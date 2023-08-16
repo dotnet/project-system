@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 {
     public sealed class UpToDateCheckImplicitConfiguredInputTests : BuildUpToDateCheckTestBase
     {

@@ -11,7 +11,7 @@ using Xunit.Abstractions;
 #pragma warning disable IDE0058
 #pragma warning disable CS0649 // Field is never assigned to
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 {
     public sealed class BuildUpToDateCheckTests : BuildUpToDateCheckTestBase, IDisposable
     {

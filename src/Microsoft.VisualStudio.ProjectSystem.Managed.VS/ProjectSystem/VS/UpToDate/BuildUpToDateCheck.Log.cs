@@ -3,7 +3,7 @@
 using System.Diagnostics;
 using Microsoft.VisualStudio.Telemetry;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 {
     internal sealed partial class BuildUpToDateCheck
     {
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             private static string GetResourceString(string resourceName)
             {
-                string? message = Resources.ResourceManager.GetString(resourceName, Resources.Culture);
+                string? message = VSResources.ResourceManager.GetString(resourceName, VSResources.Culture);
 
                 if (message is null)
                 {
@@ -252,7 +252,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     (TelemetryPropertyName.UpToDateCheck.AcceleratedCopyCount, copyCount)
                 });
 
-                Info(nameof(Resources.FUTD_UpToDate));
+                Info(nameof(VSResources.FUTD_UpToDate));
             }
 
             public readonly struct Scope : IDisposable

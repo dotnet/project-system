@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate;
 
 /// <summary>
 /// Models an item that is copied to a project's output directory when that project is built.

@@ -3,7 +3,7 @@
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Text;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 {
     /// <summary>
     /// Models all up-to-date check state for a single configuration.

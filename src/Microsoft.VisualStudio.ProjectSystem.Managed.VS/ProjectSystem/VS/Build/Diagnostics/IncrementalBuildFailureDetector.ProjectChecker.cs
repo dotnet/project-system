@@ -3,7 +3,7 @@
 using System.Diagnostics;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Build;
-using Microsoft.VisualStudio.ProjectSystem.UpToDate;
+using Microsoft.VisualStudio.ProjectSystem.VS.UpToDate;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build.Diagnostics
 {

@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Build;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 {
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private)]
     internal interface IBuildUpToDateCheckValidator

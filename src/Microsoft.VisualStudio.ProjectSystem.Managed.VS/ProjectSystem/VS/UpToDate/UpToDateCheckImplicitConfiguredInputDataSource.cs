@@ -11,7 +11,7 @@ using UpdateValues = System.ValueTuple<
     Microsoft.VisualStudio.ProjectSystem.IProjectItemSchema,
     Microsoft.VisualStudio.ProjectSystem.Properties.IProjectCatalogSnapshot>;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 {
     /// <inheritdoc cref="IUpToDateCheckImplicitConfiguredInputDataSource" />
     [Export(typeof(IUpToDateCheckImplicitConfiguredInputDataSource))]

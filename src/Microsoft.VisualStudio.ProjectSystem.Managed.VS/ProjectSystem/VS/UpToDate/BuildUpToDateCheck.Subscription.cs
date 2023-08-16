@@ -3,7 +3,7 @@
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 {
     internal sealed partial class BuildUpToDateCheck
     {

@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Build;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate;
 
 /// <summary>
 /// Called (in a specific project configuration) when that project's build starts and completes.

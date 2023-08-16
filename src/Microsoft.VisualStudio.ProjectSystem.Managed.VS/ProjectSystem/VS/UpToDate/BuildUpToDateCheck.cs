@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Telemetry;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 {
     [AppliesTo(AppliesToExpression)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
-                return log.Fail("CriticalTasks", nameof(Resources.FUTD_CriticalBuildTasksRunning));
+                return log.Fail("CriticalTasks", nameof(VSResources.FUTD_CriticalBuildTasksRunning));
             }
 
             if (validateFirstRun && lastSuccessfulBuildStartTimeUtc is null)
@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // Despite the name, "FirstRun" can occur on the second run if the first build didn't
                 // complete correctly. The name is kept though as it allows easier correlation between
                 // older and newer data.
-                return log.Fail("FirstRun", nameof(Resources.FUTD_FirstRun));
+                return log.Fail("FirstRun", nameof(VSResources.FUTD_FirstRun));
             }
 
             if (lastSuccessfulBuildStartTimeUtc < state.LastItemsChangedAtUtc)
@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 Assumes.NotNull(lastSuccessfulBuildStartTimeUtc);
                 Assumes.NotNull(state.LastItemsChangedAtUtc);
 
-                log.Fail("ProjectItemsChangedSinceLastSuccessfulBuildStart", nameof(Resources.FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2), state.LastItemsChangedAtUtc, lastSuccessfulBuildStartTimeUtc);
+                log.Fail("ProjectItemsChangedSinceLastSuccessfulBuildStart", nameof(VSResources.FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2), state.LastItemsChangedAtUtc, lastSuccessfulBuildStartTimeUtc);
 
                 if (log.Level >= LogLevel.Info)
                 {
@@ -154,13 +154,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (state.LastItemChanges.Length == 0)
                     {
-                        log.Info(nameof(Resources.FUTD_SetOfChangedItemsIsEmpty));
+                        log.Info(nameof(VSResources.FUTD_SetOfChangedItemsIsEmpty));
                     }
                     else
                     {
                         foreach ((bool isAdd, string itemType, string item) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Item))
                         {
-                            log.Info(isAdd ? nameof(Resources.FUTD_ChangedItemsAddition_2) : nameof(Resources.FUTD_ChangedItemsRemoval_2), itemType, item);
+                            log.Info(isAdd ? nameof(VSResources.FUTD_ChangedItemsAddition_2) : nameof(VSResources.FUTD_ChangedItemsRemoval_2), itemType, item);
                         }
                     }
                 }
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // are treated separately or not. If omitted, such inputs/outputs are included in the default set,
             // which also includes other items such as project files, compilation items, analyzer references, etc.
 
-            log.Info(nameof(Resources.FUTD_ComparingInputOutputTimestamps));
+            log.Info(nameof(VSResources.FUTD_ComparingInputOutputTimestamps));
 
             using (log.IndentScope())
             {
@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (log.Level >= LogLevel.Verbose)
                 {
-                    log.Verbose(nameof(Resources.FUTD_ComparingInputOutputTimestampsInSet_1), setName);
+                    log.Verbose(nameof(VSResources.FUTD_ComparingInputOutputTimestampsInSet_1), setName);
                     log.Indent++;
                 }
 
@@ -227,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (outputTime is null)
                     {
-                        return log.Fail("OutputNotFound", nameof(Resources.FUTD_OutputDoesNotExist_1), output);
+                        return log.Fail("OutputNotFound", nameof(VSResources.FUTD_OutputDoesNotExist_1), output);
                     }
 
                     if (outputTime < earliestOutputTime)
@@ -241,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (!hasOutput)
                 {
-                    log.Info(setName == DefaultSetName ? nameof(Resources.FUTD_NoBuildOutputDefined) : nameof(Resources.FUTD_NoBuildOutputDefinedInSet_1), setName);
+                    log.Info(setName == DefaultSetName ? nameof(VSResources.FUTD_NoBuildOutputDefined) : nameof(VSResources.FUTD_NoBuildOutputDefinedInSet_1), setName);
 
                     return true;
                 }
@@ -260,17 +260,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         if (isRequired)
                         {
-                            return log.Fail("InputNotFound", itemType is null ? nameof(Resources.FUTD_RequiredInputNotFound_1) : nameof(Resources.FUTD_RequiredTypedInputNotFound_2), input, itemType ?? "");
+                            return log.Fail("InputNotFound", itemType is null ? nameof(VSResources.FUTD_RequiredInputNotFound_1) : nameof(VSResources.FUTD_RequiredTypedInputNotFound_2), input, itemType ?? "");
                         }
                         else
                         {
-                            log.Verbose(itemType is null ? nameof(Resources.FUTD_NonRequiredInputNotFound_1) : nameof(Resources.FUTD_NonRequiredTypedInputNotFound_2), input, itemType ?? "");
+                            log.Verbose(itemType is null ? nameof(VSResources.FUTD_NonRequiredInputNotFound_1) : nameof(VSResources.FUTD_NonRequiredTypedInputNotFound_2), input, itemType ?? "");
                         }
                     }
 
                     if (inputTime > earliestOutputTime)
                     {
-                        return log.Fail("InputNewerThanEarliestOutput", itemType is null ? nameof(Resources.FUTD_InputNewerThanOutput_4) : nameof(Resources.FUTD_TypedInputNewerThanOutput_5), input, inputTime.Value, earliestOutputPath, earliestOutputTime, itemType ?? "");
+                        return log.Fail("InputNewerThanEarliestOutput", itemType is null ? nameof(VSResources.FUTD_InputNewerThanOutput_4) : nameof(VSResources.FUTD_TypedInputNewerThanOutput_5), input, inputTime.Value, earliestOutputPath, earliestOutputTime, itemType ?? "");
                     }
 
                     if (inputTime > lastSuccessfulBuildStartTimeUtc)
@@ -278,7 +278,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         // Bypass this test if no check has yet been performed. We handle that in CheckGlobalConditions.
                         Assumes.NotNull(inputTime);
                         Assumes.NotNull(lastSuccessfulBuildStartTimeUtc);
-                        return log.Fail("InputModifiedSinceLastSuccessfulBuildStart", itemType is null ? nameof(Resources.FUTD_InputModifiedSinceLastSuccessfulBuildStart_3) : nameof(Resources.FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4), input, inputTime, lastSuccessfulBuildStartTimeUtc, itemType ?? "");
+                        return log.Fail("InputModifiedSinceLastSuccessfulBuildStart", itemType is null ? nameof(VSResources.FUTD_InputModifiedSinceLastSuccessfulBuildStart_3) : nameof(VSResources.FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4), input, inputTime, lastSuccessfulBuildStartTimeUtc, itemType ?? "");
                     }
 
                     if (latestInput is null || inputTime > latestInput.Value.Time)
@@ -291,11 +291,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     if (latestInput is null)
                     {
-                        log.Info(setName == DefaultSetName ? nameof(Resources.FUTD_NoInputsDefined) : nameof(Resources.FUTD_NoInputsDefinedInSet_1), setName);
+                        log.Info(setName == DefaultSetName ? nameof(VSResources.FUTD_NoInputsDefined) : nameof(VSResources.FUTD_NoInputsDefinedInSet_1), setName);
                     }
                     else
                     {
-                        log.Info(setName == DefaultSetName ? nameof(Resources.FUTD_NoInputsNewerThanEarliestOutput_4) : nameof(Resources.FUTD_NoInputsNewerThanEarliestOutputInSet_5), earliestOutputPath, earliestOutputTime, latestInput.Value.Path, latestInput.Value.Time ?? (object)"null", setName);
+                        log.Info(setName == DefaultSetName ? nameof(VSResources.FUTD_NoInputsNewerThanEarliestOutput_4) : nameof(VSResources.FUTD_NoInputsNewerThanEarliestOutputInSet_5), earliestOutputPath, earliestOutputTime, latestInput.Value.Path, latestInput.Value.Time ?? (object)"null", setName);
                     }
                 }
 
@@ -306,7 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (state.NewestImportInput is not null)
                 {
-                    log.Verbose(nameof(Resources.FUTD_AddingNewestImportInput));
+                    log.Verbose(nameof(VSResources.FUTD_AddingNewestImportInput));
                     using (log.IndentScope())
                     {
                         log.VerboseLiteral(state.NewestImportInput);
@@ -316,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 foreach ((string itemType, ImmutableArray<string> items) in state.InputSourceItemsByItemType)
                 {
-                    log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), itemType);
+                    log.Verbose(nameof(VSResources.FUTD_AddingTypedInputs_1), itemType);
 
                     using Log.Scope _ = log.IndentScope();
 
@@ -330,7 +330,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (!state.ResolvedAnalyzerReferencePaths.IsEmpty)
                 {
-                    log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), ResolvedAnalyzerReference.SchemaName);
+                    log.Verbose(nameof(VSResources.FUTD_AddingTypedInputs_1), ResolvedAnalyzerReference.SchemaName);
 
                     using Log.Scope _ = log.IndentScope();
 
@@ -344,7 +344,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (!state.ResolvedCompilationReferencePaths.IsEmpty)
                 {
-                    log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), ResolvedCompilationReference.SchemaName);
+                    log.Verbose(nameof(VSResources.FUTD_AddingTypedInputs_1), ResolvedCompilationReference.SchemaName);
 
                     using Log.Scope _ = log.IndentScope();
 
@@ -358,7 +358,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (state.UpToDateCheckInputItemsByKindBySetName.TryGetValue(DefaultSetName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckInputItems))
                 {
-                    log.Verbose(nameof(Resources.FUTD_AddingTypedInputs_1), UpToDateCheckInput.SchemaName);
+                    log.Verbose(nameof(VSResources.FUTD_AddingTypedInputs_1), UpToDateCheckInput.SchemaName);
 
                     using Log.Scope _ = log.IndentScope();
 
@@ -386,7 +386,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (state.UpToDateCheckOutputItemsByKindBySetName.TryGetValue(DefaultSetName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckOutputItems))
                 {
-                    log.Verbose(nameof(Resources.FUTD_AddingTypedOutputs_1), UpToDateCheckOutput.SchemaName);
+                    log.Verbose(nameof(VSResources.FUTD_AddingTypedOutputs_1), UpToDateCheckOutput.SchemaName);
 
                     using Log.Scope _ = log.IndentScope();
 
@@ -411,7 +411,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (state.UpToDateCheckBuiltItemsByKindBySetName.TryGetValue(DefaultSetName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckBuiltItems))
                 {
-                    log.Verbose(nameof(Resources.FUTD_AddingTypedOutputs_1), UpToDateCheckBuilt.SchemaName);
+                    log.Verbose(nameof(VSResources.FUTD_AddingTypedOutputs_1), UpToDateCheckBuilt.SchemaName);
 
                     using Log.Scope _ = log.IndentScope();
 
@@ -439,7 +439,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (state.UpToDateCheckInputItemsByKindBySetName.TryGetValue(setName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckInputItems))
                 {
-                    log.Verbose(nameof(Resources.FUTD_AddingTypedInputsInSet_2), UpToDateCheckInput.SchemaName, setName);
+                    log.Verbose(nameof(VSResources.FUTD_AddingTypedInputsInSet_2), UpToDateCheckInput.SchemaName, setName);
 
                     using Log.Scope _ = log.IndentScope();
 
@@ -467,7 +467,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (state.UpToDateCheckOutputItemsByKindBySetName.TryGetValue(setName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckOutputItems))
                 {
-                    log.Verbose(nameof(Resources.FUTD_AddingTypedOutputsInSet_2), UpToDateCheckOutput.SchemaName, setName);
+                    log.Verbose(nameof(VSResources.FUTD_AddingTypedOutputsInSet_2), UpToDateCheckOutput.SchemaName, setName);
 
                     using Log.Scope _ = log.IndentScope();
 
@@ -492,7 +492,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (state.UpToDateCheckBuiltItemsByKindBySetName.TryGetValue(setName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckBuiltItems))
                 {
-                    log.Verbose(nameof(Resources.FUTD_AddingTypedOutputsInSet_2), UpToDateCheckBuilt.SchemaName, setName);
+                    log.Verbose(nameof(VSResources.FUTD_AddingTypedOutputsInSet_2), UpToDateCheckBuilt.SchemaName, setName);
 
                     using Log.Scope _ = log.IndentScope();
 
@@ -528,7 +528,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     foreach (string path in items)
                     {
                         string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                        log.Verbose(nameof(Resources.FUTD_SkippingIgnoredKindItem_2), absolutePath, kind);
+                        log.Verbose(nameof(VSResources.FUTD_SkippingIgnoredKindItem_2), absolutePath, kind);
                     }
                 }
 
@@ -608,7 +608,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return true;
             }
 
-            log.Info(nameof(Resources.FUTD_ComparingCopyMarkerTimestamps));
+            log.Info(nameof(VSResources.FUTD_ComparingCopyMarkerTimestamps));
 
             using Log.Scope _ = log.IndentScope();
 
@@ -619,13 +619,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             if (outputMarkerTime is null)
             {
                 // No output marker exists, so we can't be out of date.
-                log.Info(nameof(Resources.FUTD_NoOutputMarkerExists_1), outputMarkerFile);
+                log.Info(nameof(VSResources.FUTD_NoOutputMarkerExists_1), outputMarkerFile);
                 return true;
             }
 
-            log.Info(nameof(Resources.FUTD_WriteTimeOnOutputMarker_2), outputMarkerTime, outputMarkerFile);
+            log.Info(nameof(VSResources.FUTD_WriteTimeOnOutputMarker_2), outputMarkerTime, outputMarkerFile);
 
-            log.Verbose(nameof(Resources.FUTD_AddingInputReferenceCopyMarkers));
+            log.Verbose(nameof(VSResources.FUTD_AddingInputReferenceCopyMarkers));
 
             bool inputMarkerExists = false;
 
@@ -641,7 +641,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         using (log.IndentScope())
                         {
-                            log.Verbose(nameof(Resources.FUTD_InputMarkerDoesNotExist));
+                            log.Verbose(nameof(VSResources.FUTD_InputMarkerDoesNotExist));
                             continue;
                         }
                     }
@@ -653,14 +653,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         fileSystemOperations.IsAccelerationCandidate = true;
 
-                        return log.Fail("InputMarkerNewerThanOutputMarker", nameof(Resources.FUTD_InputMarkerNewerThanOutputMarker_4), inputMarker, inputMarkerTime, outputMarkerFile, outputMarkerTime);
+                        return log.Fail("InputMarkerNewerThanOutputMarker", nameof(VSResources.FUTD_InputMarkerNewerThanOutputMarker_4), inputMarker, inputMarkerTime, outputMarkerFile, outputMarkerTime);
                     }
                 }
             }
 
             if (!inputMarkerExists)
             {
-                log.Info(nameof(Resources.FUTD_NoInputMarkersExist));
+                log.Info(nameof(VSResources.FUTD_NoInputMarkersExist));
             }
 
             return true;
@@ -679,7 +679,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 string sourcePath = _configuredProject.UnconfiguredProject.MakeRooted(sourceRelative);
                 string destinationPath = _configuredProject.UnconfiguredProject.MakeRooted(destinationRelative);
 
-                log.Info(nameof(Resources.FUTD_CheckingBuiltOutputFile), sourcePath);
+                log.Info(nameof(VSResources.FUTD_CheckingBuiltOutputFile), sourcePath);
 
                 using Log.Scope _ = log.IndentScope();
 
@@ -689,23 +689,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     // We don't generally expect the source to be unavailable.
                     // If this occurs, schedule a build to be on the safe side.
-                    return log.Fail("CopySourceNotFound", nameof(Resources.FUTD_CheckingBuiltOutputFileSourceNotFound_2), sourcePath, destinationPath);
+                    return log.Fail("CopySourceNotFound", nameof(VSResources.FUTD_CheckingBuiltOutputFileSourceNotFound_2), sourcePath, destinationPath);
                 }
 
-                log.Info(nameof(Resources.FUTD_SourceFileTimeAndPath_2), sourceTime, sourcePath);
+                log.Info(nameof(VSResources.FUTD_SourceFileTimeAndPath_2), sourceTime, sourcePath);
 
                 DateTime? destinationTime = timestampCache.GetTimestampUtc(destinationPath);
 
                 if (destinationTime is null)
                 {
-                    return log.Fail("CopyDestinationNotFound", nameof(Resources.FUTD_CheckingBuiltOutputFileDestinationNotFound_2), destinationPath, sourcePath);
+                    return log.Fail("CopyDestinationNotFound", nameof(VSResources.FUTD_CheckingBuiltOutputFileDestinationNotFound_2), destinationPath, sourcePath);
                 }
 
-                log.Info(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destinationPath);
+                log.Info(nameof(VSResources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destinationPath);
 
                 if (destinationTime < sourceTime)
                 {
-                    return log.Fail("CopySourceNewer", nameof(Resources.FUTD_CheckingBuiltOutputFileSourceNewer));
+                    return log.Fail("CopySourceNewer", nameof(VSResources.FUTD_CheckingBuiltOutputFileSourceNewer));
                 }
             }
 
@@ -747,17 +747,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (scope1 is null)
                     {
-                        log.Verbose(nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItems));
+                        log.Verbose(nameof(VSResources.FUTD_CheckingCopyToOutputDirectoryItems));
                         scope1 = log.IndentScope();
                     }
 
                     if (scope2 is null)
                     {
-                        log.Verbose(nameof(Resources.FUTDC_CheckingCopyItemsForProject_1), project);
+                        log.Verbose(nameof(VSResources.FUTDC_CheckingCopyItemsForProject_1), project);
                         scope2 = log.IndentScope();
                     }
 
-                    log.Verbose(nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItem_1), copyType.ToString());
+                    log.Verbose(nameof(VSResources.FUTD_CheckingCopyToOutputDirectoryItem_1), copyType.ToString());
 
                     DateTime? sourceTime = timestampCache.GetTimestampUtc(sourcePath);
 
@@ -765,28 +765,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         // We don't generally expect the source to be unavailable.
                         // If this occurs, schedule a build to be on the safe side.
-                        return log.Fail("CopyToOutputDirectorySourceNotFound", nameof(Resources.FUTD_CheckingCopyToOutputDirectorySourceNotFound_1), sourcePath);
+                        return log.Fail("CopyToOutputDirectorySourceNotFound", nameof(VSResources.FUTD_CheckingCopyToOutputDirectorySourceNotFound_1), sourcePath);
                     }
 
                     using Log.Scope _ = log.IndentScope();
 
-                    log.Verbose(nameof(Resources.FUTD_SourceFileTimeAndPath_2), sourceTime, sourcePath);
+                    log.Verbose(nameof(VSResources.FUTD_SourceFileTimeAndPath_2), sourceTime, sourcePath);
 
                     DateTime? destinationTime = timestampCache.GetTimestampUtc(destinationPath);
 
                     if (destinationTime is null)
                     {
-                        log.Verbose(nameof(Resources.FUTD_DestinationDoesNotExist_1), destinationPath);
+                        log.Verbose(nameof(VSResources.FUTD_DestinationDoesNotExist_1), destinationPath);
 
                         if (!fileSystemAggregator.AddCopy(sourcePath, destinationPath))
                         {
-                            return log.Fail("CopyToOutputDirectoryDestinationNotFound", nameof(Resources.FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1), destinationPath);
+                            return log.Fail("CopyToOutputDirectoryDestinationNotFound", nameof(VSResources.FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1), destinationPath);
                         }
 
                         continue;
                     }
 
-                    log.Verbose(nameof(Resources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destinationPath);
+                    log.Verbose(nameof(VSResources.FUTD_DestinationFileTimeAndPath_2), destinationTime, destinationPath);
 
                     switch (copyType)
                     {
@@ -804,7 +804,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             {
                                 if (!fileSystemAggregator.AddCopy(sourcePath, destinationPath))
                                 {
-                                    return log.Fail("CopyAlwaysItemDiffers", nameof(Resources.FUTD_CopyAlwaysItemsDiffer_6), sourcePath, sourceTime, sourceSizeBytes, destinationPath, destinationTime, destinationSizeBytes);
+                                    return log.Fail("CopyAlwaysItemDiffers", nameof(VSResources.FUTD_CopyAlwaysItemsDiffer_6), sourcePath, sourceTime, sourceSizeBytes, destinationPath, destinationTime, destinationSizeBytes);
                                 }
                             }
 
@@ -817,7 +817,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             {
                                 if (!fileSystemAggregator.AddCopy(sourcePath, destinationPath))
                                 {
-                                    return log.Fail("CopyToOutputDirectorySourceNewer", nameof(Resources.FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_3), CopyType.PreserveNewest.ToString(), sourcePath, destinationPath);
+                                    return log.Fail("CopyToOutputDirectorySourceNewer", nameof(VSResources.FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_3), CopyType.PreserveNewest.ToString(), sourcePath, destinationPath);
                                 }
                             }
 
@@ -1004,7 +1004,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                         if (requestedLogLevel >= LogLevel.Info && ignoreKinds.Count != 0)
                         {
-                            logger.Info(nameof(Resources.FUTD_IgnoringKinds_1), ignoreKindsString);
+                            logger.Info(nameof(VSResources.FUTD_IgnoringKinds_1), ignoreKindsString);
                         }
                     }
 
@@ -1028,7 +1028,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                         if (logConfigurations)
                         {
-                            logger.Info(nameof(Resources.FUTD_CheckingConfiguration_1), implicitState.ProjectConfiguration.GetDisplayString());
+                            logger.Info(nameof(VSResources.FUTD_CheckingConfiguration_1), implicitState.ProjectConfiguration.GetDisplayString());
                             logger.Indent++;
                         }
 
@@ -1041,7 +1041,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                             }
                             else
                             {
-                                logger.Fail("Disabled", nameof(Resources.FUTD_DisableFastUpToDateCheckTrue));
+                                logger.Fail("Disabled", nameof(VSResources.FUTD_DisableFastUpToDateCheckTrue));
                                 return (false, checkedConfigurations);
                             }
                         }
@@ -1096,7 +1096,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                         if (copyCount != 0)
                         {
-                            logger.Info(nameof(Resources.FUTD_BuildAccelerationSummary_1), copyCount);
+                            logger.Info(nameof(VSResources.FUTD_BuildAccelerationSummary_1), copyCount);
                         }
 
                         logger.UpToDate(copyCount);
@@ -1106,7 +1106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 catch (Exception ex)
                 {
-                    return (logger.Fail("Exception", nameof(Resources.FUTD_Exception_1), ex), ImmutableArray<ProjectConfiguration>.Empty);
+                    return (logger.Fail("Exception", nameof(VSResources.FUTD_Exception_1), ex), ImmutableArray<ProjectConfiguration>.Empty);
                 }
                 finally
                 {
@@ -1115,7 +1115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         // We didn't copy anything, but we did find a candidate for build acceleration,
                         // and the project does not specify AccelerateBuildsInVisualStudio. Log a message to
                         // let the user know that their project might benefit from Build Acceleration.
-                        logger.Minimal(nameof(Resources.FUTD_AccelerationCandidate));
+                        logger.Minimal(nameof(VSResources.FUTD_AccelerationCandidate));
                     }
 
                     if (fileSystemOperations.IsAccelerationEnabled is true && fileSystemOperations.TargetsWithoutReferenceAssemblies is { Count: > 0 })
@@ -1123,10 +1123,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         // This project is configured to use build acceleration, but some of its references do not
                         // produce reference assemblies. Log a message to let the user know that they may be able
                         // to improve their build performance by enabling the production of reference assemblies.
-                        logger.Minimal(nameof(Resources.FUTD_NotAllReferencesProduceReferenceAssemblies_1), string.Join(", ", fileSystemOperations.TargetsWithoutReferenceAssemblies.Select(s => $"'{s}'")));
+                        logger.Minimal(nameof(VSResources.FUTD_NotAllReferencesProduceReferenceAssemblies_1), string.Join(", ", fileSystemOperations.TargetsWithoutReferenceAssemblies.Select(s => $"'{s}'")));
                     }
 
-                    logger.Verbose(nameof(Resources.FUTD_Completed), sw.Elapsed.TotalMilliseconds);
+                    logger.Verbose(nameof(VSResources.FUTD_Completed), sw.Elapsed.TotalMilliseconds);
 
                     _lastFailureReason = logger.FailureReason;
                     _lastFailureDescription = logger.FailureDescription;
@@ -1152,7 +1152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         if (logger.Level >= LogLevel.Info)
                         {
                             logger.Info(
-                                nameof(Resources.BuildAccelerationDisabledDueToIncompatiblePackageReferences_1),
+                                nameof(VSResources.BuildAccelerationDisabledDueToIncompatiblePackageReferences_1),
                                 string.Join(", ", implicitState.PresentBuildAccelerationIncompatiblePackages.Select(id => $"'{id}'")));
                         }
 
@@ -1172,12 +1172,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         if (await _projectSystemOptions.IsBuildAccelerationEnabledByDefaultAsync(cancellationToken))
                         {
                             // The user has opted-in via feature flag. Set this to true and carry on with further checks.
-                            logger.Info(nameof(Resources.FUTD_BuildAccelerationEnabledViaFeatureFlag));
+                            logger.Info(nameof(VSResources.FUTD_BuildAccelerationEnabledViaFeatureFlag));
                             isEnabled = true;
                         }
                         else
                         {
-                            logger.Verbose(nameof(Resources.FUTD_BuildAccelerationIsNotEnabledForThisProject));
+                            logger.Verbose(nameof(VSResources.FUTD_BuildAccelerationIsNotEnabledForThisProject));
                             return null;
                         }
                     }
@@ -1191,20 +1191,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         if (isCopyItemsComplete)
                         {
                             logger.Info(isEnabledInProject is null
-                                ? nameof(Resources.FUTD_BuildAccelerationEnabledViaFeatureFlag)
-                                : nameof(Resources.FUTD_BuildAccelerationEnabledViaProperty));
+                                ? nameof(VSResources.FUTD_BuildAccelerationEnabledViaFeatureFlag)
+                                : nameof(VSResources.FUTD_BuildAccelerationEnabledViaProperty));
                             return true;
                         }
                         else
                         {
-                            logger.Info(nameof(Resources.FUTD_AccelerationDisabledCopyItemsIncomplete));
+                            logger.Info(nameof(VSResources.FUTD_AccelerationDisabledCopyItemsIncomplete));
                             return false;
                         }
                     }
                     else
                     {
                         // The project explicitly opts out.
-                        logger.Info(nameof(Resources.FUTD_AccelerationDisabledForProject));
+                        logger.Info(nameof(VSResources.FUTD_AccelerationDisabledForProject));
                         return false;
                     }
                 }

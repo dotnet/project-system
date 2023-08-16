@@ -3,7 +3,7 @@
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 {
     /// <inheritdoc cref="IUpToDateCheckConfiguredInputDataSource" />
     [Export(typeof(IUpToDateCheckConfiguredInputDataSource))]

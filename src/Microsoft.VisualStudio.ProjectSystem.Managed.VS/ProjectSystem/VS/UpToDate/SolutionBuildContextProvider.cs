@@ -2,7 +2,6 @@
 
 using System.Diagnostics;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Telemetry;
 

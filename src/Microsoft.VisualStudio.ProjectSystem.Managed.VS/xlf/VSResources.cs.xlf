@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="cs" original="../VSResources.resx">
     <body>
+      <trans-unit id="BuildAccelerationDisabledDueToIncompatiblePackageReferences_1">
+        <source>Build acceleration has been disabled for this project due to known incompatible NuGet package reference(s) {0}. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">Akcelerace sestavení byla pro tento projekt zakázána kvůli známým nekompatibilním odkazům na balíčky NuGet {0}. Viz https://aka.ms/vs-build-acceleration.</target>
+        <note>{0} is a comma-separated list of NuGet package names.</note>
+      </trans-unit>
       <trans-unit id="BuildAccelerationSummary_2">
         <source>Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</source>
         <target state="translated">Služba Visual Studio akcelerovala tento počet projektů: {0} a kopíruje tento počet souborů: {1}. Další informace najdete na: https://aka.ms/vs-build-acceleration.</target>
@@ -64,6 +69,361 @@
         <source>Path</source>
         <target state="translated">Cesta</target>
         <note />
+      </trans-unit>
+      <trans-unit id="FUTDC_AccelerationDataMissingForProject_1">
+        <source>Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">Data akcelerace sestavení nejsou pro projekt s cílem {0} k dispozici. Viz https://aka.ms/vs-build-acceleration.</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTDC_CheckingCopyItemsForProject_1">
+        <source>Checking copy items from project '{0}':</source>
+        <target state="translated">Probíhá kontrola kopírování položek z projektu {0}:</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_AccelerationCandidate">
+        <source>This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">Zdá se, že tento projekt je kandidátem na akceleraci sestavení. Pro přihlášení nastavte vlastnost MSBuild AccelerateBuildsInVisualStudio na hodnotu true. Viz https://aka.ms/vs-build-acceleration.</target>
+        <note>Do not translate 'AccelerateBuildsInVisualStudio' or 'true'.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_AccelerationDisabledCopyItemsIncomplete">
+        <source>Build acceleration is not available for this project because not all transitively referenced projects have provided acceleration data.</source>
+        <target state="translated">Akcelerace sestavení není pro tento projekt k dispozici, protože ne všechny přechodně odkazované projekty poskytly data akcelerace.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_AccelerationDisabledForProject">
+        <source>Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">Akcelerace sestavení je pro tento projekt zakázaná prostřednictvím vlastnosti MSBuild AccelerateBuildsInVisualStudio. Viz https://aka.ms/vs-build-acceleration.</target>
+        <note>Do not translate AccelerateBuildsInVisualStudio.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_AddingInputReferenceCopyMarkers">
+        <source>Adding input reference copy markers:</source>
+        <target state="translated">Přidávají se značky kopírování vstupního odkazu:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_AddingNewestImportInput">
+        <source>Adding newest import input:</source>
+        <target state="translated">Přidává se nejnovější vstup importu:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_AddingTypedInputsInSet_2">
+        <source>Adding {0} inputs in Set="{1}":</source>
+        <target state="translated">Přidávají se vstupy {0} v sadě="{1}":</target>
+        <note>{0} is an MSBuild item type. {1} is the name of the set.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_AddingTypedInputs_1">
+        <source>Adding {0} inputs:</source>
+        <target state="translated">Přidávají se vstupy {0}:</target>
+        <note>{0} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_AddingTypedOutputsInSet_2">
+        <source>Adding {0} outputs in Set="{1}":</source>
+        <target state="translated">Přidávají se výstupy {0} v sadě="{1}":</target>
+        <note>{0} is an MSBuild item type. {1} is the name of the set.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_AddingTypedOutputs_1">
+        <source>Adding {0} outputs:</source>
+        <target state="translated">Přidávají se výstupy {0}:</target>
+        <note>{0} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_BuildAccelerationEnabledViaFeatureFlag">
+        <source>Build acceleration is enabled for this project via a feature flag. See "Tools | Options | Environment | Preview Features" to control this setting. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">Akcelerace sestavení je pro tento projekt povolená prostřednictvím příznaku funkce. Toto nastavení můžete ovládat v části „Nástroje | Možnosti | Prostředí | Funkce Preview“. Viz https://aka.ms/vs-build-acceleration.</target>
+        <note>"Tools | Options | Environment | Preview Features" references UI labels that must be made to match the equivalent values in each culture.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_BuildAccelerationEnabledViaProperty">
+        <source>Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">Akcelerace sestavení je pro tento projekt povolená prostřednictvím vlastnosti MSBuild AccelerateBuildsInVisualStudio. Viz https://aka.ms/vs-build-acceleration.</target>
+        <note>Do not translate 'AccelerateBuildsInVisualStudio'.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_BuildAccelerationIsNotEnabledForThisProject">
+        <source>Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">Akcelerace sestavení není pro tento projekt povolená. Viz https://aka.ms/vs-build-acceleration.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_BuildAccelerationSummary_1">
+        <source>Build acceleration copied {0} files.</source>
+        <target state="translated">Akcelerace sestavení zkopírovala soubory: {0}.</target>
+        <note>{0} is a non-zero integer.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_ChangedItemsAddition_2">
+        <source>{0} item added '{1}'</source>
+        <target state="translated">Položka {0} přidala {1}</target>
+        <note>{0} is an MSBuild item type. {1} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_ChangedItemsRemoval_2">
+        <source>{0} item removed '{1}'</source>
+        <target state="translated">Položka {0} odebrala {1}</target>
+        <note>{0} is an MSBuild item type. {1} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingBuiltOutputFile">
+        <source>Checking built output (UpToDateCheckBuilt with Original property) file:</source>
+        <target state="translated">Kontrola výstupního souboru sestavení (UpToDateCheckBuilt s vlastností Original):</target>
+        <note>Do not translate UpToDateCheckBuilt or Original.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingBuiltOutputFileDestinationNotFound_2">
+        <source>Destination '{0}' does not exist for copy from '{1}', not up-to-date.</source>
+        <target state="translated">Cíl {0} pro kopírování z {1} neexistuje. Není aktuální.</target>
+        <note>{0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingBuiltOutputFileSourceNewer">
+        <source>Source is newer than build output destination, not up-to-date.</source>
+        <target state="translated">Zdroj je novější než výstupní cíl sestavení. Není aktuální.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingBuiltOutputFileSourceNotFound_2">
+        <source>Source '{0}' does not exist for build into target '{1}', not up-to-date.</source>
+        <target state="translated">Zdroj {0} pro sestavení do cíle {1} neexistuje, není aktuální.</target>
+        <note>{0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingConfiguration_1">
+        <source>Checking configuration {0}:</source>
+        <target state="translated">Kontroluje se konfigurace {0}:</target>
+        <note>{0} is a description of the project's configuration, such as "Debug|AnyCPU|net6.0".</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyFileSourceNotFound_2">
+        <source>Source '{0}' does not exist for copy to '{1}'.</source>
+        <target state="translated">Zdroj {0} pro kopírování do {1} neexistuje.</target>
+        <note>{0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1">
+        <source>Destination '{0}' does not exist, not up-to-date.</source>
+        <target state="translated">Cíl {0} neexistuje. Není aktuální.</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItem_1">
+        <source>Checking {0} item</source>
+        <target state="translated">Kontrola položky {0}</target>
+        <note>{0} is either the literal "PreserveNewest" or "Always", describing the policy used when copying these items to the output directory.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItems">
+        <source>Checking items to copy to the output directory:</source>
+        <target state="translated">Kontrolují se položky, které se mají zkopírovat do výstupního adresáře:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_3">
+        <source>Item with CopyToOutputDirectory="{0}" source '{1}' is newer than destination '{2}', not up-to-date.</source>
+        <target state="translated">Položka s CopyToOutputDirectory="{0}" zdroje {1} je novější než cíl {2}, není aktuální.</target>
+        <note>Do not translate CopyToOutputDirectory. {0} is from an enum of valid values. {1} and {2} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectorySourceNotFound_1">
+        <source>Source '{0}' does not exist, not up-to-date.</source>
+        <target state="translated">Zdroj {0} neexistuje. Není aktuální.</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_ComparingCopyMarkerTimestamps">
+        <source>Comparing timestamps of copy marker inputs and output:</source>
+        <target state="translated">Porovnání časových razítek vstupů a výstupu značky kopírování:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_ComparingInputOutputTimestamps">
+        <source>Comparing timestamps of inputs and outputs:</source>
+        <target state="translated">Porovnávání časových razítek vstupů a výstupů:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_ComparingInputOutputTimestampsInSet_1">
+        <source>Comparing timestamps of inputs and outputs in Set="{0}":</source>
+        <target state="translated">Porovnávají se časová razítka vstupů a výstupů v sadě="{0}":</target>
+        <note>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_Completed">
+        <source>Up-to-date check completed in {0:N1} ms</source>
+        <target state="translated">Kontrola aktuálnosti dokončena za {0:N1} ms</target>
+        <note>{0} is a duration in milliseconds. "ms" refers to "milliseconds". Leave the "{0:N1}" string as-is, for correct formatting of the number.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CopyAlwaysItemsDiffer_6">
+        <source>Item with CopyToOutputDirectory="Always" source ('{0}' {1}, {2} bytes) differs from destination ('{3}' {4}, {5} bytes), not up-to-date.</source>
+        <target state="translated">Položka se zdrojem CopyToOutputDirectory"Always" ({0} {1}, počet bajtů: {2}) se liší od cíle ({3} {4}, počet bajtů: {5}), není aktuální.</target>
+        <note>Do not translate CopyToOutputDirectory="Always". {0} and {3} are file paths. {1} and {4} are date times. {2} and {5} are byte counts.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CopyingFilesToAccelerateBuild_1">
+        <source>Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):</source>
+        <target state="translated">Kopírují se soubory ({0}) pro zrychlení sestavení (https://aka.ms/vs-build-acceleration):</target>
+        <note>{0} is an integer.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CriticalBuildTasksRunning">
+        <source>Critical build tasks are running, not up-to-date.</source>
+        <target state="translated">Kritické úlohy sestavení jsou spuštěné. Není aktuální.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_DestinationDoesNotExist_1">
+        <source>Destination '{0}' does not exist.</source>
+        <target state="translated">Cíl {0} neexistuje.</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_DestinationFileTimeAndPath_2">
+        <source>Destination {0}: '{1}'</source>
+        <target state="translated">Cíl {0}: {1}</target>
+        <note>{0} is a datetime. {1} is a file path. The indentation after "Destination" should be coordinated with the value of "Source" in FUTD_SourceFileTimeAndPath_2.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_DisableFastUpToDateCheckTrue">
+        <source>The 'DisableFastUpToDateCheck' property is 'true', not up-to-date.</source>
+        <target state="translated">Vlastnost DisableFastUpToDateCheck je true. Není aktuální.</target>
+        <note>Do not translate 'DisableFastUpToDateCheck' or 'true'.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_ExceptionCopyingFile_1">
+        <source>Exception copying file, scheduling MSBuild: {0}</source>
+        <target state="translated">Exception kopírování souboru, plánování MSBuild: {0}</target>
+        <note>Do not translate 'Exception' or 'MSBuild'. {0} is an exception message and stack trace.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_Exception_1">
+        <source>Up-to-date check threw an exception. Not up-to-date. {0}</source>
+        <target state="translated">Kontrola aktuálnosti vyvolala výjimku. Není aktuální. {0}</target>
+        <note>{0} is the exception message.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_FirstRun">
+        <source>The up-to-date check has not yet run for this project. Not up-to-date.</source>
+        <target state="translated">Pro tento projekt ještě neběží kontrola aktuálnosti. Není aktuální.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_FromTo_2">
+        <source>From '{0}' to '{1}'.</source>
+        <target state="translated">Z: {0} do: {1}.</target>
+        <note>{0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_IgnoringKinds_1">
+        <source>Ignoring up-to-date check items with Kind="{0}"</source>
+        <target state="translated">Ignorují se položky kontroly aktuálnosti s prvkem Kind="{0}".</target>
+        <note>Do not translate Kind. {0} is the kind name.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_InputMarkerDoesNotExist">
+        <source>Input marker does not exist.</source>
+        <target state="translated">Vstupní značka neexistuje.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker_4">
+        <source>Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.</source>
+        <target state="translated">Vstupní značka {0} je novější ({1}) než výstupní značka{2} ({3}). Není aktuální.</target>
+        <note>{0} and {2} are file paths. {1} and {3} are datetimes.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_InputModifiedSinceLastSuccessfulBuildStart_3">
+        <source>Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</source>
+        <target state="translated">Vstup {0} ({1}) se od posledního úspěšného zahájení sestavení ({2}) změnil, takže není aktuální.</target>
+        <note>{0} is a file path. {1} and {2} are datetimes.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_InputNewerThanOutput_4">
+        <source>Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.</source>
+        <target state="translated">Vstup {0} je novější ({1}) než nejstarší výstup {2} ({3}). Není aktuální.</target>
+        <note>{0} and {2} are file paths. {1} and {3} are datetimes.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NoBuildOutputDefined">
+        <source>No build outputs defined.</source>
+        <target state="translated">Nejsou definovány žádné výstupy sestavení.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_NoBuildOutputDefinedInSet_1">
+        <source>No build outputs defined in Set="{0}".</source>
+        <target state="translated">V sadě="{0}" nejsou definované žádné výstupy sestavení.</target>
+        <note>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NoInputMarkersExist">
+        <source>No input markers exist, skipping marker check.</source>
+        <target state="translated">Neexistují žádné vstupní značky. Kontrola značek se přeskočí.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_NoInputsDefined">
+        <source>No inputs defined.</source>
+        <target state="translated">Nejsou definované žádné vstupy.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_NoInputsDefinedInSet_1">
+        <source>No inputs defined in Set="{0}".</source>
+        <target state="translated">V sadě="{0}" nejsou definovány žádné vstupy.</target>
+        <note>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NoInputsNewerThanEarliestOutputInSet_5">
+        <source>In Set="{4}", no inputs are newer than earliest output '{0}' ({1}). Newest input is '{2}' ({3}).</source>
+        <target state="translated">V sadě="{4}" nejsou žádné vstupy novější než nejstarší výstup {0} ({1}). Nejnovější vstup je {2} ({3}).</target>
+        <note>Do not translate 'Set' as this name is used in code. {0} and {2} are file paths. {1} and {2} are datetimes. {4} is the name of the set.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NoInputsNewerThanEarliestOutput_4">
+        <source>No inputs are newer than earliest output '{0}' ({1}). Newest input is '{2}' ({3}).</source>
+        <target state="translated">Žádné vstupy nejsou novější než nejstarší výstup {0} ({1}). Nejnovější vstup je {2} ({3}).</target>
+        <note>{0} and {2} are file paths. {1} and {2} are datetimes.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NoOutputMarkerExists_1">
+        <source>Output marker '{0}' does not exist, skipping marker check.</source>
+        <target state="translated">Výstupní značka {0} neexistuje. Kontrola značek se přeskočí.</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NonRequiredInputNotFound_1">
+        <source>Input '{0}' does not exist, but is not required.</source>
+        <target state="translated">Vstup {0} neexistuje, ale není povinný.</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NonRequiredTypedInputNotFound_2">
+        <source>Input {1} item '{0}' does not exist, but is not required.</source>
+        <target state="translated">Vstupní položka {1} {0} neexistuje, i když je povinná.</target>
+        <note>{0} is a file path. {1} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NotAllReferencesProduceReferenceAssemblies_1">
+        <source>This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.</source>
+        <target state="translated">Tento projekt povolil akceleraci sestavení, ale ne všechny odkazované projekty vytvářejí referenční sestavení. Zajistěte, aby projekty vytvářející následující výstupy měly vlastnost MSBuild ProduceReferenceAssembly nastavenou na hodnotu true: {0}. Další informace najdete v https://aka.ms/vs-build-acceleration.</target>
+        <note>Do not translate 'ProduceReferenceAssembly' or 'true'.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_OutputDoesNotExist_1">
+        <source>Output '{0}' does not exist, not up-to-date.</source>
+        <target state="translated">Výstup {0} neexistuje. Není aktuální.</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_RememberingCopiedFile_2">
+        <source>Remembering the need to copy file '{0}' to '{1}'.</source>
+        <target state="translated">Pamatovat si, že je nutné kopírovat soubor {0} do {1}.</target>
+        <note>{0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_RequiredInputNotFound_1">
+        <source>Input '{0}' does not exist and is required, not up-to-date.</source>
+        <target state="translated">Vstup {0} neexistuje, i když je povinný. Není aktuální.</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_RequiredTypedInputNotFound_2">
+        <source>Input {1} item '{0}' does not exist and is required, not up-to-date.</source>
+        <target state="translated">Vstupní položka {1} {0} neexistuje, i když je povinná. Není aktuální.</target>
+        <note>{0} is a file path. {1} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_SetOfChangedItemsIsEmpty">
+        <source>The set of changed items is empty.</source>
+        <target state="translated">Sada změněných položek je prázdná.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2">
+        <source>The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.</source>
+        <target state="translated">Sada položek projektu změněna ({0}), tedy před posledním úspěšným časem zahájení sestavení ({1}), takže není aktuální.</target>
+        <note>{0} and {1} are datetimes.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_SkippingCopyDueToIdenticalSizeAndWriteTime_2">
+        <source>Skipping copy of CopyToOutputDirectory Always item from '{0}' to '{1}' due to identical file size and last write time.</source>
+        <target state="translated">Kopírování položky CopyToOutputDirectory Always z {0} do {1} se přeskakuje kvůli stejné velikosti souboru a času posledního zápisu.</target>
+        <note>Do not translate 'CopyToOutputDirectory' or 'Always'. {0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_SkippingIgnoredKindItem_2">
+        <source>Skipping '{0}' with ignored Kind="{1}"</source>
+        <target state="translated">Přeskočí se {0} s ignorovaným prvkem Kind="{1}".</target>
+        <note>Do not translate 'Kind' as this name is used in code. {0} is a file path. {2} is the name of the kind.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_SourceFileTimeAndPath_2">
+        <source>Source      {0}: '{1}'</source>
+        <target state="translated">Zdroj      {0}: {1}</target>
+        <note>{0} is a datetime. {1} is a file path. The indentation after "Source" should be coordinated with the value of "Destination" in FUTD_DestinationFileTimeAndPath_2.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4">
+        <source>Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</source>
+        <target state="translated">Položka {0} ({1}) vstupu {3} se od posledního úspěšného zahájení sestavení ({2}) změnila, takže není aktuální.</target>
+        <note>{0} is a file path. {1} and {2} are datetimes. {3} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_TypedInputNewerThanOutput_5">
+        <source>Input {4} item '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.</source>
+        <target state="translated">Vstupní položka {4} {0} je novější ({1}) než nejstarší výstup {2} ({3}). Není aktuální.</target>
+        <note>{0} and {2} are file paths. {1} and {3} are datetimes. {4} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_UpToDate">
+        <source>Project is up-to-date.</source>
+        <target state="translated">Projekt je aktuální.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_WriteTimeOnOutputMarker_2">
+        <source>Write timestamp on output marker is {0} on '{1}'.</source>
+        <target state="translated">Časové razítko zápisu na výstupní značce je {0} v cestě {1}.</target>
+        <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="HotReloadApplyUpdatesFailure">
         <source>Applying updates failed: {0}</source>

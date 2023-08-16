@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.IO;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate;
 
 /// <summary>
 /// A context for the up-to-date check with the lifetime of the solution build, which

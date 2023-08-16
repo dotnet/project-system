@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate;
 
 [Export(typeof(ICopyItemAggregator))]
 [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
@@ -59,7 +59,7 @@ internal class CopyItemAggregator : ICopyItemAggregator
 
                 if (!_projectData.TryGetValue(project, out ProjectCopyData data))
                 {
-                    logger.Verbose(nameof(Resources.FUTDC_AccelerationDataMissingForProject_1), project);
+                    logger.Verbose(nameof(VSResources.FUTDC_AccelerationDataMissingForProject_1), project);
                     isComplete = false;
                     continue;
                 }

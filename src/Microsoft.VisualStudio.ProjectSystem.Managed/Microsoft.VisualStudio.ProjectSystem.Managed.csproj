@@ -437,18 +437,6 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\CopyUpToDateMarker.cs">
-      <DependentUpon>CopyUpToDateMarker.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\CopyUpToDateMarker.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfInput>false</XlfInput>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-      <DataAccess>None</DataAccess>
-      <RuleInjection>None</RuleInjection>
-    </XamlPropertyRule>
-
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\DebuggerGeneral.xaml" />
 
     <Compile Update="ProjectSystem\Rules\DotNetCliToolReference.cs">
@@ -501,18 +489,6 @@
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
-    </XamlPropertyRule>
-
-    <Compile Update="ProjectSystem\Rules\ResolvedCompilationReference.cs">
-      <DependentUpon>ResolvedCompilationReference.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedCompilationReference.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfInput>false</XlfInput>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-      <DataAccess>None</DataAccess>
-      <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\SourceControl.xaml">
@@ -601,70 +577,10 @@
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\UpToDateCheckBuilt.cs">
-      <DependentUpon>UpToDateCheckBuilt.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckBuilt.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfInput>false</XlfInput>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-      <DataAccess>None</DataAccess>
-      <RuleInjection>None</RuleInjection>
-    </XamlPropertyRule>
-
-    <Compile Update="ProjectSystem\Rules\UpToDateCheckInput.cs">
-      <DependentUpon>UpToDateCheckInput.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckInput.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfInput>false</XlfInput>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-      <DataAccess>None</DataAccess>
-      <RuleInjection>None</RuleInjection>
-    </XamlPropertyRule>
-
-    <Compile Update="ProjectSystem\Rules\CopyToOutputDirectoryItem.cs">
-      <DependentUpon>CopyToOutputDirectoryItem.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\CopyToOutputDirectoryItem.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfInput>false</XlfInput>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-      <DataAccess>None</DataAccess>
-      <RuleInjection>None</RuleInjection>
-    </XamlPropertyRule>
-
-    <Compile Update="ProjectSystem\Rules\BuildAccelerationIncompatiblePackage.cs">
-      <DependentUpon>BuildAccelerationIncompatiblePackage.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\BuildAccelerationIncompatiblePackage.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-      <XlfInput>false</XlfInput>
-      <DataAccess>None</DataAccess>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <RuleInjection>None</RuleInjection>
-    </XamlPropertyRule>
-
     <Compile Update="ProjectSystem\Rules\WindowsFormsConfiguration.cs">
       <DependentUpon>WindowsFormsConfiguration.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\WindowsFormsConfiguration.xaml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <XlfInput>false</XlfInput>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-      <DataAccess>None</DataAccess>
-      <RuleInjection>None</RuleInjection>
-    </XamlPropertyRule>
-
-    <Compile Update="ProjectSystem\Rules\UpToDateCheckOutput.cs">
-      <DependentUpon>UpToDateCheckOutput.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckOutput.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
@@ -727,6 +643,10 @@
     <None Update="ProjectSystem\Rules\Items\Resource.FSharp.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ProjectSystem\UpToDate\" />
   </ItemGroup>
 
   <Target Name="AddFilesForNpmPackage" DependsOnTargets="Build;SatelliteDllsProjectOutputGroup" Condition="'$(TargetFramework)' == 'net7.0'">

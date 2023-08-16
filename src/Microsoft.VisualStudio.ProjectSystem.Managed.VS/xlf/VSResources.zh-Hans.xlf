@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hans" original="../VSResources.resx">
     <body>
+      <trans-unit id="BuildAccelerationDisabledDueToIncompatiblePackageReferences_1">
+        <source>Build acceleration has been disabled for this project due to known incompatible NuGet package reference(s) {0}. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">由于已知的 NuGet 包引用 {0} 不兼容，已为此项目禁用生成加速。请参阅 https://aka.ms/vs-build-acceleration。</target>
+        <note>{0} is a comma-separated list of NuGet package names.</note>
+      </trans-unit>
       <trans-unit id="BuildAccelerationSummary_2">
         <source>Visual Studio accelerated {0} project(s), copying {1} file(s). See https://aka.ms/vs-build-acceleration.</source>
         <target state="translated">Visual Studio 已加速 {0} 个项目，正在复制 {1} 个文件。请参阅 https://aka.ms/vs-build-acceleration。</target>
@@ -64,6 +69,361 @@
         <source>Path</source>
         <target state="translated">路径</target>
         <note />
+      </trans-unit>
+      <trans-unit id="FUTDC_AccelerationDataMissingForProject_1">
+        <source>Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">生成加速数据不适用于目标为“{0}”的项目。请参阅 https://aka.ms/vs-build-acceleration。</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTDC_CheckingCopyItemsForProject_1">
+        <source>Checking copy items from project '{0}':</source>
+        <target state="translated">正在检查项目“{0}”中的复制项:</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_AccelerationCandidate">
+        <source>This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">此项目似乎是生成加速的候选项。要选择加入，请将 “AccelerateBuildsInVisualStudio” MSBuild 属性设置为 “true”。请参阅 https://aka.ms/vs-build-acceleration。</target>
+        <note>Do not translate 'AccelerateBuildsInVisualStudio' or 'true'.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_AccelerationDisabledCopyItemsIncomplete">
+        <source>Build acceleration is not available for this project because not all transitively referenced projects have provided acceleration data.</source>
+        <target state="translated">生成加速不适用于此项目，因为并非所有可传递引用的项目都提供了加速数据。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_AccelerationDisabledForProject">
+        <source>Build acceleration is disabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">已通过 “AccelerateBuildsInVisualStudio” MSBuild 属性禁用此项目的生成加速。请参阅 https://aka.ms/vs-build-acceleration。</target>
+        <note>Do not translate AccelerateBuildsInVisualStudio.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_AddingInputReferenceCopyMarkers">
+        <source>Adding input reference copy markers:</source>
+        <target state="translated">正在添加输入引用副本标记:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_AddingNewestImportInput">
+        <source>Adding newest import input:</source>
+        <target state="translated">正在添加最新的导入输入:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_AddingTypedInputsInSet_2">
+        <source>Adding {0} inputs in Set="{1}":</source>
+        <target state="translated">正在 Set="{1}" 中添加 {0} 个输入:</target>
+        <note>{0} is an MSBuild item type. {1} is the name of the set.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_AddingTypedInputs_1">
+        <source>Adding {0} inputs:</source>
+        <target state="translated">正在添加 {0} 个输入:</target>
+        <note>{0} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_AddingTypedOutputsInSet_2">
+        <source>Adding {0} outputs in Set="{1}":</source>
+        <target state="translated">正在 Set="{1}" 中添加 {0} 个输出:</target>
+        <note>{0} is an MSBuild item type. {1} is the name of the set.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_AddingTypedOutputs_1">
+        <source>Adding {0} outputs:</source>
+        <target state="translated">正在添加 {0} 个输出:</target>
+        <note>{0} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_BuildAccelerationEnabledViaFeatureFlag">
+        <source>Build acceleration is enabled for this project via a feature flag. See "Tools | Options | Environment | Preview Features" to control this setting. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">已通过功能标志启用此项目的生成加速。请参阅“工具 | 选项 | 环境 | 预览功能”以控制此设置。参阅 https://aka.ms/vs-build-acceleration。</target>
+        <note>"Tools | Options | Environment | Preview Features" references UI labels that must be made to match the equivalent values in each culture.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_BuildAccelerationEnabledViaProperty">
+        <source>Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">已通过“AccelerateBuildsInVisualStudio”MSBuild 属性启用此项目的生成加速。请参阅 https://aka.ms/vs-build-acceleration。</target>
+        <note>Do not translate 'AccelerateBuildsInVisualStudio'.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_BuildAccelerationIsNotEnabledForThisProject">
+        <source>Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.</source>
+        <target state="translated">没有为此项目启用生成加速。请参阅 https://aka.ms/vs-build-acceleration。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_BuildAccelerationSummary_1">
+        <source>Build acceleration copied {0} files.</source>
+        <target state="translated">生成加速已复制 {0} 文件。</target>
+        <note>{0} is a non-zero integer.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_ChangedItemsAddition_2">
+        <source>{0} item added '{1}'</source>
+        <target state="translated">已添加 {0} 项“{1}”</target>
+        <note>{0} is an MSBuild item type. {1} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_ChangedItemsRemoval_2">
+        <source>{0} item removed '{1}'</source>
+        <target state="translated">已删除 {0} 项“{1}”</target>
+        <note>{0} is an MSBuild item type. {1} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingBuiltOutputFile">
+        <source>Checking built output (UpToDateCheckBuilt with Original property) file:</source>
+        <target state="translated">正在检查生成的输出 (使用原始属性生成 UpToDateCheckBuilt )文件:</target>
+        <note>Do not translate UpToDateCheckBuilt or Original.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingBuiltOutputFileDestinationNotFound_2">
+        <source>Destination '{0}' does not exist for copy from '{1}', not up-to-date.</source>
+        <target state="translated">从'{1}'复制的目标'{0}'不存在，不是最新的。</target>
+        <note>{0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingBuiltOutputFileSourceNewer">
+        <source>Source is newer than build output destination, not up-to-date.</source>
+        <target state="translated">源比生成输出目标新，不是最新的。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingBuiltOutputFileSourceNotFound_2">
+        <source>Source '{0}' does not exist for build into target '{1}', not up-to-date.</source>
+        <target state="translated">生成到目标“{1}”时，源“{0}”不存在，不是最新的。</target>
+        <note>{0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingConfiguration_1">
+        <source>Checking configuration {0}:</source>
+        <target state="translated">正在检查配置 {0}:</target>
+        <note>{0} is a description of the project's configuration, such as "Debug|AnyCPU|net6.0".</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyFileSourceNotFound_2">
+        <source>Source '{0}' does not exist for copy to '{1}'.</source>
+        <target state="translated">源“{0}”不存在，无法复制到“{1}”。</target>
+        <note>{0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItemDestinationNotFound_1">
+        <source>Destination '{0}' does not exist, not up-to-date.</source>
+        <target state="translated">目标 '{0}' 不存在，不是最新的。</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItem_1">
+        <source>Checking {0} item</source>
+        <target state="translated">正在检查 {0} 项</target>
+        <note>{0} is either the literal "PreserveNewest" or "Always", describing the policy used when copying these items to the output directory.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectoryItems">
+        <source>Checking items to copy to the output directory:</source>
+        <target state="translated">正在检查要复制到输出目录的项:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectorySourceNewerThanDestination_3">
+        <source>Item with CopyToOutputDirectory="{0}" source '{1}' is newer than destination '{2}', not up-to-date.</source>
+        <target state="translated">具有 CopyToOutputDirectory="{0}"源 '{1}' 的项比目标 '{2}' 更新，不是最新版本。</target>
+        <note>Do not translate CopyToOutputDirectory. {0} is from an enum of valid values. {1} and {2} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CheckingCopyToOutputDirectorySourceNotFound_1">
+        <source>Source '{0}' does not exist, not up-to-date.</source>
+        <target state="translated">源 '{0}' 不存在，不是最新的。</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_ComparingCopyMarkerTimestamps">
+        <source>Comparing timestamps of copy marker inputs and output:</source>
+        <target state="translated">比较复制标记输入和输出的时间戳:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_ComparingInputOutputTimestamps">
+        <source>Comparing timestamps of inputs and outputs:</source>
+        <target state="translated">比较输入和输出的时间戳:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_ComparingInputOutputTimestampsInSet_1">
+        <source>Comparing timestamps of inputs and outputs in Set="{0}":</source>
+        <target state="translated">比较 Set="{0}" 中的输入和输出时间戳:</target>
+        <note>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_Completed">
+        <source>Up-to-date check completed in {0:N1} ms</source>
+        <target state="translated">最新检查已在 {0:N1} 毫秒内完成</target>
+        <note>{0} is a duration in milliseconds. "ms" refers to "milliseconds". Leave the "{0:N1}" string as-is, for correct formatting of the number.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CopyAlwaysItemsDiffer_6">
+        <source>Item with CopyToOutputDirectory="Always" source ('{0}' {1}, {2} bytes) differs from destination ('{3}' {4}, {5} bytes), not up-to-date.</source>
+        <target state="translated">具有 CopyToOutputDirectory="Always" 源的项('{0}' {1}，{2} 字节)不同于目标('{3}' {4}，{5} 字节)，不是最新版本。</target>
+        <note>Do not translate CopyToOutputDirectory="Always". {0} and {3} are file paths. {1} and {4} are date times. {2} and {5} are byte counts.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CopyingFilesToAccelerateBuild_1">
+        <source>Copying {0} files to accelerate build (https://aka.ms/vs-build-acceleration):</source>
+        <target state="translated">正在复制 {0} 个文件以加速生成(https://aka.ms/vs-build-acceleration):</target>
+        <note>{0} is an integer.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_CriticalBuildTasksRunning">
+        <source>Critical build tasks are running, not up-to-date.</source>
+        <target state="translated">关键生成任务正在运行，不是最新的。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_DestinationDoesNotExist_1">
+        <source>Destination '{0}' does not exist.</source>
+        <target state="translated">目标“{0}”不存在。</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_DestinationFileTimeAndPath_2">
+        <source>Destination {0}: '{1}'</source>
+        <target state="translated">目标 {0}: '{1}'</target>
+        <note>{0} is a datetime. {1} is a file path. The indentation after "Destination" should be coordinated with the value of "Source" in FUTD_SourceFileTimeAndPath_2.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_DisableFastUpToDateCheckTrue">
+        <source>The 'DisableFastUpToDateCheck' property is 'true', not up-to-date.</source>
+        <target state="translated">'DisableFastUpToDateCheck' 属性为 'true'，不是最新的。</target>
+        <note>Do not translate 'DisableFastUpToDateCheck' or 'true'.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_ExceptionCopyingFile_1">
+        <source>Exception copying file, scheduling MSBuild: {0}</source>
+        <target state="translated">复制文件时出现异常，正在计划 MSBuild: {0}</target>
+        <note>Do not translate 'Exception' or 'MSBuild'. {0} is an exception message and stack trace.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_Exception_1">
+        <source>Up-to-date check threw an exception. Not up-to-date. {0}</source>
+        <target state="translated">最新检查引发了异常。不是最新的。{0}</target>
+        <note>{0} is the exception message.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_FirstRun">
+        <source>The up-to-date check has not yet run for this project. Not up-to-date.</source>
+        <target state="translated">尚未为此项目运行最新检查。不是最新的。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_FromTo_2">
+        <source>From '{0}' to '{1}'.</source>
+        <target state="translated">从“{0}”到“{1}”。</target>
+        <note>{0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_IgnoringKinds_1">
+        <source>Ignoring up-to-date check items with Kind="{0}"</source>
+        <target state="translated">正在忽略 Kind="{0}" 的最新检查项</target>
+        <note>Do not translate Kind. {0} is the kind name.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_InputMarkerDoesNotExist">
+        <source>Input marker does not exist.</source>
+        <target state="translated">输入标记不存在。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_InputMarkerNewerThanOutputMarker_4">
+        <source>Input marker '{0}' is newer ({1}) than output marker '{2}' ({3}), not up-to-date.</source>
+        <target state="translated">输入标记“{0}”比输出标记“{2}”({3})更新({1})，不是最新的。</target>
+        <note>{0} and {2} are file paths. {1} and {3} are datetimes.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_InputModifiedSinceLastSuccessfulBuildStart_3">
+        <source>Input '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</source>
+        <target state="translated">自上次成功生成开始({2}) 以来，已对输入“{0}”进行了修改({1})，不是最新的。</target>
+        <note>{0} is a file path. {1} and {2} are datetimes.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_InputNewerThanOutput_4">
+        <source>Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.</source>
+        <target state="translated">输入 '{0}' 比最早的输出 '{2}' ({3}) 新 ({1}) ，不是最新的。</target>
+        <note>{0} and {2} are file paths. {1} and {3} are datetimes.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NoBuildOutputDefined">
+        <source>No build outputs defined.</source>
+        <target state="translated">未定义生成输出。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_NoBuildOutputDefinedInSet_1">
+        <source>No build outputs defined in Set="{0}".</source>
+        <target state="translated">Set="{0}" 中未定义生成输出。</target>
+        <note>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NoInputMarkersExist">
+        <source>No input markers exist, skipping marker check.</source>
+        <target state="translated">不存在输入标记，正在跳过标记检查。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_NoInputsDefined">
+        <source>No inputs defined.</source>
+        <target state="translated">未定义输入。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_NoInputsDefinedInSet_1">
+        <source>No inputs defined in Set="{0}".</source>
+        <target state="translated">Set="{0}" 中未定义任何输入。</target>
+        <note>Do not translate 'Set' as this name is used in code. {0} is the name of the set.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NoInputsNewerThanEarliestOutputInSet_5">
+        <source>In Set="{4}", no inputs are newer than earliest output '{0}' ({1}). Newest input is '{2}' ({3}).</source>
+        <target state="translated">在 Set="{4}" 中，没有比最早输出'{0}' ({1})更新的输入。最新的输入为'{2}' ({3})。</target>
+        <note>Do not translate 'Set' as this name is used in code. {0} and {2} are file paths. {1} and {2} are datetimes. {4} is the name of the set.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NoInputsNewerThanEarliestOutput_4">
+        <source>No inputs are newer than earliest output '{0}' ({1}). Newest input is '{2}' ({3}).</source>
+        <target state="translated">输入不早于最早输出'{0}' ({1})。最新的输入为 '{2}' ({3})。</target>
+        <note>{0} and {2} are file paths. {1} and {2} are datetimes.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NoOutputMarkerExists_1">
+        <source>Output marker '{0}' does not exist, skipping marker check.</source>
+        <target state="translated">输出标记 '{0}' 不存在，正在跳过标记检查。</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NonRequiredInputNotFound_1">
+        <source>Input '{0}' does not exist, but is not required.</source>
+        <target state="translated">输入'{0}'不存在，但不需要。</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NonRequiredTypedInputNotFound_2">
+        <source>Input {1} item '{0}' does not exist, but is not required.</source>
+        <target state="translated">输入{1}项'{0}'不存在，但不需要。</target>
+        <note>{0} is a file path. {1} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_NotAllReferencesProduceReferenceAssemblies_1">
+        <source>This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': {0}. See https://aka.ms/vs-build-acceleration for more information.</source>
+        <target state="translated">此项目已启用生成加速，但并非所有引用的项目都会生成引用程序集。确保生成以下输出的项目已将“ProduceReferenceAssembly”MSBuild 属性设置为“true”: {0}。有关详细信息，请参阅 https://aka.ms/vs-build-acceleration。</target>
+        <note>Do not translate 'ProduceReferenceAssembly' or 'true'.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_OutputDoesNotExist_1">
+        <source>Output '{0}' does not exist, not up-to-date.</source>
+        <target state="translated">输出 '{0}' 不存在，不是最新的。</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_RememberingCopiedFile_2">
+        <source>Remembering the need to copy file '{0}' to '{1}'.</source>
+        <target state="translated">请记住，需要将文件“{0}”复制到“{1}”。</target>
+        <note>{0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_RequiredInputNotFound_1">
+        <source>Input '{0}' does not exist and is required, not up-to-date.</source>
+        <target state="translated">输入 '{0}' 不存在并且是必需的，不是最新的。</target>
+        <note>{0} is a file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_RequiredTypedInputNotFound_2">
+        <source>Input {1} item '{0}' does not exist and is required, not up-to-date.</source>
+        <target state="translated">输入 {1} 项'{0}'不存在且是必需的，不是最新的。</target>
+        <note>{0} is a file path. {1} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_SetOfChangedItemsIsEmpty">
+        <source>The set of changed items is empty.</source>
+        <target state="translated">已更改项的集合为空。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2">
+        <source>The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.</source>
+        <target state="translated">与上次成功的生成开始时间({1})相比，最近({0})对项目项集进行了更改，不是最新的。</target>
+        <note>{0} and {1} are datetimes.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_SkippingCopyDueToIdenticalSizeAndWriteTime_2">
+        <source>Skipping copy of CopyToOutputDirectory Always item from '{0}' to '{1}' due to identical file size and last write time.</source>
+        <target state="translated">由于文件大小和上次写入时间相同，正在跳过 CopyToOutputDirectory Always 项从“{0}”到“{1}”的副本。</target>
+        <note>Do not translate 'CopyToOutputDirectory' or 'Always'. {0} and {1} are file paths.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_SkippingIgnoredKindItem_2">
+        <source>Skipping '{0}' with ignored Kind="{1}"</source>
+        <target state="translated">正在跳过已忽略 Kind="{1}" 的'{0}'</target>
+        <note>Do not translate 'Kind' as this name is used in code. {0} is a file path. {2} is the name of the kind.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_SourceFileTimeAndPath_2">
+        <source>Source      {0}: '{1}'</source>
+        <target state="translated">源      {0}: '{1}'</target>
+        <note>{0} is a datetime. {1} is a file path. The indentation after "Source" should be coordinated with the value of "Destination" in FUTD_DestinationFileTimeAndPath_2.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_TypedInputModifiedSinceLastSuccessfulBuildStart_4">
+        <source>Input {3} item '{0}' ({1}) has been modified since the last successful build started ({2}), not up-to-date.</source>
+        <target state="translated">自上次成功生成开始({2})以来，已对输入 {3} 项“{0}”({1})进行了修改，不是最新的。</target>
+        <note>{0} is a file path. {1} and {2} are datetimes. {3} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_TypedInputNewerThanOutput_5">
+        <source>Input {4} item '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up-to-date.</source>
+        <target state="translated">输入{4}项 '{0}' 比最早输出'{1}' ({2})新 ({3})，不是最新的。</target>
+        <note>{0} and {2} are file paths. {1} and {3} are datetimes. {4} is an MSBuild item type.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_UpToDate">
+        <source>Project is up-to-date.</source>
+        <target state="translated">项目已是最新。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_WriteTimeOnOutputMarker_2">
+        <source>Write timestamp on output marker is {0} on '{1}'.</source>
+        <target state="translated">输出标记上写入时间戳为 '{1}'上的 {0}。</target>
+        <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
       <trans-unit id="HotReloadApplyUpdatesFailure">
         <source>Applying updates failed: {0}</source>

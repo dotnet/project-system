@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.IO;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate;
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate;
 
 internal sealed partial class BuildUpToDateCheck
 {
@@ -113,7 +113,7 @@ internal sealed partial class BuildUpToDateCheck
             _pendingCopies ??= new();
             _pendingCopies.Add((source, destination));
 
-            _logger.Verbose(nameof(Resources.FUTD_RememberingCopiedFile_2), source, destination);
+            _logger.Verbose(nameof(VSResources.FUTD_RememberingCopiedFile_2), source, destination);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ internal sealed partial class BuildUpToDateCheck
             {
                 // we have some copies to perform
 
-                _logger.Info(nameof(Resources.FUTD_CopyingFilesToAccelerateBuild_1), _pendingCopies.Count);
+                _logger.Info(nameof(VSResources.FUTD_CopyingFilesToAccelerateBuild_1), _pendingCopies.Count);
 
                 using Log.Scope _ = _logger.IndentScope();
 
@@ -155,7 +155,7 @@ internal sealed partial class BuildUpToDateCheck
                         {
                             // We ensure the source file exists during the scan, so it should rarely not exist at
                             // this point, and then only as a result of a race condition.
-                            _logger.Info(nameof(Resources.FUTD_CheckingCopyFileSourceNotFound_2), source, destination);
+                            _logger.Info(nameof(VSResources.FUTD_CheckingCopyFileSourceNotFound_2), source, destination);
 
                             return (Success: false, CopyCount: copyCount);
                         }
@@ -164,7 +164,7 @@ internal sealed partial class BuildUpToDateCheck
 
                         if (destinationInfo is null || sourceInfo.Value.SizeBytes != destinationInfo.Value.SizeBytes || sourceInfo.Value.WriteTimeUtc != destinationInfo.Value.WriteTimeUtc)
                         {
-                            _logger.Info(nameof(Resources.FUTD_FromTo_2), source, destination);
+                            _logger.Info(nameof(VSResources.FUTD_FromTo_2), source, destination);
 
                             if (destinationInfo is null)
                             {
@@ -181,12 +181,12 @@ internal sealed partial class BuildUpToDateCheck
                         }
                         else
                         {
-                            _logger.Verbose(nameof(Resources.FUTD_SkippingCopyDueToIdenticalSizeAndWriteTime_2), source, destination);
+                            _logger.Verbose(nameof(VSResources.FUTD_SkippingCopyDueToIdenticalSizeAndWriteTime_2), source, destination);
                         }
                     }
                     catch (Exception ex)
                     {
-                        _logger.Fail("ExceptionCopyingFile", nameof(Resources.FUTD_ExceptionCopyingFile_1), ex);
+                        _logger.Fail("ExceptionCopyingFile", nameof(VSResources.FUTD_ExceptionCopyingFile_1), ex);
                         return (Success: false, CopyCount: copyCount);
                     }
                 }

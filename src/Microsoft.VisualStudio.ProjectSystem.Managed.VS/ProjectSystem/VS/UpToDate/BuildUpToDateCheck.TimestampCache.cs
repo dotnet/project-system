@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.IO;
 
-namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 {
     internal sealed partial class BuildUpToDateCheck
     {

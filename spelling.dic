@@ -17,6 +17,7 @@ enum
 enums
 fsscript
 func
+futdcache
 fxcop
 github
 globbing
