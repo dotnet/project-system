@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return IsValueDefinedInContextMSBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
         }
 
-        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties projectProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             ComplexTargetFramework storedProperties = await GetStoredPropertiesAsync();
 
@@ -70,12 +70,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 // Changing the Target Framework Moniker
                 if (StringComparers.PropertyLiteralValues.Equals(propertyName, InterceptedTargetFrameworkProperty))
                 {
-                    // Delete stored platform properties
-                    storedProperties.TargetPlatformIdentifier = null;
-                    storedProperties.TargetPlatformVersion = null;
-                    await ResetPlatformPropertiesAsync(defaultProperties);
-
+                    if (Strings.IsNullOrEmpty(unevaluatedPropertyValue))
+                    {
+                        return null;
+                    }
+                    
                     storedProperties.TargetFrameworkMoniker = unevaluatedPropertyValue;
+                    
+                    // Only projects targeting .NET 5 or higher use platform properties.
+                    string targetFrameworkAlias = await GetTargetFrameworkAliasAsync(unevaluatedPropertyValue);
+                    if (!IsNetCore5OrHigher(targetFrameworkAlias))
+                    {
+                        // Delete platform properties
+                        storedProperties.TargetPlatformIdentifier = null;
+                        storedProperties.TargetPlatformVersion = null;
+                        await ResetPlatformPropertiesAsync(projectProperties);
+                    }
                 }
 
                 // Changing the Target Platform Identifier
@@ -83,10 +93,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     if (unevaluatedPropertyValue != storedProperties.TargetPlatformIdentifier)
                     {
-                        // Delete stored platform properties
-                        storedProperties.TargetPlatformIdentifier = null;
+                        // Delete platform properties.
                         storedProperties.TargetPlatformVersion = null;
-                        await ResetPlatformPropertiesAsync(defaultProperties);
+                        await ResetPlatformPropertiesAsync(projectProperties);
 
                         storedProperties.TargetPlatformIdentifier = unevaluatedPropertyValue;
                     }
@@ -98,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     storedProperties.TargetPlatformVersion = unevaluatedPropertyValue;
                 }
 
-                await defaultProperties.SetPropertyValueAsync(TargetFrameworkProperty, await ComputeValueAsync(storedProperties));
+                await projectProperties.SetPropertyValueAsync(TargetFrameworkProperty, await ComputeValueAsync(storedProperties));
             }
 
             return null;
@@ -198,7 +207,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return targetFrameworkAlias + "-windows" + complexTargetFramework.TargetPlatformVersion;
             }
 
-            if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier))
+            // We only keep the platform properties for projects targeting .NET 5 or higher.
+            if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier) && IsNetCore5OrHigher(targetFrameworkAlias))
             {
                 string targetPlatformAlias = await GetTargetPlatformAliasAsync(complexTargetFramework.TargetPlatformIdentifier);
 
@@ -318,6 +328,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <returns></returns>
         private static async Task ResetPlatformPropertiesAsync(IProjectProperties projectProperties)
         {
+            await projectProperties.DeletePropertyAsync(TargetPlatformProperty);
             await projectProperties.DeletePropertyAsync(TargetPlatformVersionProperty);
             await projectProperties.DeletePropertyAsync(SupportedOSPlatformVersionProperty);
         }
