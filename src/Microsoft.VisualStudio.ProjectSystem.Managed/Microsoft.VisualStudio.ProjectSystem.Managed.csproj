@@ -737,6 +737,8 @@
       <NpmContent Include="@(SatelliteDllsProjectOutputGroupOutput)">
         <PackagePath>%(SatelliteDllsProjectOutputGroupOutput.TargetPath)</PackagePath>
       </NpmContent>
+      <!-- Include symbol files (.pdb) so we can get code coverage numbers from C# Dev Kit integration test runs. -->
+      <NpmContent Include="@(DebugSymbolsProjectOutputGroupOutput)" />
     </ItemGroup>
   </Target>
 
