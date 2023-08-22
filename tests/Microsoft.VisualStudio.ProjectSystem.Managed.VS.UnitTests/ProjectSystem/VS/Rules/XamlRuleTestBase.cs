@@ -2,46 +2,58 @@
 
 using System.Xml;
 using System.Xml.Linq;
+using Microsoft.VisualStudio.ProjectSystem.Rules;
 using Microsoft.VisualStudio.Utilities;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Rules
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Rules
 {
     public abstract class XamlRuleTestBase
     {
         protected const string MSBuildNamespace = "http://schemas.microsoft.com/build/2009/properties";
 
-        protected static IEnumerable<string> GetRules(string suffix, bool recursive = false)
+        protected static IEnumerable<(string Path, Type AssemblyExporterType)> GetRules(string? suffix = null, bool recursive = false)
         {
             // Not all rules are embedded as manifests so we have to read the xaml files from the file system.
-            string rulesPath = Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "Rules");
-
-            if (!string.IsNullOrEmpty(suffix))
+            (string, Type)[] projects =
             {
-                rulesPath = Path.Combine(rulesPath, suffix);
+                (Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "Rules"), typeof(RuleExporter)),
+                (Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.VS.Managed", "ProjectSystem", "Rules"), typeof(VSRuleExporter))
+            };
+
+            bool foundDirectory = false;
+
+            foreach ((string basePath, Type assemblyExporterType) in projects)
+            {
+                string path = string.IsNullOrEmpty(suffix) ? basePath : Path.Combine(basePath, suffix);
+
+                if (Directory.Exists(path))
+                {
+                    foundDirectory = true;
+
+                    var searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+
+                    foreach (var filePath in Directory.EnumerateFiles(path, "*.xaml", searchOption))
+                    {
+                        XElement rule = LoadXamlRule(filePath);
+
+                        // Ignore XAML documents for non-Rule types (such as ProjectSchemaDefinitions)
+                        if (rule.Name.LocalName == "Rule")
+                        {
+                            yield return (filePath, assemblyExporterType);
+                        }
+                    }
+                }
             }
 
-            Assert.True(Directory.Exists(rulesPath), "Couldn't find XAML rules folder: " + rulesPath);
-
-            var searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-
-            foreach (var filePath in Directory.EnumerateFiles(rulesPath, "*.xaml", searchOption))
-            {
-                XElement rule = LoadXamlRule(filePath);
-
-                // Ignore XAML documents for non-Rule types (such as ProjectSchemaDefinitions)
-                if (rule.Name.LocalName != "Rule")
-                    continue;
-
-                yield return filePath;
-            }
+            Assert.True(foundDirectory, $"Couldn't find XAML rules folder with suffix '{suffix}'.");
         }
 
         /// <summary>Projects a XAML rule file's path into the form used by unit tests theories.</summary>
-        protected static IEnumerable<object[]> Project(IEnumerable<string> filePaths)
+        protected static IEnumerable<object[]> Project(IEnumerable<(string Path, Type AssemblyExporterType)> files)
         {
             // we return the rule name separately mainly to get a readable display in Test Explorer so failures can be diagnosed more easily
-            return from filePath in filePaths
-                   select new object[] { Path.GetFileNameWithoutExtension(filePath), filePath };
+            return from file in files
+                   select new object[] { Path.GetFileNameWithoutExtension(file.Path), file.Path, file.AssemblyExporterType };
         }
 
         protected static XElement LoadXamlRule(string filePath)

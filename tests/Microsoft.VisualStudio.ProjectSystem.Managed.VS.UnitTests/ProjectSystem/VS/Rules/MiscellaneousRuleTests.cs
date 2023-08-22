@@ -4,8 +4,9 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Microsoft.VisualStudio.ProjectSystem.Rules;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Rules
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Rules
 {
     public sealed class MiscellaneousRuleTests : XamlRuleTestBase
     {
@@ -17,11 +18,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             static IEnumerable<string> EnumerateEmbeddedTypeNames()
             {
-                foreach (var type in typeof(RuleExporter).GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public))
+                foreach (var type in RuleServices.GetRuleExporterTypes())
                 {
                     foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
                     {
                         foreach (var exportRule in field.GetCustomAttributes<ExportRuleAttribute>())
+                        {
+                            yield return exportRule.RuleName;
+                        }
+
+                        foreach (var exportRule in field.GetCustomAttributes<ExportVSRuleAttribute>())
                         {
                             yield return exportRule.RuleName;
                         }
@@ -30,17 +36,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
         }
 
+        [Fact]
+        public void EmbeddedRuleNames()
+        {
+            Assert.NotEmpty(s_embeddedRuleNames);
+        }
+
         [Theory]
         [MemberData(nameof(GetEmbeddedRules))]
-        public void EmbeddedRulesShouldNotHaveVisibleProperties(string ruleName, string fullPath)
+        public void EmbeddedRulesShouldNotHaveVisibleProperties(string ruleName, string fullPath, Type assemblyExporterType)
         {
             // We are not currently able to localize embedded rules. Such rules must not have visible properties,
             // as all visible values must be localized.
 
             XElement rule = LoadXamlRule(fullPath);
 
-            foreach (var property in 
-                GetProperties(rule))
+            foreach (var property in GetProperties(rule))
             {
                 Assert.False(
                     IsVisible(property),
@@ -50,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetAllDisplayedRules))]
-        public void NonVisiblePropertiesShouldntBeLocalized(string ruleName, string fullPath)
+        public void NonVisiblePropertiesShouldNotBeLocalized(string ruleName, string fullPath, Type assemblyExporterType)
         {
             XElement rule = LoadXamlRule(fullPath);
 
@@ -74,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetAllDisplayedRules))]
-        public void VisiblePropertiesMustHaveDisplayName(string ruleName, string fullPath)
+        public void VisiblePropertiesMustHaveDisplayName(string ruleName, string fullPath, Type assemblyExporterType)
         {
             // The "DisplayName" property is localised, while "Name" is not.
             // Visible properties without a "DisplayName" will appear in English in all locales.
@@ -99,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetAllRules))]
-        public void PropertyDescriptionMustEndWithFullStop(string ruleName, string fullPath)
+        public void PropertyDescriptionMustEndWithFullStop(string ruleName, string fullPath, Type assemblyExporterType)
         {
             XElement rule = LoadXamlRule(fullPath, out XmlNamespaceManager namespaceManager);
 
@@ -132,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetAllRules))]
-        public void RuleMustHaveAName(string ruleName, string fullPath)
+        public void RuleMustHaveAName(string ruleName, string fullPath, Type assemblyExporterType)
         {
             XElement rule = LoadXamlRule(fullPath);
 
@@ -144,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetAllRules))]
-        public void TargetResultsDataSourcesMustSpecifyTheTarget(string ruleName, string fullPath)
+        public void TargetResultsDataSourcesMustSpecifyTheTarget(string ruleName, string fullPath, Type assemblyExporterType)
         {
             var root = LoadXamlRule(fullPath, out var namespaceManager);
 
@@ -170,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetAllRules))]
-        public void ItemDataSourcesMustSpecifyTheItemType(string ruleName, string fullPath)
+        public void ItemDataSourcesMustSpecifyTheItemType(string ruleName, string fullPath, Type assemblyExporterType)
         {
             var root = LoadXamlRule(fullPath, out var namespaceManager);
 
@@ -188,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetAllRules))]
-        public void PropertiesDataSourcesMustMatchItemDataSources(string ruleName, string fullPath)
+        public void PropertiesDataSourcesMustMatchItemDataSources(string ruleName, string fullPath, Type assemblyExporterType)
         {
             var root = LoadXamlRule(fullPath, out var namespaceManager);
 
@@ -217,7 +228,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetAllRules))]
-        public void PropertyNamesMustNotContainSpaces(string ruleName, string fullPath)
+        public void PropertyNamesMustNotContainSpaces(string ruleName, string fullPath, Type assemblyExporterType)
         {
             // While MSBuild properties may not contain spaces in their names this restriction doesn't necessarily
             // apply when the property in the Rule connects to a non-MSBuild DataSource. Currently none of our

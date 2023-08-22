@@ -3,13 +3,13 @@
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Rules
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Rules
 {
     public sealed class ProjectPropertiesLocalizationRuleTests : XamlRuleTestBase
     {
         [Theory]
         [MemberData(nameof(GetPropertyPagesRules))]
-        public void CategoriesShouldBeDefinedOnFile(string ruleName, string fullPath)
+        public void CategoriesShouldBeDefinedOnFile(string ruleName, string fullPath, Type assemblyExporterType)
         {
             // These are launch profile files and don't use categories, so let's skip them.
             if (ruleName.Contains("ExecutableDebugPropertyPage") || ruleName.Contains("ProjectDebugPropertyPage"))

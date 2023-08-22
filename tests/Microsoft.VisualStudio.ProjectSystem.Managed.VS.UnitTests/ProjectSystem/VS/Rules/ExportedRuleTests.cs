@@ -2,20 +2,21 @@
 
 using System.Reflection;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Rules;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Rules
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Rules
 {
     public sealed class RuleExporterTests : XamlRuleTestBase
     {
-        [Theory(Skip="Waiting on all rules to be embedded")]
+        [Theory(Skip = "Waiting on all rules to be embedded")]
         [MemberData(nameof(GetAllRules))]
-        public void AllRulesMustBeExported(string name, string fullPath)
+        public void AllRulesMustBeExported(string name, string fullPath, Type assemblyExporterType)
         {
             name = name.Replace(".", "");
 
-            MemberInfo member = typeof(RuleExporter).GetField(name);
+            MemberInfo member = typeof(VSRuleExporter).GetField(name) ?? typeof(RuleExporter).GetField(name);
 
-            Assert.True(member is not null, $"Rule '{fullPath}' has not been exported by {nameof(RuleExporter)}. Export this rule from a member called {name}.");
+            Assert.True(member is not null, $"Rule '{fullPath}' has not been exported by {nameof(RuleExporter)} or {nameof(VSRuleExporter)}. Export this rule from a member called \"{name}\".");
         }
 
         [Theory]
@@ -133,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         public static IEnumerable<object[]> GetAllExportedMembersWithDeclaringType()
         {
-            foreach (Type type in RuleServices.GetAllExportedTypes())
+            foreach (Type type in RuleServices.GetRuleExporterTypes())
             {
                 yield return new object[] { type, RuleServices.GetDeclaredMembers(type) };
             }

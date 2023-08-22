@@ -3,13 +3,13 @@
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Rules
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Rules
 {
     public sealed class DependencyRuleTests : XamlRuleTestBase
     {
         [Theory]
         [MemberData(nameof(GetResolvedDependenciesRules))]
-        public void VisibleEditableResolvedDependenciesMustHaveDataSource(string ruleName, string fullPath)
+        public void VisibleEditableResolvedDependenciesMustHaveDataSource(string ruleName, string fullPath, Type assemblyExporterType)
         {
             // Resolved rules get their data from design time targets. Any editable properties need a
             // property-level data source that specifies the storage for that property as the project file
@@ -44,11 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                     .Element(XName.Get(dataSourceElementName, MSBuildNamespace))
                     ?.Element(XName.Get("DataSource", MSBuildNamespace));
 
-                if (dataSource is null)
-                {
-                    throw new Xunit.Sdk.XunitException($"Resolved dependency rule {ruleName} has visible, non-readonly property {property.Attribute("Name")} with no {dataSourceElementName} value.");
-                }
-
+                Assert.True(dataSource is not null, $"Resolved dependency rule {ruleName} has visible, non-readonly property {property.Attribute("Name")} with no {dataSourceElementName} value.");
                 Assert.Equal("False",        dataSource.Attribute("HasConfigurationCondition")?.Value, StringComparer.OrdinalIgnoreCase);
                 Assert.Equal("ProjectFile",  dataSource.Attribute("Persistence")?.Value,               StringComparer.Ordinal);
                 Assert.Equal("AfterContext", dataSource.Attribute("SourceOfDefaultValue")?.Value,      StringComparer.Ordinal);
@@ -58,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetResolvedDependenciesRules))]
-        public void ResolvedDependenciesRulesMustHaveOriginalItemSpecProperty(string ruleName, string fullPath)
+        public void ResolvedDependenciesRulesMustHaveOriginalItemSpecProperty(string ruleName, string fullPath, Type assemblyExporterType)
         {
             // All resolved dependency items have a corresponding 'original' item spec, which contains
             // the value of the item produced by evaluation.
@@ -76,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetDependenciesRules))]
-        public void DependenciesRulesMustHaveVisibleProperty(string ruleName, string fullPath)
+        public void DependenciesRulesMustHaveVisibleProperty(string ruleName, string fullPath, Type assemblyExporterType)
         {
             XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
 
@@ -91,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetDependenciesRules))]
-        public void DependenciesRulesMustHaveIsImplicitlyDefinedProperty(string ruleName, string fullPath)
+        public void DependenciesRulesMustHaveIsImplicitlyDefinedProperty(string ruleName, string fullPath, Type assemblyExporterType)
         {
             XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
 
@@ -106,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetDependenciesRules))]
-        public void DependenciesRulesDescriptionHaveCorrectSuffix(string ruleName, string fullPath)
+        public void DependenciesRulesDescriptionHaveCorrectSuffix(string ruleName, string fullPath, Type assemblyExporterType)
         {
             XElement rule = LoadXamlRule(fullPath);
 
@@ -115,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetDependenciesRules))]
-        public void DependenciesRulesDisplayNameHaveCorrectSuffix(string ruleName, string fullPath)
+        public void DependenciesRulesDisplayNameHaveCorrectSuffix(string ruleName, string fullPath, Type assemblyExporterType)
         {
             XElement rule = LoadXamlRule(fullPath);
 
@@ -124,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetUnresolvedDependenciesRules))]
-        public void UnresolvedDependenciesRulesMustNotHaveOriginalItemSpec(string ruleName, string fullPath)
+        public void UnresolvedDependenciesRulesMustNotHaveOriginalItemSpec(string ruleName, string fullPath, Type assemblyExporterType)
         {
             XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
 
@@ -135,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetUnresolvedDependenciesRules))]
-        public void UnresolvedRulesDataSources(string ruleName, string fullPath)
+        public void UnresolvedRulesDataSources(string ruleName, string fullPath, Type assemblyExporterType)
         {
             XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
 
@@ -167,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetResolvedDependenciesRules))]
-        public void ResolvedRulesDataSources(string ruleName, string fullPath)
+        public void ResolvedRulesDataSources(string ruleName, string fullPath, Type assemblyExporterType)
         {
             XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
 
@@ -250,13 +246,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         public static IEnumerable<object[]> GetUnresolvedDependenciesRules()
         {
             return Project(GetRules("Dependencies")
-                .Where(fileName => fileName.IndexOf("Resolved", StringComparisons.Paths) == -1));
+                .Where(rule => rule.Path.IndexOf("Resolved", StringComparisons.Paths) == -1));
         }
 
         public static IEnumerable<object[]> GetResolvedDependenciesRules()
         {
             return Project(GetRules("Dependencies")
-                .Where(fileName => fileName.IndexOf("Resolved", StringComparisons.Paths) != -1));
+                .Where(rule => rule.Path.IndexOf("Resolved", StringComparisons.Paths) != -1));
         }
 
         public static IEnumerable<object[]> GetDependenciesRules()
@@ -268,8 +264,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             var rules = GetRules("Dependencies").ToList();
 
-            var unresolvedPaths = rules.Where(fileName => fileName.IndexOf("Resolved", StringComparisons.Paths) == -1).ToHashSet(StringComparer.Ordinal);
-            var resolvedPaths = rules.Where(fileName => fileName.IndexOf("Resolved", StringComparisons.Paths) != -1).ToHashSet(StringComparer.Ordinal);
+            var unresolvedPaths = rules.Select(rule => rule.Path).Where(path => path.IndexOf("Resolved", StringComparisons.Paths) == -1).ToHashSet(StringComparer.Ordinal);
+            var resolvedPaths = rules.Select(rule => rule.Path).Where(path => path.IndexOf("Resolved", StringComparisons.Paths) != -1).ToHashSet(StringComparer.Ordinal);
 
             Assert.Equal(resolvedPaths.Count, unresolvedPaths.Count);
 

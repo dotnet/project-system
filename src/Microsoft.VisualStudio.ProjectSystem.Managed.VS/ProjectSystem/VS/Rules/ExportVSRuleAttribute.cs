@@ -2,19 +2,19 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Rules
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Rules
 {
     /// <summary>
     ///     Exports a XAML-based embedded rule.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    internal sealed class ExportRuleAttribute : ExportPropertyXamlRuleDefinitionAttribute
+    internal sealed class ExportVSRuleAttribute : ExportPropertyXamlRuleDefinitionAttribute
     {
         // TODO: If reflection is insufficient, this will also work.
         //private const string AssemblyFullName = $"{ThisAssembly.AssemblyName}, Version = {ThisAssembly.AssemblyVersion}, Culture = neutral, PublicKeyToken = {ThisAssembly.PublicKeyToken}";
 
         /// <summary>
-        ///     Initializes the <see cref="ExportRuleAttribute"/> class with the specified rule name and context.
+        ///     Initializes the <see cref="ExportVSRuleAttribute"/> class with the specified rule name and context.
         /// </summary>
         /// <param name="ruleName">
         ///     The name of the rule without '.xaml', for example, 'ConfigurationGeneral'.
@@ -22,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         /// <param name="contexts">
         ///     One or more of <see cref="PropertyPageContexts"/>.
         /// </param>
-        public ExportRuleAttribute(string ruleName, params string[] contexts)
-            : base(typeof(ExportRuleAttribute).Assembly.FullName, $"XamlRuleToCode:{ruleName}.xaml", string.Join(";", contexts))
+        public ExportVSRuleAttribute(string ruleName, params string[] contexts)
+            : base(typeof(ExportVSRuleAttribute).Assembly.FullName, $"XamlRuleToCode:{ruleName}.xaml", string.Join(";", contexts))
         {
             RuleName = ruleName;
         }

@@ -3,13 +3,13 @@
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Rules
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Rules
 {
     public sealed class ItemRuleTests : XamlRuleTestBase
     {
         [Theory]
         [MemberData(nameof(GetFileItemRules))]
-        public void FileRulesShouldMatchNone(string ruleName, string fullPath)
+        public void FileRulesShouldMatchNone(string ruleName, string fullPath, Type assemblyExporterType)
         {
             // Special case for Folder rule which hasn't been split yet, but is in the Items folder. But also its completely different.
             if (ruleName.Equals("Folder", StringComparison.Ordinal))
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetBrowseObjectItemRules))]
-        public void BrowseObjectRulesShouldMatchNone(string ruleName, string fullPath)
+        public void BrowseObjectRulesShouldMatchNone(string ruleName, string fullPath, Type assemblyExporterType)
         {
             // Special case for Folder rule which hasn't been split yet, but is in the Items folder. But also its completely different.
             if (ruleName.Equals("Folder", StringComparison.Ordinal))
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetFileItemRules))]
-        public void FileRulesShouldntBeLocalized(string ruleName, string fullPath)
+        public void FileRulesShouldntBeLocalized(string ruleName, string fullPath, Type assemblyExporterType)
         {
             // Special case for Folder rule which hasn't been split yet, but is in the Items folder
             if (ruleName.Equals("Folder", StringComparison.Ordinal))
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetBrowseObjectItemRules))]
-        public void HidePropertyPagesForBrowseObjectRules(string ruleName, string fullPath)
+        public void HidePropertyPagesForBrowseObjectRules(string ruleName, string fullPath, Type assemblyExporterType)
         {
             XElement rule = LoadXamlRule(fullPath);
             XAttribute attribute = rule.Attribute("PropertyPagesHidden");
@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetItemRules))]
-        public void RuleNameMatchesFileName(string ruleName, string fullPath)
+        public void RuleNameMatchesFileName(string ruleName, string fullPath, Type assemblyExporterType)
         {
             XElement rule = LoadXamlRule(fullPath);
 
@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetItemRules))]
-        public void ItemTypesMustMatchFileNameRoot(string ruleName, string fullPath)
+        public void ItemTypesMustMatchFileNameRoot(string ruleName, string fullPath, Type assemblyExporterType)
         {
             // If a rule is split between File and BrowseObject we need to trim the BrowseObject part off
             if (ruleName.IndexOf('.') > -1)
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         [Theory]
         [MemberData(nameof(GetFileItemRules))]
-        public void FileRulesShouldntHaveFileInfo(string ruleName, string fullPath)
+        public void FileRulesShouldntHaveFileInfo(string ruleName, string fullPath, Type assemblyExporterType)
         {
             XElement rule = LoadXamlRule(fullPath);
 
@@ -198,14 +198,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             // Special case for Folder because it is both File and BrowseObject context (for now), but is named like a File.
             return Project(GetRules("Items")
-                .Where(fileName => fileName.EndsWith(".BrowseObject.xaml", StringComparisons.Paths) ||
-                                   fileName.Equals("Folder.xaml", StringComparisons.Paths)));
+                .Where(rule => rule.Path.EndsWith(".BrowseObject.xaml", StringComparisons.Paths) ||
+                               rule.Path.Equals("Folder.xaml", StringComparisons.Paths)));
         }
 
         public static IEnumerable<object[]> GetFileItemRules()
         {
             return Project(GetRules("Items")
-                .Where(fileName => !fileName.EndsWith(".BrowseObject.xaml", StringComparisons.Paths)));
+                .Where(rule => !rule.Path.EndsWith(".BrowseObject.xaml", StringComparisons.Paths)));
         }
 
         public static IEnumerable<object[]> GetItemRules()

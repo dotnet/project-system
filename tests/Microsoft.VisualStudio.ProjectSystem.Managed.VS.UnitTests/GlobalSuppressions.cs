@@ -8,3 +8,5 @@ using System.Diagnostics.CodeAnalysis;
 [assembly:SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.TempPE.DesignTimeInputsCompilerTests")]
 [assembly:SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.VS.TempPE.DesignTimeInputsBuildManagerBridgeTests.Dispose")]
 [assembly:SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.TempPE.DesignTimeInputsBuildManagerBridgeTests")]
+
+[assembly: SuppressMessage("Style", "IDE0270:Use coalesce expression", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.VS.Rules.DependencyRuleTests.VisibleEditableResolvedDependenciesMustHaveDataSource(System.String,System.String)")]
