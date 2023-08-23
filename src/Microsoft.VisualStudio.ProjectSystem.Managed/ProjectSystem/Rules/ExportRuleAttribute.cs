@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Reflection;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
@@ -9,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
     ///     Exports a XAML-based embedded rule.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    internal class ExportRuleAttribute : ExportPropertyXamlRuleDefinitionAttribute
+    internal sealed class ExportRuleAttribute : ExportPropertyXamlRuleDefinitionAttribute
     {
         // TODO: If reflection is insufficient, this will also work.
         //private const string AssemblyFullName = $"{ThisAssembly.AssemblyName}, Version = {ThisAssembly.AssemblyVersion}, Culture = neutral, PublicKeyToken = {ThisAssembly.PublicKeyToken}";
@@ -24,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         ///     One or more of <see cref="PropertyPageContexts"/>.
         /// </param>
         public ExportRuleAttribute(string ruleName, params string[] contexts)
-            : base(Assembly.GetExecutingAssembly().FullName, $"XamlRuleToCode:{ruleName}.xaml", string.Join(";", contexts))
+            : base(typeof(ExportRuleAttribute).Assembly.FullName, $"XamlRuleToCode:{ruleName}.xaml", string.Join(";", contexts))
         {
             RuleName = ruleName;
         }

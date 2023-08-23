@@ -1,7 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Text.RegularExpressions;
-using Microsoft.VisualStudio.ProjectSystem.Rules;
+using Microsoft.VisualStudio.ProjectSystem.VS.Rules;
 using Microsoft.VisualStudio.Utilities;
 using Xunit.Abstractions;
 
@@ -9,9 +9,9 @@ namespace Microsoft.VisualStudio.Setup
 {
     public sealed class SwrTests
     {
-        private static readonly Regex _swrFolderPattern = new(@"^\s*folder\s+""(?<path>[^""]+)""\s*$", RegexOptions.Compiled);
-        private static readonly Regex _swrFilePattern = new(@"^\s*file\s+source=""(?<path>[^""]+)""\s*$", RegexOptions.Compiled);
-        private static readonly Regex _xlfFilePattern = new(@"^(?<filename>.+\.xaml)\.(?<culture>[^.]+)\.xlf$", RegexOptions.Compiled);
+        private static readonly Regex _swrFolderPattern = new(@"^\s*folder\s+""(?<path>[^""]+)""\s*$", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex _swrFilePattern = new(@"^\s*file\s+source=""(?<path>[^""]+)""\s*$", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex _xlfFilePattern = new(@"^(?<filename>.+\.xaml)\.(?<culture>[^.]+)\.xlf$", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
         private readonly ITestOutputHelper _output;
 
@@ -37,14 +37,22 @@ namespace Microsoft.VisualStudio.Setup
                 .Where(pair => pair.File.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase))
                 .ToLookup(pair => pair.Culture, pair => pair.File);
 
-            var rulesPath = Path.Combine(
+            var rulesPath1 = Path.Combine(
                 rootPath,
                 "src",
                 "Microsoft.VisualStudio.ProjectSystem.Managed",
                 "ProjectSystem",
                 "Rules");
+            var rulesPath2 = Path.Combine(
+                rootPath,
+                "src",
+                "Microsoft.VisualStudio.ProjectSystem.Managed.VS",
+                "ProjectSystem",
+                "VS",
+                "Rules");
 
-            var ruleFilesByCulture = Directory.EnumerateFiles(rulesPath, "*", SearchOption.AllDirectories)
+            var ruleFilesByCulture = Directory.EnumerateFiles(rulesPath1, "*", SearchOption.AllDirectories)
+                .Concat(Directory.EnumerateFiles(rulesPath2, "*", SearchOption.AllDirectories))
                 .Select(ParseRepoFile)
                 .Where(pair => pair.Culture is not null)
                 .ToLookup(pair => pair.Culture!, pair => pair.File);
