@@ -4,6 +4,8 @@ namespace Microsoft.VisualStudio.Utilities
 {
     internal static class RepoUtil
     {
+        private static string? _root;
+
         /// <summary>
         /// Gets the absolute path to the checked out location of this repo.
         /// </summary>
@@ -12,18 +14,22 @@ namespace Microsoft.VisualStudio.Utilities
         /// </remarks>
         public static string FindRepoRootPath()
         {
-            // Start with this DLL's location
-            string path = typeof(RepoUtil).Assembly.Location;
-
-            // Walk up the tree until we find the 'artifacts' folder
-            while (!Path.GetFileName(path).Equals("artifacts", StringComparisons.Paths))
+            if (_root is null)
             {
-                path = Path.GetDirectoryName(path);
+                // Start with this DLL's location
+                string path = typeof(RepoUtil).Assembly.Location;
+
+                // Walk up the tree until we find the 'artifacts' folder
+                while (!Path.GetFileName(path).Equals("artifacts", StringComparisons.Paths))
+                {
+                    path = Path.GetDirectoryName(path);
+                }
+
+                // Go up one more level
+                _root = Path.GetDirectoryName(path);
             }
 
-            // Go up one more level
-            path = Path.GetDirectoryName(path);
-            return path;
+            return _root;
         }
     }
 }
