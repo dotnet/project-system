@@ -18,9 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private Guid _projectGuid;
 
         private readonly ConfiguredProject _project;
-        private readonly IProjectFaultHandlerService _projectFaultHandlerService;
         private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
-        private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
+        private readonly IProjectSubscriptionService _projectSubscriptionService;
 
         private IDisposable? _subscription;
 
@@ -30,12 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             ConfiguredProject configuredProject,
             IProjectThreadingService threadingService,
             IProjectFaultHandlerService projectFaultHandlerService, 
-            IActiveConfiguredProjectSubscriptionService projectSubscriptionService)
+            IProjectSubscriptionService projectSubscriptionService)
             : base(threadingService.JoinableTaskContext)
         {
             _missingSetupComponentRegistrationService = missingSetupComponentRegistrationService;
             _project = configuredProject;
-            _projectFaultHandlerService = projectFaultHandlerService;
             _projectSubscriptionService = projectSubscriptionService;
         }
         
