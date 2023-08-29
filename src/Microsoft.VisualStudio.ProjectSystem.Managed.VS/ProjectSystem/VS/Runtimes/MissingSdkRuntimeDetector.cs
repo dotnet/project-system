@@ -28,19 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             IMissingSetupComponentRegistrationService missingSetupComponentRegistrationService,
             ConfiguredProject configuredProject,
             IProjectThreadingService threadingService,
-            IProjectFaultHandlerService projectFaultHandlerService, 
             IProjectSubscriptionService projectSubscriptionService)
             : base(threadingService.JoinableTaskContext)
         {
             _missingSetupComponentRegistrationService = missingSetupComponentRegistrationService;
             _project = configuredProject;
             _projectSubscriptionService = projectSubscriptionService;
-        }
-        
-        
-        private Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> _)
-        {
-            return RegisterSdkNetCoreRuntimeNeededInProjectAsync(_project);
         }
 
         public Task LoadAsync()
@@ -67,19 +60,28 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // safe to use within IProjectDynamicLoadComponent.LoadAsync.
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
-            _subscription = _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(target: OnProjectChangedAsync, _project.UnconfiguredProject);
+            _subscription = _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAction(
+                target: OnProjectChanged, 
+                project: _project.UnconfiguredProject,
+                ruleNames: ConfigurationGeneral.SchemaName);
         }
 
-        private async Task RegisterSdkNetCoreRuntimeNeededInProjectAsync(ConfiguredProject project)
+        private void OnProjectChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
         {
-            var projectProperties = project.Services.ExportProvider.GetExportedValue<ProjectProperties>();
+            IImmutableDictionary<string, string> configurationGeneralProperties = update.Value.CurrentState[ConfigurationGeneral.SchemaName].Properties;
+            if (!configurationGeneralProperties.TryGetValue(ConfigurationGeneral.TargetFrameworkIdentifierProperty, out string? targetFrameworkIdentifier) ||
+                !configurationGeneralProperties.TryGetValue(ConfigurationGeneral.TargetFrameworkVersionProperty, out string? targetFrameworkVersion) || 
+                targetFrameworkVersion is null)
+            {
+                return;
+            }
 
-            ConfigurationGeneral configuration = await projectProperties.GetConfigurationGeneralPropertiesAsync();
+            RegisterSdkNetCoreRuntimeNeededInProject(_project, targetFrameworkIdentifier, targetFrameworkVersion);
+        }
 
-            string? targetFrameworkIdentifier = await configuration.TargetFrameworkIdentifier.GetDisplayValueAsync();
-
-            string? targetFrameworkVersion = await configuration.TargetFrameworkVersion.GetDisplayValueAsync();
-
+        private void RegisterSdkNetCoreRuntimeNeededInProject(ConfiguredProject project, string? targetFrameworkIdentifier, string targetFrameworkVersion)
+        {
+            // set to empty for non-netcore projects so that we do not check for missing installed runtime for them
             if (!string.Equals(targetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) ||
                 string.IsNullOrEmpty(targetFrameworkVersion))
             {
