@@ -33,16 +33,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly UnconfiguredProject _project;
         private readonly IProjectItemProvider _sourceItemsProvider;
         private readonly IMyAppFileAccessor _myAppXmlFileAccessor;
+        private readonly IProjectAccessor _projectAccessor;
 
         [ImportingConstructor]
         public ApplicationFrameworkValueProvider(
             UnconfiguredProject project,
             [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-            IMyAppFileAccessor myAppXamlFileAccessor)
+            IMyAppFileAccessor myAppXamlFileAccessor,
+            IProjectAccessor projectAccessor)
         {
             _project = project;
             _sourceItemsProvider = sourceItemsProvider;
             _myAppXmlFileAccessor = myAppXamlFileAccessor;
+            _projectAccessor = projectAccessor;
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
@@ -206,6 +209,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 if (value)
                 {
                     // Enabled
+
+                    //project accessor to remove the applicationdefinition property if re-enabled
+                    await _projectAccessor.OpenProjectXmlForWriteAsync(_project, project =>
+                    {
+                        foreach (var propertyGroup in project.PropertyGroups.ToList())
+                        {
+                            foreach (var property in propertyGroup.Properties.ToList())
+                            {
+                                if (string.Equals(property.Name, ApplicationDefinitionItemType))
+                                {
+                                    propertyGroup.RemoveChild(property);
+                                }
+                            }
+                        }
+                    });
 
                     // Create the Application.xaml if it doesn't exist. We don't care about the path, we just need it to be created.
                     string? appXamlFilePath = await GetAppXamlRelativeFilePathAsync(create: true);
