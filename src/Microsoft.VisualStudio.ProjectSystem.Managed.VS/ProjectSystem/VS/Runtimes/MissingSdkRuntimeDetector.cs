@@ -18,20 +18,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private Guid _projectGuid;
 
         private readonly ConfiguredProject _project;
-        private readonly IProjectFaultHandlerService _projectFaultHandlerService;
         private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
+        private readonly IProjectSubscriptionService _projectSubscriptionService;
+
+        private IDisposable? _subscription;
 
         [ImportingConstructor]
         public MissingSdkRuntimeDetector(
             IMissingSetupComponentRegistrationService missingSetupComponentRegistrationService,
             ConfiguredProject configuredProject,
             IProjectThreadingService threadingService,
-            IProjectFaultHandlerService projectFaultHandlerService)
+            IProjectSubscriptionService projectSubscriptionService)
             : base(threadingService.JoinableTaskContext)
         {
             _missingSetupComponentRegistrationService = missingSetupComponentRegistrationService;
             _project = configuredProject;
-            _projectFaultHandlerService = projectFaultHandlerService;
+            _projectSubscriptionService = projectSubscriptionService;
         }
 
         public Task LoadAsync()
@@ -42,7 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public Task UnloadAsync()
         {
             _missingSetupComponentRegistrationService.UnregisterProjectConfiguration(_projectGuid, _project);
-
+            _subscription?.Dispose();
+            
             return Task.CompletedTask;
         }
 
@@ -57,29 +60,35 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // safe to use within IProjectDynamicLoadComponent.LoadAsync.
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
-            _projectFaultHandlerService.Forget(RegisterSdkNetCoreRuntimeNeededInProjectAsync(_project), _project.UnconfiguredProject);
+            _subscription = _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAction(
+                target: OnProjectChanged, 
+                project: _project.UnconfiguredProject,
+                ruleNames: ConfigurationGeneral.SchemaName);
         }
 
-        private async Task RegisterSdkNetCoreRuntimeNeededInProjectAsync(ConfiguredProject project)
+        private void OnProjectChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
         {
-            if (IsInitialized)
+            IImmutableDictionary<string, string> configurationGeneralProperties = update.Value.CurrentState[ConfigurationGeneral.SchemaName].Properties;
+            if (!configurationGeneralProperties.TryGetValue(ConfigurationGeneral.TargetFrameworkIdentifierProperty, out string? targetFrameworkIdentifier) ||
+                !configurationGeneralProperties.TryGetValue(ConfigurationGeneral.TargetFrameworkVersionProperty, out string? targetFrameworkVersion) || 
+                targetFrameworkVersion is null)
             {
-                var projectProperties = project.Services.ExportProvider.GetExportedValue<ProjectProperties>();
-
-                ConfigurationGeneral configuration = await projectProperties.GetConfigurationGeneralPropertiesAsync();
-
-                string? targetFrameworkIdentifier = await configuration.TargetFrameworkIdentifier.GetDisplayValueAsync();
-
-                string? targetFrameworkVersion = await configuration.TargetFrameworkVersion.GetDisplayValueAsync();
-
-                if (!string.Equals(targetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) ||
-                    string.IsNullOrEmpty(targetFrameworkVersion))
-                {
-                    targetFrameworkVersion = string.Empty;
-                }
-                
-                _missingSetupComponentRegistrationService.RegisterPossibleMissingSdkRuntimeVersion(_projectGuid, project, targetFrameworkVersion);
+                return;
             }
+
+            RegisterSdkNetCoreRuntimeNeededInProject(_project, targetFrameworkIdentifier, targetFrameworkVersion);
+        }
+
+        private void RegisterSdkNetCoreRuntimeNeededInProject(ConfiguredProject project, string? targetFrameworkIdentifier, string targetFrameworkVersion)
+        {
+            // set to empty for non-netcore projects so that we do not check for missing installed runtime for them
+            if (!string.Equals(targetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) ||
+                string.IsNullOrEmpty(targetFrameworkVersion))
+            {
+                targetFrameworkVersion = string.Empty;
+            }
+            
+            _missingSetupComponentRegistrationService.RegisterPossibleMissingSdkRuntimeVersion(_projectGuid, project, targetFrameworkVersion);
         }
     }
 }
