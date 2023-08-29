@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return IsValueDefinedInContextMSBuildPropertiesAsync(defaultProperties, s_msBuildPropertyNames);
         }
 
-        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties projectProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             ComplexTargetFramework storedProperties = await GetStoredPropertiesAsync();
 
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                         // Delete platform properties
                         storedProperties.TargetPlatformIdentifier = null;
                         storedProperties.TargetPlatformVersion = null;
-                        await ResetPlatformPropertiesAsync(projectProperties);
+                        await ResetPlatformPropertiesAsync(defaultProperties);
                     }
                 }
 
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     {
                         // Delete platform properties.
                         storedProperties.TargetPlatformVersion = null;
-                        await ResetPlatformPropertiesAsync(projectProperties);
+                        await ResetPlatformPropertiesAsync(defaultProperties);
 
                         storedProperties.TargetPlatformIdentifier = unevaluatedPropertyValue;
                     }
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     storedProperties.TargetPlatformVersion = unevaluatedPropertyValue;
                 }
 
-                await projectProperties.SetPropertyValueAsync(TargetFrameworkProperty, await ComputeValueAsync(storedProperties));
+                await defaultProperties.SetPropertyValueAsync(TargetFrameworkProperty, await ComputeValueAsync(storedProperties));
             }
 
             return null;
