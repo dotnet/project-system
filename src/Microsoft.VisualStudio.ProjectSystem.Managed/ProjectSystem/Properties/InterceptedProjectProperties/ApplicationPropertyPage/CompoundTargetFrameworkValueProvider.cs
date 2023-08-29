@@ -282,7 +282,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private async Task<string> GetTargetFrameworkAliasAsync(string targetFrameworkMoniker)
         {
             IProjectSubscriptionService? subscriptionService = _configuredProject.Services.ProjectSubscription;
-            Assumes.Present(subscriptionService);
+            if (subscriptionService is null)
+            {
+                return string.Empty;
+            }
 
             IImmutableDictionary<string, IProjectRuleSnapshot> supportedTargetFrameworks = await subscriptionService.ProjectRuleSource.GetLatestVersionAsync(_configuredProject, new string[] { SupportedTargetFramework.SchemaName });
             IProjectRuleSnapshot targetFrameworkRuleSnapshot = supportedTargetFrameworks[SupportedTargetFramework.SchemaName];
@@ -306,7 +309,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private async Task<string> GetTargetPlatformAliasAsync(string targetPlatformIdentifier)
         {
             IProjectSubscriptionService? subscriptionService = _configuredProject.Services.ProjectSubscription;
-            Assumes.Present(subscriptionService);
+            if (subscriptionService is null)
+            {
+                return string.Empty;
+            }
 
             IImmutableDictionary<string, IProjectRuleSnapshot> sdkSupportedTargetPlatformIdentifiers = await subscriptionService.ProjectRuleSource.GetLatestVersionAsync(_configuredProject, new string[] { SdkSupportedTargetPlatformIdentifier.SchemaName });
 
