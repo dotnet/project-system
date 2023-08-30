@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             TargetPlatformVersionProperty
         },
         ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal sealed class CompoundTargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
+    internal class CompoundTargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
     {
         private const string InterceptedTargetFrameworkProperty = "InterceptedTargetFramework";
         private const string TargetPlatformProperty = ConfigurationGeneral.TargetPlatformIdentifierProperty;
@@ -44,10 +44,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [ImportingConstructor]
-        public CompoundTargetFrameworkValueProvider(ProjectProperties properties, ConfiguredProject configuredProject)
+        public CompoundTargetFrameworkValueProvider(ProjectProperties properties)
         {
             _properties = properties;
-            _configuredProject = configuredProject;
+            _configuredProject = properties.ConfiguredProject;
         }
 
         private async Task<ComplexTargetFramework> GetStoredPropertiesAsync()
@@ -70,12 +70,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 // Changing the Target Framework Moniker
                 if (StringComparers.PropertyLiteralValues.Equals(propertyName, InterceptedTargetFrameworkProperty))
                 {
-                    // Delete stored platform properties
-                    storedProperties.TargetPlatformIdentifier = null;
-                    storedProperties.TargetPlatformVersion = null;
-                    await ResetPlatformPropertiesAsync(defaultProperties);
-
+                    if (Strings.IsNullOrEmpty(unevaluatedPropertyValue))
+                    {
+                        return null;
+                    }
+                    
                     storedProperties.TargetFrameworkMoniker = unevaluatedPropertyValue;
+                    
+                    // Only projects targeting .NET 5 or higher use platform properties.
+                    string targetFrameworkAlias = await GetTargetFrameworkAliasAsync(unevaluatedPropertyValue);
+                    if (!IsNetCore5OrHigher(targetFrameworkAlias))
+                    {
+                        // Delete platform properties
+                        storedProperties.TargetPlatformIdentifier = null;
+                        storedProperties.TargetPlatformVersion = null;
+                        await ResetPlatformPropertiesAsync(defaultProperties);
+                    }
                 }
 
                 // Changing the Target Platform Identifier
@@ -83,8 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     if (unevaluatedPropertyValue != storedProperties.TargetPlatformIdentifier)
                     {
-                        // Delete stored platform properties
-                        storedProperties.TargetPlatformIdentifier = null;
+                        // Delete platform properties.
                         storedProperties.TargetPlatformVersion = null;
                         await ResetPlatformPropertiesAsync(defaultProperties);
 
@@ -198,7 +207,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return targetFrameworkAlias + "-windows" + complexTargetFramework.TargetPlatformVersion;
             }
 
-            if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier))
+            // We only keep the platform properties for projects targeting .NET 5 or higher.
+            if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier) && IsNetCore5OrHigher(targetFrameworkAlias))
             {
                 string targetPlatformAlias = await GetTargetPlatformAliasAsync(complexTargetFramework.TargetPlatformIdentifier);
 
@@ -269,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// Retrieves the target framework alias (i.e. net5.0) from the project's subscription service.
         /// </summary>
         /// <returns></returns>
-        private async Task<string> GetTargetFrameworkAliasAsync(string targetFrameworkMoniker)
+        internal virtual async Task<string> GetTargetFrameworkAliasAsync(string targetFrameworkMoniker)
         {
             IProjectSubscriptionService? subscriptionService = _configuredProject.Services.ProjectSubscription;
             Assumes.Present(subscriptionService);
@@ -318,6 +328,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <returns></returns>
         private static async Task ResetPlatformPropertiesAsync(IProjectProperties projectProperties)
         {
+            await projectProperties.DeletePropertyAsync(TargetPlatformProperty);
             await projectProperties.DeletePropertyAsync(TargetPlatformVersionProperty);
             await projectProperties.DeletePropertyAsync(SupportedOSPlatformVersionProperty);
         }
