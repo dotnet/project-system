@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void LaunchSettings_CtorTests()
         {
-            var profiles = new List<LaunchProfile>()
+            var profiles = new[]
             {
                 new LaunchProfile("abc", null, commandLineArgs: "test"),
                 new LaunchProfile("def", null),
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var settings = new LaunchSettings(profiles);
             Assert.NotNull(settings.ActiveProfile);
             Assert.True(settings.ActiveProfile.Name == "abc");
-            Assert.Equal(profiles.Count, settings.Profiles.Count);
+            Assert.Equal(profiles.Length, settings.Profiles.Count);
             Assert.Empty(settings.GlobalSettings);
 
             settings = new LaunchSettings(profiles, activeProfileName: "ghi");

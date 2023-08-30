@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
-                new DesignTimeInputFileChange[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
+                new[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
                 "C:\\TempPE"));
 
             // One file should have been added
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
-                new DesignTimeInputFileChange[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
+                new[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
                 "C:\\TempPE"));
 
             await _bridge.BuildDesignTimeOutputAsync("Resources1.Designer.cs");
