@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             TargetPlatformVersionProperty
         },
         ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal sealed class CompoundTargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
+    internal class CompoundTargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
     {
         private const string InterceptedTargetFrameworkProperty = "InterceptedTargetFramework";
         private const string TargetPlatformProperty = ConfigurationGeneral.TargetPlatformIdentifierProperty;
@@ -44,10 +44,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [ImportingConstructor]
-        public CompoundTargetFrameworkValueProvider(ProjectProperties properties, ConfiguredProject configuredProject)
+        public CompoundTargetFrameworkValueProvider(ProjectProperties properties)
         {
             _properties = properties;
-            _configuredProject = configuredProject;
+            _configuredProject = properties.ConfiguredProject;
         }
 
         private async Task<ComplexTargetFramework> GetStoredPropertiesAsync()
@@ -279,13 +279,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// Retrieves the target framework alias (i.e. net5.0) from the project's subscription service.
         /// </summary>
         /// <returns></returns>
-        private async Task<string> GetTargetFrameworkAliasAsync(string targetFrameworkMoniker)
+        internal virtual async Task<string> GetTargetFrameworkAliasAsync(string targetFrameworkMoniker)
         {
             IProjectSubscriptionService? subscriptionService = _configuredProject.Services.ProjectSubscription;
-            if (subscriptionService is null)
-            {
-                return string.Empty;
-            }
+            Assumes.Present(subscriptionService);
 
             IImmutableDictionary<string, IProjectRuleSnapshot> supportedTargetFrameworks = await subscriptionService.ProjectRuleSource.GetLatestVersionAsync(_configuredProject, new string[] { SupportedTargetFramework.SchemaName });
             IProjectRuleSnapshot targetFrameworkRuleSnapshot = supportedTargetFrameworks[SupportedTargetFramework.SchemaName];
@@ -309,10 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private async Task<string> GetTargetPlatformAliasAsync(string targetPlatformIdentifier)
         {
             IProjectSubscriptionService? subscriptionService = _configuredProject.Services.ProjectSubscription;
-            if (subscriptionService is null)
-            {
-                return string.Empty;
-            }
+            Assumes.Present(subscriptionService);
 
             IImmutableDictionary<string, IProjectRuleSnapshot> sdkSupportedTargetPlatformIdentifiers = await subscriptionService.ProjectRuleSource.GetLatestVersionAsync(_configuredProject, new string[] { SdkSupportedTargetPlatformIdentifier.SchemaName });
 
