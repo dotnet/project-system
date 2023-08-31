@@ -19,9 +19,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    
-    <!-- Infrastructure -->
-    <PackageReference Include="Microsoft.VSSDK.BuildTools"     PrivateAssets="all" />
 
     <!-- VS SDK -->
     <PackageReference Include="Microsoft.Internal.VisualStudio.Interop" />
