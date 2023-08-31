@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(UIPermissionAttribute));
 
-            var rect = new RECT[] { new RECT() { left = 25, top = 25 } };
+            var rect = new[] { new RECT() { left = 25, top = 25 } };
             var page = new Mock<PropertyPage>()
             {
                 CallBase = true

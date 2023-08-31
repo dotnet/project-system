@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             var queue = new CompilationQueue();
 
-            var range = ImmutableArray.CreateRange(new DesignTimeInputFileChange[]
+            var range = ImmutableArray.CreateRange(new[]
             {
                 new DesignTimeInputFileChange("FileName1", false),
                 new DesignTimeInputFileChange("FileName2", false)
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             var queue = new CompilationQueue();
 
-            var range = ImmutableArray.CreateRange(new DesignTimeInputFileChange[]
+            var range = ImmutableArray.CreateRange(new[]
             {
                 new DesignTimeInputFileChange("FileName1", false),
                 new DesignTimeInputFileChange("FileName1", false)
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             var queue = new CompilationQueue();
 
-            var range = ImmutableArray.CreateRange(new DesignTimeInputFileChange[]
+            var range = ImmutableArray.CreateRange(new[]
             {
                 new DesignTimeInputFileChange("FileName1", false),
                 new DesignTimeInputFileChange("FileName1", true)
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             var queue = new CompilationQueue();
 
-            var range = ImmutableArray.CreateRange(new DesignTimeInputFileChange[]
+            var range = ImmutableArray.CreateRange(new[]
             {
                 new DesignTimeInputFileChange("FileName1", false),
                 new DesignTimeInputFileChange("FileName2", false)

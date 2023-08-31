@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             ProjectConfiguration projectConfiguration = ProjectConfigurationFactory.Create("Debug|x64");
             IComparable projectVersion = 0;
 
-            return new PackageRestoreConfiguredInput[1]{new PackageRestoreConfiguredInput(projectConfiguration, restoreInfo, projectVersion)};
+            return new[] { new PackageRestoreConfiguredInput(projectConfiguration, restoreInfo, projectVersion) };
         }
     }
 }
