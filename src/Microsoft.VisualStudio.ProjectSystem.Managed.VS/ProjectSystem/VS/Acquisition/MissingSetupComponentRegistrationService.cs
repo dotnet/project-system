@@ -272,8 +272,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     {
         if (!_isVSFromPreviewChannel.HasValue)
         {
-            _isVSFromPreviewChannel = await _shellUtilitiesHelper.Value.IsVSFromPreviewChannelAsync();
-            await TaskScheduler.Default;
+            _isVSFromPreviewChannel = _shellUtilitiesHelper.Value.IsVSFromPreviewChannel();
         }
 
         IVsSetupCompositionService? setupCompositionService = await _vsSetupCompositionService.GetValueAsync();
