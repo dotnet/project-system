@@ -7,8 +7,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition;
 
 internal sealed class NetCoreRuntimeVersionsRegistryReader
 {
-    private static readonly string s_arm64NetCoreRegistryKeyPath = "SOFTWARE\\dotnet\\Setup\\InstalledVersions\\ARM64\\sharedfx\\";
-    private static readonly string s_x64NetCoreRegistryKeyPath = "SOFTWARE\\WOW6432Node\\dotnet\\Setup\\InstalledVersions\\x64\\sharedfx\\";
+    private static readonly string s_arm64NetCoreRegistryKeyPath = """SOFTWARE\dotnet\Setup\InstalledVersions\ARM64\sharedfx\""";
+    private static readonly string s_x64NetCoreRegistryKeyPath = """SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\""";
     private static readonly string s_netCoreRegistryKeyName = "Microsoft.NETCore.App";
 
     /// <summary>
