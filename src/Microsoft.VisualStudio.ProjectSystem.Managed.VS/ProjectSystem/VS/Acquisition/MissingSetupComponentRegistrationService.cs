@@ -48,11 +48,11 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
 
     // State
-    private readonly ConcurrentHashSet<string> _webComponentIdsDetected;
+    private readonly ConcurrentHashSet<string> _webComponentIdsDetected = new();
     private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
-    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
-    private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap;
-    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
+    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap = new();
+    private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap = new();
+    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap = new();
     private ConcurrentDictionary<string, ConcurrentHashSet<ProjectConfiguration>>? _projectPathToProjectConfigurationsMap;
     private IAsyncDisposable? _solutionEventsSubscription;
     private bool? _isVSFromPreviewChannel;
@@ -68,11 +68,6 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         JoinableTaskContext joinableTaskContext)
         : base(new(joinableTaskContext))
     {
-        _webComponentIdsDetected = new();
-        _projectGuidToWorkloadDescriptorsMap = new();
-        _projectGuidToProjectConfigurationsMap = new();
-        _projectGuidToRuntimeDescriptorMap = new();
-
         _serviceBrokerContainer = serviceBrokerContainer;
         _vsSetupCompositionService = vsSetupCompositionService;
         _solutionService = solutionService;
