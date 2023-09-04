@@ -7,8 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
     /// </summary>
     internal readonly struct WorkloadDescriptor
     {
-        private static readonly char[] s_visualStudioComponentIdSeparators = new char[] { ';' };
-
         /// <summary>
         /// An empty workload descriptor is used to indicate an unknown workload
         /// e.g. when a design-time build fails or when no additional workloads
@@ -19,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         public WorkloadDescriptor(string workloadName, string visualStudioComponentIds)
         {
             WorkloadName = workloadName;
-            string[] vsComponentIds = visualStudioComponentIds.Split(s_visualStudioComponentIdSeparators, StringSplitOptions.RemoveEmptyEntries);
+            string[] vsComponentIds = visualStudioComponentIds.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries);
             VisualStudioComponentIds = new HashSet<string>(vsComponentIds, StringComparers.VisualStudioSetupComponentIds);
         }
 
