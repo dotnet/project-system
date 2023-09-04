@@ -246,8 +246,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
     private void DisplayMissingComponentsPromptIfNeeded(ConfiguredProject project)
     {
-        bool displayMissingComponentsPrompt = ShouldDisplayMissingComponentsPrompt();
-        if (displayMissingComponentsPrompt)
+        if (ShouldDisplayMissingComponentsPrompt())
         {
             Task displayMissingComponentsTask = DisplayMissingComponentsPromptAsync();
 
