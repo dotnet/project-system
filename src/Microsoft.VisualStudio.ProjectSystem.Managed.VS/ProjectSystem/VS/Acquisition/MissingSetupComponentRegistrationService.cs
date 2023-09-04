@@ -75,19 +75,6 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         _projectFaultHandlerService = projectFaultHandlerService;
     }
 
-    private ConcurrentDictionary<string, ConcurrentHashSet<ProjectConfiguration>> ProjectPathToProjectConfigurationsMap
-    {
-        get
-        {
-            if (_projectPathToProjectConfigurationsMap is null)
-            {
-                Interlocked.CompareExchange(ref _projectPathToProjectConfigurationsMap, new(StringComparers.Paths), null);
-            }
-
-            return _projectPathToProjectConfigurationsMap;
-        }
-    }
-
     private HashSet<string> RuntimeVersionsInstalledInLocalMachine
     {
         get
@@ -207,7 +194,13 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
             // Fall back to the full path of the project if the project GUID has not yet been set.
             if (projectGuid == Guid.Empty)
             {
-                projectConfigurationSet = ProjectPathToProjectConfigurationsMap.GetOrAdd(project.UnconfiguredProject.FullPath, guid => new ConcurrentHashSet<ProjectConfiguration>());
+                // This collection is not commonly needed, so we construct it lazily.
+                if (_projectPathToProjectConfigurationsMap is null)
+                {
+                    Interlocked.CompareExchange(ref _projectPathToProjectConfigurationsMap, new(StringComparers.Paths), null);
+                }
+
+                projectConfigurationSet = _projectPathToProjectConfigurationsMap.GetOrAdd(project.UnconfiguredProject.FullPath, guid => new ConcurrentHashSet<ProjectConfiguration>());
             }
             else
             {
