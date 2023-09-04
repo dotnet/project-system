@@ -325,25 +325,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
             }
         }
 
-        AddMissingSdkRuntimeComponentIds(setupCompositionService, vsComponentIdsToRegister);
-
-        if (vsComponentIdsToRegister.Count == 0)
-        {
-            return null;
-        }
-
-        return vsComponentIdsToRegister;
-    }
-
-    private bool IsSupportedWorkload(string workloadName)
-    {
-        return !string.IsNullOrWhiteSpace(workloadName)
-            && (s_supportedReleaseChannelWorkloads.Contains(workloadName)
-                || _isVSFromPreviewChannel == true);
-    }
-
-    private void AddMissingSdkRuntimeComponentIds(IVsSetupCompositionService setupCompositionService, Dictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister)
-    {
+        // Add missing SDK runtime component IDs
         foreach ((Guid projectGuid, string runtimeComponentId) in _projectGuidToRuntimeDescriptorMap)
         {
             if (setupCompositionService.IsPackageInstalled(runtimeComponentId))
@@ -359,6 +341,20 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
             vsComponentIdsToRegister[projectGuid] = runtimeVsComponents.ToImmutableList();
         }
+
+        if (vsComponentIdsToRegister.Count == 0)
+        {
+            return null;
+        }
+
+        return vsComponentIdsToRegister;
+    }
+
+    private bool IsSupportedWorkload(string workloadName)
+    {
+        return !string.IsNullOrWhiteSpace(workloadName)
+            && (s_supportedReleaseChannelWorkloads.Contains(workloadName)
+                || _isVSFromPreviewChannel == true);
     }
 
     #region IVsSolutionEvents
