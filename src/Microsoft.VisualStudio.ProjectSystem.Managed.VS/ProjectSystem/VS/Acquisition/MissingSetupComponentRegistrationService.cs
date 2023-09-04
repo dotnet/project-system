@@ -40,28 +40,29 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     private readonly object _displayPromptLock = new();
     private readonly object _lock = new();
 
+    // Services
+    private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
+    private readonly IVsService<SVsSetupCompositionService, IVsSetupCompositionService> _vsSetupCompositionService;
+    private readonly ISolutionService _solutionService;
+    private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
+    private readonly IProjectFaultHandlerService _projectFaultHandlerService;
+
+    // State
     private readonly ConcurrentHashSet<string> _webComponentIdsDetected;
     private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
     private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
     private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap;
     private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
-    private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
-    private readonly ISolutionService _solutionService;
-    private readonly IVsService<SVsSetupCompositionService, IVsSetupCompositionService> _vsSetupCompositionService;
-    private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
-    private readonly IProjectFaultHandlerService _projectFaultHandlerService;
-
     private ConcurrentDictionary<string, ConcurrentHashSet<ProjectConfiguration>>? _projectPathToProjectConfigurationsMap;
     private IAsyncDisposable? _solutionEventsSubscription;
     private bool? _isVSFromPreviewChannel;
-
     private HashSet<string>? _netCoreRegistryKeyValues;
 
     [ImportingConstructor]
     public MissingSetupComponentRegistrationService(
         IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> serviceBrokerContainer,
-        ISolutionService solutionService,
         IVsService<SVsSetupCompositionService, IVsSetupCompositionService> vsSetupCompositionService,
+        ISolutionService solutionService,
         Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
         IProjectFaultHandlerService projectFaultHandlerService,
         JoinableTaskContext joinableTaskContext)
@@ -73,10 +74,10 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         _projectGuidToRuntimeDescriptorMap = new();
 
         _serviceBrokerContainer = serviceBrokerContainer;
-        _solutionService = solutionService;
         _vsSetupCompositionService = vsSetupCompositionService;
-        _projectFaultHandlerService = projectFaultHandlerService;
+        _solutionService = solutionService;
         _shellUtilitiesHelper = vsShellUtilitiesHelper;
+        _projectFaultHandlerService = projectFaultHandlerService;
     }
 
     private ConcurrentDictionary<string, ConcurrentHashSet<ProjectConfiguration>> ProjectPathToProjectConfigurationsMap
