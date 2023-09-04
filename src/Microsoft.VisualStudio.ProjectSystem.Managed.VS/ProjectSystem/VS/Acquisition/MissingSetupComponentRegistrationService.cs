@@ -48,7 +48,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
 
     // State
-    private readonly ConcurrentHashSet<string> _webComponentIdsDetected = new();
+    private readonly ConcurrentHashSet<string> _webComponentIdsDetected = new(StringComparers.VisualStudioSetupComponentIds);
     private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
     private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap = new();
     private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap = new();
@@ -81,7 +81,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         {
             if (_projectPathToProjectConfigurationsMap is null)
             {
-                Interlocked.CompareExchange(ref _projectPathToProjectConfigurationsMap, new(), null);
+                Interlocked.CompareExchange(ref _projectPathToProjectConfigurationsMap, new(StringComparers.Paths), null);
             }
 
             return _projectPathToProjectConfigurationsMap;
