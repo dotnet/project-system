@@ -35,7 +35,11 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
     private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
+    // Lock objects
     private readonly object _webComponentIdsDetectedLock = new();
+    private readonly object _displayPromptLock = new();
+    private readonly object _lock = new();
+
     private readonly ConcurrentHashSet<string> _webComponentIdsDetected;
     private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
     private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
@@ -46,13 +50,11 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     private readonly IVsService<SVsSetupCompositionService, IVsSetupCompositionService> _vsSetupCompositionService;
     private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
-    private readonly object _displayPromptLock = new();
 
     private ConcurrentDictionary<string, ConcurrentHashSet<ProjectConfiguration>>? _projectPathToProjectConfigurationsMap;
     private IAsyncDisposable? _solutionEventsSubscription;
     private bool? _isVSFromPreviewChannel;
 
-    private readonly object _lock = new();
     private HashSet<string>? _netCoreRegistryKeyValues;
 
     [ImportingConstructor]
