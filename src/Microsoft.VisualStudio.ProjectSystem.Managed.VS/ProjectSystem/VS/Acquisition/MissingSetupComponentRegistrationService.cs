@@ -378,50 +378,15 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
     #region IVsSolutionEvents
 
-    public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
-    {
-        return HResult.NotImplemented;
-    }
-
-    public int OnQueryCloseProject(IVsHierarchy pHierarchy, int fRemoving, ref int pfCancel)
-    {
-        return HResult.NotImplemented;
-    }
-
-    public int OnBeforeCloseProject(IVsHierarchy pHierarchy, int fRemoved)
-    {
-        return HResult.NotImplemented;
-    }
-
-    public int OnAfterLoadProject(IVsHierarchy pStubHierarchy, IVsHierarchy pRealHierarchy)
-    {
-        return HResult.NotImplemented;
-    }
-
-    public int OnQueryUnloadProject(IVsHierarchy pRealHierarchy, ref int pfCancel)
-    {
-        return HResult.NotImplemented;
-    }
-
-    public int OnBeforeUnloadProject(IVsHierarchy pRealHierarchy, IVsHierarchy pStubHierarchy)
-    {
-        return HResult.NotImplemented;
-    }
-
-    public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
-    {
-        return HResult.NotImplemented;
-    }
-
-    public int OnQueryCloseSolution(object pUnkReserved, ref int pfCancel)
-    {
-        return HResult.NotImplemented;
-    }
-
-    public int OnBeforeCloseSolution(object pUnkReserved)
-    {
-        return HResult.NotImplemented;
-    }
+    public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded) => HResult.NotImplemented;
+    public int OnQueryCloseProject(IVsHierarchy pHierarchy, int fRemoving, ref int pfCancel) => HResult.NotImplemented;
+    public int OnBeforeCloseProject(IVsHierarchy pHierarchy, int fRemoved) => HResult.NotImplemented;
+    public int OnAfterLoadProject(IVsHierarchy pStubHierarchy, IVsHierarchy pRealHierarchy) => HResult.NotImplemented;
+    public int OnQueryUnloadProject(IVsHierarchy pRealHierarchy, ref int pfCancel) => HResult.NotImplemented;
+    public int OnBeforeUnloadProject(IVsHierarchy pRealHierarchy, IVsHierarchy pStubHierarchy) => HResult.NotImplemented;
+    public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution) => HResult.NotImplemented;
+    public int OnQueryCloseSolution(object pUnkReserved, ref int pfCancel) => HResult.NotImplemented;
+    public int OnBeforeCloseSolution(object pUnkReserved) => HResult.NotImplemented;
 
     public int OnAfterCloseSolution(object pUnkReserved)
     {
