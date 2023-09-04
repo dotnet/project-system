@@ -37,9 +37,9 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     private readonly object _webComponentIdsDetectedLock = new();
     private readonly ConcurrentHashSet<string> _webComponentIdsDetected;
     private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
-    private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
+    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
     private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap;
-    private readonly ConcurrentDictionary<Guid, IConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
+    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
     private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
     private readonly ISolutionService _solutionService;
     private readonly IVsService<SVsSetupCompositionService, IVsSetupCompositionService> _vsSetupCompositionService;
@@ -47,7 +47,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
     private readonly object _displayPromptLock = new();
 
-    private ConcurrentDictionary<string, IConcurrentHashSet<ProjectConfiguration>>? _projectPathToProjectConfigurationsMap;
+    private ConcurrentDictionary<string, ConcurrentHashSet<ProjectConfiguration>>? _projectPathToProjectConfigurationsMap;
     private IAsyncDisposable? _solutionEventsSubscription;
     private bool? _isVSFromPreviewChannel;
 
@@ -76,7 +76,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         _shellUtilitiesHelper = vsShellUtilitiesHelper;
     }
 
-    private ConcurrentDictionary<string, IConcurrentHashSet<ProjectConfiguration>> ProjectPathToProjectConfigurationsMap
+    private ConcurrentDictionary<string, ConcurrentHashSet<ProjectConfiguration>> ProjectPathToProjectConfigurationsMap
     {
         get
         {
@@ -201,7 +201,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
         void AddConfiguration()
         {
-            IConcurrentHashSet<ProjectConfiguration> projectConfigurationSet;
+            ConcurrentHashSet<ProjectConfiguration> projectConfigurationSet;
 
             // Fall back to the full path of the project if the project GUID has not yet been set.
             if (projectGuid == Guid.Empty)
@@ -223,7 +223,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
         void RemoveConfiguration(Guid projectGuid, ConfiguredProject project)
         {
-            IConcurrentHashSet<ProjectConfiguration>? projectConfigurationSet;
+            ConcurrentHashSet<ProjectConfiguration>? projectConfigurationSet = null;
 
             if (projectGuid == Guid.Empty)
             {
