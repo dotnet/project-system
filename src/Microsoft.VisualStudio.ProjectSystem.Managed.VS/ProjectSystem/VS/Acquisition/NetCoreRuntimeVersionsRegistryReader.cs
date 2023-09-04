@@ -18,7 +18,7 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
     ///     This list contains all runtimes installed outside VS as standalone packages and the ones installed through VS Setup.
     /// </remarks>
     /// <returns>A list of strings representing runtime versions in the format v{Majorversion}.{MinorVersion}. i.e. "v3.1"</returns>
-    public static HashSet<string>? ReadRuntimeVersionsInstalledInLocalMachine()
+    public static HashSet<string> ReadRuntimeVersionsInstalledInLocalMachine()
     {
         // TODO:
         // We assume that the projects will run under the same architecture as VS.
