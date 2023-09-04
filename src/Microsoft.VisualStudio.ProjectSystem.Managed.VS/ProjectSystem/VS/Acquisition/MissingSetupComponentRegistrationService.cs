@@ -93,7 +93,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         }
     }
 
-    private HashSet<string>? RuntimeVersionsInstalledInLocalMachine
+    private HashSet<string> RuntimeVersionsInstalledInLocalMachine
     {
         get
         {
@@ -180,7 +180,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     {
         // Check if the runtime is already installed in VS
         if (!string.IsNullOrEmpty(runtimeVersion) &&
-            (RuntimeVersionsInstalledInLocalMachine is null || !RuntimeVersionsInstalledInLocalMachine.Contains(runtimeVersion)) &&
+            !RuntimeVersionsInstalledInLocalMachine.Contains(runtimeVersion) &&
             s_packageVersionToComponentId.TryGetValue(runtimeVersion, value: out string? componentId))
         {
             if (componentId is not null && _projectGuidToRuntimeDescriptorMap.TryAdd(projectGuid, componentId))
