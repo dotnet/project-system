@@ -308,17 +308,18 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
             return null;
         }
 
+        // Values in this dictionary must be List<string> within this method.
         Dictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister = new();
 
         foreach ((Guid projectGuid, ConcurrentHashSet<WorkloadDescriptor> vsComponents) in _projectGuidToWorkloadDescriptorsMap)
         {
-            string[] vsComponentIds = vsComponents
+            List<string> vsComponentIds = vsComponents
                 .Where(descriptor => IsSupportedWorkload(descriptor.WorkloadName))
                 .SelectMany(workloadDescriptor => workloadDescriptor.VisualStudioComponentIds)
                 .Where(vsComponentId => !setupCompositionService.IsPackageInstalled(vsComponentId))
-                .ToArray();
+                .ToList();
 
-            if (vsComponentIds.Length > 0)
+            if (vsComponentIds.Count > 0)
             {
                 vsComponentIdsToRegister[projectGuid] = vsComponentIds;
             }
@@ -332,13 +333,14 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
                 continue;
             }
 
-            vsComponentIdsToRegister.TryGetValue(projectGuid, out IReadOnlyCollection<string>? workloadVsComponent);
-
-            IEnumerable<string> runtimeVsComponents = workloadVsComponent is not null ?
-                 workloadVsComponent.Append(runtimeComponentId)
-                 : new List<string>() { runtimeComponentId };
-
-            vsComponentIdsToRegister[projectGuid] = runtimeVsComponents.ToImmutableList();
+            if (vsComponentIdsToRegister.TryGetValue(projectGuid, out IReadOnlyCollection<string>? workloadVsComponent))
+            {
+                ((List<string>)workloadVsComponent).Add(runtimeComponentId);
+            }
+            else
+            {
+                vsComponentIdsToRegister.Add(projectGuid, new List<string>(capacity: 1) { runtimeComponentId });
+            }
         }
 
         if (vsComponentIdsToRegister.Count == 0)
