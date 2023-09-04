@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using Microsoft.ServiceHub.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.Workloads;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.ServiceBroker;
 using Microsoft.VisualStudio.Threading;
@@ -15,7 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition;
 ///     need to improve the development experience.
 /// </summary>
 [Export(typeof(IMissingSetupComponentRegistrationService))]
-internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDisposedAsync, IMissingSetupComponentRegistrationService, IVsSolutionEvents
+[Export(ExportContractNames.Scopes.ProjectService, typeof(IPackageService))]
+internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDisposedAsync, IMissingSetupComponentRegistrationService, IVsSolutionEvents, IPackageService
 {
     private const string WasmToolsWorkloadName = "wasm-tools";
 
@@ -421,9 +423,9 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
     #endregion
 
-    Task IMissingSetupComponentRegistrationService.InitializeAsync(CancellationToken cancellationToken)
+    Task IPackageService.InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
     {
-        return InitializeAsync(cancellationToken);
+        return InitializeAsync(CancellationToken.None);
     }
 
     protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)

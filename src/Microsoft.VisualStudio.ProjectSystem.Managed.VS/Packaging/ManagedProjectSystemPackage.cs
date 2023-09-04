@@ -2,6 +2,7 @@
 
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.ComponentModelHost;
+using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
@@ -26,16 +27,25 @@ namespace Microsoft.VisualStudio.Packaging
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+            // Here we initialize our internal IPackageService implementations, both in global and project services scope.
+
+            // Get access to global MEF services.
             IComponentModel componentModel = await this.GetServiceAsync<SComponentModel, IComponentModel>();
 
-            IEnumerable<IPackageService> packageServices = componentModel.GetExtensions<IPackageService>();
+            // Get access to project services scope services.
+            IProjectServiceAccessor projectServiceAccessor = componentModel.GetService<IProjectServiceAccessor>();
 
+            // Find package services in global scope.
+            IEnumerable<IPackageService> globalPackageServices = componentModel.GetExtensions<IPackageService>();
+
+            // Find package services in project service scope.
+            IEnumerable<IPackageService> projectServicesPackageServices = projectServiceAccessor.GetProjectService().Services.ExportProvider.GetExportedValues<IPackageService>(ExportContractNames.Scopes.ProjectService);
+
+            // We initialize these on the main thread.
             await JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            foreach (IPackageService packageService in packageServices)
-            {
-                await packageService.InitializeAsync(this);
-            }
+            // Initialize all services concurrently.
+            await Task.WhenAll(globalPackageServices.Concat(projectServicesPackageServices).Select(s => s.InitializeAsync(this)));
         }
     }
 }
