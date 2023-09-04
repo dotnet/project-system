@@ -267,7 +267,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         bool AreMissingComponentsToInstall()
         {
             // Projects can register zero or more missing components.
-            return _projectGuidToWorkloadDescriptorsMap.Count > 0 || _projectGuidToRuntimeDescriptorMap.Count > 0;
+            return !_projectGuidToWorkloadDescriptorsMap.IsEmpty || !_projectGuidToRuntimeDescriptorMap.IsEmpty;
         }
 
         bool AllProjectsConfigurationsRegisteredTheirMissingComponents()
@@ -319,7 +319,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
     private IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? ComputeVsComponentIdsToRegister(IVsSetupCompositionService setupCompositionService)
     {
-        if (_projectGuidToWorkloadDescriptorsMap.Count == 0 && _projectGuidToRuntimeDescriptorMap.Count == 0)
+        if (_projectGuidToWorkloadDescriptorsMap.IsEmpty && _projectGuidToRuntimeDescriptorMap.IsEmpty)
         {
             return null;
         }
