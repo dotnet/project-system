@@ -230,7 +230,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
             if (projectGuid == Guid.Empty)
             {
-                ProjectPathToProjectConfigurationsMap.TryGetValue(project.UnconfiguredProject.FullPath, out projectConfigurationSet);
+                _projectPathToProjectConfigurationsMap?.TryGetValue(project.UnconfiguredProject.FullPath, out projectConfigurationSet);
             }
             else
             {
