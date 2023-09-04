@@ -5,6 +5,7 @@ using Microsoft.ServiceHub.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.Workloads;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.RpcContracts.Setup;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.ServiceBroker;
 using Microsoft.VisualStudio.Threading;
@@ -126,7 +127,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     {
         if (workloadDescriptors.Count > 0)
         {
-            var workloadDescriptorSet = _projectGuidToWorkloadDescriptorsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
+            ConcurrentHashSet<WorkloadDescriptor> workloadDescriptorSet = _projectGuidToWorkloadDescriptorsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
             if (workloadDescriptorSet.AddRange(workloadDescriptors))
             {
                 DisplayMissingComponentsPromptIfNeeded(project);
@@ -143,7 +144,8 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
             return;
         }
 
-        var workloadDescriptorSet = _projectGuidToWorkloadDescriptorsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
+        ConcurrentHashSet<WorkloadDescriptor> workloadDescriptorSet = _projectGuidToWorkloadDescriptorsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
+
         workloadDescriptorSet.AddRange(workloadDescriptors);
 
         DisplayMissingComponentsPromptIfNeeded(project);
@@ -151,9 +153,10 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         bool AreNewComponentIdsToRegister(ISet<WorkloadDescriptor> workloadDescriptors)
         {
             bool notFound = false;
-            foreach (var workloadDescriptor in workloadDescriptors)
+
+            foreach (WorkloadDescriptor workloadDescriptor in workloadDescriptors)
             {
-                foreach (var componentId in workloadDescriptor.VisualStudioComponentIds)
+                foreach (string componentId in workloadDescriptor.VisualStudioComponentIds)
                 {
                     lock (_webComponentIdsDetectedLock)
                     {
@@ -243,7 +246,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         bool displayMissingComponentsPrompt = ShouldDisplayMissingComponentsPrompt();
         if (displayMissingComponentsPrompt)
         {
-            var displayMissingComponentsTask = DisplayMissingComponentsPromptAsync();
+            Task displayMissingComponentsTask = DisplayMissingComponentsPromptAsync();
 
             _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project.UnconfiguredProject, ProjectFaultSeverity.Recoverable);
         }
@@ -283,7 +286,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
             await TaskScheduler.Default;
         }
 
-        var setupCompositionService = await _vsSetupCompositionService.GetValueAsync();
+        IVsSetupCompositionService? setupCompositionService = await _vsSetupCompositionService.GetValueAsync();
         if (setupCompositionService is null)
         {
             return;
@@ -295,14 +298,14 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
             return;
         }
 
-        var serviceBrokerContainer = await _serviceBrokerContainer.GetValueAsync();
+        IBrokeredServiceContainer serviceBrokerContainer = await _serviceBrokerContainer.GetValueAsync();
         IServiceBroker? serviceBroker = serviceBrokerContainer?.GetFullAccessServiceBroker();
         if (serviceBroker is null)
         {
             return;
         }
 
-        var missingWorkloadRegistrationService = await serviceBroker.GetProxyAsync<RpcContracts.Setup.IMissingComponentRegistrationService>(
+        IMissingComponentRegistrationService? missingWorkloadRegistrationService = await serviceBroker.GetProxyAsync<IMissingComponentRegistrationService>(
             serviceDescriptor: VisualStudioServices.VS2022.MissingComponentRegistrationService);
 
         using (missingWorkloadRegistrationService as IDisposable)
@@ -323,12 +326,13 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
         Dictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister = new();
 
-        foreach (var (projectGuid, vsComponents) in _projectGuidToWorkloadDescriptorsMap)
+        foreach ((Guid projectGuid, ConcurrentHashSet<WorkloadDescriptor> vsComponents) in _projectGuidToWorkloadDescriptorsMap)
         {
-            var vsComponentIds = vsComponents.Where(descriptor => IsSupportedWorkload(descriptor.WorkloadName))
-                                             .SelectMany(workloadDescriptor => workloadDescriptor.VisualStudioComponentIds)
-                                             .Where(vsComponentId => !setupCompositionService.IsPackageInstalled(vsComponentId))
-                                             .ToArray();
+            string[] vsComponentIds = vsComponents
+                .Where(descriptor => IsSupportedWorkload(descriptor.WorkloadName))
+                .SelectMany(workloadDescriptor => workloadDescriptor.VisualStudioComponentIds)
+                .Where(vsComponentId => !setupCompositionService.IsPackageInstalled(vsComponentId))
+                .ToArray();
 
             if (vsComponentIds.Length > 0)
             {
@@ -355,7 +359,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
     private void AddMissingSdkRuntimeComponentIds(IVsSetupCompositionService setupCompositionService, Dictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister)
     {
-        foreach (var (projectGuid, runtimeComponentId) in _projectGuidToRuntimeDescriptorMap)
+        foreach ((Guid projectGuid, string runtimeComponentId) in _projectGuidToRuntimeDescriptorMap)
         {
             if (setupCompositionService.IsPackageInstalled(runtimeComponentId))
             {
