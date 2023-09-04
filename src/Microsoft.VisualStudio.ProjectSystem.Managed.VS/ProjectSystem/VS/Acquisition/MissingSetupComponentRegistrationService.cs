@@ -38,7 +38,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     // Lock objects
     private readonly object _webComponentIdsDetectedLock = new();
     private readonly object _displayPromptLock = new();
-    private readonly object _lock = new();
+    private readonly object _netCoreRegistryKeyValuesLock = new();
 
     // Services
     private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
@@ -81,7 +81,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         {
             if (_netCoreRegistryKeyValues is null)
             {
-                lock (_lock)
+                lock (_netCoreRegistryKeyValuesLock)
                 {
                     if (_netCoreRegistryKeyValues is null)
                     {
