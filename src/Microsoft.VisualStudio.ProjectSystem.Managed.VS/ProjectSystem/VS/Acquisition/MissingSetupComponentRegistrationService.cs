@@ -289,12 +289,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         }
 
         IBrokeredServiceContainer serviceBrokerContainer = await _serviceBrokerContainer.GetValueAsync();
-        IServiceBroker? serviceBroker = serviceBrokerContainer?.GetFullAccessServiceBroker();
-        if (serviceBroker is null)
-        {
-            return;
-        }
-
+        IServiceBroker serviceBroker = serviceBrokerContainer.GetFullAccessServiceBroker();
         IMissingComponentRegistrationService? missingWorkloadRegistrationService = await serviceBroker.GetProxyAsync<IMissingComponentRegistrationService>(
             serviceDescriptor: VisualStudioServices.VS2022.MissingComponentRegistrationService);
 
