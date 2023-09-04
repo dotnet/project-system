@@ -17,7 +17,7 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
     /// <remarks>
     ///     This list contains all runtimes installed outside VS as standalone packages and the ones installed through VS Setup.
     /// </remarks>
-    /// <returns>A list of strings representing runtime versions in the format v{Majorversion}.{MinorVersion}. i.e. "v3.1"</returns>
+    /// <returns>A list of strings representing runtime versions in the format v{MajorVersion}.{MinorVersion}. i.e. "v3.1"</returns>
     public static HashSet<string> ReadRuntimeVersionsInstalledInLocalMachine()
     {
         // TODO:
@@ -39,8 +39,8 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
 
         if (registryKeyPath is not null)
         {
-            var regkey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-            var subKey = regkey.OpenSubKey(registryKeyPath + s_netCoreRegistryKeyName);
+            var regKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+            var subKey = regKey.OpenSubKey(registryKeyPath + s_netCoreRegistryKeyName);
 
             foreach (string valueName in subKey.GetValueNames())
             {
