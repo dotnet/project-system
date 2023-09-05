@@ -13,12 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [AppliesTo(ProjectCapability.DotNet)]
     internal class MissingSdkRuntimeDetector : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
     {
-        private Guid _projectGuid;
-
         private readonly ConfiguredProject _project;
         private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
+        private Guid _projectGuid;
         private IDisposable? _subscription;
 
         [ImportingConstructor]
