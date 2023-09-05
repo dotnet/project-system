@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup
 
             foreach (string componentId in VisualStudioComponentIds)
             {
-                hashCode += StringComparers.VisualStudioSetupComponentIds.GetHashCode(componentId);
+                hashCode |= StringComparers.VisualStudioSetupComponentIds.GetHashCode(componentId);
             }
 
             return hashCode;
