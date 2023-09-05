@@ -12,6 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup
     {
         public WorkloadDescriptor(string workloadName, string visualStudioComponentIds)
         {
+            Requires.NotNullOrWhiteSpace(workloadName);
+            Requires.NotNullOrWhiteSpace(visualStudioComponentIds);
+
             WorkloadName = workloadName;
             string[] vsComponentIds = visualStudioComponentIds.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries);
             VisualStudioComponentIds = new HashSet<string>(vsComponentIds, StringComparers.VisualStudioSetupComponentIds);
