@@ -40,11 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <remarks>
         /// This service must be initialized first.
         /// </remarks>
-        void RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
-
-        /// <summary>
-        /// Unregister a project if no longer tracked.
-        /// </summary>
-        void UnregisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
+        /// <returns>An <see cref="IDisposable"/> that unregisters the project configuration when disposed.</returns>
+        IDisposable RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
     }
 }

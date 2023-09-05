@@ -174,7 +174,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         UnregisterProjectConfiguration(projectGuid, project);
     }
 
-    public void RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
+    public IDisposable RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
     {
         if (project.ProjectConfiguration is null)
         {
@@ -182,10 +182,12 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
             TraceUtilities.TraceError(errorMessage);
 
             System.Diagnostics.Debug.Fail(errorMessage);
-            return;
+            return EmptyDisposable.Instance;
         }
 
         AddConfiguration();
+
+        return new DisposableDelegate(() => UnregisterProjectConfiguration(projectGuid, project));
 
         void AddConfiguration()
         {
@@ -211,7 +213,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         }
     }
 
-    public void UnregisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
+    private void UnregisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
     {
         RemoveConfiguration(projectGuid, project);
 

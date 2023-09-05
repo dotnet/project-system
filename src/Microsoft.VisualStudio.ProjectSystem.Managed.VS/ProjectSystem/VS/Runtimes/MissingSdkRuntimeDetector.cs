@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Runtimes
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
         private Guid _projectGuid;
+        private IDisposable? _registration;
         private IDisposable? _subscription;
 
         [ImportingConstructor]
@@ -38,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Runtimes
 
         public Task UnloadAsync()
         {
-            _missingSetupComponentRegistrationService.UnregisterProjectConfiguration(_projectGuid, _project);
+            _registration?.Dispose();
             _subscription?.Dispose();
             
             return Task.CompletedTask;
@@ -54,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Runtimes
             // Note we don't use the ISafeProjectGuidService here because it is generally *not*
             // safe to use within IProjectDynamicLoadComponent.LoadAsync.
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
-            _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
+            _registration = _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
             _subscription = _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAction(
                 target: OnProjectChanged, 
                 project: _project.UnconfiguredProject,

@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Workloads
         private Guid _projectGuid;
 
         private IDisposable? _joinedDataSources;
+        private IDisposable? _registration;
         private IDisposable? _subscription;
         private bool? _hasNoMissingWorkloads;
         private ISet<WorkloadDescriptor>? _missingWorkloads;
@@ -45,13 +46,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Workloads
 
         public Task UnloadAsync()
         {
-            _missingSetupComponentRegistrationService.UnregisterProjectConfiguration(_projectGuid, _project);
-
             return Task.CompletedTask;
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
+            _registration?.Dispose();
             _subscription?.Dispose();
             _joinedDataSources?.Dispose();
 
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Workloads
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _workloadDescriptorDataSource);
 
-            _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
+            _registration = _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
 
             Action<IProjectVersionedValue<ISet<WorkloadDescriptor>>> action = OnWorkloadDescriptorsComputed;
 
