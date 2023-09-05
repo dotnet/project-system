@@ -311,7 +311,6 @@ stages:
           pipelineID: $(System.DefinitionId)
           InsertTargetBranch: ${{ parameters.InsertionVSGreenBranch }}
           ComponentSubDir: $(Build.Repository.Name)
-          SetAutoComplete: false
 
       - template: eng/pipelines/templates/upgrade-version.yml@ProjectSystemVSCodeExtensionRepo
         parameters:
