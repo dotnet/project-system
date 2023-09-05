@@ -1,8 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.Workloads;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Workloads
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Workloads
 {
     /// <summary>
     ///     Tracks the set of missing .NET workloads for a configured project.
