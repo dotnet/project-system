@@ -16,7 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string CSharpOrFSharp = "(" + CSharp + " | " + FSharp + ")";
         public const string CSharpOrVisualBasic = "(" + ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB + ")";
         public const string CSharpOrVisualBasicLanguageService = CSharpOrVisualBasic + " & " + LanguageService;
-        public const string RazorAndEitherWinFormsOrWpf = "(" + DotNetRazor + "|" + "(" + WindowsForms + "&" + WPF + ")" + ")";
 
         public const string AppDesigner = nameof(AppDesigner);
         public const string AppSettings = nameof(AppSettings);
@@ -40,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string SupportUniversalAuthentication = nameof(SupportUniversalAuthentication);
 
         public const string DotNet = ".NET";
-        public const string DotNetRazor = "DotNetCoreRazor";
+        public const string DotNetCoreRazor = "DotNetCoreRazor";
 
         /// <summary>
         /// Instructs CPS to order tree items according to the <see cref="IProjectTree2.DisplayOrder"/> property first.

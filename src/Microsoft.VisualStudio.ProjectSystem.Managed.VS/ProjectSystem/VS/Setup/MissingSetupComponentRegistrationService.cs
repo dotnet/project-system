@@ -3,14 +3,13 @@
 using System.Collections.Concurrent;
 using Microsoft.ServiceHub.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.Workloads;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.RpcContracts.Setup;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.ServiceBroker;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition;
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
 /// <summary>
 ///     Tracks the set of missing workload packs and SDK runtimes the .NET projects in a solution

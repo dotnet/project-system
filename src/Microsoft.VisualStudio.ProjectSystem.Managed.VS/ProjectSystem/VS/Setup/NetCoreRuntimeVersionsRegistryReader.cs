@@ -3,7 +3,7 @@
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition;
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
 internal sealed class NetCoreRuntimeVersionsRegistryReader
 {
@@ -12,12 +12,12 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
     private static readonly string s_netCoreRegistryKeyName = "Microsoft.NETCore.App";
 
     /// <summary>
-    ///     Open the registry key to read the list of versions of NetCore runtimes installed in this machine.
+    ///     Reads the list of installed .NET Core runtimes from thw registry.
     /// </summary>
     /// <remarks>
-    ///     This list contains all runtimes installed outside VS as standalone packages and the ones installed through VS Setup.
+    ///     This list contains both runtimes installed outside VS as standalone packages, and runtimes installed through VS Setup.
     /// </remarks>
-    /// <returns>A list of strings representing runtime versions in the format v{MajorVersion}.{MinorVersion}. i.e. "v3.1"</returns>
+    /// <returns>A list of strings representing runtime versions in the format <c>v{MajorVersion}.{MinorVersion}</c> (i.e. <c>"v3.1").</c></returns>
     public static HashSet<string> ReadRuntimeVersionsInstalledInLocalMachine()
     {
         // TODO:
