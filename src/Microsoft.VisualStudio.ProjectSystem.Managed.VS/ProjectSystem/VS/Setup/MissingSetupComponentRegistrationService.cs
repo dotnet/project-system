@@ -33,7 +33,6 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
     // Lock objects
     private readonly object _webComponentIdsDetectedLock = new();
     private readonly object _displayPromptLock = new();
-    private readonly object _netCoreRegistryKeyValuesLock = new();
 
     // Services
     private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
@@ -41,6 +40,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
     private readonly ISolutionService _solutionService;
     private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
+    private readonly Lazy<HashSet<string>> _installedRuntimeVersions;
 
     // State
     private readonly ConcurrentHashSet<string> _webComponentIdsDetected = new(StringComparers.VisualStudioSetupComponentIds);
@@ -51,7 +51,6 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
     private ConcurrentDictionary<string, ConcurrentHashSet<ProjectConfiguration>>? _projectConfigurationsByProjectPath;
     private IAsyncDisposable? _solutionEventsSubscription;
     private bool? _isVSFromPreviewChannel;
-    private HashSet<string>? _netCoreRegistryKeyValues;
 
     [ImportingConstructor]
     public MissingSetupComponentRegistrationService(
@@ -68,29 +67,12 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
         _solutionService = solutionService;
         _shellUtilitiesHelper = vsShellUtilitiesHelper;
         _projectFaultHandlerService = projectFaultHandlerService;
-    }
 
-    private HashSet<string> RuntimeVersionsInstalledInLocalMachine
-    {
-        get
-        {
-            if (_netCoreRegistryKeyValues is null)
-            {
-                lock (_netCoreRegistryKeyValuesLock)
-                {
-                    if (_netCoreRegistryKeyValues is null)
-                    {
-                        // Workaround to fix https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1460328
-                        // VS has no information about the packages installed outside VS, and deep detection is not suggested for performance reasons.
-                        // This workaround reads the Registry Key HKLM\SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.NETCore.App
-                        // and get the installed runtime versions from the value names.
-                        _netCoreRegistryKeyValues = NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine();
-                    }
-                }
-            }
-
-            return _netCoreRegistryKeyValues;
-        }
+        // Workaround to fix https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1460328
+        // VS has no information about the packages installed outside VS, and deep detection is not suggested for performance reasons.
+        // This workaround reads the Registry Key HKLM\SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.NETCore.App
+        // and get the installed runtime versions from the value names.
+        _installedRuntimeVersions = new Lazy<HashSet<string>>(NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine);
     }
 
     private void ClearMissingWorkloadMetadata()
@@ -157,7 +139,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
     {
         // Check if the runtime is already installed in VS
         if (!string.IsNullOrEmpty(runtimeVersion) &&
-            !RuntimeVersionsInstalledInLocalMachine.Contains(runtimeVersion) &&
+            !_installedRuntimeVersions.Value.Contains(runtimeVersion) &&
             s_packageVersionToComponentId.TryGetValue(runtimeVersion, value: out string? componentId))
         {
             if (componentId is not null && _runtimeComponentIdByProjectGuid.TryAdd(projectGuid, componentId))
