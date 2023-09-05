@@ -226,119 +226,123 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
             _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project.UnconfiguredProject, ProjectFaultSeverity.Recoverable);
         }
-    }
 
-    private bool ShouldDisplayMissingComponentsPrompt()
-    {
-        lock (_displayPromptLock)
+        return;
+
+        bool ShouldDisplayMissingComponentsPrompt()
         {
-            // Projects that subscribe to this service will registers all their configurations and after that
-            // each project configuration can start registering missing workload at different point in time.
-            // We want to display the prompt after ALL the registered project already registered their missing components
-            // and at least there is one component to install.
-            return AreMissingComponentsToInstall()
-                && AllProjectsConfigurationsRegisteredTheirMissingComponents();
+            lock (_displayPromptLock)
+            {
+                // Projects that subscribe to this service will registers all their configurations and after that
+                // each project configuration can start registering missing workload at different point in time.
+                // We want to display the prompt after ALL the registered project already registered their missing components
+                // and at least there is one component to install.
+                return AreMissingComponentsToInstall()
+                    && AllProjectsConfigurationsRegisteredTheirMissingComponents();
+            }
+
+            bool AreMissingComponentsToInstall()
+            {
+                // Projects can register zero or more missing components.
+                return !_workloadsByProjectGuid.IsEmpty || !_runtimeComponentIdByProjectGuid.IsEmpty;
+            }
+
+            bool AllProjectsConfigurationsRegisteredTheirMissingComponents()
+            {
+                // When a project configuration registers its missing components, the configuration gets removed, but we keep the list of components.
+                return _projectConfigurationsByProjectGuid.Values.All(projectConfigurations => projectConfigurations.Count == 0)
+                    && _projectConfigurationsByProjectPath?.Values.All(projectConfigurations => projectConfigurations.Count == 0) is null or true;
+            }
         }
 
-        bool AreMissingComponentsToInstall()
+        async Task DisplayMissingComponentsPromptAsync()
         {
-            // Projects can register zero or more missing components.
-            return !_workloadsByProjectGuid.IsEmpty || !_runtimeComponentIdByProjectGuid.IsEmpty;
-        }
+            IVsSetupCompositionService? setupCompositionService = await _vsSetupCompositionService.GetValueAsync();
 
-        bool AllProjectsConfigurationsRegisteredTheirMissingComponents()
-        {
-            // When a project configuration registers its missing components, the configuration gets removed, but we keep the list of components.
-            return _projectConfigurationsByProjectGuid.Values.All(projectConfigurations => projectConfigurations.Count == 0)
-                && _projectConfigurationsByProjectPath?.Values.All(projectConfigurations => projectConfigurations.Count == 0) is null or true;
-        }
-    }
+            if (setupCompositionService is null)
+            {
+                return;
+            }
 
-    private async Task DisplayMissingComponentsPromptAsync()
-    {
-        IVsSetupCompositionService? setupCompositionService = await _vsSetupCompositionService.GetValueAsync();
+            IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? missingComponentIdsByProjectGuid = GetMissingComponentIdsByProjectGuid(setupCompositionService);
 
-        if (setupCompositionService is null)
-        {
+            if (missingComponentIdsByProjectGuid is null)
+            {
+                return;
+            }
+
+            IBrokeredServiceContainer serviceBrokerContainer = await _serviceBrokerContainer.GetValueAsync();
+            IServiceBroker serviceBroker = serviceBrokerContainer.GetFullAccessServiceBroker();
+            IMissingComponentRegistrationService? missingWorkloadRegistrationService = await serviceBroker.GetProxyAsync<IMissingComponentRegistrationService>(
+                serviceDescriptor: VisualStudioServices.VS2022.MissingComponentRegistrationService);
+
+            using (missingWorkloadRegistrationService as IDisposable)
+            {
+                if (missingWorkloadRegistrationService is not null)
+                {
+                    await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(missingComponentIdsByProjectGuid, cancellationToken: default);
+                }
+            }
+
             return;
-        }
 
-        IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? missingComponentIdsByProjectGuid = GetMissingComponentIdsByProjectGuid(setupCompositionService);
-
-        if (missingComponentIdsByProjectGuid is null)
-        {
-            return;
-        }
-
-        IBrokeredServiceContainer serviceBrokerContainer = await _serviceBrokerContainer.GetValueAsync();
-        IServiceBroker serviceBroker = serviceBrokerContainer.GetFullAccessServiceBroker();
-        IMissingComponentRegistrationService? missingWorkloadRegistrationService = await serviceBroker.GetProxyAsync<IMissingComponentRegistrationService>(
-            serviceDescriptor: VisualStudioServices.VS2022.MissingComponentRegistrationService);
-
-        using (missingWorkloadRegistrationService as IDisposable)
-        {
-            if (missingWorkloadRegistrationService is not null)
+            IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? GetMissingComponentIdsByProjectGuid(IVsSetupCompositionService setupCompositionService)
             {
-                await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(missingComponentIdsByProjectGuid, cancellationToken: default);
+                if (_workloadsByProjectGuid.IsEmpty && _runtimeComponentIdByProjectGuid.IsEmpty)
+                {
+                    return null;
+                }
+
+                // Values in this dictionary must be List<string> within this method.
+                Dictionary<Guid, IReadOnlyCollection<string>> missingComponentIdsByProjectGuid = new();
+
+                foreach ((Guid projectGuid, ConcurrentHashSet<WorkloadDescriptor> workloads) in _workloadsByProjectGuid)
+                {
+                    List<string> missingComponentIds = workloads
+                        .Where(workload => IsSupportedWorkload(workload.WorkloadName))
+                        .SelectMany(workload => workload.VisualStudioComponentIds)
+                        .Where(componentId => !setupCompositionService.IsPackageInstalled(componentId))
+                        .ToList();
+
+                    if (missingComponentIds.Count > 0)
+                    {
+                        missingComponentIdsByProjectGuid[projectGuid] = missingComponentIds;
+                    }
+                }
+
+                // Add missing SDK runtime component IDs
+                foreach ((Guid projectGuid, string runtimeComponentId) in _runtimeComponentIdByProjectGuid)
+                {
+                    if (setupCompositionService.IsPackageInstalled(runtimeComponentId))
+                    {
+                        continue;
+                    }
+
+                    if (missingComponentIdsByProjectGuid.TryGetValue(projectGuid, out IReadOnlyCollection<string>? missingComponentIds))
+                    {
+                        ((List<string>)missingComponentIds).Add(runtimeComponentId);
+                    }
+                    else
+                    {
+                        missingComponentIdsByProjectGuid.Add(projectGuid, new List<string>(capacity: 1) { runtimeComponentId });
+                    }
+                }
+
+                if (missingComponentIdsByProjectGuid.Count == 0)
+                {
+                    return null;
+                }
+
+                return missingComponentIdsByProjectGuid;
+
+                bool IsSupportedWorkload(string workloadName)
+                {
+                    return !string.IsNullOrWhiteSpace(workloadName)
+                        && (s_supportedReleaseChannelWorkloads.Contains(workloadName)
+                            || _isPreviewChannel.Value);
+                }
             }
         }
-    }
-
-    private IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? GetMissingComponentIdsByProjectGuid(IVsSetupCompositionService setupCompositionService)
-    {
-        if (_workloadsByProjectGuid.IsEmpty && _runtimeComponentIdByProjectGuid.IsEmpty)
-        {
-            return null;
-        }
-
-        // Values in this dictionary must be List<string> within this method.
-        Dictionary<Guid, IReadOnlyCollection<string>> missingComponentIdsByProjectGuid = new();
-
-        foreach ((Guid projectGuid, ConcurrentHashSet<WorkloadDescriptor> workloads) in _workloadsByProjectGuid)
-        {
-            List<string> missingComponentIds = workloads
-                .Where(workload => IsSupportedWorkload(workload.WorkloadName))
-                .SelectMany(workload => workload.VisualStudioComponentIds)
-                .Where(componentId => !setupCompositionService.IsPackageInstalled(componentId))
-                .ToList();
-
-            if (missingComponentIds.Count > 0)
-            {
-                missingComponentIdsByProjectGuid[projectGuid] = missingComponentIds;
-            }
-        }
-
-        // Add missing SDK runtime component IDs
-        foreach ((Guid projectGuid, string runtimeComponentId) in _runtimeComponentIdByProjectGuid)
-        {
-            if (setupCompositionService.IsPackageInstalled(runtimeComponentId))
-            {
-                continue;
-            }
-
-            if (missingComponentIdsByProjectGuid.TryGetValue(projectGuid, out IReadOnlyCollection<string>? missingComponentIds))
-            {
-                ((List<string>)missingComponentIds).Add(runtimeComponentId);
-            }
-            else
-            {
-                missingComponentIdsByProjectGuid.Add(projectGuid, new List<string>(capacity: 1) { runtimeComponentId });
-            }
-        }
-
-        if (missingComponentIdsByProjectGuid.Count == 0)
-        {
-            return null;
-        }
-
-        return missingComponentIdsByProjectGuid;
-    }
-
-    private bool IsSupportedWorkload(string workloadName)
-    {
-        return !string.IsNullOrWhiteSpace(workloadName)
-            && (s_supportedReleaseChannelWorkloads.Contains(workloadName)
-                || _isPreviewChannel.Value);
     }
 
     #region IVsSolutionEvents
