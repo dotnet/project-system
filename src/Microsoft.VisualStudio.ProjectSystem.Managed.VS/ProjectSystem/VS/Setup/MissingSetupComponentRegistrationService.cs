@@ -17,7 +17,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 {
     private const string WasmToolsWorkloadName = "wasm-tools";
 
-    private static readonly ImmutableDictionary<string, string> s_packageVersionToComponentId = ImmutableStringDictionary<string>.EmptyOrdinalIgnoreCase
+    private static readonly ImmutableDictionary<string, string> s_runtimeVersionToComponentId = ImmutableStringDictionary<string>.EmptyOrdinalIgnoreCase
         .Add("v2.0", "Microsoft.Net.Core.Component.SDK.2.1")
         .Add("v2.1", "Microsoft.Net.Core.Component.SDK.2.1")
         .Add("v2.2", "Microsoft.Net.Core.Component.SDK.2.1")
@@ -153,7 +153,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
         // Check if the runtime is already installed in VS
         if (!string.IsNullOrEmpty(runtimeVersion) &&
             !_installedRuntimeVersions.Value.Contains(runtimeVersion) &&
-            s_packageVersionToComponentId.TryGetValue(runtimeVersion, value: out string? componentId))
+            s_runtimeVersionToComponentId.TryGetValue(runtimeVersion, value: out string? componentId))
         {
             if (componentId is not null && _runtimeComponentIdByProjectGuid.TryAdd(projectGuid, componentId))
             {
