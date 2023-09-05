@@ -217,36 +217,30 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
     private void DisplayMissingComponentsPromptIfNeeded(ConfiguredProject project)
     {
-        if (ShouldDisplayMissingComponentsPrompt())
+        if (_workloadsByProjectGuid.IsEmpty && _runtimeComponentIdByProjectGuid.IsEmpty)
         {
-            Task displayMissingComponentsTask = DisplayMissingComponentsPromptAsync();
-
-            _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project.UnconfiguredProject, ProjectFaultSeverity.Recoverable);
+            // No workloads or components were registered, so there's nothing that could need to be installed.
+            return;
         }
+
+        if (!AllProjectsConfigurationsRegisteredTheirMissingComponents())
+        {
+            // Still waiting on at least one registered project to provide its components.
+            // We will wait until we have heard from every project.
+            return;
+        }
+
+        Task displayMissingComponentsTask = DisplayMissingComponentsPromptAsync();
+
+        _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project.UnconfiguredProject, ProjectFaultSeverity.Recoverable);
 
         return;
 
-        bool ShouldDisplayMissingComponentsPrompt()
+        bool AllProjectsConfigurationsRegisteredTheirMissingComponents()
         {
-            // Projects that subscribe to this service will registers all their configurations and after that
-            // each project configuration can start registering missing workload at different point in time.
-            // We want to display the prompt after ALL the registered project already registered their missing components
-            // and at least there is one component to install.
-            return AreMissingComponentsToInstall()
-                && AllProjectsConfigurationsRegisteredTheirMissingComponents();
-
-            bool AreMissingComponentsToInstall()
-            {
-                // Projects can register zero or more missing components.
-                return !_workloadsByProjectGuid.IsEmpty || !_runtimeComponentIdByProjectGuid.IsEmpty;
-            }
-
-            bool AllProjectsConfigurationsRegisteredTheirMissingComponents()
-            {
-                // When a project configuration registers its missing components, the configuration gets removed, but we keep the list of components.
-                return _projectConfigurationsByProjectGuid.Values.All(projectConfigurations => projectConfigurations.Count == 0)
-                    && _projectConfigurationsByProjectPath?.Values.All(projectConfigurations => projectConfigurations.Count == 0) is null or true;
-            }
+            // When a project configuration registers its required components, the configuration gets removed, but we keep the list of components.
+            return _projectConfigurationsByProjectGuid.Values.All(configs => configs.Count == 0)
+                && _projectConfigurationsByProjectPath?.Values.All(configs => configs.Count == 0) is null or true;
         }
 
         async Task DisplayMissingComponentsPromptAsync()
@@ -282,11 +276,6 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
             IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? GetMissingComponentIdsByProjectGuid(IVsSetupCompositionService setupCompositionService)
             {
-                if (_workloadsByProjectGuid.IsEmpty && _runtimeComponentIdByProjectGuid.IsEmpty)
-                {
-                    return null;
-                }
-
                 // Values in this dictionary must be List<string> within this method.
                 Dictionary<Guid, IReadOnlyCollection<string>> missingComponentIdsByProjectGuid = new();
 
