@@ -13,8 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [AppliesTo(ProjectCapability.DotNet)]
     internal class MissingSdkRuntimeDetector : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
     {
-        private static readonly string s_netCoreTargetFrameworkIdentifier = ".NETCoreApp";
-
         private Guid _projectGuid;
 
         private readonly ConfiguredProject _project;
@@ -82,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private void RegisterSdkNetCoreRuntimeNeededInProject(ConfiguredProject project, string? targetFrameworkIdentifier, string targetFrameworkVersion)
         {
             // set to empty for non-netcore projects so that we do not check for missing installed runtime for them
-            if (!string.Equals(targetFrameworkIdentifier, s_netCoreTargetFrameworkIdentifier, StringComparisons.FrameworkIdentifiers) ||
+            if (!string.Equals(targetFrameworkIdentifier, TargetFrameworkIdentifiers.NetCoreApp, StringComparisons.FrameworkIdentifiers) ||
                 string.IsNullOrEmpty(targetFrameworkVersion))
             {
                 targetFrameworkVersion = string.Empty;
