@@ -2,7 +2,7 @@
 
 Visual Studio supports in-product acquisition (IPA) when it attempts to load a project that requires components or workloads that you are missing from your installation.
 
-However, the mechanism used by the VS Platform is not sufficient for some of the more intricate .NET acquisition scenarios. For this reason, we use a component build in the Windows Phone era to work off of MSBuild evaluation data and present a more feature-ful UI to allow users to make better choices about missing VS components and VS Workloads. The motivation for this is to properly support the [.NET Workload](https://github.com/dotnet/designs/pull/100) concept, which factors parts of the .NET SDK into individually installable parts.
+However, the mechanism used by the VS Platform is not sufficient for some of the more intricate .NET acquisition scenarios. For this reason, we use a component built in the Windows Phone era to work off of MSBuild evaluation data and present a more fully-featured UI to allow users to make better choices about missing VS components and VS Workloads. The motivation for this is to properly support the [.NET Workload](https://github.com/dotnet/designs/pull/100) concept, which factors parts of the .NET SDK into individually installable parts.
 
 ## Terminology
 
