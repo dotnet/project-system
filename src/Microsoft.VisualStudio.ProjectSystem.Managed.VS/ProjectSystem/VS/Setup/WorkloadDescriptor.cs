@@ -10,13 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup
     /// </remarks>
     internal readonly struct WorkloadDescriptor
     {
-        /// <summary>
-        /// An empty workload descriptor is used to indicate an unknown workload
-        /// e.g. when a design-time build fails or when no additional workloads
-        /// are required by a project.
-        /// </summary>
-        internal static readonly WorkloadDescriptor Empty = new(string.Empty, string.Empty);
-
         public WorkloadDescriptor(string workloadName, string visualStudioComponentIds)
         {
             WorkloadName = workloadName;

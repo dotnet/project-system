@@ -178,21 +178,25 @@ internal sealed class MissingComponentProvider : OnceInitializedOnceDisposedAsyn
                     return ImmutableHashSet<WorkloadDescriptor>.Empty;
                 }
 
-                var workloadDescriptors = suggestedWorkloads.Items.Select(item =>
+                HashSet<WorkloadDescriptor>? workloads = null;
+
+                if (suggestedWorkloads.Items.Count == 0)
                 {
-                    string workloadName = item.Key;
-
-                    if (!string.IsNullOrWhiteSpace(workloadName)
-                        && (item.Value.TryGetStringProperty(SuggestedWorkload.VisualStudioComponentIdsProperty, out string? vsComponentIds)
-                         || item.Value.TryGetStringProperty(SuggestedWorkload.VisualStudioComponentIdProperty, out vsComponentIds)))
+                    foreach ((string workloadName, IImmutableDictionary<string, string> metadata) in suggestedWorkloads.Items)
                     {
-                        return new WorkloadDescriptor(workloadName, vsComponentIds);
+                        string? componentIds =
+                            metadata.GetStringProperty(SuggestedWorkload.VisualStudioComponentIdsProperty) ??
+                            metadata.GetStringProperty(SuggestedWorkload.VisualStudioComponentIdProperty);
+
+                        if (componentIds is not null && !string.IsNullOrWhiteSpace(workloadName))
+                        {
+                            workloads ??= new();
+                            workloads.Add(new WorkloadDescriptor(workloadName, componentIds));
+                        }
                     }
+                }
 
-                    return WorkloadDescriptor.Empty;
-                });
-
-                return new HashSet<WorkloadDescriptor>(workloadDescriptors);
+                return (ISet<WorkloadDescriptor>?)workloads ?? ImmutableHashSet<WorkloadDescriptor>.Empty;
             }
         }
     }
