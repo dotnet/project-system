@@ -30,9 +30,6 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
     private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
-    // Lock objects
-    private readonly object _displayPromptLock = new();
-
     // Services
     private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
     private readonly IVsService<SVsSetupCompositionService, IVsSetupCompositionService> _vsSetupCompositionService;
@@ -231,15 +228,12 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
         bool ShouldDisplayMissingComponentsPrompt()
         {
-            lock (_displayPromptLock)
-            {
-                // Projects that subscribe to this service will registers all their configurations and after that
-                // each project configuration can start registering missing workload at different point in time.
-                // We want to display the prompt after ALL the registered project already registered their missing components
-                // and at least there is one component to install.
-                return AreMissingComponentsToInstall()
-                    && AllProjectsConfigurationsRegisteredTheirMissingComponents();
-            }
+            // Projects that subscribe to this service will registers all their configurations and after that
+            // each project configuration can start registering missing workload at different point in time.
+            // We want to display the prompt after ALL the registered project already registered their missing components
+            // and at least there is one component to install.
+            return AreMissingComponentsToInstall()
+                && AllProjectsConfigurationsRegisteredTheirMissingComponents();
 
             bool AreMissingComponentsToInstall()
             {
