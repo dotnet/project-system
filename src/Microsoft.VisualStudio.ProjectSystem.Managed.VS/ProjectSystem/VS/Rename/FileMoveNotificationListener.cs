@@ -135,18 +135,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
             }
 
-            _ = _threadingService.JoinableTaskFactory.RunAsync(async () =>
-            {
-                // The wait service requires the main thread to run.
-                await _threadingService.SwitchToUIThread();
-                // Displays a dialog showing the progress of updating the namespaces in the files.
-                _waitService.Run(
-                    title: string.Empty,
-                    message: _renameMessage!,
-                    allowCancel: true,
-                    asyncMethod: ApplyRenamesAsync,
-                    totalSteps: _renameActionSetByFilePath.Count);
-            });
+            // Display a dialog showing the progress of updating the namespaces in the files.
+            _ = _waitService.RunAsync(
+                title: string.Empty,
+                message: _renameMessage!,
+                allowCancel: true,
+                asyncMethod: ApplyRenamesAsync,
+                totalSteps: _renameActionSetByFilePath.Count);
 
             return;
 

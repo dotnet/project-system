@@ -5,8 +5,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Waiting
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IWaitIndicator
     {
-        WaitIndicatorResult Run(string title, string message, bool allowCancel, Func<IWaitContext, Task> asyncMethod, int totalSteps = 0);
+        Task<WaitIndicatorResult> RunAsync(string title, string message, bool allowCancel, Func<IWaitContext, Task> asyncMethod, int totalSteps = 0);
 
-        WaitIndicatorResult<T> Run<T>(string title, string message, bool allowCancel, Func<IWaitContext, Task<T>> asyncMethod, int totalSteps = 0);
+        Task<WaitIndicatorResult<T>> RunAsync<T>(string title, string message, bool allowCancel, Func<IWaitContext, Task<T>> asyncMethod, int totalSteps = 0);
     }
 }

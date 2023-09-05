@@ -118,11 +118,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 Solution currentSolution = await PublishLatestSolutionAsync(_projectAsynchronousTasksService.UnloadCancellationToken);
 
                 string renameOperationName = string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, value);
-                WaitIndicatorResult<Solution> indicatorResult = _waitService.Run(
-                                title: VSResources.Renaming_Type,
-                                message: renameOperationName,
-                                allowCancel: true,
-                                context => documentRenameResult.UpdateSolutionAsync(currentSolution, context.CancellationToken));
+                WaitIndicatorResult<Solution> indicatorResult = await _waitService.RunAsync(
+                    title: VSResources.Renaming_Type,
+                    message: renameOperationName,
+                    allowCancel: true,
+                    context => documentRenameResult.UpdateSolutionAsync(currentSolution, context.CancellationToken));
 
                 // Do not warn the user if the rename was cancelled by the user	
                 if (indicatorResult.IsCancelled)

@@ -7,47 +7,42 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 {
-    public static class VisualStudioWaitIndicatorTests
+    public class VisualStudioWaitIndicatorTests
     {
         [Fact]
-        public static void Run_WhenAsyncMethodThrows_Throws()
+        public async Task Run_WhenAsyncMethodThrows_Throws()
         {
             var (instance, _) = CreateInstance();
-            Assert.Throws<Exception>(() =>
-            {
-                instance.Run<string>("", "", false, _
-                    => throw new Exception());
-            });
+
+            await Assert.ThrowsAsync<Exception>(
+                () => instance.RunAsync<string>("", "", false, _ => throw new Exception()));
         }
 
         [Fact]
-        public static void Run_WhenAsyncMethodThrowsWrapped_Throws()
+        public async Task Run_WhenAsyncMethodThrowsWrapped_Throws()
         {
             var (instance, _) = CreateInstance();
-            Assert.Throws<Exception>(() =>
-            {
-                instance.Run("", "", false, async _
-                    => await Task.FromException<string>(new Exception()));
-            });
+            
+            await Assert.ThrowsAsync<Exception>(
+                () => instance.RunAsync("", "", false, _ => Task.FromException<string>(new Exception())));
         }
 
         [Fact]
-        public static void Run_WhenAsyncMethodThrowsOperationCanceled_SetsIsCancelledToTrue()
+        public async Task Run_WhenAsyncMethodThrowsOperationCanceled_SetsIsCancelledToTrue()
         {
             var (instance, _) = CreateInstance();
 
-            var result = instance.Run("", "", false, async _
-                    => await Task.FromException<string>(new OperationCanceledException()));
+            var result = await instance.RunAsync("", "", false, _ => Task.FromException<string>(new OperationCanceledException()));
 
             Assert.True(result.IsCancelled);
         }
 
         [Fact]
-        public static void Run_WhenAsyncMethodThrowsAggregrateContainedOperationCanceled_SetsIsCancelledToTrue()
+        public async Task Run_WhenAsyncMethodThrowsAggregateContainedOperationCanceled_SetsIsCancelledToTrue()
         {
             var (instance, _) = CreateInstance();
 
-            var result = instance.Run("", "", false, async _ =>
+            var result = await instance.RunAsync("", "", false, async _ =>
             {
                 await Task.WhenAll(
                     Task.Run(() => throw new OperationCanceledException()),
@@ -60,12 +55,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         }
 
         [Fact]
-        public static void Run_WhenUserCancels_CancellationTokenIsCancelled()
+        public async Task Run_WhenUserCancels_CancellationTokenIsCancelled()
         {
             var (instance, userCancel) = CreateInstance(isCancelable: true);
 
             CancellationToken? result = default;
-            instance.Run("", "", true, context =>
+            await instance.RunAsync("", "", true, context =>
             {
                 userCancel();
 
@@ -79,11 +74,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         }
 
         [Fact]
-        public static void Run_ReturnsResultOfAsyncMethod()
+        public async Task Run_ReturnsResultOfAsyncMethod()
         {
             var (instance, _) = CreateInstance();
 
-            var result = instance.Run("", "", false, _ =>
+            var result = await instance.RunAsync("", "", false, _ =>
             {
                 return Task.FromResult("Hello");
             });

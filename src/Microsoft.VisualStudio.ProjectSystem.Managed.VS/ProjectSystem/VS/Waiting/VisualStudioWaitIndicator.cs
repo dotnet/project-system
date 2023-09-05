@@ -20,17 +20,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             _waitDialogFactoryService = waitDialogFactoryService;
         }
 
-        public WaitIndicatorResult Run(string title, string message, bool allowCancel, Func<IWaitContext, Task> asyncMethod, int totalSteps = 0)
+        public async Task<WaitIndicatorResult> RunAsync(string title, string message, bool allowCancel, Func<IWaitContext, Task> asyncMethod, int totalSteps = 0)
         {
-            _joinableTaskContext.VerifyIsOnMainThread();
+            await _joinableTaskContext.Factory.SwitchToMainThreadAsync();
 
             using IWaitContext waitContext = new VisualStudioWaitContext(_waitDialogFactoryService.Value, title, message, allowCancel, totalSteps);
 
             try
             {
-#pragma warning disable VSTHRD102 // Deliberate usage  
-                _joinableTaskContext.Factory.Run(() => asyncMethod(waitContext));
-#pragma warning restore VSTHRD102
+                await asyncMethod(waitContext);
 
                 return WaitIndicatorResult.Completed;
             }
@@ -44,17 +42,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             }
         }
 
-        public WaitIndicatorResult<T> Run<T>(string title, string message, bool allowCancel, Func<IWaitContext, Task<T>> asyncMethod, int totalSteps = 0)
+        public async Task<WaitIndicatorResult<T>> RunAsync<T>(string title, string message, bool allowCancel, Func<IWaitContext, Task<T>> asyncMethod, int totalSteps = 0)
         {
-            _joinableTaskContext.VerifyIsOnMainThread();
+            await _joinableTaskContext.Factory.SwitchToMainThreadAsync();
 
             using IWaitContext waitContext = new VisualStudioWaitContext(_waitDialogFactoryService.Value, title, message, allowCancel, totalSteps);
 
             try
             {
-#pragma warning disable VSTHRD102 // Deliberate usage  
-                T result = _joinableTaskContext.Factory.Run(() => asyncMethod(waitContext));
-#pragma warning restore VSTHRD102
+                T result = await asyncMethod(waitContext);
 
                 return WaitIndicatorResult<T>.FromResult(result);
             }
