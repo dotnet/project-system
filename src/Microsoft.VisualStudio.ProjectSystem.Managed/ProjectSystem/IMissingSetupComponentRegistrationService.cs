@@ -12,11 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal interface IMissingSetupComponentRegistrationService
     {
         /// <summary>
-        /// Initialize this service.
-        /// </summary>
-        Task InitializeAsync(CancellationToken cancellationToken = default);
-
-        /// <summary>
         /// Register per project a set of component ids needed for the project to work correctly.
         /// The components will be installed if they are not in the IDE.
         /// </summary>

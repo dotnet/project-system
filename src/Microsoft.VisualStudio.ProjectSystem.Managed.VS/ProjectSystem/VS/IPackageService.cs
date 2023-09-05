@@ -8,9 +8,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// A service that is initialized when the VS package is initialized.
     /// </summary>
     /// <remarks>
-    /// Implementations must be exported in global scope.
+    /// Implementations must be exported in either global or project service scopes.
     /// </remarks>
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
+    [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore, ContractName = ExportContractNames.Scopes.ProjectService)]
     internal interface IPackageService
     {
         /// <summary>
