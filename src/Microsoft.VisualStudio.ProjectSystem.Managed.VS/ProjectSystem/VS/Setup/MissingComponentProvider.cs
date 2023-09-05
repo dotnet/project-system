@@ -6,13 +6,18 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
 /// <summary>
-/// Determines the VS setup component requirements of the configured project and provides them to <see cref="IMissingSetupComponentRegistrationService"/>/>.
-///     Tracks the set of missing .NET workloads for a configured project.
-///     
-/// Detect during solution load the Net Core runtime version based on the target framework 
-/// used in a project file and pass this version to a service that can install the
-/// runtime component if not installed.
+/// Determines the VS setup component requirements of the configured project and provides them
+/// to <see cref="IMissingSetupComponentRegistrationService"/> (global scope), which aggregates across
+/// all projects and notifies the user to install missing components via in-product acquisition.
 /// </summary>
+/// <remarks>
+/// Reported requirements are:
+/// <list type="bullet">
+///   <item><see cref="SuggestedWorkload"/> items from the <c>CollectSuggestedWorkloads</c> target (yay!).</item>
+///   <item>Specific workloads based on project capabilities and hard-coded knowledge about project types and .NET features (boo!).</item>
+///   <item>The .NET runtime version (for .NET Core project configurations).</item>
+/// </list>
+/// </remarks>
 [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
 [AppliesTo(ProjectCapability.DotNet)]
 internal sealed class MissingComponentProvider : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent

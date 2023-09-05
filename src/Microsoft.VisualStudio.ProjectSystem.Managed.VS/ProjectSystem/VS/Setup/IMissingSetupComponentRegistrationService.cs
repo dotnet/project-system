@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup
         void RegisterMissingWebWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors);
 
         /// <summary>
-        /// Register per project the version of sdk net core runtime (e.g. v6.0) to be installed if it is missing.
+        /// Register per project the version of sdk net core runtime (e.g. <c>v6.0</c>) to be installed if it is missing.
         /// </summary>
         /// <remarks>
         /// Must register a project first using <see cref="RegisterProjectConfiguration" />
