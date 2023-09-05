@@ -31,7 +31,6 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
     private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
 
     // Lock objects
-    private readonly object _webComponentIdsDetectedLock = new();
     private readonly object _displayPromptLock = new();
 
     // Services
@@ -114,24 +113,20 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
         bool AreNewComponentIdsToRegister(ISet<WorkloadDescriptor> workloadDescriptors)
         {
-            bool notFound = false;
+            bool added = false;
 
             foreach (WorkloadDescriptor workloadDescriptor in workloadDescriptors)
             {
                 foreach (string componentId in workloadDescriptor.VisualStudioComponentIds)
                 {
-                    lock (_webComponentIdsDetectedLock)
+                    if (_webComponentIdsDetected.Add(componentId))
                     {
-                        if (!_webComponentIdsDetected.Contains(componentId))
-                        {
-                            notFound = true;
-                            _webComponentIdsDetected.Add(componentId);
-                        }
+                        added = true;
                     }
                 }
             }
 
-            return !notFound;
+            return added;
         }
     }
 
