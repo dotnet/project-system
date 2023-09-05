@@ -38,9 +38,9 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
     private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
     private readonly IVsService<SVsSetupCompositionService, IVsSetupCompositionService> _vsSetupCompositionService;
     private readonly ISolutionService _solutionService;
-    private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
     private readonly Lazy<HashSet<string>> _installedRuntimeVersions;
+    private readonly Lazy<bool> _isPreviewChannel;
 
     // State
     private readonly ConcurrentHashSet<string> _webComponentIdsDetected = new(StringComparers.VisualStudioSetupComponentIds);
@@ -50,7 +50,6 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
     private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<ProjectConfiguration>> _projectConfigurationsByProjectGuid = new();
     private ConcurrentDictionary<string, ConcurrentHashSet<ProjectConfiguration>>? _projectConfigurationsByProjectPath;
     private IAsyncDisposable? _solutionEventsSubscription;
-    private bool? _isVSFromPreviewChannel;
 
     [ImportingConstructor]
     public MissingSetupComponentRegistrationService(
@@ -65,7 +64,6 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
         _serviceBrokerContainer = serviceBrokerContainer;
         _vsSetupCompositionService = vsSetupCompositionService;
         _solutionService = solutionService;
-        _shellUtilitiesHelper = vsShellUtilitiesHelper;
         _projectFaultHandlerService = projectFaultHandlerService;
 
         // Workaround to fix https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1460328
@@ -73,6 +71,8 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
         // This workaround reads the Registry Key HKLM\SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.NETCore.App
         // and get the installed runtime versions from the value names.
         _installedRuntimeVersions = new Lazy<HashSet<string>>(NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine);
+
+        _isPreviewChannel = new Lazy<bool>(() => vsShellUtilitiesHelper.Value.IsVSFromPreviewChannel());
     }
 
     private void ClearMissingWorkloadMetadata()
@@ -249,11 +249,6 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
     private async Task DisplayMissingComponentsPromptAsync()
     {
-        if (!_isVSFromPreviewChannel.HasValue)
-        {
-            _isVSFromPreviewChannel = _shellUtilitiesHelper.Value.IsVSFromPreviewChannel();
-        }
-
         IVsSetupCompositionService? setupCompositionService = await _vsSetupCompositionService.GetValueAsync();
 
         if (setupCompositionService is null)
@@ -336,7 +331,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
     {
         return !string.IsNullOrWhiteSpace(workloadName)
             && (s_supportedReleaseChannelWorkloads.Contains(workloadName)
-                || _isVSFromPreviewChannel == true);
+                || _isPreviewChannel.Value);
     }
 
     #region IVsSolutionEvents
