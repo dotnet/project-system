@@ -3,8 +3,11 @@
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup
 {
     /// <summary>
-    ///     Represents a mapping from a .NET workload to a Visual Studio component.
+    ///     Represents a mapping from a .NET workload to one or more Visual Studio components.
     /// </summary>
+    /// <remarks>
+    ///     Note that this represents a .NET workload, not a VS workload.
+    /// </remarks>
     internal readonly struct WorkloadDescriptor
     {
         /// <summary>

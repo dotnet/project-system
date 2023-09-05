@@ -3,8 +3,8 @@
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup
 {
     /// <summary>
-    ///     Tracks the set of missing workload packs and SDK runtimes the .NET projects in a solution
-    ///     need to improve the development experience.
+    /// Aggregates the set of components required by projects across the solution.
+    /// When required components are absent, triggers the in-product acquisition to allow the user to easily launch the installer.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private)]
     internal interface IMissingSetupComponentRegistrationService

@@ -11,10 +11,6 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
-/// <summary>
-///     Tracks the set of missing workload packs and SDK runtimes the .NET projects in a solution
-///     need to improve the development experience.
-/// </summary>
 [Export(typeof(IMissingSetupComponentRegistrationService))]
 [Export(ExportContractNames.Scopes.ProjectService, typeof(IPackageService))]
 internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDisposedAsync, IMissingSetupComponentRegistrationService, IVsSolutionEvents, IPackageService
