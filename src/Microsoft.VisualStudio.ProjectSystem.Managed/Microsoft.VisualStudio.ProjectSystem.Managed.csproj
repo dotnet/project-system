@@ -645,10 +645,6 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ProjectSystem\UpToDate\" />
-  </ItemGroup>
-
   <Target Name="AddFilesForNpmPackage" DependsOnTargets="Build;SatelliteDllsProjectOutputGroup" Condition="'$(TargetFramework)' == 'net7.0'">
     <ItemGroup>
       <NpmContent Include="exports.json" />
