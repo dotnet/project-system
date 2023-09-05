@@ -16,7 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Workloads
         private readonly IWorkloadDescriptorDataSource _workloadDescriptorDataSource;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
 
-        private bool _enabled;
         private Guid _projectGuid;
 
         private IDisposable? _joinedDataSources;
@@ -41,15 +40,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Workloads
 
         public Task LoadAsync()
         {
-            _enabled = true;
-
             return InitializeAsync();
         }
 
         public Task UnloadAsync()
         {
-            _enabled = false;
-
             _missingSetupComponentRegistrationService.UnregisterProjectConfiguration(_projectGuid, _project);
 
             return Task.CompletedTask;
@@ -81,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Workloads
 
         private void OnWorkloadDescriptorsComputed(IProjectVersionedValue<ISet<WorkloadDescriptor>> workloadDescriptors)
         {
-            if (!_enabled || _hasNoMissingWorkloads == true)
+            if (_hasNoMissingWorkloads == true)
             {
                 return;
             }
