@@ -108,7 +108,8 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
     {
         if (workloadDescriptors.Count > 0)
         {
-            ConcurrentHashSet<WorkloadDescriptor> workloadDescriptorSet = _workloadsByProjectGuid.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
+            ConcurrentHashSet<WorkloadDescriptor> workloadDescriptorSet = _workloadsByProjectGuid.GetOrAdd(projectGuid, guid => new());
+
             if (workloadDescriptorSet.AddRange(workloadDescriptors))
             {
                 DisplayMissingComponentsPromptIfNeeded(project);
@@ -125,7 +126,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
             return;
         }
 
-        ConcurrentHashSet<WorkloadDescriptor> workloadDescriptorSet = _workloadsByProjectGuid.GetOrAdd(projectGuid, static _ => new ConcurrentHashSet<WorkloadDescriptor>());
+        ConcurrentHashSet<WorkloadDescriptor> workloadDescriptorSet = _workloadsByProjectGuid.GetOrAdd(projectGuid, static _ => new());
 
         workloadDescriptorSet.AddRange(workloadDescriptors);
 
@@ -185,11 +186,11 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
                     Interlocked.CompareExchange(ref _projectConfigurationsByProjectPath, new(StringComparers.Paths), null);
                 }
 
-                projectConfigurations = _projectConfigurationsByProjectPath.GetOrAdd(project.UnconfiguredProject.FullPath, static _ => new ConcurrentHashSet<ProjectConfiguration>());
+                projectConfigurations = _projectConfigurationsByProjectPath.GetOrAdd(project.UnconfiguredProject.FullPath, static _ => new());
             }
             else
             {
-                projectConfigurations = _projectConfigurationsByProjectGuid.GetOrAdd(projectGuid, static _ => new ConcurrentHashSet<ProjectConfiguration>());
+                projectConfigurations = _projectConfigurationsByProjectGuid.GetOrAdd(projectGuid, static _ => new());
             }
 
             projectConfigurations.Add(project.ProjectConfiguration);
