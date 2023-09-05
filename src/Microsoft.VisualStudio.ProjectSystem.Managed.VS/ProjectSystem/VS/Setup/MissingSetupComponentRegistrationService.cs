@@ -168,15 +168,6 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
     public IDisposable RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
     {
-        if (project.ProjectConfiguration is null)
-        {
-            const string errorMessage = "Cannot register the project configuration for a null project configuration.";
-            TraceUtilities.TraceError(errorMessage);
-
-            System.Diagnostics.Debug.Fail(errorMessage);
-            return EmptyDisposable.Instance;
-        }
-
         AddConfiguration();
 
         return new DisposableDelegate(() => UnregisterProjectConfiguration(projectGuid, project));
