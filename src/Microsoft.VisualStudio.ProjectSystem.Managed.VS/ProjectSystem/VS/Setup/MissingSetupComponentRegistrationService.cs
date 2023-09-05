@@ -101,7 +101,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
         _projectConfigurationsByProjectPath?.Clear();
     }
 
-    public void RegisterMissingWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors)
+    public void SetSuggestedWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors)
     {
         if (workloadDescriptors.Count > 0)
         {
@@ -116,7 +116,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
         UnregisterProjectConfiguration(projectGuid, project);
     }
 
-    public void RegisterMissingWebWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors)
+    public void SetSuggestedWebWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors)
     {
         if (AreNewComponentIdsToRegister(workloadDescriptors))
         {
@@ -148,7 +148,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
         }
     }
 
-    public void RegisterPossibleMissingSdkRuntimeVersion(Guid projectGuid, ConfiguredProject project, string runtimeVersion)
+    public void SetRuntimeVersion(Guid projectGuid, ConfiguredProject project, string runtimeVersion)
     {
         // Check if the runtime is already installed in VS
         if (!string.IsNullOrEmpty(runtimeVersion) &&

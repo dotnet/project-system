@@ -106,7 +106,7 @@ internal sealed class MissingComponentProvider : OnceInitializedOnceDisposedAsyn
                 // TODO cache allocation
                 ImmutableHashSet<WorkloadDescriptor> workloads = ImmutableHashSet<WorkloadDescriptor>.Empty.Add(s_webWorkload);
 
-                _missingSetupComponentRegistrationService.RegisterMissingWebWorkloads(_projectGuid, _project, workloads);
+                _missingSetupComponentRegistrationService.SetSuggestedWebWorkloads(_projectGuid, _project, workloads);
             }
 
             bool RequiresWebComponent()
@@ -138,7 +138,7 @@ internal sealed class MissingComponentProvider : OnceInitializedOnceDisposedAsyn
                 targetFrameworkVersion = string.Empty;
             }
 
-            _missingSetupComponentRegistrationService.RegisterPossibleMissingSdkRuntimeVersion(_projectGuid, _project, targetFrameworkVersion);
+            _missingSetupComponentRegistrationService.SetRuntimeVersion(_projectGuid, _project, targetFrameworkVersion);
         }
 
         void ProcessBuildUpdate(IProjectSubscriptionUpdate update)
@@ -165,7 +165,7 @@ internal sealed class MissingComponentProvider : OnceInitializedOnceDisposedAsyn
                         }
                     }
 
-                    _missingSetupComponentRegistrationService.RegisterMissingWorkloads(_projectGuid, _project, workloads);
+                    _missingSetupComponentRegistrationService.SetSuggestedWorkloads(_projectGuid, _project, workloads);
                 }
             }
 
