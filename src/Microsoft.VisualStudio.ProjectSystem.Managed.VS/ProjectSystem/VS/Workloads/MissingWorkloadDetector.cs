@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Workloads
         private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
         private readonly IWorkloadDescriptorDataSource _workloadDescriptorDataSource;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
-        private readonly IProjectSubscriptionService _projectSubscriptionService;
 
         private bool _enabled;
         private Guid _projectGuid;
@@ -31,15 +30,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Workloads
             IWorkloadDescriptorDataSource workloadDescriptorDataSource,
             IMissingSetupComponentRegistrationService missingSetupComponentRegistrationService,
             IProjectThreadingService threadingService,
-            IProjectFaultHandlerService projectFaultHandlerService,
-            IProjectSubscriptionService projectSubscriptionService)
+            IProjectFaultHandlerService projectFaultHandlerService)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
             _workloadDescriptorDataSource = workloadDescriptorDataSource;
             _missingSetupComponentRegistrationService = missingSetupComponentRegistrationService;
             _projectFaultHandlerService = projectFaultHandlerService;
-            _projectSubscriptionService = projectSubscriptionService;
         }
 
         public Task LoadAsync()
@@ -71,41 +68,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Workloads
             // Note we don't use the ISafeProjectGuidService here because it is generally *not*
             // safe to use within IProjectDynamicLoadComponent.LoadAsync.
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
-            _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectSource, _workloadDescriptorDataSource);
+            _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _workloadDescriptorDataSource);
 
             _missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
 
-            Action<IProjectVersionedValue<ValueTuple<IProjectSnapshot, ISet<WorkloadDescriptor>>>> action = OnWorkloadDescriptorsComputed;
+            Action<IProjectVersionedValue<ISet<WorkloadDescriptor>>> action = OnWorkloadDescriptorsComputed;
 
-            _subscription = ProjectDataSources.SyncLinkTo(
-                _projectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
-                _workloadDescriptorDataSource.SourceBlock.SyncLinkOptions(),
-                    DataflowBlockFactory.CreateActionBlock(action, _project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality),
-                    linkOptions: DataflowOption.PropagateCompletion,
-                    cancellationToken: cancellationToken);
+            _subscription = _workloadDescriptorDataSource.SourceBlock.LinkTo(
+                DataflowBlockFactory.CreateActionBlock(action, _project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality),
+                linkOptions: DataflowOption.PropagateCompletion);
         }
 
-        private void OnWorkloadDescriptorsComputed(IProjectVersionedValue<(IProjectSnapshot projectSnapshot, ISet<WorkloadDescriptor> workloadDescriptors)> pair)
+        private void OnWorkloadDescriptorsComputed(IProjectVersionedValue<ISet<WorkloadDescriptor>> workloadDescriptors)
         {
             if (!_enabled || _hasNoMissingWorkloads == true)
             {
                 return;
             }
 
-            if (pair.Value.workloadDescriptors.Count == 0)
+            if (workloadDescriptors.Value.Count == 0)
             {
                 _hasNoMissingWorkloads = true;
             }
             else
             {
                 _missingWorkloads ??= new HashSet<WorkloadDescriptor>();
-                if (!_missingWorkloads.AddRange(pair.Value.workloadDescriptors))
+                if (!_missingWorkloads.AddRange(workloadDescriptors.Value))
                 {
                     return;
                 }
             }
 
-            _missingSetupComponentRegistrationService.RegisterMissingWorkloads(_projectGuid, _project, pair.Value.workloadDescriptors);
+            _missingSetupComponentRegistrationService.RegisterMissingWorkloads(_projectGuid, _project, workloadDescriptors.Value);
         }
     }
 }
