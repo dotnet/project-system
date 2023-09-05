@@ -39,12 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup
 
         public override bool Equals(object? obj)
         {
-            if (obj is WorkloadDescriptor workloadDescriptor)
-            {
-                return Equals(workloadDescriptor);
-            }
-
-            return false;
+            return obj is WorkloadDescriptor workloadDescriptor && Equals(workloadDescriptor);
         }
 
         public override int GetHashCode()
