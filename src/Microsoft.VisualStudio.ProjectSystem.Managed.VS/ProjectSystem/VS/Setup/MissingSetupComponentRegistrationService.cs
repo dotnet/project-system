@@ -74,6 +74,26 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
         _isPreviewChannel = new Lazy<bool>(() => vsShellUtilitiesHelper.Value.IsVSFromPreviewChannel());
     }
 
+    Task IPackageService.InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
+    {
+        return InitializeAsync(CancellationToken.None);
+    }
+
+    protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
+    {
+        _solutionEventsSubscription = await _solutionService.SubscribeAsync(this, cancellationToken);
+    }
+
+    protected override async Task DisposeCoreAsync(bool initialized)
+    {
+        ClearMissingWorkloadMetadata();
+
+        if (_solutionEventsSubscription is not null)
+        {
+            await _solutionEventsSubscription.DisposeAsync();
+        }
+    }
+
     private void ClearMissingWorkloadMetadata()
     {
         _webComponentIdsDetected.Clear();
@@ -349,24 +369,4 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
     }
 
     #endregion
-
-    Task IPackageService.InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
-    {
-        return InitializeAsync(CancellationToken.None);
-    }
-
-    protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
-    {
-        _solutionEventsSubscription = await _solutionService.SubscribeAsync(this, cancellationToken);
-    }
-
-    protected override async Task DisposeCoreAsync(bool initialized)
-    {
-        ClearMissingWorkloadMetadata();
-
-        if (_solutionEventsSubscription is not null)
-        {
-            await _solutionEventsSubscription.DisposeAsync();
-        }
-    }
 }
