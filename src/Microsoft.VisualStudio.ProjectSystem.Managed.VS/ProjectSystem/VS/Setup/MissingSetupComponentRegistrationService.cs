@@ -45,10 +45,10 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     // State
     private readonly ConcurrentHashSet<string> _webComponentIdsDetected = new(StringComparers.VisualStudioSetupComponentIds);
     private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
-    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap = new();
-    private readonly ConcurrentDictionary<Guid, string> _projectGuidToRuntimeDescriptorMap = new();
-    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap = new();
-    private ConcurrentDictionary<string, ConcurrentHashSet<ProjectConfiguration>>? _projectPathToProjectConfigurationsMap;
+    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<WorkloadDescriptor>> _workloadsByProjectGuid = new();
+    private readonly ConcurrentDictionary<Guid, string> _runtimeComponentIdByProjectGuid = new();
+    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<ProjectConfiguration>> _projectConfigurationsByProjectGuid = new();
+    private ConcurrentDictionary<string, ConcurrentHashSet<ProjectConfiguration>>? _projectConfigurationsByProjectPath;
     private IAsyncDisposable? _solutionEventsSubscription;
     private bool? _isVSFromPreviewChannel;
     private HashSet<string>? _netCoreRegistryKeyValues;
@@ -97,17 +97,17 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     {
         _webComponentIdsDetected.Clear();
         _missingRuntimesRegistered.Clear();
-        _projectGuidToRuntimeDescriptorMap.Clear();
-        _projectGuidToWorkloadDescriptorsMap.Clear();
-        _projectGuidToProjectConfigurationsMap.Clear();
-        _projectPathToProjectConfigurationsMap?.Clear();
+        _runtimeComponentIdByProjectGuid.Clear();
+        _workloadsByProjectGuid.Clear();
+        _projectConfigurationsByProjectGuid.Clear();
+        _projectConfigurationsByProjectPath?.Clear();
     }
 
     public void RegisterMissingWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors)
     {
         if (workloadDescriptors.Count > 0)
         {
-            ConcurrentHashSet<WorkloadDescriptor> workloadDescriptorSet = _projectGuidToWorkloadDescriptorsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
+            ConcurrentHashSet<WorkloadDescriptor> workloadDescriptorSet = _workloadsByProjectGuid.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
             if (workloadDescriptorSet.AddRange(workloadDescriptors))
             {
                 DisplayMissingComponentsPromptIfNeeded(project);
@@ -124,7 +124,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
             return;
         }
 
-        ConcurrentHashSet<WorkloadDescriptor> workloadDescriptorSet = _projectGuidToWorkloadDescriptorsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
+        ConcurrentHashSet<WorkloadDescriptor> workloadDescriptorSet = _workloadsByProjectGuid.GetOrAdd(projectGuid, static _ => new ConcurrentHashSet<WorkloadDescriptor>());
 
         workloadDescriptorSet.AddRange(workloadDescriptors);
 
@@ -160,7 +160,7 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
             !RuntimeVersionsInstalledInLocalMachine.Contains(runtimeVersion) &&
             s_packageVersionToComponentId.TryGetValue(runtimeVersion, value: out string? componentId))
         {
-            if (componentId is not null && _projectGuidToRuntimeDescriptorMap.TryAdd(projectGuid, componentId))
+            if (componentId is not null && _runtimeComponentIdByProjectGuid.TryAdd(projectGuid, componentId))
             {
                 DisplayMissingComponentsPromptIfNeeded(project);
             }
@@ -186,25 +186,25 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
         void AddConfiguration()
         {
-            ConcurrentHashSet<ProjectConfiguration> projectConfigurationSet;
+            ConcurrentHashSet<ProjectConfiguration> projectConfigurations;
 
             // Fall back to the full path of the project if the project GUID has not yet been set.
             if (projectGuid == Guid.Empty)
             {
                 // This collection is not commonly needed, so we construct it lazily.
-                if (_projectPathToProjectConfigurationsMap is null)
+                if (_projectConfigurationsByProjectPath is null)
                 {
-                    Interlocked.CompareExchange(ref _projectPathToProjectConfigurationsMap, new(StringComparers.Paths), null);
+                    Interlocked.CompareExchange(ref _projectConfigurationsByProjectPath, new(StringComparers.Paths), null);
                 }
 
-                projectConfigurationSet = _projectPathToProjectConfigurationsMap.GetOrAdd(project.UnconfiguredProject.FullPath, guid => new ConcurrentHashSet<ProjectConfiguration>());
+                projectConfigurations = _projectConfigurationsByProjectPath.GetOrAdd(project.UnconfiguredProject.FullPath, static _ => new ConcurrentHashSet<ProjectConfiguration>());
             }
             else
             {
-                projectConfigurationSet = _projectGuidToProjectConfigurationsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<ProjectConfiguration>());
+                projectConfigurations = _projectConfigurationsByProjectGuid.GetOrAdd(projectGuid, static _ => new ConcurrentHashSet<ProjectConfiguration>());
             }
 
-            projectConfigurationSet.Add(project.ProjectConfiguration);
+            projectConfigurations.Add(project.ProjectConfiguration);
         }
     }
 
@@ -214,18 +214,18 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
 
         void RemoveConfiguration(Guid projectGuid, ConfiguredProject project)
         {
-            ConcurrentHashSet<ProjectConfiguration>? projectConfigurationSet = null;
+            ConcurrentHashSet<ProjectConfiguration>? projectConfigurations = null;
 
             if (projectGuid == Guid.Empty)
             {
-                _projectPathToProjectConfigurationsMap?.TryGetValue(project.UnconfiguredProject.FullPath, out projectConfigurationSet);
+                _projectConfigurationsByProjectPath?.TryGetValue(project.UnconfiguredProject.FullPath, out projectConfigurations);
             }
             else
             {
-                _projectGuidToProjectConfigurationsMap.TryGetValue(projectGuid, out projectConfigurationSet);
+                _projectConfigurationsByProjectGuid.TryGetValue(projectGuid, out projectConfigurations);
             }
 
-            projectConfigurationSet?.Remove(project.ProjectConfiguration);
+            projectConfigurations?.Remove(project.ProjectConfiguration);
         }
     }
 
@@ -254,14 +254,14 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         bool AreMissingComponentsToInstall()
         {
             // Projects can register zero or more missing components.
-            return !_projectGuidToWorkloadDescriptorsMap.IsEmpty || !_projectGuidToRuntimeDescriptorMap.IsEmpty;
+            return !_workloadsByProjectGuid.IsEmpty || !_runtimeComponentIdByProjectGuid.IsEmpty;
         }
 
         bool AllProjectsConfigurationsRegisteredTheirMissingComponents()
         {
             // When a project configuration registers its missing components, the configuration gets removed, but we keep the list of components.
-            return _projectGuidToProjectConfigurationsMap.Values.All(projectConfigurationSet => projectConfigurationSet.Count == 0)
-                && _projectPathToProjectConfigurationsMap?.Values.All(projectConfigurationSet => projectConfigurationSet.Count == 0) is null or true;
+            return _projectConfigurationsByProjectGuid.Values.All(projectConfigurations => projectConfigurations.Count == 0)
+                && _projectConfigurationsByProjectPath?.Values.All(projectConfigurations => projectConfigurations.Count == 0) is null or true;
         }
     }
 
@@ -273,13 +273,15 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         }
 
         IVsSetupCompositionService? setupCompositionService = await _vsSetupCompositionService.GetValueAsync();
+
         if (setupCompositionService is null)
         {
             return;
         }
 
-        IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? vsComponentIdsToRegister = ComputeVsComponentIdsToRegister(setupCompositionService);
-        if (vsComponentIdsToRegister is null)
+        IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? missingComponentIdsByProjectGuid = GetMissingComponentIdsByProjectGuid(setupCompositionService);
+
+        if (missingComponentIdsByProjectGuid is null)
         {
             return;
         }
@@ -293,59 +295,59 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         {
             if (missingWorkloadRegistrationService is not null)
             {
-                await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(vsComponentIdsToRegister, cancellationToken: default);
+                await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(missingComponentIdsByProjectGuid, cancellationToken: default);
             }
         }
     }
 
-    private IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? ComputeVsComponentIdsToRegister(IVsSetupCompositionService setupCompositionService)
+    private IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? GetMissingComponentIdsByProjectGuid(IVsSetupCompositionService setupCompositionService)
     {
-        if (_projectGuidToWorkloadDescriptorsMap.IsEmpty && _projectGuidToRuntimeDescriptorMap.IsEmpty)
+        if (_workloadsByProjectGuid.IsEmpty && _runtimeComponentIdByProjectGuid.IsEmpty)
         {
             return null;
         }
 
         // Values in this dictionary must be List<string> within this method.
-        Dictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister = new();
+        Dictionary<Guid, IReadOnlyCollection<string>> missingComponentIdsByProjectGuid = new();
 
-        foreach ((Guid projectGuid, ConcurrentHashSet<WorkloadDescriptor> vsComponents) in _projectGuidToWorkloadDescriptorsMap)
+        foreach ((Guid projectGuid, ConcurrentHashSet<WorkloadDescriptor> workloads) in _workloadsByProjectGuid)
         {
-            List<string> vsComponentIds = vsComponents
-                .Where(descriptor => IsSupportedWorkload(descriptor.WorkloadName))
-                .SelectMany(workloadDescriptor => workloadDescriptor.VisualStudioComponentIds)
-                .Where(vsComponentId => !setupCompositionService.IsPackageInstalled(vsComponentId))
+            List<string> missingComponentIds = workloads
+                .Where(workload => IsSupportedWorkload(workload.WorkloadName))
+                .SelectMany(workload => workload.VisualStudioComponentIds)
+                .Where(componentId => !setupCompositionService.IsPackageInstalled(componentId))
                 .ToList();
 
-            if (vsComponentIds.Count > 0)
+            if (missingComponentIds.Count > 0)
             {
-                vsComponentIdsToRegister[projectGuid] = vsComponentIds;
+                missingComponentIdsByProjectGuid[projectGuid] = missingComponentIds;
             }
         }
 
         // Add missing SDK runtime component IDs
-        foreach ((Guid projectGuid, string runtimeComponentId) in _projectGuidToRuntimeDescriptorMap)
+        foreach ((Guid projectGuid, string runtimeComponentId) in _runtimeComponentIdByProjectGuid)
         {
             if (setupCompositionService.IsPackageInstalled(runtimeComponentId))
             {
                 continue;
             }
 
-            if (vsComponentIdsToRegister.TryGetValue(projectGuid, out IReadOnlyCollection<string>? workloadVsComponent))
+            if (missingComponentIdsByProjectGuid.TryGetValue(projectGuid, out IReadOnlyCollection<string>? missingComponentIds))
             {
-                ((List<string>)workloadVsComponent).Add(runtimeComponentId);
+                ((List<string>)missingComponentIds).Add(runtimeComponentId);
             }
             else
             {
-                vsComponentIdsToRegister.Add(projectGuid, new List<string>(capacity: 1) { runtimeComponentId });
+                missingComponentIdsByProjectGuid.Add(projectGuid, new List<string>(capacity: 1) { runtimeComponentId });
             }
         }
 
-        if (vsComponentIdsToRegister.Count == 0)
+        if (missingComponentIdsByProjectGuid.Count == 0)
         {
             return null;
         }
 
-        return vsComponentIdsToRegister;
+        return missingComponentIdsByProjectGuid;
     }
 
     private bool IsSupportedWorkload(string workloadName)
