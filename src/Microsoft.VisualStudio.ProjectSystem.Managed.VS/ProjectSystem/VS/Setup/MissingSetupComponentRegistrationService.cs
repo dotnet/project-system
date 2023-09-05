@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
 [Export(typeof(IMissingSetupComponentRegistrationService))]
 [Export(ExportContractNames.Scopes.ProjectService, typeof(IPackageService))]
-internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDisposedAsync, IMissingSetupComponentRegistrationService, IVsSolutionEvents, IPackageService
+internal sealed class MissingSetupComponentRegistrationService : OnceInitializedOnceDisposedAsync, IMissingSetupComponentRegistrationService, IVsSolutionEvents, IPackageService
 {
     private const string WasmToolsWorkloadName = "wasm-tools";
 
