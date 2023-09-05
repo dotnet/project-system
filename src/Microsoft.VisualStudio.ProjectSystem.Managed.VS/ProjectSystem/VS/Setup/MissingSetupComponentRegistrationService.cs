@@ -299,7 +299,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
                 foreach ((Guid projectGuid, ConcurrentHashSet<WorkloadDescriptor> workloads) in _workloadsByProjectGuid)
                 {
                     List<string> missingComponentIds = workloads
-                        .Where(workload => IsSupportedWorkload(workload.WorkloadName))
+                        .Where(workload => IsSupportedWorkload(workload))
                         .SelectMany(workload => workload.VisualStudioComponentIds)
                         .Where(componentId => !setupCompositionService.IsPackageInstalled(componentId))
                         .ToList();
@@ -335,11 +335,10 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
                 return missingComponentIdsByProjectGuid;
 
-                bool IsSupportedWorkload(string workloadName)
+                bool IsSupportedWorkload(WorkloadDescriptor workload)
                 {
-                    return !string.IsNullOrWhiteSpace(workloadName)
-                        && (s_supportedReleaseChannelWorkloads.Contains(workloadName)
-                            || _isPreviewChannel.Value);
+                    return s_supportedReleaseChannelWorkloads.Contains(workload.WorkloadName)
+                        || _isPreviewChannel.Value;
                 }
             }
         }
