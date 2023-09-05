@@ -109,7 +109,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
             if (workloadDescriptorSet.AddRange(workloadDescriptors))
             {
-                DisplayMissingComponentsPromptIfNeeded(project);
+                DisplayMissingComponentsPromptIfNeeded(project.UnconfiguredProject);
             }
         }
 
@@ -127,7 +127,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
         workloadDescriptorSet.AddRange(workloadDescriptors);
 
-        DisplayMissingComponentsPromptIfNeeded(project);
+        DisplayMissingComponentsPromptIfNeeded(project.UnconfiguredProject);
 
         bool AreNewComponentIdsToRegister(ISet<WorkloadDescriptor> workloadDescriptors)
         {
@@ -157,7 +157,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
         {
             if (componentId is not null && _runtimeComponentIdByProjectGuid.TryAdd(projectGuid, componentId))
             {
-                DisplayMissingComponentsPromptIfNeeded(project);
+                DisplayMissingComponentsPromptIfNeeded(project.UnconfiguredProject);
             }
         }
 
@@ -215,7 +215,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
         }
     }
 
-    private void DisplayMissingComponentsPromptIfNeeded(ConfiguredProject project)
+    private void DisplayMissingComponentsPromptIfNeeded(UnconfiguredProject project)
     {
         if (_workloadsByProjectGuid.IsEmpty && _runtimeComponentIdByProjectGuid.IsEmpty)
         {
@@ -232,7 +232,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
         Task displayMissingComponentsTask = DisplayMissingComponentsPromptAsync();
 
-        _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project.UnconfiguredProject, ProjectFaultSeverity.Recoverable);
+        _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project, ProjectFaultSeverity.Recoverable);
 
         return;
 
