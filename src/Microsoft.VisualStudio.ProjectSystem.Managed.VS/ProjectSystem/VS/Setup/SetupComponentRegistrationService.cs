@@ -18,7 +18,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
     /// <summary>
     /// Maps .NET Core <c>TargetFrameworkVersion</c> to the corresponding VS Setup component ID for that version's runtime.
     /// </summary>
-    private static readonly ImmutableDictionary<string, string> s_runtimeVersionToComponentId = ImmutableStringDictionary<string>.EmptyOrdinalIgnoreCase
+    private static readonly ImmutableDictionary<string, string> s_componentIdByRuntimeVersion = ImmutableStringDictionary<string>.EmptyOrdinalIgnoreCase
         .Add("v2.0", "Microsoft.Net.Core.Component.SDK.2.1")
         .Add("v2.1", "Microsoft.Net.Core.Component.SDK.2.1")
         .Add("v2.2", "Microsoft.Net.Core.Component.SDK.2.1")
@@ -176,7 +176,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         // Check if the runtime is already installed in VS
         if (!string.IsNullOrEmpty(runtimeVersion) &&
             !_installedRuntimeVersions.Value.Contains(runtimeVersion) &&
-            s_runtimeVersionToComponentId.TryGetValue(runtimeVersion, value: out string? componentId))
+            s_componentIdByRuntimeVersion.TryGetValue(runtimeVersion, value: out string? componentId))
         {
             if (componentId is not null && _runtimeComponentIdByProjectGuid.TryAdd(projectGuid, componentId))
             {
