@@ -127,7 +127,10 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
         if (workloadDescriptors.Count > 0)
         {
             var workloadDescriptorSet = _projectGuidToWorkloadDescriptorsMap.GetOrAdd(projectGuid, guid => new ConcurrentHashSet<WorkloadDescriptor>());
-            workloadDescriptorSet.AddRange(workloadDescriptors);
+            if (workloadDescriptorSet.AddRange(workloadDescriptors))
+            {
+                DisplayMissingComponentsPromptIfNeeded(project);
+            }
         }
 
         UnregisterProjectConfiguration(projectGuid, project);
@@ -174,7 +177,10 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
             (RuntimeVersionsInstalledInLocalMachine is null || !RuntimeVersionsInstalledInLocalMachine.Contains(runtimeVersion)) &&
             s_packageVersionToComponentId.TryGetValue(runtimeVersion, value: out string? componentId))
         {
-            _projectGuidToRuntimeDescriptorMap.GetOrAdd(projectGuid, componentId);
+            if (componentId is not null && _projectGuidToRuntimeDescriptorMap.TryAdd(projectGuid, componentId))
+            {
+                DisplayMissingComponentsPromptIfNeeded(project);
+            }
         }
 
         UnregisterProjectConfiguration(projectGuid, project);
@@ -214,7 +220,6 @@ internal class MissingSetupComponentRegistrationService : OnceInitializedOnceDis
     public void UnregisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
     {
         RemoveConfiguration(projectGuid, project);
-        DisplayMissingComponentsPromptIfNeeded(project);
 
         void RemoveConfiguration(Guid projectGuid, ConfiguredProject project)
         {
