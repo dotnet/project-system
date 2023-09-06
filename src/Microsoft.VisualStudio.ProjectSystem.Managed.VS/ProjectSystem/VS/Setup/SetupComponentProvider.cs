@@ -2,6 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
@@ -25,7 +26,7 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
     private static readonly IImmutableSet<string> s_evaluationRuleNames = ImmutableHashSet<string>.Empty.WithComparer(StringComparers.RuleNames).Add(ConfigurationGeneral.SchemaName);
     private static readonly IImmutableSet<string> s_buildRuleNames = ImmutableHashSet<string>.Empty.WithComparer(StringComparers.RuleNames).Add(SuggestedWorkload.SchemaName);
 
-    private static readonly WorkloadDescriptor s_webWorkload = new("Web", "Microsoft.VisualStudio.Component.Web");
+    private static readonly ISet<string> s_webComponentIds = ImmutableHashSet<string>.Empty.WithComparer(StringComparers.VisualStudioSetupComponentIds).Add("Microsoft.VisualStudio.Component.Web");
 
     private readonly ConfiguredProject _project;
     private readonly ISetupComponentRegistrationService _setupComponentRegistrationService;
@@ -34,8 +35,6 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
     private readonly DisposableBag _disposables = new();
 
     private Guid _projectGuid;
-    private bool? _hasNoSuggestedWorkloads;
-    private ISet<WorkloadDescriptor>? _suggestedWorkloads;
 
     [ImportingConstructor]
     public SetupComponentProvider(
@@ -103,10 +102,7 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
         {
             if (RequiresWebComponent())
             {
-                // TODO cache allocation
-                ImmutableHashSet<WorkloadDescriptor> workloads = ImmutableHashSet<WorkloadDescriptor>.Empty.Add(s_webWorkload);
-
-                _setupComponentRegistrationService.SetSuggestedWebWorkloads(_projectGuid, _project, workloads);
+                _setupComponentRegistrationService.SetSuggestedWebComponents(_projectGuid, _project, s_webComponentIds);
             }
 
             bool RequiresWebComponent()
@@ -144,59 +140,36 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
         void ProcessBuildUpdate(IProjectSubscriptionUpdate update)
         {
             // TODO no-op when data unchanged
-            var workloads = CreateWorkloadDescriptor(update.CurrentState);
+            ISet<string> componentIds = GatherComponentIds(update.CurrentState);
 
-            ProcessWorkloads(workloads);
+            _setupComponentRegistrationService.SetSuggestedWorkloadComponents(_projectGuid, _project, componentIds);
 
-            void ProcessWorkloads(ISet<WorkloadDescriptor> workloads)
-            {
-                if (_hasNoSuggestedWorkloads != true)
-                {
-                    if (workloads.Count == 0)
-                    {
-                        _hasNoSuggestedWorkloads = true;
-                    }
-                    else
-                    {
-                        _suggestedWorkloads ??= new HashSet<WorkloadDescriptor>();
-                        if (!_suggestedWorkloads.AddRange(workloads))
-                        {
-                            return;
-                        }
-                    }
-
-                    _setupComponentRegistrationService.SetSuggestedWorkloads(_projectGuid, _project, workloads);
-                }
-            }
-
-            static ISet<WorkloadDescriptor> CreateWorkloadDescriptor(IImmutableDictionary<string, IProjectRuleSnapshot> currentState)
+            static ISet<string> GatherComponentIds(IImmutableDictionary<string, IProjectRuleSnapshot> currentState)
             {
                 IProjectRuleSnapshot suggestedWorkloads = currentState.GetSnapshotOrEmpty(SuggestedWorkload.SchemaName);
 
                 if (suggestedWorkloads.Items.Count == 0)
                 {
-                    return ImmutableHashSet<WorkloadDescriptor>.Empty;
+                    return ImmutableHashSet<string>.Empty;
                 }
 
-                HashSet<WorkloadDescriptor>? workloads = null;
+                HashSet<string>? componentIds = null;
 
-                if (suggestedWorkloads.Items.Count == 0)
+                foreach ((string workloadName, IImmutableDictionary<string, string> metadata) in suggestedWorkloads.Items)
                 {
-                    foreach ((string workloadName, IImmutableDictionary<string, string> metadata) in suggestedWorkloads.Items)
+                    if (metadata.GetStringProperty(SuggestedWorkload.VisualStudioComponentIdsProperty) is string ids)
                     {
-                        string? componentIds =
-                            metadata.GetStringProperty(SuggestedWorkload.VisualStudioComponentIdsProperty) ??
-                            metadata.GetStringProperty(SuggestedWorkload.VisualStudioComponentIdProperty);
-
-                        if (componentIds is not null && !string.IsNullOrWhiteSpace(workloadName))
-                        {
-                            workloads ??= new();
-                            workloads.Add(new WorkloadDescriptor(workloadName, componentIds));
-                        }
+                        componentIds ??= new();
+                        componentIds.AddRange(new LazyStringSplit(ids, ';').Where(id => !string.IsNullOrWhiteSpace(id)).Select(id => id.Trim()));
+                    }
+                    else if (metadata.GetStringProperty(SuggestedWorkload.VisualStudioComponentIdProperty) is string id)
+                    {
+                        componentIds ??= new();
+                        componentIds.Add(id.Trim());
                     }
                 }
 
-                return (ISet<WorkloadDescriptor>?)workloads ?? ImmutableHashSet<WorkloadDescriptor>.Empty;
+                return (ISet<string>?)componentIds ?? ImmutableHashSet<string>.Empty;
             }
         }
     }

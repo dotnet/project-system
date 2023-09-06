@@ -24,7 +24,7 @@ internal interface ISetupComponentRegistrationService
     /// <remarks>
     /// Must register a project first using <see cref="RegisterProjectConfiguration" />
     /// </remarks>
-    void SetSuggestedWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors);
+    void SetSuggestedWorkloadComponents(Guid projectGuid, ConfiguredProject project, ISet<string> componentIds);
 
     /// <summary>
     /// Integrates a set of suggested web workloads for the specified project configuration.
@@ -32,7 +32,7 @@ internal interface ISetupComponentRegistrationService
     /// <remarks>
     /// Must register a project first using <see cref="RegisterProjectConfiguration" />
     /// </remarks>
-    void SetSuggestedWebWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors);
+    void SetSuggestedWebComponents(Guid projectGuid, ConfiguredProject project, ISet<string> componentIds);
 
     /// <summary>
     /// Sets the .NET Core runtime version (e.g. <c>v6.0</c>) required by the project.

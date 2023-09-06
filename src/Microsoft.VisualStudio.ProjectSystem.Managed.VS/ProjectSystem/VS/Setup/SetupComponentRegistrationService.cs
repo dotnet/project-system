@@ -38,7 +38,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
 
     // State
     private readonly ConcurrentHashSet<string> _webComponentIdsDetected = new(StringComparers.VisualStudioSetupComponentIds);
-    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<WorkloadDescriptor>> _workloadsByProjectGuid = new();
+    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<string>> _workloadComponentIdsByProjectGuid = new();
     private readonly ConcurrentDictionary<Guid, string> _runtimeComponentIdByProjectGuid = new();
     private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<ProjectConfiguration>> _projectConfigurationsByProjectGuid = new();
     private ConcurrentDictionary<string, ConcurrentHashSet<ProjectConfiguration>>? _projectConfigurationsByProjectPath;
@@ -89,7 +89,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
     {
         _webComponentIdsDetected.Clear();
         _runtimeComponentIdByProjectGuid.Clear();
-        _workloadsByProjectGuid.Clear();
+        _workloadComponentIdsByProjectGuid.Clear();
         _projectConfigurationsByProjectGuid.Clear();
         _projectConfigurationsByProjectPath?.Clear();
     }
@@ -124,13 +124,14 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         }
     }
 
-    public void SetSuggestedWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors)
+    public void SetSuggestedWorkloadComponents(Guid projectGuid, ConfiguredProject project, ISet<string> componentIds)
     {
-        if (workloadDescriptors.Count > 0)
+        if (componentIds.Count > 0)
         {
-            ConcurrentHashSet<WorkloadDescriptor> workloadDescriptorSet = _workloadsByProjectGuid.GetOrAdd(projectGuid, guid => new());
+            // TODO why merge here? why not replace?
+            ConcurrentHashSet<string> existingComponentIds = _workloadComponentIdsByProjectGuid.GetOrAdd(projectGuid, static _ => new());
 
-            if (workloadDescriptorSet.AddRange(workloadDescriptors))
+            if (existingComponentIds.AddRange(componentIds))
             {
                 DisplayMissingComponentsPromptIfNeeded(project.UnconfiguredProject);
             }
@@ -139,31 +140,29 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         UnregisterProjectConfiguration(projectGuid, project);
     }
 
-    public void SetSuggestedWebWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors)
+    public void SetSuggestedWebComponents(Guid projectGuid, ConfiguredProject project, ISet<string> componentIds)
     {
-        if (AreNewComponentIdsToRegister(workloadDescriptors))
+        if (AreNewComponentIdsToRegister(componentIds))
         {
             return;
         }
 
-        ConcurrentHashSet<WorkloadDescriptor> workloadDescriptorSet = _workloadsByProjectGuid.GetOrAdd(projectGuid, static _ => new());
+        // TODO why merge here? why not replace?
+        ConcurrentHashSet<string> existingComponentIds = _workloadComponentIdsByProjectGuid.GetOrAdd(projectGuid, static _ => new());
 
-        workloadDescriptorSet.AddRange(workloadDescriptors);
+        existingComponentIds.AddRange(componentIds);
 
         DisplayMissingComponentsPromptIfNeeded(project.UnconfiguredProject);
 
-        bool AreNewComponentIdsToRegister(ISet<WorkloadDescriptor> workloadDescriptors)
+        bool AreNewComponentIdsToRegister(ISet<string> componentIds)
         {
             bool added = false;
 
-            foreach (WorkloadDescriptor workloadDescriptor in workloadDescriptors)
+            foreach (string componentId in componentIds)
             {
-                foreach (string componentId in workloadDescriptor.VisualStudioComponentIds)
+                if (_webComponentIdsDetected.Add(componentId))
                 {
-                    if (_webComponentIdsDetected.Add(componentId))
-                    {
-                        added = true;
-                    }
+                    added = true;
                 }
             }
 
@@ -210,9 +209,9 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
 
     private void DisplayMissingComponentsPromptIfNeeded(UnconfiguredProject project)
     {
-        if (_workloadsByProjectGuid.IsEmpty && _runtimeComponentIdByProjectGuid.IsEmpty)
+        if (_workloadComponentIdsByProjectGuid.IsEmpty && _runtimeComponentIdByProjectGuid.IsEmpty)
         {
-            // No workloads or components were registered, so there's nothing that could need to be installed.
+            // No components were registered, so there's nothing that could need to be installed.
             return;
         }
 
@@ -272,10 +271,9 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
                 // Values in this dictionary must be List<string> within this method.
                 Dictionary<Guid, IReadOnlyCollection<string>> missingComponentIdsByProjectGuid = new();
 
-                foreach ((Guid projectGuid, ConcurrentHashSet<WorkloadDescriptor> workloads) in _workloadsByProjectGuid)
+                foreach ((Guid projectGuid, ConcurrentHashSet<string> componentIds) in _workloadComponentIdsByProjectGuid)
                 {
-                    List<string> missingComponentIds = workloads
-                        .SelectMany(workload => workload.VisualStudioComponentIds)
+                    List<string> missingComponentIds = componentIds
                         .Where(componentId => !setupCompositionService.IsPackageInstalled(componentId))
                         .ToList();
 
