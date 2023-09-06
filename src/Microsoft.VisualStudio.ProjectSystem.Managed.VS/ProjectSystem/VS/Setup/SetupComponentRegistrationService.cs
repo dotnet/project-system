@@ -15,6 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 [Export(ExportContractNames.Scopes.ProjectService, typeof(IPackageService))]
 internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDisposedAsync, ISetupComponentRegistrationService, IVsSolutionEvents, IPackageService
 {
+    /// <summary>
+    /// Maps .NET Core <c>TargetFrameworkVersion</c> to the corresponding VS Setup component ID for that version's runtime.
+    /// </summary>
     private static readonly ImmutableDictionary<string, string> s_runtimeVersionToComponentId = ImmutableStringDictionary<string>.EmptyOrdinalIgnoreCase
         .Add("v2.0", "Microsoft.Net.Core.Component.SDK.2.1")
         .Add("v2.1", "Microsoft.Net.Core.Component.SDK.2.1")
