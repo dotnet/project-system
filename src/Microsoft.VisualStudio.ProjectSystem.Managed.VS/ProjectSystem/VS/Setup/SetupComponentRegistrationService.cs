@@ -94,6 +94,36 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         _projectConfigurationsByProjectPath?.Clear();
     }
 
+    public IDisposable RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
+    {
+        AddConfiguration();
+
+        return new DisposableDelegate(() => UnregisterProjectConfiguration(projectGuid, project));
+
+        void AddConfiguration()
+        {
+            ConcurrentHashSet<ProjectConfiguration> projectConfigurations;
+
+            // Fall back to the full path of the project if the project GUID has not yet been set.
+            if (projectGuid == Guid.Empty)
+            {
+                // This collection is not commonly needed, so we construct it lazily.
+                if (_projectConfigurationsByProjectPath is null)
+                {
+                    Interlocked.CompareExchange(ref _projectConfigurationsByProjectPath, new(StringComparers.Paths), null);
+                }
+
+                projectConfigurations = _projectConfigurationsByProjectPath.GetOrAdd(project.UnconfiguredProject.FullPath, static _ => new());
+            }
+            else
+            {
+                projectConfigurations = _projectConfigurationsByProjectGuid.GetOrAdd(projectGuid, static _ => new());
+            }
+
+            projectConfigurations.Add(project.ProjectConfiguration);
+        }
+    }
+
     public void SetSuggestedWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors)
     {
         if (workloadDescriptors.Count > 0)
@@ -155,36 +185,6 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         }
 
         UnregisterProjectConfiguration(projectGuid, project);
-    }
-
-    public IDisposable RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
-    {
-        AddConfiguration();
-
-        return new DisposableDelegate(() => UnregisterProjectConfiguration(projectGuid, project));
-
-        void AddConfiguration()
-        {
-            ConcurrentHashSet<ProjectConfiguration> projectConfigurations;
-
-            // Fall back to the full path of the project if the project GUID has not yet been set.
-            if (projectGuid == Guid.Empty)
-            {
-                // This collection is not commonly needed, so we construct it lazily.
-                if (_projectConfigurationsByProjectPath is null)
-                {
-                    Interlocked.CompareExchange(ref _projectConfigurationsByProjectPath, new(StringComparers.Paths), null);
-                }
-
-                projectConfigurations = _projectConfigurationsByProjectPath.GetOrAdd(project.UnconfiguredProject.FullPath, static _ => new());
-            }
-            else
-            {
-                projectConfigurations = _projectConfigurationsByProjectGuid.GetOrAdd(projectGuid, static _ => new());
-            }
-
-            projectConfigurations.Add(project.ProjectConfiguration);
-        }
     }
 
     private void UnregisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)

@@ -62,13 +62,6 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
         return Task.CompletedTask;
     }
 
-    protected override Task DisposeCoreAsync(bool initialized)
-    {
-        _disposables.Dispose();
-
-        return Task.CompletedTask;
-    }
-
     protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
     {
         // Note we don't use the ISafeProjectGuidService here because it is generally *not*
@@ -91,6 +84,13 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
             target: DataflowBlockFactory.CreateActionBlock(action, _project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality),
             linkOptions: DataflowOption.PropagateCompletion,
             cancellationToken: cancellationToken));
+    }
+
+    protected override Task DisposeCoreAsync(bool initialized)
+    {
+        _disposables.Dispose();
+
+        return Task.CompletedTask;
     }
 
     private void OnUpdate(IProjectVersionedValue<(IProjectSubscriptionUpdate EvaluationUpdate, IProjectSubscriptionUpdate BuildUpdate, IProjectCapabilitiesSnapshot Capabilities)> update)

@@ -10,6 +10,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 internal interface ISetupComponentRegistrationService
 {
     /// <summary>
+    /// Register a project to be tracked for components to be installed.
+    /// </summary>
+    /// <remarks>
+    /// This service must be initialized first.
+    /// </remarks>
+    /// <returns>An <see cref="IDisposable"/> that unregisters the project configuration when disposed.</returns>
+    IDisposable RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
+
+    /// <summary>
     /// Integrates a set of suggested workloads for the specified project configuration.
     /// </summary>
     /// <remarks>
@@ -32,13 +41,4 @@ internal interface ISetupComponentRegistrationService
     /// Must register a project first using <see cref="RegisterProjectConfiguration" />
     /// </remarks>
     void SetRuntimeVersion(Guid projectGuid, ConfiguredProject project, string runtimeVersion);
-
-    /// <summary>
-    /// Register a project to be tracked for components to be installed.
-    /// </summary>
-    /// <remarks>
-    /// This service must be initialized first.
-    /// </remarks>
-    /// <returns>An <see cref="IDisposable"/> that unregisters the project configuration when disposed.</returns>
-    IDisposable RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
 }
