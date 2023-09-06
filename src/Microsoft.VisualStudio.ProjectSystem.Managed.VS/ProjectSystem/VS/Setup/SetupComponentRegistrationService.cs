@@ -254,14 +254,14 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
 
             IBrokeredServiceContainer serviceBrokerContainer = await _serviceBrokerContainer.GetValueAsync();
             IServiceBroker serviceBroker = serviceBrokerContainer.GetFullAccessServiceBroker();
-            IMissingComponentRegistrationService? missingWorkloadRegistrationService = await serviceBroker.GetProxyAsync<IMissingComponentRegistrationService>(
+            IMissingComponentRegistrationService? missingComponentRegistrationService = await serviceBroker.GetProxyAsync<IMissingComponentRegistrationService>(
                 serviceDescriptor: VisualStudioServices.VS2022.MissingComponentRegistrationService);
 
-            using (missingWorkloadRegistrationService as IDisposable)
+            using (missingComponentRegistrationService as IDisposable)
             {
-                if (missingWorkloadRegistrationService is not null)
+                if (missingComponentRegistrationService is not null)
                 {
-                    await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(missingComponentIdsByProjectGuid, cancellationToken: default);
+                    await missingComponentRegistrationService.RegisterMissingComponentsAsync(missingComponentIdsByProjectGuid, cancellationToken: default);
                 }
             }
 
