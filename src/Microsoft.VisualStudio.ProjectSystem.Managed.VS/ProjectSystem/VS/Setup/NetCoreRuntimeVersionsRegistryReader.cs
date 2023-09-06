@@ -12,7 +12,7 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
     private static readonly string s_netCoreRegistryKeyName = "Microsoft.NETCore.App";
 
     /// <summary>
-    ///     Reads the list of installed .NET Core runtimes from thw registry.
+    ///     Reads the list of installed .NET Core runtimes from the registry.
     /// </summary>
     /// <remarks>
     ///     This list contains both runtimes installed outside VS as standalone packages, and runtimes installed through VS Setup.
