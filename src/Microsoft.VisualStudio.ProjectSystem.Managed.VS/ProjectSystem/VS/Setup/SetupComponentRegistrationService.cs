@@ -11,9 +11,9 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
-[Export(typeof(IMissingSetupComponentRegistrationService))]
+[Export(typeof(ISetupComponentRegistrationService))]
 [Export(ExportContractNames.Scopes.ProjectService, typeof(IPackageService))]
-internal sealed class MissingSetupComponentRegistrationService : OnceInitializedOnceDisposedAsync, IMissingSetupComponentRegistrationService, IVsSolutionEvents, IPackageService
+internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDisposedAsync, ISetupComponentRegistrationService, IVsSolutionEvents, IPackageService
 {
     private const string WasmToolsWorkloadName = "wasm-tools";
 
@@ -40,7 +40,6 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
     // State
     private readonly ConcurrentHashSet<string> _webComponentIdsDetected = new(StringComparers.VisualStudioSetupComponentIds);
-    private readonly ConcurrentHashSet<string> _missingRuntimesRegistered = new(StringComparers.WorkloadNames);
     private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<WorkloadDescriptor>> _workloadsByProjectGuid = new();
     private readonly ConcurrentDictionary<Guid, string> _runtimeComponentIdByProjectGuid = new();
     private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<ProjectConfiguration>> _projectConfigurationsByProjectGuid = new();
@@ -48,7 +47,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
     private IAsyncDisposable? _solutionEventsSubscription;
 
     [ImportingConstructor]
-    public MissingSetupComponentRegistrationService(
+    public SetupComponentRegistrationService(
         IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> serviceBrokerContainer,
         IVsService<SVsSetupCompositionService, IVsSetupCompositionService> vsSetupCompositionService,
         ISolutionService solutionService,
@@ -83,7 +82,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
     protected override async Task DisposeCoreAsync(bool initialized)
     {
-        ClearMissingWorkloadMetadata();
+        ClearData();
 
         if (_solutionEventsSubscription is not null)
         {
@@ -91,10 +90,9 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
         }
     }
 
-    private void ClearMissingWorkloadMetadata()
+    private void ClearData()
     {
         _webComponentIdsDetected.Clear();
-        _missingRuntimesRegistered.Clear();
         _runtimeComponentIdByProjectGuid.Clear();
         _workloadsByProjectGuid.Clear();
         _projectConfigurationsByProjectGuid.Clear();
@@ -223,20 +221,20 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
             return;
         }
 
-        if (!AllProjectsConfigurationsRegisteredTheirMissingComponents())
+        if (!AllProjectsConfigurationsRegisteredComponents())
         {
             // Still waiting on at least one registered project to provide its components.
             // We will wait until we have heard from every project.
             return;
         }
 
-        Task displayMissingComponentsTask = DisplayMissingComponentsPromptAsync();
+        Task task = DisplayMissingComponentsPromptAsync();
 
-        _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: project, ProjectFaultSeverity.Recoverable);
+        _projectFaultHandlerService.Forget(task, project: project, ProjectFaultSeverity.Recoverable);
 
         return;
 
-        bool AllProjectsConfigurationsRegisteredTheirMissingComponents()
+        bool AllProjectsConfigurationsRegisteredComponents()
         {
             // When a project configuration registers its required components, the configuration gets removed, but we keep the list of components.
             return _projectConfigurationsByProjectGuid.Values.All(configs => configs.Count == 0)
@@ -320,6 +318,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
                 bool IsSupportedWorkload(WorkloadDescriptor workload)
                 {
+                    // TODO why are we blocking so many workloads here?
                     return s_supportedReleaseChannelWorkloads.Contains(workload.WorkloadName)
                         || _isPreviewChannel.Value;
                 }
@@ -341,7 +340,7 @@ internal sealed class MissingSetupComponentRegistrationService : OnceInitialized
 
     public int OnAfterCloseSolution(object pUnkReserved)
     {
-        ClearMissingWorkloadMetadata();
+        ClearData();
 
         return HResult.OK;
     }

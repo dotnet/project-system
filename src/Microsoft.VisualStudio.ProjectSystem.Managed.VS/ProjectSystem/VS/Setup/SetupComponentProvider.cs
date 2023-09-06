@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
 /// <summary>
 /// Determines the VS setup component requirements of the configured project and provides them
-/// to <see cref="IMissingSetupComponentRegistrationService"/> (global scope), which aggregates across
+/// to <see cref="ISetupComponentRegistrationService"/> (global scope), which aggregates across
 /// all projects and notifies the user to install missing components via in-product acquisition.
 /// </summary>
 /// <remarks>
@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 /// </remarks>
 [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
 [AppliesTo(ProjectCapability.DotNet)]
-internal sealed class MissingComponentProvider : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
+internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
 {
     private static readonly IImmutableSet<string> s_evaluationRuleNames = ImmutableHashSet<string>.Empty.WithComparer(StringComparers.RuleNames).Add(ConfigurationGeneral.SchemaName);
     private static readonly IImmutableSet<string> s_buildRuleNames = ImmutableHashSet<string>.Empty.WithComparer(StringComparers.RuleNames).Add(SuggestedWorkload.SchemaName);
@@ -28,26 +28,26 @@ internal sealed class MissingComponentProvider : OnceInitializedOnceDisposedAsyn
     private static readonly WorkloadDescriptor s_webWorkload = new("Web", "Microsoft.VisualStudio.Component.Web");
 
     private readonly ConfiguredProject _project;
-    private readonly IMissingSetupComponentRegistrationService _missingSetupComponentRegistrationService;
+    private readonly ISetupComponentRegistrationService _setupComponentRegistrationService;
     private readonly IProjectSubscriptionService _projectSubscriptionService;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
     private readonly DisposableBag _disposables = new();
 
     private Guid _projectGuid;
-    private bool? _hasNoMissingWorkloads;
-    private ISet<WorkloadDescriptor>? _missingWorkloads;
+    private bool? _hasNoSuggestedWorkloads;
+    private ISet<WorkloadDescriptor>? _suggestedWorkloads;
 
     [ImportingConstructor]
-    public MissingComponentProvider(
+    public SetupComponentProvider(
         ConfiguredProject project,
-        IMissingSetupComponentRegistrationService missingSetupComponentRegistrationService,
+        ISetupComponentRegistrationService setupComponentRegistrationService,
         IProjectSubscriptionService projectSubscriptionService,
         IProjectFaultHandlerService projectFaultHandlerService,
         IProjectThreadingService threadingService)
         : base(threadingService.JoinableTaskContext)
     {
         _project = project;
-        _missingSetupComponentRegistrationService = missingSetupComponentRegistrationService;
+        _setupComponentRegistrationService = setupComponentRegistrationService;
         _projectSubscriptionService = projectSubscriptionService;
         _projectFaultHandlerService = projectFaultHandlerService;
     }
@@ -80,7 +80,7 @@ internal sealed class MissingComponentProvider : OnceInitializedOnceDisposedAsyn
         _disposables.Add(ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectRuleSource, _projectSubscriptionService.ProjectBuildRuleSource, _project.Capabilities));
 
         // Register this configured project with the aggregator.
-        _disposables.Add(_missingSetupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project));
+        _disposables.Add(_setupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project));
 
         Action<IProjectVersionedValue<(IProjectSubscriptionUpdate EvaluationUpdate, IProjectSubscriptionUpdate BuildUpdate, IProjectCapabilitiesSnapshot Capabilities)>> action = OnUpdate;
 
@@ -106,7 +106,7 @@ internal sealed class MissingComponentProvider : OnceInitializedOnceDisposedAsyn
                 // TODO cache allocation
                 ImmutableHashSet<WorkloadDescriptor> workloads = ImmutableHashSet<WorkloadDescriptor>.Empty.Add(s_webWorkload);
 
-                _missingSetupComponentRegistrationService.SetSuggestedWebWorkloads(_projectGuid, _project, workloads);
+                _setupComponentRegistrationService.SetSuggestedWebWorkloads(_projectGuid, _project, workloads);
             }
 
             bool RequiresWebComponent()
@@ -138,7 +138,7 @@ internal sealed class MissingComponentProvider : OnceInitializedOnceDisposedAsyn
                 targetFrameworkVersion = string.Empty;
             }
 
-            _missingSetupComponentRegistrationService.SetRuntimeVersion(_projectGuid, _project, targetFrameworkVersion);
+            _setupComponentRegistrationService.SetRuntimeVersion(_projectGuid, _project, targetFrameworkVersion);
         }
 
         void ProcessBuildUpdate(IProjectSubscriptionUpdate update)
@@ -150,22 +150,22 @@ internal sealed class MissingComponentProvider : OnceInitializedOnceDisposedAsyn
 
             void ProcessWorkloads(ISet<WorkloadDescriptor> workloads)
             {
-                if (_hasNoMissingWorkloads != true)
+                if (_hasNoSuggestedWorkloads != true)
                 {
                     if (workloads.Count == 0)
                     {
-                        _hasNoMissingWorkloads = true;
+                        _hasNoSuggestedWorkloads = true;
                     }
                     else
                     {
-                        _missingWorkloads ??= new HashSet<WorkloadDescriptor>();
-                        if (!_missingWorkloads.AddRange(workloads))
+                        _suggestedWorkloads ??= new HashSet<WorkloadDescriptor>();
+                        if (!_suggestedWorkloads.AddRange(workloads))
                         {
                             return;
                         }
                     }
 
-                    _missingSetupComponentRegistrationService.SetSuggestedWorkloads(_projectGuid, _project, workloads);
+                    _setupComponentRegistrationService.SetSuggestedWorkloads(_projectGuid, _project, workloads);
                 }
             }
 

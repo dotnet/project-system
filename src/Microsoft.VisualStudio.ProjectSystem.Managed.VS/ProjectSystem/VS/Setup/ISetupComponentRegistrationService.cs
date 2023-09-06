@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup
     /// When required components are absent, triggers the in-product acquisition to allow the user to easily launch the installer.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private)]
-    internal interface IMissingSetupComponentRegistrationService
+    internal interface ISetupComponentRegistrationService
     {
         /// <summary>
         /// Integrates a set of suggested workloads for the specified project configuration.
