@@ -15,8 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 [Export(ExportContractNames.Scopes.ProjectService, typeof(IPackageService))]
 internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDisposedAsync, ISetupComponentRegistrationService, IVsSolutionEvents, IPackageService
 {
-    private const string WasmToolsWorkloadName = "wasm-tools";
-
     private static readonly ImmutableDictionary<string, string> s_runtimeVersionToComponentId = ImmutableStringDictionary<string>.EmptyOrdinalIgnoreCase
         .Add("v2.0", "Microsoft.Net.Core.Component.SDK.2.1")
         .Add("v2.1", "Microsoft.Net.Core.Component.SDK.2.1")
@@ -28,15 +26,12 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         .Add("v7.0", "Microsoft.NetCore.Component.Runtime.7.0")
         .Add("v8.0", "Microsoft.NetCore.Component.Runtime.8.0");
 
-    private static readonly ImmutableHashSet<string> s_supportedReleaseChannelWorkloads = ImmutableHashSet.Create(StringComparers.WorkloadNames, WasmToolsWorkloadName);
-
     // Services
     private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
     private readonly IVsService<SVsSetupCompositionService, IVsSetupCompositionService> _vsSetupCompositionService;
     private readonly ISolutionService _solutionService;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
     private readonly Lazy<HashSet<string>> _installedRuntimeVersions;
-    private readonly Lazy<bool> _isPreviewChannel;
 
     // State
     private readonly ConcurrentHashSet<string> _webComponentIdsDetected = new(StringComparers.VisualStudioSetupComponentIds);
@@ -51,7 +46,6 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> serviceBrokerContainer,
         IVsService<SVsSetupCompositionService, IVsSetupCompositionService> vsSetupCompositionService,
         ISolutionService solutionService,
-        Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
         IProjectFaultHandlerService projectFaultHandlerService,
         JoinableTaskContext joinableTaskContext)
         : base(new(joinableTaskContext))
@@ -66,8 +60,6 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         // This workaround reads the Registry Key HKLM\SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.NETCore.App
         // and get the installed runtime versions from the value names.
         _installedRuntimeVersions = new Lazy<HashSet<string>>(NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine);
-
-        _isPreviewChannel = new Lazy<bool>(() => vsShellUtilitiesHelper.Value.IsVSFromPreviewChannel());
     }
 
     Task IPackageService.InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
@@ -280,7 +272,6 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
                 foreach ((Guid projectGuid, ConcurrentHashSet<WorkloadDescriptor> workloads) in _workloadsByProjectGuid)
                 {
                     List<string> missingComponentIds = workloads
-                        .Where(workload => IsSupportedWorkload(workload))
                         .SelectMany(workload => workload.VisualStudioComponentIds)
                         .Where(componentId => !setupCompositionService.IsPackageInstalled(componentId))
                         .ToList();
@@ -315,13 +306,6 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
                 }
 
                 return missingComponentIdsByProjectGuid;
-
-                bool IsSupportedWorkload(WorkloadDescriptor workload)
-                {
-                    // TODO why are we blocking so many workloads here?
-                    return s_supportedReleaseChannelWorkloads.Contains(workload.WorkloadName)
-                        || _isPreviewChannel.Value;
-                }
             }
         }
     }
