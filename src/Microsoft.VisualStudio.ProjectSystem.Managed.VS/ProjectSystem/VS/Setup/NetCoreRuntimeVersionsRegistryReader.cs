@@ -14,29 +14,24 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
     ///     Reads the list of installed .NET Core runtimes from the registry.
     /// </summary>
     /// <remarks>
-    ///     This list contains both runtimes installed outside VS as standalone packages, and runtimes installed through VS Setup.
+    ///     Returns both runtimes installed outside VS as standalone packages, and runtimes installed through VS Setup.
     /// </remarks>
-    /// <returns>A list of strings representing runtime versions in the format <c>v{MajorVersion}.{MinorVersion}</c> (i.e. <c>"v3.1").</c></returns>
-    public static HashSet<string> ReadRuntimeVersionsInstalledInLocalMachine()
+    /// <returns>An enumeration of strings representing runtime versions in the format <c>v{MajorVersion}.{MinorVersion}</c> (i.e. <c>"v3.1").</c></returns>
+    public static IEnumerable<string> ReadRuntimeVersionsInstalledInLocalMachine()
     {
         // TODO:
         // We assume that the projects will run under the same architecture as VS.
         // This will be the common case, but it does not cover situations where
         // a project will run under emulation (e.g. an x64 build running on an ARM64
         // system.
-        string? registryKeyPath = null;
-        if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+        return RuntimeInformation.ProcessArchitecture switch
         {
-            registryKeyPath = X64NetCoreRegistryKeyPath;
-        }
-        else if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
-        {
-            registryKeyPath = Arm64NetCoreRegistryKeyPath;
-        }
+            Architecture.X64 => Read(X64NetCoreRegistryKeyPath),
+            Architecture.Arm64 => Read(Arm64NetCoreRegistryKeyPath),
+            _ => Enumerable.Empty<string>()
+        };
 
-        HashSet<string> runtimeVersions = new(StringComparer.OrdinalIgnoreCase);
-
-        if (registryKeyPath is not null)
+        static IEnumerable<string> Read(string registryKeyPath)
         {
             var regKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
             var subKey = regKey.OpenSubKey(registryKeyPath);
@@ -45,10 +40,8 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
             {
                 // There is guarantee to always have $(Major).$(Minor)
                 string versionNumber = valueName.Substring(0, valueName.LastIndexOf('.'));
-                runtimeVersions.Add($"v{versionNumber}");
+                yield return $"v{versionNumber}";
             }
         }
-
-        return runtimeVersions;
     }
 }
