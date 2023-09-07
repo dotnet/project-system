@@ -7,9 +7,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
 internal sealed class NetCoreRuntimeVersionsRegistryReader
 {
-    private const string Arm64NetCoreRegistryKeyPath = """SOFTWARE\dotnet\Setup\InstalledVersions\ARM64\sharedfx\""";
-    private const string X64NetCoreRegistryKeyPath = """SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\""";
-    private const string NetCoreRegistryKeyName = "Microsoft.NETCore.App";
+    private const string Arm64NetCoreRegistryKeyPath = """SOFTWARE\dotnet\Setup\InstalledVersions\ARM64\sharedfx\Microsoft.NETCore.App""";
+    private const string X64NetCoreRegistryKeyPath = """SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.NETCore.App""";
 
     /// <summary>
     ///     Reads the list of installed .NET Core runtimes from the registry.
@@ -40,7 +39,7 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
         if (registryKeyPath is not null)
         {
             var regKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-            var subKey = regKey.OpenSubKey(registryKeyPath + NetCoreRegistryKeyName);
+            var subKey = regKey.OpenSubKey(registryKeyPath);
 
             foreach (string valueName in subKey.GetValueNames())
             {
