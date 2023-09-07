@@ -33,8 +33,8 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
 
         static IEnumerable<string> Read(string registryKeyPath)
         {
-            var regKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-            var subKey = regKey.OpenSubKey(registryKeyPath);
+            using RegistryKey regKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+            using RegistryKey subKey = regKey.OpenSubKey(registryKeyPath);
 
             foreach (string valueName in subKey.GetValueNames())
             {
