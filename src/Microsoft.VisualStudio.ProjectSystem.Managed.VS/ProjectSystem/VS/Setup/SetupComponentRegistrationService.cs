@@ -120,6 +120,9 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
 
     private void TryPublish()
     {
+        // Grab a reference to this now so that we can work with a consistent view of the solution data without locking.
+        ImmutableDictionary<Guid, UnconfiguredSetupComponentSnapshot?> snapshotByProjectGuid = _snapshotByProjectGuid;
+
         if (!HaveAllSnapshots())
         {
             return;
@@ -130,7 +133,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
 
         Dictionary<Guid, IReadOnlyCollection<string>>? missingComponentsByProjectGuid = null;
 
-        foreach ((Guid projectGuid, UnconfiguredSetupComponentSnapshot? snapshot) in _snapshotByProjectGuid)
+        foreach ((Guid projectGuid, UnconfiguredSetupComponentSnapshot? snapshot) in snapshotByProjectGuid)
         {
             Assumes.NotNull(snapshot);
 
@@ -163,7 +166,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
 
         bool HaveAllSnapshots()
         {
-            foreach ((_, UnconfiguredSetupComponentSnapshot? snapshot) in _snapshotByProjectGuid)
+            foreach ((_, UnconfiguredSetupComponentSnapshot? snapshot) in snapshotByProjectGuid)
             {
                 if (snapshot is null)
                 {
