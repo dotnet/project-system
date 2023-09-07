@@ -3,8 +3,8 @@
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
 /// <summary>
-/// Aggregates the set of components required by projects across the solution.
-/// When required components are absent, triggers the in-product acquisition to allow the user to easily launch the installer.
+/// Aggregates the set of components required by projects across the solution, allowing in-product
+/// acquisition to direct the user towards a convenient installation experience for any missing components.
 /// </summary>
 [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private)]
 internal interface ISetupComponentRegistrationService
@@ -12,9 +12,6 @@ internal interface ISetupComponentRegistrationService
     /// <summary>
     /// Register a project to be tracked for components to be installed.
     /// </summary>
-    /// <remarks>
-    /// This service must be initialized first.
-    /// </remarks>
     /// <returns>An <see cref="IDisposable"/> that unregisters the project configuration when disposed.</returns>
     IDisposable RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
 

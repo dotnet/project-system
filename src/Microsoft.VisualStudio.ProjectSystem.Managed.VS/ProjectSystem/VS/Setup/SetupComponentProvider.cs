@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 /// <list type="bullet">
 ///   <item><see cref="SuggestedWorkload"/> items from the <c>CollectSuggestedWorkloads</c> target (yay!).</item>
 ///   <item>Specific workloads based on project capabilities and hard-coded knowledge about project types and .NET features (boo!).</item>
-///   <item>The .NET runtime version (for .NET Core project configurations).</item>
+///   <item>The .NET runtime version (for .NET Core project configurations only).</item>
 /// </list>
 /// </remarks>
 [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
