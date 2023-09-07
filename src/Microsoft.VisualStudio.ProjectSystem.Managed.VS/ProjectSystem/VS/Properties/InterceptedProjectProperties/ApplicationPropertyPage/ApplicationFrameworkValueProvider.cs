@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms;
 using static Microsoft.VisualStudio.ProjectSystem.Properties.PropertyNames;
@@ -29,6 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string WinExeOutputType = "WinExe";
         private const string NoneItemType = "None";
         private const string ApplicationDefinitionItemType = "ApplicationDefinition";
+        private const string ApplicationFileName = "Application.xaml";
 
         private readonly UnconfiguredProject _project;
         private readonly IProjectItemProvider _sourceItemsProvider;
@@ -213,29 +215,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     //project accessor to remove the applicationdefinition property if re-enabled
                     await _projectAccessor.OpenProjectXmlForWriteAsync(_project, project =>
                     {
-                        foreach (var propertyGroup in project.PropertyGroups.ToList())
+                        foreach (ProjectItemGroupElement itemGroup in project.ItemGroups.ToList())
                         {
-                            foreach (var property in propertyGroup.Properties.ToList())
+                            foreach (ProjectItemElement item in itemGroup.Items.ToList())
                             {
-                                if (string.Equals(property.Name, ApplicationDefinitionItemType))
+                                if (string.Equals(item.ItemType, ApplicationDefinitionItemType, StringComparisons.ItemTypes))
                                 {
-                                    propertyGroup.RemoveChild(property);
+                                    itemGroup.RemoveChild(item);
+                                }
+                                else if (string.Equals(item.ItemType, NoneItemType, StringComparisons.ItemTypes) && string.Equals(item.Include, ApplicationFileName, StringComparison.Ordinal))
+                                {
+                                    itemGroup.RemoveChild(item);
                                 }
                             }
                         }
+
+                        // does not remove the two empty item groups following because project.ItemGroups is a readonly
                     });
 
                     // Create the Application.xaml if it doesn't exist. We don't care about the path, we just need it to be created.
                     string? appXamlFilePath = await GetAppXamlRelativeFilePathAsync(create: true);
-                    if (appXamlFilePath is not null)
-                    {
-                        IEnumerable<IProjectItem> matchingItems = await _sourceItemsProvider.GetItemsAsync(NoneItemType, appXamlFilePath);
-                        IProjectItem? appXamlItem = matchingItems.FirstOrDefault();
-                        if (appXamlItem is not null)
-                        {
-                            await appXamlItem.SetItemTypeAsync(ApplicationDefinitionItemType);
-                        }
-                    }
 
                     // Clear out the StartupObject if it has a value.
                     string? startupObject = await defaultProperties.GetUnevaluatedPropertyValueAsync(StartupObjectMSBuild);
@@ -255,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                         await defaultProperties.SetPropertyValueAsync(StartupObjectMSBuild, "Sub Main");
                     }
 
-                    // Set the Application.xaml file's build action to None.
+                    // Set the Application.xaml file's build action to None and set Application Definition remove fpr Application.xaml.
                     string? appXamlFilePath = await GetAppXamlRelativeFilePathAsync(create: false);
                     if (appXamlFilePath is not null)
                     {
