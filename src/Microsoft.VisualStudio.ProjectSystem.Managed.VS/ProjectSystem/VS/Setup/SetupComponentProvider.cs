@@ -159,15 +159,15 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
         {
             ConfiguredSetupComponentSnapshot snapshot = ConfiguredSetupComponentSnapshot.Empty;
 
-            var transformMany = DataflowBlockSlim.CreateTransformBlock<
+            var transform = DataflowBlockSlim.CreateTransformBlock<
                 IProjectVersionedValue<(IProjectSubscriptionUpdate EvaluationUpdate, IProjectSubscriptionUpdate BuildUpdate, IProjectCapabilitiesSnapshot Capabilities)>,
                 IProjectVersionedValue<ConfiguredSetupComponentSnapshot>>(
                     Transform,
-                    nameFormat: $"{nameof(ConfiguredSetupComponentDataSource)} transform many {{1}}",
+                    nameFormat: $"{nameof(ConfiguredSetupComponentDataSource)} transform {{1}}",
                     skipIntermediateInputData: false,
                     skipIntermediateOutputData: true);
 
-            transformMany.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
+            transform.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
 
             JoinUpstreamDataSources(_projectSubscriptionService.ProjectRuleSource, _projectSubscriptionService.ProjectBuildRuleSource, _configuredProject.Capabilities);
 
@@ -175,7 +175,7 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
                 _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(s_evaluationRuleNames)),
                 _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(s_buildRuleNames)),
                 _configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
-                target: transformMany,
+                target: transform,
                 linkOptions: DataflowOption.PropagateCompletion);
 
             IProjectVersionedValue<ConfiguredSetupComponentSnapshot> Transform(IProjectVersionedValue<(IProjectSubscriptionUpdate EvaluationUpdate, IProjectSubscriptionUpdate BuildUpdate, IProjectCapabilitiesSnapshot Capabilities)> update)
