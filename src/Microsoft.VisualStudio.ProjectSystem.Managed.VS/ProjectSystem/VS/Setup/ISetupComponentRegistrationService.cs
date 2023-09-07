@@ -12,30 +12,18 @@ internal interface ISetupComponentRegistrationService
     /// <summary>
     /// Register a project to be tracked for components to be installed.
     /// </summary>
-    /// <returns>An <see cref="IDisposable"/> that unregisters the project configuration when disposed.</returns>
-    IDisposable RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
+    /// <returns>An <see cref="IDisposable"/> that unregisters the project when disposed.</returns>
+    /// <param name="projectGuid">Identifies the project providing the data.</param>
+    /// <param name="cancellationToken">Signals a loss of interest in the result of this operation.</param>
+    Task<IDisposable> RegisterProjectAsync(Guid projectGuid, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Integrates a set of suggested workloads for the specified project configuration.
+    /// Sets the latest component snapshot for an unconfigured project.
     /// </summary>
     /// <remarks>
-    /// Must register a project first using <see cref="RegisterProjectConfiguration" />
+    /// The project must first be registered via <see cref="RegisterProjectAsync" />.
     /// </remarks>
-    void SetSuggestedWorkloadComponents(Guid projectGuid, ConfiguredProject project, ISet<string> componentIds);
-
-    /// <summary>
-    /// Integrates a set of suggested web workloads for the specified project configuration.
-    /// </summary>
-    /// <remarks>
-    /// Must register a project first using <see cref="RegisterProjectConfiguration" />
-    /// </remarks>
-    void SetSuggestedWebComponents(Guid projectGuid, ConfiguredProject project, ISet<string> componentIds);
-
-    /// <summary>
-    /// Sets the .NET Core runtime version (e.g. <c>v6.0</c>) required by the project.
-    /// </summary>
-    /// <remarks>
-    /// Must register a project first using <see cref="RegisterProjectConfiguration" />
-    /// </remarks>
-    void SetRuntimeVersion(Guid projectGuid, ConfiguredProject project, string runtimeVersion);
+    /// <param name="projectGuid">Identifies the project providing the data.</param>
+    /// <param name="snapshot">The set of components required by the calling project.</param>
+    void SetProjectComponentSnapshot(Guid projectGuid, UnconfiguredSetupComponentSnapshot snapshot);
 }

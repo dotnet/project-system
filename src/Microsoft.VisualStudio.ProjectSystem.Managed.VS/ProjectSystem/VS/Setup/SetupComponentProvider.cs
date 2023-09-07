@@ -1,13 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
+using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
 /// <summary>
-/// Determines the VS setup component requirements of the configured project and provides them
+/// Determines the VS setup component requirements of the unconfigured project and provides them
 /// to <see cref="ISetupComponentRegistrationService"/> (global scope), which aggregates across
 /// all projects and notifies the user to install missing components via in-product acquisition.
 /// </summary>
@@ -18,19 +17,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 ///   <item>Specific workloads based on project capabilities and hard-coded knowledge about project types and .NET features (boo!).</item>
 ///   <item>The .NET runtime version (for .NET Core project configurations only).</item>
 /// </list>
+/// Components are gathered from all active configured projects within the project.
 /// </remarks>
-[Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
+[Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
 [AppliesTo(ProjectCapability.DotNet)]
 internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
 {
-    private static readonly IImmutableSet<string> s_evaluationRuleNames = ImmutableHashSet<string>.Empty.WithComparer(StringComparers.RuleNames).Add(ConfigurationGeneral.SchemaName);
-    private static readonly IImmutableSet<string> s_buildRuleNames = ImmutableHashSet<string>.Empty.WithComparer(StringComparers.RuleNames).Add(SuggestedWorkload.SchemaName);
+    private static readonly IImmutableSet<string> s_evaluationRuleNames = ImmutableStringHashSet.EmptyRuleNames.Add(ConfigurationGeneral.SchemaName);
+    private static readonly IImmutableSet<string> s_buildRuleNames = ImmutableStringHashSet.EmptyRuleNames.Add(SuggestedWorkload.SchemaName);
 
-    private static readonly ISet<string> s_webComponentIds = ImmutableHashSet<string>.Empty.WithComparer(StringComparers.VisualStudioSetupComponentIds).Add("Microsoft.VisualStudio.Component.Web");
-
-    private readonly ConfiguredProject _project;
+    private readonly UnconfiguredProject _unconfiguredProject;
+    private readonly ISafeProjectGuidService _safeProjectGuidService;
     private readonly ISetupComponentRegistrationService _setupComponentRegistrationService;
-    private readonly IProjectSubscriptionService _projectSubscriptionService;
+    private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
+    private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
     private readonly DisposableBag _disposables = new();
 
@@ -38,22 +38,33 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
 
     [ImportingConstructor]
     public SetupComponentProvider(
-        ConfiguredProject project,
+        UnconfiguredProject project,
+        ISafeProjectGuidService safeProjectGuidService,
         ISetupComponentRegistrationService setupComponentRegistrationService,
-        IProjectSubscriptionService projectSubscriptionService,
+        IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
+        IActiveConfigurationGroupService activeConfigurationGroupService,
         IProjectFaultHandlerService projectFaultHandlerService,
         IProjectThreadingService threadingService)
         : base(threadingService.JoinableTaskContext)
     {
-        _project = project;
+        _unconfiguredProject = project;
+        _safeProjectGuidService = safeProjectGuidService;
         _setupComponentRegistrationService = setupComponentRegistrationService;
-        _projectSubscriptionService = projectSubscriptionService;
+        _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
+        _activeConfigurationGroupService = activeConfigurationGroupService;
         _projectFaultHandlerService = projectFaultHandlerService;
     }
 
     public Task LoadAsync()
     {
-        return InitializeAsync();
+        Task task = InitializeAsync();
+
+        // Don't block on initialization here. It doesn't need to complete before we continue here,
+        // and initialization will wait on some features of the project to become available, which would
+        // cause a deadlock if we waited here. We file this so any exception is reported as an NFE.
+        _projectFaultHandlerService.Forget(task, _unconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+
+        return Task.CompletedTask;
     }
 
     public Task UnloadAsync()
@@ -63,26 +74,62 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
 
     protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
     {
-        // Note we don't use the ISafeProjectGuidService here because it is generally *not*
-        // safe to use within IProjectDynamicLoadComponent.LoadAsync.
-        _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
+        _projectGuid = await _safeProjectGuidService.GetProjectGuidAsync(cancellationToken);
 
-        // Join the source blocks, so if they need to switch to UI thread to complete
-        // and someone is blocked on us on the same thread, the call proceeds
-        _disposables.Add(ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectRuleSource, _projectSubscriptionService.ProjectBuildRuleSource, _project.Capabilities));
+        if (_projectGuid == Guid.Empty)
+        {
+            System.Diagnostics.Debug.Fail("Project GUID is empty. Setup component reporting will be disabled for this project.");
+            return;
+        }
 
-        // Register this configured project with the aggregator.
-        _disposables.Add(_setupComponentRegistrationService.RegisterProjectConfiguration(_projectGuid, _project));
+        // Register this project with the aggregator.
+        _disposables.Add(await _setupComponentRegistrationService.RegisterProjectAsync(_projectGuid, cancellationToken));
 
-        Action<IProjectVersionedValue<(IProjectSubscriptionUpdate EvaluationUpdate, IProjectSubscriptionUpdate BuildUpdate, IProjectCapabilitiesSnapshot Capabilities)>> action = OnUpdate;
+        // Join data across configurations into a single update.
+        var joinBlock = new ConfiguredProjectDataSourceJoinBlock<ConfiguredSetupComponentSnapshot>(
+            configuredProject => configuredProject.Services.ExportProvider.GetExportedValue<ConfiguredSetupComponentDataSource>(),
+            JoinableFactory,
+            _unconfiguredProject);
 
-        _disposables.Add(ProjectDataSources.SyncLinkTo(
-            _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(s_evaluationRuleNames)),
-            _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(s_buildRuleNames)),
-            _project.Capabilities.SourceBlock.SyncLinkOptions(),
-            target: DataflowBlockFactory.CreateActionBlock(action, _project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality),
-            linkOptions: DataflowOption.PropagateCompletion,
-            cancellationToken: cancellationToken));
+        _disposables.Add(joinBlock);
+
+        UnconfiguredSetupComponentSnapshot? snapshot = null;
+
+        // Combine data across all configurations.
+        var mergeBlock = DataflowBlockSlim.CreateTransformManyBlock<IProjectVersionedValue<IReadOnlyCollection<ConfiguredSetupComponentSnapshot>>, UnconfiguredSetupComponentSnapshot>(
+            TransformMany,
+            nameFormat: $"Merge {nameof(ConfiguredSetupComponentSnapshot)} {{1}}",
+            skipIntermediateInputData: true,
+            skipIntermediateOutputData: true); // skip data if we fall behind
+
+        Action<UnconfiguredSetupComponentSnapshot> action = OnUpdate;
+
+        mergeBlock.LinkTo(
+            DataflowBlockFactory.CreateActionBlock(action, _unconfiguredProject, ProjectFaultSeverity.LimitedFunctionality),
+            DataflowOption.PropagateCompletion);
+
+        joinBlock.LinkTo(mergeBlock, DataflowOption.PropagateCompletion);
+
+        // Link a data source of active ConfiguredProjects into the join block.
+        _disposables.Add(
+            _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkTo(
+                joinBlock,
+                DataflowOption.PropagateCompletion));
+
+        _disposables.Add(ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource));
+
+        IEnumerable<UnconfiguredSetupComponentSnapshot> TransformMany(IProjectVersionedValue<IReadOnlyCollection<ConfiguredSetupComponentSnapshot>> update)
+        {
+            if (UnconfiguredSetupComponentSnapshot.TryUpdate(ref snapshot, update.Value))
+            {
+                yield return snapshot;
+            }
+        }
+
+        void OnUpdate(UnconfiguredSetupComponentSnapshot snapshot)
+        {
+            _setupComponentRegistrationService.SetProjectComponentSnapshot(_projectGuid, snapshot);
+        }
     }
 
     protected override Task DisposeCoreAsync(bool initialized)
@@ -92,84 +139,53 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
         return Task.CompletedTask;
     }
 
-    private void OnUpdate(IProjectVersionedValue<(IProjectSubscriptionUpdate EvaluationUpdate, IProjectSubscriptionUpdate BuildUpdate, IProjectCapabilitiesSnapshot Capabilities)> update)
+    [Export(typeof(ConfiguredSetupComponentDataSource))]
+    private sealed class ConfiguredSetupComponentDataSource : ChainedProjectValueDataSourceBase<ConfiguredSetupComponentSnapshot>
     {
-        ProcessCapabilities(update.Value.Capabilities);
-        ProcessEvaluationUpdate(update.Value.EvaluationUpdate);
-        ProcessBuildUpdate(update.Value.BuildUpdate);
+        private readonly ConfiguredProject _configuredProject;
+        private readonly IProjectSubscriptionService _projectSubscriptionService;
 
-        void ProcessCapabilities(IProjectCapabilitiesSnapshot capabilities)
+        [ImportingConstructor]
+        public ConfiguredSetupComponentDataSource(
+            ConfiguredProject configuredProject,
+            IProjectSubscriptionService projectSubscriptionService)
+            : base(configuredProject.UnconfiguredProject.ProjectService, synchronousDisposal: false, registerDataSource: false)
         {
-            if (RequiresWebComponent())
-            {
-                _setupComponentRegistrationService.SetSuggestedWebComponents(_projectGuid, _project, s_webComponentIds);
-            }
-
-            bool RequiresWebComponent()
-            {
-                // Handle scenarios where Visual Studio developer may have an install of VS with only the desktop workload
-                // and a developer may open a WPF/WinForms project (or edit an existing one) to be able to create a hybrid app (WPF + Blazor web).
-
-                // DotNetCoreRazor && (WindowsForms || WPF)
-                return capabilities.IsProjectCapabilityPresent(ProjectCapability.DotNetCoreRazor)
-                    && (capabilities.IsProjectCapabilityPresent(ProjectCapability.WindowsForms) || capabilities.IsProjectCapabilityPresent(ProjectCapability.WPF));
-            }
+            _configuredProject = configuredProject;
+            _projectSubscriptionService = projectSubscriptionService;
         }
 
-        void ProcessEvaluationUpdate(IProjectSubscriptionUpdate update)
+        protected override IDisposable? LinkExternalInput(ITargetBlock<IProjectVersionedValue<ConfiguredSetupComponentSnapshot>> targetBlock)
         {
-            IImmutableDictionary<string, string> configurationGeneralProperties = update.CurrentState[ConfigurationGeneral.SchemaName].Properties;
+            ConfiguredSetupComponentSnapshot snapshot = ConfiguredSetupComponentSnapshot.Empty;
 
-            if (!configurationGeneralProperties.TryGetValue(ConfigurationGeneral.TargetFrameworkIdentifierProperty, out string? targetFrameworkIdentifier) ||
-                !configurationGeneralProperties.TryGetValue(ConfigurationGeneral.TargetFrameworkVersionProperty, out string? targetFrameworkVersion) ||
-                targetFrameworkVersion is null)
+            var transformMany = DataflowBlockSlim.CreateTransformBlock<
+                IProjectVersionedValue<(IProjectSubscriptionUpdate EvaluationUpdate, IProjectSubscriptionUpdate BuildUpdate, IProjectCapabilitiesSnapshot Capabilities)>,
+                IProjectVersionedValue<ConfiguredSetupComponentSnapshot>>(
+                    Transform,
+                    nameFormat: $"{nameof(ConfiguredSetupComponentDataSource)} transform many {{1}}",
+                    skipIntermediateInputData: false,
+                    skipIntermediateOutputData: true);
+
+            transformMany.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
+
+            JoinUpstreamDataSources(_projectSubscriptionService.ProjectRuleSource, _projectSubscriptionService.ProjectBuildRuleSource, _configuredProject.Capabilities);
+
+            return ProjectDataSources.SyncLinkTo(
+                _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(s_evaluationRuleNames)),
+                _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(s_buildRuleNames)),
+                _configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
+                target: transformMany,
+                linkOptions: DataflowOption.PropagateCompletion);
+
+            IProjectVersionedValue<ConfiguredSetupComponentSnapshot> Transform(IProjectVersionedValue<(IProjectSubscriptionUpdate EvaluationUpdate, IProjectSubscriptionUpdate BuildUpdate, IProjectCapabilitiesSnapshot Capabilities)> update)
             {
-                return;
-            }
+                // Apply the update. Note that this may return the same instance as before, however because
+                // we join the output of this block with that of other blocks, we must always return a value
+                // with the latest versions.
+                snapshot = snapshot.Update(update.Value.EvaluationUpdate, update.Value.BuildUpdate, update.Value.Capabilities);
 
-            // set to empty for non-netcore projects so that we do not check for missing installed runtime for them
-            if (!string.Equals(targetFrameworkIdentifier, TargetFrameworkIdentifiers.NetCoreApp, StringComparisons.FrameworkIdentifiers) ||
-                string.IsNullOrEmpty(targetFrameworkVersion))
-            {
-                targetFrameworkVersion = string.Empty;
-            }
-
-            _setupComponentRegistrationService.SetRuntimeVersion(_projectGuid, _project, targetFrameworkVersion);
-        }
-
-        void ProcessBuildUpdate(IProjectSubscriptionUpdate update)
-        {
-            // TODO no-op when data unchanged
-            ISet<string> componentIds = GatherComponentIds(update.CurrentState);
-
-            _setupComponentRegistrationService.SetSuggestedWorkloadComponents(_projectGuid, _project, componentIds);
-
-            static ISet<string> GatherComponentIds(IImmutableDictionary<string, IProjectRuleSnapshot> currentState)
-            {
-                IProjectRuleSnapshot suggestedWorkloads = currentState.GetSnapshotOrEmpty(SuggestedWorkload.SchemaName);
-
-                if (suggestedWorkloads.Items.Count == 0)
-                {
-                    return ImmutableHashSet<string>.Empty;
-                }
-
-                HashSet<string>? componentIds = null;
-
-                foreach ((string workloadName, IImmutableDictionary<string, string> metadata) in suggestedWorkloads.Items)
-                {
-                    if (metadata.GetStringProperty(SuggestedWorkload.VisualStudioComponentIdsProperty) is string ids)
-                    {
-                        componentIds ??= new();
-                        componentIds.AddRange(new LazyStringSplit(ids, ';').Where(id => !string.IsNullOrWhiteSpace(id)).Select(id => id.Trim()));
-                    }
-                    else if (metadata.GetStringProperty(SuggestedWorkload.VisualStudioComponentIdProperty) is string id)
-                    {
-                        componentIds ??= new();
-                        componentIds.Add(id.Trim());
-                    }
-                }
-
-                return (ISet<string>?)componentIds ?? ImmutableHashSet<string>.Empty;
+                return new ProjectVersionedValue<ConfiguredSetupComponentSnapshot>(snapshot, update.DataSourceVersions);
             }
         }
     }

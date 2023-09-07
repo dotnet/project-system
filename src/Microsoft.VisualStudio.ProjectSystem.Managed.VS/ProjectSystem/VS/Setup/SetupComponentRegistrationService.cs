@@ -1,10 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Concurrent;
 using Microsoft.ServiceHub.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.RpcContracts.Setup;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.ServiceBroker;
 using Microsoft.VisualStudio.Threading;
@@ -12,37 +11,18 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
 [Export(typeof(ISetupComponentRegistrationService))]
-[Export(ExportContractNames.Scopes.ProjectService, typeof(IPackageService))]
-internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDisposedAsync, ISetupComponentRegistrationService, IVsSolutionEvents, IPackageService
+internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDisposedAsync, ISetupComponentRegistrationService, IVsSolutionEvents
 {
-    /// <summary>
-    /// Maps .NET Core <c>TargetFrameworkVersion</c> to the corresponding VS Setup component ID for that version's runtime.
-    /// </summary>
-    private static readonly ImmutableDictionary<string, string> s_componentIdByRuntimeVersion = ImmutableStringDictionary<string>.EmptyOrdinalIgnoreCase
-        .Add("v2.0", "Microsoft.Net.Core.Component.SDK.2.1")
-        .Add("v2.1", "Microsoft.Net.Core.Component.SDK.2.1")
-        .Add("v2.2", "Microsoft.Net.Core.Component.SDK.2.1")
-        .Add("v3.0", "Microsoft.NetCore.Component.Runtime.3.1")
-        .Add("v3.1", "Microsoft.NetCore.Component.Runtime.3.1")
-        .Add("v5.0", "Microsoft.NetCore.Component.Runtime.5.0")
-        .Add("v6.0", "Microsoft.NetCore.Component.Runtime.6.0")
-        .Add("v7.0", "Microsoft.NetCore.Component.Runtime.7.0")
-        .Add("v8.0", "Microsoft.NetCore.Component.Runtime.8.0");
-
-    // Services
     private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
-    private readonly IVsService<SVsSetupCompositionService, IVsSetupCompositionService> _vsSetupCompositionService;
+    private readonly IVsService<SVsSetupCompositionService, IVsSetupCompositionService> _setupCompositionServiceFactory;
     private readonly ISolutionService _solutionService;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
-    private readonly Lazy<HashSet<string>> _installedRuntimeVersions;
+    private readonly Lazy<HashSet<string>> _installedRuntimeComponentIds;
 
-    // State
-    private readonly ConcurrentHashSet<string> _webComponentIdsDetected = new(StringComparers.VisualStudioSetupComponentIds);
-    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<string>> _workloadComponentIdsByProjectGuid = new();
-    private readonly ConcurrentDictionary<Guid, string> _runtimeComponentIdByProjectGuid = new();
-    private readonly ConcurrentDictionary<Guid, ConcurrentHashSet<ProjectConfiguration>> _projectConfigurationsByProjectGuid = new();
-    private ConcurrentDictionary<string, ConcurrentHashSet<ProjectConfiguration>>? _projectConfigurationsByProjectPath;
+    private IVsSetupCompositionService? _setupCompositionService;
+    private IMissingComponentRegistrationService? _missingComponentRegistrationService;
     private IAsyncDisposable? _solutionEventsSubscription;
+    private ImmutableDictionary<Guid, UnconfiguredSetupComponentSnapshot?> _snapshotByProjectGuid = ImmutableDictionary<Guid, UnconfiguredSetupComponentSnapshot?>.Empty;
 
     [ImportingConstructor]
     public SetupComponentRegistrationService(
@@ -54,7 +34,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         : base(new(joinableTaskContext))
     {
         _serviceBrokerContainer = serviceBrokerContainer;
-        _vsSetupCompositionService = vsSetupCompositionService;
+        _setupCompositionServiceFactory = vsSetupCompositionService;
         _solutionService = solutionService;
         _projectFaultHandlerService = projectFaultHandlerService;
 
@@ -62,252 +42,151 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         // VS has no information about the packages installed outside VS, and deep detection is not suggested for performance reasons.
         // This workaround reads the Registry Key HKLM\SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.NETCore.App
         // and get the installed runtime versions from the value names.
-        _installedRuntimeVersions = new Lazy<HashSet<string>>(NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine);
-    }
+        _installedRuntimeComponentIds = new Lazy<HashSet<string>>(FindInstalledRuntimeComponentIds);
 
-    Task IPackageService.InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
-    {
-        return InitializeAsync(CancellationToken.None);
+        static HashSet<string> FindInstalledRuntimeComponentIds()
+        {
+            HashSet<string> installedRuntimeComponentIds = new(StringComparers.VisualStudioSetupComponentIds);
+
+            foreach (string runtimeVersion in NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine())
+            {
+                if (ConfiguredSetupComponentSnapshot.ComponentIdByRuntimeVersion.TryGetValue(runtimeVersion, out string? runtimeComponentId))
+                {
+                    installedRuntimeComponentIds.Add(runtimeComponentId);
+                }
+            }
+
+            return installedRuntimeComponentIds;
+        }
     }
 
     protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
     {
         _solutionEventsSubscription = await _solutionService.SubscribeAsync(this, cancellationToken);
+
+        _setupCompositionService = await _setupCompositionServiceFactory.GetValueAsync(cancellationToken);
+
+        IBrokeredServiceContainer serviceBrokerContainer = await _serviceBrokerContainer.GetValueAsync(cancellationToken);
+        IServiceBroker serviceBroker = serviceBrokerContainer.GetFullAccessServiceBroker();
+        _missingComponentRegistrationService = await serviceBroker.GetProxyAsync<IMissingComponentRegistrationService>(
+            serviceDescriptor: VisualStudioServices.VS2022.MissingComponentRegistrationService,
+            cancellationToken: cancellationToken);
     }
 
     protected override async Task DisposeCoreAsync(bool initialized)
     {
-        ClearData();
-
         if (_solutionEventsSubscription is not null)
         {
             await _solutionEventsSubscription.DisposeAsync();
         }
-    }
 
-    private void ClearData()
-    {
-        _webComponentIdsDetected.Clear();
-        _runtimeComponentIdByProjectGuid.Clear();
-        _workloadComponentIdsByProjectGuid.Clear();
-        _projectConfigurationsByProjectGuid.Clear();
-        _projectConfigurationsByProjectPath?.Clear();
-    }
-
-    public IDisposable RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
-    {
-        AddConfiguration();
-
-        return new DisposableDelegate(() => UnregisterProjectConfiguration(projectGuid, project));
-
-        void AddConfiguration()
+        if (_missingComponentRegistrationService is IDisposable disposable)
         {
-            ConcurrentHashSet<ProjectConfiguration> projectConfigurations;
-
-            // Fall back to the full path of the project if the project GUID has not yet been set.
-            if (projectGuid == Guid.Empty)
-            {
-                // This collection is not commonly needed, so we construct it lazily.
-                if (_projectConfigurationsByProjectPath is null)
-                {
-                    Interlocked.CompareExchange(ref _projectConfigurationsByProjectPath, new(StringComparers.Paths), null);
-                }
-
-                projectConfigurations = _projectConfigurationsByProjectPath.GetOrAdd(project.UnconfiguredProject.FullPath, static _ => new());
-            }
-            else
-            {
-                projectConfigurations = _projectConfigurationsByProjectGuid.GetOrAdd(projectGuid, static _ => new());
-            }
-
-            projectConfigurations.Add(project.ProjectConfiguration);
+            disposable.Dispose();
         }
     }
 
-    public void SetSuggestedWorkloadComponents(Guid projectGuid, ConfiguredProject project, ISet<string> componentIds)
+    public async Task<IDisposable> RegisterProjectAsync(Guid projectGuid, CancellationToken cancellationToken)
     {
-        if (componentIds.Count > 0)
+        Requires.Argument(projectGuid != Guid.Empty, nameof(projectGuid), "Cannot be an empty GUID.");
+
+        await InitializeAsync(cancellationToken);
+
+        // Add an empty snapshot for the project for now.
+        ImmutableInterlocked.Update(
+            ref _snapshotByProjectGuid,
+            static (dic, projectGuid) => dic.Add(projectGuid, null),
+            projectGuid);
+
+        return new DisposableDelegate(() =>
         {
-            // TODO why merge here? why not replace?
-            ConcurrentHashSet<string> existingComponentIds = _workloadComponentIdsByProjectGuid.GetOrAdd(projectGuid, static _ => new());
-
-            if (existingComponentIds.AddRange(componentIds))
-            {
-                DisplayMissingComponentsPromptIfNeeded(project.UnconfiguredProject);
-            }
-        }
-
-        UnregisterProjectConfiguration(projectGuid, project);
+            ImmutableInterlocked.Update(
+                ref _snapshotByProjectGuid,
+                static (dic, projectGuid) => dic.Remove(projectGuid),
+                projectGuid);
+        });
     }
 
-    public void SetSuggestedWebComponents(Guid projectGuid, ConfiguredProject project, ISet<string> componentIds)
+    public void SetProjectComponentSnapshot(Guid projectGuid, UnconfiguredSetupComponentSnapshot snapshot)
     {
-        if (AreNewComponentIdsToRegister(componentIds))
+        Requires.Argument(projectGuid != Guid.Empty, nameof(projectGuid), "Cannot be an empty GUID.");
+        Requires.Argument(_snapshotByProjectGuid.ContainsKey(projectGuid), nameof(projectGuid), "Project GUID must be registered.");
+
+        if (ImmutableInterlocked.Update(ref _snapshotByProjectGuid, static (dic, pair) => dic.SetItem(pair.Key, pair.Value), (Key: projectGuid, Value: snapshot)))
+        {
+            TryPublish();
+        }
+    }
+
+    private void TryPublish()
+    {
+        if (!HaveAllSnapshots())
         {
             return;
         }
 
-        // TODO why merge here? why not replace?
-        ConcurrentHashSet<string> existingComponentIds = _workloadComponentIdsByProjectGuid.GetOrAdd(projectGuid, static _ => new());
+        Assumes.Present(_setupCompositionService);
+        Assumes.Present(_missingComponentRegistrationService);
 
-        existingComponentIds.AddRange(componentIds);
+        Dictionary<Guid, IReadOnlyCollection<string>>? missingComponentsByProjectGuid = null;
 
-        DisplayMissingComponentsPromptIfNeeded(project.UnconfiguredProject);
-
-        bool AreNewComponentIdsToRegister(ISet<string> componentIds)
+        foreach ((Guid projectGuid, UnconfiguredSetupComponentSnapshot? snapshot) in _snapshotByProjectGuid)
         {
-            bool added = false;
+            Assumes.NotNull(snapshot);
 
-            foreach (string componentId in componentIds)
+            List<string>? missingComponents = null;
+
+            foreach (string componentId in snapshot.ComponentIds)
             {
-                if (_webComponentIdsDetected.Add(componentId))
+                if (IsMissingComponent(componentId))
                 {
-                    added = true;
+                    missingComponents ??= new();
+                    missingComponents.Add(componentId);
                 }
             }
 
-            return added;
-        }
-    }
-
-    public void SetRuntimeVersion(Guid projectGuid, ConfiguredProject project, string runtimeVersion)
-    {
-        // Check if the runtime is already installed in VS
-        if (!string.IsNullOrEmpty(runtimeVersion) &&
-            !_installedRuntimeVersions.Value.Contains(runtimeVersion) &&
-            s_componentIdByRuntimeVersion.TryGetValue(runtimeVersion, value: out string? componentId))
-        {
-            if (componentId is not null && _runtimeComponentIdByProjectGuid.TryAdd(projectGuid, componentId))
+            if (missingComponents is not null)
             {
-                DisplayMissingComponentsPromptIfNeeded(project.UnconfiguredProject);
+                missingComponentsByProjectGuid ??= new();
+                missingComponentsByProjectGuid.Add(projectGuid, missingComponents);
             }
         }
 
-        UnregisterProjectConfiguration(projectGuid, project);
-    }
-
-    private void UnregisterProjectConfiguration(Guid projectGuid, ConfiguredProject project)
-    {
-        RemoveConfiguration(projectGuid, project);
-
-        void RemoveConfiguration(Guid projectGuid, ConfiguredProject project)
+        if (missingComponentsByProjectGuid is not null)
         {
-            ConcurrentHashSet<ProjectConfiguration>? projectConfigurations = null;
+            Task task = _missingComponentRegistrationService.RegisterMissingComponentsAsync(missingComponentsByProjectGuid, cancellationToken: default);
 
-            if (projectGuid == Guid.Empty)
-            {
-                _projectConfigurationsByProjectPath?.TryGetValue(project.UnconfiguredProject.FullPath, out projectConfigurations);
-            }
-            else
-            {
-                _projectConfigurationsByProjectGuid.TryGetValue(projectGuid, out projectConfigurations);
-            }
-
-            projectConfigurations?.Remove(project.ProjectConfiguration);
+            _projectFaultHandlerService.Forget(task, project: null, ProjectFaultSeverity.Recoverable);
         }
-    }
-
-    private void DisplayMissingComponentsPromptIfNeeded(UnconfiguredProject project)
-    {
-        if (_workloadComponentIdsByProjectGuid.IsEmpty && _runtimeComponentIdByProjectGuid.IsEmpty)
-        {
-            // No components were registered, so there's nothing that could need to be installed.
-            return;
-        }
-
-        if (!AllProjectsConfigurationsRegisteredComponents())
-        {
-            // Still waiting on at least one registered project to provide its components.
-            // We will wait until we have heard from every project.
-            return;
-        }
-
-        Task task = DisplayMissingComponentsPromptAsync();
-
-        _projectFaultHandlerService.Forget(task, project: project, ProjectFaultSeverity.Recoverable);
 
         return;
 
-        bool AllProjectsConfigurationsRegisteredComponents()
+        bool HaveAllSnapshots()
         {
-            // When a project configuration registers its required components, the configuration gets removed, but we keep the list of components.
-            return _projectConfigurationsByProjectGuid.Values.All(configs => configs.Count == 0)
-                && _projectConfigurationsByProjectPath?.Values.All(configs => configs.Count == 0) is null or true;
+            foreach ((_, UnconfiguredSetupComponentSnapshot? snapshot) in _snapshotByProjectGuid)
+            {
+                if (snapshot is null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
-        async Task DisplayMissingComponentsPromptAsync()
+        bool IsMissingComponent(string componentId)
         {
-            IVsSetupCompositionService? setupCompositionService = await _vsSetupCompositionService.GetValueAsync();
-
-            if (setupCompositionService is null)
+            if (_installedRuntimeComponentIds.Value.Contains(componentId))
             {
-                return;
+                return false;
             }
 
-            IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? missingComponentIdsByProjectGuid = GetMissingComponentIdsByProjectGuid(setupCompositionService);
-
-            if (missingComponentIdsByProjectGuid is null)
+            if (_setupCompositionService.IsPackageInstalled(componentId))
             {
-                return;
+                return false;
             }
 
-            IBrokeredServiceContainer serviceBrokerContainer = await _serviceBrokerContainer.GetValueAsync();
-            IServiceBroker serviceBroker = serviceBrokerContainer.GetFullAccessServiceBroker();
-            IMissingComponentRegistrationService? missingComponentRegistrationService = await serviceBroker.GetProxyAsync<IMissingComponentRegistrationService>(
-                serviceDescriptor: VisualStudioServices.VS2022.MissingComponentRegistrationService);
-
-            using (missingComponentRegistrationService as IDisposable)
-            {
-                if (missingComponentRegistrationService is not null)
-                {
-                    await missingComponentRegistrationService.RegisterMissingComponentsAsync(missingComponentIdsByProjectGuid, cancellationToken: default);
-                }
-            }
-
-            return;
-
-            IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>? GetMissingComponentIdsByProjectGuid(IVsSetupCompositionService setupCompositionService)
-            {
-                // Values in this dictionary must be List<string> within this method.
-                Dictionary<Guid, IReadOnlyCollection<string>> missingComponentIdsByProjectGuid = new();
-
-                foreach ((Guid projectGuid, ConcurrentHashSet<string> componentIds) in _workloadComponentIdsByProjectGuid)
-                {
-                    List<string> missingComponentIds = componentIds
-                        .Where(componentId => !setupCompositionService.IsPackageInstalled(componentId))
-                        .ToList();
-
-                    if (missingComponentIds.Count > 0)
-                    {
-                        missingComponentIdsByProjectGuid[projectGuid] = missingComponentIds;
-                    }
-                }
-
-                // Add missing SDK runtime component IDs
-                foreach ((Guid projectGuid, string runtimeComponentId) in _runtimeComponentIdByProjectGuid)
-                {
-                    if (setupCompositionService.IsPackageInstalled(runtimeComponentId))
-                    {
-                        continue;
-                    }
-
-                    if (missingComponentIdsByProjectGuid.TryGetValue(projectGuid, out IReadOnlyCollection<string>? missingComponentIds))
-                    {
-                        ((List<string>)missingComponentIds).Add(runtimeComponentId);
-                    }
-                    else
-                    {
-                        missingComponentIdsByProjectGuid.Add(projectGuid, new List<string>(capacity: 1) { runtimeComponentId });
-                    }
-                }
-
-                if (missingComponentIdsByProjectGuid.Count == 0)
-                {
-                    return null;
-                }
-
-                return missingComponentIdsByProjectGuid;
-            }
+            return true;
         }
     }
 
@@ -325,7 +204,8 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
 
     public int OnAfterCloseSolution(object pUnkReserved)
     {
-        ClearData();
+        // Clear all data associated with the solution that's being closed
+        _snapshotByProjectGuid = ImmutableDictionary<Guid, UnconfiguredSetupComponentSnapshot?>.Empty;
 
         return HResult.OK;
     }
