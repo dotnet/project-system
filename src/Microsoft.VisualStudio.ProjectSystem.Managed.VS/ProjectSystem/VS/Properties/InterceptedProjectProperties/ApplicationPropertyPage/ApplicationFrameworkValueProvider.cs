@@ -229,8 +229,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                                 }
                             }
                         }
-
-                        // does not remove the two empty item groups following because project.ItemGroups is a readonly
                     });
 
                     // Create the Application.xaml if it doesn't exist. We don't care about the path, we just need it to be created.
