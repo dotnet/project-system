@@ -7,9 +7,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
 internal sealed class NetCoreRuntimeVersionsRegistryReader
 {
-    private static readonly string s_arm64NetCoreRegistryKeyPath = """SOFTWARE\dotnet\Setup\InstalledVersions\ARM64\sharedfx\""";
-    private static readonly string s_x64NetCoreRegistryKeyPath = """SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\""";
-    private static readonly string s_netCoreRegistryKeyName = "Microsoft.NETCore.App";
+    private const string Arm64NetCoreRegistryKeyPath = """SOFTWARE\dotnet\Setup\InstalledVersions\ARM64\sharedfx\""";
+    private const string X64NetCoreRegistryKeyPath = """SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\""";
+    private const string NetCoreRegistryKeyName = "Microsoft.NETCore.App";
 
     /// <summary>
     ///     Reads the list of installed .NET Core runtimes from the registry.
@@ -28,11 +28,11 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
         string? registryKeyPath = null;
         if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
         {
-            registryKeyPath = s_x64NetCoreRegistryKeyPath;
+            registryKeyPath = X64NetCoreRegistryKeyPath;
         }
         else if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
         {
-            registryKeyPath = s_arm64NetCoreRegistryKeyPath;
+            registryKeyPath = Arm64NetCoreRegistryKeyPath;
         }
 
         HashSet<string> runtimeVersions = new(StringComparer.OrdinalIgnoreCase);
@@ -40,7 +40,7 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
         if (registryKeyPath is not null)
         {
             var regKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-            var subKey = regKey.OpenSubKey(registryKeyPath + s_netCoreRegistryKeyName);
+            var subKey = regKey.OpenSubKey(registryKeyPath + NetCoreRegistryKeyName);
 
             foreach (string valueName in subKey.GetValueNames())
             {
