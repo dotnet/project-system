@@ -34,7 +34,16 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
         static IEnumerable<string> Read(string registryKeyPath)
         {
             using RegistryKey regKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-            using RegistryKey subKey = regKey.OpenSubKey(registryKeyPath);
+            using RegistryKey? subKey = regKey.OpenSubKey(registryKeyPath);
+
+            if (subKey is null)
+            {
+                // TODO We've seen this return null in RPS, which indicates a failure to open the sub key.
+                // We should understand why this occurs, as failure to identify installed workloads here may
+                // lead to us misreporting a need to install runtimes that exist on the machine outside of VS.
+                System.Diagnostics.Debug.Fail("Failed to open registry sub key.");
+                yield break;
+            }
 
             foreach (string valueName in subKey.GetValueNames())
             {
