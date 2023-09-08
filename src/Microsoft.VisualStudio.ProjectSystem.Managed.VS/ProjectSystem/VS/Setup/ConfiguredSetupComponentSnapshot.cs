@@ -68,6 +68,7 @@ internal sealed class ConfiguredSetupComponentSnapshot
         IProjectSubscriptionUpdate buildUpdate,
         IProjectCapabilitiesSnapshot capabilities)
     {
+        // We use bitwise | here instead of logical || to prevent short circuiting.
         if (IsEmpty |
             ProcessCapabilities(out bool requiresWebComponent) |
             ProcessEvaluationUpdate(out string? netCoreTargetFrameworkVersion) |
