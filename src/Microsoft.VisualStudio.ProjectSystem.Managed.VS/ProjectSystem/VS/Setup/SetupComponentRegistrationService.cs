@@ -17,7 +17,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
     private readonly IVsService<SVsSetupCompositionService, IVsSetupCompositionService> _setupCompositionServiceFactory;
     private readonly ISolutionService _solutionService;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
-    private readonly Lazy<HashSet<string>> _installedRuntimeComponentIds;
+    private readonly Lazy<HashSet<string>?> _installedRuntimeComponentIds;
 
     private IVsSetupCompositionService? _setupCompositionService;
     private IMissingComponentRegistrationService? _missingComponentRegistrationService;
@@ -38,19 +38,40 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         _solutionService = solutionService;
         _projectFaultHandlerService = projectFaultHandlerService;
 
-        // Workaround to fix https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1460328
-        // VS has no information about the packages installed outside VS, and deep detection is not suggested for performance reasons.
-        // This workaround reads the Registry Key HKLM\SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.NETCore.App
-        // and get the installed runtime versions from the value names.
-        _installedRuntimeComponentIds = new Lazy<HashSet<string>>(FindInstalledRuntimeComponentIds);
+        _installedRuntimeComponentIds = new Lazy<HashSet<string>?>(FindInstalledRuntimeComponentIds);
 
-        static HashSet<string> FindInstalledRuntimeComponentIds()
+        static HashSet<string>? FindInstalledRuntimeComponentIds()
         {
+            // Workaround for https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1460328
+            // VS Setup doesn't know about runtimes installed outside of VS. Deep detection is not suggested for performance reasons.
+            // Instead we read installed runtimes from the registry.
+
+            string[]? runtimeVersions = NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine();
+
+            if (runtimeVersions is null)
+            {
+                return null;
+            }
+
             HashSet<string> installedRuntimeComponentIds = new(StringComparers.VisualStudioSetupComponentIds);
 
-            foreach (string runtimeVersion in NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine())
+            foreach (string runtimeVersion in runtimeVersions)
             {
-                if (ConfiguredSetupComponentSnapshot.ComponentIdByRuntimeVersion.TryGetValue(runtimeVersion, out string? runtimeComponentId))
+                // Example versions:
+                //
+                // - "3.1.32"
+                // - "7.0.11"
+                // - "8.0.0-preview.7.23375.6"
+                // - "8.0.0-rc.1.23419.4"
+                //
+                // We only want the major/minor version, in the same format as TargetFrameworkVersion (e.g. "v8.0").
+
+                int firstDotIndex = runtimeVersion.IndexOf('.');
+                int secondDotIndex = runtimeVersion.IndexOf('.', firstDotIndex + 1);
+                string versionNumber = runtimeVersion.Substring(0, secondDotIndex);
+                string version = $"v{versionNumber}";
+
+                if (ConfiguredSetupComponentSnapshot.ComponentIdByRuntimeVersion.TryGetValue(version, out string? runtimeComponentId))
                 {
                     installedRuntimeComponentIds.Add(runtimeComponentId);
                 }
@@ -179,16 +200,30 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
 
         bool IsMissingComponent(string componentId)
         {
-            if (_installedRuntimeComponentIds.Value.Contains(componentId))
-            {
-                return false;
-            }
-
             if (_setupCompositionService.IsPackageInstalled(componentId))
             {
+                // Setup knows this component. It is not missing.
                 return false;
             }
 
+            if (_installedRuntimeComponentIds.Value is null)
+            {
+                // We couldn't determine installed runtimes, so err on the side of not reporting missing runtimes
+                // rather than warning the user about something they do actually have installed.
+                if (componentId.StartsWith("Microsoft.NetCore.Component.Runtime.", StringComparisons.VisualStudioSetupComponentIds) ||
+                    componentId.StartsWith("Microsoft.Net.Core.Component.SDK.", StringComparisons.VisualStudioSetupComponentIds))
+                {
+                    // This looks like a runtime component.
+                    return false;
+                }
+            }
+            else if (_installedRuntimeComponentIds.Value.Contains(componentId))
+            {
+                // We have a list of known installed runtimes and it includes this component.
+                return false;
+            }
+
+            // This component is not known so is considered missing.
             return true;
         }
     }

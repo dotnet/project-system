@@ -15,9 +15,11 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
     /// </summary>
     /// <remarks>
     ///     Returns both runtimes installed outside VS as standalone packages, and runtimes installed through VS Setup.
+    ///     Values have the form <c>3.1.32</c>, <c>7.0.11</c>, <c>8.0.0-preview.7.23375.6</c>, <c>8.0.0-rc.1.23419.4</c>.
+    ///     If results could not be determined, <see langword="null"/> is returned.
     /// </remarks>
-    /// <returns>An enumeration of strings representing runtime versions in the format <c>v{MajorVersion}.{MinorVersion}</c> (i.e. <c>"v3.1").</c></returns>
-    public static IEnumerable<string> ReadRuntimeVersionsInstalledInLocalMachine()
+    /// <returns>An array of runtime versions, or <see langword="null"/> if results could not be determined.</returns>
+    public static string[]? ReadRuntimeVersionsInstalledInLocalMachine()
     {
         // TODO:
         // We assume that the projects will run under the same architecture as VS.
@@ -28,10 +30,10 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
         {
             Architecture.X64 => Read(X64NetCoreRegistryKeyPath),
             Architecture.Arm64 => Read(Arm64NetCoreRegistryKeyPath),
-            _ => Enumerable.Empty<string>()
+            _ => null
         };
 
-        static IEnumerable<string> Read(string registryKeyPath)
+        static string[]? Read(string registryKeyPath)
         {
             using RegistryKey regKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
             using RegistryKey? subKey = regKey.OpenSubKey(registryKeyPath);
@@ -42,15 +44,10 @@ internal sealed class NetCoreRuntimeVersionsRegistryReader
                 // We should understand why this occurs, as failure to identify installed workloads here may
                 // lead to us misreporting a need to install runtimes that exist on the machine outside of VS.
                 System.Diagnostics.Debug.Fail("Failed to open registry sub key.");
-                yield break;
+                return null;
             }
 
-            foreach (string valueName in subKey.GetValueNames())
-            {
-                // There is guarantee to always have $(Major).$(Minor)
-                string versionNumber = valueName.Substring(0, valueName.LastIndexOf('.'));
-                yield return $"v{versionNumber}";
-            }
+            return subKey.GetValueNames();
         }
     }
 }
