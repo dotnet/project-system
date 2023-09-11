@@ -91,7 +91,8 @@
   
     "categories": {
       "projectsAndSolutions.sdkStyleProjects": {
-        "title": "@Settings_Category_SdkStyleProjects;{860A27C0-B665-47F3-BC12-637E16A1050A}"
+        "title": "@Settings_Category_SdkStyleProjects;{860A27C0-B665-47F3-BC12-637E16A1050A}",
+        "legacyOptionPageId": "2e6db64b-da09-4b9f-a334-37a86fecda6a"
       },
       "projectsAndSolutions.sdkStyleProjects.fastUpToDateCheck": {
         "title": "@Settings_Category_FastUpToDateCheck;{860A27C0-B665-47F3-BC12-637E16A1050A}",
