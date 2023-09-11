@@ -212,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     // Enabled
 
-                    //project accessor to remove the applicationdefinition property if re-enabled
+                    // Project accessor to remove the ApplicationDefinition property if re-enabled
                     await _projectAccessor.OpenProjectXmlForWriteAsync(_project, project =>
                     {
                         foreach (ProjectItemGroupElement itemGroup in project.ItemGroups.ToList())
@@ -252,7 +252,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                         await defaultProperties.SetPropertyValueAsync(StartupObjectMSBuild, "Sub Main");
                     }
 
-                    // Set the Application.xaml file's build action to None and set Application Definition remove fpr Application.xaml.
+                    // Set the Application.xaml file's build action to None, which will also remove it from the ApplicationDefinition item group.
                     string? appXamlFilePath = await GetAppXamlRelativeFilePathAsync(create: false);
                     if (appXamlFilePath is not null)
                     {
