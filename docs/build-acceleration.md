@@ -66,6 +66,8 @@ For example, if `MyPackage` is known to be incompatible with Build Acceleration,
 </Project>
 ```
 
+The .NET Project System includes a list of known, commonly used packages that don't work with Build Acceleration. To disable this default list, set the `EnableDefaultBuildAccelerationIncompatiblePackages` property to `false`.
+
 ## Debugging
 
 ### Enable logging
