@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Runtime.InteropServices;
 using Microsoft.ServiceHub.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.RpcContracts.Setup;
@@ -45,8 +46,14 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
             // Workaround for https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1460328
             // VS Setup doesn't know about runtimes installed outside of VS. Deep detection is not suggested for performance reasons.
             // Instead we read installed runtimes from the registry.
+            //
+            // We currently assume that the project will run on the same architecture as VS.
+            // This will be the common case, but does not cover situations where a project runs
+            // under emulation (e.g. an x64 build running on an ARM64 system).
+            // TODO consider the architecture of the project itself
+            Architecture architecture = RuntimeInformation.ProcessArchitecture;
 
-            string[]? runtimeVersions = NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine();
+            string[]? runtimeVersions = NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine(architecture);
 
             if (runtimeVersions is null)
             {
