@@ -26,7 +26,8 @@
     <PackageAction Condition="'$(PackageAction)' == ''">Pack</PackageAction>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!-- Specify NuGet packages that are known to not work with Build Acceleration. -->
+  <ItemGroup Condition="'$(EnableDefaultBuildAccelerationIncompatiblePackages)' != 'false'">
     <!-- Disable Build Acceleration for VSIX projects -->
     <BuildAccelerationIncompatiblePackage Include="Microsoft.VSSDK.BuildTools" />
   </ItemGroup>
