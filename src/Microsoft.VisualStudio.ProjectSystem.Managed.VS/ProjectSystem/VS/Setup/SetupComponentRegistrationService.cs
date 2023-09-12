@@ -23,6 +23,17 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
     private IVsSetupCompositionService? _setupCompositionService;
     private IMissingComponentRegistrationService? _missingComponentRegistrationService;
     private IAsyncDisposable? _solutionEventsSubscription;
+
+    /// <summary>
+    /// Stores the project's required setup components, keyed by project GUID.
+    /// </summary>
+    /// <remarks>
+    /// When we call VS Setup (via <see cref="IMissingComponentRegistrationService"/>) we will pass data from all projects.
+    /// To avoid churn, we don't make that call until we have data from all projects. To achieve this, we use a <see langword="null"/>
+    /// value for projects that registered themselves (via <see cref="ISetupComponentRegistrationService.RegisterProjectAsync"/>)
+    /// but have not yet provided their data (via <see cref="ISetupComponentRegistrationService.SetProjectComponentSnapshot"/>).
+    /// In <see cref="TryPublish"/> we ensure that all values in this dictionary are non-<see langword="null"/> before publishing.
+    /// </remarks>
     private ImmutableDictionary<Guid, UnconfiguredSetupComponentSnapshot?> _snapshotByProjectGuid = ImmutableDictionary<Guid, UnconfiguredSetupComponentSnapshot?>.Empty;
 
     [ImportingConstructor]
