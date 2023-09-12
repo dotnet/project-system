@@ -30,6 +30,8 @@
   <ItemGroup Condition="'$(EnableDefaultBuildAccelerationIncompatiblePackages)' != 'false'">
     <!-- Disable Build Acceleration for VSIX projects -->
     <BuildAccelerationIncompatiblePackage Include="Microsoft.VSSDK.BuildTools" />
+    <!-- Slow Cheetah doesn't support Build Acceleration -->
+    <BuildAccelerationIncompatiblePackage Include="Microsoft.VisualStudio.SlowCheetah" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(AssemblyReferenceTabs)' == '' And '$(UsingMicrosoftNETSdk)' == 'true'">
