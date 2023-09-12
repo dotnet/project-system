@@ -77,3 +77,6 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Style", "VSTHRD200:Use \"Async\" suffix for async methods", Justification = "This is a When method, such as Task.WhenAll, which doesn't use Async suffix.", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.LanguageServices.LanguageServiceHost.WhenProjectLoaded(System.Threading.CancellationToken)~System.Threading.Tasks.Task")]
 
 [assembly: SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Retained exception for dump analysis purposes.", Scope = "member", Target = "~F:Microsoft.VisualStudio.ProjectSystem.LanguageServices.Workspace._updateException")]
+
+[assembly: SuppressMessage("Reliability", "ISB001:Dispose of proxies", Justification = "Lifecycle is handled correctly, but analyzer cannot tell that", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.VS.Setup.SetupComponentRegistrationService.InitializeCoreAsync(System.Threading.CancellationToken)~System.Threading.Tasks.Task")]
+[assembly: SuppressMessage("Reliability", "ISB001:Dispose of proxies", Justification = "Lifecycle is handled correctly, but analyzer cannot tell that", Scope = "member", Target = "~F:Microsoft.VisualStudio.ProjectSystem.VS.Setup.SetupComponentRegistrationService._missingComponentRegistrationService")]
