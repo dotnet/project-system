@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Legacy;
-using Microsoft.VisualStudio.ProjectSystem;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -347,7 +346,7 @@ internal sealed class DependenciesSnapshotProvider : OnceInitializedOnceDisposed
 
                 ProjectConfiguration activeProjectConfiguration = update.ActiveConfiguredProject.ProjectConfiguration;
 
-                ProjectConfigurationSlice? primarySlice = update.ConfiguredDependencies.Keys.FirstOrDefault(slice => slice.IsPrimaryActiveSlice(activeProjectConfiguration));
+                ProjectConfigurationSlice? primarySlice = update.ConfiguredDependencies.Keys.FirstOrDefault(static (slice, config) => slice.IsPrimaryActiveSlice(config), activeProjectConfiguration);
 
                 if (primarySlice is null)
                 {
