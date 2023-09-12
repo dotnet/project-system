@@ -10,22 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 /// </summary>
 internal sealed class ConfiguredSetupComponentSnapshot
 {
-    private const string WebComponentId = "Microsoft.VisualStudio.Component.Web";
-
-    /// <summary>
-    /// Maps .NET Core <c>TargetFrameworkVersion</c> to the corresponding VS Setup component ID for that version's runtime.
-    /// </summary>
-    public static readonly ImmutableDictionary<string, string> ComponentIdByRuntimeVersion = ImmutableStringDictionary<string>.EmptyOrdinalIgnoreCase
-        .Add("v2.0", "Microsoft.Net.Core.Component.SDK.2.1")
-        .Add("v2.1", "Microsoft.Net.Core.Component.SDK.2.1")
-        .Add("v2.2", "Microsoft.Net.Core.Component.SDK.2.1")
-        .Add("v3.0", "Microsoft.NetCore.Component.Runtime.3.1")
-        .Add("v3.1", "Microsoft.NetCore.Component.Runtime.3.1")
-        .Add("v5.0", "Microsoft.NetCore.Component.Runtime.5.0")
-        .Add("v6.0", "Microsoft.NetCore.Component.Runtime.6.0")
-        .Add("v7.0", "Microsoft.NetCore.Component.Runtime.7.0")
-        .Add("v8.0", "Microsoft.NetCore.Component.Runtime.8.0");
-
     public static ConfiguredSetupComponentSnapshot Empty { get; } = new();
 
     private readonly bool _requiresWebComponent;
@@ -52,10 +36,10 @@ internal sealed class ConfiguredSetupComponentSnapshot
 
         if (requiresWebComponent)
         {
-            componentIds = componentIds.Add(WebComponentId);
+            componentIds = componentIds.Add(SetupComponentReferenceData.WebComponentId);
         }
 
-        if (netCoreTargetFrameworkVersion is not null && ComponentIdByRuntimeVersion.TryGetValue(netCoreTargetFrameworkVersion, out string? runtimeComponentId))
+        if (netCoreTargetFrameworkVersion is not null && SetupComponentReferenceData.TryGetComponentIdByNetCoreTargetFrameworkVersion(netCoreTargetFrameworkVersion, out string? runtimeComponentId))
         {
             componentIds = componentIds.Add(runtimeComponentId);
         }

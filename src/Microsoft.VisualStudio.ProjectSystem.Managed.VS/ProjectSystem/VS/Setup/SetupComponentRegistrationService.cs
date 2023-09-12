@@ -89,7 +89,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
                 string versionNumber = runtimeVersion.Substring(0, secondDotIndex);
                 string version = $"v{versionNumber}";
 
-                if (ConfiguredSetupComponentSnapshot.ComponentIdByRuntimeVersion.TryGetValue(version, out string? runtimeComponentId))
+                if (SetupComponentReferenceData.TryGetComponentIdByNetCoreTargetFrameworkVersion(version, out string? runtimeComponentId))
                 {
                     installedRuntimeComponentIds.Add(runtimeComponentId);
                 }
@@ -228,8 +228,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
             {
                 // We couldn't determine installed runtimes, so err on the side of not reporting missing runtimes
                 // rather than warning the user about something they do actually have installed.
-                if (componentId.StartsWith("Microsoft.NetCore.Component.Runtime.", StringComparisons.VisualStudioSetupComponentIds) ||
-                    componentId.StartsWith("Microsoft.Net.Core.Component.SDK.", StringComparisons.VisualStudioSetupComponentIds))
+                if (SetupComponentReferenceData.IsRuntimeComponentId(componentId))
                 {
                     // This looks like a runtime component.
                     return false;
