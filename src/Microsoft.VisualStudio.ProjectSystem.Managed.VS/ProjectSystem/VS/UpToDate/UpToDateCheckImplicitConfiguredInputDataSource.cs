@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     {
         private readonly ConfiguredProject _configuredProject;
         private readonly IProjectItemSchemaService _projectItemSchemaService;
-        private readonly IUpToDateCheckStatePersistence? _persistentState;
+        private readonly IUpToDateCheckStatePersistence _persistentState;
         private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
         private readonly ICopyItemAggregator _copyItemAggregator;
 
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             IProjectItemSchemaService projectItemSchemaService,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
             ICopyItemAggregator copyItemAggregator,
-            [Import(AllowDefault = true)] IUpToDateCheckStatePersistence? persistentState)
+            IUpToDateCheckStatePersistence persistentState)
             : base(containingProject, synchronousDisposal: false, registerDataSource: false)
         {
             _configuredProject = containingProject;
@@ -103,17 +103,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 {
                     attemptedStateRestore = true;
 
-                    if (_persistentState is not null)
-                    {
-                        // Restoring state requires the UI thread. We must use JTF.RunAsync here to ensure the UI
-                        // thread is shared between related work and prevent deadlocks.
-                        (int ItemHash, DateTime? InputsChangedAtUtc)? restoredState =
-                            await JoinableFactory.RunAsync(() => _persistentState.RestoreItemStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, _projectAsynchronousTasksService.UnloadCancellationToken));
+                    // Restoring state requires the UI thread. We must use JTF.RunAsync here to ensure the UI
+                    // thread is shared between related work and prevent deadlocks.
+                    (int ItemHash, DateTime? InputsChangedAtUtc)? restoredState =
+                        await JoinableFactory.RunAsync(() => _persistentState.RestoreItemStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, _projectAsynchronousTasksService.UnloadCancellationToken));
 
-                        if (restoredState is not null)
-                        {
-                            state = state.WithRestoredState(restoredState.Value.ItemHash, restoredState.Value.InputsChangedAtUtc);
-                        }
+                    if (restoredState is not null)
+                    {
+                        state = state.WithRestoredState(restoredState.Value.ItemHash, restoredState.Value.InputsChangedAtUtc);
                     }
                 }
 
@@ -136,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     }
                 }
 
-                if (state.ItemHash is not null && _persistentState is not null && (priorItemHash != state.ItemHash || priorLastItemsChangedAtUtc != state.LastItemsChangedAtUtc))
+                if (state.ItemHash is not null && (priorItemHash != state.ItemHash || priorLastItemsChangedAtUtc != state.LastItemsChangedAtUtc))
                 {
                     await _persistentState.StoreItemStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, state.ItemHash.Value, state.LastItemsChangedAtUtc, _projectAsynchronousTasksService.UnloadCancellationToken);
                 }
