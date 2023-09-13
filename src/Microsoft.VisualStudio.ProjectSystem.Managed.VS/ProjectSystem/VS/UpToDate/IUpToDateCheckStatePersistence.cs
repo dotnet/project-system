@@ -5,7 +5,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     /// <summary>
     /// Persists fast up-to-date check state across solution lifetimes.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.OneOrZero)]
+    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private)]
     internal interface IUpToDateCheckStatePersistence
     {
         /// <summary>
