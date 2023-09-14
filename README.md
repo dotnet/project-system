@@ -64,6 +64,10 @@ We welcome you to try things out, [file issues](https://github.com/dotnet/projec
 
 This project has adopted a code of conduct adapted from the [Contributor Covenant](https://www.contributor-covenant.org) to clarify expected behavior in our community. This code of conduct has been [adopted by many other projects](https://www.contributor-covenant.org/adopters/). For more information, see [Contributors Code of conduct](https://github.com/dotnet/home/blob/master/guidance/be-nice.md).
 
+## Trademarks
+
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/legal/intellectualproperty/trademarks/usage/general). Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship. Any use of third-party trademarks or logos are subject to those third-party's policies.
+
 <!-- References -->
 
 [MainBranch]:       https://github.com/dotnet/project-system/tree/main
