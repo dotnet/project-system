@@ -139,6 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     '
                     If _view IsNot Nothing AndAlso _view.Controls.Count = 0 Then
                         PopulateView()
+                        EnableUndo()
                     End If
                     Return _view
                 End Get
