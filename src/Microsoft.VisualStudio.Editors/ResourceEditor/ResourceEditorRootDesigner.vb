@@ -38,9 +38,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ' Contains information about the current state of Find/Replace
         Private ReadOnly _findReplace As New FindReplace(Me)
 
-        ' Indicates whether or not we are trying to register our view helper on a delayed basis
-        Private _delayRegisteringViewHelper As Boolean
-
         ' The ErrorListProvider to support error list window
         Private _errorListProvider As ErrorListProvider
 
