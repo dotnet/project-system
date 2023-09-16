@@ -38,9 +38,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ' Contains information about the current state of Find/Replace
         Private ReadOnly _findReplace As New FindReplace(Me)
 
-        ' Indicates whether or not we are trying to register our view helper on a delayed basis
-        Private _delayRegisteringViewHelper As Boolean
-
         ' The ErrorListProvider to support error list window
         Private _errorListProvider As ErrorListProvider
 
@@ -410,34 +407,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Register this root designer as a view helper with the current frame so the shell will can find our
         '''   implementations of IVsFindTarget, IOleCommandTarget, etc.
         ''' </summary>
-        Public Sub RegisterViewHelper()
+        Public Sub RegisterViewHelper(VsWindowFrame As IVsWindowFrame)
             Try
-                Dim VsWindowFrame As IVsWindowFrame = CType(GetService(GetType(IVsWindowFrame)), IVsWindowFrame)
-
                 If VsWindowFrame IsNot Nothing Then
                     VSErrorHandler.ThrowOnFailure(VsWindowFrame.SetProperty(__VSFPROPID.VSFPROPID_ViewHelper, New UnknownWrapper(Me)))
                 Else
-                    If _view IsNot Nothing Then
-                        'We don't have a window frame yet.  Need to delay this registration until we do.
-                        '  Easiest way is to use BeginInvoke.
-                        If _delayRegisteringViewHelper Then
-                            'This is already our second try
-                            Debug.Fail("Unable to delay-register our view helper")
-                            _delayRegisteringViewHelper = False
-                        Else
-                            'Try again, delayed.
-                            _delayRegisteringViewHelper = True
-
-                            ' VS Whidbey #260046 -- Make sure the control is created before calling Invoke/BeginInvoke                                                      
-                            If _view.Created = False Then
-                                _view.CreateControl()
-                            End If
-
-                            _view.BeginInvoke(New System.Windows.Forms.MethodInvoker(AddressOf RegisterViewHelper))
-                        End If
-                    Else
-                        Debug.Fail("View not set in RegisterViewHelper() - can't delay-register view helper")
-                    End If
+                    Debug.Fail("Unable to register our view helper")
                 End If
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(RegisterViewHelper), NameOf(ResourceEditorRootDesigner))
             End Try
