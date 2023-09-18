@@ -33,7 +33,8 @@ internal static class KnownProjectImageMonikers
 
     public static ProjectImageMoniker Reference  { get; } = KnownMonikers.Reference.ToProjectSystemType();
     public static ProjectImageMoniker ReferenceWarning { get; } = KnownMonikers.ReferenceWarning.ToProjectSystemType();
-    public static ProjectImageMoniker ReferenceError { get; } = KnownMonikers.ReferenceError.ToProjectSystemType();
+    // TODO get a "ReferenceError" icon https://github.com/dotnet/project-system/issues/8946
+    public static ProjectImageMoniker ReferenceError { get; } = KnownMonikers.ReferenceWarning.ToProjectSystemType();
     public static ProjectImageMoniker ReferencePrivate { get; } = KnownMonikers.ReferencePrivate.ToProjectSystemType();
 
     public static ProjectImageMoniker COM { get; } = KnownMonikers.COM.ToProjectSystemType();
@@ -43,7 +44,8 @@ internal static class KnownProjectImageMonikers
 
     public static ProjectImageMoniker Library { get; } = KnownMonikers.Library.ToProjectSystemType();
     public static ProjectImageMoniker LibraryWarning { get; } = KnownMonikers.LibraryWarning.ToProjectSystemType();
-    public static ProjectImageMoniker LibraryError { get; } = KnownMonikers.LibraryError.ToProjectSystemType();
+    // TODO get a "LibraryError" icon https://github.com/dotnet/project-system/issues/8946
+    public static ProjectImageMoniker LibraryError { get; } = KnownMonikers.LibraryWarning.ToProjectSystemType();
 
     public static ProjectImageMoniker Framework { get; } = KnownMonikers.Framework.ToProjectSystemType();
     public static ProjectImageMoniker FrameworkWarning { get; } = KnownMonikers.FrameworkWarning.ToProjectSystemType();
