@@ -86,7 +86,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _view.Text = "DesignerWindowPaneBase View"
 
                 _host = DirectCast(GetService(GetType(IDesignerHost)), IDesignerHost)
-                If _host IsNot Nothing AndAlso Not _host.Loading Then
+                If _host IsNot Nothing AndAlso _undoEngine Is Nothing AndAlso Not _host.Loading Then
                     PopulateView()
                     EnableUndo()
                 End If
@@ -137,10 +137,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     ' a load event if a bad event handler threw before
                     ' we got invoked.
                     '
-                    If _view IsNot Nothing AndAlso _view.Controls.Count = 0 Then
-                        PopulateView()
-                        EnableUndo()
-                    End If
                     Return _view
                 End Get
             End Property
@@ -205,7 +201,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' Called to enable OLE undo.
             ''' </summary>
             Private Sub EnableUndo()
-
                 Debug.Assert(_undoEngine Is Nothing, "EnableUndo should only be called once.  Call DisableUndo before calling this again.")
 
                 ' Undo requires that IDesignerSerializationService and
@@ -248,9 +243,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             Private Sub OnLoaded(sender As Object, e As LoadedEventArgs)
-                PopulateView()
-                EnableUndo()
-                'ChangeFormEditorCaption()
+                If _undoEngine Is Nothing Then
+                    PopulateView()
+                    EnableUndo()
+                    'ChangeFormEditorCaption()
+                End If
             End Sub
 
             ''' <summary>

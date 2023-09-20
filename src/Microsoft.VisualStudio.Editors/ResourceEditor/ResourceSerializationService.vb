@@ -95,7 +95,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Requires.NotNull(Value)
 
             If TypeOf Value IsNot Resource Then
-                Throw CreateArgumentException(NameOf(Value))
+                Return
             End If
             Dim Resource As Resource = DirectCast(Value, Resource)
 
