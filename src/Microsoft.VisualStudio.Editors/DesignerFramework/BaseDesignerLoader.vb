@@ -684,14 +684,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Protected Overridable Sub OnDesignerWindowActivated(Activated As Boolean)
         End Sub
 
-        ''' <summary>
-        ''' Called before the frame that's hosting the designer is shown.
-        ''' </summary>
-        ''' <param name="FirstShow">Indicates whether this is the first time the designer is being shown.</param>
-        ''' <param name="Frame">The frame hosting the designer.</param>
-        Protected Overridable Sub OnBeforeDesignerWindowShow(FirstShow As Boolean, Frame As IVsWindowFrame)
-        End Sub
-
 #End Region
 
         ''' <summary>
@@ -826,16 +818,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Function
 
-        Private Function OnBeforeDocumentWindowShow(docCookie As UInteger, firstShow As Integer, frame As IVsWindowFrame) As Integer _
-            Implements IVsRunningDocTableEvents.OnBeforeDocumentWindowShow, IVsRunningDocTableEvents2.OnBeforeDocumentWindowShow
-
-            ' Only notify if our frame showing
-            If CType(GetService(GetType(IVsWindowFrame)), IVsWindowFrame) Is frame Then
-                OnBeforeDesignerWindowShow(firstShow = 1, frame)
-            End If
-
-        End Function
-
 #Region "RDT events we don't care about"
 
         Private Function OnAfterAttributeChange(docCookie As UInteger, attributes As UInteger) As Integer _
@@ -856,6 +838,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Private Function OnAfterSave(docCookie As UInteger) As Integer _
             Implements IVsRunningDocTableEvents.OnAfterSave, IVsRunningDocTableEvents2.OnAfterSave
+        End Function
+
+        Private Function OnBeforeDocumentWindowShow(docCookie As UInteger, firstShow As Integer, frame As IVsWindowFrame) As Integer _
+            Implements IVsRunningDocTableEvents.OnBeforeDocumentWindowShow, IVsRunningDocTableEvents2.OnBeforeDocumentWindowShow
         End Function
 
 #End Region

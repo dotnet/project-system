@@ -141,6 +141,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         'Try to restore the editor state from before the last reload, if any.
                         NewResourceEditorRoot.RootDesigner.TryDepersistSavedEditorState()
 
+                        'Now that we know the load succeeded, we can try registering our view helper
+                        NewResourceEditorRoot.RootDesigner.RegisterViewHelper()
                     Catch ex As Exception When ReportWithoutCrash(ex, NameOf(HandleLoad), NameOf(ResourceEditorDesignerLoader))
                         _rootComponent = Nothing
 
@@ -253,12 +255,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         _rootComponent.RootDesigner.CommitAnyPendingChanges()
                     End If
                 End If
-            End If
-        End Sub
-
-        Protected Overrides Sub OnBeforeDesignerWindowShow(FirstShow As Boolean, Frame As IVsWindowFrame)
-            If FirstShow Then
-                _rootComponent.RootDesigner.RegisterViewHelper(Frame)
             End If
         End Sub
 
