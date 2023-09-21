@@ -88,7 +88,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 _host = DirectCast(GetService(GetType(IDesignerHost)), IDesignerHost)
                 If _host IsNot Nothing AndAlso Not _host.Loading Then
                     PopulateView()
-                    EnableUndo()
                 End If
 
                 AddHandler surface.Loaded, AddressOf OnLoaded
@@ -238,6 +237,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Protected Overrides Sub OnCreate()
                 MyBase.OnCreate()
 
+                _host = DirectCast(GetService(GetType(IDesignerHost)), IDesignerHost)
+                If _host IsNot Nothing AndAlso Not _host.Loading Then
+                    EnableUndo()
+                End If
             End Sub
 
             ''' <summary>
