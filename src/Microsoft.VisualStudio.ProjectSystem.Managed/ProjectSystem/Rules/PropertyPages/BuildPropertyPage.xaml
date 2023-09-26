@@ -196,7 +196,7 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and
-            (has-project-capability "NativeAOTProperties")
+            (has-project-capability "NativeAOT")
             (has-evaluated-value "Application" "OutputType" "Library"))
         </NameValuePair.Value>
       </NameValuePair>
@@ -216,7 +216,7 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and
-            (has-project-capability "NativeAOTProperties")
+            (has-project-capability "NativeAOT")
             (has-evaluated-value "Application" "OutputType" "Library"))
         </NameValuePair.Value>
       </NameValuePair>
@@ -446,7 +446,7 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and
-            (has-project-capability "NativeAOTProperties")
+            (has-project-capability "NativeAOT")
             (not (has-evaluated-value "Application" "OutputType" "Library")))
         </NameValuePair.Value>
       </NameValuePair>
@@ -465,7 +465,7 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and
-            (has-project-capability "NativeAOTProperties")
+            (has-project-capability "NativeAOT")
             (not (has-evaluated-value "Application" "OutputType" "Library")))
         </NameValuePair.Value>
       </NameValuePair>
