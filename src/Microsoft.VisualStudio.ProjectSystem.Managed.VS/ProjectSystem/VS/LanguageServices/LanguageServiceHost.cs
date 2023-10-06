@@ -6,10 +6,6 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem; // Roslyn
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Threading;
 
-// .NET Core defines a non-generic TaskCompletionSource but .NETFramework does not.
-// For consistency, always use the one we define.
-using TaskCompletionSource = Microsoft.VisualStudio.Threading.Tasks.TaskCompletionSource;
-
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 /// <summary>
