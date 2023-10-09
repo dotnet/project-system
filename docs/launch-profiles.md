@@ -12,6 +12,7 @@ The launch profiles for a particular project (if any) are stored in the Properti
     "Start (with native debugging)": {
       "commandName": "Executable",
       "executablePath": "$(DevEnvDir)devenv.exe",
+       "projectName": "NewProjectName",
       "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /log",
       "environmentVariables": {
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
