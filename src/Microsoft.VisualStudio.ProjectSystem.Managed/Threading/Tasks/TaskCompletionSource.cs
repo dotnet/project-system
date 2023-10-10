@@ -1,8 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+#if NETFRAMEWORK
+
 using System.ComponentModel;
 
-namespace Microsoft.VisualStudio.Threading.Tasks
+namespace System.Threading.Tasks
 {
     /// <inheritdoc cref="TaskCompletionSource{TResult}"/>
     /// <remarks>
@@ -54,3 +56,5 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
     }
 }
+
+#endif
