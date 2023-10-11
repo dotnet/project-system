@@ -30,7 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string WinExeOutputType = "WinExe";
         private const string NoneItemType = "None";
         private const string ApplicationDefinitionItemType = "ApplicationDefinition";
-        private const string ApplicationFileName = "Application.xaml";
 
         private readonly UnconfiguredProject _project;
         private readonly IProjectItemProvider _sourceItemsProvider;
@@ -52,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            if (propertyName == ApplicationFramework)
+            if (StringComparers.PropertyNames.Equals(propertyName, ApplicationFramework))
             {
                 if (await IsWPFApplicationAsync(defaultProperties))
                 {
@@ -71,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            if (propertyName == ApplicationFramework)
+            if (StringComparers.PropertyNames.Equals(propertyName, ApplicationFramework))
             {
                 return GetPropertyValueAsync(defaultProperties);
             }
@@ -83,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            if (propertyName == ApplicationFramework)
+            if (StringComparers.PropertyNames.Equals(propertyName, ApplicationFramework))
             {
                 return GetPropertyValueAsync(defaultProperties);
             }
@@ -170,10 +169,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                     if (startupObjectValue is not null)
                     {
+                        string prefix = rootNamespace + ".";
                         // Use StringComparison.OrdinalIgnoreCase because VB is _not_ case-sensitive
-                        if (startupObjectValue.StartsWith(rootNamespace + ".", StringComparison.OrdinalIgnoreCase))
+                        if (startupObjectValue.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
                         {
-                            startupObjectValue = startupObjectValue.Substring((rootNamespace + ".").Length);
+                            startupObjectValue = startupObjectValue.Substring(prefix.Length);
                         }
                         await _myAppXmlFileAccessor.SetMainFormAsync(startupObjectValue);
                     }
@@ -212,18 +212,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     // Enabled
 
+                    string? appXamlFileName = Path.GetFileName(await GetAppXamlRelativeFilePathAsync(create: false));
+
                     // Project accessor to remove the ApplicationDefinition property if re-enabled
+                    // Note: this code causes CPS tree validation warning in Debug builds only, but we are ignorning
                     await _projectAccessor.OpenProjectXmlForWriteAsync(_project, project =>
                     {
-                        foreach (ProjectItemGroupElement itemGroup in project.ItemGroups.ToList())
+                        foreach (ProjectItemGroupElement itemGroup in project.ItemGroups)
                         {
                             foreach (ProjectItemElement item in itemGroup.Items.ToList())
                             {
-                                if (string.Equals(item.ItemType, ApplicationDefinitionItemType, StringComparisons.ItemTypes))
+                                if (StringComparers.ItemTypes.Equals(item.ItemType, ApplicationDefinitionItemType))
                                 {
                                     itemGroup.RemoveChild(item);
                                 }
-                                else if (string.Equals(item.ItemType, NoneItemType, StringComparisons.ItemTypes) && string.Equals(item.Include, ApplicationFileName, StringComparison.Ordinal))
+                                else if (StringComparers.ItemTypes.Equals(item.ItemType, NoneItemType) && StringComparers.Paths.Equals(item.Include, appXamlFileName))
                                 {
                                     itemGroup.RemoveChild(item);
                                 }
