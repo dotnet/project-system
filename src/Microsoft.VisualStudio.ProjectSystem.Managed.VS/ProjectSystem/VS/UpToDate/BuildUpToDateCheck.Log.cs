@@ -209,6 +209,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 });
 
                 // Remember the failure reason and description for use in IncrementalBuildFailureDetector.
+                // First, ensure times are converted to local time (in case logging is not enabled).
+                ConvertToLocalTimes(values);
                 FailureReason = reason;
                 FailureDescription = string.Format(GetResourceString(resourceName), values);
 
