@@ -3,7 +3,8 @@
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.MSBuildDependencies;
 
 [Export(typeof(IMSBuildDependencyFactory))]
-[AppliesTo(ProjectCapability.DependenciesTree)]
+// There's no "AnalyzerReferences" capability, and F# doesn't have analyzers
+[AppliesTo(ProjectCapability.DependenciesTree + " & (" + ProjectCapability.CSharp + " | " + ProjectCapability.VisualBasic + ")")]
 internal sealed class AnalyzerDependencyFactory : MSBuildDependencyFactoryBase
 {
     // NOTE we include ProjectTreeFlags.FileSystemEntity here so that Roslyn can correctly identify the
