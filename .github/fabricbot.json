@@ -107,7 +107,7 @@
           {
             "name": "addMilestone",
             "parameters": {
-              "milestoneName": "17.8"
+              "milestoneName": "17.9"
             }
           }
         ],
@@ -1800,6 +1800,51 @@
             "name": "addMilestone",
             "parameters": {
               "milestoneName": "17.7"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "taskType": "trigger",
+      "capabilityId": "IssueResponder",
+      "subCapability": "PullRequestResponder",
+      "version": "1.0",
+      "config": {
+        "conditions": {
+          "operator": "and",
+          "operands": [
+            {
+              "name": "isAction",
+              "parameters": {
+                "action": "merged"
+              }
+            },
+            {
+              "operator": "or",
+              "operands": [
+                {
+                  "name": "prTargetsBranch",
+                  "parameters": {
+                    "branchName": "dev17.8.x"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "eventType": "pull_request",
+        "eventNames": [
+          "pull_request",
+          "issues",
+          "project_card"
+        ],
+        "taskName": "Milestone tracking - 17.8",
+        "actions": [
+          {
+            "name": "addMilestone",
+            "parameters": {
+              "milestoneName": "17.8"
             }
           }
         ]
