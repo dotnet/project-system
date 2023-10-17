@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithAddedItems("A.cs");
             var metadata = MetadataFactory.Create("A.cs", ("Name", "Value"));
 
-            ApplyProjectEvaluation(context, handler, 1, difference, metadata);
+            ApplyProjectEvaluation(context, handler, 1, difference, metadata: metadata);
 
             var result = handler.Files[@"C:\Project\A.cs"];
 
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                                           .Add("B.cs", ("ExcludeFromCurrentConfiguration", "false"));
                             
 
-            ApplyProjectEvaluation(context, handler, 1, difference, metadata);
+            ApplyProjectEvaluation(context, handler, 1, difference, metadata: metadata);
 
             string[] expectedFiles = new[] { @"C:\Project\B.cs", @"C:\Project\C.cs" };
             Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
@@ -311,7 +311,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.WithChangedItems(file);
             var metadata = MetadataFactory.Create(file, ("Name", "Value"));
 
-            ApplyProjectEvaluation(context, handler, 2, difference, metadata);
+            ApplyProjectEvaluation(context, handler, 2, difference, metadata: metadata);
 
             var result = handler.Files[@"C:\Project\A.cs"];
 
@@ -372,10 +372,56 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Single(handler.FileNames, @"C:\Project\Source.cs");
         }
 
-        private static void ApplyProjectEvaluation(IWorkspaceProjectContext context, AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>>? metadata = null)
+        [Fact]
+        public void ApplyProjectEvaluation_ChangingExclusionMetadata_IncludesFile()
+        {
+            var handler = CreateInstance(@"C:\Project\Project.csproj");
+            var context = IWorkspaceProjectContextMockFactory.Create();
+
+            var metadata = MetadataFactory.Create("Source.cs", ("ExcludeFromCurrentConfiguration", "true"));
+
+            ApplyProjectEvaluation(context, handler, version: 0, IProjectChangeDiffFactory.WithAddedItems("Source.cs"), metadata: metadata);
+
+            Assert.Empty(handler.FileNames);
+
+            var previousMetadata = metadata;
+            metadata = MetadataFactory.Create("Source.cs", ("ExcludeFromCurrentConfiguration", "false"));
+
+            ApplyProjectEvaluation(context, handler, version: 1, IProjectChangeDiffFactory.WithChangedItems("Source.cs"), previousMetadata, metadata);
+
+            Assert.Single(handler.FileNames, @"C:\Project\Source.cs");
+        }
+
+        [Fact]
+        public void ApplyProjectEvaluation_ChangingExclusionMetadata_ExcludesFile()
+        {
+            var handler = CreateInstance(@"C:\Project\Project.csproj");
+            var context = IWorkspaceProjectContextMockFactory.Create();
+
+            var metadata = MetadataFactory.Create("Source.cs", ("ExcludeFromCurrentConfiguration", "false"));
+
+            ApplyProjectEvaluation(context, handler, version: 0, IProjectChangeDiffFactory.WithAddedItems("Source.cs"), metadata: metadata);
+
+            Assert.Single(handler.FileNames, @"C:\Project\Source.cs");
+
+            var previousMetadata = metadata;
+            metadata = MetadataFactory.Create("Source.cs", ("ExcludeFromCurrentConfiguration", "true"));
+
+            ApplyProjectEvaluation(context, handler, version: 1, IProjectChangeDiffFactory.WithChangedItems("Source.cs"), previousMetadata, metadata);
+
+            Assert.Empty(handler.FileNames);
+        }
+
+        private static void ApplyProjectEvaluation(
+            IWorkspaceProjectContext context,
+            AbstractEvaluationCommandLineHandler handler,
+            IComparable version,
+            IProjectChangeDiff difference,
+            IImmutableDictionary<string, IImmutableDictionary<string, string>>? previousMetadata = null,
+            IImmutableDictionary<string, IImmutableDictionary<string, string>>? metadata = null)
         {
             metadata ??= ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
-            var previousMetadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
+            previousMetadata ??= ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             bool isActiveContext = true;
             var logger = IManagedProjectDiagnosticOutputServiceFactory.Create();
 
