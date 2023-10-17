@@ -183,10 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
                 foreach (string includePath in difference.ChangedItems)
                 {
-                    UpdateInContextIfPresent(context, includePath, previousMetadata, currentMetadata, isActiveContext, logger);
-
-                    // TODO: Check for changes in the metadata indicating if we should ignore the file
-                    // in the current configuration.
+                    HandleEvaluationMetadataChange(context, includePath, previousMetadata, currentMetadata, isActiveContext, logger);
                 }
             }
 
@@ -223,16 +220,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void UpdateInContextIfPresent(IWorkspaceProjectContext context, string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IManagedProjectDiagnosticOutputService logger)
+        /// <remarks>
+        ///     This should only be called for evaluation changes. The items we get from design-time builds represent
+        ///     command line arguments and won't have metadata.
+        /// </remarks>
+        private void HandleEvaluationMetadataChange(IWorkspaceProjectContext context, string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IManagedProjectDiagnosticOutputService logger)
         {
-            string fullPath = _project.MakeRooted(includePath);
-
-            if (_paths.Contains(fullPath))
+            // A change in ExcludeFromCurrentConfiguration metadata needs to be processed as an add or remove rather
+            // than an update, so check for that first.
+            bool previouslyIncluded = IsItemInCurrentConfiguration(includePath, previousMetadata);
+            bool currentlyIncluded = IsItemInCurrentConfiguration(includePath, currentMetadata);
+            
+            if (previouslyIncluded && !currentlyIncluded)
             {
-                IImmutableDictionary<string, string> previousItemMetadata = previousMetadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
-                IImmutableDictionary<string, string> currentItemMetadata = currentMetadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
+                RemoveFromContextIfPresent(context, includePath, logger);
+            }
+            else if (!previouslyIncluded && currentlyIncluded)
+            {
+                AddToContextIfNotPresent(context, includePath, currentMetadata, isActiveContext, logger);
+            }
+            else
+            {
+                // No change to ExcludeFromCurrentConfiguration; handle as an update.
+                
+                string fullPath = _project.MakeRooted(includePath);
 
-                UpdateInContext(context, fullPath, previousItemMetadata, currentItemMetadata, isActiveContext, logger);
+                if (_paths.Contains(fullPath))
+                {
+                    IImmutableDictionary<string, string> previousItemMetadata = previousMetadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
+                    IImmutableDictionary<string, string> currentItemMetadata = currentMetadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
+
+                    UpdateInContext(context, fullPath, previousItemMetadata, currentItemMetadata, isActiveContext, logger);
+                }
             }
         }
 
