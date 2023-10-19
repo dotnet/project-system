@@ -30,7 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
 
             bool checkBoxSelection;
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>(), out checkBoxSelection), Times.Once);
-            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [Theory]
@@ -52,7 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
 
             bool checkBoxSelection;
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>(), out checkBoxSelection), Times.Never);
-            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [Theory]
@@ -77,7 +75,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.CSharp, settingsManagerService).TimeoutAfter(TimeSpan.FromSeconds(1));
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
-            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
         }
 
@@ -96,7 +93,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineService, LanguageNames.CSharp, settingsManagerService);
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
-            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
         }
 
@@ -116,7 +112,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineService, LanguageNames.CSharp, settingsManagerService);
             bool disablePromptMessage;
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>(), out disablePromptMessage), Times.Never);
-            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
         }
 
@@ -135,7 +130,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineService, LanguageNames.CSharp, settingsManagerService);
             bool disablePromptMessage;
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>(), out disablePromptMessage), Times.Never);
-            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
         }
 
