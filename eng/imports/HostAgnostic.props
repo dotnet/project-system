@@ -59,7 +59,6 @@
 
     <!-- Host-Agnostic Visual Studio -->
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />
-    <PackageReference Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'">
