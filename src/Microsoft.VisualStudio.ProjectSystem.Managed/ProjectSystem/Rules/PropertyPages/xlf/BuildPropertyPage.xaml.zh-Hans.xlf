@@ -232,14 +232,14 @@
         <target state="translated">目标平台</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|Trimming|Description">
+      <trans-unit id="DynamicEnumProperty|TrimMode|Description">
         <source>Select the desired .NET trimming option for optimizing your application's deployment size and performance.</source>
-        <target state="translated">选择所需的 .NET 剪裁选项以优化应用程序的部署大小和性能。</target>
+        <target state="new">Select the desired .NET trimming option for optimizing your application's deployment size and performance.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|Trimming|DisplayName">
-        <source>Trimming</source>
-        <target state="translated">修整</target>
+      <trans-unit id="DynamicEnumProperty|TrimMode|DisplayName">
+        <source>Trim mode</source>
+        <target state="new">Trim mode</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">

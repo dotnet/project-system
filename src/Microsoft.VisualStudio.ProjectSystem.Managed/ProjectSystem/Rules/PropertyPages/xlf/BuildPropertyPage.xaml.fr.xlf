@@ -232,14 +232,14 @@
         <target state="translated">Plateforme cible</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|Trimming|Description">
+      <trans-unit id="DynamicEnumProperty|TrimMode|Description">
         <source>Select the desired .NET trimming option for optimizing your application's deployment size and performance.</source>
-        <target state="translated">Sélectionnez l’option de découpage .NET souhaitée pour optimiser la taille et les performances de déploiement de votre application.</target>
+        <target state="new">Select the desired .NET trimming option for optimizing your application's deployment size and performance.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|Trimming|DisplayName">
-        <source>Trimming</source>
-        <target state="translated">Suppression</target>
+      <trans-unit id="DynamicEnumProperty|TrimMode|DisplayName">
+        <source>Trim mode</source>
+        <target state="new">Trim mode</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">

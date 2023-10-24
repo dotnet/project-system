@@ -5,16 +5,16 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 
-[ExportDynamicEnumValuesProvider("TrimmingEnumProvider")]
+[ExportDynamicEnumValuesProvider("TrimModeEnumProvider")]
 [AppliesTo(ProjectCapability.DotNet)]
-internal class TrimmingEnumProvider : IDynamicEnumValuesProvider
+internal class TrimModeEnumProvider : IDynamicEnumValuesProvider
 {
     public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
     {
-        return Task.FromResult<IDynamicEnumValuesGenerator>(new TrimmingEnumGenerator());
+        return Task.FromResult<IDynamicEnumValuesGenerator>(new TrimModeEnumGenerator());
     }
 
-    private class TrimmingEnumGenerator : IDynamicEnumValuesGenerator
+    private class TrimModeEnumGenerator : IDynamicEnumValuesGenerator
     {
         private static readonly List<IEnumValue> s_enumValues = new()
         {

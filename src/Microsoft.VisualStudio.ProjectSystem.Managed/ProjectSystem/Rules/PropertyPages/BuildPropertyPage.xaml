@@ -431,12 +431,12 @@
   </EnumProperty>
 
   <!-- These Native AOT properties should not be visible for class library projects. -->
-  <DynamicEnumProperty Name="Trimming"
-                       DisplayName="Trimming"
+  <DynamicEnumProperty Name="TrimMode"
+                       DisplayName="Trim mode"
                        Description="Select the desired .NET trimming option for optimizing your application's deployment size and performance."
                        HelpUrl="https://go.microsoft.com/fwlink/?linkid=2240879"
                        Category="Publish"
-                       EnumProvider="TrimmingEnumProvider"
+                       EnumProvider="TrimModeEnumProvider"
                        MultipleValuesAllowed="False">
     <DynamicEnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
