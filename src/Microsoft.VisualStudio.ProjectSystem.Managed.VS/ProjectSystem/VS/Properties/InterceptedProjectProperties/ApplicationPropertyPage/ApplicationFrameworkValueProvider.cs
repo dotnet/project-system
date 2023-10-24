@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms;
 using static Microsoft.VisualStudio.ProjectSystem.Properties.PropertyNames;
@@ -33,21 +34,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly UnconfiguredProject _project;
         private readonly IProjectItemProvider _sourceItemsProvider;
         private readonly IMyAppFileAccessor _myAppXmlFileAccessor;
+        private readonly IProjectAccessor _projectAccessor;
 
         [ImportingConstructor]
         public ApplicationFrameworkValueProvider(
             UnconfiguredProject project,
             [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
-            IMyAppFileAccessor myAppXamlFileAccessor)
+            IMyAppFileAccessor myAppXamlFileAccessor,
+            IProjectAccessor projectAccessor)
         {
             _project = project;
             _sourceItemsProvider = sourceItemsProvider;
             _myAppXmlFileAccessor = myAppXamlFileAccessor;
+            _projectAccessor = projectAccessor;
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            if (propertyName == ApplicationFramework)
+            if (StringComparers.PropertyNames.Equals(propertyName, ApplicationFramework))
             {
                 if (await IsWPFApplicationAsync(defaultProperties))
                 {
@@ -66,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            if (propertyName == ApplicationFramework)
+            if (StringComparers.PropertyNames.Equals(propertyName, ApplicationFramework))
             {
                 return GetPropertyValueAsync(defaultProperties);
             }
@@ -78,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            if (propertyName == ApplicationFramework)
+            if (StringComparers.PropertyNames.Equals(propertyName, ApplicationFramework))
             {
                 return GetPropertyValueAsync(defaultProperties);
             }
@@ -165,10 +169,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                     if (startupObjectValue is not null)
                     {
+                        string prefix = rootNamespace + ".";
                         // Use StringComparison.OrdinalIgnoreCase because VB is _not_ case-sensitive
-                        if (startupObjectValue.StartsWith(rootNamespace + ".", StringComparison.OrdinalIgnoreCase))
+                        if (startupObjectValue.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
                         {
-                            startupObjectValue = startupObjectValue.Substring((rootNamespace + ".").Length);
+                            startupObjectValue = startupObjectValue.Substring(prefix.Length);
                         }
                         await _myAppXmlFileAccessor.SetMainFormAsync(startupObjectValue);
                     }
@@ -207,17 +212,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     // Enabled
 
+                    string? appXamlFileName = Path.GetFileName(await GetAppXamlRelativeFilePathAsync(create: false));
+
+                    // Project accessor to remove the ApplicationDefinition property if re-enabled
+                    // Note: this code causes CPS tree validation warning in Debug builds only, but we are ignorning
+                    await _projectAccessor.OpenProjectXmlForWriteAsync(_project, project =>
+                    {
+                        foreach (ProjectItemGroupElement itemGroup in project.ItemGroups)
+                        {
+                            foreach (ProjectItemElement item in itemGroup.Items.ToList())
+                            {
+                                if (StringComparers.ItemTypes.Equals(item.ItemType, ApplicationDefinitionItemType))
+                                {
+                                    itemGroup.RemoveChild(item);
+                                }
+                                else if (StringComparers.ItemTypes.Equals(item.ItemType, NoneItemType) && StringComparers.Paths.Equals(item.Include, appXamlFileName))
+                                {
+                                    itemGroup.RemoveChild(item);
+                                }
+                            }
+                        }
+                    });
+
                     // Create the Application.xaml if it doesn't exist. We don't care about the path, we just need it to be created.
                     string? appXamlFilePath = await GetAppXamlRelativeFilePathAsync(create: true);
-                    if (appXamlFilePath is not null)
-                    {
-                        IEnumerable<IProjectItem> matchingItems = await _sourceItemsProvider.GetItemsAsync(NoneItemType, appXamlFilePath);
-                        IProjectItem? appXamlItem = matchingItems.FirstOrDefault();
-                        if (appXamlItem is not null)
-                        {
-                            await appXamlItem.SetItemTypeAsync(ApplicationDefinitionItemType);
-                        }
-                    }
 
                     // Clear out the StartupObject if it has a value.
                     string? startupObject = await defaultProperties.GetUnevaluatedPropertyValueAsync(StartupObjectMSBuild);
@@ -237,7 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                         await defaultProperties.SetPropertyValueAsync(StartupObjectMSBuild, "Sub Main");
                     }
 
-                    // Set the Application.xaml file's build action to None.
+                    // Set the Application.xaml file's build action to None, which will also remove it from the ApplicationDefinition item group.
                     string? appXamlFilePath = await GetAppXamlRelativeFilePathAsync(create: false);
                     if (appXamlFilePath is not null)
                     {
