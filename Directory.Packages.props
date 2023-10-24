@@ -49,7 +49,6 @@
     <PackageVersion Include="Microsoft.VisualStudio.Interop"                                         Version="17.4.0-preview-2-32826-307" />
     <PackageVersion Include="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50728" />
     <PackageVersion Include="Microsoft.VisualStudio.RpcContracts"                                    Version="17.7.5-preview" />
-    <PackageVersion Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes"                           Version="15.0.36" />
     <PackageVersion Include="Microsoft.VisualStudio.Settings.15.0"                                   Version="17.3.32804.24" />
     <PackageVersion Include="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="3.2.2146" />
     <PackageVersion Include="Microsoft.VisualStudio.Shell.15.0"                                      Version="17.3.32804.24" />
