@@ -294,12 +294,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">关</target>
+        <target state="translated">Off</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
         <source>On</source>
-        <target state="translated">开</target>
+        <target state="translated">On</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
@@ -334,7 +334,7 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionStrict.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Off</target>
+        <target state="translated">关</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionStrict.On|DisplayName">
