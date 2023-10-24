@@ -539,7 +539,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Off]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[关]]></Val>
+            <Val><![CDATA[Off]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -548,7 +548,7 @@
         <Str Cat="Text">
           <Val><![CDATA[On]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[开]]></Val>
+            <Val><![CDATA[On]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -611,7 +611,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Off]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Off]]></Val>
+            <Val><![CDATA[关]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
