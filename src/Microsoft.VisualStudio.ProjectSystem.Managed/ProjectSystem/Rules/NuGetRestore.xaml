@@ -20,6 +20,10 @@
   <StringProperty Name="CentralPackageVersionOverrideEnabled"
                   ReadOnly="True"
                   Visible="False" />
+                  
+  <StringProperty Name="CentralPackageFloatingVersionsEnabled"
+                  ReadOnly="True"
+                  Visible="False" />
 
   <StringProperty Name="CLRSupport"
                   ReadOnly="True"
