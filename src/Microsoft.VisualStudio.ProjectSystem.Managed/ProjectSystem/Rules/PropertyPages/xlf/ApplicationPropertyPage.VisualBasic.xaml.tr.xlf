@@ -74,12 +74,12 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|Description">
         <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
-        <target state="new">Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</target>
+        <target state="translated">Uygulama yüklediğinde çağrılacak giriş noktasını tanımlar. Bu, genellikle uygulamanızda ana form olarak veya uygulama başladığında çalışması gereken 'Ana' yordam olarak ayarlanır. Sınıf kitaplıkları bir giriş noktası tanımlamaz.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
         <source>Startup object</source>
-        <target state="new">Startup object</target>
+        <target state="translated">Başlangıç nesnesi</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupURI|Description">

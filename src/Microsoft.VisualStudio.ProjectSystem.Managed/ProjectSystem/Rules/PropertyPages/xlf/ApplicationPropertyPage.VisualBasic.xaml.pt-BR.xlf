@@ -74,12 +74,12 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|Description">
         <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
-        <target state="new">Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</target>
+        <target state="translated">Define o ponto de entrada a ser chamado quando o aplicativo é carregado. Geralmente, essa opção é definida como o formulário principal no aplicativo ou como o procedimento 'Main' que deve ser executado quando o aplicativo é iniciado. As bibliotecas de classe não definem um ponto de entrada.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
         <source>Startup object</source>
-        <target state="new">Startup object</target>
+        <target state="translated">Objeto de inicialização</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupURI|Description">
