@@ -72,14 +72,14 @@
         <target state="translated">Pantalla de presentación</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|StartupObject|Description">
+      <trans-unit id="DynamicEnumProperty|StartupObjectVB|Description">
         <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
-        <target state="translated">Define el punto de entrada al que se va a llamar cuando se cargue la aplicación. Normalmente, se establece en el formulario principal de la aplicación o en el procedimiento "Principal" que debe ejecutarse cuando se inicia la aplicación. Las bibliotecas de clases no definen ningún punto de entrada.</target>
+        <target state="new">Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+      <trans-unit id="DynamicEnumProperty|StartupObjectVB|DisplayName">
         <source>Startup object</source>
-        <target state="translated">Objeto de inicio</target>
+        <target state="new">Startup object</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupURI|Description">

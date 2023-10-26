@@ -45,7 +45,6 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
 
                 if (string.Compare(applicationFrameworkValue, EnabledValue) == 0)
                 {
-                    // Set the startup object in the myapp file.
                     if (unevaluatedPropertyValue.StartsWith(rootNameSpace + ".", StringComparison.OrdinalIgnoreCase))
                     {
                         unevaluatedPropertyValue = unevaluatedPropertyValue.Substring(rootNameSpace.Length + 1);
@@ -63,11 +62,13 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
             {
                 // Else, if it's other than a Windows Forms project, save the StartupObject property in the project file as usual.
                 // Or if the ApplicationFramework property is disabled, save the StartupObject property in the project file as usual.
-                return rootNameSpace + "." + unevaluatedPropertyValue;
+                await defaultProperties.SetPropertyValueAsync(StartupObjectProperty, rootNameSpace + "." + unevaluatedPropertyValue);
+                return null;
             }
         }
         // This check can be removed when https://github.com/dotnet/project-system/issues/8170 is addressed.
-        return unevaluatedPropertyValue;
+        await defaultProperties.SetPropertyValueAsync(StartupObjectProperty, unevaluatedPropertyValue);
+        return null;
     }
 
     public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)

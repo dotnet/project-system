@@ -94,6 +94,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }));
             }
 
+            // Remove My.MyApplication entry if any.
+            enumValues = enumValues.Where(ep => !ep.Name.Contains("My.MyApplication")).ToList();
+
             return enumValues;
         }
 
