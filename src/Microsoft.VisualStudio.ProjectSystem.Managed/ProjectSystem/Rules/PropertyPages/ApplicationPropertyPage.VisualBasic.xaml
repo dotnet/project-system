@@ -36,7 +36,7 @@
        For VB projects, we expect to see every Form in the assembly directly or indirectly inherited from Form.
        We specify this by setting the SearchForEntryPointsInFormsOnly to true.
        We also want to ensure that the property always has a value. -->
-  <DynamicEnumProperty Name="StartupObjectVB"
+  <DynamicEnumProperty Name="StartupObject"
                        DisplayName="Startup object"
                        Description="Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point."
                        Category="General"
@@ -48,9 +48,7 @@
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
-          (and
-            (is-vb)
-            (not (has-evaluated-value "Application" "OutputType" "Library")))
+            (not (has-evaluated-value "Application" "OutputType" "Library"))
         </NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>

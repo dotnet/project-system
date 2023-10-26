@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 
 // The AppliesTo metadata has no effect given the limitations described in https://github.com/dotnet/project-system/issues/8170.
-[ExportInterceptingPropertyValueProvider(InterceptedStartupObjectProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+[ExportInterceptingPropertyValueProvider(StartupObjectProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
 [AppliesTo(ProjectCapability.WPF + "|" + ProjectCapability.WindowsForms)]
 internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBase
 {
@@ -17,7 +17,6 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
     private const string DisabledValue = "WindowsFormsWithCustomSubMain";
 
     internal const string UseWinFormsProperty = "UseWindowsForms";
-    internal const string InterceptedStartupObjectProperty = "StartupObjectVB";
     internal const string StartupObjectProperty = "StartupObject";
     internal const string RootNamespaceProperty = "RootNamespace";
 
@@ -62,13 +61,11 @@ internal class StartupObjectValueProvider : InterceptingPropertyValueProviderBas
             {
                 // Else, if it's other than a Windows Forms project, save the StartupObject property in the project file as usual.
                 // Or if the ApplicationFramework property is disabled, save the StartupObject property in the project file as usual.
-                await defaultProperties.SetPropertyValueAsync(StartupObjectProperty, rootNameSpace + "." + unevaluatedPropertyValue);
-                return null;
+                return rootNameSpace + "." + unevaluatedPropertyValue;
             }
         }
         // This check can be removed when https://github.com/dotnet/project-system/issues/8170 is addressed.
-        await defaultProperties.SetPropertyValueAsync(StartupObjectProperty, unevaluatedPropertyValue);
-        return null;
+        return rootNameSpace + "." + unevaluatedPropertyValue;
     }
 
     public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)

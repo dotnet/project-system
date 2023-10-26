@@ -227,9 +227,7 @@
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
-          (and
-            (not (is-vb))
-            (not (has-evaluated-value "Application" "OutputType" "Library")))
+            (not (has-evaluated-value "Application" "OutputType" "Library"))
         </NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
