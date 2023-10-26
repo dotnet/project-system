@@ -226,7 +226,9 @@
                        EnumProvider="StartupObjectsEnumProvider">
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(not (has-evaluated-value "Application" "OutputType" "Library"))</NameValuePair.Value>
+        <NameValuePair.Value>
+            (not (has-evaluated-value "Application" "OutputType" "Library"))
+        </NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
     <DynamicEnumProperty.ProviderSettings>
