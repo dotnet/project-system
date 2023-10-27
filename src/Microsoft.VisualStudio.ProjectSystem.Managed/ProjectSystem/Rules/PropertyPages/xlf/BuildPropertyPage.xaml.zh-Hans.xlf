@@ -83,8 +83,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|Description">
-        <source>Allows the "Publish" target to run. This property only affects processes that use *.proj files and "Publish" target, such as "dotnet publish" command. It does not affect publishing in Visual Studio. The default value is true.</source>
-        <target state="new">Allows the "Publish" target to run. This property only affects processes that use *.proj files and "Publish" target, such as "dotnet publish" command. It does not affect publishing in Visual Studio. The default value is true.</target>
+        <source>Allows the "Publish" target to run. This property only affects processes that use .*proj files and "Publish" target, such as "dotnet publish" command. It does not affect publishing in Visual Studio. The default value is true.</source>
+        <target state="new">Allows the "Publish" target to run. This property only affects processes that use .*proj files and "Publish" target, such as "dotnet publish" command. It does not affect publishing in Visual Studio. The default value is true.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|DisplayName">
@@ -148,8 +148,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PublishTrimmed|Description">
-        <source>Controls wheter trimming is enabled during publish.</source>
-        <target state="new">Controls wheter trimming is enabled during publish.</target>
+        <source>Controls whether trimming is enabled during publish.</source>
+        <target state="new">Controls whether trimming is enabled during publish.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PublishTrimmed|DisplayName">
