@@ -232,16 +232,6 @@
         <target state="translated">目标平台</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TrimMode|Description">
-        <source>Select the desired .NET trimming option for optimizing your application's deployment size and performance.</source>
-        <target state="new">Select the desired .NET trimming option for optimizing your application's deployment size and performance.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TrimMode|DisplayName">
-        <source>Trim mode</source>
-        <target state="new">Trim mode</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
         <target state="translated">指定内部版本期间生成的调试符号类型。</target>

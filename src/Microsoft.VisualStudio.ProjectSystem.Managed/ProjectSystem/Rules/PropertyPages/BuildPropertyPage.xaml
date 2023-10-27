@@ -431,18 +431,6 @@
   </EnumProperty>
 
   <!-- These Native AOT properties should not be visible for class library projects. -->
-  <DynamicEnumProperty Name="TrimMode"
-                       DisplayName="Trim mode"
-                       Description="Select the desired .NET trimming option for optimizing your application's deployment size and performance."
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2240879"
-                       Category="Publish"
-                       EnumProvider="TrimModeEnumProvider"
-                       MultipleValuesAllowed="False">
-    <DynamicEnumProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  Persistence="ProjectFileWithInterception"/>
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and
@@ -450,8 +438,6 @@
             (not (has-evaluated-value "Application" "OutputType" "Library")))
         </NameValuePair.Value>
       </NameValuePair>
-    </DynamicEnumProperty.Metadata>
-  </DynamicEnumProperty>
 
   <BoolProperty Name="PublishAot"
                 DisplayName="Publish native AOT"

@@ -232,16 +232,6 @@
         <target state="translated">Destino de plataforma</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TrimMode|Description">
-        <source>Select the desired .NET trimming option for optimizing your application's deployment size and performance.</source>
-        <target state="new">Select the desired .NET trimming option for optimizing your application's deployment size and performance.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TrimMode|DisplayName">
-        <source>Trim mode</source>
-        <target state="new">Trim mode</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
         <target state="translated">Especifica o tipos de símbolo de depuração produzidos durante a compilação.</target>
