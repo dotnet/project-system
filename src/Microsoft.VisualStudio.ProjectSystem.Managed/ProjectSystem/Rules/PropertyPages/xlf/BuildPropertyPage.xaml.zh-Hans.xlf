@@ -137,6 +137,16 @@
         <target state="translated">发布本机 AOT</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|PublishTrimmed|Description">
+        <source>Controls wheter trimming is enabled during publish.</source>
+        <target state="new">Controls wheter trimming is enabled during publish.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PublishTrimmed|DisplayName">
+        <source>Publish trimmed</source>
+        <target state="new">Publish trimmed</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
         <target state="translated">对输出程序集进行签名来向其提供强名称。</target>

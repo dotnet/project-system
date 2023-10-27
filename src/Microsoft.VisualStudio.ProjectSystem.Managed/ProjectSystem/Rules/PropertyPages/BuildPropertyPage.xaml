@@ -431,6 +431,15 @@
   </EnumProperty>
 
   <!-- These Native AOT properties should not be visible for class library projects. -->
+  <BoolProperty Name="PublishTrimmed"
+                DisplayName="Publish trimmed"
+                Description="Controls wheter trimming is enabled during publish."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2250076"
+                Category="Publish">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and
@@ -438,6 +447,8 @@
             (not (has-evaluated-value "Application" "OutputType" "Library")))
         </NameValuePair.Value>
       </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
 
   <BoolProperty Name="PublishAot"
                 DisplayName="Publish native AOT"
