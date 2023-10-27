@@ -93,10 +93,4 @@
     </StringProperty.Metadata>
   </StringProperty>
 
-  <BoolProperty Name="IsPublishable"
-                DisplayName="Publishing"
-                Description="Allow publishing outside of Visual Studio, such as via &quot;dotnet publish&quot;."
-                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165975"
-                Category="Packaging" />
-
 </Rule>

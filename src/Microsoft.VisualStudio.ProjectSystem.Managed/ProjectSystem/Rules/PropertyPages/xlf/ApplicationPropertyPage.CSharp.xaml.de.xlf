@@ -2,16 +2,6 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="de" original="../ApplicationPropertyPage.CSharp.xaml">
     <body>
-      <trans-unit id="BoolProperty|IsPublishable|Description">
-        <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
-        <target state="translated">Hiermit wird die Veröffentlichung außerhalb von Visual Studio zugelassen, z. B. über "dotnet publish".</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
-        <source>Publishing</source>
-        <target state="translated">Veröffentlichung</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|Packaging|Description">
         <source>Packaging settings for the application.</source>
         <target state="translated">Paketeinstellungen für die Anwendung.</target>
