@@ -15,6 +15,10 @@
     <Category Name="Resources"
               DisplayName="Resources"
               Description="Resource settings for the application." />
+
+    <Category Name="Dependencies"
+              DisplayName="Dependencies"
+              Description="Dependency management settings for the application." />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -288,4 +292,45 @@
                DisplayName="Resource file" />
   </EnumProperty>
 
+  <!-- TODO convert to fwlink -->
+  <BoolProperty Name="NuGetAudit"
+                DisplayName="Audit NuGet dependencies"
+                Description="Audit package dependencies for security vulnerabilities."
+                HelpUrl="https://learn.microsoft.com/nuget/concepts/auditing-packages"
+                Category="Dependencies" />
+
+  <EnumProperty Name="NuGetAuditMode"
+                DisplayName="Audit Mode"
+                Description="Specifies which packages to include in the audit."
+                Category="Dependencies">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Application" "NuGetAudit" true)</NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="direct"
+               DisplayName="Direct dependencies" />
+    <EnumValue Name="all"
+               DisplayName="All dependencies (direct and transitive)" />
+  </EnumProperty>
+
+  <EnumProperty Name="NuGetAuditLevel"
+                DisplayName="Audit Severity Level"
+                Description="The minimum vulnerability severity level to report when a package has a known vulnerability. Known vulnerabilities with a lower severity level will not be reported.."
+                Category="Dependencies">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Application" "NuGetAudit" true)</NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="low"
+               DisplayName="Low" />
+    <EnumValue Name="moderate"
+               DisplayName="Moderate" />
+    <EnumValue Name="high"
+               DisplayName="High" />
+    <EnumValue Name="critical"
+               DisplayName="Critical" />
+  </EnumProperty>
+  
 </Rule>

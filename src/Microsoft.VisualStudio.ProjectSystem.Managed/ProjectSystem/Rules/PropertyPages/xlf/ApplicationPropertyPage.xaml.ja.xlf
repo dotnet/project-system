@@ -12,6 +12,16 @@
         <target state="translated">バインド リダイレクトの自動生成</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|NuGetAudit|Description">
+        <source>Audit package dependencies for security vulnerabilities.</source>
+        <target state="new">Audit package dependencies for security vulnerabilities.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|NuGetAudit|DisplayName">
+        <source>Audit NuGet dependencies</source>
+        <target state="new">Audit NuGet dependencies</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|UseWPF|Description">
         <source>Enable WPF for this project.</source>
         <target state="translated">このプロジェクトで WPF を有効にします。</target>
@@ -30,6 +40,16 @@
       <trans-unit id="BoolProperty|UseWindowsForms|DisplayName">
         <source>Windows Forms</source>
         <target state="translated">Windows フォーム</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Dependencies|Description">
+        <source>Dependency management settings for the application.</source>
+        <target state="new">Dependency management settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Dependencies|DisplayName">
+        <source>Dependencies</source>
+        <target state="new">Dependencies</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
@@ -122,6 +142,26 @@
         <target state="translated">プラットフォーム</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|NuGetAuditLevel|Description">
+        <source>The minimum vulnerability severity level to report when a package has a known vulnerability. Known vulnerabilities with a lower severity level will not be reported..</source>
+        <target state="new">The minimum vulnerability severity level to report when a package has a known vulnerability. Known vulnerabilities with a lower severity level will not be reported..</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|NuGetAuditLevel|DisplayName">
+        <source>Audit Severity Level</source>
+        <target state="new">Audit Severity Level</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|NuGetAuditMode|Description">
+        <source>Specifies which packages to include in the audit.</source>
+        <target state="new">Specifies which packages to include in the audit.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|NuGetAuditMode|DisplayName">
+        <source>Audit Mode</source>
+        <target state="new">Audit Mode</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|OutputType|Description">
         <source>Specifies the type of application to build.</source>
         <target state="translated">ビルドするアプリケーションの種類を指定します。</target>
@@ -140,6 +180,36 @@
       <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
         <source>Resources</source>
         <target state="translated">リソース</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|NuGetAuditLevel.critical|DisplayName">
+        <source>Critical</source>
+        <target state="new">Critical</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|NuGetAuditLevel.high|DisplayName">
+        <source>High</source>
+        <target state="new">High</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|NuGetAuditLevel.low|DisplayName">
+        <source>Low</source>
+        <target state="new">Low</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|NuGetAuditLevel.moderate|DisplayName">
+        <source>Moderate</source>
+        <target state="new">Moderate</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|NuGetAuditMode.all|DisplayName">
+        <source>All dependencies (direct and transitive)</source>
+        <target state="new">All dependencies (direct and transitive)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|NuGetAuditMode.direct|DisplayName">
+        <source>Direct dependencies</source>
+        <target state="new">Direct dependencies</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
