@@ -433,7 +433,7 @@
   <!-- These Native AOT properties should not be visible for class library projects. -->
   <BoolProperty Name="IsPublishable"
                 DisplayName="Publishing"
-                Description="Allows the &quot;Publish&quot; target to run. This property only affects processes that use .*proj files and &quot;Publish&quot; target, such as &quot;dotnet publish&quot; command. It does not affect publishing in Visual Studio. The default value is true."
+                Description="Allows the &quot;Publish&quot; target to run. This property only affects processes that use .*proj files and &quot;Publish&quot; target, such as &quot;dotnet publish&quot; command. The default value is true."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165975"
                 Category="Publish">
   </BoolProperty>
