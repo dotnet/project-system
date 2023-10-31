@@ -431,18 +431,22 @@
   </EnumProperty>
 
   <!-- These Native AOT properties should not be visible for class library projects. -->
-  <DynamicEnumProperty Name="Trimming"
-                       DisplayName="Trimming"
-                       Description="Select the desired .NET trimming option for optimizing your application's deployment size and performance."
-                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2240879"
-                       Category="Publish"
-                       EnumProvider="TrimmingEnumProvider"
-                       MultipleValuesAllowed="False">
-    <DynamicEnumProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  Persistence="ProjectFileWithInterception"/>
-    </DynamicEnumProperty.DataSource>
-    <DynamicEnumProperty.Metadata>
+  <BoolProperty Name="IsPublishable"
+                DisplayName="Publishing"
+                Description="Allows the &quot;Publish&quot; target to run. This property only affects processes that use .*proj files and &quot;Publish&quot; target, such as &quot;dotnet publish&quot; command. The default value is true."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165975"
+                Category="Publish">
+  </BoolProperty>
+  
+  <BoolProperty Name="PublishTrimmed"
+                DisplayName="Publish trimmed"
+                Description="Controls whether trimming is enabled during publish."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2250076"
+                Category="Publish">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and
@@ -450,8 +454,8 @@
             (not (has-evaluated-value "Application" "OutputType" "Library")))
         </NameValuePair.Value>
       </NameValuePair>
-    </DynamicEnumProperty.Metadata>
-  </DynamicEnumProperty>
+    </BoolProperty.Metadata>
+  </BoolProperty>
 
   <BoolProperty Name="PublishAot"
                 DisplayName="Publish native AOT"

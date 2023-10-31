@@ -82,6 +82,16 @@
         <target state="translated">Zgodne z opcją kompilacji z wyprzedzeniem</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|IsPublishable|Description">
+        <source>Allows the "Publish" target to run. This property only affects processes that use .*proj files and "Publish" target, such as "dotnet publish" command. The default value is true.</source>
+        <target state="new">Allows the "Publish" target to run. This property only affects processes that use .*proj files and "Publish" target, such as "dotnet publish" command. The default value is true.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
+        <source>Publishing</source>
+        <target state="new">Publishing</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|IsTrimmable|Description">
         <source>Marks your assembly as trimmable and enables trim warnings for that project.</source>
         <target state="translated">Oznacza zestaw jako możliwy do przycinania i włącza ostrzeżenia przycinania dla tego projektu.</target>
@@ -135,6 +145,16 @@
       <trans-unit id="BoolProperty|PublishAot|DisplayName">
         <source>Publish native AOT</source>
         <target state="translated">Publikuj natywne kompilacje z wyprzedzeniem</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PublishTrimmed|Description">
+        <source>Controls whether trimming is enabled during publish.</source>
+        <target state="new">Controls whether trimming is enabled during publish.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PublishTrimmed|DisplayName">
+        <source>Publish trimmed</source>
+        <target state="new">Publish trimmed</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
@@ -230,16 +250,6 @@
       <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
         <source>Platform target</source>
         <target state="translated">Platforma docelowa</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|Trimming|Description">
-        <source>Select the desired .NET trimming option for optimizing your application's deployment size and performance.</source>
-        <target state="translated">Wybierz żądaną opcję przycinania platformy .NET, aby zoptymalizować rozmiar i wydajność wdrożenia aplikacji.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|Trimming|DisplayName">
-        <source>Trimming</source>
-        <target state="translated">Przycinanie</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
