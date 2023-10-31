@@ -94,6 +94,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }));
             }
 
+            // Remove My.MyApplication entry if any.
+            enumValues.RemoveAll(ep => ep.Name.Contains("My.MyApplication"));
+
             return enumValues;
         }
 
