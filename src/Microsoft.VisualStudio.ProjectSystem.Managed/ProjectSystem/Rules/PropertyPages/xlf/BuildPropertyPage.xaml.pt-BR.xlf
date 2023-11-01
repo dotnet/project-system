@@ -477,16 +477,6 @@
         <target state="translated">Arquivo da chave de nome forte</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
-        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">Especifica o local base para a saída intermediária do projeto durante o build. As subpastas serão acrescentadas a este caminho para diferenciar a configuração do projeto.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
-        <source>Base intermediate output path</source>
-        <target state="translated">Caminho base da saída intermediária</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
         <target state="translated">Especifica o local base para a saída do projeto durante o build. As subpastas serão acrescentadas a este caminho para diferenciar a configuração do projeto.</target>

@@ -477,16 +477,6 @@
         <target state="translated">強式名稱金鑰檔案</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
-        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">指定建置期間，用以存放專案之中繼輸出的基底位置。此路徑會附加子資料夾，以區分專案設定。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
-        <source>Base intermediate output path</source>
-        <target state="translated">基底中繼輸出路徑</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
         <target state="translated">指定建置期間，用以存放專案之輸出的基底位置。此路徑會附加子資料夾，以區分專案設定。</target>

@@ -477,16 +477,6 @@
         <target state="translated">Archivo de clave de nombre seguro</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
-        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">Especifica la ubicación base de la salida intermedia del proyecto durante la compilación. Las subcarpetas se asociarán a esta ruta de acceso para diferenciar la configuración del proyecto.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
-        <source>Base intermediate output path</source>
-        <target state="translated">Ruta de acceso de salida intermedia base</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
         <target state="translated">Especifica la ubicación base de la salida del proyecto durante la compilación. Las subcarpetas se asociarán a esta ruta de acceso para diferenciar la configuración del proyecto.</target>
