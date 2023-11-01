@@ -477,16 +477,6 @@
         <target state="translated">Plik klucza o silnej nazwie</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
-        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">Określa lokalizację podstawową dla pośrednich danych wyjściowych projektu podczas kompilowania. Podfoldery zostaną dołączone do tej ścieżki w celu odróżnienia konfiguracji projektu.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
-        <source>Base intermediate output path</source>
-        <target state="translated">Podstawowa pośrednia ścieżka wyjściowa</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
         <target state="translated">Określa lokalizację podstawową dla danych wyjściowych projektu podczas kompilowania. Podfoldery zostaną dołączone do tej ścieżki w celu odróżnienia konfiguracji projektu.</target>

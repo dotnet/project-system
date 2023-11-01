@@ -477,16 +477,6 @@
         <target state="translated">Soubor klíče se silným názvem</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
-        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">Určuje základní umístění mezivýstupu projektu během sestavování. Aby se rozlišila konfigurace projektu, připojí se k této cestě podsložky.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
-        <source>Base intermediate output path</source>
-        <target state="translated">Základní cesta k mezivýstupu</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
         <target state="translated">Určuje základní umístění výstupu projektu během sestavování. Aby se rozlišila konfigurace projektu, připojí se k této cestě podsložky.</target>

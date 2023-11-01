@@ -477,16 +477,6 @@
         <target state="translated">강력한 이름 키 파일</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
-        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">빌드하는 동안 프로젝트의 중간 출력에 대한 기본 위치를 지정합니다. 프로젝트 구성을 구분하기 위해 이 경로에 하위 폴더가 추가됩니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
-        <source>Base intermediate output path</source>
-        <target state="translated">기본 중간 출력 경로</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
         <target state="translated">빌드하는 동안 프로젝트의 출력에 대한 기본 위치를 지정합니다. 프로젝트 구성을 구분하기 위해 이 경로에 하위 폴더가 추가됩니다.</target>

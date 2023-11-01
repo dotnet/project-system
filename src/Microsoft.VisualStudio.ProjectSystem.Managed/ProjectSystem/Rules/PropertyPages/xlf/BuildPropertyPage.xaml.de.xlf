@@ -477,16 +477,6 @@
         <target state="translated">Schlüsseldatei mit starkem Namen</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
-        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">Hiermit wird der Basisspeicherort für die Zwischenausgabe des Projekts während des Buildvorgangs angegeben. Zur Unterscheidung von Projektkonfigurationen werden an diesen Pfad Unterordner angefügt.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
-        <source>Base intermediate output path</source>
-        <target state="translated">Basispfad für Zwischenausgabe</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
         <target state="translated">Hiermit wird der Basisspeicherort für die Ausgabe des Projekts während des Buildvorgangs angegeben. Zur Unterscheidung von Projektkonfigurationen werden an diesen Pfad Unterordner angefügt.</target>

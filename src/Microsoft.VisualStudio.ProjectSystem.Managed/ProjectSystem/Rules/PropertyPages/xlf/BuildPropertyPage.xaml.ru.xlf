@@ -477,16 +477,6 @@
         <target state="translated">Файл ключей строгого имени</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
-        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">Задает базовое расположение промежуточных выходных данных проекта во время сборки. К этому пути будут добавлены вложенные папки для конфигурации проекта.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
-        <source>Base intermediate output path</source>
-        <target state="translated">Базовый путь для промежуточных выходных данных</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
         <target state="translated">Задает базовое расположение выходных данных проекта во время сборки. К этому пути будут добавлены вложенные папки для конфигурации проекта.</target>

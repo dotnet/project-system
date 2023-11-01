@@ -477,16 +477,6 @@
         <target state="translated">厳密な名前のキー ファイル</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
-        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">ビルド時のプロジェクトの中間出力の基本場所を指定します。プロジェクト構成を区別するために、サブフォルダーがこのパスに追加されます。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
-        <source>Base intermediate output path</source>
-        <target state="translated">基本中間出力パス</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
         <target state="translated">ビルド時のプロジェクトの出力の基本場所を指定します。プロジェクト構成を区別するために、サブフォルダーがこのパスに追加されます。</target>

@@ -477,16 +477,6 @@
         <target state="translated">Fichier de clé de nom fort</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
-        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">Spécifie l'emplacement de base de la sortie intermédiaire du projet durant la génération. Des sous-dossiers sont ajoutés à ce chemin pour différencier la configuration du projet.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
-        <source>Base intermediate output path</source>
-        <target state="translated">Chemin de sortie intermédiaire de base</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
         <target state="translated">Spécifie l'emplacement de base de la sortie du projet durant la génération. Des sous-dossiers sont ajoutés à ce chemin pour différencier la configuration du projet.</target>
