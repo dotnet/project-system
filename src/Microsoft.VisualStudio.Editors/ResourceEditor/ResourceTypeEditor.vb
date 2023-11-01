@@ -20,9 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     Security.Permissions.PermissionSet(Security.Permissions.SecurityAction.LinkDemand, Name:="FullTrust")>
     Friend MustInherit Class ResourceTypeEditor
 
-        'Note: These comments aren't in the XML docs because I don't want it to accidentally end up in the public XML
-        '   documentation for this class if it is ever made public.
-
         ' If the resource editor decides to support a pluggable architecture, new resource type editors can be 
         '   written and registered for use with new serializable types intended for use inside a .resx file.  
         '   The pluggable editor author would subclass ResourceTypeEditor.  This is similar in concept to 
