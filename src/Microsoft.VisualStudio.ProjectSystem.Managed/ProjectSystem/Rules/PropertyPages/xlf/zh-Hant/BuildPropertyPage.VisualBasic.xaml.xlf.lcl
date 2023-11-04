@@ -553,75 +553,51 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|OptionCompare.Binary|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
+      <Item ItemId=";EnumValue|OptionCompare.Binary|DisplayName" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text" UsrLk="true">
           <Val><![CDATA[Binary]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Binary]]></Val>
-          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|OptionCompare.Text|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
+      <Item ItemId=";EnumValue|OptionCompare.Text|DisplayName" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text" UsrLk="true">
           <Val><![CDATA[Text]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Text]]></Val>
-          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|OptionExplicit.Off|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
+      <Item ItemId=";EnumValue|OptionExplicit.Off|DisplayName" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text" UsrLk="true">
           <Val><![CDATA[Off]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Off]]></Val>
-          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|OptionExplicit.On|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
+      <Item ItemId=";EnumValue|OptionExplicit.On|DisplayName" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text" UsrLk="true">
           <Val><![CDATA[On]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[On]]></Val>
-          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|OptionInfer.Off|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
+      <Item ItemId=";EnumValue|OptionInfer.Off|DisplayName" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text" UsrLk="true">
           <Val><![CDATA[Off]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Off]]></Val>
-          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|OptionInfer.On|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
+      <Item ItemId=";EnumValue|OptionInfer.On|DisplayName" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text" UsrLk="true">
           <Val><![CDATA[On]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[On]]></Val>
-          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|OptionStrict.Off|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
+      <Item ItemId=";EnumValue|OptionStrict.Off|DisplayName" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text" UsrLk="true">
           <Val><![CDATA[Off]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Off]]></Val>
-          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";EnumValue|OptionStrict.On|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
+      <Item ItemId=";EnumValue|OptionStrict.On|DisplayName" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text" UsrLk="true">
           <Val><![CDATA[On]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[On]]></Val>
-          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>

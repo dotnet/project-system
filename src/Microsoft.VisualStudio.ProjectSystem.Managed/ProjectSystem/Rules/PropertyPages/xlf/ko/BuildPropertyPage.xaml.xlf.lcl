@@ -166,6 +166,24 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";BoolProperty|IsPublishable|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Allows the "Publish" target to run. This property only affects processes that use .*proj files and "Publish" target, such as "dotnet publish" command. The default value is true.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA["게시" 대상을 실행하도록 허용합니다. 이 속성은 "dotnet publish" 명령과 같이 .*proj 파일 및 "게시" 대상을 사용하는 프로세스에만 영향을 줍니다. 기본값은 true입니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|IsPublishable|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Publishing]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[게시]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";BoolProperty|IsTrimmable|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Marks your assembly as trimmable and enables trim warnings for that project.]]></Val>
@@ -264,6 +282,24 @@
           <Val><![CDATA[Publish native AOT]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[네이티브 AOT 게시]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|PublishTrimmed|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Controls whether trimming is enabled during publish.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[게시하는 동안 트리밍을 사용할지 여부를 제어합니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|PublishTrimmed|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Publish trimmed]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[트리밍하여 게시]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -441,24 +477,6 @@
           <Val><![CDATA[Platform target]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[플랫폼 대상]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";DynamicEnumProperty|Trimming|Description" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Select the desired .NET trimming option for optimizing your application's deployment size and performance.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[애플리케이션의 배포 크기 및 성능을 최적화하기 위해 원하는 .NET 트리밍 옵션을 선택합니다.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";DynamicEnumProperty|Trimming|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Trimming]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[트리밍]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

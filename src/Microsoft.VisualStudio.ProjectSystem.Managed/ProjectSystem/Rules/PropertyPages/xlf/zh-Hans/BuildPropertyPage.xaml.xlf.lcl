@@ -166,6 +166,24 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";BoolProperty|IsPublishable|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Allows the "Publish" target to run. This property only affects processes that use .*proj files and "Publish" target, such as "dotnet publish" command. The default value is true.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[允许运行“发布”目标。此属性仅影响使用 .*proj 文件和“发布”目标的进程，例如“dotnet publish”命令。默认值为 true。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|IsPublishable|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Publishing]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[正在发布]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";BoolProperty|IsTrimmable|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Marks your assembly as trimmable and enables trim warnings for that project.]]></Val>
@@ -264,6 +282,24 @@
           <Val><![CDATA[Publish native AOT]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[发布本机 AOT]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|PublishTrimmed|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Controls whether trimming is enabled during publish.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[控制是否在发布期间启用剪裁。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|PublishTrimmed|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Publish trimmed]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[已剪裁发布]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -441,24 +477,6 @@
           <Val><![CDATA[Platform target]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[目标平台]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";DynamicEnumProperty|Trimming|Description" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Select the desired .NET trimming option for optimizing your application's deployment size and performance.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[选择所需的 .NET 剪裁选项以优化应用程序的部署大小和性能。]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";DynamicEnumProperty|Trimming|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Trimming]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[修整]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
