@@ -84,12 +84,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|Description">
         <source>Allows the "Publish" target to run. This property only affects processes that use .*proj files and "Publish" target, such as "dotnet publish" command. The default value is true.</source>
-        <target state="new">Allows the "Publish" target to run. This property only affects processes that use .*proj files and "Publish" target, such as "dotnet publish" command. The default value is true.</target>
+        <target state="translated">"게시" 대상을 실행하도록 허용합니다. 이 속성은 "dotnet publish" 명령과 같이 .*proj 파일 및 "게시" 대상을 사용하는 프로세스에만 영향을 줍니다. 기본값은 true입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|DisplayName">
         <source>Publishing</source>
-        <target state="new">Publishing</target>
+        <target state="translated">게시</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsTrimmable|Description">
@@ -149,12 +149,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PublishTrimmed|Description">
         <source>Controls whether trimming is enabled during publish.</source>
-        <target state="new">Controls whether trimming is enabled during publish.</target>
+        <target state="translated">게시하는 동안 트리밍을 사용할지 여부를 제어합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PublishTrimmed|DisplayName">
         <source>Publish trimmed</source>
-        <target state="new">Publish trimmed</target>
+        <target state="translated">트리밍하여 게시</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">

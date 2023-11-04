@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|DisplayName">
         <source>Publishing</source>
-        <target state="new">Publishing</target>
+        <target state="translated">發行</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsTrimmable|Description">

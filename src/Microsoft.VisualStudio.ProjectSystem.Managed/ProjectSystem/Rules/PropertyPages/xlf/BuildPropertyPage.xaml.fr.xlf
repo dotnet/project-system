@@ -84,12 +84,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|Description">
         <source>Allows the "Publish" target to run. This property only affects processes that use .*proj files and "Publish" target, such as "dotnet publish" command. The default value is true.</source>
-        <target state="new">Allows the "Publish" target to run. This property only affects processes that use .*proj files and "Publish" target, such as "dotnet publish" command. The default value is true.</target>
+        <target state="translated">Autorise l’exécution de la cible « Publier ». Cette propriété affecte uniquement les processus qui utilisent des fichiers .*proj et la cible « Publish », comme la commande « dotnet publish ». La valeur par défaut est vraie.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|DisplayName">
         <source>Publishing</source>
-        <target state="new">Publishing</target>
+        <target state="translated">Publication</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsTrimmable|Description">
@@ -149,12 +149,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PublishTrimmed|Description">
         <source>Controls whether trimming is enabled during publish.</source>
-        <target state="new">Controls whether trimming is enabled during publish.</target>
+        <target state="translated">Contrôle si le découpage est activé pendant la publication.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PublishTrimmed|DisplayName">
         <source>Publish trimmed</source>
-        <target state="new">Publish trimmed</target>
+        <target state="translated">Publication tronquée</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">

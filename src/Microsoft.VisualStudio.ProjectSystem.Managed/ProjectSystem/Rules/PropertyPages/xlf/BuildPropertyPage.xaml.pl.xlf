@@ -84,12 +84,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|Description">
         <source>Allows the "Publish" target to run. This property only affects processes that use .*proj files and "Publish" target, such as "dotnet publish" command. The default value is true.</source>
-        <target state="new">Allows the "Publish" target to run. This property only affects processes that use .*proj files and "Publish" target, such as "dotnet publish" command. The default value is true.</target>
+        <target state="translated">Zezwala na uruchomienie elementu docelowego „Opublikuj”. Ta właściwość ma wpływ tylko na procesy korzystające z plików .*proj i elementu docelowego „Opublikuj”, na przykład polecenia „dotnet publish”. Wartość domyślna to true.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|DisplayName">
         <source>Publishing</source>
-        <target state="new">Publishing</target>
+        <target state="translated">Publikowanie</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsTrimmable|Description">
@@ -149,12 +149,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PublishTrimmed|Description">
         <source>Controls whether trimming is enabled during publish.</source>
-        <target state="new">Controls whether trimming is enabled during publish.</target>
+        <target state="translated">Określa, czy przycinanie jest włączone podczas publikowania.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PublishTrimmed|DisplayName">
         <source>Publish trimmed</source>
-        <target state="new">Publish trimmed</target>
+        <target state="translated">Opublikowano przycięte</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
