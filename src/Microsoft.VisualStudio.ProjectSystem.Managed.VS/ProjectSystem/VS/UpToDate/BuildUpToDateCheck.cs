@@ -993,14 +993,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                 logger.FileSystemOperations = fileSystemOperations;
 
-                HashSet<string> copyItemPaths = new();
+                HashSet<string> copyItemPaths = new(StringComparers.Paths);
 
                 try
                 {
                     HashSet<string>? ignoreKinds = null;
                     if (ignoreKindsString is not null)
                     {
-                        ignoreKinds = new HashSet<string>(new LazyStringSplit(ignoreKindsString, ';'), StringComparer.OrdinalIgnoreCase);
+                        ignoreKinds = new HashSet<string>(new LazyStringSplit(ignoreKindsString, ';'), KindNameComparer);
 
                         if (requestedLogLevel >= LogLevel.Info && ignoreKinds.Count != 0)
                         {
