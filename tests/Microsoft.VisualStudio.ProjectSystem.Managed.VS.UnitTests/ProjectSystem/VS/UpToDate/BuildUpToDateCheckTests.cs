@@ -85,6 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             var configuredProject = new Mock<ConfiguredProject>(MockBehavior.Strict);
             configuredProject.SetupGet(c => c.Services).Returns(configuredProjectServices);
             configuredProject.SetupGet(c => c.UnconfiguredProject).Returns(UnconfiguredProjectFactory.Create(fullPath: _projectPath));
+            configuredProject.SetupGet(c => c.Capabilities).Returns(IProjectCapabilitiesScopeFactory.Create());
 
             _persistence = new Mock<IUpToDateCheckStatePersistence>(MockBehavior.Strict);
             _persistence
@@ -152,6 +153,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 guidService,
                 upToDateCheckHost.Object,
                 copyItemAggregator.Object);
+
+            _buildUpToDateCheck.UpToDateCheckers.Add(_buildUpToDateCheck);
         }
 
         public void Dispose() => _buildUpToDateCheck.Dispose();
@@ -2237,6 +2240,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 targetFramework: "betaFramework");
         }
 
+        [Fact]
+        public async Task IsUpToDateAsync_True_LogsOtherUpToDateCheckProviders()
+        {
+            _buildUpToDateCheck.UpToDateCheckers.Add(new MockProvider());
+
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems(@"bin\Debug\Built.dll")
+            };
+
+            var sourceSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [Compile.SchemaName] = SimpleItems("Input.cs")
+            };
+
+            // The rule is that no input item should be modified since the last successful build started.
+
+            var t0 = DateTime.UtcNow.AddMinutes(-3); // t0 Input file timestamp
+            var t1 = DateTime.UtcNow.AddMinutes(-2); // t1 Rebuild (sets output file timestamp)
+
+            _fileSystem.AddFile(_inputPath, t0);
+            _fileSystem.AddFile(_builtPath, t1);
+
+            await SetupAsync(projectSnapshot, sourceSnapshot, lastSuccessfulBuildStartTimeUtc: t1);
+
+            // Rebuild (t1)
+            ((IProjectBuildEventListener)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: t1);
+            await ((IProjectBuildEventListener)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true, isRebuild: true);
+
+            // Run test (t2)
+            await AssertUpToDateAsync(
+                $"""
+                Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
+                Comparing timestamps of inputs and outputs:
+                    Adding UpToDateCheckBuilt outputs:
+                        {_builtPath}
+                    Adding newest import input:
+                        {_projectPath}
+                    Adding Compile inputs:
+                        {_inputPath}
+                    No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(t1)}). Newest input is '{_inputPath}' ({ToLocalTime(t0)}).
+                Project is up-to-date.
+                Note that other checks may still determine the project is not up-to-date. The following checks are present:
+                - Microsoft.VisualStudio.ProjectSystem.VS.UpToDate.BuildUpToDateCheckTests+MockProvider
+                """);
+        }
+
         #region Test helpers
 
         private void SetCopyItems(params CopyItem[] items)
@@ -2468,6 +2518,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 }
 
                 Xunit.Assert.Equal(_expected, actual);
+            }
+        }
+
+        private sealed class MockProvider : IBuildUpToDateCheckProvider
+        {
+            Task<bool> IBuildUpToDateCheckProvider.IsUpToDateAsync(BuildAction buildAction, TextWriter logger, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+
+            Task<bool> IBuildUpToDateCheckProvider.IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
             }
         }
 

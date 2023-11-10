@@ -562,4 +562,11 @@ In order to debug this project, add an executable project to this solution which
     <value>Build acceleration has been disabled for this project due to known incompatible NuGet package reference(s) {0}. See https://aka.ms/vs-build-acceleration.</value>
     <comment>{0} is a comma-separated list of NuGet package names.</comment>
   </data>
+  <data name="OtherUpToDateCheckProvidersPresent" xml:space="preserve">
+    <value>Note that other checks may still determine the project is not up-to-date. The following checks are present:</value>
+  </data>
+  <data name="OtherUpToDateCheckProviderInfo_1" xml:space="preserve">
+    <value>- {0}</value>
+    <comment>{0} is the .NET type name of the implementation of an up-to-date check.</comment>
+  </data>
 </root>

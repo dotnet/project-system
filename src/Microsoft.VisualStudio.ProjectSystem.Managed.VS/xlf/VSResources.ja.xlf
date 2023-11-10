@@ -480,6 +480,16 @@
         <target state="translated">警告: '{0}' でビルド パフォーマンスの問題が発生する可能性があります。プロジェクトは、ビルドが成功した後に最新の状態になりません: {1}。https://aka.ms/incremental-build-failure を参照してください。</target>
         <note>{0} is the file name of the project. {1} is a description of the failure. The period '.' after {1} is intentional and should be kept.</note>
       </trans-unit>
+      <trans-unit id="OtherUpToDateCheckProviderInfo_1">
+        <source>- {0}</source>
+        <target state="new">- {0}</target>
+        <note>{0} is the .NET type name of the implementation of an up-to-date check.</note>
+      </trans-unit>
+      <trans-unit id="OtherUpToDateCheckProvidersPresent">
+        <source>Note that other checks may still determine the project is not up-to-date. The following checks are present:</source>
+        <target state="new">Note that other checks may still determine the project is not up-to-date. The following checks are present:</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>Attaching to process.</source>
         <target state="translated">プロセスにアタッチしています。</target>

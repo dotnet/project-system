@@ -60,6 +60,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         private int _checkNumber;
         private IEnumerable<string>? _lastCopyTargetsFromThisProject;
 
+        /// <summary>
+        /// Gets the set of up-to-date checkers that apply to this project.
+        /// </summary>
+        /// <remarks>
+        /// We can use this information in log output if multiple up-to-date checks are present, so that users can
+        /// observe that even if we find the project up-to-date, another check may not, which will lead to the
+        /// project being built. If other checkers exist, we log that fact and include their type names, which
+        /// can avoid confusion and assist with further debugging.
+        /// </remarks>
+        [ImportMany]
+        internal OrderPrecedenceImportCollection<IBuildUpToDateCheckProvider> UpToDateCheckers { get; }
+
         [ImportingConstructor]
         public BuildUpToDateCheck(
             ISolutionBuildContextProvider solutionBuildContextProvider,
@@ -87,6 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             _guidService = guidService;
             _upToDateCheckHost = upToDateCheckHost;
             _copyItemAggregator = copyItemAggregator;
+
+            UpToDateCheckers = new OrderPrecedenceImportCollection<IBuildUpToDateCheckProvider>(projectCapabilityCheckProvider: configuredProject);
 
             _subscription = new Subscription(inputDataSource, configuredProject, upToDateCheckHost, persistence);
         }
@@ -977,6 +991,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                 var logger = new Log(
                     logWriter,
+                    this,
+                    UpToDateCheckers,
                     requestedLogLevel,
                     _solutionBuildEventListener,
                     sw,
