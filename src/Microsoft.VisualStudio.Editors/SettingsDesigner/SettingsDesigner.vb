@@ -203,7 +203,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         If Settings.UseSpecialClassName Then
                             Return SpecialClassName
                         End If
-                    Catch ex As Exception When Common.ReportWithoutCrash(ex, String.Format("Failed to crack open {0} to determine if we were supposed to use the ""Special"" settings class name", FullPath), NameOf(SettingsDesigner))
+                    Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to crack open settings file to determine if we were supposed to use the ""Special"" settings class name", NameOf(SettingsDesigner))
                     End Try
                 End If
 
