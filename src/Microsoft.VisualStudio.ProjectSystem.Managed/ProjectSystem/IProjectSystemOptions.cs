@@ -51,11 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         Task<bool> GetPreferSingleTargetBuildsForStartupProjectsAsync(CancellationToken cancellationToken);
 
         /// <summary>
-        ///     Gets a value indicating if the project system should attempt to detect cycles in the NuGet restore process.
-        /// </summary>
-        ValueTask<bool> IsNuGetRestoreCycleDetectionEnabledAsync(CancellationToken cancellationToken);
-
-        /// <summary>
         ///     Gets whether incremental build failure detection should write to the output window when failures are detected.
         /// </summary>
         ValueTask<bool> IsIncrementalBuildFailureOutputLoggingEnabledAsync(CancellationToken cancellationToken);

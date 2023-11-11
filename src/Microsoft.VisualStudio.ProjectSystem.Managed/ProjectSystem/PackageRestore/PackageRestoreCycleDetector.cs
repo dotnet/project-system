@@ -12,7 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 internal sealed class PackageRestoreCycleDetector(
     UnconfiguredProject unconfiguredProject,
     ITelemetryService telemetryService,
-    IProjectSystemOptions projectSystemOptions,
     INonModalNotificationService userNotificationService)
     : IPackageRestoreCycleDetector
 {
@@ -43,7 +42,6 @@ internal sealed class PackageRestoreCycleDetector(
 
     private readonly UnconfiguredProject _unconfiguredProject = unconfiguredProject;
     private readonly ITelemetryService _telemetryService = telemetryService;
-    private readonly IProjectSystemOptions _projectSystemOptions = projectSystemOptions;
     private readonly INonModalNotificationService _userNotificationService = userNotificationService;
 
     private Hash? _lastHash;
@@ -53,12 +51,6 @@ internal sealed class PackageRestoreCycleDetector(
 
     public async Task<bool> IsCycleDetectedAsync(Hash hash, CancellationToken cancellationToken)
     {
-        if (!await _projectSystemOptions.IsNuGetRestoreCycleDetectionEnabledAsync(cancellationToken))
-        {
-            // Cycle detection has been disabled. Take no further action.
-            return false;
-        }
-
         // Ensure we have a stopwatch running throughout restores. We will stop it when we either
         // have two consecutive restores at the same hash, or when we detect a cycle.
         _stopwatch.Start();

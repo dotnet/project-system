@@ -74,11 +74,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             await settingsManager.SetValueAsync(name, value, isMachineLocal: false);
         }
 
-        public ValueTask<bool> IsNuGetRestoreCycleDetectionEnabledAsync(CancellationToken cancellationToken)
-        {
-            return IsFlagEnabledAsync(FeatureFlagNames.EnableNuGetRestoreCycleDetection, defaultValue: false, cancellationToken);
-        }
-
         public ValueTask<bool> IsIncrementalBuildFailureOutputLoggingEnabledAsync(CancellationToken cancellationToken)
         {
             return IsFlagEnabledAsync(FeatureFlagNames.EnableIncrementalBuildFailureOutputLogging, defaultValue: false, cancellationToken);
