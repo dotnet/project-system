@@ -22,14 +22,6 @@ public sealed class PackageRestoreCycleDetectorTests
         await ValidateAsync(instance, sequence, isCycleDetected);
     }
 
-    [Fact]
-    public async Task IsCycleDetectedAsync_CycleIgnoredWhenFeatureDisabled()
-    {
-        var instance = CreateInstance(isEnabled: false); // disabled
-
-        await ValidateAsync(instance, "ABABABABAB", isCycleDetected: false);
-    }
-
     private async Task ValidateAsync(PackageRestoreCycleDetector instance, string sequence, bool isCycleDetected)
     {
         for (var i = 0; i < sequence.Length; i++)
@@ -44,12 +36,11 @@ public sealed class PackageRestoreCycleDetectorTests
 
     private static Hash CreateHash(byte b) => new(new[] { b });
 
-    private static PackageRestoreCycleDetector CreateInstance(bool isEnabled = true)
+    private static PackageRestoreCycleDetector CreateInstance()
     {
         var project = UnconfiguredProjectFactory.CreateWithActiveConfiguredProjectProvider(IProjectThreadingServiceFactory.Create());
 
         var projectSystemOptions = new Mock<IProjectSystemOptions>();
-        projectSystemOptions.Setup(o => o.IsNuGetRestoreCycleDetectionEnabledAsync(It.IsAny<CancellationToken>())).ReturnsAsync(isEnabled);
 
         var telemetryService = new Mock<ITelemetryService>();
         var nonModelNotificationService = new Mock<INonModalNotificationService>();
@@ -57,7 +48,6 @@ public sealed class PackageRestoreCycleDetectorTests
         return new PackageRestoreCycleDetector(
             project,
             telemetryService.Object,
-            projectSystemOptions.Object,
             nonModelNotificationService.Object);
     }
 }
