@@ -1086,3 +1086,11 @@ Microsoft.VisualStudio.Editors.PropertyPages.HiddenIfMissingPropertyControlData.
 Overrides VSThemedLinkLabel.ShowFocusCues() -> Boolean
 VSThemedLinkLabel.DisplayFocusCues() -> Boolean
 VSThemedLinkLabel.DisplayFocusCues(value As Boolean) -> Void
+Overridable Microsoft.VisualStudio.Editors.AppDesDesignerFramework.CheckCommandStatusHandler.Invoke(menuCommand As Microsoft.VisualStudio.Editors.AppDesDesignerFramework.DesignerMenuCommand) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetDelegate.Invoke(control As System.Windows.Forms.Control, prop As System.ComponentModel.PropertyDescriptor, ByRef value As Object) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.MultiValueGetDelegate.Invoke(control As System.Windows.Forms.Control, prop As System.ComponentModel.PropertyDescriptor, ByRef Values As Object()) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.MultiValueSetDelegate.Invoke(control As System.Windows.Forms.Control, prop As System.ComponentModel.PropertyDescriptor, Values As Object()) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDelegate.Invoke(control As System.Windows.Forms.Control, prop As System.ComponentModel.PropertyDescriptor, value As Object) -> Boolean
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.FileChangedDelegate.Invoke(ChangeFlags As UInteger, FileAttrs As UInteger) -> Void
+Overridable Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData.LoadCompletedDelegate.Invoke(Reload As Integer) -> Void
+Overridable Microsoft.VisualStudio.Editors.VBPackageUtils.getServiceDelegate.Invoke(ServiceType As System.Type) -> Object
