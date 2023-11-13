@@ -997,6 +997,24 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to - {0}.
+        /// </summary>
+        internal static string OtherUpToDateCheckProviderInfo_1 {
+            get {
+                return ResourceManager.GetString("OtherUpToDateCheckProviderInfo_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note that other checks may still determine the project is not up-to-date. The following checks are present:.
+        /// </summary>
+        internal static string OtherUpToDateCheckProvidersPresent {
+            get {
+                return ResourceManager.GetString("OtherUpToDateCheckProvidersPresent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &amp;Pack.
         /// </summary>
         internal static string PackCommand {

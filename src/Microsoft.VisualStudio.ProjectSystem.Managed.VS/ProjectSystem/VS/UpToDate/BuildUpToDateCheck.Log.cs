@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics;
+using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
@@ -10,6 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         internal sealed class Log
         {
             private readonly TextWriter _writer;
+            private readonly IBuildUpToDateCheckProvider _check;
+            private readonly ICollection<Lazy<IBuildUpToDateCheckProvider, IOrderPrecedenceMetadataView>> _checkers;
             private readonly ISolutionBuildEventListener _solutionBuildEventListener;
             private readonly Stopwatch _stopwatch;
             private readonly TimeSpan _waitTime;
@@ -29,9 +32,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             public string? FailureDescription { get; private set; }
             public FileSystemOperationAggregator? FileSystemOperations { get; set; }
 
-            public Log(TextWriter writer, LogLevel requestedLogLevel, ISolutionBuildEventListener solutionBuildEventListener, Stopwatch stopwatch, TimeSpan waitTime, TimestampCache timestampCache, string projectPath, Guid projectGuid, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput, string? ignoreKinds, int checkNumber)
+            public Log(TextWriter writer, IBuildUpToDateCheckProvider check, ICollection<Lazy<IBuildUpToDateCheckProvider, IOrderPrecedenceMetadataView>> checkers, LogLevel requestedLogLevel, ISolutionBuildEventListener solutionBuildEventListener, Stopwatch stopwatch, TimeSpan waitTime, TimestampCache timestampCache, string projectPath, Guid projectGuid, ITelemetryService? telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput, string? ignoreKinds, int checkNumber)
             {
                 _writer = writer;
+                _check = check;
+                _checkers = checkers;
                 Level = requestedLogLevel;
                 _solutionBuildEventListener = solutionBuildEventListener;
                 _stopwatch = stopwatch;
@@ -255,6 +260,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 });
 
                 Info(nameof(VSResources.FUTD_UpToDate));
+
+                System.Diagnostics.Debug.Assert(_checkers.Any(check => ReferenceEquals(check.Value, _check)), "Expected the current IBuildUpToDateCheckProvider to be present in the set of known checks for this configured project");
+
+                if (_checkers.Count > 1 && Level >= LogLevel.Info)
+                {
+                    // There's more than one IBuildUpToDateCheckProvider for this configured project, so we are
+                    // not the only up-to-date check. Other checks may also declare this project as out-of-date.
+                    // When that happens, someone looking at the logs could be confused. The logs would say
+                    // "Project is up to date", followed immediately by details of a build (assuming the other
+                    // check doesn't log anything). To improve this situation, we log some information about
+                    // other checks we detect that apply to the project, so that someone investigating this
+                    // situation is not confused and knows where to move their investigation.
+                    Info(nameof(VSResources.OtherUpToDateCheckProvidersPresent));
+
+                    foreach (Lazy<IBuildUpToDateCheckProvider, IOrderPrecedenceMetadataView> check in _checkers)
+                    {
+                        if (!ReferenceEquals(check.Value, _check))
+                        {
+                            Info(nameof(VSResources.OtherUpToDateCheckProviderInfo_1), check.Value.GetType());
+                        }
+                    }
+                }
             }
 
             public readonly struct Scope : IDisposable
