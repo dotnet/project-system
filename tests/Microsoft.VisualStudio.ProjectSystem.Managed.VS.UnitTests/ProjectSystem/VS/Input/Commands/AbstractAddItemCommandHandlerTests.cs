@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             {
             }
 
-            protected override ImmutableDictionary<long, ImmutableArray<TemplateDetails>> GetTemplateDetails() => ImmutableDictionary<long, ImmutableArray<TemplateDetails>>.Empty
+            protected override ImmutableDictionary<long, ImmutableArray<TemplateDetails>> TemplatesByCommandId => ImmutableDictionary<long, ImmutableArray<TemplateDetails>>.Empty
                 .CreateTemplateDetails(CommandId, Capability, Guid.Empty, ResourceIds.DirName, ResourceIds.TemplateName);
         }
     }

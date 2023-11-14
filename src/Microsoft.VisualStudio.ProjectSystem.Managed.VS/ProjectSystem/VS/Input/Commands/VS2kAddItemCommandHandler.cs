@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             .CreateTemplateDetails(VisualStudioStandard2KCommandId.AddModule,        ProjectCapability.VisualBasic,                                      LegacyVBPackageGuid,        LegacyVBStringResourceIds.IDS_VSDIR_VBPROJECTFILES,     LegacyVBStringResourceIds.IDS_VSDIR_ITEM_MODULE             );
 
-        protected override ImmutableDictionary<long, ImmutableArray<TemplateDetails>> GetTemplateDetails() => s_templateDetails;
+        protected override ImmutableDictionary<long, ImmutableArray<TemplateDetails>> TemplatesByCommandId => s_templateDetails;
 
         [ImportingConstructor]
         public VS2kAddItemCommandHandler(ConfiguredProject configuredProject, IAddItemDialogService addItemDialogService, IVsUIService<SVsShell, IVsShell> vsShell)

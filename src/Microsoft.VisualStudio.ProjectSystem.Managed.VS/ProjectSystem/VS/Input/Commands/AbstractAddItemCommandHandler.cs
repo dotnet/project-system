@@ -8,12 +8,20 @@ using Microsoft.VisualStudio.Shell.Interop;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     /// <summary>
-    /// Provides support for all Add Item commands that operate on <see cref="IProjectTree"/> nodes, across C# and VB
+    /// Provides support for all Add Item commands that operate on <see cref="IProjectTree"/> nodes, across C# and VB.
     /// </summary>
-    internal abstract partial class AbstractAddItemCommandHandler : IAsyncCommandGroupHandler
+    internal abstract class AbstractAddItemCommandHandler : IAsyncCommandGroupHandler
     {
+        internal sealed record class TemplateDetails(
+            string AppliesTo,
+            Guid DirNamePackageGuid,
+            uint DirNameResourceId,
+            Guid TemplateNamePackageGuid,
+            uint TemplateNameResourceId);
+
         protected static readonly Guid LegacyCSharpPackageGuid = new("{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}");
         protected static readonly Guid LegacyVBPackageGuid = new("{164B10B9-B200-11d0-8C61-00A0C91E29D5}");
+
         private readonly ConfiguredProject _configuredProject;
         private readonly IAddItemDialogService _addItemDialogService;
         private readonly IVsUIService<IVsShell> _vsShell;
@@ -26,15 +34,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
 
         /// <summary>
-        /// Gets the list of potential templates that could apply to this handler. Implementors should cache the results of this method.
+        /// Gets the list of potential templates that could apply to this handler, keyed by command ID.
         /// </summary>
-        protected abstract ImmutableDictionary<long, ImmutableArray<TemplateDetails>> GetTemplateDetails();
+        protected abstract ImmutableDictionary<long, ImmutableArray<TemplateDetails>> TemplatesByCommandId { get; }
 
         public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
             Requires.NotNull(nodes);
 
-            if (nodes.Count == 1 && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()) && TryGetTemplateDetails(commandId, out _))
+            if (nodes.Count == 1 && TryGetTemplateDetails(commandId, out _) && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()))
             {
                 return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
             }
@@ -46,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             Requires.NotNull(nodes);
 
-            if (nodes.Count == 1 && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()) && TryGetTemplateDetails(commandId, out TemplateDetails? result))
+            if (nodes.Count == 1 && TryGetTemplateDetails(commandId, out TemplateDetails? result) && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()))
             {
                 IVsShell vsShell = _vsShell.Value;
 
@@ -66,10 +74,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         private bool TryGetTemplateDetails(long commandId, [NotNullWhen(returnValue: true)] out TemplateDetails? result)
         {
-            IProjectCapabilitiesScope capabilities = _configuredProject.Capabilities;
-
-            if (GetTemplateDetails().TryGetValue(commandId, out ImmutableArray<TemplateDetails> templates))
+            if (TemplatesByCommandId.TryGetValue(commandId, out ImmutableArray<TemplateDetails> templates))
             {
+                IProjectCapabilitiesScope capabilities = _configuredProject.Capabilities;
+
                 foreach (TemplateDetails template in templates)
                 {
                     if (capabilities.AppliesTo(template.AppliesTo))
