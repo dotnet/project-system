@@ -73,10 +73,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         private bool TryGetTemplateDetails(long commandId, [NotNullWhen(returnValue: true)] out TemplateDetails? result)
         {
-            IProjectCapabilitiesScope capabilities = _configuredProject.Capabilities;
-
             if (GetTemplateDetails().TryGetValue(commandId, out ImmutableArray<TemplateDetails> templates))
             {
+                IProjectCapabilitiesScope capabilities = _configuredProject.Capabilities;
+
                 foreach (TemplateDetails template in templates)
                 {
                     if (capabilities.AppliesTo(template.AppliesTo))
