@@ -12,7 +12,7 @@
     <!-- Path Property: PkgMicrosoft_DiaSymReader_Pdb2Pdb -->
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="Microsoft.DotNet.XliffTasks"         PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset"     PrivateAssets="all" />
     <!--
       The SourceLink package depends on the repo provider used.
       https://github.com/dotnet/sourcelink#using-source-link-in-net-projects
