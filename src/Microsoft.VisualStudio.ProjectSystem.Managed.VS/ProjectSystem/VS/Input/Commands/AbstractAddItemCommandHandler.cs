@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             Requires.NotNull(nodes);
 
-            if (nodes.Count == 1 && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()) && TryGetTemplateDetails(commandId, out _))
+            if (nodes.Count == 1 && TryGetTemplateDetails(commandId, out _) && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()))
             {
                 return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
             }
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             Requires.NotNull(nodes);
 
-            if (nodes.Count == 1 && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()) && TryGetTemplateDetails(commandId, out TemplateDetails? result))
+            if (nodes.Count == 1 && TryGetTemplateDetails(commandId, out TemplateDetails? result) && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()))
             {
                 IVsShell vsShell = _vsShell.Value;
 
