@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             .CreateTemplateDetails(WPFCommandId.AddWPFResourceDictionary, ProjectCapability.VisualBasic, ProjectCapability.WPF, LegacyVBPackageGuid,     LegacyVBStringResourceIds.IDS_VSDIR_CLIENTPROJECTITEMS,   s_wpfPackage, WPFTemplateNames.WPFResourceDictionary )
             .CreateTemplateDetails(WPFCommandId.WPFResourceDictionary,    ProjectCapability.VisualBasic, ProjectCapability.WPF, LegacyVBPackageGuid,     LegacyVBStringResourceIds.IDS_VSDIR_CLIENTPROJECTITEMS,   s_wpfPackage, WPFTemplateNames.WPFResourceDictionary );
 
-        protected override ImmutableDictionary<long, ImmutableArray<TemplateDetails>> GetTemplateDetails() => s_templateDetails;
+        protected override ImmutableDictionary<long, ImmutableArray<TemplateDetails>> TemplatesByCommandId => s_templateDetails;
 
         [ImportingConstructor]
         public WPFAddItemCommandHandler(ConfiguredProject configuredProject, IAddItemDialogService addItemDialogService, IVsUIService<SVsShell, IVsShell> vsShell)

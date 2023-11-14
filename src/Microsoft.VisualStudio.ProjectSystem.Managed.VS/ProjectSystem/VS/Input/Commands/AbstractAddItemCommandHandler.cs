@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// <summary>
         /// Gets the list of potential templates that could apply to this handler. Implementors should cache the results of this method.
         /// </summary>
-        protected abstract ImmutableDictionary<long, ImmutableArray<TemplateDetails>> GetTemplateDetails();
+        protected abstract ImmutableDictionary<long, ImmutableArray<TemplateDetails>> TemplatesByCommandId { get; }
 
         public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
         {
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         private bool TryGetTemplateDetails(long commandId, [NotNullWhen(returnValue: true)] out TemplateDetails? result)
         {
-            if (GetTemplateDetails().TryGetValue(commandId, out ImmutableArray<TemplateDetails> templates))
+            if (TemplatesByCommandId.TryGetValue(commandId, out ImmutableArray<TemplateDetails> templates))
             {
                 IProjectCapabilitiesScope capabilities = _configuredProject.Capabilities;
 
