@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ImportedNamespaces|ValueEditors|ValueEditor|Metadata|TypeDescriptorText|Value">
         <source>Imported Namespaces</source>
-        <target state="new">Imported Namespaces</target>
+        <target state="translated">가져온 네임스페이스</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|References|Description">
