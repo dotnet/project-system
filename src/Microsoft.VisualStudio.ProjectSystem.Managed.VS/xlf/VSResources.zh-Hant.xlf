@@ -482,12 +482,12 @@
       </trans-unit>
       <trans-unit id="OtherUpToDateCheckProviderInfo_1">
         <source>- {0}</source>
-        <target state="new">- {0}</target>
+        <target state="translated">- {0}</target>
         <note>{0} is the .NET type name of the implementation of an up-to-date check.</note>
       </trans-unit>
       <trans-unit id="OtherUpToDateCheckProvidersPresent">
         <source>Note that other checks may still determine the project is not up-to-date. The following checks are present:</source>
-        <target state="new">Note that other checks may still determine the project is not up-to-date. The following checks are present:</target>
+        <target state="translated">請注意，其他檢查可能仍然會判斷專案不是最新。存在下列檢查:</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
