@@ -15,7 +15,7 @@ These CPS mechanisms do not provide their own means of handling localized `Rule`
 
 Both of these approaches assume that you have localized copies of the original .xaml `Rule` file, one per supported locale. The process of creating these files is beyond the scope of this document, and will depend on the specific localization tools and processes used by your component.
 
-That being said, this particular repo makes use of [xliff-tasks](https://github.com/dotnet/xliff-tasks) to extract the localizable parts of .xaml `Rule` files into .xlf files for translation, and to incorporate the translated .xlf files back into the build.
+That being said, this particular repo makes use of [xliff-tasks](https://github.com/dotnet/arcade/blob/main/src/Microsoft.DotNet.XliffTasks/README.md) to extract the localizable parts of .xaml `Rule` files into .xlf files for translation, and to incorporate the translated .xlf files back into the build.
 
 
 ## Integrating localized XAML files on disk

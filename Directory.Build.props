@@ -92,7 +92,7 @@
     <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
     <!-- This tells XliffTasks to produce updated XLF files when building a project. -->
     <!-- We set this off in CI so that the CI build will fail if updated XLF files were not committed to the repo. -->
-    <!-- https://github.com/dotnet/xliff-tasks/tree/main#using-microsoftdotnetxlifftasks -->
+    <!-- https://github.com/dotnet/arcade/blob/main/src/Microsoft.DotNet.XliffTasks/README.md#using-microsoftdotnetxlifftasks -->
     <UpdateXlfOnBuild Condition="'$(CIBuild)' != 'true'">true</UpdateXlfOnBuild>
   </PropertyGroup>
 

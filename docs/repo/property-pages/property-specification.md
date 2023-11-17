@@ -614,4 +614,4 @@ It is possible to achieve this by authoring a property whose data source uses `P
 
 ## Localization
 
-XAML files in the dotnet/project-system repo are configured for automatic localization via XLF files, which are automatically generated and updated during build via [xliff-tasks](https://github.com/dotnet/xliff-tasks) MSBuild tasks/targets.
+XAML files in the dotnet/project-system repo are configured for automatic localization via XLF files, which are automatically generated and updated during build via [xliff-tasks](https://github.com/dotnet/arcade/blob/main/src/Microsoft.DotNet.XliffTasks/README.md) MSBuild tasks/targets.
