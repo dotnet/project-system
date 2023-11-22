@@ -1206,9 +1206,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     {
                         if (isCopyItemsComplete)
                         {
-                            logger.Info(isEnabledInProject is null
-                                ? nameof(VSResources.FUTD_BuildAccelerationEnabledViaFeatureFlag)
-                                : nameof(VSResources.FUTD_BuildAccelerationEnabledViaProperty));
+                            if (isEnabledInProject is not null)
+                            {
+                                // Don't log if isEnabledInProject is null, as we already log that status above
+                                logger.Info(nameof(VSResources.FUTD_BuildAccelerationEnabledViaProperty));
+                            }
+
                             return true;
                         }
                         else
