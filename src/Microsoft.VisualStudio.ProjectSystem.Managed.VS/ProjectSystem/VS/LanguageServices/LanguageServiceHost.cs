@@ -310,6 +310,8 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
 
         await WhenProjectLoaded(cancellationToken);
 
+        await WhenInitialized(cancellationToken);
+
         return _primaryWorkspace ?? throw Assumes.Fail("Primary workspace unknown.");
     }
 
