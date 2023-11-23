@@ -39,8 +39,21 @@ To enable it in your solution, add or edit a top-level [`Directory.Build.props`]
 
 ```xml
 <Project>
+  <!--
+    This Directory.Build.props files sets default properties that apply to all projects found in
+    this folder or subfolders, recursively.
+  -->
   <PropertyGroup>
+    <!-- Enable Build Acceleration in Visual Studio. -->
     <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+
+    <!--
+      If you target a framework earlier than .NET 5 (including .NET Framework and .NET Standard),
+      you should set ProduceReferenceAssembly to true in order to speed incremental builds.
+      If you multi-target and any target is before .NET 5, you need this.
+      Even if you target .NET 5 or later, having this property is fine.
+    -->
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
 </Project>
 ```
@@ -59,8 +72,10 @@ For example, if `MyPackage` is known to be incompatible with Build Acceleration,
 <Project>
   <PropertyGroup>
     <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
   <ItemGroup>
+    <!-- Disable Build Acceleration for projects that reference specific incompatible packages. -->
     <BuildAccelerationIncompatiblePackage Include="MyPackage" />
   </ItemGroup>
 </Project>
@@ -129,6 +144,8 @@ Looking through the build output with the following points in mind:
 
    This message lists the referenced projects that are not producing a reference assembly. The `TargetPath` of those projects is used, as this can help disambiguate between target frameworks in multi-targeting projects.
 
+   For more information, see [Reference Assemblies](#reference-assemblies).
+
 - ✅ You should see a section listing items to copy:
 
    ```
@@ -156,6 +173,27 @@ Looking through the build output with the following points in mind:
    This indicates that rather than calling MSBuild to build the project, Visual Studio has copied the listed files directly. The check completed quickly, the project is reported as up-to-date, and the next project (if any) can start building.
 
    ⚠️ Note that the bug described in [Discrepancies between FUTDC logging and build summary](up-to-date-check.md#discrepancies-between-futdc-logging-and-build-summary) may cause the number of succeeded projects to be overstated. This requires changes within Visual Studio, and we hope to fix this in a future release.
+
+## Reference Assemblies
+
+A reference assembly is a DLLs that models the public API of a project, without any actual implementation.
+
+During build, reference assembly timestamps are only updated when their project's public API changes. Incremental build systems use file-system timestamps for many of their optimisations. If project changes are internal-only (e.g. method bodies, private members added/removed, documentation changed) then the timestamp is not changed. Knowing the time at which a public API was last changed allows skipping some compilation.
+
+This is useful in multi-project builds, where projects reference one another. Consider two projects, where `A` references `B`:
+
+```mermaid
+graph LR
+    A --> B
+```
+
+In our example, `A` only need to recompile if it has its own changes, or if `B`'s reference assembly changes. In the common case that `B`'s implementation changed but not its reference assembly, the build of `A` can be made faster by skipping recompilation and copying `B`'s implementation assembly into `A`'s output folder.
+
+Production of a reference assembly is controlled by the `ProduceReferenceAssembly` MSBuild property, and the feature is part of MSBuild directly. This means it works well outside of VS, in case you also do CLI builds. Note that most CI builds are non-incremental (they happen on fresh clones), so this property has no impact there.
+
+When `ProduceReferenceAssembly` was introduced in .NET 5, it was only enabled by default for .NET 5 and later. We investigated changing the default for earlier frameworks too, but this caused issues in a very small number of highly customised builds and we take backwards compatability very seriously. That said, it's generally desirable to configure projects to produce reference assemblies, regardless of whether you use Build Acceleration or not.
+
+For more information, see [Reference Assemblies](https://learn.microsoft.com/dotnet/standard/assembly/reference-assemblies) on Microsoft Learn.
 
 ## Limitations
 
