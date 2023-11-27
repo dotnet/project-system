@@ -178,7 +178,7 @@ Looking through the build output with the following points in mind:
 
 A reference assembly is a DLLs that models the public API of a project, without any actual implementation.
 
-During build, reference assembly timestamps are only updated when their project's public API changes. Incremental build systems use file-system timestamps for many of their optimisations. If project changes are internal-only (e.g. method bodies, private members added/removed, documentation changed) then the timestamp is not changed. Knowing the time at which a public API was last changed allows skipping some compilation.
+During build, reference assembly timestamps are only updated when their project's public API changes. Incremental build systems use file system timestamps for many of their optimisations. If project changes are internal-only (e.g. method bodies, private members added/removed, documentation changed) then the timestamp is not changed. Knowing the time at which a public API was last changed allows skipping some compilation.
 
 This is useful in multi-project builds, where projects reference one another. Consider two projects, where `A` references `B`:
 
