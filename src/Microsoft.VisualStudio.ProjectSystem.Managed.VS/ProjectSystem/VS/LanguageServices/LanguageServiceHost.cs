@@ -4,6 +4,7 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem; // Roslyn
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
@@ -45,7 +46,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
     private readonly IProjectFaultHandlerService _projectFaultHandler;
     private readonly JoinableTaskCollection _joinableTaskCollection;
     private readonly JoinableTaskFactory _joinableTaskFactory;
-    private readonly ILanguageServiceHostEnvironment? _languageServiceHostEnvironment;
+    private readonly AsyncLazy<bool> _isEnabled;
 
     private DisposableBag? _disposables;
 
@@ -65,7 +66,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
         ISafeProjectGuidService projectGuidService,
         IProjectThreadingService threadingService,
         IProjectFaultHandlerService projectFaultHandler,
-        [Import(AllowDefault = true)] ILanguageServiceHostEnvironment? languageServiceHostEnvironment)
+        IVsShellServices vsShell)
         : base(threadingService.JoinableTaskContext)
     {
         _unconfiguredProject = project;
@@ -75,7 +76,19 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
         _tasksService = tasksService;
         _projectGuidService = projectGuidService;
         _projectFaultHandler = projectFaultHandler;
-        _languageServiceHostEnvironment = languageServiceHostEnvironment;
+
+        _isEnabled = new(
+            async () =>
+            {
+                await threadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                // If VS is running in command line mode (e.g. "devenv.exe /build my.sln"),
+                // language services should not be enabled. The one exception to this is
+                // when we're populating a solution cache via "/populateSolutionCache".
+                return !await vsShell.IsCommandLineModeAsync()
+                    || await vsShell.IsPopulateSolutionCacheModeAsync();
+            },
+            threadingService.JoinableTaskFactory);
 
         _joinableTaskCollection = threadingService.JoinableTaskContext.CreateCollection();
         _joinableTaskCollection.DisplayName = "LanguageServiceHostTasks";
@@ -262,14 +275,8 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
 
     public Task<bool> IsEnabledAsync(CancellationToken cancellationToken)
     {
-        if (_languageServiceHostEnvironment is null)
-        {
-            // Assume enabled when no host environment is available.
-            return TaskResult.True;
-        }
-
         // Defer to the host environment to determine if we're enabled.
-        return _languageServiceHostEnvironment.IsEnabledAsync(cancellationToken);
+        return _isEnabled.GetValueAsync(cancellationToken);
     }
 
     public async Task WhenInitialized(CancellationToken token)
