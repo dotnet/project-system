@@ -238,7 +238,7 @@ stages:
         # - https://stackoverflow.com/a/57488169/294804
         # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
         value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
-      runSettingsURI: https://vsdrop.corp.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
+      runSettingsURI: https://vsdrop.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
       # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
       # This variable is expanded when it is used: https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
       visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
