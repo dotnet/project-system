@@ -20,6 +20,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
     private readonly UnconfiguredProject _unconfiguredProject;
     private readonly IProjectService _projectService;
     private readonly IProjectThreadingService _threadingService;
+    private readonly IUnconfiguredProjectTasksService _tasksService;
     private readonly IManagedProjectDiagnosticOutputService _logger;
     private readonly IDataProgressTrackerService _dataProgressTrackerService;
     private readonly IActiveEditorContextTracker _activeWorkspaceProjectContextTracker;
@@ -46,6 +47,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
         _unconfiguredProject = unconfiguredProject;
         _projectService = projectService;
         _threadingService = threadingService;
+        _tasksService = tasksService;
         _logger = logger;
         _dataProgressTrackerService = dataProgressTrackerService;
         _activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker;
@@ -93,7 +95,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
         // while waiting for data that won't ever arrive due to the fault.
         _ = actionBlock.Completion.ContinueWith(
             task => workspace.Fault(task.Exception),
-            CancellationToken.None,
+            cancellationToken,
             TaskContinuationOptions.OnlyOnFaulted,
             TaskScheduler.Default);
 
@@ -146,9 +148,19 @@ internal class WorkspaceFactory : IWorkspaceFactory
                 cancellationToken: cancellationToken),
 
             buildTransformBlock.LinkTo(orderingBlock, DataflowOption.PropagateCompletion),
-
-            ProjectDataSources.JoinUpstreamDataSources(joinableTaskFactory, _projectService.Services.FaultHandler, source.ActiveConfiguredProjectSource, source.ProjectBuildRuleSource)
         });
+
+        // During solution load we run evaluations but not DTB. CPS has a feature that detects when the main thread
+        // needs DTB results and allows the DTB to run before solution load completes, in order to avoid deadlocks.
+        // While it's fine to create a dataflow subscription for build data during solution load, the joining of
+        // upstream data sources can cause CPS to accidentally think that DTB is blocking the UI thread. There's only
+        // one gate for the whole solution, so even a single project in this state will cause all projects to build.
+        // In order to avoid this, we defer joining upstream sources until after the solution has loaded.
+        _ = _tasksService.SolutionLoadedInHost.ContinueWith(
+            _ => workspace.ChainDisposal(ProjectDataSources.JoinUpstreamDataSources(joinableTaskFactory, _projectService.Services.FaultHandler, source.ActiveConfiguredProjectSource, source.ProjectBuildRuleSource)),
+            cancellationToken,
+            TaskContinuationOptions.None,
+            TaskScheduler.Default);
 
         #endregion
 
