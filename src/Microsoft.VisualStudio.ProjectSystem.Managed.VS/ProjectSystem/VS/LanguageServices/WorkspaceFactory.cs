@@ -95,7 +95,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
         // while waiting for data that won't ever arrive due to the fault.
         _ = actionBlock.Completion.ContinueWith(
             task => workspace.Fault(task.Exception),
-            CancellationToken.None,
+            cancellationToken,
             TaskContinuationOptions.OnlyOnFaulted,
             TaskScheduler.Default);
 
@@ -158,7 +158,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
         // In order to avoid this, we defer joining upstream sources until after the solution has loaded.
         _ = _tasksService.SolutionLoadedInHost.ContinueWith(
             _ => workspace.ChainDisposal(ProjectDataSources.JoinUpstreamDataSources(joinableTaskFactory, _projectService.Services.FaultHandler, source.ActiveConfiguredProjectSource, source.ProjectBuildRuleSource)),
-            CancellationToken.None,
+            cancellationToken,
             TaskContinuationOptions.None,
             TaskScheduler.Default);
 
