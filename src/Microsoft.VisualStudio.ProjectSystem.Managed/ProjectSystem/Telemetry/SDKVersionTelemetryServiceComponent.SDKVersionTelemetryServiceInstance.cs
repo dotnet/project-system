@@ -35,7 +35,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Telemetry
                     // Wait for the project to be loaded so that we don't prematurely load the active configuration
                     await _unconfiguredProjectTasksService.ProjectLoadedInHost;
 
-                    ConfigurationGeneral projectProperties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
+                    // We use TryGetCurrentConfigurationGeneralPropertiesSnapshot rather than GetConfigurationGeneralPropertiesAsync
+                    // as the latter will take a project read lock, while the former uses the most recent available
+                    // snapshot. For the SDK version, this is unlikely to change throughout the lifetime of the project,
+                    // so even an older version of this value will be fine.
+                    if (!_projectVsServices.ActiveConfiguredProjectProperties.TryGetCurrentConfigurationGeneralPropertiesSnapshot(out ConfigurationGeneral projectProperties, requiredToMatchProjectVersion: false))
+                    {
+                        // Given we waited for the project to load above, this should never happen.
+                        System.Diagnostics.Debug.Fail("Unable to get ConfigurationGeneral properties snapshot for SDK version.");
+                        return;
+                    }
+
                     Task<object?>? task = projectProperties?.NETCoreSdkVersion?.GetValueAsync();
                     string? version = task is null ? string.Empty : (string?)await task;
                     string? projectId = await GetProjectIdAsync();
