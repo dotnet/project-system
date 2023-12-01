@@ -48,16 +48,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Telemetry
 
                     Task<object?>? task = projectProperties?.NETCoreSdkVersion?.GetValueAsync();
                     string? version = task is null ? string.Empty : (string?)await task;
-                    string? projectId = await GetProjectIdAsync();
+                    Guid projectGuid = await _projectGuidService.GetProjectGuidAsync();
 
-                    if (Strings.IsNullOrEmpty(version) || Strings.IsNullOrEmpty(projectId))
+                    if (Strings.IsNullOrEmpty(version) || projectGuid == Guid.Empty)
                     {
                         return;
                     }
 
                     _telemetryService.PostProperties(TelemetryEventName.SDKVersion, new[]
                     {
-                        (TelemetryPropertyName.SDKVersion.Project, (object)projectId),
+                        (TelemetryPropertyName.SDKVersion.Project, (object)projectGuid.ToString()),
                         (TelemetryPropertyName.SDKVersion.NETCoreSDKVersion, version)
                     });
                 },
@@ -66,12 +66,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Telemetry
 
             protected override void Dispose(bool disposing)
             {
-            }
-
-            private async Task<string?> GetProjectIdAsync()
-            {
-                Guid projectGuid = await _projectGuidService.GetProjectGuidAsync();
-                return projectGuid == Guid.Empty ? null : projectGuid.ToString();
             }
 
             public Task InitializeAsync()
