@@ -29,10 +29,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Telemetry
 
             protected override void Initialize()
             {
-                // Do not block initialization on reporting the sdk version. It is possible to deadlock.
+                // Do not block initialization on reporting the SDK version. It is possible to deadlock.
                 _projectVsServices.ThreadingService.RunAndForget(async () =>
                 {
-                    // Wait for the project to be loaded so that we don't prematurely load the active configuration
+                    // Wait for the project to be loaded so that we don't prematurely load the active configuration.
                     await _unconfiguredProjectTasksService.ProjectLoadedInHost;
 
                     // We use TryGetCurrentConfigurationGeneralPropertiesSnapshot rather than GetConfigurationGeneralPropertiesAsync
