@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             public string? EventName { get; set; }
 
-            public List<(string propertyName, object propertyValue)>? Properties { get; set; }
+            public List<(string Name, object Value)>? Properties { get; set; }
         }
 
         public static ITelemetryService Create(TelemetryParameters callParameters)
