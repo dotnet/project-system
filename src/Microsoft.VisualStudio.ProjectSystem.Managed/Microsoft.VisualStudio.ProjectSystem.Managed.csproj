@@ -253,6 +253,16 @@
 
   <!-- Items -->
   <ItemGroup>
+    <Compile Update="ProjectSystem\Rules\Items\AdditionalFiles.cs">
+      <DependentUpon>AdditionalFiles.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\AdditionalFiles.xaml">
+      <SubType>Designer</SubType>
+      <XlfInput>false</XlfInput>
+      <DataAccess>None</DataAccess>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
     <Compile Update="ProjectSystem\Rules\Items\Compile.cs">
       <DependentUpon>Compile.xaml</DependentUpon>
     </Compile>
