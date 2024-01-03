@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private static void EnsureTrailingSlash([AllowNull] ref string path)
         {
-            if (path is not null)
+            if (!Strings.IsNullOrEmpty(path))
             {
                 path = PathHelper.EnsureTrailingSlash(path);
             }
