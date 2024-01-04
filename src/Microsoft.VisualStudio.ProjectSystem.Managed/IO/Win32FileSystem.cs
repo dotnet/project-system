@@ -36,9 +36,18 @@ namespace Microsoft.VisualStudio.IO
             }
         }
 
-        public void CopyFile(string source, string destination, bool overwrite)
+        public void CopyFile(string source, string destination, bool overwrite, bool clearReadOnly)
         {
             File.Copy(source, destination, overwrite);
+
+            if (clearReadOnly)
+            {
+                FileAttributes attributes = File.GetAttributes(destination);
+                if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                {
+                    File.SetAttributes(destination, attributes & ~FileAttributes.ReadOnly);
+                }
+            }
         }
 
         public async Task<string> ReadAllTextAsync(string path)

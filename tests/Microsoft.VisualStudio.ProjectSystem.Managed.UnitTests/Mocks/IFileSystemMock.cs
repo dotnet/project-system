@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.IO
             Files.Remove(path);
         }
 
-        public void CopyFile(string source, string destination, bool overwrite)
+        public void CopyFile(string source, string destination, bool overwrite, bool clearReadOnly)
         {
             if (!FileExists(destination))
             {
