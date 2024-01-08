@@ -441,14 +441,14 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             For Each codeGenerator As CodeGenerator In _codeGeneratorEntries
                 If codeGenerator.DisplayName.Equals(value, StringComparison.CurrentCultureIgnoreCase) Then
-                    Dim Designer = CType(RootDesigner, ResourceEditorRootDesigner)
-                    If Designer IsNot Nothing Then
+                    If TypeOf RootDesigner Is ResourceEditorRootDesigner Then
+                        Dim Designer = CType(RootDesigner, ResourceEditorRootDesigner)
                         Dim ResourceView As ResourceEditorView = Designer.GetView()
                         ' We let the base class handle the read only mode
                         ' As mentioned in ResourceEditorDesignerLoader, "We actually don't want users to edit Form RESX file"
                         ' so we just need to add the same warning as there for now until the new resource explorer is released
-                        If ResourceView IsNot Nothing AndAlso Not ResourceView.ReadOnlyMode
-                           If ResourceView.DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UpdateADependentFile, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2, HelpIDs.Err_EditFormResx) = DialogResult.Yes Then
+                        If ResourceView IsNot Nothing AndAlso Not ResourceView.ReadOnlyMode Then
+                            If ResourceView.DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UpdateADependentFile, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2, HelpIDs.Err_EditFormResx) = DialogResult.Yes Then
                                 _allowEdit = True
                             End If
                         End If
@@ -457,6 +457,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         End If
 
                         _allowEdit = False
+                    Else
+                        TrySetCustomToolValue(codeGenerator.CustomToolValue)
                     End If
                     Return
                 End If
