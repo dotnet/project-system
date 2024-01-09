@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.M
 /// </summary>
 internal sealed class MSBuildDependencyCollection
 {
-    private readonly Dictionary<string, MSBuildDependency> _dependencyById = new();
+    private readonly Dictionary<string, MSBuildDependency> _dependencyById = new(StringComparers.DependencyIds);
     private readonly MSBuildDependencyFactoryBase _factory;
 
     public DependencyGroupType DependencyGroupType => _factory.DependencyGroupType;
