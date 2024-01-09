@@ -80,6 +80,15 @@ internal sealed class DependenciesTreeBuilder
 
         await BuildUnconfiguredNodesAsync();
 
+        dependenciesNode = RemoveUnexpectedChildren(dependenciesNode, expectedChildren);
+
+        ProjectImageMoniker rootIcon = snapshot.MaximumDiagnosticLevel switch
+        {
+            DiagnosticLevel.Error => KnownProjectImageMonikers.ReferenceGroupError,
+            DiagnosticLevel.Warning => KnownProjectImageMonikers.ReferenceGroupWarning,
+            _ => KnownProjectImageMonikers.ReferenceGroup
+        };
+
         if (cancellationToken.IsCancellationRequested)
         {
             // We return the original tree on cancellation. This is because the cancellation can indicate
@@ -90,16 +99,16 @@ internal sealed class DependenciesTreeBuilder
             return originalNode;
         }
 
-        dependenciesNode = RemoveUnexpectedChildren(dependenciesNode, expectedChildren);
-
-        ProjectImageMoniker rootIcon = snapshot.MaximumDiagnosticLevel switch
+        if (dependenciesNode.Icon == rootIcon && dependenciesNode.ExpandedIcon == rootIcon)
         {
-            DiagnosticLevel.Error => KnownProjectImageMonikers.ReferenceGroupError,
-            DiagnosticLevel.Warning => KnownProjectImageMonikers.ReferenceGroupWarning,
-            _ => KnownProjectImageMonikers.ReferenceGroup
-        };
-
-        return dependenciesNode.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
+            // The icon is unchanged, so avoid creating an additional tree item.
+            return dependenciesNode;
+        }
+        else
+        {
+            // The icon changed. Apply it.
+            return dependenciesNode.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
+        }
 
         IProjectTree CreateDependenciesNode()
         {
