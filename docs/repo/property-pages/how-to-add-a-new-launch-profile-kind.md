@@ -122,15 +122,15 @@ In this option the XAML file is embedded in an assembly as a resource and discov
 
 ### Step 1: Add the Project System SDK
 
-Use the NuGet Package Manager to add the Microsoft.VisualStudio.ProjectSystem.Sdk package package to your project.
+Use the NuGet Package Manager to add the Microsoft.VisualStudio.ProjectSystem.SDK package package to your project.
 
 ### Step 2: (optional): Add the Microsoft.Build.Framework package
 
 Use the NuGet Package Manager to add the Microsoft.Build.Framework package to your project. This is an optional step, but it will allow the XAML editor to find the [Rule](https://docs.microsoft.com/en-us/dotnet/api/microsoft.build.framework.xamltypes.rule) type (and related types) and provide code completion, tool tips, Go to Definition, and other features while you type.
 
-### Step 3: Add the Microsoft.VisualStudio.ProjectSystem.SDK.Tools package
+### Step 3: Add the Microsoft.VisualStudio.ProjectSystem.Sdk.Tools package
 
-Use the NuGet Package Manager to add the Microsoft.VisualStudio.ProjectSystem.SDK.Tools package to your project. This is required to correctly embed the XAML rule at build time.
+Use the NuGet Package Manager to add the Microsoft.VisualStudio.ProjectSystem.Sdk.Tools package to your project. This is required to correctly embed the XAML rule at build time.
 
 ### Step 4: Define the XAML file
 
