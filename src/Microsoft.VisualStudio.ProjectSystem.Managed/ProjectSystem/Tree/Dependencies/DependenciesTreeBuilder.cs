@@ -80,6 +80,15 @@ internal sealed class DependenciesTreeBuilder
 
         await BuildUnconfiguredNodesAsync();
 
+        dependenciesNode = RemoveUnexpectedChildren(dependenciesNode, expectedChildren);
+
+        ProjectImageMoniker rootIcon = snapshot.MaximumDiagnosticLevel switch
+        {
+            DiagnosticLevel.Error => KnownProjectImageMonikers.ReferenceGroupError,
+            DiagnosticLevel.Warning => KnownProjectImageMonikers.ReferenceGroupWarning,
+            _ => KnownProjectImageMonikers.ReferenceGroup
+        };
+
         if (cancellationToken.IsCancellationRequested)
         {
             // We return the original tree on cancellation. This is because the cancellation can indicate
@@ -89,15 +98,6 @@ internal sealed class DependenciesTreeBuilder
             // unmodified, CPS will not perform additional work as part of the update.
             return originalNode;
         }
-
-        dependenciesNode = RemoveUnexpectedChildren(dependenciesNode, expectedChildren);
-
-        ProjectImageMoniker rootIcon = snapshot.MaximumDiagnosticLevel switch
-        {
-            DiagnosticLevel.Error => KnownProjectImageMonikers.ReferenceGroupError,
-            DiagnosticLevel.Warning => KnownProjectImageMonikers.ReferenceGroupWarning,
-            _ => KnownProjectImageMonikers.ReferenceGroup
-        };
 
         return dependenciesNode.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
 
