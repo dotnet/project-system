@@ -99,7 +99,16 @@ internal sealed class DependenciesTreeBuilder
             return originalNode;
         }
 
-        return dependenciesNode.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
+        if (dependenciesNode.Icon == rootIcon && dependenciesNode.ExpandedIcon == rootIcon)
+        {
+            // The icon is unchanged, so avoid creating an additional tree item.
+            return dependenciesNode;
+        }
+        else
+        {
+            // The icon changed. Apply it.
+            return dependenciesNode.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
+        }
 
         IProjectTree CreateDependenciesNode()
         {
