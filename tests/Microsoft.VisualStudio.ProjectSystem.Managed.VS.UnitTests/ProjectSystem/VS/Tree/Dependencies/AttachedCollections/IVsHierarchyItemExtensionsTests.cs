@@ -7,16 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 {
     public sealed class IVsHierarchyItemExtensionsTests
     {
-        [Fact]
-        public void TryGetFlagsString()
-        {
-            IVsHierarchyItem item = CreateItemWithFlags("A B C");
-
-            Assert.True(item.TryGetFlagsString(out string? s));
-            Assert.NotNull(s);
-            Assert.Equal("A B C", s);
-        }
-
         [Theory]
         [InlineData("TargetNode $TFM:FooBar", "FooBar")]
         [InlineData("$TFM:FooBar TargetNode", "FooBar")]

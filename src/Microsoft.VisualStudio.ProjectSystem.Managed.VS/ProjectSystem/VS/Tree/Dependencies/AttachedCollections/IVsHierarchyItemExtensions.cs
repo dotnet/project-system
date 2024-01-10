@@ -1,9 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
-using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 
 using Flags = Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags;
 
@@ -14,8 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// </summary>
     internal static class IVsHierarchyItemExtensions
     {
-        private static Regex? s_targetFlagsRegex;
-
         /// <summary>
         /// Detects the target configuration dimension associated with a given hierarchy item in the dependencies tree, if
         /// nested within a target group node. For projects that do not multi-target, this will always return <see langword="false"/>.
@@ -26,18 +23,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         /// <returns><see langword="true"/> if the target was found, otherwise <see langword="false"/>.</returns>
         public static bool TryFindTarget(this IVsHierarchyItem item, [NotNullWhen(returnValue: true)] out string? target)
         {
-            s_targetFlagsRegex ??= new Regex(@"^(?=.*\b" + nameof(Flags.TargetNode) + @"\b)(?=.*\$TFM:(?<target>[^ ]+)\b).*$", RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.CultureInvariant);
-
             for (IVsHierarchyItem? parent = item; parent is not null; parent = parent.Parent)
             {
-                if (parent.TryGetFlagsString(out string? flagsString))
+                if (parent.TryGetFlags(out ProjectTreeFlags flags) && flags.Contains(Flags.TargetNode))
                 {
-                    Match match = s_targetFlagsRegex.Match(flagsString);
-                    if (match.Success)
+                    // Found an ancestor target node.
+                    const string prefix = "$TFM:";
+                    string? flag = flags.FirstOrDefault(f => f.StartsWith(prefix));
+
+                    if (flag is not null)
                     {
-                        target = match.Groups["target"].Value;
+                        target = flag.Substring(prefix.Length);
                         return true;
                     }
+
+                    // Target node didn't have a TFM flag for some reason. This is unexpected, but there's not much
+                    // we can do about it. Don't check any more ancestors, as there should only be one relevant target node.
+                    break;
                 }
             }
 
@@ -45,17 +47,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             return false;
         }
 
-        public static bool TryGetFlagsString(this IVsHierarchyItem item, [NotNullWhen(returnValue: true)] out string? flagsString)
+        public static bool TryGetFlags(this IVsHierarchyItem item, out ProjectTreeFlags flags)
         {
-            IVsHierarchyItemIdentity identity = item.HierarchyIdentity;
-
-            if (identity.NestedHierarchy.GetProperty(identity.NestedItemID, (int)__VSHPROPID7.VSHPROPID_ProjectTreeCapabilities, out object? value) == HResult.OK)
+            // Browse objects are created lazily, so access the one on the project root in order to obtain the unconfigured project.
+            IVsHierarchyItem root = item;
+            while (!root.HierarchyIdentity.IsRoot)
             {
-                flagsString = (string)value;
-                return true;
+                root = root.Parent;
             }
 
-            flagsString = null;
+            if (root.HierarchyIdentity.NestedHierarchy is IVsBrowseObjectContext context)
+            {
+                IProjectTreeServiceState? tree = context.UnconfiguredProject.Services.ProjectTreeService?.CurrentTree;
+
+                if (tree is not null)
+                {
+                    if (tree.Tree.TryFind((IntPtr)item.HierarchyIdentity.ItemID, out IProjectTree? subtree))
+                    {
+                        flags = subtree.Flags;
+                        return true;
+                    }
+                }
+            }
+
+            flags = default;
             return false;
         }
     }
