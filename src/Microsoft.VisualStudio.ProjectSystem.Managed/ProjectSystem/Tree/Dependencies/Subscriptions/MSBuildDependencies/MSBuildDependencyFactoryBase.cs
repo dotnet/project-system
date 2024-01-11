@@ -245,7 +245,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
 #endif
 
             // This is a resolved dependency.
-            bool isImplicit = IsImplicit(projectFullPath, properties);
+            bool isImplicit = IsImplicit(projectFullPath, evaluation?.Properties, properties);
             DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved: true, properties);
             string caption = GetResolvedCaption(itemSpec, id, properties);
             ProjectImageMoniker icon = GetIcon(isImplicit, diagnosticLevel);
@@ -279,7 +279,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
             Assumes.True(StringComparers.DependencyIds.Equals(id, itemSpec));
 #endif
 
-            bool isImplicit = IsImplicit(projectFullPath, properties);
+            bool isImplicit = IsImplicit(projectFullPath, properties, buildProperties: null);
             DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved: isEvaluationOnlySnapshot, properties);
             string caption = GetUnresolvedCaption(itemSpec, properties);
             ProjectImageMoniker icon = GetIcon(isImplicit, diagnosticLevel);
@@ -348,7 +348,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
 
             bool isResolved = true;
 
-            bool isImplicit = IsImplicit(projectFullPath, properties);
+            bool isImplicit = IsImplicit(projectFullPath, properties, evaluation?.Properties);
             DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved, properties);
             string caption = GetResolvedCaption(itemSpec, dependency.Id, properties);
             ProjectImageMoniker icon = GetIcon(isImplicit, diagnosticLevel);
@@ -380,7 +380,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
 
             bool? isResolved = isEvaluationOnlySnapshot ? dependency.IsResolved : false;
 
-            bool isImplicit = IsImplicit(projectFullPath, properties);
+            bool isImplicit = IsImplicit(projectFullPath, evaluationProperties: null, properties);
             DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved, properties, defaultLevel: dependency.DiagnosticLevel);
             string caption = GetUnresolvedCaption(itemSpec, properties);
             ProjectImageMoniker icon = GetIcon(isImplicit, diagnosticLevel);
@@ -436,26 +436,47 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
 
     private static bool IsImplicit(
         string projectFullPath,
-        IImmutableDictionary<string, string> properties)
+        IImmutableDictionary<string, string>? evaluationProperties,
+        IImmutableDictionary<string, string>? buildProperties)
     {
         Requires.NotNull(projectFullPath);
-        Requires.NotNull(properties);
+        Assumes.True(evaluationProperties is not null || buildProperties is not null);
 
-        // Check for "IsImplicitlyDefined" metadata, which is available on certain items.
-        bool? isImplicitMetadata = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined);
-
-        if (isImplicitMetadata != null)
-        {
-            return isImplicitMetadata.Value;
-        }
+        // We have two ways of determining whether a given dependency is implicit.
+        //
+        // 1. Checking its "IsImplicitlyDefined" metadata, and
+        // 2. Checking whether its "DefiningProjectFullPath" metadata matches the current project path.
+        //
+        // Additionally, we check both evaluation and build data where possible, because certain
+        // dependency types require this currently. For example, resolved package references (from
+        // build data) report "IsImplicitlyDefined" as "false" despite being defined outside the
+        // user's project. Therefore, we check "DefiningProjectFullPath" first, however that value is
+        // only defined (for packages) in evaluation data, hence the need to check both eval and build
+        // properties.
+        //
+        // Note that ideally the evaluation/build would produce consistent values for all
+        // dependencies, rather than us having to manipulate them here. We could fix that in
+        // MSBuild and SDK targets one day.
 
         // Check for "DefiningProjectFullPath" metadata and compare with the project file path.
-        // This is used by COM dependencies (and possibly others).
-        string? definingProjectFullPath = properties.GetStringProperty(ProjectItemMetadata.DefiningProjectFullPath);
+        // This is used by COM dependencies (and possibly others). It may only be present in
+        // evaluation properties, so we check both build and eval data.
+        string? definingProjectFullPath = buildProperties?.GetStringProperty(ProjectItemMetadata.DefiningProjectFullPath);
+        definingProjectFullPath ??= evaluationProperties?.GetStringProperty(ProjectItemMetadata.DefiningProjectFullPath);
 
         if (!string.IsNullOrEmpty(definingProjectFullPath))
         {
             return !StringComparers.Paths.Equals(definingProjectFullPath, projectFullPath);
+        }
+
+        // Check for "IsImplicitlyDefined" metadata, which is available on certain items.
+        // Some items, such as package references, define this on evaluation data but not build data.
+        bool? isImplicitMetadata = buildProperties?.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined);
+        isImplicitMetadata ??= evaluationProperties?.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined);
+
+        if (isImplicitMetadata != null)
+        {
+            return isImplicitMetadata.Value;
         }
 
         return false;
