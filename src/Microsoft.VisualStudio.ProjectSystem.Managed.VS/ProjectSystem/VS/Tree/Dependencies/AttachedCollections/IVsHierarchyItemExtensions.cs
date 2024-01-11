@@ -50,20 +50,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public static bool TryGetFlags(this IVsHierarchyItem item, out ProjectTreeFlags flags)
         {
-            // Browse objects are created lazily, so access the one on the project root in order to obtain the unconfigured project.
-            IVsHierarchyItem root = item;
-            while (!root.HierarchyIdentity.IsRoot)
-            {
-                root = root.Parent;
-            }
+            uint itemId = item.HierarchyIdentity.ItemID;
 
-            if (root.HierarchyIdentity.NestedHierarchy is IVsBrowseObjectContext context)
+            // Skip the root as we can't pass that ID to the CPS API.
+            if (itemId != (uint)VSConstants.VSITEMID.Root)
             {
-                IProjectTreeServiceState? tree = context.UnconfiguredProject.Services.ProjectTreeService?.CurrentTree;
-
-                if (tree is not null)
+                // Browse objects are created lazily, and we want to avoid creating them when possible.
+                // This method is typically invoked for every hierarchy item in the tree, via Solution Explorer APIs.
+                // Rather than create a browse object for every node, we find the project root node and use that.
+                // In this way, we only ever create one browse object per project.
+                IVsHierarchyItem root = item;
+                while (!root.HierarchyIdentity.IsRoot)
                 {
-                    if (tree.Tree.TryFind((IntPtr)item.HierarchyIdentity.ItemID, out IProjectTree? subtree))
+                    root = root.Parent;
+                }
+
+                if (root.HierarchyIdentity.NestedHierarchy is IVsBrowseObjectContext { UnconfiguredProject.Services.ProjectTreeService.CurrentTree.Tree: { } tree })
+                {
+                    if (tree?.TryFind((IntPtr)itemId, out IProjectTree? subtree) == true)
                     {
                         flags = subtree.Flags;
                         return true;
