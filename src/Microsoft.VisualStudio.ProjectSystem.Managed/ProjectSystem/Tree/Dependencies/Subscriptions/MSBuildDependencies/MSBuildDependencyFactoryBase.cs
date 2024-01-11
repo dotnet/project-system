@@ -279,7 +279,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
             Assumes.True(StringComparers.DependencyIds.Equals(id, itemSpec));
 #endif
 
-            bool isImplicit = IsImplicit(projectFullPath, properties, null);
+            bool isImplicit = IsImplicit(projectFullPath, properties, buildProperties: null);
             DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved: isEvaluationOnlySnapshot, properties);
             string caption = GetUnresolvedCaption(itemSpec, properties);
             ProjectImageMoniker icon = GetIcon(isImplicit, diagnosticLevel);
@@ -380,7 +380,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
 
             bool? isResolved = isEvaluationOnlySnapshot ? dependency.IsResolved : false;
 
-            bool isImplicit = IsImplicit(projectFullPath, null, properties);
+            bool isImplicit = IsImplicit(projectFullPath, evaluationProperties: null, properties);
             DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved, properties, defaultLevel: dependency.DiagnosticLevel);
             string caption = GetUnresolvedCaption(itemSpec, properties);
             ProjectImageMoniker icon = GetIcon(isImplicit, diagnosticLevel);
