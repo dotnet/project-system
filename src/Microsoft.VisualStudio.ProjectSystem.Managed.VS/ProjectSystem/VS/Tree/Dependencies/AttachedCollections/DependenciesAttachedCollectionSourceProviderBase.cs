@@ -15,22 +15,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// </remarks>
     public abstract class DependenciesAttachedCollectionSourceProviderBase : IAttachedCollectionSourceProvider
     {
-        private readonly FlagsStringMatcher _flagsStringMatcher;
+        private readonly ProjectTreeFlags _flags;
 
         [Import] private IRelationProvider RelationProvider { get; set; } = null!;
 
-        protected DependenciesAttachedCollectionSourceProviderBase(ProjectTreeFlags flags) => _flagsStringMatcher = new FlagsStringMatcher(flags);
+        protected DependenciesAttachedCollectionSourceProviderBase(ProjectTreeFlags flags) => _flags = flags;
 
         /// <summary>
-        /// Creates collection sources for selected hierarchy items, depending upon the implementation.
+        /// Creates a collection source for a hierarchy item.
         /// </summary>
         /// <remarks>
         /// Only called for hierarchy items whose flags match those passed to the constructor. <paramref name="flagsString"/> is
         /// provided in case further information is needed.
         /// </remarks>
+        /// <param name="hierarchyItem">The VS hierarchy item to create a collection for.</param>
+        /// <param name="unused">Legacy parameter, no longer provided. Will always be an empty string.</param>
+        /// <param name="target">A string that identifies the target framework, for multi-targeting projects.</param>
+        /// <param name="relationProvider">The relation provider.</param>
+        /// <param name="containsCollectionSource">The returned collection source.</param>
         protected abstract bool TryCreateCollectionSource(
             IVsHierarchyItem hierarchyItem,
-            string flagsString,
+            string unused,
             string? target,
             IRelationProvider relationProvider,
             [NotNullWhen(returnValue: true)] out AggregateRelationCollectionSource? containsCollectionSource);
@@ -41,9 +46,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             {
                 if (item is IVsHierarchyItem hierarchyItem)
                 {
-                    if (hierarchyItem.TryGetFlagsString(out string? flagsString) && _flagsStringMatcher.Matches(flagsString))
+                    if (hierarchyItem.TryGetFlags(out ProjectTreeFlags flags) && flags.Contains(_flags))
                     {
                         hierarchyItem.TryFindTarget(out string? target);
+
+                        // NOTE historically we used to pass a string having all project tree flags concatenated
+                        // in a single string. Nothing actually uses this value, and it's expensive to create.
+                        // Unfortunately this is a public API and the signature of the method cannot change.
+                        // So instead, we always just pass an empty string.
+                        string flagsString = "";
 
                         if (TryCreateCollectionSource(hierarchyItem, flagsString, target, RelationProvider, out AggregateRelationCollectionSource? containsCollection))
                         {
