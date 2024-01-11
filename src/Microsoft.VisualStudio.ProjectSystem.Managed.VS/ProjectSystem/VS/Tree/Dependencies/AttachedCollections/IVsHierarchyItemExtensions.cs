@@ -23,9 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         /// <returns><see langword="true"/> if the target was found, otherwise <see langword="false"/>.</returns>
         public static bool TryFindTarget(this IVsHierarchyItem item, [NotNullWhen(returnValue: true)] out string? target)
         {
-            for (IVsHierarchyItem? parent = item; parent is not null; parent = parent.Parent)
+            // Check this hierarchy item, then walk upwards through its ancestry.
+            for (; item is not null; item = item.Parent)
             {
-                if (parent.TryGetFlags(out ProjectTreeFlags flags) && flags.Contains(Flags.TargetNode))
+                if (item.TryGetFlags(out ProjectTreeFlags flags) && flags.Contains(Flags.TargetNode))
                 {
                     // Found an ancestor target node.
                     const string prefix = "$TFM:";
