@@ -21,10 +21,10 @@ _Descriptions of these steps can be found in the team OneNote._
 - [ ] For branches not matching `dev*` or `feature/*` (usually we skip these)
   - [ ] Update the [pull-request.yml](https://github.com/dotnet/project-system/blob/main/eng/pipelines/pull-request.yml) (via `pr`) to support PR builds
   - [ ] Update the [official.yml](https://github.com/dotnet/project-system/blob/main/eng/pipelines/official.yml) (via `trigger`) to have signed builds the new branch
-- [ ] Update Roslyn Tools [config.xml](https://github.com/dotnet/roslyn-tools/blob/main/src/GitHubCreateMergePRs/config.xml) file to flow branch changes to the latest dev branch
-  - [ ] dotnet/roslyn-tools PR: https://github.com/dotnet/roslyn-tools/pull/❓
 - [ ] Update [version.json](https://github.com/dotnet/project-system/blob/main/version.json) (via `"version"`) to match the version of VS, if needed
-    - [ ] In new branch: https://github.com/dotnet/project-system/blob/dev17.❓.x/version.json
-    - [ ] In `main`: https://github.com/dotnet/project-system/blob/main/version.json
+  - [ ] In new branch: https://github.com/dotnet/project-system/blob/dev17.❓.x/version.json
+  - [ ] In `main`: https://github.com/dotnet/project-system/blob/main/version.json
+- [ ] In the new branch, update the "Build VS Bootstrapper" task in [build-official-release.yml](https://github.com/dotnet/project-system/blob/main/eng/pipelines/templates/build-official-release.yml) and set `channelName` to match the VS insertion branch.
+  - E.g., for VS `main` the `channelName` is "int.main"; for `rel/d17.8` it would be "int.d17.8"; etc.
 - [ ] To run manual insertions, use the [DotNet-Project-System pipeline](https://devdiv.visualstudio.com/DevDiv/_build?definitionId=9675&_a=summary). Enter the GitHub branch as _Branch/tag_, the VS branch as _VS Insertion Branch Name_, and check _Create VS Insertion PR_.
 - [ ] Update [MSFTBot milestone tracking](https://aka.ms/fabricbotconfig)
