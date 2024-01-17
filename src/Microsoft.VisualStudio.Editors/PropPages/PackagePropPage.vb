@@ -58,7 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Shared Function GetUnconfiguredProject(hierarchy As IVsHierarchy) As UnconfiguredProject
             Dim context = DirectCast(hierarchy, IVsBrowseObjectContext)
-            If context IsNot Nothing Then
+            If context Is Nothing Then
                 Dim dteProject = DirectCast(GetDTEProject(hierarchy), EnvDTE.Project)
                 If dteProject IsNot Nothing Then
                     context = DirectCast(dteProject.Object, IVsBrowseObjectContext)
