@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                 if (root.HierarchyIdentity.NestedHierarchy is IVsBrowseObjectContext { UnconfiguredProject.Services.ProjectTreeService.CurrentTree.Tree: { } tree })
                 {
-                    if (tree?.TryFind((IntPtr)itemId, out IProjectTree? subtree) == true)
+                    if (tree.TryFind((IntPtr)itemId, out IProjectTree? subtree))
                     {
                         flags = subtree.Flags;
                         return true;
