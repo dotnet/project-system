@@ -25,8 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         /// Creates a collection source for a hierarchy item.
         /// </summary>
         /// <remarks>
-        /// Only called for hierarchy items whose flags match those passed to the constructor. <paramref name="flagsString"/> is
-        /// provided in case further information is needed.
+        /// Only called for hierarchy items whose flags match those passed to the constructor.
         /// </remarks>
         /// <param name="hierarchyItem">The VS hierarchy item to create a collection for.</param>
         /// <param name="unused">Legacy parameter, no longer provided. Will always be an empty string.</param>
