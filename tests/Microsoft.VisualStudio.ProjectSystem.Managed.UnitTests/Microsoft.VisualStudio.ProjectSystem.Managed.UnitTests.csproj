@@ -10,9 +10,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;net7.0</TargetFrameworks>
-
-    <!-- TODO: Remove this when the port to net7.0 is complete -->
-    <NoWarn>$(NoWarn);NU1701;NU1702</NoWarn>
   </PropertyGroup>
 
   <!-- TODO: Re-enable nullability and clean up warnings. -->
@@ -37,10 +34,6 @@
     <Compile Remove="Mocks\IProjectDependenciesSubTreeProviderFactory.cs" />
     <Compile Remove="Mocks\IProjectImageProviderFactory.cs" />
   </ItemGroup>
-
-  <!-- <ItemGroup>
-    <Reference Include="WindowsBase" />
-  </ItemGroup> -->
 
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />

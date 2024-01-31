@@ -16,9 +16,6 @@
     <Summary>Microsoft VisualStudio Managed Project System</Summary>
     <PackageTags>Roslyn Managed Project System VisualStudio</PackageTags>
     <NoWarn>$(NoWarn);NU5125</NoWarn>
-
-    <!-- TODO: Remove this when the port to net7.0 is complete -->
-    <NoWarn>$(NoWarn);NU1701</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
