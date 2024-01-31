@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
         {
             // No configurations - likely during project close.
             // Check if out of date to prevent extra restore under some conditions.
-            if (!_enabled || e.Value.RestoreInfo is null || IsProjectConfigurationVersionOutOfDate(e.Value.ConfiguredInputs))
+            if (!_enabled || e.Value.RestoreInfo is null || IsRestoreDataVersionOutOfDate(e.DataSourceVersions) || IsProjectConfigurationVersionOutOfDate(e.Value.ConfiguredInputs))
             {
                 return Enumerable.Empty<IProjectVersionedValue<RestoreData>>();
             }
@@ -183,6 +183,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 projectAssetsFilePath,
                 lastWriteTime,
                 succeeded: succeeded && lastWriteTime != DateTime.MinValue);
+        }
+
+        protected virtual bool IsRestoreDataVersionOutOfDate(IImmutableDictionary<NamedIdentity, IComparable> dataVersions)
+        {
+            Assumes.Present(_project.Services.DataSourceRegistry);
+
+            IProjectDataSourceRegistry dataSourceRegistry = _project.Services.DataSourceRegistry;
+            foreach (KeyValuePair<NamedIdentity, IComparable> versionDescription in dataVersions)
+            {
+                if (dataSourceRegistry.TryGetDataSource(versionDescription.Key, out IProjectValueDataSource? dataSource) && versionDescription.Value.CompareTo(dataSource.DataSourceVersion) < 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         protected virtual bool IsProjectConfigurationVersionOutOfDate(IReadOnlyCollection<PackageRestoreConfiguredInput> configuredInputs)

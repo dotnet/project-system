@@ -19,6 +19,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
         {
         }
 
+        protected override bool IsRestoreDataVersionOutOfDate(IImmutableDictionary<NamedIdentity, IComparable> dataVersions)
+        {
+            return false;
+        }
+
         protected override bool IsProjectConfigurationVersionOutOfDate(IReadOnlyCollection<PackageRestoreConfiguredInput>? configuredInputs)
         {
             return false;
