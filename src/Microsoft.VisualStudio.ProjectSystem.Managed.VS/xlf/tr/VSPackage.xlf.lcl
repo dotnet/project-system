@@ -201,10 +201,13 @@
       </Item>
       <Item ItemId=";Setting_FastUpToDateCheck_LoggingLevel_Title" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Logging Level]]></Val>
+          <Val><![CDATA[Logging level]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Günlük Kaydı Düzeyi]]></Val>
+            <Val><![CDATA[Günlük kaydı düzeyi]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Logging Level]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -228,10 +231,13 @@
       </Item>
       <Item ItemId=";Setting_FileNesting_PreferSingleTargetBuilds_Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.]]></Val>
+          <Val><![CDATA[When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Birden çok çerçeveyi hedefleyen bir proje başlatılırken derlemeyi tek bir çerçeveyle sınırlayarak derleme süresi azaltılabilir.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -246,37 +252,49 @@
       </Item>
       <Item ItemId=";Settings_Category_FastUpToDateCheck" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Up to date checks]]></Val>
+          <Val><![CDATA[Up-to-date Checks]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Güncellik denetimleri]]></Val>
+            <Val><![CDATA[Güncellik Denetimleri]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Up to date checks]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Settings_Category_FileNestingSettings" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[File nesting settings]]></Val>
+          <Val><![CDATA[File Nesting]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[İç içe dosya yerleştirme ayarları]]></Val>
+            <Val><![CDATA[Dosya İç İçe Yerleştirme]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[File nesting settings]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Settings_Category_MultiTargetingSettings" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Multi-targeting settings]]></Val>
+          <Val><![CDATA[Multi-targeting]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Çoklu hedefleme ayarları]]></Val>
+            <Val><![CDATA[Çoklu hedefleme]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Multi-targeting settings]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Settings_Category_SdkStyleProjects" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[SDK-style projects]]></Val>
+          <Val><![CDATA[SDK-style Projects]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[SDK stili projeler]]></Val>
+            <Val><![CDATA[SDK Stili Projeler]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[SDK-style projects]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

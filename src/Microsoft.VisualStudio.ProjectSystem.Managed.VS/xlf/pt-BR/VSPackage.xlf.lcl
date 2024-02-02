@@ -201,10 +201,13 @@
       </Item>
       <Item ItemId=";Setting_FastUpToDateCheck_LoggingLevel_Title" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Logging Level]]></Val>
+          <Val><![CDATA[Logging level]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nível de Log]]></Val>
+            <Val><![CDATA[Nível de registros em log]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Logging Level]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -228,10 +231,13 @@
       </Item>
       <Item ItemId=";Setting_FileNesting_PreferSingleTargetBuilds_Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.]]></Val>
+          <Val><![CDATA[When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Ao iniciar um projeto direcionado a várias estruturas, o tempo de compilação pode ser reduzido compilando apenas uma estrutura.]]></Val>
+            <Val><![CDATA[Ao iniciar um projeto que direciona várias estruturas de destino, o tempo de compilação pode ser reduzido com a criação de apenas uma única estrutura.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -246,37 +252,49 @@
       </Item>
       <Item ItemId=";Settings_Category_FastUpToDateCheck" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Up to date checks]]></Val>
+          <Val><![CDATA[Up-to-date Checks]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Verificações atualizadas]]></Val>
+            <Val><![CDATA[Verificações atualizadas]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Up to date checks]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Settings_Category_FileNestingSettings" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[File nesting settings]]></Val>
+          <Val><![CDATA[File Nesting]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Configurações de aninhamento de arquivo]]></Val>
+            <Val><![CDATA[Aninhamento de Arquivos]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[File nesting settings]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Settings_Category_MultiTargetingSettings" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Multi-targeting settings]]></Val>
+          <Val><![CDATA[Multi-targeting]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Configurações de segmentação múltipla]]></Val>
+            <Val><![CDATA[Segmentação múltipla]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Multi-targeting settings]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Settings_Category_SdkStyleProjects" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[SDK-style projects]]></Val>
+          <Val><![CDATA[SDK-style Projects]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Projetos no estilo de SDK]]></Val>
+            <Val><![CDATA[Projetos no estilo SDK]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[SDK-style projects]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
