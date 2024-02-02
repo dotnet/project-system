@@ -89,6 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// In some cases dependency should be present in snapshot, but not displayed in the Tree.
         /// </summary>
+        [Obsolete("Property is unused. Implementation of this property may throw, as it should never be called.")]
         bool Visible { get; }
 
         /// <summary>
@@ -99,6 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Gets the icon to use when the dependency is resolved and expanded.
         /// </summary>
+        [Obsolete("Property is unused. Implementation of this property may throw, as it should never be called.")]
         ImageMoniker ExpandedIcon { get; }
 
         /// <summary>
@@ -109,6 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Gets the icon to use when the dependency is unresolved and expanded.
         /// </summary>
+        [Obsolete("Property is unused. Implementation of this property may throw, as it should never be called.")]
         ImageMoniker UnresolvedExpandedIcon { get; }
 
         /// <summary>
