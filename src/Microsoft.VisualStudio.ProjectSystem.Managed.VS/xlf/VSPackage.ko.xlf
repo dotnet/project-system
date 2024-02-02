@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
         <source>Logging level</source>
-        <target state="needs-review-translation">로깅 수준</target>
+        <target state="new">Logging level</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
         <source>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</source>
-        <target state="needs-review-translation">여러 프레임워크를 대상으로 하는 프로젝트를 시작할 때 빌드 시간은 단일 프레임워크만 빌드하여 줄일 수 있습니다.</target>
+        <target state="new">When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
@@ -134,22 +134,22 @@
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
         <source>Up-to-date Checks</source>
-        <target state="needs-review-translation">최신 검사</target>
+        <target state="new">Up-to-date Checks</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
         <source>File Nesting</source>
-        <target state="needs-review-translation">파일 중첩 설정</target>
+        <target state="new">File Nesting</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
         <source>Multi-targeting</source>
-        <target state="needs-review-translation">다중 대상 지정 설정</target>
+        <target state="new">Multi-targeting</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
         <source>SDK-style Projects</source>
-        <target state="needs-review-translation">SDK 스타일 프로젝트</target>
+        <target state="new">SDK-style Projects</target>
         <note />
       </trans-unit>
     </body>
