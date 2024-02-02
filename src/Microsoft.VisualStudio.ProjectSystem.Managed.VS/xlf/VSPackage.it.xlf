@@ -123,8 +123,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
-        <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
-        <target state="translated">Quando si avvia un progetto destinato a più framework, è possibile ridurre il tempo di compilazione limitando la compilazione a un singolo framework.</target>
+        <source>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</source>
+        <target state="needs-review-translation">Quando si avvia un progetto destinato a più framework, è possibile ridurre il tempo di compilazione limitando la compilazione a un singolo framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">

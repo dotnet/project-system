@@ -123,8 +123,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
-        <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
-        <target state="translated">启动面向多个框架的项目时，可通过仅生成一个框架来缩短生成时间。</target>
+        <source>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</source>
+        <target state="needs-review-translation">启动面向多个框架的项目时，可通过仅生成一个框架来缩短生成时间。</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">

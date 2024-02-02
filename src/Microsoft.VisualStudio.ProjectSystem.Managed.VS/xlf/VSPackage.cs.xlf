@@ -123,8 +123,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
-        <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
-        <target state="translated">Při zahajování projektu, který cílí na více architektur, je možné zkrátit dobu sestavení vytvořením pouze jednoho projektu.</target>
+        <source>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</source>
+        <target state="needs-review-translation">Při zahajování projektu, který cílí na více architektur, je možné zkrátit dobu sestavení vytvořením pouze jednoho projektu.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">

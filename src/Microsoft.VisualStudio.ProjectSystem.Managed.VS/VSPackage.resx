@@ -193,7 +193,7 @@
     <value>Prefer single-target builds when starting a project</value>
   </data>
   <data name="Setting_FileNesting_PreferSingleTargetBuilds_Description">
-    <value>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</value>
+    <value>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</value>
   </data>
   <data name="Settings_Category_SdkStyleProjects">
     <value>SDK-style Projects</value>

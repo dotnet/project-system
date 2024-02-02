@@ -123,8 +123,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
-        <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
-        <target state="translated">Birden çok çerçeveyi hedefleyen bir proje başlatılırken derlemeyi tek bir çerçeveyle sınırlayarak derleme süresi azaltılabilir.</target>
+        <source>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</source>
+        <target state="needs-review-translation">Birden çok çerçeveyi hedefleyen bir proje başlatılırken derlemeyi tek bir çerçeveyle sınırlayarak derleme süresi azaltılabilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
