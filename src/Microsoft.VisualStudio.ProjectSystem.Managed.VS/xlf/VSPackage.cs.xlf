@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
         <source>Logging level</source>
-        <target state="needs-review-translation">Úroveň protokolování</target>
+        <target state="new">Logging level</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
         <source>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</source>
-        <target state="needs-review-translation">Při zahajování projektu, který cílí na více architektur, je možné zkrátit dobu sestavení vytvořením pouze jednoho projektu.</target>
+        <target state="new">When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
@@ -134,22 +134,22 @@
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
         <source>Up-to-date Checks</source>
-        <target state="needs-review-translation">Kontroly aktuálnosti</target>
+        <target state="new">Up-to-date Checks</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
         <source>File Nesting</source>
-        <target state="needs-review-translation">Nastavení vnořování souborů</target>
+        <target state="new">File Nesting</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
         <source>Multi-targeting</source>
-        <target state="needs-review-translation">Nastavení vícenásobného cílení</target>
+        <target state="new">Multi-targeting</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
         <source>SDK-style Projects</source>
-        <target state="needs-review-translation">Projekty stylu sady SDK</target>
+        <target state="new">SDK-style Projects</target>
         <note />
       </trans-unit>
     </body>

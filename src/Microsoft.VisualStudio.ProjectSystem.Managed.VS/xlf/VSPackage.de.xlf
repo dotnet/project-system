@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
         <source>Logging level</source>
-        <target state="needs-review-translation">Protokolliergrad</target>
+        <target state="new">Logging level</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
         <source>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</source>
-        <target state="needs-review-translation">Beim Starten eines Projekts, das auf mehrere Frameworks ausgerichtet ist, kann die Buildzeit verringert werden, indem nur ein einzelnes erstellt wird.</target>
+        <target state="new">When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
@@ -134,22 +134,22 @@
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
         <source>Up-to-date Checks</source>
-        <target state="needs-review-translation">Aktualitätsprüfungen</target>
+        <target state="new">Up-to-date Checks</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
         <source>File Nesting</source>
-        <target state="needs-review-translation">Einstellungen für Dateischachtelung</target>
+        <target state="new">File Nesting</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
         <source>Multi-targeting</source>
-        <target state="needs-review-translation">Einstellungen für Festlegung von Zielversionen</target>
+        <target state="new">Multi-targeting</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
         <source>SDK-style Projects</source>
-        <target state="needs-review-translation">Projekte im SDK-Format</target>
+        <target state="new">SDK-style Projects</target>
         <note />
       </trans-unit>
     </body>

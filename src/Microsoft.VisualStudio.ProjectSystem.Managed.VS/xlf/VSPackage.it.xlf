@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
         <source>Logging level</source>
-        <target state="needs-review-translation">Livello di registrazione</target>
+        <target state="new">Logging level</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
         <source>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</source>
-        <target state="needs-review-translation">Quando si avvia un progetto destinato a più framework, è possibile ridurre il tempo di compilazione limitando la compilazione a un singolo framework.</target>
+        <target state="new">When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
@@ -134,22 +134,22 @@
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
         <source>Up-to-date Checks</source>
-        <target state="needs-review-translation">Controlli aggiornamenti</target>
+        <target state="new">Up-to-date Checks</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
         <source>File Nesting</source>
-        <target state="needs-review-translation">Impostazioni di annidamento file</target>
+        <target state="new">File Nesting</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
         <source>Multi-targeting</source>
-        <target state="needs-review-translation">Impostazioni multi-targeting</target>
+        <target state="new">Multi-targeting</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
         <source>SDK-style Projects</source>
-        <target state="needs-review-translation">Progetti di tipo SDK</target>
+        <target state="new">SDK-style Projects</target>
         <note />
       </trans-unit>
     </body>
