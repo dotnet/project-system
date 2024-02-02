@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
         <source>Logging level</source>
-        <target state="new">Logging level</target>
+        <target state="translated">Уровень ведения журнала</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
         <source>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</source>
-        <target state="new">When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</target>
+        <target state="translated">При запуске проекта, предназначенного для нескольких платформ, время сборки можно сократить, создав только одну из платформ.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
@@ -134,22 +134,22 @@
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
         <source>Up-to-date Checks</source>
-        <target state="new">Up-to-date Checks</target>
+        <target state="translated">Актуальные проверки</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
         <source>File Nesting</source>
-        <target state="new">File Nesting</target>
+        <target state="translated">Вложение файлов</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
         <source>Multi-targeting</source>
-        <target state="new">Multi-targeting</target>
+        <target state="translated">Мультитаргетинг</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
         <source>SDK-style Projects</source>
-        <target state="new">SDK-style Projects</target>
+        <target state="translated">Проекты в стиле SDK</target>
         <note />
       </trans-unit>
     </body>
