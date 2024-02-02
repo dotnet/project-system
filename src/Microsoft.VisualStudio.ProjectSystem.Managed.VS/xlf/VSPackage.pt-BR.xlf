@@ -108,8 +108,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
-        <source>Logging Level</source>
-        <target state="translated">Nível de Log</target>
+        <source>Logging level</source>
+        <target state="needs-review-translation">Nível de Log</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
@@ -123,8 +123,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
-        <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
-        <target state="translated">Ao iniciar um projeto direcionado a várias estruturas, o tempo de compilação pode ser reduzido compilando apenas uma estrutura.</target>
+        <source>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</source>
+        <target state="needs-review-translation">Ao iniciar um projeto direcionado a várias estruturas, o tempo de compilação pode ser reduzido compilando apenas uma estrutura.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
@@ -133,23 +133,23 @@
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
-        <source>Up to date checks</source>
-        <target state="translated">Verificações atualizadas</target>
+        <source>Up-to-date Checks</source>
+        <target state="needs-review-translation">Verificações atualizadas</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
-        <source>File nesting settings</source>
-        <target state="translated">Configurações de aninhamento de arquivo</target>
+        <source>File Nesting</source>
+        <target state="needs-review-translation">Configurações de aninhamento de arquivo</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
-        <source>Multi-targeting settings</source>
-        <target state="translated">Configurações de segmentação múltipla</target>
+        <source>Multi-targeting</source>
+        <target state="needs-review-translation">Configurações de segmentação múltipla</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
-        <source>SDK-style projects</source>
-        <target state="translated">Projetos no estilo de SDK</target>
+        <source>SDK-style Projects</source>
+        <target state="needs-review-translation">Projetos no estilo de SDK</target>
         <note />
       </trans-unit>
     </body>

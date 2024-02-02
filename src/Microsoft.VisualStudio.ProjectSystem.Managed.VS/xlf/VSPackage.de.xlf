@@ -108,8 +108,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
-        <source>Logging Level</source>
-        <target state="translated">Protokolliergrad</target>
+        <source>Logging level</source>
+        <target state="needs-review-translation">Protokolliergrad</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
@@ -123,8 +123,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
-        <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
-        <target state="translated">Beim Starten eines Projekts, das auf mehrere Frameworks ausgerichtet ist, kann die Buildzeit verringert werden, indem nur ein einzelnes erstellt wird.</target>
+        <source>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</source>
+        <target state="needs-review-translation">Beim Starten eines Projekts, das auf mehrere Frameworks ausgerichtet ist, kann die Buildzeit verringert werden, indem nur ein einzelnes erstellt wird.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
@@ -133,23 +133,23 @@
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
-        <source>Up to date checks</source>
-        <target state="translated">Aktualitätsprüfungen</target>
+        <source>Up-to-date Checks</source>
+        <target state="needs-review-translation">Aktualitätsprüfungen</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
-        <source>File nesting settings</source>
-        <target state="translated">Einstellungen für Dateischachtelung</target>
+        <source>File Nesting</source>
+        <target state="needs-review-translation">Einstellungen für Dateischachtelung</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
-        <source>Multi-targeting settings</source>
-        <target state="translated">Einstellungen für Festlegung von Zielversionen</target>
+        <source>Multi-targeting</source>
+        <target state="needs-review-translation">Einstellungen für Festlegung von Zielversionen</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
-        <source>SDK-style projects</source>
-        <target state="translated">Projekte im SDK-Format</target>
+        <source>SDK-style Projects</source>
+        <target state="needs-review-translation">Projekte im SDK-Format</target>
         <note />
       </trans-unit>
     </body>
