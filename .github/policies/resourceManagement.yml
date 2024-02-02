@@ -1,0 +1,206 @@
+id: 
+name: GitOps.PullRequestIssueManagement
+description: GitOps.PullRequestIssueManagement primitive
+owner: 
+resource: repository
+disabled: false
+where: 
+configuration:
+  resourceManagementConfiguration:
+    scheduledSearches: []
+    eventResponderTasks:
+    - if:
+      - payloadType: Pull_Request
+      - hasLabel:
+          label: auto-merge
+      then:
+      - enableAutoMerge:
+          mergeMethod: Merge
+      description: Automatically merge PR once CI passes
+    - if:
+      - payloadType: Pull_Request
+      - labelRemoved:
+          label: auto-merge
+      then:
+      - disableAutoMerge
+      description: Automatically merge PR once CI passes
+    - if:
+      - payloadType: Pull_Request
+      - labelAdded:
+          label: auto-merge
+      - isActivitySender:
+          user: dotnet-bot
+          issueAuthor: False
+      then:
+      - approvePullRequest:
+          comment: Auto-approval of dotnet-bot PRs
+      description: Auto-approve PRs labeled with "auto-merge" opened by dotnet-bot
+    - if:
+      - payloadType: Pull_Request
+      - isAction:
+          action: Null
+      - targetsBranch:
+          branch: main
+      then:
+      - addMilestone:
+          milestone: 17.9
+      description: Milestone tracking - main
+      triggerOnOwnActions: true
+    - if:
+      - payloadType: Pull_Request
+      - targetsBranch:
+          branch: dev17.2.x
+      - isAction:
+          action: Null
+      then:
+      - addMilestone:
+          milestone: 17.2
+      description: Milestone tracking - 17.2
+      triggerOnOwnActions: true
+    - if:
+      - payloadType: Pull_Request
+      - isAction:
+          action: Opened
+      then:
+      - addCodeFlowLink
+      description: CodeFlow
+    - if:
+      - payloadType: Pull_Request
+      - targetsBranch:
+          branch: dev16.8.x
+      - isAction:
+          action: Null
+      then:
+      - addMilestone:
+          milestone: 16.8
+      description: Milestone tracking - 16.8
+    - if:
+      - payloadType: Issue_Comment
+      then:
+      - cleanEmailReply
+      description: Email cleanser
+    - if:
+      - payloadType: Pull_Request
+      then:
+      - labelSync:
+          pattern: Feature-
+      - labelSync:
+          pattern: Performance
+      - labelSync:
+          pattern: Tenet
+      - labelSync:
+          pattern: Parity
+      description: Sync labels from issues -> PR
+    - if:
+      - payloadType: Pull_Request
+      - targetsBranch:
+          branch: dev16.9.x
+      - isAction:
+          action: Null
+      then:
+      - addMilestone:
+          milestone: 16.9
+      description: Milestone tracking - 16.9
+    - if:
+      - payloadType: Pull_Request
+      - targetsBranch:
+          branch: dev16.10.x
+      - isAction:
+          action: Null
+      then:
+      - addMilestone:
+          milestone: 16.10
+      description: Milestone tracking - 16.10
+    - if:
+      - payloadType: Pull_Request
+      - targetsBranch:
+          branch: dev17.0.x
+      - isAction:
+          action: Null
+      then:
+      - addMilestone:
+          milestone: 17.0
+      description: Milestone tracking - 17.0
+    - if:
+      - payloadType: Pull_Request
+      - targetsBranch:
+          branch: dev16.11.x
+      - isAction:
+          action: Null
+      then:
+      - addMilestone:
+          milestone: 16.11
+      description: Milestone tracking - 16.11
+    - if:
+      - payloadType: Pull_Request
+      - targetsBranch:
+          branch: dev17.1.x
+      - isAction:
+          action: Null
+      then:
+      - addMilestone:
+          milestone: 17.1
+      description: Milestone tracking - 17.1
+    - if:
+      - payloadType: Pull_Request
+      - isAction:
+          action: Null
+      - or:
+        - targetsBranch:
+            branch: dev17.3.x
+        - targetsBranch:
+            branch: dev17.3-preview2
+      then:
+      - addMilestone:
+          milestone: 17.3
+      description: Milestone tracking - 17.3
+    - if:
+      - payloadType: Pull_Request
+      - isAction:
+          action: Null
+      - or:
+        - targetsBranch:
+            branch: dev17.4-preview1
+        - targetsBranch:
+            branch: dev17.4-preview2
+        - targetsBranch:
+            branch: dev17.4.x
+      then:
+      - addMilestone:
+          milestone: 17.4
+      description: Milestone tracking - 17.4
+    - if:
+      - payloadType: Pull_Request
+      - isAction:
+          action: Null
+      - or:
+        - targetsBranch:
+            branch: dev17.5-x
+      then:
+      - addMilestone:
+          milestone: 17.5
+      description: Milestone tracking - 17.5
+    - if:
+      - payloadType: Pull_Request
+      - isAction:
+          action: Null
+      - or:
+        - targetsBranch:
+            branch: dev17.7-x
+      then:
+      - addMilestone:
+          milestone: 17.7
+      description: Milestone tracking - 17.7
+    - if:
+      - payloadType: Pull_Request
+      - isAction:
+          action: Null
+      - or:
+        - targetsBranch:
+            branch: dev17.8.x
+      then:
+      - addMilestone:
+          milestone: 17.8
+      description: Milestone tracking - 17.8
+onFailure: 
+onSuccess: 
