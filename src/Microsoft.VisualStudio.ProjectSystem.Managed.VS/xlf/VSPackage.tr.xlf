@@ -108,8 +108,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
-        <source>Logging Level</source>
-        <target state="translated">Günlük Kaydı Düzeyi</target>
+        <source>Logging level</source>
+        <target state="needs-review-translation">Günlük Kaydı Düzeyi</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
@@ -133,23 +133,23 @@
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
-        <source>Up to date checks</source>
-        <target state="translated">Güncellik denetimleri</target>
+        <source>Up-to-date Checks</source>
+        <target state="needs-review-translation">Güncellik denetimleri</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
-        <source>File nesting settings</source>
-        <target state="translated">İç içe dosya yerleştirme ayarları</target>
+        <source>File Nesting</source>
+        <target state="needs-review-translation">İç içe dosya yerleştirme ayarları</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
-        <source>Multi-targeting settings</source>
-        <target state="translated">Çoklu hedefleme ayarları</target>
+        <source>Multi-targeting</source>
+        <target state="needs-review-translation">Çoklu hedefleme ayarları</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
-        <source>SDK-style projects</source>
-        <target state="translated">SDK stili projeler</target>
+        <source>SDK-style Projects</source>
+        <target state="needs-review-translation">SDK stili projeler</target>
         <note />
       </trans-unit>
     </body>

@@ -108,8 +108,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
-        <source>Logging Level</source>
-        <target state="translated">Nivel de registro</target>
+        <source>Logging level</source>
+        <target state="needs-review-translation">Nivel de registro</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
@@ -133,23 +133,23 @@
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
-        <source>Up to date checks</source>
-        <target state="translated">Comprobaciones de actualizaciones</target>
+        <source>Up-to-date Checks</source>
+        <target state="needs-review-translation">Comprobaciones de actualizaciones</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
-        <source>File nesting settings</source>
-        <target state="translated">Configuración del anidamiento de archivos</target>
+        <source>File Nesting</source>
+        <target state="needs-review-translation">Configuración del anidamiento de archivos</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
-        <source>Multi-targeting settings</source>
-        <target state="translated">Configuración de múltiples destinatarios</target>
+        <source>Multi-targeting</source>
+        <target state="needs-review-translation">Configuración de múltiples destinatarios</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
-        <source>SDK-style projects</source>
-        <target state="translated">Proyectos de tipo SDK</target>
+        <source>SDK-style Projects</source>
+        <target state="needs-review-translation">Proyectos de tipo SDK</target>
         <note />
       </trans-unit>
     </body>

@@ -108,8 +108,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
-        <source>Logging Level</source>
-        <target state="translated">Úroveň protokolování</target>
+        <source>Logging level</source>
+        <target state="needs-review-translation">Úroveň protokolování</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Verbose">
@@ -133,23 +133,23 @@
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
-        <source>Up to date checks</source>
-        <target state="translated">Kontroly aktuálnosti</target>
+        <source>Up-to-date Checks</source>
+        <target state="needs-review-translation">Kontroly aktuálnosti</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
-        <source>File nesting settings</source>
-        <target state="translated">Nastavení vnořování souborů</target>
+        <source>File Nesting</source>
+        <target state="needs-review-translation">Nastavení vnořování souborů</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
-        <source>Multi-targeting settings</source>
-        <target state="translated">Nastavení vícenásobného cílení</target>
+        <source>Multi-targeting</source>
+        <target state="needs-review-translation">Nastavení vícenásobného cílení</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
-        <source>SDK-style projects</source>
-        <target state="translated">Projekty stylu sady SDK</target>
+        <source>SDK-style Projects</source>
+        <target state="needs-review-translation">Projekty stylu sady SDK</target>
         <note />
       </trans-unit>
     </body>
