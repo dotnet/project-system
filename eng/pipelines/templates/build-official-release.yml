@@ -29,6 +29,7 @@ jobs:
     condition: false
 
   # Necessary for signing the assemblies and packages.
+  # YAML reference: https://devdiv.visualstudio.com/Engineering/_git/MicroBuild?path=/src/Tasks/SigningPlugin/task.json
   - task: MicroBuildSigningPlugin@4
     displayName: Install Signing Plugin
     inputs:
