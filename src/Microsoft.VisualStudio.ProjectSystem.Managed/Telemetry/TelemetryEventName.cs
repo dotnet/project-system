@@ -27,16 +27,6 @@ namespace Microsoft.VisualStudio.Telemetry
         public const string UpToDateCheckFail = "vs/projectsystem/managed/uptodatecheck/fail";
 
         /// <summary>
-        ///     Indicates that the dependency tree was updated with unresolved dependencies.
-        /// </summary>
-        public const string TreeUpdatedUnresolved = "vs/projectsystem/managed/treeupdated/unresolved";
-
-        /// <summary>
-        ///     Indicates that the dependency tree was updated with all resolved dependencies.
-        /// </summary>
-        public const string TreeUpdatedResolved = "vs/projectsystem/managed/treeupdated/resolved";
-
-        /// <summary>
         ///     Indicates that a design-time build has completed.
         /// </summary>
         public const string DesignTimeBuildComplete = "vs/projectsystem/managed/designtimebuildcomplete";
@@ -55,11 +45,6 @@ namespace Microsoft.VisualStudio.Telemetry
         ///     Indicates that the TempPE compilation has occurred on demand from a designer.
         /// </summary>
         public const string TempPECompileOnDemand = "vs/projectsystem/managed/temppe/compileondemand";
-
-        /// <summary>
-        ///     Indicates that the summary of a project's dependencies is being reported during project unload.
-        /// </summary>
-        public const string ProjectUnloadDependencies = "vs/projectsystem/managed/projectunload/dependencies";
 
         /// <summary>
         ///    Indicates that project was not up-to-date after build, meaning that incremental build is not
