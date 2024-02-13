@@ -57,7 +57,7 @@ internal sealed class MSBuildDependencySubscriber : OnceInitializedOnceDisposed,
 
         ImmutableHashSet<string> GetRuleNames(bool includeResolved)
         {
-            var builder = ImmutableHashSet.CreateBuilder<string>(StringComparers.RuleNames);
+            var builder = ImmutableHashSet.CreateBuilder(StringComparers.RuleNames);
 
             foreach (IMSBuildDependencyFactory factory in factories)
             {
