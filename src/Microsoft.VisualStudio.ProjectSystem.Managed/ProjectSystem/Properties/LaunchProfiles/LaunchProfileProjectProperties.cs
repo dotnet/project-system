@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
             ImmutableDictionary<string, object> globalSettings = snapshot.GlobalSettings;
 
-            ImmutableSortedSet<string>.Builder builder = ImmutableSortedSet.CreateBuilder<string>(StringComparers.PropertyNames);
+            ImmutableSortedSet<string>.Builder builder = ImmutableSortedSet.CreateBuilder(StringComparers.PropertyNames);
             builder.UnionWith(s_standardPropertyNames);
 
             foreach ((string propertyName, LaunchProfileValueProviderAndMetadata provider) in _launchProfileValueProviders)

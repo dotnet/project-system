@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private IImmutableSet<string> GetDimensionNames()
         {
-            ImmutableHashSet<string>.Builder builder = ImmutableHashSet.CreateBuilder<string>(StringComparers.ConfigurationDimensionNames);
+            ImmutableHashSet<string>.Builder builder = ImmutableHashSet.CreateBuilder(StringComparers.ConfigurationDimensionNames);
 
             foreach (Lazy<IActiveConfiguredProjectsDimensionProvider> dimensionProvider in DimensionProviders)
             {

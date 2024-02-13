@@ -209,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 
                             IProjectTree2 SyncNode(IReadOnlyList<IProjectImportSnapshot> imports, IProjectTree2 node)
                             {
-                                var captionByProjectPath = GetCaptionByProjectPath();
+                                Dictionary<string, string> captionByProjectPath = GetCaptionByProjectPath();
 
                                 foreach (IProjectTree existingNode in node.Children)
                                 {
