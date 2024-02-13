@@ -26,7 +26,7 @@ By default, only top-level (direct) dependencies are included in search results.
 
 ## Unresolved dependencies (yellow triangles)
 
-Just because a project declares a dependency doesn't mean that the reference points to something valid/existant/compatible/etc. VS runs a [design-time build](design-time-builds.md) for each project in order to _resolve_ dependencies (amongst with other tasks).
+Just because a project declares a dependency doesn't mean that the reference points to something valid/existent/compatible/etc. VS runs a [design-time build](design-time-builds.md) for each project in order to _resolve_ dependencies (amongst other tasks).
 
 Any dependency which fails to resolve will be displayed with a yellow triangle in the tree.
 
