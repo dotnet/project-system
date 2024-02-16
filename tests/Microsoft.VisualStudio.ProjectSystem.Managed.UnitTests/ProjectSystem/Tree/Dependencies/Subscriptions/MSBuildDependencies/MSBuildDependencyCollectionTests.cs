@@ -382,7 +382,7 @@ public sealed class MSBuildDependencyCollectionTests
         factory.Setup(f => f.GetUnresolvedCaption("Item1", It.IsAny<ImmutableDictionary<string, string>>())).Returns("UnresolvedCaption");
         factory.Setup(f => f.GetResolvedCaption("ResolvedItem1", "Item1", It.IsAny<ImmutableDictionary<string, string>>())).Returns("ResolvedCaption");
         factory.Setup(f => f.UpdateTreeFlags(It.IsAny<string>(), It.IsAny<ProjectTreeFlags>())).Returns((string id, ProjectTreeFlags f) => f);
-        factory.Setup(f => f.GetDiagnosticLevel(It.IsAny<bool?>(), It.IsAny<ImmutableDictionary<string, string>>(), It.IsAny<DiagnosticLevel>())).CallBase();
+        factory.Setup(f => f.GetDiagnosticLevel(It.IsAny<bool?>(), It.IsAny<bool>(), It.IsAny<ImmutableDictionary<string, string>>(), It.IsAny<DiagnosticLevel>())).CallBase();
 
         return new MSBuildDependencyCollection(factory.Object);
     }

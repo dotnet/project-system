@@ -48,6 +48,8 @@ internal sealed class MSBuildDependencyCollection
             return false;
         }
 
+        bool hasBuildError = !evaluationProjectChange.After.IsEvaluationSucceeded() || buildProjectChange?.After.IsEvaluationSucceeded() == false;
+
         System.Diagnostics.Debug.Assert(evaluationProjectChange.Difference.RenamedItems.Count == 0, "Evaluation ProjectChange should not contain renamed items");
         System.Diagnostics.Debug.Assert(buildProjectChange?.Difference.RenamedItems.Count is null or 0, "Build ProjectChange should not contain renamed items");
 
@@ -99,7 +101,7 @@ internal sealed class MSBuildDependencyCollection
                 if (_dependencyById.TryGetValue(id, out MSBuildDependency? dependency))
                 {
                     // Updating an existing dependency.
-                    if (_factory.TryUpdate(dependency, update.Evaluation, update.Build, projectFullPath, isEvaluationOnlySnapshot: buildProjectChange is null, out MSBuildDependency? updated))
+                    if (_factory.TryUpdate(dependency, update.Evaluation, update.Build, projectFullPath, isEvaluationOnlySnapshot: buildProjectChange is null, hasBuildError, out MSBuildDependency? updated))
                     {
                         if (updated is not null)
                         {
@@ -116,7 +118,7 @@ internal sealed class MSBuildDependencyCollection
                 else
                 {
                     // Creating a new dependency.
-                    dependency = _factory.CreateDependency(id, update.Evaluation, update.Build, projectFullPath, isEvaluationOnlySnapshot: buildProjectChange is null);
+                    dependency = _factory.CreateDependency(id, update.Evaluation, update.Build, projectFullPath, hasBuildError, isEvaluationOnlySnapshot: buildProjectChange is null);
 
                     if (dependency is not null)
                     {

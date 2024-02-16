@@ -182,12 +182,12 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
     /// <param name="properties">The properties of the item.</param>
     /// <param name="defaultLevel">The diagnostic level to use when the property is either missing or empty. Intended to receive a dependency's current diagnostic level when an evaluation-only update is being processed.</param>
     /// <returns></returns>
-    protected internal virtual DiagnosticLevel GetDiagnosticLevel(bool? isResolved, IImmutableDictionary<string, string> properties, DiagnosticLevel defaultLevel = DiagnosticLevel.None)
+    protected internal virtual DiagnosticLevel GetDiagnosticLevel(bool? isResolved, bool hasBuildError, IImmutableDictionary<string, string> properties, DiagnosticLevel defaultLevel = DiagnosticLevel.None)
     {
-        return (isResolved, properties.GetDiagnosticLevel(defaultLevel)) switch
+        return (isResolved, hasBuildError, properties.GetDiagnosticLevel(defaultLevel)) switch
         {
-            (false, DiagnosticLevel.None) => DiagnosticLevel.Warning,
-            (_, DiagnosticLevel level) => level
+            (false, false, DiagnosticLevel.None) => DiagnosticLevel.Warning,
+            (_, _, DiagnosticLevel level) => level
         };
     }
 
@@ -203,6 +203,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
     /// <param name="evaluation">Evaluation item data, if present.</param>
     /// <param name="build">Evaluation item data, if present.</param>
     /// <param name="projectFullPath">Full path to the project file.</param>
+    /// <param name="hasBuildError">Whether the evaluation or build that produced this update ended with an error.</param>
     /// <param name="isEvaluationOnlySnapshot">
     /// Whether this update contained only evaluation data. If <see langword="false"/>, this update
     /// came from the JointRule source.
@@ -215,6 +216,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
         (string ItemSpec, IImmutableDictionary<string, string> Properties)? evaluation,
         (string ItemSpec, IImmutableDictionary<string, string> Properties)? build,
         string projectFullPath,
+        bool hasBuildError,
         bool isEvaluationOnlySnapshot)
     {
         if (build is not null)
@@ -246,7 +248,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
 
             // This is a resolved dependency.
             bool isImplicit = IsImplicit(projectFullPath, evaluation?.Properties, properties);
-            DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved: true, properties);
+            DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved: true, hasBuildError, properties);
             string caption = GetResolvedCaption(itemSpec, id, properties);
             ProjectImageMoniker icon = GetIcon(isImplicit, diagnosticLevel);
             ProjectTreeFlags flags = UpdateTreeFlags(itemSpec, FlagCache.Get(isResolved: true, isImplicit));
@@ -280,7 +282,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
 #endif
 
             bool isImplicit = IsImplicit(projectFullPath, properties, buildProperties: null);
-            DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved: isEvaluationOnlySnapshot, properties);
+            DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved: isEvaluationOnlySnapshot, hasBuildError, properties);
             string caption = GetUnresolvedCaption(itemSpec, properties);
             ProjectImageMoniker icon = GetIcon(isImplicit, diagnosticLevel);
             ProjectTreeFlags flags = UpdateTreeFlags(itemSpec, FlagCache.Get(isResolved: false, isImplicit));
@@ -315,6 +317,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
     /// Whether this update contained only evaluation data. If <see langword="false"/>, this update
     /// came from the JointRule source.
     /// </param>
+    /// <param name="hasBuildError">Whether the evaluation or build that produced this update ended with an error.</param>
     /// <param name="updated">
     /// The updated dependency. May be <see langword="null"/> if <paramref name="dependency"/>
     /// should be removed for whatever reason. May be the same object as <paramref name="dependency"/>
@@ -327,6 +330,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
         (string ItemSpec, IImmutableDictionary<string, string> Properties)? build,
         string projectFullPath,
         bool isEvaluationOnlySnapshot,
+        bool hasBuildError,
         out MSBuildDependency? updated)
     {
         Assumes.True(evaluation is not null || build is not null);
@@ -349,7 +353,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
             bool isResolved = true;
 
             bool isImplicit = IsImplicit(projectFullPath, properties, evaluation?.Properties);
-            DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved, properties);
+            DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved, hasBuildError, properties);
             string caption = GetResolvedCaption(itemSpec, dependency.Id, properties);
             ProjectImageMoniker icon = GetIcon(isImplicit, diagnosticLevel);
             ProjectTreeFlags flags = UpdateTreeFlags(dependency.Id, FlagCache.Get(isResolved, isImplicit));
@@ -381,7 +385,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
             bool? isResolved = isEvaluationOnlySnapshot ? dependency.IsResolved : false;
 
             bool isImplicit = IsImplicit(projectFullPath, evaluationProperties: null, properties);
-            DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved, properties, defaultLevel: dependency.DiagnosticLevel);
+            DiagnosticLevel diagnosticLevel = GetDiagnosticLevel(isResolved, hasBuildError, properties, defaultLevel: dependency.DiagnosticLevel);
             string caption = GetUnresolvedCaption(itemSpec, properties);
             ProjectImageMoniker icon = GetIcon(isImplicit, diagnosticLevel);
             ProjectTreeFlags flags = UpdateTreeFlags(itemSpec, FlagCache.Get(isResolved ?? true, isImplicit));
