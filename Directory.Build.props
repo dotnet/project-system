@@ -22,6 +22,7 @@
   <PropertyGroup>
     <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
     <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
+    <NetCoreTargetFramework>net8.0</NetCoreTargetFramework>
     <!--
       IMPORTANT: The reason we use 99.0.0 is because we need a version number that will always be above the published version of the assemblies/packages.
       This causes VS to always prefer our locally build packages for debugging (F5) purposes.

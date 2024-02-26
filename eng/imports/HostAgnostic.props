@@ -28,7 +28,7 @@
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Sdk.Tools" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.XamlTypes" Condition="'$(TargetFramework)' == 'net7.0'" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.XamlTypes" Condition="'$(TargetFramework)' == '$(NetCoreTargetFramework)'" />
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" />

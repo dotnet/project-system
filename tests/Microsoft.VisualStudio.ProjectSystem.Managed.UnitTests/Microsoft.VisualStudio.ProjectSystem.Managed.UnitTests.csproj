@@ -9,17 +9,17 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>net472;net7.0</TargetFrameworks>
+    <TargetFrameworks>net472;$(NetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 
   <!-- TODO: Re-enable nullability and clean up warnings. -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
+  <PropertyGroup Condition="'$(TargetFramework)' == '$(NetCoreTargetFramework)'">
     <Nullable>annotations</Nullable>
     <NoWarn>$(NoWarn);RS0037</NoWarn>
   </PropertyGroup>
 
-  <!-- TODO: Remove this once ImageMoniker and related types are available in a net7.0-compatible package. -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+  <!-- TODO: Remove this once ImageMoniker and related types are available in a net8.0-compatible package. -->
+  <ItemGroup Condition="'$(TargetFramework)' == '$(NetCoreTargetFramework)'">
     <!--<PackageReference Remove="Microsoft.VisualStudio.SDK.EmbedInteropTypes" />
     <PackageReference Remove="Microsoft.VisualStudio.ImageCatalog" />-->
 
