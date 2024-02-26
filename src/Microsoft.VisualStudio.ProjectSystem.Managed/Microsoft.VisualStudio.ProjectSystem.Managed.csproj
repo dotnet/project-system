@@ -8,7 +8,7 @@
     <!-- The value of RuleInjectionClassName of XamlPropertyRule items defined by this project -->
     <XamlPropertyRuleInjectionClassName>ProjectProperties</XamlPropertyRuleInjectionClassName>
     <IsManagedProjectSystemProject>true</IsManagedProjectSystemProject>
-    <TargetFrameworks>net472;net7.0</TargetFrameworks>
+    <TargetFrameworks>net472;$(NetCoreTargetFramework)</TargetFrameworks>
 
     <!-- Nuget -->
     <IsPackable>true</IsPackable>
@@ -18,7 +18,7 @@
     <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
+  <PropertyGroup Condition="'$(TargetFramework)' == '$(NetCoreTargetFramework)'">
     <!-- Sets the DependsOn for NPM packaging. We use the designated target to select the files to pack. -->
     <!-- See: https://dev.azure.com/devdiv/DevDiv/_git/vs-green?path=/components&anchor=packaging-components -->
     <StageForNpmPackDependsOn>$(StageForNpmPackDependsOn);AddFilesForNpmPackage</StageForNpmPackDependsOn>
@@ -26,7 +26,7 @@
   </PropertyGroup>
 
   <!-- TODO: Re-enable nullability and clean up warnings. -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
+  <PropertyGroup Condition="'$(TargetFramework)' == '$(NetCoreTargetFramework)'">
     <Nullable>annotations</Nullable>
     <NoWarn>$(NoWarn);RS0037</NoWarn>
   </PropertyGroup>
@@ -55,7 +55,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Common" GeneratePathProperty="true" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+  <ItemGroup Condition="'$(TargetFramework)' == '$(NetCoreTargetFramework)'">
     <!-- Package for creating an NPM package during build. -->
     <!-- See: https://dev.azure.com/devdiv/DevDiv/_git/vs-green?path=/components&anchor=packaging-components -->
     <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.NpmPack" PrivateAssets="all" />
@@ -641,9 +641,9 @@
     <AdditionalFiles Include="PublicAPI\net472\*.txt" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-    <None Remove="PublicAPI\net7.0\*.txt" />
-    <AdditionalFiles Include="PublicAPI\net7.0\*.txt" />
+  <ItemGroup Condition="'$(TargetFramework)' == '$(NetCoreTargetFramework)'">
+    <None Remove="PublicAPI\$(NetCoreTargetFramework)\*.txt" />
+    <AdditionalFiles Include="PublicAPI\$(NetCoreTargetFramework)\*.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -652,7 +652,7 @@
     </None>
   </ItemGroup>
 
-  <Target Name="AddFilesForNpmPackage" DependsOnTargets="Build;SatelliteDllsProjectOutputGroup" Condition="'$(TargetFramework)' == 'net7.0'">
+  <Target Name="AddFilesForNpmPackage" DependsOnTargets="Build;SatelliteDllsProjectOutputGroup" Condition="'$(TargetFramework)' == '$(NetCoreTargetFramework)'">
     <ItemGroup>
       <NpmContent Include="exports.json" />
       <!-- We have a runtime dependency on Microsoft.CodeAnalysis.dll in VS Code scenarios. -->

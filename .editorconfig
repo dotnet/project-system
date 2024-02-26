@@ -440,6 +440,6 @@ dotnet_diagnostic.CA1307.severity = suggestion    # Specify StringComparison
 
 # NETCOREUNDONE: Should be removed when obsolete System.Xaml types are moved from Microsoft.VisualStudio.ProjectSystem.XamlTypes into official package
 # Disabling warning for C# files generated from xaml rules
-[artifacts/*/obj/Microsoft.VisualStudio.ProjectSystem.Managed/net7.0/*.cs]
+[artifacts/*/obj/Microsoft.VisualStudio.ProjectSystem.Managed/net8.0/*.cs]
 # CS0618: Type or member is obsolete
 dotnet_diagnostic.CS0618.severity = silent

@@ -1,6 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-// The NPM package is only relevant to the net7.0 build.
+// The NPM package is only relevant to the net8.0 build.
 #if NETCOREAPP
 
 using Microsoft.VisualStudio.Utilities;
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.Setup
                 config,
                 "obj",
                 "Microsoft.VisualStudio.ProjectSystem.Managed",
-                "net7.0",
+                "net8.0",
                 "npmsrc");
 
             return Directory.EnumerateFiles(packagesDirectory, "*", SearchOption.AllDirectories)
