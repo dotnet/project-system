@@ -641,7 +641,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Disable all warnings]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[禁用所有警告。]]></Val>
+            <Val><![CDATA[禁用所有警告]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
