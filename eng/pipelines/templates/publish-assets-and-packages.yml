@@ -72,7 +72,7 @@ jobs:
 
   # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
   # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
-  - task: artifactDropTask@1
+  - task: 1ES.PublishArtifactsDrop@1
     displayName: Publish ProfilingInputs
     inputs:
       dropServiceURI: https://devdiv.artifacts.visualstudio.com
@@ -100,7 +100,7 @@ jobs:
 
   # The runsettings drives the test process for producing optimization data.
   # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
-  - task: artifactDropTask@1
+  - task: 1ES.PublishArtifactsDrop@1
     displayName: Publish RunSettings
     inputs:
       dropServiceURI: https://devdiv.artifacts.visualstudio.com
