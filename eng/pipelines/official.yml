@@ -103,7 +103,9 @@ variables:
   # - https://github.com/dotnet/Nerdbank.GitVersioning/issues/92
   # Variable reference: https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/pipeline-options-for-git?view=azure-devops&tabs=yaml#shallow-fetch
   Agent.Source.Git.ShallowFetchDepth: 0
-
+  TeamName: DotNet-Project-System
+  TeamEmail: dotnetdevexproj@microsoft.com
+  
 parameters:
 - name: CreateVSInsertion
   displayName: Create VS Insertion PR
