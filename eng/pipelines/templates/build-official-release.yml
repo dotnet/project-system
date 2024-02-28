@@ -2,7 +2,17 @@
 parameters:
   - name: SignType
     type: string
-    
+  - name: SkipOptimize
+    type: bool
+  - name: CreateVSInsertion
+    type: bool
+  - name: InsertionVSBranch
+    type: string
+  - name: CreateVSGreenInsertion
+    type: bool
+  - name: InsertionVSGreenBranch
+    type: string
+  
 jobs:
 - job: BuildOfficialRelease
   displayName: Build Official Release
@@ -44,12 +54,12 @@ jobs:
   ###################################################################################################################################################################
 
   # See: https://stackoverflow.com/a/30524983/294804
-  - powershell: if (-not (git ls-remote --heads https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS $(InsertionVSBranch))) { Write-Host "The branch name '$(InsertionVSBranch)' is not valid."; exit 1 }
+  - powershell: if (-not (git ls-remote --heads https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/VS ${{ parameters.InsertionVSBranch }})) { Write-Host "The branch name '${{ parameters.InsertionVSBranch }}' is not valid."; exit 1 }
     displayName: Validate VS Insertion Branch Name
-    condition: eq(variables.CreateVSInsertion, true)
-  - powershell: if (-not (git ls-remote --heads https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/vs-green $(InsertionVSGreenBranch))) { Write-Host "The branch name '$(InsertionVSGreenBranch)' is not valid."; exit 1 }
+    condition: eq(${{ parameters.CreateVSInsertion }}, true)
+  - powershell: if (-not (git ls-remote --heads https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/vs-green ${{ parameters.InsertionVSGreenBranch }})) { Write-Host "The branch name '${{ parameters.InsertionVSGreenBranch }}' is not valid."; exit 1 }
     displayName: Validate vs-green Insertion Branch Name
-    condition: eq(variables.CreateVSGreenInsertion, true)
+    condition: eq(${{ parameters.CreateVSGreenInsertion }}, true)
 
   ###################################################################################################################################################################
   # PLUGIN INSTALLATION
@@ -94,7 +104,7 @@ jobs:
       DropNamePrefix: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)
       AccessToken: $(System.AccessToken)
       feedSource: https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json
-      ShouldSkipOptimize: $(SkipOptimize)
+      ShouldSkipOptimize: ${{ parameters.SkipOptimize }}
       # This value determines how old the optimization data is allowed to be.
       # If the delta of the number of commits between the commit used for the last produced optimization data and the current commit is greater than this value,
       # this task will always fail. The only way to fix it is produce new optimization data.
