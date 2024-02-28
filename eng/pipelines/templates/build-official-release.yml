@@ -1,10 +1,42 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
-
+parameters:
+  - name: SignType
+    type: string
+    
 jobs:
 - job: BuildOfficialRelease
   displayName: Build Official Release
   # We make this timeout more than double the normal amount of build time as signing has a highly variable amount of time to complete.
   timeoutInMinutes: 90
+  templateContext:
+    mb:
+      signing:
+        enabled: true
+        signType: ${{ parameters.SignType }}
+        zipSources: false
+      localization:
+        enabled: true
+        type: 'pseudo'
+      sbom:
+        enabled: true
+    outputParentDirectory: $(Build.SourcesDirectory)/artifacts
+    outputs:
+      - output: pipelineArtifact
+        displayName: Publish Build Artifacts
+        targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
+        artifactName: $(Build.BuildNumber)
+        condition: succeededOrFailed()
+      - output: pipelineArtifact
+        displayName: Publish Loc Artifacts
+        targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/net472
+        artifactName: Loc
+        condition: succeededOrFailed()
+      - output: nuget
+        displayName: Publish Nuget Packages
+        packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/*.nupkg
+        packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+        publishVstsFeed: DevDiv/vs-green
+        nuGetFeedType: internal
   steps:
 
   ###################################################################################################################################################################
@@ -177,6 +209,11 @@ jobs:
   # Steps in this section should contain 'condition: succeededOrFailed()' since these artifacts can be used for analyzing build failures.
   # https://docs.microsoft.com/azure/devops/pipelines/process/tasks?view=azure-devops&tabs=yaml#task-control-options
   ###################################################################################################################################################################
+
+  - template: analyze-compliance.yml
+    parameters:
+      # For us software version is same as nuget package version
+      SoftwareVersion: $(NBGV_NuGetPackageVersion)
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
