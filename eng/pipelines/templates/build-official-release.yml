@@ -249,12 +249,14 @@ jobs:
 
   # Publishes the artifacts folder contents to the Azure Pipeline for use in other jobs/stages.
   # This publish is filtered by the .artifactignore in the 'eng' folder. See that file for more details.
-  - publish: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
+  - task: 1ES.PublishPipelineArtifact@1
+    inputs:
+      path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
+      artifact: $(Build.BuildNumber)
     displayName: Publish Build Artifacts
     # TODO: Consider using $(GitBuildVersion) instead of $(Build.BuildNumber) as it better correlates the build of the code, instead of the run of the pipeline.
     # Traditionally, this artifact name was used as it was required for the prior VS insertion mechanism.
     # Issue: https://github.com/dotnet/project-system/issues/8431
-    artifact: $(Build.BuildNumber)
     condition: succeededOrFailed()
 
   # The .artifactignore file filters the artifacts published from a particular folder.
@@ -266,7 +268,9 @@ jobs:
 
   # Publishes the staging folder contents to the Azure Pipeline for use in other jobs/stages.
   # The Build.StagingDirectory is used by certain plugin outputs, such as MicroBuild and OptProf.
-  - publish: $(Build.StagingDirectory)
+  - task: 1ES.PublishPipelineArtifact@1
+    inputs:
+      path: $(Build.StagingDirectory)
+      artifact: Staging
     displayName: Publish Staging Artifacts
-    artifact: Staging
     condition: succeededOrFailed()
