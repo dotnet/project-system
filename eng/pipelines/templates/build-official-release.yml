@@ -3,13 +3,13 @@ parameters:
   - name: SignType
     type: string
   - name: SkipOptimize
-    type: bool
+    type: boolean
   - name: CreateVSInsertion
-    type: bool
+    type: boolean
   - name: InsertionVSBranch
     type: string
   - name: CreateVSGreenInsertion
-    type: bool
+    type: boolean
   - name: InsertionVSGreenBranch
     type: string
   
