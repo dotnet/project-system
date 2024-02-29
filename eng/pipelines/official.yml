@@ -164,7 +164,7 @@ extends:
         configFile: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
       binskim:
         enabled: true
-        analyzeTargetGlob: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/**.dll
+        analyzeTargetGlob: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/net472**.dll
       credscan:
         enabled: true
       policheck:

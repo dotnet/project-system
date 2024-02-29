@@ -20,6 +20,18 @@ jobs:
   timeoutInMinutes: 90
   templateContext:
     mb:
+      optprof:
+        enabled: true
+        ShouldSkipOptimize: ${{ parameters.SkipOptimize }}
+        # This value determines how old the optimization data is allowed to be.
+        # If the delta of the number of commits between the commit used for the last produced optimization data and the current commit is greater than this value,
+        # this task will always fail. The only way to fix it is produce new optimization data.
+        # A temporary fix is to increase this value. However, it may cause a perf regression since eventually, the optimization data will no longer be aligned with the actual source content in the repo.
+        NumberCommitsToSearch: 100
+        OptimizationInputsLookupMethod: DropPrefix
+        DropNamePrefix: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)
+        AccessToken: $(System.AccessToken)
+        feedSource: https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json
       signing:
         enabled: true
         signType: ${{ parameters.SignType }}
@@ -60,56 +72,6 @@ jobs:
   - powershell: if (-not (git ls-remote --heads https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/vs-green ${{ parameters.InsertionVSGreenBranch }})) { Write-Host "The branch name '${{ parameters.InsertionVSGreenBranch }}' is not valid."; exit 1 }
     displayName: Validate vs-green Insertion Branch Name
     condition: eq(${{ parameters.CreateVSGreenInsertion }}, true)
-
-  ###################################################################################################################################################################
-  # PLUGIN INSTALLATION
-  ###################################################################################################################################################################
-
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Plugin Installation ===
-    condition: false
-
-  # Necessary for signing the assemblies and packages.
-  - task: MicroBuildSigningPlugin@4
-    displayName: Install Signing Plugin
-    inputs:
-      # Build fails if this is set to 'test'.
-      # See: https://github.com/dotnet/project-system/issues/7935
-      signType: real
-      esrpSigning: true
-
-  # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 45 seconds.
-  # This reduces the calls to the signing API (potentially increasing signing speed) and reduces the pipeline log bloat when polling signing completion.
-  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1' -signConfigPath ((Get-ChildItem -Path '$(Build.StagingDirectory)/MicroBuild/Plugins/*/build/signconfig.xml').FullName) -intervalInSeconds 45
-    displayName: Set Signing Interval
-    # This is not a necessary task for the build to be successful.
-    continueOnError: true
-
-  # Allows creating SBOM information during the build.
-  # See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support
-  - task: MicroBuildSbomPlugin@1
-    displayName: Install SBOM Plugin
-
-  # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
-  # To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true
-  # See documentation here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/2602/Build-With-Expired-(or-Without-Prior)-Optimization-Profiling-Data
-  # This plugin will restore MicroBuild.Plugins.OptProf which is required to create ProfilingInputs data.
-  # The projects include OptProf.targets which uses MicroBuild.Plugins.OptProf to run the target GenerateProfilingInputs on each project.
-  - task: MicroBuildOptProfPlugin@6
-    displayName: Install OptProf Plugin
-    inputs:
-      ProfilingInputsDropName: ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
-      OptimizationInputsLookupMethod: DropPrefix
-      DropNamePrefix: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)
-      AccessToken: $(System.AccessToken)
-      feedSource: https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json
-      ShouldSkipOptimize: ${{ parameters.SkipOptimize }}
-      # This value determines how old the optimization data is allowed to be.
-      # If the delta of the number of commits between the commit used for the last produced optimization data and the current commit is greater than this value,
-      # this task will always fail. The only way to fix it is produce new optimization data.
-      # A temporary fix is to increase this value. However, it may cause a perf regression since eventually, the optimization data will no longer be aligned with the actual source content in the repo.
-      NumberCommitsToSearch: 100
 
   ###################################################################################################################################################################
   # BUILD REPOSITORY
