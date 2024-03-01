@@ -131,11 +131,6 @@ parameters:
   displayName: Do Not Optimize Assemblies
   type: boolean
   default: false
-# Useful when testing pipeline changes and running compliance is not necessary.
-- name: SkipCompliance
-  displayName: Skip Compliance Validation
-  type: boolean
-  default: false
 # This should only be enabled if we need to create AzDO work items based on Compliance failures.
 - name: UploadTSAResults
   displayName: Create Compliance Work Items
@@ -226,9 +221,6 @@ extends:
           displayName: Optimization
           dependsOn:
           - Publish
-          # Only include the Compliance stage when it is not skipped.
-          - ${{ if eq(parameters.SkipCompliance, false) }}:
-            - Compliance
           variables:
           - name: visualStudioBootstrapperURI
             # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
@@ -283,9 +275,6 @@ extends:
         # The Build dependsOn is required for putting that stage's variables into the stageDependencies property bag (for PackageVersion).
         - Build
         - Publish
-        # Only include the Compliance stage when it is not skipped.
-        - ${{ if eq(parameters.SkipCompliance, false) }}:
-          - Compliance
         variables:
           # Gets the PackageVersion variable produced by the Build pipeline.
           PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
