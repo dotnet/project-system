@@ -36,6 +36,8 @@ variables:
   # Opt out of automatically injecting Codesign Validation into the pipeline.
   # See: https://aka.ms/gdn-injection
   runCodesignValidationInjection: false
+  TeamName: DotNet-Project-System
+  TeamEmail: dotnetdevexproj@microsoft.com
 
 ###################################################################################################################################################################
 # STAGES

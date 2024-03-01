@@ -103,7 +103,9 @@ variables:
   # - https://github.com/dotnet/Nerdbank.GitVersioning/issues/92
   # Variable reference: https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/pipeline-options-for-git?view=azure-devops&tabs=yaml#shallow-fetch
   Agent.Source.Git.ShallowFetchDepth: 0
-
+  TeamName: DotNet-Project-System
+  TeamEmail: dotnetdevexproj@microsoft.com
+  
 parameters:
 - name: CreateVSInsertion
   displayName: Create VS Insertion PR
@@ -157,7 +159,7 @@ extends:
         configFile: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
       binskim:
         enabled: true
-        analyzeTargetGlob: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/**.dll
+        analyzeTargetGlob: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/net472/**.dll
       credscan:
         enabled: true
       policheck:
@@ -192,8 +194,8 @@ extends:
       # - SymbolsUncPath
       - group: DotNet-Project-System
       jobs:
-      - template: templates/publish-assets-and-packages.yml
-      - template: templates/publish-symbols.yml
+      - template: eng/pipelines/templates/publish-assets-and-packages.yml@self
+      - template: eng/pipelines/templates/publish-symbols.yml@self
       # Disabling RichNav due to an acquisition issue. See: https://dev.azure.com/devdiv/DevDiv/_workitems/edit/1659507
       # - template: templates/publish-richnav.yml
     
@@ -209,7 +211,7 @@ extends:
       # - dn-bot-ceapex-package-r
       - group: OneLocBuildVariables
       jobs:
-      - template: templates/generate-localization.yml
+      - template: eng/pipelines/templates/generate-localization.yml@self
     
     # Run this stage only when specifically requested (via CreateOptimizationData) or when the pipeline was ran on a schedule.
     - ${{ if or(eq(parameters.CreateOptimizationData, true), eq(variables['Build.Reason'], 'Schedule')) }}:
@@ -289,7 +291,7 @@ extends:
           InsertReviewers: '.NET Project System'
         jobs:
         - ${{ if or(eq(parameters.CreateVSInsertion, true), eq(variables['Build.Reason'], 'Schedule')) }}:    
-          - template: templates/generate-vs-insertion.yml
+          - template: eng/pipelines/templates/generate-vs-insertion.yml@self
     
         - ${{ if or(eq(parameters.CreateVSGreenInsertion, true), eq(variables['Build.Reason'], 'Schedule')) }}:
           - template: azure-pipelines/external/component-insertion.yml@VSCodeExtensionRepo

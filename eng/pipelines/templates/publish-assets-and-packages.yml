@@ -45,7 +45,7 @@ jobs:
   # This creates the Products drop location and uploads the insertion data (.vsman files) for VS insertion.
   # This also includes the bootstrapper files (.exe and .vsman) necessary for OptProf.
   # YAML reference: https://dev.azure.com/devdiv/Engineering/_git/MicroBuild?path=/src/Tasks/UploadDrop/task.json
-  - task: MicroBuildUploadVstsDropFolder@2
+  - task: 1ES.MicroBuildVstsDrop@1
     displayName: Publish Insertion Data
     inputs:
       DropFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
@@ -72,7 +72,7 @@ jobs:
 
   # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
   # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
-  - task: artifactDropTask@1
+  - task: 1ES.PublishArtifactsDrop@1
     displayName: Publish ProfilingInputs
     inputs:
       dropServiceURI: https://devdiv.artifacts.visualstudio.com
@@ -100,7 +100,7 @@ jobs:
 
   # The runsettings drives the test process for producing optimization data.
   # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
-  - task: artifactDropTask@1
+  - task: 1ES.PublishArtifactsDrop@1
     displayName: Publish RunSettings
     inputs:
       dropServiceURI: https://devdiv.artifacts.visualstudio.com
@@ -141,7 +141,7 @@ jobs:
       workingFile: $(Build.SourcesDirectory)/src/Microsoft.VisualStudio.ProjectSystem.Managed/.npmrc
 
   # Publishes the NuGet packages to azure-public/vs-impl (https://dev.azure.com/azure-public/vside/_packaging?_a=feed&feed=vs-impl)
-  - task: NuGetCommand@2
+  - task: 1ES.PublishNuget@1
     displayName: Publish Packages to azure-public
     inputs:
       command: push
@@ -154,7 +154,7 @@ jobs:
 
   # Publishes the NuGet packages to DevDiv/VS (https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS)
   # A separate process will republish these packages to DevDiv/VS-CoreXtFeeds (https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS-CoreXtFeeds)
-  - task: NuGetCommand@2
+  - task: 1ES.PublishNuget@1
     displayName: Publish Packages to DevDiv
     inputs:
       command: push
@@ -167,7 +167,7 @@ jobs:
       allowPackageConflicts: true
 
   # Publishes the Managed NuGet package to DevDiv/vs-green (https://dev.azure.com/devdiv/DevDiv/_artifacts/feed/vs-green)
-  - task: NuGetCommand@2
+  - task: 1ES.PublishNuget@1
     displayName: Publish NuGet Package
     inputs:
       command: push
