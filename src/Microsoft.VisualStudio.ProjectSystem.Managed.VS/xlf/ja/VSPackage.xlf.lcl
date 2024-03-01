@@ -201,10 +201,13 @@
       </Item>
       <Item ItemId=";Setting_FastUpToDateCheck_LoggingLevel_Title" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Logging Level]]></Val>
+          <Val><![CDATA[Logging level]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[ログ記録レベル]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Logging Level]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -228,10 +231,13 @@
       </Item>
       <Item ItemId=";Setting_FileNesting_PreferSingleTargetBuilds_Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.]]></Val>
+          <Val><![CDATA[When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[複数のフレームワークを対象とするプロジェクトを開始する場合、ビルドを 1 つのフレームワークに制限することで、ビルド時間を短縮できます。]]></Val>
+            <Val><![CDATA[複数のフレームワークを対象とするプロジェクトを開始する場合、1 つのもののみをビルドすることで、ビルド時間を短縮できます。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -246,37 +252,49 @@
       </Item>
       <Item ItemId=";Settings_Category_FastUpToDateCheck" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Up to date checks]]></Val>
+          <Val><![CDATA[Up-to-date Checks]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[最新状態チェック]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Up to date checks]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Settings_Category_FileNestingSettings" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[File nesting settings]]></Val>
+          <Val><![CDATA[File Nesting]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ファイルの入れ子設定]]></Val>
+            <Val><![CDATA[ファイルの入れ子]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[File nesting settings]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Settings_Category_MultiTargetingSettings" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Multi-targeting settings]]></Val>
+          <Val><![CDATA[Multi-targeting]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[マルチターゲット設定]]></Val>
+            <Val><![CDATA[マルチ ターゲット]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Multi-targeting settings]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Settings_Category_SdkStyleProjects" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[SDK-style projects]]></Val>
+          <Val><![CDATA[SDK-style Projects]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[SDK スタイルのプロジェクト]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[SDK-style projects]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

@@ -108,7 +108,7 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
-        <source>Logging Level</source>
+        <source>Logging level</source>
         <target state="translated">Niveau de journalisation</target>
         <note />
       </trans-unit>
@@ -123,8 +123,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
-        <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
-        <target state="translated">Lorsque l’on démarre un projet qui vise plusieurs cadres, il est possible de réduire le temps de construction en n’en construisant qu’un seul.</target>
+        <source>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</source>
+        <target state="translated">Lorsque l’on démarre un projet qui vise plusieurs cadres, il est possible de réduire le temps de création en n’en créant qu’un seul.</target>
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Title">
@@ -133,22 +133,22 @@
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
-        <source>Up to date checks</source>
+        <source>Up-to-date Checks</source>
         <target state="translated">Contrôles de mise à jour</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
-        <source>File nesting settings</source>
-        <target state="translated">Paramètres d’imbrication de fichiers</target>
+        <source>File Nesting</source>
+        <target state="translated">Imbrication de fichiers</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
-        <source>Multi-targeting settings</source>
-        <target state="translated">Paramètres multi-ciblage</target>
+        <source>Multi-targeting</source>
+        <target state="translated">Multi-ciblage</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
-        <source>SDK-style projects</source>
+        <source>SDK-style Projects</source>
         <target state="translated">Projets de type SDK</target>
         <note />
       </trans-unit>

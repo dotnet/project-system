@@ -182,12 +182,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                         {
                             if (e.Value.Item2.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot snapshot))
                             {
-                                if (snapshot.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectExtensionsPathProperty, out string projectExtensionsPath))
+                                if (snapshot.Properties.TryGetStringProperty(ConfigurationGeneral.MSBuildProjectExtensionsPathProperty, out string? projectExtensionsPath))
                                 {
                                     _projectFileClassifier.ProjectExtensionsPath = projectExtensionsPath;
                                 }
 
-                                if (snapshot.Properties.TryGetValue(ConfigurationGeneral.NuGetPackageFoldersProperty, out string nuGetPackageFolders))
+                                if (snapshot.Properties.TryGetStringProperty(ConfigurationGeneral.NuGetPackageFoldersProperty, out string? nuGetPackageFolders))
                                 {
                                     _projectFileClassifier.NuGetPackageFolders = nuGetPackageFolders;
                                 }
@@ -209,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 
                             IProjectTree2 SyncNode(IReadOnlyList<IProjectImportSnapshot> imports, IProjectTree2 node)
                             {
-                                var captionByProjectPath = GetCaptionByProjectPath();
+                                Dictionary<string, string> captionByProjectPath = GetCaptionByProjectPath();
 
                                 foreach (IProjectTree existingNode in node.Children)
                                 {

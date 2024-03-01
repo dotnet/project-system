@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rules
             // First fix up the Name as we know they'll differ.
             rule.Attribute("Name").Value = "None";
 
-            if (ruleName is "Compile" or "EditorConfigFiles")
+            if (ruleName is "AdditionalFiles" or "Compile" or "EditorConfigFiles")
             {
                 // Remove the "TargetPath" element for these types
                 var targetPathElement = none.XPathSelectElement(@"/msb:Rule/msb:StringProperty[@Name=""TargetPath""]", namespaceManager);

@@ -172,7 +172,7 @@
     <value>Don't call MSBuild if a project appears to be up to date</value>
   </data>
   <data name="Setting_FastUpToDateCheck_LoggingLevel_Title">
-    <value>Logging Level</value>
+    <value>Logging level</value>
   </data>
   <data name="Setting_FastUpToDateCheck_LoggingLevel_None">
     <value>None</value>
@@ -193,18 +193,18 @@
     <value>Prefer single-target builds when starting a project</value>
   </data>
   <data name="Setting_FileNesting_PreferSingleTargetBuilds_Description">
-    <value>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</value>
+    <value>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</value>
   </data>
   <data name="Settings_Category_SdkStyleProjects">
-    <value>SDK-style projects</value>
+    <value>SDK-style Projects</value>
   </data>
   <data name="Settings_Category_FastUpToDateCheck">
-    <value>Up to date checks</value>
+    <value>Up-to-date Checks</value>
   </data>
   <data name="Settings_Category_FileNestingSettings">
-    <value>File nesting settings</value>
+    <value>File Nesting</value>
   </data>
   <data name="Settings_Category_MultiTargetingSettings">
-    <value>Multi-targeting settings</value>
+    <value>Multi-targeting</value>
   </data> 
 </root>

@@ -108,7 +108,7 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_LoggingLevel_Title">
-        <source>Logging Level</source>
+        <source>Logging level</source>
         <target state="translated">Poziom rejestrowania</target>
         <note />
       </trans-unit>
@@ -123,7 +123,7 @@
         <note />
       </trans-unit>
       <trans-unit id="Setting_FileNesting_PreferSingleTargetBuilds_Description">
-        <source>When starting a project that targets multiple frameworks the build time can be reduced by building only a single one.</source>
+        <source>When starting a project that targets multiple frameworks, build time can be reduced by building only a single one.</source>
         <target state="translated">Rozpoczynając projekt, który jest ukierunkowany na wiele struktur, czas kompilacji można skrócić, budując tylko jeden z nich.</target>
         <note />
       </trans-unit>
@@ -133,22 +133,22 @@
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FastUpToDateCheck">
-        <source>Up to date checks</source>
+        <source>Up-to-date Checks</source>
         <target state="translated">Kontrola aktualności</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_FileNestingSettings">
-        <source>File nesting settings</source>
-        <target state="translated">Ustawienia zagnieżdżania plików</target>
+        <source>File Nesting</source>
+        <target state="translated">Zagnieżdżanie plików</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_MultiTargetingSettings">
-        <source>Multi-targeting settings</source>
-        <target state="translated">Ustawienia wartości wielu elementów docelowych</target>
+        <source>Multi-targeting</source>
+        <target state="translated">Wielokierunkowe działania</target>
         <note />
       </trans-unit>
       <trans-unit id="Settings_Category_SdkStyleProjects">
-        <source>SDK-style projects</source>
+        <source>SDK-style Projects</source>
         <target state="translated">Projekty w stylu zestawu SDK</target>
         <note />
       </trans-unit>

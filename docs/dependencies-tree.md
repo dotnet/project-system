@@ -26,7 +26,7 @@ By default, only top-level (direct) dependencies are included in search results.
 
 ## Unresolved dependencies (yellow triangles)
 
-Just because a project declares a dependency doesn't mean that the reference points to something valid/existant/compatible/etc. VS runs a [design-time build](design-time-builds.md) for each project in order to _resolve_ dependencies (amongst with other tasks).
+Just because a project declares a dependency doesn't mean that the reference points to something valid/existent/compatible/etc. VS runs a [design-time build](design-time-builds.md) for each project in order to _resolve_ dependencies (amongst other tasks).
 
 Any dependency which fails to resolve will be displayed with a yellow triangle in the tree.
 
@@ -49,7 +49,3 @@ Resolved items are produced by MSBuild targets. The target to inspect depends up
 Inspecting a design-time build's `.binlog` with the [MSBuild Structured Log Viewer](https://msbuildlog.com/) and tracing back from the relevant target will reveal why the original reference was not produces as a resolved reference. Some familiarity with [MSBuild concepts](https://learn.microsoft.com/visualstudio/msbuild/msbuild-concepts) is required to do this.
 
 Note that for package references, you may also look in the `obj` folder for the `project.assets.json` file. Towards the end of that file there may be some messages in the `logs` property that provide insight into why packages were not resolved, though this information should be displayed in the Dependencies tree directly, along with the Package pane of the Output window, and the Error List.
-
-## My whole tree has yellow triangles!
-
-If all dependencies in the tree appear with a yellow triangle, it's most likely that the [design-time build](design-time-builds.md) failed completely. As above, [capture a design-time build log](design-time-builds.md#diagnosing-design-time-builds) and look for the cause of the failure. It may be something completely unrelated to your project's dependencies.

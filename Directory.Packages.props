@@ -72,7 +72,7 @@
     <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="$(CPSPackageVersion)" />
     <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="$(CPSPackageVersion)" />
     <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="$(CPSPackageVersion)" />
-    <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="$(CPSPackageVersion)" />
+    <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.Sdk.Tools"                         Version="$(CPSPackageVersion)" />
     <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.VS"                                Version="$(CPSPackageVersion)" />
     <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="$(CPSPackageVersion)" />
 
