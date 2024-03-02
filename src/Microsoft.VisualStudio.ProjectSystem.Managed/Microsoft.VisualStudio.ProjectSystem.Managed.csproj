@@ -497,6 +497,11 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
+    <Compile Update="ProjectSystem\Rules\PropertyPages\PropertyPageResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PropertyPageResources.resx</DependentUpon>
+    </Compile>
 
     <XamlPropertyRule Include="ProjectSystem\Rules\SourceControl.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -616,6 +621,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="ProjectSystem\Rules\PropertyPages\PropertyPageResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PropertyPageResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
