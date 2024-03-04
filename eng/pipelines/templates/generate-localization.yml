@@ -3,7 +3,7 @@
 jobs:
 - job: GenerateLocalization
   displayName: Generate Localization
-  timeoutInMinutes: 10
+  timeoutInMinutes: 25
   steps:
 
   ###################################################################################################################################################################
