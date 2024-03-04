@@ -46,10 +46,6 @@ namespace Microsoft.VisualStudio.Diagnostics
             public DebugAssertFailureException(string message, Exception inner) : base(message, inner)
             {
             }
-
-            protected DebugAssertFailureException(SerializationInfo info, StreamingContext context) : base(info, context)
-            {
-            }
         }
     }
 }
