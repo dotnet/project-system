@@ -138,13 +138,13 @@ parameters:
   displayName: Create Compliance Work Items
   type: boolean
   default: false
-- name: SignType
-  displayName: Signing Type
-  type: string
-  default: real
-  values:
-    - test
-    - real
+#- name: SignType (not currently used due to #7935)
+#  displayName: Signing Type
+#  type: string
+#  default: real
+#  values:
+#    - test
+#    - real
 
 ###################################################################################################################################################################
 # STAGES
@@ -179,7 +179,7 @@ extends:
       jobs:
         - template: eng/pipelines/templates/build-official-release.yml@self
           parameters:
-            SignType: ${{ parameters.SignType }}
+            #SignType: ${{ parameters.SignType }}
             SkipOptimize: ${{ parameters.SkipOptimize }}
             CreateVSInsertion: ${{ parameters.CreateVSInsertion }}
             InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
