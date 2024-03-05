@@ -21,7 +21,7 @@ steps:
     inputs:
       softwareFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/bin/Dlls/**
       softwareName: Dotnet-Project-System
-      softwareVersionNum: $(SoftwareVersion)
+      softwareVersionNum: ${{ parameters.SoftwareVersion }}
       softwareBuildNum: $(Build.BuildId)
       symbolsFolder: SRV*http://symweb
       noCopySymbols: true
