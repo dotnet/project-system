@@ -1,6 +1,6 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-jobs:
+steps:
 # Overview of tasks offered for security and compliance:
 # - https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1425/Guardian-Tools
 # - https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki
@@ -8,11 +8,6 @@ jobs:
 # Other tools to consider:
 # - InferSharp: https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1638/InferSharp-Usage
 # - CodeQL: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/codeql-build-task
-- job: AnalyzeCompliance
-  displayName: Analyze Compliance
-  timeoutInMinutes: 20
-  steps:
-
   ###################################################################################################################################################################
   # DOWNLOAD ARTIFACTS
   ###################################################################################################################################################################
