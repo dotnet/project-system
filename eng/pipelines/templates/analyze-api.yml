@@ -6,23 +6,6 @@ steps:
   # DOWNLOAD ARTIFACTS
   ###################################################################################################################################################################
 
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Download Artifacts ===
-    condition: false
-
-  # Download the build artifacts from the Build job.
-  - download: current
-    displayName: Download Build Artifacts
-    artifact: $(Build.BuildNumber)
-    # Only download the necessary files for API validation.
-    patterns: |
-      bin/Dlls/**/Microsoft.VisualStudio.AppDesigner*.pdb
-      bin/Dlls/**/Microsoft.VisualStudio.Editors*.pdb
-      bin/Dlls/**/Microsoft.VisualStudio.ProjectSystem.Managed*.pdb
-      bin/Dlls/**/Microsoft.VisualStudio.AppDesigner*.dll
-      bin/Dlls/**/Microsoft.VisualStudio.Editors*.dll
-      bin/Dlls/**/Microsoft.VisualStudio.ProjectSystem.Managed*.dll
   ###################################################################################################################################################################
   # RUN ANALYSIS
   ###################################################################################################################################################################
@@ -37,7 +20,7 @@ steps:
   - task: APIScan@2
     displayName: Run APIScan
     inputs:
-      softwareFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/bin/Dlls
+      softwareFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/bin/Dlls/**
       softwareName: Dotnet-Project-System
       softwareVersionNum: $(SoftwareVersion)
       softwareBuildNum: $(Build.BuildId)

@@ -49,7 +49,7 @@ jobs:
         condition: succeededOrFailed()
       - output: pipelineArtifact
         displayName: Publish Loc Artifacts
-        targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/net472
+        targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/**
         artifactName: Loc
         condition: succeededOrFailed()
       - output: nuget
