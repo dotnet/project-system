@@ -185,6 +185,8 @@ jobs:
     parameters:
       # For us software version is same as nuget package version
       SoftwareVersion: $(NBGV_NuGetPackageVersion)
+  - template: analyze-api.yml
+
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
