@@ -8,22 +8,6 @@ steps:
 # Other tools to consider:
 # - InferSharp: https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1638/InferSharp-Usage
 # - CodeQL: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/codeql-build-task
-  ###################################################################################################################################################################
-  # DOWNLOAD ARTIFACTS
-  ###################################################################################################################################################################
-
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Download Artifacts ===
-    condition: false
-
-  # Download the build artifacts from the Build job.
-  # The DownloadPipelineArtifact task is used since we can specify the output path. The 'download:' node doesn't allow changes in output location.
-  - task: DownloadPipelineArtifact@2
-    displayName: Download Build Artifacts
-    inputs:
-      artifact: '$(Build.BuildNumber)'
-      path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
 
   ###################################################################################################################################################################
   # RUN ANALYSIS
