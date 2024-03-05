@@ -19,7 +19,7 @@ steps:
   - task: APIScan@2
     displayName: Run APIScan
     inputs:
-      softwareFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/bin/Dlls/**
+      softwareFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/bin/Dlls/
       softwareName: Dotnet-Project-System
       softwareVersionNum: ${{ parameters.SoftwareVersion }}
       softwareBuildNum: $(Build.BuildId)
