@@ -47,34 +47,6 @@ steps:
       ExcludeFolders: bootstrapper
     condition: succeededOrFailed()
 
-  # Scan for problematic terminology. Related documentation:
-  # - https://microsoft.sharepoint.com/sites/globalreadiness/SitePages/PoliCheck.aspx
-  # - https://policheck.microsoft.com/
-  # Requires scanning both the source and the build artifacts: https://liquid.microsoft.com/Web/Object/Read/MS.GlobalReadiness/Requirements/01.01#Zapplicability
-  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/PoliCheck-build-task#v2
-  - task: PoliCheck@2
-    displayName: Run PoliCheck
-    inputs:
-      # F - Scan a particular file or folder (recursively)
-      targetType: F
-      targetArgument: $(Build.SourcesDirectory)
-      # 1 - Enable scanning of comments
-      optionsFC: 1
-      # Scan for severity 1, 2, and 3 issues
-      optionsSEV: '1|2|3'
-    condition: succeededOrFailed()
-
-  # Scan for credentials and other sensitive information. Related documentation:
-  # - https://strikecommunity.azurewebsites.net/articles/4114/credential-scanner-overview.html
-  # Even though it isn't explicitly stated, we scan both the source and the build artifacts.
-  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/credscan-azure-devops-build-task#v3-preview
-  - task: CredScan@3
-    displayName: Run CredScan
-    inputs:
-      # Output in PREFast format so TSAUpload can consume it.
-      outputFormat: pre
-    condition: succeededOrFailed()
-
   ###################################################################################################################################################################
   # PUBLISH RESULTS
   ###################################################################################################################################################################
@@ -83,23 +55,6 @@ steps:
   - script:
     displayName: === Publish Results ===
     condition: false
-
-  # Only run this task if UploadTSAResults was specified.
-  - ${{ if eq(variables.UploadTSAResults, true) }}:
-    # Upload the output of the compliance tools to Trust Services Automation (TSA), and create Azure DevOps work items for failures.
-    # TSA overview: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-overview
-    # YAML reference: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/trust-services-automation-tsa/tsa-upload-build-task#yaml-reference
-    - task: TSAUpload@2
-      displayName: Upload Results to TSA
-      inputs:
-        GdnPublishTsaOnboard: true
-        # Configures the compliance tool results to process.
-        # Configuration file format:
-        # - https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/microsoft-guardian/guardian-tsa#tsa-options-file
-        # - https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1409/Guardian-TSA?anchor=tsa-options-file
-        GdnPublishTsaConfigFile: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
-        GdnPublishTsaExportedResultsPublishable: true
-      condition: succeededOrFailed()
 
   # Publishes the results as artifacts to the Azure Pipeline.
   # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/publish-security-analysis-logs#v3

@@ -133,11 +133,6 @@ parameters:
   displayName: Do Not Optimize Assemblies
   type: boolean
   default: false
-# This should only be enabled if we need to create AzDO work items based on Compliance failures.
-- name: UploadTSAResults
-  displayName: Create Compliance Work Items
-  type: boolean
-  default: false
 #- name: SignType (not currently used due to #7935)
 #  displayName: Signing Type
 #  type: string
