@@ -109,6 +109,11 @@ jobs:
     # Name is required to reference the variables created within this build step in other stages.
     name: SetAssemblyVersion
 
+  # Required for the MicroBuildBuildVSBootstrapper task. See description above that task for details.
+  # This should not be installed prior to building the repo as it may interfere with building the swixproj and vsmanproj projects.
+  - task: MicroBuildSwixPlugin@4
+    displayName: Install Swix Plugin
+
   # Sets the VisualStudioMinimumVersion variable for the job. This variable is also used by the APIScan job.
   # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-variable-properties
   - powershell: Write-Host "##vso[task.setvariable variable=VisualStudioMinimumVersion;isoutput=true]$(. '$(Build.SourcesDirectory)/eng/scripts/GetVisualStudioMinimumVersion.ps1')"
