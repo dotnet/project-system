@@ -168,13 +168,6 @@ jobs:
       # This is a non-critical task, so don't fail the build if it fails.
       continueOnError: true
 
-  # Uploads telemetry to MicroBuild about the MicroBuild components used.
-  - task: MicroBuildCleanup@1
-    displayName: Send MicroBuild Telemetry
-    condition: succeededOrFailed()
-    # This is a non-critical task, so don't fail the build if it fails.
-    continueOnError: true
-
   ###################################################################################################################################################################
   # PUBLISH BUILD
   # Steps in this section should contain 'condition: succeededOrFailed()' since these artifacts can be used for analyzing build failures.
@@ -186,7 +179,6 @@ jobs:
     parameters:
       # For us software version is same as nuget package version
       SoftwareVersion: $(NBGV_NuGetPackageVersion)
-
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
@@ -201,39 +193,4 @@ jobs:
       testRunner: VSTest
       testResultsFiles: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/TestResults/**/*.trx
       testRunTitle: Unit Test Results
-    condition: succeededOrFailed()
-
-  # The .artifactignore file filters the artifacts published from a particular folder.
-  # This must be present in the folder we want to publish and be named '.artifactignore'.
-  # See: https://docs.microsoft.com/azure/devops/artifacts/reference/artifactignore?view=azure-devops
-  - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/build.artifactignore' -Destination '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/.artifactignore'
-    displayName: Copy Build Artifact Filter
-    condition: succeededOrFailed()
-
-  # Publishes the artifacts folder contents to the Azure Pipeline for use in other jobs/stages.
-  # This publish is filtered by the .artifactignore in the 'eng' folder. See that file for more details.
-  - task: 1ES.PublishPipelineArtifact@1
-    inputs:
-      path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
-      artifact: $(Build.BuildNumber)
-    displayName: Publish Build Artifacts
-    # TODO: Consider using $(GitBuildVersion) instead of $(Build.BuildNumber) as it better correlates the build of the code, instead of the run of the pipeline.
-    # Traditionally, this artifact name was used as it was required for the prior VS insertion mechanism.
-    # Issue: https://github.com/dotnet/project-system/issues/8431
-    condition: succeededOrFailed()
-
-  # The .artifactignore file filters the artifacts published from a particular folder.
-  # This must be present in the folder we want to publish and be named '.artifactignore'.
-  # See: https://docs.microsoft.com/azure/devops/artifacts/reference/artifactignore?view=azure-devops
-  - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/staging.artifactignore' -Destination '$(Build.StagingDirectory)/.artifactignore'
-    displayName: Copy Staging Artifact Filter
-    condition: succeededOrFailed()
-
-  # Publishes the staging folder contents to the Azure Pipeline for use in other jobs/stages.
-  # The Build.StagingDirectory is used by certain plugin outputs, such as MicroBuild and OptProf.
-  - task: 1ES.PublishPipelineArtifact@1
-    inputs:
-      path: $(Build.StagingDirectory)
-      artifact: Staging
-    displayName: Publish Staging Artifacts
     condition: succeededOrFailed()

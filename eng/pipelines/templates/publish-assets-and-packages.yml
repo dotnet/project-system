@@ -7,33 +7,6 @@ jobs:
   steps:
 
   ###################################################################################################################################################################
-  # DOWNLOAD ARTIFACTS
-  ###################################################################################################################################################################
-
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Download Artifacts ===
-    condition: false
-
-  # Download the build artifacts from the Build job.
-  - download: current
-    displayName: Download Build Artifacts
-    artifact: $(Build.BuildNumber)
-    # Only download the necessary files for publishing.
-    patterns: |
-      VSSetup/Insertion/**
-      packages/**
-
-  # Download the staging artifacts from the Build job.
-  - download: current
-    displayName: Download Staging Artifacts
-    artifact: Staging
-    # Only download the necessary files for publishing.
-    patterns: |
-      MicroBuild/**
-      OptProf/**
-
-  ###################################################################################################################################################################
   # PUBLISH INSERTION
   ###################################################################################################################################################################
 
