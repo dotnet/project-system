@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -29,11 +30,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return mock.Object;
         }
 
-        public static IWorkspace ImplementHostSpecificErrorReporter(Func<object> action)
+        public static IWorkspace ImplementErrorReporter(Func<IVsLanguageServiceBuildErrorReporter2> action)
         {
             var mock = new Mock<IWorkspace>();
 
-            mock.SetupGet(c => c.HostSpecificErrorReporter)
+            mock.SetupGet(c => c.ErrorReporter)
                 .Returns(action);
 
             return mock.Object;
