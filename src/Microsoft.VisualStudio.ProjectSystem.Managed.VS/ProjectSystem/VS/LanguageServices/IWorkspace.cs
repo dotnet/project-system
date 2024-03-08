@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -20,11 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         IWorkspaceProjectContext Context { get; }
 
         /// <summary>
-        ///     Gets an object that represents a host-specific error reporter.
+        ///     Gets the language service build error reporter object.
         /// </summary>
-        /// <remarks>
-        ///     Within a Visual Studio host, this is typically an object implementing IVsLanguageServiceBuildErrorReporter2.
-        /// </remarks>
-        object HostSpecificErrorReporter { get; }
+        IVsLanguageServiceBuildErrorReporter2 ErrorReporter { get; }
     }
 }

@@ -74,18 +74,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             {
                 handled = await _workspaceWriter.WriteAsync(workspace =>
                 {
-                    var errorReporter = (IVsLanguageServiceBuildErrorReporter2)workspace.HostSpecificErrorReporter;
-
                     try
                     {
-                        errorReporter.ReportError2(details.Message,
-                                                   details.Code,
-                                                   details.Priority,
-                                                   details.LineNumberForErrorList,
-                                                   details.ColumnNumberForErrorList,
-                                                   details.EndLineNumberForErrorList,
-                                                   details.EndColumnNumberForErrorList,
-                                                   details.GetFileFullPath(_project.FullPath));
+                        workspace.ErrorReporter.ReportError2(
+                            details.Message,
+                            details.Code,
+                            details.Priority,
+                            details.LineNumberForErrorList,
+                            details.ColumnNumberForErrorList,
+                            details.EndLineNumberForErrorList,
+                            details.EndColumnNumberForErrorList,
+                            details.GetFileFullPath(_project.FullPath));
+
                         return TaskResult.True;
                     }
                     catch (NotImplementedException)
@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             {
                 await _workspaceWriter.WriteAsync(workspace =>
                 {
-                    ((IVsLanguageServiceBuildErrorReporter2)workspace.HostSpecificErrorReporter).ClearErrors();
+                    workspace.ErrorReporter.ClearErrors();
 
                     return Task.CompletedTask;
                 });
