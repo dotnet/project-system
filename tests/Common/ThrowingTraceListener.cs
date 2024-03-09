@@ -32,7 +32,9 @@ namespace Microsoft.VisualStudio.Diagnostics
         {
         }
 
+#if !NET8_0_OR_GREATER
         [Serializable]
+#endif
         public class DebugAssertFailureException : Exception
         {
             public DebugAssertFailureException()
@@ -47,9 +49,11 @@ namespace Microsoft.VisualStudio.Diagnostics
             {
             }
 
+#if !NET8_0_OR_GREATER
             protected DebugAssertFailureException(SerializationInfo info, StreamingContext context) : base(info, context)
             {
             }
+#endif
         }
     }
 }
