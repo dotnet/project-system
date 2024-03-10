@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -18,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return new WorkspaceWriter(workspace);
         }
 
-        public static IWorkspaceWriter ImplementHostSpecificErrorReporter(Func<object> func)
+        public static IWorkspaceWriter ImplementErrorReporter(Func<IVsLanguageServiceBuildErrorReporter2> func)
         {
-            var workspace = IWorkspaceMockFactory.ImplementHostSpecificErrorReporter(func);
+            var workspace = IWorkspaceMockFactory.ImplementErrorReporter(func);
 
             return new WorkspaceWriter(workspace);
         }
