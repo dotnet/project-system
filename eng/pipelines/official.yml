@@ -41,15 +41,6 @@ schedules:
 resources:
   # These DartLab pipelines and repositories are only used by the Optimization stage.
   pipelines:
-  # This name is the default value for the 'dartLabBuildResourceName' parameter in single-runsettings.yml.
-  - pipeline: DartLab
-    project: DevDiv
-    source: DartLab
-    branch: main
-  # This name is the default value for the 'dartLabOptProfBuildResourceName' parameter in single-runsettings.yml.
-  - pipeline: DartLab.OptProf
-    source: DartLab.OptProf
-    branch: main
   repositories:
   - repository: MicroBuildTemplate
     type: git
@@ -58,11 +49,6 @@ resources:
   # This name is the default value for the 'dartLabTemplatesResourceName 'parameter in single-runsettings.yml.
   - repository: DartLabTemplates
     name: DartLab.Templates
-    type: git
-    ref: refs/heads/main
-  # This name is used to access the single-runsettings.yml template.
-  - repository: DartLabOptProfTemplates
-    name: DartLab.OptProf
     type: git
     ref: refs/heads/main
   # This repo is used to create the insertion PR into the vs-green repo.
@@ -179,7 +165,6 @@ extends:
       jobs:
         - template: eng/pipelines/templates/build-official-release.yml@self
           parameters:
-            #SignType: ${{ parameters.SignType }}
             SkipOptimize: ${{ parameters.SkipOptimize }}
             CreateVSInsertion: ${{ parameters.CreateVSInsertion }}
             InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
