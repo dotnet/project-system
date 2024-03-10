@@ -9,20 +9,6 @@ jobs:
   # DOWNLOAD ARTIFACTS
   ###################################################################################################################################################################
 
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Download Artifacts ===
-    condition: false
-
-  # Download the build artifacts from the Build job.
-  - download: current
-    displayName: Download Build Artifacts
-    artifact: $(Build.BuildNumber)
-    # Only download the necessary files for publishing.
-    patterns: |
-      VSSetup/Insertion/**
-      packages/**
-
   # Download the staging artifacts from the Build job.
   - download: current
     displayName: Download Staging Artifacts
@@ -40,24 +26,28 @@ jobs:
   - script:
     displayName: === Publish Insertion ===
     condition: false
-
-  # This creates the Products drop location and uploads the insertion data (.vsman files) for VS insertion.
-  # This also includes the bootstrapper files (.exe and .vsman) necessary for OptProf.
-  # YAML reference: https://dev.azure.com/devdiv/Engineering/_git/MicroBuild?path=/src/Tasks/UploadDrop/task.json
-  - task: 1ES.MicroBuildVstsDrop@1
-    displayName: Publish Insertion Data
+  
+  # Creates a VS insertion PR using the Products drop containing the .vsman files.
+  # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/635/Overview
+  # YAML reference: https://dev.azure.com/devdiv/Engineering/_git/MicroBuild?path=/src/Tasks/InsertVsPayload/task.json
+  - task: MicroBuildInsertVsPayload@4
+    displayName: Create VS Insertion PR
     inputs:
-      DropFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
-      # TODO: Consider using $(GitBuildVersion) instead of $(Build.BuildNumber) as it better correlates the build of the code to the VS insertion.
-      # Meaning, instead of VS Insertion -> Pipeline BuildNumber -> Code BuildVersion, it would just be VS Insertion -> Code BuildVersion.
-      # If this is updated, VstsDropNames set in build-official-release.yml would also need to be updated.
-      # For GitBuildVersion: https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
-      # Issue: https://github.com/dotnet/project-system/issues/8431
-      # Example of current path: 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
-      DropName: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
-      DropRetentionDays: 60
-      # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
-      AccessToken: $(System.AccessToken)
+      TargetBranch: ${{ parameters.InsertionVSBranch }}
+      # Cannot use '.NET' Project System as the branch name is created via this value. It produces an error:
+      # fatal: 'team/.NET-Project-System/DotNet-Project-System-20220818.3-1' is not a valid branch name
+      TeamName: DotNet Project System
+      TeamEmail: dotnetdevexproj@microsoft.com
+      # The ShortCommitId is parsed out of the payload name in tagger.yml for use in tagging the appropriate commit in our repo.
+      # This tag is used in GetInsertionPRDescription.ps1 (task above) to create the description for this insertion.
+      InsertionPayloadName: 'DotNet Project System ($(Build.SourceBranchName):$(Build.BuildNumber):$(Build.SourceVersion))'
+      # Note: The actual filename, SetupManifest.vsman, is different from the mapped value of Microsoft.VisualStudio.ResourceExplorer.vsman.
+      ComponentJsonValues: Microsoft.VisualStudio.ProjectSystem.Managed.vsman=https://vsdrop.corp.microsoft.com/file/v1/Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber);SetupManifest.vsman
+      AllowTopicBranchUpdate: true
+      InsertionReviewers: '.NET Project System'
+      InsertionBuildPolicy: Request Perf DDRITs
+      # Documentation: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/638/Set-AutoComplete-on-an-Insertion
+      InsertAutoComplete: true
 
   ###################################################################################################################################################################
   # PUBLISH OPTPROF
