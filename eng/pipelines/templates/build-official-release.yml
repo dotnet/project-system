@@ -58,7 +58,7 @@ jobs:
         packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
         publishVstsFeed: DevDiv/vs-green
         nuGetFeedType: internal
-    - output: microBuildVstsDrop
+      - output: microBuildVstsDrop
         dropFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
         # TODO: Consider using $(GitBuildVersion) instead of $(Build.BuildNumber) as it better correlates the build of the code to the VS insertion.
         # Meaning, instead of VS Insertion -> Pipeline BuildNumber -> Code BuildVersion, it would just be VS Insertion -> Code BuildVersion.
