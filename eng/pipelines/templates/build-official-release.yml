@@ -47,11 +47,7 @@ jobs:
         targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
         artifactName: $(Build.BuildNumber)
         condition: succeededOrFailed()
-      - output: pipelineArtifact
-        displayName: Publish Staging Artifacts
-        targetPath: $(Build.StagingDirectory)
-        artifactName: Staging
-        condition: succeededOrFailed()
+      
       - output: pipelineArtifact
         displayName: Publish Loc Artifacts
         targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/
