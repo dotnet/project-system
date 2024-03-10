@@ -42,16 +42,7 @@ jobs:
         enabled: true
     outputParentDirectory: $(Build.SourcesDirectory)/artifacts
     outputs:
-      - output: pipelineArtifact
-        displayName: Publish Build Artifacts
-        targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
-        artifactName: $(Build.BuildNumber)
-        condition: succeededOrFailed()
-      - output: pipelineArtifact
-        displayName: Publish Loc Artifacts
-        targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/
-        artifactName: Loc
-        condition: succeededOrFailed()
+      
       - output: nuget
         displayName: Publish Nuget Packages
         packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/*.nupkg
