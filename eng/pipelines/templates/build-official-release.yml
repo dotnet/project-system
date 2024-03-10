@@ -48,11 +48,6 @@ jobs:
         artifactName: $(Build.BuildNumber)
         condition: succeededOrFailed()
       - output: pipelineArtifact
-        displayName: Publish Staging Artifacts
-        targetPath: $(Build.StagingDirectory)
-        artifactName: Staging
-        condition: succeededOrFailed()
-      - output: pipelineArtifact
         displayName: Publish Loc Artifacts
         targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/
         artifactName: Loc
@@ -185,11 +180,6 @@ jobs:
       # For us software version is same as nuget package version
       SoftwareVersion: $(NBGV_NuGetPackageVersion)
 
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Publish Build ===
-    condition: false
-
   # Publishes the test results to the Azure Pipeline itself so they can be viewed in the UI.
   # This needs to be ran after the build, because if the build failed due to a test failure, the test results wouldn't be published.
   - task: PublishTestResults@2
@@ -198,4 +188,13 @@ jobs:
       testRunner: VSTest
       testResultsFiles: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/TestResults/**/*.trx
       testRunTitle: Unit Test Results
+    condition: succeededOrFailed()
+
+  # Publishes the staging folder contents to the Azure Pipeline for use in other jobs/stages.
+  # The Build.StagingDirectory is used by certain plugin outputs, such as MicroBuild and OptProf.
+  - task: 1ES.PublishPipelineArtifact@1
+    inputs:
+      path: $(Build.StagingDirectory)
+      displayName: Publish Staging Artifacts
+      artifact: Staging
     condition: succeededOrFailed()
