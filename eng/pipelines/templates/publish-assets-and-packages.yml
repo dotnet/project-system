@@ -73,7 +73,6 @@ jobs:
   # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
   - task: 1ES.PublishPipelineArtifact@1
     displayName: Publish ProfilingInputs
-    path: $(Build.StagingDirectory)/DropMetadata
     inputs:
       dropServiceURI: https://devdiv.artifacts.visualstudio.com
       buildNumber: ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
