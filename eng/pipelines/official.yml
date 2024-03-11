@@ -207,6 +207,7 @@ extends:
         # The Build dependsOn is required for putting that stage's variables into the stageDependencies property bag (for PackageVersion).
         - Build
         - Publish
+        
         variables:
           # Gets the PackageVersion variable produced by the Build pipeline.
           PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]
