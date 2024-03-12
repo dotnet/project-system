@@ -45,18 +45,19 @@ jobs:
   # YAML reference: https://dev.azure.com/devdiv/Engineering/_git/MicroBuild?path=/src/Tasks/UploadDrop/task.json
   - task: 1ES.MicroBuildVstsDrop@1
     displayName: Publish Insertion Data
+    continueOnError: true
     inputs:
-      DropFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
+      dropFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
       # TODO: Consider using $(GitBuildVersion) instead of $(Build.BuildNumber) as it better correlates the build of the code to the VS insertion.
       # Meaning, instead of VS Insertion -> Pipeline BuildNumber -> Code BuildVersion, it would just be VS Insertion -> Code BuildVersion.
       # If this is updated, VstsDropNames set in build-official-release.yml would also need to be updated.
       # For GitBuildVersion: https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
       # Issue: https://github.com/dotnet/project-system/issues/8431
       # Example of current path: 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
-      DropName: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
-      DropRetentionDays: 60
+      dropName: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
+      dropRetentionDays: 60
       # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
-      AccessToken: $(System.AccessToken)
+      accessToken: $(System.AccessToken)
 
   ###################################################################################################################################################################
   # PUBLISH OPTPROF

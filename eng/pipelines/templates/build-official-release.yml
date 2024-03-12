@@ -57,6 +57,7 @@ jobs:
         packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/*.nupkg
         packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
         publishVstsFeed: DevDiv/vs-green
+        allowPackageConflicts: true
         nuGetFeedType: internal
       - output: microBuildVstsDrop
         dropFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
