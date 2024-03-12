@@ -143,7 +143,7 @@ extends:
         configFile: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
       binskim:
         enabled: true
-        analyzeTargetGlob: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls
+        analyzeTargetGlob: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/**/**.dll
       credscan:
         enabled: true
       policheck:
