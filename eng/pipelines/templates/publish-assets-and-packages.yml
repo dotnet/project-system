@@ -2,7 +2,7 @@
 jobs:
 - job: PublishAssetsAndPackages
   displayName: Publish Assets and Packages
-  timeoutInMinutes: 10
+  timeoutInMinutes: 25
   steps:
   ###################################################################################################################################################################
   # DOWNLOAD ARTIFACTS
