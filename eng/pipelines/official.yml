@@ -107,10 +107,6 @@ parameters:
   displayName: vs-green Insertion Branch Name
   type: string
   default: main
-- name: CreateOptimizationData
-  displayName: Create Optimization Data
-  type: boolean
-  default: false
 # This should only be enabled when generating optimization data for the first time.
 # See details in the Build job for the MicroBuildOptProfPlugin task.
 - name: SkipOptimize
@@ -121,12 +117,7 @@ parameters:
 - name: SkipCompliance
   displayName: Skip Compliance Validation
   type: boolean
-  default: false
-# This should only be enabled if we need to create AzDO work items based on Compliance failures.
-- name: UploadTSAResults
-  displayName: Create Compliance Work Items
-  type: boolean
-  default: false
+  default: false\
 #- name: SignType (not currently used due to #7935)
 #  displayName: Signing Type
 #  type: string
