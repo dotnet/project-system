@@ -185,7 +185,7 @@ jobs:
       continueOnError: true
 
   # Run this task only when the pipeline was ran on a schedule.
-  - ${{ if eq(${{ parameters.SkipCompliance }},  false) }}:
+  - ${{ if eq(parameters['SkipCompliance'], false) }}:
     - template: analyze-compliance.yml
       parameters:
         # For us software version is same as nuget package version
