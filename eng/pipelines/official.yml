@@ -50,6 +50,8 @@ resources:
   - pipeline: DartLab.OptProf
     source: DartLab.OptProf
     branch: main
+    tags:
+    - production
   repositories:
   # This name is the default value for the 'dartLabTemplatesResourceName 'parameter in single-runsettings.yml.
   - repository: DartLabTemplates
@@ -60,7 +62,7 @@ resources:
   - repository: DartLabOptProfTemplates
     name: DartLab.OptProf
     type: git
-    ref: refs/heads/main
+    ref: refs/tags/Production
   # This repo is used to create the insertion PR into the vs-green repo.
   - repository: VSCodeExtensionRepo
     type: git
