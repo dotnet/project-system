@@ -1,5 +1,9 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+parameters:
+  - name: SoftwareVersion
+    type: string
+
 steps:
 # Overview of tasks offered for security and compliance:
 # - https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1425/Guardian-Tools
@@ -47,6 +51,29 @@ steps:
       ExcludeFolders: bootstrapper
     condition: succeededOrFailed()
 
+  # Scan for the use of undocumented APIs.
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/apiscan-build-task#v2
+  - task: APIScan@2
+    displayName: Run APIScan
+    inputs:
+      softwareFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls
+      softwareName: Dotnet-Project-System
+      softwareVersionNum: ${{ parameters.SoftwareVersion }}
+      softwareBuildNum: $(Build.BuildId)
+      symbolsFolder: SRV*http://symweb
+      noCopySymbols: true
+      noCopyBinaries: true
+      noDecompress: true
+      isLargeApp: true
+      verbosityLevel: minimal
+      preserveTempFiles: true
+    # APIScan requires an Azure Identity to run. That is provided via an Azure service principal.
+    # - https://microsoft.sharepoint.com/teams/apiscan/APIScan%20User%20Wiki/authentication_using_AAD_identities.aspx
+    # - https://microsoft.sharepoint.com/teams/apiscan/Lists/Contacts%20%20System%20Account%20and%20Wrappers/AllItems.aspx?skipSignal=true
+    # This value is provided from the DotNet-Project-System variable group, defined in the stage variables.
+    env:
+      AzureServicesAuthConnectionString: $(ApiScanConnectionString)
+
   ###################################################################################################################################################################
   # PUBLISH RESULTS
   ###################################################################################################################################################################
@@ -62,6 +89,17 @@ steps:
     displayName: Publish Compliance Artifacts
     inputs:
       ArtifactName: Analysis-Compliance
+      ArtifactType: Container
+      AllTools: true
+      ToolLogsNotFoundAction: Standard
+    condition: succeededOrFailed()
+
+  # Publishes the results as artifacts to the Azure Pipeline.
+  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/publish-security-analysis-logs#v3
+  - task: PublishSecurityAnalysisLogs@3
+    displayName: Publish API Artifacts
+    inputs:
+      ArtifactName: Analysis-API
       ArtifactType: Container
       AllTools: true
       ToolLogsNotFoundAction: Standard

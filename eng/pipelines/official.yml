@@ -117,6 +117,11 @@ parameters:
   displayName: Do Not Optimize Assemblies
   type: boolean
   default: false
+# Useful when testing pipeline changes and running compliance is not necessary.
+- name: SkipCompliance
+  displayName: Skip Compliance Validation
+  type: boolean
+  default: false
 # This should only be enabled if we need to create AzDO work items based on Compliance failures.
 - name: UploadTSAResults
   displayName: Create Compliance Work Items
@@ -168,6 +173,7 @@ extends:
             InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
             CreateVSGreenInsertion: ${{ parameters.CreateVSGreenInsertion }}
             InsertionVSGreenBranch: ${{ parameters.InsertionVSGreenBranch }}
+            SkipCompliance: ${{ parameters.SkipCompliance }}
     - stage: Publish
       displayName: Publish
       dependsOn: Build

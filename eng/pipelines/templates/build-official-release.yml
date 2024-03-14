@@ -4,6 +4,8 @@ parameters:
 #    type: string
   - name: SkipOptimize
     type: boolean
+  - name: SkipCompliance
+    type: boolean
   - name: CreateVSInsertion
     type: boolean
   - name: InsertionVSBranch
@@ -182,17 +184,18 @@ jobs:
       # This is a non-critical task, so don't fail the build if it fails.
       continueOnError: true
 
+  # Run this task only when the pipeline was ran on a schedule.
+  - ${{ if eq(${{ parameters.SkipCompliance }},  false) }}:
+    - template: analyze-compliance.yml
+      parameters:
+        # For us software version is same as nuget package version
+        SoftwareVersion: $(NBGV_NuGetPackageVersion)
+
   ###################################################################################################################################################################
   # PUBLISH BUILD
   # Steps in this section should contain 'condition: succeededOrFailed()' since these artifacts can be used for analyzing build failures.
   # https://docs.microsoft.com/azure/devops/pipelines/process/tasks?view=azure-devops&tabs=yaml#task-control-options
   ###################################################################################################################################################################
-
-  - template: analyze-compliance.yml
-  - template: analyze-api.yml
-    parameters:
-      # For us software version is same as nuget package version
-      SoftwareVersion: $(NBGV_NuGetPackageVersion)
 
   # Publishes the test results to the Azure Pipeline itself so they can be viewed in the UI.
   # This needs to be ran after the build, because if the build failed due to a test failure, the test results wouldn't be published.
