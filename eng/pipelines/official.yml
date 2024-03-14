@@ -117,7 +117,7 @@ parameters:
 - name: SkipCompliance
   displayName: Skip Compliance Validation
   type: boolean
-  default: false\
+  default: false
 #- name: SignType (not currently used due to #7935)
 #  displayName: Signing Type
 #  type: string
