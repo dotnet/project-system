@@ -72,6 +72,7 @@ jobs:
     displayName: Publish Packages to azure-public
     inputs:
       command: push
+      packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
       packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/*.nupkg
       nuGetFeedType: external
       publishFeedCredentials: azure-public/vs-impl
@@ -85,6 +86,7 @@ jobs:
     displayName: Publish Packages to DevDiv
     inputs:
       command: push
+      packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
       packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/*.nupkg
       # Feed Endpoint: https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json
       # Requires VssFeedId despite documentation here: https://docs.microsoft.com/azure/devops/pipelines/artifacts/nuget?view=azure-devops&tabs=yaml#publish-a-package
@@ -98,6 +100,7 @@ jobs:
     displayName: Publish NuGet Package
     inputs:
       command: push
+      packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
       packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/Microsoft.VisualStudio.ProjectSystem.Managed.*.nupkg;!$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/Microsoft.VisualStudio.ProjectSystem.Managed.VS.*.nupkg
       publishVstsFeed: DevDiv/vs-green
       # This allows the task to succeed if duplicate packages exist. Packages cannot be overridden in a feed.
