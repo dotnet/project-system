@@ -2,35 +2,12 @@
 jobs:
 - job: PublishAssetsAndPackages
   displayName: Publish Assets and Packages
-  timeoutInMinutes: 25
+  timeoutInMinutes: 20
   steps:
-  ###################################################################################################################################################################
-  # DOWNLOAD ARTIFACTS
-  ###################################################################################################################################################################
+   # Runs a build of the projects in the repository. See Build.proj for details. This completes much faster than the previous run, in just a few minutes.
+  - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false
+    displayName: Build All Projects
 
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Download Artifacts ===
-    condition: false
-
-  # Download the build artifacts from the Build job.
-  - download: current
-    displayName: Download Build Artifacts
-    artifact: $(Build.BuildNumber)
-    # Only download the necessary files for publishing.
-    patterns: |
-      VSSetup/Insertion/**
-      packages/**
-
-  # Download the staging artifacts from the Build job.
-  - download: current
-    displayName: Download Staging Artifacts
-    artifact: Staging
-    # Only download the necessary files for publishing.
-    patterns: |
-      MicroBuild/**
-      OptProf/**
-      
   ###################################################################################################################################################################
   # PUBLISH PACKAGES
   ###################################################################################################################################################################
