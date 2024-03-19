@@ -122,7 +122,7 @@ jobs:
     condition: false
 
   # Runs the full build of the projects in the repository. See Build.proj for details.
-  - template: build-projects.yml
+  - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false
     displayName: Build All Projects
     env:
       # The Microsoft.VisualStudio.Internal.MicroBuild.SetupTooling.props assumes this value is set, which sets the ManifestPublishUrl property.
