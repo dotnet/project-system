@@ -107,6 +107,10 @@ variables:
 stages:
 - stage: Build
   displayName: OptProf Pre-reqs
+  variables:
+    # Only used for tracking purposes in MicroBuild tasks.
+    # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
+    TeamName: DotNet-Project-System
   jobs:
   - template: templates/optprof-prereqs.yml
   # This template is provided by the DartLabOptProfTemplates repo, declared in the repositories section (top of this file).
