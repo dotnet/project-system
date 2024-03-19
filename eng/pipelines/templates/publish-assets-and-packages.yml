@@ -6,7 +6,6 @@ jobs:
   steps:
    # Run another build (this completes much faster than the previous run, in just a few minutes).
   - template: build-projects.yml
-    displayName: Build All Projects
 
   ###################################################################################################################################################################
   # PUBLISH NPM Packages
