@@ -24,6 +24,12 @@ jobs:
     mb:
       optprof:
         enabled: false
+      signing:
+        enabled: true
+        # See: https://github.com/dotnet/project-system/issues/7935, signType cannot be test (fails erroneously)
+        signType: real
+        esrpSigning: true
+        zipSources: false
       sbom:
         enabled: true
     outputParentDirectory: $(Build.SourcesDirectory)/artifacts
