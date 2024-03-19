@@ -33,7 +33,7 @@ schedules:
 # YAML reference: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
 # CRON syntax: https://docs.microsoft.com/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml#cron-syntax
 - cron: '0 11 * * *'
-  displayName: Daily 4am PT Build with Insertion
+  displayName: Daily 4am PT DartLab run
   branches:
     include:
     - main
@@ -50,6 +50,8 @@ resources:
   - pipeline: DartLab.OptProf
     source: DartLab.OptProf
     branch: main
+    tags:
+      - production
   repositories:
   # This name is the default value for the 'dartLabTemplatesResourceName 'parameter in single-runsettings.yml.
   - repository: DartLabTemplates
@@ -60,15 +62,7 @@ resources:
   - repository: DartLabOptProfTemplates
     name: DartLab.OptProf
     type: git
-    ref: refs/heads/main
-  # This repo is used to create the insertion PR into the vs-green repo.
-  - repository: VSCodeExtensionRepo
-    type: git
-    name: vs-green
-  # This repo is used to create the version upgrade PR into the dotnet-project-system-vscode repo.
-  - repository: ProjectSystemVSCodeExtensionRepo
-    type: git
-    name: dotnet-project-system-vscode
+    ref: refs/tags/Production
 
 pool:
   # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
@@ -106,72 +100,15 @@ variables:
   # Variable reference: https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/pipeline-options-for-git?view=azure-devops&tabs=yaml#shallow-fetch
   Agent.Source.Git.ShallowFetchDepth: 0
 
-parameters:
-- name: CreateVSInsertion
-  displayName: Create VS Insertion PR
-  type: boolean
-  default: false
-- name: InsertionVSBranch
-  displayName: VS Insertion Branch Name
-  type: string
-  default: main
-- name: CreateVSGreenInsertion
-  displayName: Create vs-green Insertion PR
-  type: boolean
-  default: false
-- name: InsertionVSGreenBranch
-  displayName: vs-green Insertion Branch Name
-  type: string
-  default: main
-- name: CreateOptimizationData
-  displayName: Create Optimization Data
-  type: boolean
-  default: false
-# This should only be enabled when generating optimization data for the first time.
-# See details in the Build job for the MicroBuildOptProfPlugin task.
-- name: SkipOptimize
-  displayName: Do Not Optimize Assemblies
-  type: boolean
-  default: false
-# Useful when testing pipeline changes and running compliance is not necessary.
-- name: SkipCompliance
-  displayName: Skip Compliance Validation
-  type: boolean
-  default: false
-# This should only be enabled if we need to create AzDO work items based on Compliance failures.
-- name: UploadTSAResults
-  displayName: Create Compliance Work Items
-  type: boolean
-  default: false
-
 ###################################################################################################################################################################
 # STAGES
 ###################################################################################################################################################################
 
 stages:
 - stage: Build
-  displayName: Build
-  variables:
-    SkipOptimize: ${{ parameters.SkipOptimize }}
-    # Only used for tracking purposes in MicroBuild tasks.
-    # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
-    TeamName: DotNet-Project-System
-    # Auto-injects the CodeQL task.
-    # https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/codeql/configuring-codeql3000-ado-pipelines#monolithic-repos-and-multistage-pipelines
-    Codeql.SkipTaskAutoInjection: false
-    CreateVSInsertion: ${{ parameters.CreateVSInsertion }}
-    InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
-    CreateVSGreenInsertion: ${{ parameters.CreateVSGreenInsertion }}
-    InsertionVSGreenBranch: ${{ parameters.InsertionVSGreenBranch }}
+  displayName: OptProf Pre-reqs
   jobs:
-  - template: templates/build-official-release.yml
-    parameters:
-      SkipOptimize: ${{ parameters.SkipOptimize }}
-      CreateVSInsertion: ${{ parameters.CreateVSInsertion }}
-      InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
-      CreateVSGreenInsertion: ${{ parameters.CreateVSGreenInsertion }}
-      InsertionVSGreenBranch: ${{ parameters.InsertionVSGreenBranch }}
-
+  - template: templates/optprof-prereqs.yml
   # This template is provided by the DartLabOptProfTemplates repo, declared in the repositories section (top of this file).
   # It is a stage template, defining our entire Optimization stage.
   - template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
@@ -179,10 +116,7 @@ stages:
       name: Optimization
       displayName: Optimization
       dependsOn:
-      - Publish
-      # Only include the Compliance stage when it is not skipped.
-      - ${{ if eq(parameters.SkipCompliance, false) }}:
-        - Compliance
+      - Build
       variables:
       - name: visualStudioBootstrapperURI
         # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
@@ -195,7 +129,7 @@ stages:
         # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
         # - https://stackoverflow.com/a/57488169/294804
         # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
-        value: $[ stageDependencies.Publish.PublishNpmPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
+        value: $[ stageDependencies.Build.OptProfPreReqs.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
       runSettingsURI: https://vsdrop.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
       # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
       # This variable is expanded when it is used: https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables

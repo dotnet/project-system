@@ -23,23 +23,7 @@ jobs:
   templateContext:
     mb:
       optprof:
-        enabled: true
-        ShouldSkipOptimize: ${{ parameters.SkipOptimize }}
-        # This value determines how old the optimization data is allowed to be.
-        # If the delta of the number of commits between the commit used for the last produced optimization data and the current commit is greater than this value,
-        # this task will always fail. The only way to fix it is produce new optimization data.
-        # A temporary fix is to increase this value. However, it may cause a perf regression since eventually, the optimization data will no longer be aligned with the actual source content in the repo.
-        NumberCommitsToSearch: 100
-        OptimizationInputsLookupMethod: DropPrefix
-        DropNamePrefix: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)
-        AccessToken: $(System.AccessToken)
-        feedSource: https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json
-      signing:
-        enabled: true
-        # See: https://github.com/dotnet/project-system/issues/7935, signType cannot be test (fails erroneously)
-        signType: real
-        esrpSigning: true
-        zipSources: false
+        enabled: false
       sbom:
         enabled: true
     outputParentDirectory: $(Build.SourcesDirectory)/artifacts
