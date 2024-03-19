@@ -51,7 +51,7 @@ resources:
     source: DartLab.OptProf
     branch: main
     tags:
-      - production
+    - production
   repositories:
   # This name is the default value for the 'dartLabTemplatesResourceName 'parameter in single-runsettings.yml.
   - repository: DartLabTemplates
