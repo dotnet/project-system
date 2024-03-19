@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.Setup
     {
         // These files are only added as part of signing.
         private const string DigitalSignature = "package/services/digital-signature";
-        private const string SettingsRegistrationFileSuffix = "ManagedProjectSystem.registration.json";
+        private const string SettingsRegistrationFileSuffix = "registration.json";
         private const string Rels = "_rels/.rels";
 
         [Fact]

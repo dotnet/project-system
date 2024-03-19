@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.Packaging
         termValues: new[] { "SolutionHasProjectCapability:.NET & CPS" }
         )]
     [ProvideMenuResource("Menus.ctmenu", 5)]
+    [ProvideSettingsManifest]
     internal sealed class ManagedProjectSystemPackage : AsyncPackage
     {
         public const string ActivationContextGuid = "E7DF1626-44DD-4E8C-A8A0-92EAB6DDC16E";
