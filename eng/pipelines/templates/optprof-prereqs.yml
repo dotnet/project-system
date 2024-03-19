@@ -107,7 +107,7 @@ jobs:
   - task: MicroBuildUploadVstsDropFolder@2
     displayName: Publish Insertion Data (not used to create insertion)
     inputs:
-      DropFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
+      DropFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
       # TODO: Consider using $(GitBuildVersion) instead of $(Build.BuildNumber) as it better correlates the build of the code to the VS insertion.
       # Meaning, instead of VS Insertion -> Pipeline BuildNumber -> Code BuildVersion, it would just be VS Insertion -> Code BuildVersion.
       # If this is updated, VstsDropNames set in build-official-release.yml would also need to be updated.
