@@ -19,7 +19,7 @@ jobs:
     inputs:
       # Build fails if this is set to 'test'.
       # See: https://github.com/dotnet/project-system/issues/7935
-      signType: real
+      signType: false
       esrpSigning: true
 
   # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 45 seconds.
