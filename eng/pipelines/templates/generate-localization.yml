@@ -14,9 +14,8 @@ jobs:
     displayName: === Build Repository ===
     condition: false
 
-  # Runs the full build of the projects in the repository. See Build.proj for details. (required for BinSkim)
-  - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false
-    displayName: Build All Projects
+  # Build required for BinSkim
+  - template: build-projects.yml
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:

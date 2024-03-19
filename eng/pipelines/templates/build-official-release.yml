@@ -36,7 +36,7 @@ jobs:
         feedSource: https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json
       signing:
         enabled: true
-        # See: https://github.com/dotnet/project-system/issues/7935, signType of false cannot be
+        # See: https://github.com/dotnet/project-system/issues/7935, signType cannot be test (fails erroneously)
         signType: real
         esrpSigning: true
         zipSources: false
@@ -44,6 +44,7 @@ jobs:
         enabled: true
     outputParentDirectory: $(Build.SourcesDirectory)/artifacts
     outputs:
+      # Publish artifacts
       - output: pipelineArtifact
         displayName: Publish Build Artifacts
         targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
@@ -54,13 +55,8 @@ jobs:
         targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/
         artifactName: Loc
         condition: succeededOrFailed()
-      - output: nuget
-        displayName: Publish Nuget Packages
-        packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/*.nupkg
-        packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-        publishVstsFeed: DevDiv/vs-green
-        allowPackageConflicts: true
-        nuGetFeedType: internal
+    
+      # Publish VS drop
       - output: microBuildVstsDrop
         dropFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
         # TODO: Consider using $(GitBuildVersion) instead of $(Build.BuildNumber) as it better correlates the build of the code to the VS insertion.
@@ -73,6 +69,34 @@ jobs:
         dropRetentionDays: 60
         # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
         accessToken: $(System.AccessToken)
+
+      # Publish nuget packages
+      - output: nuget
+        displayName: Publish Nuget Packages to vs-green
+        packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/*.nupkg
+        packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+        publishVstsFeed: DevDiv/vs-green
+        allowPackageConflicts: true
+        nuGetFeedType: internal
+      # Publishes the NuGet packages to DevDiv/VS (https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS)
+      # A separate process will republish these packages to DevDiv/VS-CoreXtFeeds (https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS-CoreXtFeeds)
+      - output: nuget
+        displayName: Publish Nuget Packages to DevDiv
+        packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/*.nupkg
+        packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+        # Feed Endpoint: https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json
+        # Requires VssFeedId despite documentation here: https://docs.microsoft.com/azure/devops/pipelines/artifacts/nuget?view=azure-devops&tabs=yaml#publish-a-package
+        publishVstsFeed: 97a41293-2972-4f48-8c0e-05493ae82010
+        allowPackageConflicts: true
+      - output: nuget
+        displayName: Publish Nuget Packages to azure-publish
+        packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/*.nupkg
+        packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+        publishVstsFeed: DevDiv/vs-green
+        publishFeedCredentials: azure-public/vs-impl
+        allowPackageConflicts: true
+        nuGetFeedType: external
+        
 
   steps:
 
@@ -98,7 +122,7 @@ jobs:
     condition: false
 
   # Runs the full build of the projects in the repository. See Build.proj for details.
-  - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
+  - template: build-projects.yml
     displayName: Build All Projects
     env:
       # The Microsoft.VisualStudio.Internal.MicroBuild.SetupTooling.props assumes this value is set, which sets the ManifestPublishUrl property.
@@ -206,3 +230,12 @@ jobs:
       testResultsFiles: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/TestResults/**/*.trx
       testRunTitle: Unit Test Results
     condition: succeededOrFailed()
+
+
+  # Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
+  # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
+  # This connecction is used in the templateContext nuget outputs.
+  - task: NuGetAuthenticate@1
+    displayName: Authenticate NuGet
+    inputs:
+      nuGetServiceConnections: azure-public/vs-impl
