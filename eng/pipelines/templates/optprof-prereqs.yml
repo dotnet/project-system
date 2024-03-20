@@ -4,6 +4,7 @@ jobs:
 - job: OptProfPreReqs
   displayName: OptProf Pre-reqs
   timeoutInMinutes: 60
+  steps:
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
     displayName: === Plugin Installation ===
@@ -130,6 +131,14 @@ jobs:
   - script:
     displayName: === Publish OptProf ===
     condition: false
+
+# Download the staging artifacts from the Build job.
+  - download: current
+    displayName: Download Staging Artifacts
+    artifact: Staging
+    # Only download the necessary files for publishing.
+    patterns: |
+      OptProf/**
 
   # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
   # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
