@@ -39,10 +39,6 @@ schedules:
     - main
 
 resources:
-  pipelines:
-  - pipeline: optprof-scheduled
-    source: optprof-scheduled
-    trigger: true
   repositories:
   - repository: MicroBuildTemplate
     type: git
