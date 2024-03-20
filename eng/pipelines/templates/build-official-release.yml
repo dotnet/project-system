@@ -62,8 +62,6 @@ jobs:
         dropRetentionDays: 60
         # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
         accessToken: $(System.AccessToken)
-        
-      # Publish ProfilingInputs 
 
       # Publish nuget packages
       - output: nuget

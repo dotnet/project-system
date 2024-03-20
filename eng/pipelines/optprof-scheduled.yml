@@ -63,6 +63,11 @@ pool:
   # Demands Docs: https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
   demands: Cmd
 
+parameters:
+  - name: InsertTargetBranch
+    type: string
+    default: main
+
 # Note: Only add pipeline variables if they apply to most of the stages/jobs.
 variables:
   # The configuration for the build is used throughout the various pipelines as the file paths for output contain the build configuration as a folder name.
@@ -98,43 +103,37 @@ variables:
 ###################################################################################################################################################################
 
 stages:
-- stage: Build
-  displayName: OptProf Pre-reqs
-  variables:
-    # Only used for tracking purposes in MicroBuild tasks.
-    # See: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/650/MicroBuild-Signing?anchor=high-level-steps-to-enable-signing
-    TeamName: DotNet-Project-System
-  jobs:
-  - template: templates/optprof-prereqs.yml
-  # This template is provided by the DartLabOptProfTemplates repo, declared in the repositories section (top of this file).
-  # It is a stage template, defining our entire Optimization stage.
 - template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
   parameters:
     name: Optimization
     displayName: Optimization
-    dependsOn:
-    - Build
     variables:
-    - name: visualStudioBootstrapperURI
-      # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
-      # For parameter, variable, and expression syntax/usage, see:
-      # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
-      # - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops
-      # - https://docs.microsoft.com/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
-      # For variables across stages, see:
-      # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
-      # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
-      # - https://stackoverflow.com/a/57488169/294804
-      # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
-      value: $[ stageDependencies.Build.OptProfPreReqs.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
+    - name: VisualStudio.InstallationUnderTest.BootstrapperBranch
+      value: ${{ parameters.InsertTargetBranch }}
     runSettingsURI: https://vsdrop.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
     # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
     # This variable is expanded when it is used: https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
-    visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
+    visualStudioBootstrapperURI: $(VisualStudio.InstallationUnderTest.BootstrapperURL)
     # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
     optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
     testLabPoolName: VS-Platform
     previousOptimizationInputsDropName: $(previousOptimizationInputsDropName)
+    ##### Step Hooks #####
+    preTestMachineConfigurationStepList:
+      # Download the staging artifacts from the release pipeline.
+      - download: Build
+        displayName: Download Staging Artifacts
+        artifact: Staging
+        # Only download the necessary files for publishing.
+        patterns: |
+          MicroBuild/**
+          OptProf/** 
+      - task: PowerShell@2
+        inputs:
+          filePath: $(DartLab.Path)\Scripts\VisualStudio\Bootstrapper\Get-BootstrapperURL.ps1
+          arguments: -BootstrapperInfoJsonURI '$(Pipeline.Workspace)\Staging\MicroBuild\Output\BootstrapperInfo.json' -VSBranch '$(VisualStudio.InstallationUnderTest.BootstrapperBranch)' -OutVariableName 'VisualStudio.InstallationUnderTest.BootstrapperURL'
+        displayName: Set 'VisualStudio.InstallationUnderTest.BootstrapperURL'
+
     prePublishOptimizationInputsDropStepList:
     # This extracts the Metadata.json file information from the OptProf artifact in the build and sets the drop name to the previousOptimizationInputsDropName variable.
     # The previousOptimizationInputsDropName variable enables LKG (Last Known Good) support.
