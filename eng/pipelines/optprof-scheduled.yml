@@ -31,6 +31,9 @@ pr: none
 resources:
   # These DartLab pipelines and repositories are only used by the Optimization stage.
   pipelines:
+  - pipeline: Build
+    source: DotNet-Project-System
+    trigger: true
   # This name is the default value for the 'dartLabBuildResourceName' parameter in single-runsettings.yml.
   - pipeline: DartLab
     project: DevDiv
