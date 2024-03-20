@@ -18,6 +18,13 @@ jobs:
       signType: Test
       esrpSigning: true
  
+  # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 45 seconds.
+  # This reduces the calls to the signing API (potentially increasing signing speed) and reduces the pipeline log bloat when polling signing completion.
+  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1' -signConfigPath ((Get-ChildItem -Path '$(Build.StagingDirectory)/MicroBuild/Plugins/*/build/signconfig.xml').FullName) -intervalInSeconds 45
+    displayName: Set Signing Interval
+    # This is not a necessary task for the build to be successful.
+    continueOnError: true
+
   # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
   # To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true
   # See documentation here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/2602/Build-With-Expired-(or-Without-Prior)-Optimization-Profiling-Data
