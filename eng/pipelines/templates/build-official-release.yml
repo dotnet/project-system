@@ -221,8 +221,14 @@ jobs:
       # Outputting to the Insertion folder allows the bootstrapper to be published to the Products drop, along with our insertion files.
       # The merged .vsman (OverlaidInstallerManifest.vsman) created by the bootstrapper assumes the bootstrapper will be output to the same drop (Products) as the insertion files.
       outputFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+      
+  - powershell: Get-ChildItem -Path '$(Build.StagingDirectory)' -recurse
+    condition: succeededOrFailed()
 
-  # Run this task only when the pipeline was ran on a schedule.
+  - powershell: Get-ChildItem -Path '$(Build.SourcesDirectory)' -recurse
+    condition: succeededOrFailed()
+
+    # Run this task only when the pipeline was ran on a schedule.
   - ${{ if eq(variables['Build.Reason'], 'Schedule') }}:
     # This adds our source information to http://index (which is called Codex).
     # https://github.com/Ref12/Codex
