@@ -4,15 +4,6 @@ jobs:
   displayName: Publish NPM Packages
   timeoutInMinutes: 20
   steps:
-  ###################################################################################################################################################################
-  # DOWNLOAD ARTIFACTS
-  ###################################################################################################################################################################
-  
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Download Artifacts ===
-    condition: false
-  
   # Download the build artifacts from the Build job.
   - download: current
     displayName: Download Build Artifacts
@@ -29,10 +20,21 @@ jobs:
     # Only download the necessary files for publishing.
     patterns: |
       MicroBuild/**
-      OptProf/**    
+      OptProf/**
+      
+  ###################################################################################################################################################################
+  # PUBLISH NPM Packages
+  ###################################################################################################################################################################
+  - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false
+    displayName: Build All Projects
     
-  # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
-  # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
+    # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Publish OptProf ===
+    condition: false
+    
+    # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
+    # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
   - task: 1ES.PublishArtifactsDrop@1
     displayName: Publish ProfilingInputs
     inputs:
@@ -72,11 +74,7 @@ jobs:
       # detailedLog: true
       # This task uploads the drop metadata to the pipeline artifacts using this name. There does not seem to be an option of not uploading this metadata.
       dropMetadataContainerName: OptProf-RunSettings
-
-  ###################################################################################################################################################################
-  # PUBLISH NPM Packages
-  ###################################################################################################################################################################
-
+      
   # Authenticates the .npmrc file for publishing to the internal AzDO feed.
   # See: https://learn.microsoft.com/azure/devops/pipelines/tasks/package/npm-authenticate?view=azure-devops
   - task: npmAuthenticate@0
@@ -88,5 +86,5 @@ jobs:
   # Feed: https://dev.azure.com/devdiv/DevDiv/_artifacts/feed/vs-green/Npm/@microsoft%2Fmicrosoft.visualstudio.projectsystem.managed/
   # See: https://docs.npmjs.com/cli/v8/commands/npm-publish
   # npmrc doc: https://docs.npmjs.com/cli/v9/using-npm/config#npmrc-files
-  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/PublishNPMPackage.ps1' -npmrcPath '$(Build.SourcesDirectory)/src/Microsoft.VisualStudio.ProjectSystem.Managed/.npmrc' -tgzPath ((Get-ChildItem -Path '$(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/microsoft-microsoft.visualstudio.projectsystem.managed-*.tgz').FullName)
+  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/PublishNPMPackage.ps1' -npmrcPath '$(Build.SourcesDirectory)/src/Microsoft.VisualStudio.ProjectSystem.Managed/.npmrc' -tgzPath ((Get-ChildItem -Path '$(Pipeline.Workspace)/$(Build.BuildNumber)/packages/microsoft-microsoft.visualstudio.projectsystem.managed-*.tgz').FullName)
     displayName: Publish NPM Package
