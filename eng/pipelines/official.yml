@@ -39,18 +39,11 @@ schedules:
     - main
 
 resources:
-  # These DartLab pipelines and repositories are only used by the Optimization stage.
-  pipelines:
   repositories:
   - repository: MicroBuildTemplate
     type: git
     name: 1ESPipelineTemplates/MicroBuildTemplate
     ref: refs/tags/release
-  # This name is the default value for the 'dartLabTemplatesResourceName 'parameter in single-runsettings.yml.
-  - repository: DartLabTemplates
-    name: DartLab.Templates
-    type: git
-    ref: refs/heads/main
   # This repo is used to create the insertion PR into the vs-green repo.
   - repository: VSCodeExtensionRepo
     type: git
@@ -109,19 +102,15 @@ parameters:
   displayName: vs-green Insertion Branch Name
   type: string
   default: main
-- name: CreateOptimizationData
-  displayName: Create Optimization Data
-  type: boolean
-  default: false
 # This should only be enabled when generating optimization data for the first time.
 # See details in the Build job for the MicroBuildOptProfPlugin task.
 - name: SkipOptimize
   displayName: Do Not Optimize Assemblies
   type: boolean
   default: false
-# This should only be enabled if we need to create AzDO work items based on Compliance failures.
-- name: UploadTSAResults
-  displayName: Create Compliance Work Items
+# Useful when testing pipeline changes and running compliance is not necessary.
+- name: SkipCompliance
+  displayName: Skip Compliance Validation
   type: boolean
   default: false
 #- name: SignType (not currently used due to #7935)
@@ -170,6 +159,7 @@ extends:
             InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
             CreateVSGreenInsertion: ${{ parameters.CreateVSGreenInsertion }}
             InsertionVSGreenBranch: ${{ parameters.InsertionVSGreenBranch }}
+            SkipCompliance: ${{ parameters.SkipCompliance }}
     - stage: Publish
       displayName: Publish
       dependsOn: Build
@@ -197,60 +187,7 @@ extends:
       - group: OneLocBuildVariables
       jobs:
       - template: eng/pipelines/templates/generate-localization.yml@self
-    
-    # Run this stage only when specifically requested (via CreateOptimizationData) or when the pipeline was ran on a schedule.
-    - ${{ if or(eq(parameters.CreateOptimizationData, true), eq(variables['Build.Reason'], 'Schedule')) }}:
-      # This template is provided by the DartLabOptProfTemplates repo, declared in the repositories section (top of this file).
-      # It is a stage template, defining our entire Optimization stage.
-      - template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
-        parameters:
-          name: Optimization
-          displayName: Optimization
-          dependsOn:
-          - Publish
-          variables:
-          - name: visualStudioBootstrapperURI
-            # If you set this value to the visualStudioBootstrapperURI parameter directly, it does not resolve correctly. Instead, we set it to a variable and pass that variable into the parameter.
-            # For parameter, variable, and expression syntax/usage, see:
-            # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#understand-variable-syntax
-            # - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops
-            # - https://docs.microsoft.com/azure/devops/pipelines/process/runtime-parameters?view=azure-devops&tabs=script#how-can-i-use-variables-inside-of-templates
-            # For variables across stages, see:
-            # - https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#use-outputs-in-a-different-stage
-            # - https://arunksingh16.medium.com/azure-devops-share-variable-across-stages-9bca85abfe8a
-            # - https://stackoverflow.com/a/57488169/294804
-            # - https://github.com/microsoft/azure-pipelines-tasks/issues/4743
-            value: $[ stageDependencies.Publish.PublishAssetsAndPackages.outputs['UpdateRunSettings.visualStudioBootstrapperURI'] ]
-          runSettingsURI: https://vsdrop.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(Build.BuildId);OptProf.runsettings
-          # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
-          # This variable is expanded when it is used: https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
-          visualStudioBootstrapperURI: $(visualStudioBootstrapperURI)
-          # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
-          optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(Build.BuildId)/$(System.StageAttempt)
-          testLabPoolName: VS-Platform
-          previousOptimizationInputsDropName: $(previousOptimizationInputsDropName)
-          prePublishOptimizationInputsDropStepList:
-          # This extracts the Metadata.json file information from the OptProf artifact in the build and sets the drop name to the previousOptimizationInputsDropName variable.
-          # The previousOptimizationInputsDropName variable enables LKG (Last Known Good) support.
-          # See LKG support for details: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/29053/Enabling-LKG-support
-          # This PowerShell script needs to be written in this YAML file directly as the job that runs this task does not have access to files on-disk (it does not perform a checkout).
-          - powershell: |
-              $artifactParameters = @{
-                InstanceURL = 'https://dev.azure.com/devdiv'
-                ProjectName = 'DevDiv'
-                BuildID = '$(Build.BuildId)'
-                ArtifactName = 'OptProf'
-                OAuthAccessToken = (ConvertTo-SecureString '$(System.AccessToken)' -AsPlainText -Force)
-              }
-              $artifact = Get-BuildArtifact @artifactParameters
-              $containerName = $artifact.Resource.Data -Split '/' | Select-Object -Last 1
-              $metadataString = Read-BuildArtifactFile @artifactParameters -FileName (Join-Path $containerName 'Metadata.json')
-              $dropName = ($metadataString | ConvertFrom-Json).OptimizationData
-    
-              Write-Host "previousOptimizationInputsDropName: $dropName"
-              Set-AzurePipelinesVariable 'previousOptimizationInputsDropName' $dropName
-            displayName: Set previousOptimizationInputsDropName variable
-    
+        
     # Run this stage only when specifically requested (via CreateVSInsertion or CreateVSGreenInsertion) or when the pipeline was ran on a schedule.
     # Conditional insertion syntax:
     # - https://docs.microsoft.com/azure/devops/pipelines/process/expressions?view=azure-devops#conditional-insertion
@@ -262,6 +199,7 @@ extends:
         # The Build dependsOn is required for putting that stage's variables into the stageDependencies property bag (for PackageVersion).
         - Build
         - Publish
+        
         variables:
           # Gets the PackageVersion variable produced by the Build pipeline.
           PackageVersion: $[ stageDependencies.Build.BuildOfficialRelease.outputs['SetPackageVersion.PackageVersion'] ]

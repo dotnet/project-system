@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public void ClearAllAsync_WhenNoHostSpecificErrorReporter_ReturnsCompletedTask()
+        public void ClearAllAsync_WhenNoErrorReporter_ReturnsCompletedTask()
         {
             var provider = CreateInstance();
 
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public void ClearMessageFromTargetAsync_WhenNoHostSpecificErrorReporter_ReturnsCompletedTask()
+        public void ClearMessageFromTargetAsync_WhenNoErrorReporter_ReturnsCompletedTask()
         {
             var provider = CreateInstance();
 
@@ -43,11 +43,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public async Task ClearAllAsync_WhenHostSpecificErrorReporter_CallsClearErrors()
+        public async Task ClearAllAsync_WhenErrorReporter_CallsClearErrors()
         {
             int callCount = 0;
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementClearErrors(() => { callCount++; return 0; });
-            var host = IWorkspaceWriterFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var host = IWorkspaceWriterFactory.ImplementErrorReporter(() => reporter);
             var task = CreateDefaultTask();
             var provider = CreateInstance(host);
 
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public async Task AddMessageAsync_WhenNoHostSpecificErrorReporter_ReturnsNotHandled()
+        public async Task AddMessageAsync_WhenNoErrorReporter_ReturnsNotHandled()
         {
             var provider = CreateInstance();
 
@@ -106,14 +106,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public async Task AddMessageAsync_WhenHostSpecificErrorReporterThrowsNotImplemented_ReturnsNotHandled()
+        public async Task AddMessageAsync_WhenErrorReporterThrowsNotImplemented_ReturnsNotHandled()
         {
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
             {
                 throw new NotImplementedException();
             });
 
-            var host = IWorkspaceWriterFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var host = IWorkspaceWriterFactory.ImplementErrorReporter(() => reporter);
             var provider = CreateInstance(host);
             var task = CreateDefaultTask();
 
@@ -123,14 +123,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         }
 
         [Fact]
-        public async Task AddMessageAsync_WhenHostSpecificErrorReporterThrows_Throws()
+        public async Task AddMessageAsync_WhenErrorReporterThrows_Throws()
         {
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
             {
                 throw new Exception();
             });
 
-            var host = IWorkspaceWriterFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var host = IWorkspaceWriterFactory.ImplementErrorReporter(() => reporter);
             var provider = CreateInstance(host);
             var task = CreateDefaultTask();
 
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         public async Task AddMessageAsync_ReturnsHandledAndStopProcessing()
         {
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => { });
-            var host = IWorkspaceWriterFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var host = IWorkspaceWriterFactory.ImplementErrorReporter(() => reporter);
             var provider = CreateInstance(host);
             var task = CreateDefaultTask();
 
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             {
                 result = nPriority;
             });
-            var host = IWorkspaceWriterFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var host = IWorkspaceWriterFactory.ImplementErrorReporter(() => reporter);
             var provider = CreateInstance(host);
 
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildWarningEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             {
                 result = nPriority;
             });
-            var host = IWorkspaceWriterFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var host = IWorkspaceWriterFactory.ImplementErrorReporter(() => reporter);
             var provider = CreateInstance(host);
 
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             {
                 result = nPriority;
             });
-            var host = IWorkspaceWriterFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var host = IWorkspaceWriterFactory.ImplementErrorReporter(() => reporter);
             var provider = CreateInstance(host);
 
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new CriticalBuildMessageEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
@@ -220,7 +220,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 errorIdResult = bstrErrorId;
             });
 
-            var host = IWorkspaceWriterFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var host = IWorkspaceWriterFactory.ImplementErrorReporter(() => reporter);
 
             var provider = CreateInstance(host);
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, code, "File", 0, 0, 0, 0, errorMessage, "HelpKeyword", "Sender")));
@@ -250,7 +250,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 columnResult = iColumn;
             });
 
-            var host = IWorkspaceWriterFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var host = IWorkspaceWriterFactory.ImplementErrorReporter(() => reporter);
 
             var provider = CreateInstance(host);
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", lineNumber, columnNumber, 0, 0, "ErrorMessage", "HelpKeyword", "Sender")));
@@ -281,7 +281,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 endColumnResult = iEndColumn;
             });
 
-            var host = IWorkspaceWriterFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var host = IWorkspaceWriterFactory.ImplementErrorReporter(() => reporter);
 
             var provider = CreateInstance(host);
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", lineNumber, columnNumber, endLineNumber, endColumnNumber, "ErrorMessage", "HelpKeyword", "Sender")));
@@ -314,7 +314,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 fileNameResult = bstrFileName;
             });
 
-            var host = IWorkspaceWriterFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var host = IWorkspaceWriterFactory.ImplementErrorReporter(() => reporter);
 
             var provider = CreateInstance(host);
 
@@ -331,7 +331,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         public async Task AddMessageAsync_WithLspPullDiagnosticsEnabled_ReturnsNotHandled()
         {
             var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => { });
-            var host = IWorkspaceWriterFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var host = IWorkspaceWriterFactory.ImplementErrorReporter(() => reporter);
             var provider = CreateInstance(host, lspPullDiagnosticsFeatureFlag: true);
             var task = CreateDefaultTask();
 

@@ -180,6 +180,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
     /// </summary>
     /// <param name="hasBuildError">Whether the evaluation or build that produced this update ended with an error.</param>
     /// <param name="isResolved"><see langword="true"/> if the dependency is resolved, <see langword="false"/> if it is unresolved, or <see langword="null"/> if the status is not yet determined.</param>
+    /// <param name="hasBuildError">Whether the MSBuild invocation that produced this data also encountered an error or not.</param>
     /// <param name="properties">The properties of the item.</param>
     /// <param name="defaultLevel">The diagnostic level to use when the property is either missing or empty. Intended to receive a dependency's current diagnostic level when an evaluation-only update is being processed.</param>
     /// <returns></returns>

@@ -4,6 +4,8 @@ parameters:
 #    type: string
   - name: SkipOptimize
     type: boolean
+  - name: SkipCompliance
+    type: boolean
   - name: CreateVSInsertion
     type: boolean
   - name: InsertionVSBranch
@@ -20,21 +22,9 @@ jobs:
   timeoutInMinutes: 90 # API Scan can take a long time and fail the build
   templateContext:
     mb:
-      optprof:
-        enabled: true
-        ShouldSkipOptimize: ${{ parameters.SkipOptimize }}
-        # This value determines how old the optimization data is allowed to be.
-        # If the delta of the number of commits between the commit used for the last produced optimization data and the current commit is greater than this value,
-        # this task will always fail. The only way to fix it is produce new optimization data.
-        # A temporary fix is to increase this value. However, it may cause a perf regression since eventually, the optimization data will no longer be aligned with the actual source content in the repo.
-        NumberCommitsToSearch: 100
-        OptimizationInputsLookupMethod: DropPrefix
-        DropNamePrefix: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)
-        AccessToken: $(System.AccessToken)
-        feedSource: https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json
       signing:
         enabled: true
-        # See: https://github.com/dotnet/project-system/issues/7935, signType of false cannot be
+        # See: https://github.com/dotnet/project-system/issues/7935, signType cannot be test (fails erroneously)
         signType: real
         esrpSigning: true
         zipSources: false
@@ -42,6 +32,7 @@ jobs:
         enabled: true
     outputParentDirectory: $(Build.SourcesDirectory)/artifacts
     outputs:
+      # Publish artifacts
       - output: pipelineArtifact
         displayName: Publish Build Artifacts
         targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
@@ -57,12 +48,73 @@ jobs:
         targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/
         artifactName: Loc
         condition: succeededOrFailed()
+    
+      # Publish VS drop
+      - output: microBuildVstsDrop
+        dropFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+        # TODO: Consider using $(GitBuildVersion) instead of $(Build.BuildNumber) as it better correlates the build of the code to the VS insertion.
+        # Meaning, instead of VS Insertion -> Pipeline BuildNumber -> Code BuildVersion, it would just be VS Insertion -> Code BuildVersion.
+        # If this is updated, VstsDropNames set in build-official-release.yml would also need to be updated.
+        # For GitBuildVersion: https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
+        # Issue: https://github.com/dotnet/project-system/issues/8431
+        # Example of current path: 'Products/[DevDiv]/[vs-resource-explorer]/[main]/[x.x]'
+        dropName: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(GitBuildVersion)/$(Build.BuildNumber)
+        dropRetentionDays: 60
+        # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
+        accessToken: $(System.AccessToken)
+        
+      # Publish ProfilingInputs drop
+      - output: artifactsDrop
+        dropServiceURI: https://devdiv.artifacts.visualstudio.com
+        buildNumber: ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
+        sourcePath: $(Pipeline.Workspace)/Staging/OptProf/ProfilingInputs
+        toLowerCase: false
+        # For deeper investigation, uncomment the following line:
+        # detailedLog: true
+        # This task uploads the drop metadata to the pipeline artifacts using this name. There does not seem to be an option of not uploading this metadata.
+        dropMetadataContainerName: OptProf-ProfilingInputs
+      
+      # Publish RunSettings
+      # The runsettings drives the test process for producing optimization data.
+      # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
+      - output: artifactsDrop
+        dropServiceURI: https://devdiv.artifacts.visualstudio.com
+        buildNumber: RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
+        sourcePath: $(Build.SourcesDirectory)/eng/scripts/runsettings
+        toLowerCase: false
+        # For deeper investigation, uncomment the following line:
+        # detailedLog: true
+        # This task uploads the drop metadata to the pipeline artifacts using this name. There does not seem to be an option of not uploading this metadata.
+        dropMetadataContainerName: OptProf-RunSettings
+
+      # Publish nuget packages
       - output: nuget
-        displayName: Publish Nuget Packages
+        displayName: Publish Nuget Packages to vs-green
         packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/*.nupkg
         packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
         publishVstsFeed: DevDiv/vs-green
+        allowPackageConflicts: true
         nuGetFeedType: internal
+      # Publishes the NuGet packages to DevDiv/VS (https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS)
+      # A separate process will republish these packages to DevDiv/VS-CoreXtFeeds (https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS-CoreXtFeeds)
+      - output: nuget
+        displayName: Publish Nuget Packages to DevDiv
+        packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/*.nupkg
+        packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+        # Feed Endpoint: https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json
+        # Requires VssFeedId despite documentation here: https://docs.microsoft.com/azure/devops/pipelines/artifacts/nuget?view=azure-devops&tabs=yaml#publish-a-package
+        publishVstsFeed: 97a41293-2972-4f48-8c0e-05493ae82010
+        allowPackageConflicts: true
+      - output: nuget
+        displayName: Publish Nuget Packages to azure-publish
+        packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/*.nupkg
+        packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+        publishVstsFeed: DevDiv/vs-green
+        publishFeedCredentials: azure-public/vs-impl
+        allowPackageConflicts: true
+        nuGetFeedType: external
+        
+
   steps:
 
   ###################################################################################################################################################################
@@ -76,6 +128,53 @@ jobs:
   - powershell: if (-not (git ls-remote --heads https://$(System.AccessToken)@dev.azure.com/devdiv/DevDiv/_git/vs-green ${{ parameters.InsertionVSGreenBranch }})) { Write-Host "The branch name '${{ parameters.InsertionVSGreenBranch }}' is not valid."; exit 1 }
     displayName: Validate vs-green Insertion Branch Name
     condition: eq(${{ parameters.CreateVSGreenInsertion }}, true)
+    
+    # Use a disabled, empty script to display the section header in the pipeline UI.
+  - script:
+    displayName: === Plugin Installation ===
+    condition: false
+    
+    # Necessary for signing the assemblies and packages.
+    # YAML reference: https://devdiv.visualstudio.com/Engineering/_git/MicroBuild?path=/src/Tasks/SigningPlugin/task.json
+  - task: MicroBuildSigningPlugin@4
+    displayName: Install Signing Plugin
+    inputs:
+      # Build fails if this is set to 'test'.
+      # See: https://github.com/dotnet/project-system/issues/7935
+      signType: real
+      esrpSigning: true
+    
+    # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 45 seconds.
+    # This reduces the calls to the signing API (potentially increasing signing speed) and reduces the pipeline log bloat when polling signing completion.
+  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1' -signConfigPath ((Get-ChildItem -Path '$(Build.StagingDirectory)/MicroBuild/Plugins/*/build/signconfig.xml').FullName) -intervalInSeconds 45
+    displayName: Set Signing Interval
+    # This is not a necessary task for the build to be successful.
+    continueOnError: true
+    
+    # Allows creating SBOM information during the build.
+    # See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support
+  - task: MicroBuildSbomPlugin@1
+    displayName: Install SBOM Plugin
+    
+    # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
+    # To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true
+    # See documentation here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/2602/Build-With-Expired-(or-Without-Prior)-Optimization-Profiling-Data
+    # This plugin will restore MicroBuild.Plugins.OptProf which is required to create ProfilingInputs data.
+    # The projects include OptProf.targets which uses MicroBuild.Plugins.OptProf to run the target GenerateProfilingInputs on each project.
+  - task: MicroBuildOptProfPlugin@6
+    displayName: Install OptProf Plugin
+    inputs:
+      ProfilingInputsDropName: ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
+      OptimizationInputsLookupMethod: DropPrefix
+      DropNamePrefix: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)
+      AccessToken: $(System.AccessToken)
+      feedSource: https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json
+      ShouldSkipOptimize: $(SkipOptimize)
+      # This value determines how old the optimization data is allowed to be.
+      # If the delta of the number of commits between the commit used for the last produced optimization data and the current commit is greater than this value,
+      # this task will always fail. The only way to fix it is produce new optimization data.
+      # A temporary fix is to increase this value. However, it may cause a perf regression since eventually, the optimization data will no longer be aligned with the actual source content in the repo.
+      NumberCommitsToSearch: 100
 
   ###################################################################################################################################################################
   # BUILD REPOSITORY
@@ -87,7 +186,7 @@ jobs:
     condition: false
 
   # Runs the full build of the projects in the repository. See Build.proj for details.
-  - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true
+  - script: $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true /p:Test=false
     displayName: Build All Projects
     env:
       # The Microsoft.VisualStudio.Internal.MicroBuild.SetupTooling.props assumes this value is set, which sets the ManifestPublishUrl property.
@@ -146,6 +245,15 @@ jobs:
       # Outputting to the Insertion folder allows the bootstrapper to be published to the Products drop, along with our insertion files.
       # The merged .vsman (OverlaidInstallerManifest.vsman) created by the bootstrapper assumes the bootstrapper will be output to the same drop (Products) as the insertion files.
       outputFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+    
+    # Run this task only when the pipeline was ran on a schedule.
+  - ${{ if eq(parameters.SkipOptimize, false) }}:
+      # Using the VS bootstrapper data, update the runsettings with the appropriate information for this build.
+    - powershell: . '$(Build.SourcesDirectory)/eng/scripts/UpdateRunSettings.ps1' -profilingInputsPath 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)' -bootstrapperInfoPath '$(Pipeline.Workspace)/Staging/MicroBuild/Output/BootstrapperInfo.json'
+      displayName: Update RunSettings
+      failOnStderr: true
+      # Name is required to reference the variables created within this build step in other stages.
+      name: UpdateRunSettings
 
   # Run this task only when the pipeline was ran on a schedule.
   - ${{ if eq(variables['Build.Reason'], 'Schedule') }}:
@@ -173,22 +281,18 @@ jobs:
       # This is a non-critical task, so don't fail the build if it fails.
       continueOnError: true
 
+  # Run this task only when the pipeline was ran on a schedule.
+  - ${{ if eq(parameters['SkipCompliance'], false) }}:
+    - template: analyze-compliance.yml
+      parameters:
+        # For us software version is same as nuget package version
+        SoftwareVersion: $(NBGV_NuGetPackageVersion)
+
   ###################################################################################################################################################################
   # PUBLISH BUILD
   # Steps in this section should contain 'condition: succeededOrFailed()' since these artifacts can be used for analyzing build failures.
   # https://docs.microsoft.com/azure/devops/pipelines/process/tasks?view=azure-devops&tabs=yaml#task-control-options
   ###################################################################################################################################################################
-
-  - template: analyze-compliance.yml
-  - template: analyze-api.yml
-    parameters:
-      # For us software version is same as nuget package version
-      SoftwareVersion: $(NBGV_NuGetPackageVersion)
-
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Publish Build ===
-    condition: false
 
   # Publishes the test results to the Azure Pipeline itself so they can be viewed in the UI.
   # This needs to be ran after the build, because if the build failed due to a test failure, the test results wouldn't be published.
@@ -199,3 +303,12 @@ jobs:
       testResultsFiles: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/TestResults/**/*.trx
       testRunTitle: Unit Test Results
     condition: succeededOrFailed()
+
+
+  # Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
+  # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
+  # This connecction is used in the templateContext nuget outputs.
+  - task: NuGetAuthenticate@1
+    displayName: Authenticate NuGet
+    inputs:
+      nuGetServiceConnections: azure-public/vs-impl
