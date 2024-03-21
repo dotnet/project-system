@@ -270,7 +270,13 @@ jobs:
       testResultsFiles: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/TestResults/**/*.trx
       testRunTitle: Unit Test Results
     condition: succeededOrFailed()
-
+    
+    # The .artifactignore file filters the artifacts published from a particular folder.
+    # This must be present in the folder we want to publish and be named '.artifactignore'.
+    # See: https://docs.microsoft.com/azure/devops/artifacts/reference/artifactignore?view=azure-devops
+  - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/staging.artifactignore' -Destination '$(Build.StagingDirectory)/.artifactignore'
+    displayName: Copy Staging Artifact Filter
+    condition: succeededOrFailed()
 
   # Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
   # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
