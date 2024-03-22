@@ -229,7 +229,7 @@ jobs:
       {
           $LASTEXITCODE = 0
       }
-      displayName: 'Copy BootstrapperInfo.json to Staging'
+    displayName: 'Copy BootstrapperInfo.json to Staging'
       
   - powershell: Get-ChildItem -Path '$(Build.StagingDirectory)' -recurse
     condition: succeededOrFailed()
