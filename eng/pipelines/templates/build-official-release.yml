@@ -222,6 +222,15 @@ jobs:
       # The merged .vsman (OverlaidInstallerManifest.vsman) created by the bootstrapper assumes the bootstrapper will be output to the same drop (Products) as the insertion files.
       outputFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
       
+  - powershell: |
+      & robocopy.exe /np /mt "$(Agent.TempDirectory)\MicroBuild\Output" "$(Build.StagingDirectory)\MicroBuild\Output" BootstrapperInfo.json
+      
+      if ($LASTEXITCODE -lt 8)
+      {
+          $LASTEXITCODE = 0
+      }
+      displayName: 'Copy BootstrapperInfo.json to Staging'
+      
   - powershell: Get-ChildItem -Path '$(Build.StagingDirectory)' -recurse
     condition: succeededOrFailed()
 
