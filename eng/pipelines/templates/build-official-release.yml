@@ -120,13 +120,6 @@ jobs:
       signType: real
       esrpSigning: true
     
-    # Gets the signconfig.xml from the MicroBuild Signing plugin and sets the retry interval to 45 seconds.
-    # This reduces the calls to the signing API (potentially increasing signing speed) and reduces the pipeline log bloat when polling signing completion.
-  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/SetSigningRetryInterval.ps1' -signConfigPath ((Get-ChildItem -Path '$(Build.StagingDirectory)/MicroBuild/Plugins/*/build/signconfig.xml').FullName) -intervalInSeconds 45
-    displayName: Set Signing Interval
-    # This is not a necessary task for the build to be successful.
-    continueOnError: true
-    
     # Allows creating SBOM information during the build.
     # See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support
   - task: MicroBuildSbomPlugin@1
@@ -230,12 +223,6 @@ jobs:
           $LASTEXITCODE = 0
       }
     displayName: 'Copy BootstrapperInfo.json to Staging'
-      
-  - powershell: Get-ChildItem -Path '$(Build.StagingDirectory)' -recurse
-    condition: succeededOrFailed()
-
-  - powershell: Get-ChildItem -Path '$(Build.SourcesDirectory)' -recurse
-    condition: succeededOrFailed()
 
     # Run this task only when the pipeline was ran on a schedule.
   - ${{ if eq(variables['Build.Reason'], 'Schedule') }}:
