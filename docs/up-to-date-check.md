@@ -231,7 +231,7 @@ The logs captured by that tool are usually adequate to diagnose build problems. 
 
 Each project type takes its own approach to incremental builds.
 
-- Visual C++ projects use `.tlog` files, which are described [here](https://learn.microsoft.com/previous-versions/visualstudio/visual-studio-2017/extensibility/visual-cpp-project-extensibility?view=vs-2017#incremental-builds-and-up-to-date-checks).
+- Visual C++ projects use `.tlog` files, which are described [here](https://learn.microsoft.com/visualstudio/extensibility/visual-cpp-project-extensibility#incremental-builds-and-up-to-date-checks).
 
 ---
 
