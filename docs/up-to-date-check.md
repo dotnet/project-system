@@ -1,4 +1,12 @@
-﻿# Up-to-date Check
+﻿﻿# Up-to-date Check (SDK-Style projects)
+
+> [!IMPORTANT]
+> This document relates to SDK-style .NET projects only!
+>
+> Other project types use different mechanisms for their up-to-date checks:
+>
+> - Legacy C#/VB projects (.NET Framework-era) have a different check ([documentation](fast-up-to-date-legacy.md))
+> - Visual C++ projects (`.vcxproj`) use `.tlog` files, which contain all build inputs and outputs ([documentation](https://learn.microsoft.com/visualstudio/extensibility/visual-cpp-project-extensibility#incremental-builds-and-up-to-date-checks)).
 
 The Project System's _Fast Up-to-Date Check_ (FUTDC) saves developers time by quickly assessing whether a project needs to be
 built or not. If not, Visual Studio can avoid a comparatively expensive call to MSBuild.
@@ -158,8 +166,6 @@ When multiple inputs produce one or more outputs, use `BuildUpToDateCheckInput` 
 
 ## Debugging
 
-### SDK-Style projects
-
 By default the up-to-date check does not log anything, though you can infer its decision from your build output summary:
 
 ```text
@@ -182,56 +188,34 @@ build output.
 - `Minimal` produces a single message per out-of-date project.
 - `Info` and `Verbose` provide increasingly detailed information about the inner workings of the check, which are useful for debugging.
 
-### .NET Framework (non-SDK-style) projects
-
-There is no built-in way to enable up-to-date check logging for old-style (non-SDK) projects. The [Tweakster extension](https://github.com/madskristensen/Tweakster#up-to-date-check-verbose) provides a UI option for this, however.
-
-Alternatively, to enable logging manually:
-
-1. Open a "Developer Command Prompt" for the particular version of Visual Studio you are using.
-2. Enter command:
-   ```text
-   vsregedit set "%cd%" HKCU General U2DCheckVerbosity dword 1
-   ```
-3. The message `Set value for U2DCheckVerbosity` should be displayed
-
-Run the same command with a `0` instead of a `1` to disable this logging.
-
-Note that `"%cd%"` evaluates to the current directory. When you first open a Developer Prompt, this path will be correct. To execute this command from arbitrary locations, you'll need to substitute the relevant quoted path, such as `"C:\Program Files\Microsoft Visual Studio\2022\Enterprise"`, with no trailing `/` or `>` character.
-
-You can change this value while VS is running and it will take effect immediately.
-
-When logging is enabled you'll see messages such as this in build output:
-
-> Project 'MyProject' is not up to date. Input file 'c:\path\myproject\class1.cs' is modified after output file 'C:\Path\MyProject\bin\Debug\MyProject.pdb'.
-
-#### Logging from the experimental hive
-
-If you wish to enable this logging for a particular hive (this is an advanced scenario) then pass the hive's name after the path. For example:
-
-```text
-vsregedit set "%cd%" Exp HKCU General U2DCheckVerbosity dword 1
-```
-
 ### Binary logs
 
 The fast up-to-date check logging will explain the reason for the failure at a high level. Often it's necessary to dig
 deeper into the build to understand why the failure occurs.
 
-The best technique for this is to:
+To capture binary logs of builds made by VS:
 
-1. Capture a binary build log (also called a "binlog"), and
-1. view it with the [MSBuild structured log viewer](https://msbuildlog.com/).
+1. Open a Developer Command Prompt for the version of Visual Studio you want to use.
+1. Set two environment variables:
+   - Command
+      ```cmd
+      set MSBuildDebugEngine=1
+      set MSBUILDDEBUGPATH=c:\some\path
+      ```
+   - PowerShell
+      ```powershell
+      $env:MSBuildDebugEngine = "1"
+      $env:MSBUILDDEBUGPATH = "c:\some\path"
+      ```
+   You can use whatever path you like for `MSBUILDDEBUGPATH`, but it must be writeable by the current user.
+1. Type `devenv` to start Visual Studio with this configuration.
+1. Open the `MSBUILDDEBUGPATH` path in Windows Explorer to see the captured binlog and other diagnostic files.
+1. Open `.binlog` files in [MSBuild structured log viewer](https://msbuildlog.com/).
 
-The [Project System Tools](https://github.com/dotnet/project-system-tools) extension enables capturing binlogs for builds that happen within Visual Studio.
+For more information, see [this documentation section](https://github.com/dotnet/msbuild/blob/main/documentation/wiki/Building-Testing-and-Debugging-on-Full-Framework-MSBuild.md#logs).
 
-The logs captured by that tool are usually adequate to diagnose build problems. They exclude some detail however, for performance reasons. If more data is required, see [this technique to get full-fidelity logs](https://github.com/dotnet/project-system-tools#getting-higher-fidelity-logs-from-vs).
-
-### Other types of projects
-
-Each project type takes its own approach to incremental builds.
-
-- Visual C++ projects use `.tlog` files, which are described [here](https://learn.microsoft.com/visualstudio/extensibility/visual-cpp-project-extensibility#incremental-builds-and-up-to-date-checks).
+> [!TIP]
+> If you see _The type initializer for ‘Microsoft.Build.Shared.Debugging.DebugUtils’ threw an exception_ then the path set in `MSBUILDDEBUGPATH` is not writeable by Visual Studio. Close VS, set a new path and try again.
 
 ---
 
