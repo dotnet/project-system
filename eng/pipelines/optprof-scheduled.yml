@@ -28,6 +28,16 @@ trigger:
 # See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines#examples
 pr: none
 
+schedules:
+  # Runs the pipelines at 4am PST (11am UTC) every Monday
+  # YAML reference: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
+  # CRON syntax: https://docs.microsoft.com/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml#cron-syntax
+  - cron: '0 11 * * 1'
+    displayName: Weekly 4am PT OptProf
+    branches:
+      include:
+        - main
+
 resources:
   # These DartLab pipelines and repositories are only used by the Optimization stage.
   pipelines:
@@ -108,7 +118,7 @@ stages:
         artifact: Staging
         # Only download the necessary files for publishing.
         patterns: |
-          MicroBuild/**
+          Staging/MicroBuild/**
           OptProf/** 
       - powershell: Get-ChildItem -Path '$(Pipeline.Workspace)' -recurse
         condition: succeededOrFailed()
