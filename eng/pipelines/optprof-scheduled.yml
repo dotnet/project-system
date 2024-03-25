@@ -118,7 +118,7 @@ stages:
         artifact: Staging
         # Only download the necessary files for publishing.
         patterns: |
-          Staging/MicroBuild/**
+          MicroBuild/**
           OptProf/** 
       - powershell: Get-ChildItem -Path '$(Pipeline.Workspace)' -recurse
         condition: succeededOrFailed()
