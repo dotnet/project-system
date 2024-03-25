@@ -1,42 +1,25 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-# Name: DotNet-Project-System
-# URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=9675
+# Name: DotNet-Project-System-OptProf
+# URL: https://devdiv.visualstudio.com/DevDiv/_build?definitionId=21326
 
-# Produces the signed product build for insertion into the Visual Studio & Visual Studio Code Extension
+# Consumes generated OptProf optimization data from the last successful run, and runs DartLab optimization template.
 
 ###################################################################################################################################################################
 # PIPELINE METADATA
 ###################################################################################################################################################################
 
-# Activates the pipeline after a PR is merged.
-# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines
-trigger:
-  branches:
-    include:
-    - main
-    # Our VS alignment branches start with dev (for example: dev17.2.x)
-    - dev*
-    # Any other branches that contain major feature development, or require access to the pipeline, prior to merge.
-    - feature/*
-  paths:
-    exclude:
-    - docs/*
-    - README.md
-
-# Disable PR builds for this pipeline.
-# See: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/pr?view=azure-pipelines#examples
+# Disable PR builds and triggers
+trigger: none
 pr: none
 
 schedules:
-  # Runs the pipelines at 4am PST (11am UTC) every Monday
-  # YAML reference: https://docs.microsoft.com/azure/devops/pipelines/yaml-schema/schedules-cron?view=azure-pipelines
-  # CRON syntax: https://docs.microsoft.com/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml#cron-syntax
-  - cron: '0 11 * * 1'
-    displayName: Weekly 4am PT OptProf
+  - cron: "0 10 */3 * *" # Approximately every 3 days, early in the morning
+    displayName: Semi-weekly OptProf run
     branches:
       include:
         - main
+    always: true # we must keep data fresh since optimizationdata drops are purged after 30 days
 
 resources:
   # These DartLab pipelines and repositories are only used by the Optimization stage.
