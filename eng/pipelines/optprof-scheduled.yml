@@ -125,7 +125,7 @@ stages:
       - task: PowerShell@2
         inputs:
           filePath: $(DartLab.Path)\Scripts\VisualStudio\Bootstrapper\Get-BootstrapperURL.ps1
-          arguments: -BootstrapperInfoJsonURI '$(Pipeline.Workspace)\Staging\MicroBuild\Output\BootstrapperInfo.json' -VSBranch '$(VisualStudio.InstallationUnderTest.BootstrapperBranch)' -OutVariableName 'VisualStudio.InstallationUnderTest.BootstrapperURL'
+          arguments: -BootstrapperInfoJsonURI '$(Pipeline.Workspace)\Build\Staging\MicroBuild\Output\BootstrapperInfo.json' -VSBranch '$(VisualStudio.InstallationUnderTest.BootstrapperBranch)' -OutVariableName 'VisualStudio.InstallationUnderTest.BootstrapperURL'
         displayName: Set 'VisualStudio.InstallationUnderTest.BootstrapperURL'
 
     prePublishOptimizationInputsDropStepList:
