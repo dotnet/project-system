@@ -120,8 +120,6 @@ stages:
         patterns: |
           MicroBuild/**
           OptProf/** 
-      - powershell: Get-ChildItem -Path '$(Pipeline.Workspace)' -recurse
-        condition: succeededOrFailed()
       - task: PowerShell@2
         inputs:
           filePath: $(DartLab.Path)\Scripts\VisualStudio\Bootstrapper\Get-BootstrapperURL.ps1
