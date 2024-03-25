@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                                     UIPropertyDataProducer.CreateUIPropertyValues(request.QueryExecutionContext, launchProfileEntity, state.ProjectState, state.PropertiesContext, state.Rule, s_requestedPropertyProperties));
                                 launchProfileEntity.SetRelatedEntities(LaunchProfileType.PropertiesPropertyName, properties);
 
-                                await PopulateEditorsAndValues(properties);
+                                await PopulateEditorsAndValuesAsync(properties);
                             }
 
                             returnedLaunchProfiles.Add(launchProfileEntity);
@@ -165,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             await ResultReceiver.OnRequestProcessFinishedAsync(request);
 
-            static async Task PopulateSupportedValuesAndConfigurations(ImmutableArray<IEntityValue> valueEntities)
+            static async Task PopulateSupportedValuesAndConfigurationsAsync(ImmutableArray<IEntityValue> valueEntities)
             {
                 foreach (IEntityValue valueEntity in valueEntities)
                 {
@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 }
             }
 
-            async Task PopulateEditorsAndValues(ImmutableArray<IEntityValue> properties)
+            async Task PopulateEditorsAndValuesAsync(ImmutableArray<IEntityValue> properties)
             {
                 foreach (IEntityValue propertyEntity in properties)
                 {
@@ -215,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                             await UIPropertyValueDataProducer.CreateUIPropertyValueValuesAsync(request.QueryExecutionContext, propertyEntity, propertyProviderState.ProjectState, propertyProviderState.ContainingRule, propertyProviderState.PropertiesContext, propertyProviderState.PropertyName, s_requestedValueProperties));
                         propertyEntity.SetRelatedEntities(UIPropertyType.ValuesPropertyName, values);
 
-                        await PopulateSupportedValuesAndConfigurations(values);
+                        await PopulateSupportedValuesAndConfigurationsAsync(values);
                     }
                 }
             }
