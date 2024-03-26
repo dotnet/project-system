@@ -105,26 +105,6 @@ jobs:
     displayName: Validate vs-green Insertion Branch Name
     condition: eq(${{ parameters.CreateVSGreenInsertion }}, true)
     
-    # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Plugin Installation ===
-    condition: false
-    
-    # Necessary for signing the assemblies and packages.
-    # YAML reference: https://devdiv.visualstudio.com/Engineering/_git/MicroBuild?path=/src/Tasks/SigningPlugin/task.json
-  - task: MicroBuildSigningPlugin@4
-    displayName: Install Signing Plugin
-    inputs:
-      # Build fails if this is set to 'test'.
-      # See: https://github.com/dotnet/project-system/issues/7935
-      signType: real
-      esrpSigning: true
-    
-    # Allows creating SBOM information during the build.
-    # See: https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/29786/Common-setup-authoring-recommendations?anchor=including-sbom-support
-  - task: MicroBuildSbomPlugin@1
-    displayName: Install SBOM Plugin
-    
     # This requires the OptimizationInputs via the 'Publish OptimizationInputs drop' step in the release pipeline.
     # To generate ProfilingInputs for the first time, set this input: ShouldSkipOptimize: true
     # See documentation here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/2602/Build-With-Expired-(or-Without-Prior)-Optimization-Profiling-Data
@@ -215,13 +195,10 @@ jobs:
       # The merged .vsman (OverlaidInstallerManifest.vsman) created by the bootstrapper assumes the bootstrapper will be output to the same drop (Products) as the insertion files.
       outputFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
       
-  - powershell: |
-      & robocopy.exe /np /mt "$(Agent.TempDirectory)\MicroBuild\Output" "$(Build.StagingDirectory)\MicroBuild\Output" BootstrapperInfo.json
-      
-      if ($LASTEXITCODE -lt 8)
-      {
-          $LASTEXITCODE = 0
-      }
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: $(Agent.TempDirectory)\MicroBuild\Output
+      TargetFolder: $(Build.StagingDirectory)\MicroBuild\Output
     displayName: 'Copy BootstrapperInfo.json to Staging'
 
     # Run this task only when the pipeline was ran on a schedule.

@@ -132,14 +132,10 @@ extends:
       tsa:
         enabled: true
         configFile: $(Build.SourcesDirectory)/eng/pipelines/configuration/TSAConfig.gdntsa
-      binskim:
-        enabled: true
-        analyzeTargetGlob: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/**/**.dll
       credscan:
         enabled: true
       policheck:
-        enabled: true
-    
+        enabled: true  
     pool:
       # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
       name: VSEngSS-MicroBuild2022-1ES

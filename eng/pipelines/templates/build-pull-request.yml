@@ -78,9 +78,7 @@ jobs:
 
   # Publishes the artifacts folder contents to the Azure Pipeline for use in other jobs/stages.
   # This publish is filtered by the .artifactignore in the 'eng' folder. See that file for more details.
-  - task: 1ES.PublishPipelineArtifact@1
+  - publish: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
     displayName: Publish Build Artifacts
-    inputs:
-      path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
-      artifact: $(ArtifactName)
+    artifact: $(ArtifactName)
     condition: succeededOrFailed()
