@@ -1,10 +1,6 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 parameters:
-#  - name: SignType (parameter not currently used due to #7935)
-#    type: string
   - name: SkipOptimize
-    type: boolean
-  - name: SkipCompliance
     type: boolean
   - name: CreateVSInsertion
     type: boolean
@@ -227,12 +223,10 @@ jobs:
       # This is a non-critical task, so don't fail the build if it fails.
       continueOnError: true
 
-  # Run this task only when the pipeline was ran on a schedule.
-  - ${{ if eq(parameters['SkipCompliance'], false) }}:
-    - template: analyze-compliance.yml
-      parameters:
-        # For us software version is same as nuget package version
-        SoftwareVersion: $(NBGV_NuGetPackageVersion)
+  - template: analyze-compliance.yml
+    parameters:
+      # For us software version is same as nuget package version
+      SoftwareVersion: $(NBGV_NuGetPackageVersion)
 
   ###################################################################################################################################################################
   # PUBLISH BUILD

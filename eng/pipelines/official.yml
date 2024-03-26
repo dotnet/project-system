@@ -108,18 +108,6 @@ parameters:
   displayName: Do Not Optimize Assemblies
   type: boolean
   default: false
-# Useful when testing pipeline changes and running compliance is not necessary.
-- name: SkipCompliance
-  displayName: Skip Compliance Validation
-  type: boolean
-  default: false
-#- name: SignType (not currently used due to #7935)
-#  displayName: Signing Type
-#  type: string
-#  default: real
-#  values:
-#    - test
-#    - real
 
 ###################################################################################################################################################################
 # STAGES
@@ -155,7 +143,6 @@ extends:
             InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
             CreateVSGreenInsertion: ${{ parameters.CreateVSGreenInsertion }}
             InsertionVSGreenBranch: ${{ parameters.InsertionVSGreenBranch }}
-            SkipCompliance: ${{ parameters.SkipCompliance }}
     - stage: Publish
       displayName: Publish
       dependsOn: Build
