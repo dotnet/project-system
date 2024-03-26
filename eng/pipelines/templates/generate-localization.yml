@@ -14,9 +14,6 @@ jobs:
     displayName: === Build Repository ===
     condition: false
 
-  # Build required for BinSkim
-  - template: build-projects.yml
-
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
     displayName: === Generate Localization ===
