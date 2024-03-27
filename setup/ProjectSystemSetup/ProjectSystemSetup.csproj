@@ -27,7 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="UnifiedSettings\ManagedProjectSystem.registration.json">
+    <Content Include="UnifiedSettings\registration.json">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     

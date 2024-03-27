@@ -38,15 +38,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         // Values returned by mocks that may be modified in test cases as needed
         private bool _isTaskQueueEmpty = true;
         private bool _isFastUpToDateCheckEnabledInSettings = true;
-        private bool _isBuildAccelerationEnabledInSettings;
+        private readonly bool _isBuildAccelerationEnabledInSettings;
         private bool? _isBuildAccelerationEnabledInProject;
         private bool? _expectedIsBuildAccelerationEnabled;
         private IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> _copyItems = Enumerable.Empty<(string Path, ImmutableArray<CopyItem> CopyItems)>();
-        private bool _isCopyItemsComplete = true;
+        private readonly bool _isCopyItemsComplete = true;
         private IReadOnlyList<string>? _targetsWithoutReferenceAssemblies;
 
         private UpToDateCheckConfiguredInput? _state;
-        private SolutionBuildContext? _currentSolutionBuildContext;
+        private readonly SolutionBuildContext? _currentSolutionBuildContext;
         private bool _expectedUpToDate;
 
         public BuildUpToDateCheckTests(ITestOutputHelper output)

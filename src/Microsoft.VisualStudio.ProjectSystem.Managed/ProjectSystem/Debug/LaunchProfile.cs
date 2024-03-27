@@ -77,11 +77,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 return profile switch
                 {
-                    ILaunchProfile2 profile2 => ReplaceValuesAsync(profile2.OtherSettings, ReplaceIfString),
-                    _ => ReplaceValuesAsync(profile.FlattenOtherSettings(), ReplaceIfString)
+                    ILaunchProfile2 profile2 => ReplaceValuesAsync(profile2.OtherSettings, ReplaceIfStringAsync),
+                    _ => ReplaceValuesAsync(profile.FlattenOtherSettings(), ReplaceIfStringAsync)
                 };
 
-                async Task<object> ReplaceIfString(object o)
+                async Task<object> ReplaceIfStringAsync(object o)
                 {
                     return o switch
                     {
