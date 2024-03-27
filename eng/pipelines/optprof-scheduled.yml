@@ -1,0 +1,132 @@
+# Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+# Name: DotNet-Project-System-OptProf
+# URL: https://devdiv.visualstudio.com/DevDiv/_build?definitionId=21326
+
+# Consumes generated OptProf optimization data from the last successful run, and runs DartLab optimization template.
+
+###################################################################################################################################################################
+# PIPELINE METADATA
+###################################################################################################################################################################
+
+# Disable PR builds and triggers
+trigger: none
+pr: none
+
+schedules:
+  - cron: "0 10 */3 * *" # Approximately every 3 days, early in the morning
+    displayName: Semi-weekly OptProf run
+    branches:
+      include:
+        - main
+    always: true # we must keep data fresh since optimizationdata drops are purged after 30 days
+
+resources:
+  # These DartLab pipelines and repositories are only used by the Optimization stage.
+  pipelines:
+  - pipeline: Build
+    source: DotNet-Project-System
+    trigger: true
+  # This name is the default value for the 'dartLabBuildResourceName' parameter in single-runsettings.yml.
+  - pipeline: DartLab
+    project: DevDiv
+    source: DartLab
+    branch: main
+  # This name is the default value for the 'dartLabOptProfBuildResourceName' parameter in single-runsettings.yml.
+  - pipeline: DartLab.OptProf
+    source: DartLab.OptProf
+    branch: main
+    tags:
+    - production
+  repositories:
+  # This name is the default value for the 'dartLabTemplatesResourceName 'parameter in single-runsettings.yml.
+  - repository: DartLabTemplates
+    name: DartLab.Templates
+    type: git
+    ref: refs/heads/main
+  # This name is used to access the single-runsettings.yml template.
+  - repository: DartLabOptProfTemplates
+    name: DartLab.OptProf
+    type: git
+    ref: refs/tags/Production
+
+pool:
+  # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
+  name: VSEngSS-MicroBuild2022-1ES
+  # Demands Docs: https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
+  demands: Cmd
+
+parameters:
+  - name: InsertTargetBranch
+    type: string
+    default: main
+
+# Note: Only add pipeline variables if they apply to most of the stages/jobs.
+variables:
+  # Sets the fetch depth to no longer be a shallow clone. Nerdbank.GitVersioning requires a non-shallow clone.
+  # See:
+  # - https://github.com/dotnet/Nerdbank.GitVersioning/issues/423
+  # - https://github.com/dotnet/Nerdbank.GitVersioning/issues/92
+  # Variable reference: https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/pipeline-options-for-git?view=azure-devops&tabs=yaml#shallow-fetch
+  Agent.Source.Git.ShallowFetchDepth: 0
+  
+  TeamName: DotNet-Project-System
+  TeamEmail: dotnetdevexproj@microsoft.com
+
+###################################################################################################################################################################
+# STAGES
+###################################################################################################################################################################
+
+stages:
+- template: \templates\stages\visual-studio\single-runsettings.yml@DartLabOptProfTemplates
+  parameters:
+    name: Optimization
+    displayName: Optimization
+    variables:
+    - name: VisualStudio.InstallationUnderTest.BootstrapperBranch
+      value: ${{ parameters.InsertTargetBranch }}
+    runSettingsURI: https://vsdrop.microsoft.com/file/v1/RunSettings/$(System.TeamProject)/dotnet/project-system/$(Build.SourceBranchName)/$(resources.pipeline.Build.runID);OptProf.runsettings
+    # This variable is set during the 'Update RunSettings' (UpdateRunSettings.ps1) step in the publish-assets-and-packages.yml.
+    # This variable is expanded when it is used: https://docs.microsoft.com/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#macro-syntax-variables
+    visualStudioBootstrapperURI: $(VisualStudio.InstallationUnderTest.BootstrapperURL)
+    # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
+    optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(resources.pipeline.Build.runID)/$(System.StageAttempt)
+    testLabPoolName: VS-Platform
+    previousOptimizationInputsDropName: $(previousOptimizationInputsDropName)
+    ##### Step Hooks #####
+    preTestMachineConfigurationStepList:
+      # Download the staging artifacts from the release pipeline.
+      - download: Build
+        displayName: Download Staging Artifacts
+        artifact: Staging
+        # Only download the necessary files for publishing.
+        patterns: |
+          MicroBuild/**
+          OptProf/** 
+      - task: PowerShell@2
+        inputs:
+          filePath: $(DartLab.Path)\Scripts\VisualStudio\Bootstrapper\Get-BootstrapperURL.ps1
+          arguments: -BootstrapperInfoJsonURI '$(Pipeline.Workspace)\Build\Staging\MicroBuild\Output\BootstrapperInfo.json' -VSBranch '$(VisualStudio.InstallationUnderTest.BootstrapperBranch)' -OutVariableName 'VisualStudio.InstallationUnderTest.BootstrapperURL'
+        displayName: Set 'VisualStudio.InstallationUnderTest.BootstrapperURL'
+
+    prePublishOptimizationInputsDropStepList:
+    # This extracts the Metadata.json file information from the OptProf artifact in the build and sets the drop name to the previousOptimizationInputsDropName variable.
+    # The previousOptimizationInputsDropName variable enables LKG (Last Known Good) support.
+    # See LKG support for details: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/29053/Enabling-LKG-support
+    # This PowerShell script needs to be written in this YAML file directly as the job that runs this task does not have access to files on-disk (it does not perform a checkout).
+    - powershell: |
+        $artifactParameters = @{
+          InstanceURL = 'https://dev.azure.com/devdiv'
+          ProjectName = 'DevDiv'
+          BuildID = '$(resources.pipeline.Build.runID)'
+          ArtifactName = 'OptProf'
+          OAuthAccessToken = (ConvertTo-SecureString '$(System.AccessToken)' -AsPlainText -Force)
+        }
+        $artifact = Get-BuildArtifact @artifactParameters
+        $containerName = $artifact.Resource.Data -Split '/' | Select-Object -Last 1
+        $metadataString = Read-BuildArtifactFile @artifactParameters -FileName (Join-Path $containerName 'Metadata.json')
+        $dropName = ($metadataString | ConvertFrom-Json).OptimizationData
+
+        Write-Host "previousOptimizationInputsDropName: $dropName"
+        Set-AzurePipelinesVariable 'previousOptimizationInputsDropName' $dropName
+      displayName: Set previousOptimizationInputsDropName variable

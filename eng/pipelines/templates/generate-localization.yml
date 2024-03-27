@@ -3,12 +3,16 @@
 jobs:
 - job: GenerateLocalization
   displayName: Generate Localization
-  timeoutInMinutes: 10
+  timeoutInMinutes: 25
   steps:
 
   ###################################################################################################################################################################
   # GENERATE LOCALIZATION
   ###################################################################################################################################################################
+
+  - script:
+    displayName: === Build Repository ===
+    condition: false
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
@@ -54,7 +58,10 @@ jobs:
     condition: false
 
   # Publishes any associated information related to the OneLocBuild process.
-  - publish: $(Build.StagingDirectory)/loc
+  - task: 1ES.PublishPipelineArtifact@1
+    inputs:
+      path: $(Build.StagingDirectory)/loc
+      artifact: OneLocBuild
+      publish: $(Build.StagingDirectory)/loc
     displayName: Publish Localization Artifacts
-    artifact: OneLocBuild
     condition: succeededOrFailed()
