@@ -56,10 +56,10 @@
     <PackageVersion Include="Microsoft.VisualStudio.Shell.Framework"                                 Version="17.3.32804.24" />
     <PackageVersion Include="Microsoft.VisualStudio.Telemetry"                                       Version="17.8.9" />
     <PackageVersion Include="Microsoft.VisualStudio.TemplateWizardInterface"                         Version="17.3.32804.24" />
-    <PackageVersion Include="Microsoft.VisualStudio.Threading"                                       Version="17.7.30" />
-    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.7.30" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading"                                       Version="17.9.28" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.9.28" />
     <PackageVersion Include="Microsoft.VisualStudio.Utilities"                                       Version="17.7.36307-preview.2" />
-    <PackageVersion Include="Microsoft.VisualStudio.Validation"                                      Version="17.6.11" />
+    <PackageVersion Include="Microsoft.VisualStudio.Validation"                                      Version="17.8.8" />
     <PackageVersion Include="Microsoft.VisualStudio.XmlEditor"                                       Version="17.3.32804.24" />
     <PackageVersion Include="Microsoft.VSSDK.BuildTools"                                             Version="17.5.18-preview1" />
     <PackageVersion Include="System.Threading.Tasks.Dataflow"                                        Version="7.0.0" />

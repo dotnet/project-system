@@ -137,7 +137,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
 
         ITargetBlock<IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, ConfigurationSubscriptionSources Sources)>> actionBlock
             = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, ConfigurationSubscriptionSources Sources)>>(
-                update => OnSlicesChanged(update, cancellationToken),
+                update => OnSlicesChangedAsync(update, cancellationToken),
                 _unconfiguredProject,
                 ProjectFaultSeverity.LimitedFunctionality,
                 nameFormat: "LanguageServiceHostSlices {1}");
@@ -190,7 +190,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
 
         return;
 
-        async Task OnSlicesChanged(IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, ConfigurationSubscriptionSources Sources)> update, CancellationToken cancellationToken)
+        async Task OnSlicesChangedAsync(IProjectVersionedValue<(ConfiguredProject ActiveConfiguredProject, ConfigurationSubscriptionSources Sources)> update, CancellationToken cancellationToken)
         {
             ProjectConfiguration activeProjectConfiguration = update.Value.ActiveConfiguredProject.ProjectConfiguration;
             ConfigurationSubscriptionSources sources = update.Value.Sources;

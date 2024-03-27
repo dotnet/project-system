@@ -104,12 +104,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog)
             {
-                return createPropertyPageValuesAsync();
+                return createPropertyPageValues();
             }
 
             return Enumerable.Empty<IEntityValue>();
 
-            IEnumerable<IEntityValue> createPropertyPageValuesAsync()
+            IEnumerable<IEntityValue> createPropertyPageValues()
             {
                 IProjectState projectState = new PropertyPageProjectState(project);
                 QueryProjectPropertiesContext propertiesContext = new QueryProjectPropertiesContext(isProjectFile: true, project.FullPath, itemType: null, itemName: null);
