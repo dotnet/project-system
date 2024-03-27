@@ -1,20 +1,18 @@
 # Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
-
 jobs:
-- job: PublishAssetsAndPackages
-  displayName: Publish Assets and Packages
-  timeoutInMinutes: 10
+- job: PublishNpmPackages
+  displayName: Publish NPM Packages
+  timeoutInMinutes: 20
   steps:
-
   ###################################################################################################################################################################
-  # DOWNLOAD ARTIFACTS
+  # Download artifacts
   ###################################################################################################################################################################
 
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
-    displayName: === Download Artifacts ===
+    displayName: === Download artifacts ===
     condition: false
-
+    
   # Download the build artifacts from the Build job.
   - download: current
     displayName: Download Build Artifacts
@@ -23,7 +21,7 @@ jobs:
     patterns: |
       VSSetup/Insertion/**
       packages/**
-
+  
   # Download the staging artifacts from the Build job.
   - download: current
     displayName: Download Staging Artifacts
@@ -32,47 +30,19 @@ jobs:
     patterns: |
       MicroBuild/**
       OptProf/**
-
-  ###################################################################################################################################################################
-  # PUBLISH INSERTION
-  ###################################################################################################################################################################
-
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Publish Insertion ===
-    condition: false
-
-  # This creates the Products drop location and uploads the insertion data (.vsman files) for VS insertion.
-  # This also includes the bootstrapper files (.exe and .vsman) necessary for OptProf.
-  # YAML reference: https://dev.azure.com/devdiv/Engineering/_git/MicroBuild?path=/src/Tasks/UploadDrop/task.json
-  - task: MicroBuildUploadVstsDropFolder@2
-    displayName: Publish Insertion Data
-    inputs:
-      DropFolder: $(Pipeline.Workspace)/$(Build.BuildNumber)/VSSetup/Insertion
-      # TODO: Consider using $(GitBuildVersion) instead of $(Build.BuildNumber) as it better correlates the build of the code to the VS insertion.
-      # Meaning, instead of VS Insertion -> Pipeline BuildNumber -> Code BuildVersion, it would just be VS Insertion -> Code BuildVersion.
-      # If this is updated, VstsDropNames set in build-official-release.yml would also need to be updated.
-      # For GitBuildVersion: https://github.com/dotnet/Nerdbank.GitVersioning/blob/main/doc/cloudbuild.md#automatically-match-cloud-build-numbers-to-to-your-git-version
-      # Issue: https://github.com/dotnet/project-system/issues/8431
-      # Example of current path: 'Products/[DevDiv]/[dotnet/project-system]/[main]/[x.x]'
-      DropName: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
-      DropRetentionDays: 60
-      # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
-      AccessToken: $(System.AccessToken)
-
-  ###################################################################################################################################################################
-  # PUBLISH OPTPROF
-  # The published OptProf metadata is consumed by the Optimization pipeline that profiles the assemblies to create the optimization data.
-  ###################################################################################################################################################################
-
+          
   # Use a disabled, empty script to display the section header in the pipeline UI.
   - script:
     displayName: === Publish OptProf ===
     condition: false
-
+    
+  ###################################################################################################################################################################
+  # PUBLISH OptProf
+  ###################################################################################################################################################################
+  
   # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
   # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
-  - task: artifactDropTask@1
+  - task: 1ES.PublishArtifactsDrop@1
     displayName: Publish ProfilingInputs
     inputs:
       dropServiceURI: https://devdiv.artifacts.visualstudio.com
@@ -83,24 +53,24 @@ jobs:
       # detailedLog: true
       # This task uploads the drop metadata to the pipeline artifacts using this name. There does not seem to be an option of not uploading this metadata.
       dropMetadataContainerName: OptProf-ProfilingInputs
-
+    
   # The current artifactDropTask seems to try making the DropMetadata folder every time it runs. After running this artifactDropTask for ProfilingInputs, we need to delete the folder so the artifactDropTask for RunSettings succeeds.
   # Otherwise, the error is shown as follows:
   #   ##[warning]Can't find loc string for key: FailedToRunClientTool
   #   ##[error]FailedToRunClientTool EEXIST: file already exists, mkdir 'D:\a\_work\1\a\DropMetadata'
   - powershell: Remove-Item -Path '$(Build.StagingDirectory)/DropMetadata/' -Recurse -Force
     displayName: Delete DropMetadata Folder
-
+    
   # Using the VS bootstrapper data, update the runsettings with the appropriate information for this build.
   - powershell: . '$(Build.SourcesDirectory)/eng/scripts/UpdateRunSettings.ps1' -profilingInputsPath 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)' -bootstrapperInfoPath '$(Pipeline.Workspace)/Staging/MicroBuild/Output/BootstrapperInfo.json'
     displayName: Update RunSettings
     failOnStderr: true
     # Name is required to reference the variables created within this build step in other stages.
     name: UpdateRunSettings
-
+    
   # The runsettings drives the test process for producing optimization data.
   # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
-  - task: artifactDropTask@1
+  - task: 1ES.PublishArtifactsDrop@1
     displayName: Publish RunSettings
     inputs:
       dropServiceURI: https://devdiv.artifacts.visualstudio.com
@@ -111,27 +81,10 @@ jobs:
       # detailedLog: true
       # This task uploads the drop metadata to the pipeline artifacts using this name. There does not seem to be an option of not uploading this metadata.
       dropMetadataContainerName: OptProf-RunSettings
-
+      
   ###################################################################################################################################################################
-  # PUBLISH PACKAGES
+  # PUBLISH NPM Packages
   ###################################################################################################################################################################
-
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Publish Packages ===
-    condition: false
-
-  # Downloads NuGet and adds it to the PATH.
-  # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/tool/nuget?view=azure-devops
-  - task: NuGetToolInstaller@1
-    displayName: Install NuGet
-
-  # Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
-  # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
-  - task: NuGetAuthenticate@1
-    displayName: Authenticate NuGet
-    inputs:
-      nuGetServiceConnections: azure-public/vs-impl
 
   # Authenticates the .npmrc file for publishing to the internal AzDO feed.
   # See: https://learn.microsoft.com/azure/devops/pipelines/tasks/package/npm-authenticate?view=azure-devops
@@ -139,43 +92,6 @@ jobs:
     displayName: Authenticate NPM Feed
     inputs:
       workingFile: $(Build.SourcesDirectory)/src/Microsoft.VisualStudio.ProjectSystem.Managed/.npmrc
-
-  # Publishes the NuGet packages to azure-public/vs-impl (https://dev.azure.com/azure-public/vside/_packaging?_a=feed&feed=vs-impl)
-  - task: NuGetCommand@2
-    displayName: Publish Packages to azure-public
-    inputs:
-      command: push
-      packagesToPush: $(Pipeline.Workspace)/$(Build.BuildNumber)/packages/*.nupkg
-      nuGetFeedType: external
-      publishFeedCredentials: azure-public/vs-impl
-      # This allows the task to succeed if duplicate packages exist. Packages cannot be overridden in a feed.
-      # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget?view=azure-devops#arguments
-      allowPackageConflicts: true
-
-  # Publishes the NuGet packages to DevDiv/VS (https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS)
-  # A separate process will republish these packages to DevDiv/VS-CoreXtFeeds (https://dev.azure.com/DevDiv/DevDiv/_artifacts/feed/VS-CoreXtFeeds)
-  - task: NuGetCommand@2
-    displayName: Publish Packages to DevDiv
-    inputs:
-      command: push
-      packagesToPush: $(Pipeline.Workspace)/$(Build.BuildNumber)/packages/*.nupkg
-      # Feed Endpoint: https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json
-      # Requires VssFeedId despite documentation here: https://docs.microsoft.com/azure/devops/pipelines/artifacts/nuget?view=azure-devops&tabs=yaml#publish-a-package
-      publishVstsFeed: 97a41293-2972-4f48-8c0e-05493ae82010
-      # This allows the task to succeed if duplicate packages exist. Packages cannot be overridden in a feed.
-      # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget?view=azure-devops#arguments
-      allowPackageConflicts: true
-
-  # Publishes the Managed NuGet package to DevDiv/vs-green (https://dev.azure.com/devdiv/DevDiv/_artifacts/feed/vs-green)
-  - task: NuGetCommand@2
-    displayName: Publish NuGet Package
-    inputs:
-      command: push
-      packagesToPush: $(Pipeline.Workspace)/$(Build.BuildNumber)/packages/Microsoft.VisualStudio.ProjectSystem.Managed.*.nupkg;!$(Pipeline.Workspace)/$(Build.BuildNumber)/packages/Microsoft.VisualStudio.ProjectSystem.Managed.VS.*.nupkg
-      publishVstsFeed: DevDiv/vs-green
-      # This allows the task to succeed if duplicate packages exist. Packages cannot be overridden in a feed.
-      # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget?view=azure-devops#arguments
-      allowPackageConflicts: true
 
   # Publishes the NPM package to the internal AzDO feed.
   # Feed: https://dev.azure.com/devdiv/DevDiv/_artifacts/feed/vs-green/Npm/@microsoft%2Fmicrosoft.visualstudio.projectsystem.managed/
