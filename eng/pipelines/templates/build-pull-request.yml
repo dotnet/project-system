@@ -82,3 +82,12 @@ jobs:
     displayName: Publish Build Artifacts
     artifact: $(ArtifactName)
     condition: succeededOrFailed()
+    
+    # Checks for Component Governance issues introduced by the pull request.
+    # See: https://docs.opensource.microsoft.com/tools/cg/governed-repos/pull-request-integration/
+  - task: ComponentGovernanceComponentDetection@0
+    displayName: Run Component Governance Check
+    inputs:
+      scanType: 'Register'
+      verbosity: 'Verbose'
+      alertWarningLevel: 'High'
