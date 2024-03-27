@@ -68,34 +68,3 @@ steps:
     # This value is provided from the DotNet-Project-System variable group, defined in the stage variables.
     env:
       AzureServicesAuthConnectionString: $(ApiScanConnectionString)
-
-  ###################################################################################################################################################################
-  # PUBLISH RESULTS
-  ###################################################################################################################################################################
-
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Publish Results ===
-    condition: false
-
-  # Publishes the results as artifacts to the Azure Pipeline.
-  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/publish-security-analysis-logs#v3
-  - task: PublishSecurityAnalysisLogs@3
-    displayName: Publish Compliance Artifacts
-    inputs:
-      ArtifactName: Analysis-Compliance
-      ArtifactType: Container
-      AllTools: true
-      ToolLogsNotFoundAction: Standard
-    condition: succeededOrFailed()
-
-  # Publishes the results as artifacts to the Azure Pipeline.
-  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/publish-security-analysis-logs#v3
-  - task: PublishSecurityAnalysisLogs@3
-    displayName: Publish API Artifacts
-    inputs:
-      ArtifactName: Analysis-API
-      ArtifactType: Container
-      AllTools: true
-      ToolLogsNotFoundAction: Standard
-    condition: succeededOrFailed()
