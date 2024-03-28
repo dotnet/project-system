@@ -393,6 +393,7 @@ dotnet_diagnostic.IDE0090.severity = warning      # Use new(...)
 dotnet_diagnostic.IDE0220.severity = warning      # Add explicit cast
 dotnet_diagnostic.IDE0250.severity = warning      # Struct can be made 'readonly'
 dotnet_diagnostic.IDE0251.severity = suggestion   # Struct methods can be made 'readonly'
+dotnet_diagnostic.IDE0270.severity = suggestion   # Use coalesce expression
 dotnet_diagnostic.IDE1006.severity = warning      # Naming styles                                 Task Open()                                         Task OpenAsync()
 dotnet_diagnostic.IDE1006WithoutSuggestion.severity = suggestion
 
@@ -443,3 +444,4 @@ dotnet_diagnostic.CA1307.severity = suggestion    # Specify StringComparison
 [artifacts/*/obj/Microsoft.VisualStudio.ProjectSystem.Managed/net8.0/*.cs]
 # CS0618: Type or member is obsolete
 dotnet_diagnostic.CS0618.severity = silent
+

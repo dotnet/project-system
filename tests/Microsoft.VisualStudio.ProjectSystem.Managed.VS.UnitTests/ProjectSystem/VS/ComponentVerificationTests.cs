@@ -21,8 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             foreach ((ImportDefinitionBinding import, IReadOnlyList<ExportDefinitionBinding> exports) in part.SatisfyingExports)
             {
-                var importingProperty = import.ImportingMember as PropertyInfo;
-                if (importingProperty is null)  // We don't verify ImportingConstructor, only check properties.
+                // Only check properties. We don't verify ImportingConstructor.
+                if (import.ImportingMember is not PropertyInfo importingProperty)
                     return;
 
                 Type memberType = importingProperty.PropertyType;
