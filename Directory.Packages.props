@@ -29,7 +29,7 @@
     <PackageVersion Include="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
     <PackageVersion Include="Nerdbank.GitVersioning"                                                 Version="3.6.79-alpha" />
     <PackageVersion Include="Nerdbank.Streams"                                                       Version="2.10.69" />
-    <PackageVersion Include="System.IO.Pipelines"                                                    Version="7.0.0" />
+    <PackageVersion Include="System.IO.Pipelines"                                                    Version="8.0.0" />
 
     <!-- VS SDK -->
     <!-- https://dev.azure.com/azure-public/vside/_artifacts/feed/vssdk -->
@@ -37,7 +37,7 @@
     <PackageVersion Include="Microsoft.Internal.VisualStudio.Interop"                                Version="17.3.32804.24" />
     <PackageVersion Include="Microsoft.ServiceHub.Framework"                                         Version="4.3.57" />
     <PackageVersion Include="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.3.198" />
-    <PackageVersion Include="Microsoft.VisualStudio.Composition"                                     Version="17.7.18" />
+    <PackageVersion Include="Microsoft.VisualStudio.Composition"                                     Version="17.7.29" />
     <PackageVersion Include="Microsoft.VisualStudio.Data.Core"                                       Version="17.0.0-preview-2-31223-026" />
     <PackageVersion Include="Microsoft.VisualStudio.Data.Services"                                   Version="17.0.0-preview-2-31223-026" />
     <PackageVersion Include="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026" />
