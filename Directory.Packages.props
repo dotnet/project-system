@@ -80,7 +80,7 @@
     <PackageVersion Include="Microsoft.CodeAnalysis"                                                 Version="4.8.0-3.final" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Common"                                          Version="4.8.0-3.final" />
     <PackageVersion Include="Microsoft.CSharp"                                                       Version="4.7.0" />
-    <PackageVersion Include="Microsoft.Net.Compilers.Toolset"                                        Version="4.8.0-3.final" />
+    <PackageVersion Include="Microsoft.Net.Compilers.Toolset"                                        Version="4.10.0-3.24157.9" />
     <PackageVersion Include="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
     <PackageVersion Include="Microsoft.VisualStudio.LanguageServices"                                Version="4.8.0-3.final" />
 
