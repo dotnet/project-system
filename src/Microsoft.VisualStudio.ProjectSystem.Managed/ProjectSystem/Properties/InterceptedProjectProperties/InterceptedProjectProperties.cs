@@ -12,16 +12,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal sealed class InterceptedProjectProperties : DelegatedProjectPropertiesBase, IRuleAwareProjectProperties
     {
         private readonly UnconfiguredProject _project;
-        private readonly ImmutableDictionary<string, Providers> _valueProviders;
+        private readonly Dictionary<string, Providers> _valueProviders = new(StringComparers.PropertyNames);
         
         public InterceptedProjectProperties(ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> valueProviders, IProjectProperties defaultProperties, UnconfiguredProject project)
             : base(defaultProperties)
         {
             _project = project;
             Requires.NotNullOrEmpty(valueProviders);
-
-            ImmutableDictionary<string, Providers>.Builder builder = 
-                ImmutableDictionary.CreateBuilder<string, Providers>(StringComparers.PropertyNames);
             
             foreach (Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider in valueProviders)
             {
@@ -31,17 +28,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
 
-                    if (!builder.TryGetValue(propertyName, out Providers? entry))
+                    if (!_valueProviders.TryGetValue(propertyName, out Providers? entry))
                     {
                         entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> { valueProvider });
-                        builder.Add(propertyName, entry);
+                        _valueProviders.Add(propertyName, entry);
                     }
 
                     entry.Exports.Add(valueProvider);
                 }
             }
-
-            _valueProviders = builder.ToImmutable();
         }
 
         public override async Task<bool> IsValueInheritedAsync(string propertyName)
