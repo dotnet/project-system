@@ -54,11 +54,10 @@ jobs:
     continueOnError: true
 
   # The symbols archived here are checked as part of the VS Insertion PR to ensure they are available.
-  # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/672/Archive-Symbols-with-Symweb
-  - task: MicroBuildArchiveSymbols@4
+  # https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/34315/Archiving-Symbols
+  - task: MicroBuildArchiveSymbols@5
     displayName: Publish to Symweb
     inputs:
       SymbolsFeatureName: MS.VS.ProjectSystem.Managed
       SymbolsProject: VS
       SymbolsAgentPath: $(Pipeline.Workspace)/$(Build.BuildNumber)
-      azureSubscription: Symbols Upload (DevDiv)
