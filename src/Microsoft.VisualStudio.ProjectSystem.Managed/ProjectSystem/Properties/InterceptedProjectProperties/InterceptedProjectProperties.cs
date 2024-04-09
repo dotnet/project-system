@@ -12,36 +12,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal sealed class InterceptedProjectProperties : DelegatedProjectPropertiesBase, IRuleAwareProjectProperties
     {
         private readonly UnconfiguredProject _project;
-        private readonly Dictionary<string, Providers> _valueProviders = new(StringComparers.PropertyNames);
+        private readonly InterceptedPropertiesProviderBase _valueProvider;
         
-        public InterceptedProjectProperties(ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> valueProviders, IProjectProperties defaultProperties, UnconfiguredProject project)
+        public InterceptedProjectProperties(InterceptedPropertiesProviderBase valueProvider, IProjectProperties defaultProperties, UnconfiguredProject project)
             : base(defaultProperties)
         {
             _project = project;
-            Requires.NotNullOrEmpty(valueProviders);
-            
-            foreach (Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider in valueProviders)
-            {
-                string[] propertyNames = valueProvider.Metadata.PropertyNames;
-
-                foreach (string propertyName in propertyNames)
-                {
-                    Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
-
-                    if (!_valueProviders.TryGetValue(propertyName, out Providers? entry))
-                    {
-                        entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> { valueProvider });
-                        _valueProviders.Add(propertyName, entry);
-                    }
-
-                    entry.Exports.Add(valueProvider);
-                }
-            }
+            _valueProvider = valueProvider;
         }
 
         public override async Task<bool> IsValueInheritedAsync(string propertyName)
         {
-            if (!_valueProviders.TryGetValue(propertyName, out Providers? propertyValueProviders) || 
+            if (!_valueProvider.TryGetInterceptingValueProvider(propertyName, out Providers? propertyValueProviders) || 
                 propertyValueProviders.GetFilteredProvider(propertyName, _project.Capabilities.AppliesTo) is not { } valueProvider)
             {
                 return await base.IsValueInheritedAsync(propertyName);
@@ -59,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
             string evaluatedProperty = await base.GetEvaluatedPropertyValueAsync(propertyName);
-            if (_valueProviders.TryGetValue(propertyName, out Providers? propertyValueProviders) &&
+            if (_valueProvider.TryGetInterceptingValueProvider(propertyName, out Providers? propertyValueProviders) &&
                 propertyValueProviders.GetFilteredProvider(propertyName, _project.Capabilities.AppliesTo) is { } valueProvider)
             {
                 evaluatedProperty = await valueProvider.OnGetEvaluatedPropertyValueAsync(propertyName, evaluatedProperty, DelegatedProperties);
@@ -71,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<string?> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
             string? unevaluatedProperty = await base.GetUnevaluatedPropertyValueAsync(propertyName);
-            if (_valueProviders.TryGetValue(propertyName, out Providers? propertyValueProviders) &&
+            if (_valueProvider.TryGetInterceptingValueProvider(propertyName, out Providers? propertyValueProviders) &&
                 propertyValueProviders.GetFilteredProvider(propertyName, _project.Capabilities.AppliesTo) is { } valueProvider)
             {
                 unevaluatedProperty = await valueProvider.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedProperty ?? "", DelegatedProperties);
@@ -83,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             string? valueToSet;
-            if (_valueProviders.TryGetValue(propertyName, out Providers? propertyValueProviders) &&
+            if (_valueProvider.TryGetInterceptingValueProvider(propertyName, out Providers? propertyValueProviders) &&
                 propertyValueProviders.GetFilteredProvider(propertyName, _project.Capabilities.AppliesTo) is { } valueProvider)
             {
                 valueToSet = await valueProvider.OnSetPropertyValueAsync(propertyName, unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions);
@@ -103,42 +85,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             var ruleAwareProperties = DelegatedProperties as IRuleAwareProjectProperties;
             ruleAwareProperties?.SetRuleContext(rule);
-        }
-    }
-
-    internal class Providers
-    {
-        public Providers(List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> exports)
-        {
-            Exports = exports;
-        }
-
-        public List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Exports { get; private set; }
-
-        public IInterceptingPropertyValueProvider? GetFilteredProvider(
-            string propertyName,
-            Func<string, bool> appliesToEvaluator)
-        {
-            // todo consider caching this based on capability
-            var foundExports = Exports.Where(lazyProvider =>
-            {
-                string? appliesToExpression = lazyProvider.Value.GetType()
-                    .GetCustomAttributes(typeof(AppliesToAttribute), inherit: true)
-                    .OfType<AppliesToAttribute>()
-                    .FirstOrDefault()?.AppliesTo;
-
-                return appliesToExpression is null || appliesToEvaluator(appliesToExpression);
-            })
-                .GroupBy(x => x.Value.GetType()) // in case we end up importing multiple of the same provider, which *has happened with TargetFrameworkMoniker* 
-                .Select(x => x.First())
-                .ToList();
-
-            return foundExports.Count switch
-            {
-                0 => null,
-                1 => foundExports.First().Value,
-                _ => throw new ArgumentException($"Duplicate property value providers for same property name: {propertyName}")
-            };
         }
     }
 }
