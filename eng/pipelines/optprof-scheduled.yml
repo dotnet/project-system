@@ -91,6 +91,7 @@ stages:
     visualStudioBootstrapperURI: $(VisualStudio.InstallationUnderTest.BootstrapperURL)
     # The output of the optimization process. The first half of the path is provided to the DropNamePrefix input in the 'Install OptProf Plugin' (MicroBuildOptProfPlugin) step in build-official-release.yml.
     optOptimizationInputsDropName: OptimizationInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceVersion)/$(resources.pipeline.Build.runID)/$(System.StageAttempt)
+    cloudBuildResourceName: ComponentBuildUnderTest
     testLabPoolName: VS-Platform
     previousOptimizationInputsDropName: $(previousOptimizationInputsDropName)
     ##### Step Hooks #####
