@@ -7,9 +7,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// <summary>
     /// A provider for assembly info properties that are stored either in the project file OR the source code of the project.
     /// </summary>
-    internal abstract class AbstractProjectFileOrAssemblyInfoPropertiesProvider : DelegatedProjectPropertiesProviderBase
+    internal abstract class AbstractProjectFileOrAssemblyInfoPropertiesProvider : InterceptedPropertiesProviderBase
     {
-        private readonly ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> _interceptingValueProviders;
         private readonly UnconfiguredProject _project;
         private readonly Func<ProjectId?> _getActiveProjectId;
         private readonly Workspace _workspace;
@@ -23,14 +22,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Func<ProjectId?> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
-            : base(delegatedProvider, instanceProvider, project)
+            : base(delegatedProvider, instanceProvider, project, interceptingValueProviders)
         {
-            Requires.NotNull(interceptingValueProviders);
             Requires.NotNull(getActiveProjectId);
             Requires.NotNull(workspace);
             Requires.NotNull(threadingService);
 
-            _interceptingValueProviders = interceptingValueProviders.ToImmutableArray();
             _project = project;
             _getActiveProjectId = getActiveProjectId;
             _workspace = workspace;
@@ -44,9 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             IProjectProperties delegatedProperties = base.GetProperties(file, itemType, item);
             IProjectProperties assemblyInfoProperties = new AssemblyInfoProperties(delegatedProperties, _getActiveProjectId, _workspace, _threadingService);
-            return _interceptingValueProviders.IsDefaultOrEmpty
-                ? assemblyInfoProperties
-                : new InterceptedProjectProperties(_interceptingValueProviders, assemblyInfoProperties, _project);
+            return HasInterceptingValueProvider
+                ? new InterceptedProjectProperties(this, assemblyInfoProperties, _project)
+                : assemblyInfoProperties;
         }
     }
 }

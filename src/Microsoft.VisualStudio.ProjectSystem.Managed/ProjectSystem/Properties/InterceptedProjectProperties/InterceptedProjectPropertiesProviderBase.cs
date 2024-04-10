@@ -6,20 +6,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// An intercepting project properties provider that validates and/or transforms the default <see cref="IProjectProperties"/>
     /// using the exported <see cref="IInterceptingPropertyValueProvider"/>s.
     /// </summary>
-    internal abstract class InterceptedProjectPropertiesProviderBase : DelegatedProjectPropertiesProviderBase
+    internal abstract class InterceptedProjectPropertiesProviderBase : InterceptedPropertiesProviderBase
     {
         private readonly UnconfiguredProject _project;
-        private readonly ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> _interceptingValueProviders;
 
         protected InterceptedProjectPropertiesProviderBase(
             IProjectPropertiesProvider provider,
             IProjectInstancePropertiesProvider instanceProvider,
             UnconfiguredProject project,
             IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
-            : base(provider, instanceProvider, project)
+            : base(provider, instanceProvider, project, interceptingValueProviders)
         {
             _project = project;
-            _interceptingValueProviders = interceptingValueProviders.ToImmutableArray();
         }
 
         public override IProjectProperties GetProperties(string file, string? itemType, string? item)
@@ -30,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         protected IProjectProperties InterceptProperties(IProjectProperties defaultProperties)
         {
-            return _interceptingValueProviders.IsDefaultOrEmpty ? defaultProperties : new InterceptedProjectProperties(_interceptingValueProviders, defaultProperties, _project);
+            return HasInterceptingValueProvider ? new InterceptedProjectProperties(this, defaultProperties, _project) : defaultProperties;
         }
     }
 }
