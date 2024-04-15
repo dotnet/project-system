@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.Collections
         where TKey : notnull
     {
         /// <summary>
-        /// Initializes a new instance of the DictionaryEqualityComparer class.
+        /// Initializes a new instance of the <see cref="DictionaryEqualityComparer{TKey, TValue}"/> class.
         /// </summary>
         private DictionaryEqualityComparer()
         {
