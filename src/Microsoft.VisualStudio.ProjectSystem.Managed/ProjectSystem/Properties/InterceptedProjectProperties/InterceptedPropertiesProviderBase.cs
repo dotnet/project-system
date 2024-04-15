@@ -16,12 +16,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectPropertiesProvider provider,
             IProjectInstancePropertiesProvider instanceProvider,
             UnconfiguredProject project,
-            IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
+            IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> interceptingValueProviders)
             : base(provider, instanceProvider, project)
         {
             Requires.NotNullOrEmpty(interceptingValueProviders);
 
-            foreach (Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider in interceptingValueProviders)
+            foreach (Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2> valueProvider in interceptingValueProviders)
             {
                 string[] propertyNames = valueProvider.Metadata.PropertyNames;
 
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                     if (!_interceptingValueProviders.TryGetValue(propertyName, out Providers? entry))
                     {
-                        entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>(1) { valueProvider });
+                        entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>>(1) { valueProvider });
                         _interceptingValueProviders.Add(propertyName, entry);
                     }
                     else
@@ -52,12 +52,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
     internal class Providers
     {
-        public Providers(List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> exports)
+        public Providers(List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> exports)
         {
             Exports = exports;
         }
 
-        public List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Exports { get; }
+        public List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> Exports { get; }
 
         public IInterceptingPropertyValueProvider? GetFilteredProvider(
             string propertyName,

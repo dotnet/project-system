@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
 
-        public static Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> Create(
+        public static Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2> Create(
             string propertyName,
             Func<string, IProjectProperties, string>? onGetEvaluatedPropertyValue = null,
             Func<string, IProjectProperties, string>? onGetUnevaluatedPropertyValue = null,
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mockMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName);
             var mockProvider = Create(onGetEvaluatedPropertyValue, onGetUnevaluatedPropertyValue, onSetPropertyValue);
-            return new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(() => mockProvider, mockMetadata);
+            return new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>(() => mockProvider, mockMetadata);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             var delegateProvider = IProjectPropertiesProviderFactory.Create();
             var keyFileProvider = new AssemblyOriginatorKeyFileValueProvider(project);
             var providerMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(AssemblyOriginatorKeyFilePropertyName);
-            var lazyArray = new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
+            var lazyArray = new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>(
                 () => keyFileProvider, providerMetadata) };
             var interceptedProvider = new ProjectFileInterceptedViaSnapshotProjectPropertiesProvider(delegateProvider, instanceProvider, project, lazyArray);
             var propertyNames = await properties.GetPropertyNamesAsync();

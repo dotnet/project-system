@@ -12,13 +12,13 @@ public class InterceptedProjectPropertiesTests
     [Fact]
     public void InterceptedProjectProperties_GetValueProviderBasedOnCapability_WithNonEmptyAndEmptyAppliesTo()
     {
-        var mockProviderMetadata = new Mock<IInterceptingPropertyValueProviderMetadata>();
+        var mockProviderMetadata = new Mock<IInterceptingPropertyValueProviderMetadata2>();
         mockProviderMetadata.Setup(x => x.PropertyNames).Returns(new[] { MockPropertyName });
         var metadata = mockProviderMetadata.Object;
 
         var providersWithEmptyAndNonEmptyAppliesTo =
             new Providers(
-                new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>
+                new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>>
                 {
                     new(() => new MockPropertyFilteredInterceptor1(), metadata),
                     new(() => new MockPropertyFilteredInterceptor2(), metadata),
@@ -33,7 +33,7 @@ public class InterceptedProjectPropertiesTests
         Assert.Equal(typeof(MockPropertyFilteredInterceptor3), providersWithEmptyAndNonEmptyAppliesTo.GetFilteredProvider(MockPropertyName, AppliesToFunction(Capability3))?.GetType());
 
         var providersWithNonEmptyAppliesTo = new Providers(
-            new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>
+            new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>>
             {
                 new(() => new MockPropertyFilteredInterceptor1(), metadata), 
                 new(() => new MockPropertyFilteredInterceptor2(), metadata)
