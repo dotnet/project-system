@@ -34,10 +34,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                         entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> { valueProvider });
                         _interceptingValueProviders.Add(propertyName, entry);
                     }
-
+                    else
+                    {
                     entry.Exports.Add(valueProvider);
                 }
             }
+        }
         }
 
         protected bool HasInterceptingValueProvider => _interceptingValueProviders.Count > 0;
