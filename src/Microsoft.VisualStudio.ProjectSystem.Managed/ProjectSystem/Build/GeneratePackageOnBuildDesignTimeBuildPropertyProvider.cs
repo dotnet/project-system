@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private readonly Task<IImmutableDictionary<string, string>> _properties;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TargetFrameworkGlobalBuildPropertyProvider"/> class.
+        /// Initializes a new instance of the <see cref="GeneratePackageOnBuildDesignTimeBuildPropertyProvider"/> class.
         /// </summary>
         [ImportingConstructor]
         internal GeneratePackageOnBuildDesignTimeBuildPropertyProvider(IProjectService projectService)

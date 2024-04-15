@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private readonly IProjectSystemOptions _projectSystemOptions;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TargetFrameworkGlobalBuildPropertyProvider"/> class.
+        /// Initializes a new instance of the <see cref="StartupProjectSingleTargetGlobalBuildPropertyProvider"/> class.
         /// </summary>
         [ImportingConstructor]
         internal StartupProjectSingleTargetGlobalBuildPropertyProvider(
