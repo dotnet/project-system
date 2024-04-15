@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                     if (!_interceptingValueProviders.TryGetValue(propertyName, out Providers? entry))
                     {
-                        entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> { valueProvider });
+                        entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>(1) { valueProvider });
                         _interceptingValueProviders.Add(propertyName, entry);
                     }
                     else
@@ -57,29 +57,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Exports = exports;
         }
 
-        public List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Exports { get; private set; }
+        public List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Exports { get; }
 
         public IInterceptingPropertyValueProvider? GetFilteredProvider(
             string propertyName,
             Func<string, bool> appliesToEvaluator)
         {
             // todo consider caching this based on capability
-            var foundExports = Exports
-                .Where(lazyProvider =>
-                    {
-                        string? appliesToExpression = lazyProvider.Metadata.AppliesTo;
-                        return appliesToExpression is null || appliesToEvaluator(appliesToExpression);
-                    })
-                .GroupBy(x => x.Value.GetType()) // in case we end up importing multiple of the same provider, which *has happened with TargetFrameworkMoniker* 
-                .Select(x => x.First())
-                .ToList();
-
-            return foundExports.Count switch
+            IInterceptingPropertyValueProvider? firstProvider = null;
+            foreach (var lazyProvider in Exports)
             {
-                0 => null,
-                1 => foundExports.First().Value,
-                _ => throw new ArgumentException($"Duplicate property value providers for same property name: {propertyName}")
-            };
+                string? appliesToExpression = lazyProvider.Metadata.AppliesTo;
+                if (appliesToExpression is null || appliesToEvaluator(appliesToExpression))
+                {
+                    if (firstProvider is null)
+                    {
+                        firstProvider = lazyProvider.Value;
+                    }
+                    else if (lazyProvider.Value.GetType() != firstProvider.GetType())
+                    {
+                        throw new ArgumentException($"Duplicate property value providers for same property name: {propertyName}");
+                    }
+                }
+            }
+
+            return firstProvider;
         }
     }
 }
