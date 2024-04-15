@@ -187,3 +187,4 @@ static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Dependenc
 static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.SupportsRemove -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.UnresolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs.DependenciesChangedEventArgs(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider provider, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependenciesChanges changes, System.Threading.CancellationToken token) -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata.AppliesTo.get -> string?

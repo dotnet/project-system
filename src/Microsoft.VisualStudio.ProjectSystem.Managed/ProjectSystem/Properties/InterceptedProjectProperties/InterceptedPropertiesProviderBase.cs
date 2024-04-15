@@ -36,10 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     }
                     else
                     {
-                    entry.Exports.Add(valueProvider);
+                        entry.Exports.Add(valueProvider);
+                    }
                 }
             }
-        }
         }
 
         protected bool HasInterceptingValueProvider => _interceptingValueProviders.Count > 0;
@@ -64,15 +64,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Func<string, bool> appliesToEvaluator)
         {
             // todo consider caching this based on capability
-            var foundExports = Exports.Where(lazyProvider =>
-            {
-                string? appliesToExpression = lazyProvider.Value.GetType()
-                    .GetCustomAttributes(typeof(AppliesToAttribute), inherit: true)
-                    .OfType<AppliesToAttribute>()
-                    .FirstOrDefault()?.AppliesTo;
-
-                return appliesToExpression is null || appliesToEvaluator(appliesToExpression);
-            })
+            var foundExports = Exports
+                .Where(lazyProvider =>
+                    {
+                        string? appliesToExpression = lazyProvider.Metadata.AppliesTo;
+                        return appliesToExpression is null || appliesToEvaluator(appliesToExpression);
+                    })
                 .GroupBy(x => x.Value.GetType()) // in case we end up importing multiple of the same provider, which *has happened with TargetFrameworkMoniker* 
                 .Select(x => x.First())
                 .ToList();
