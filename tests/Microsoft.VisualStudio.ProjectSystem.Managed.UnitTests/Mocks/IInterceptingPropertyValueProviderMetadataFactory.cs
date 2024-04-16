@@ -6,9 +6,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IInterceptingPropertyValueProviderMetadataFactory
     {
-        public static IInterceptingPropertyValueProviderMetadata Create(string propertyName)
+        public static IInterceptingPropertyValueProviderMetadata2 Create(string propertyName)
         {
-            var mock = new Mock<IInterceptingPropertyValueProviderMetadata>();
+            var mock = new Mock<IInterceptingPropertyValueProviderMetadata2>();
 
             mock.SetupGet(s => s.PropertyNames)
                 .Returns(new[] { propertyName });

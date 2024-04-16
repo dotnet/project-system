@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // provider as the ProjectFile, and is exported as the ProjectFile provider.
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
             UnconfiguredProject project,
-            [ImportMany(ContractNames.ProjectPropertyProviders.UserFile)]IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
+            [ImportMany(ContractNames.ProjectPropertyProviders.UserFile)]IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> interceptingValueProviders)
             : base(provider, instanceProvider, project, interceptingValueProviders)
         {
         }

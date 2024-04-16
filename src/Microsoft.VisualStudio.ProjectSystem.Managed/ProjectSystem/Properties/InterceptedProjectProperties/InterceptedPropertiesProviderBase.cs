@@ -16,12 +16,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectPropertiesProvider provider,
             IProjectInstancePropertiesProvider instanceProvider,
             UnconfiguredProject project,
-            IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
+            IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> interceptingValueProviders)
             : base(provider, instanceProvider, project)
         {
             Requires.NotNullOrEmpty(interceptingValueProviders);
 
-            foreach (Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider in interceptingValueProviders)
+            foreach (Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2> valueProvider in interceptingValueProviders)
             {
                 string[] propertyNames = valueProvider.Metadata.PropertyNames;
 
@@ -31,11 +31,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                     if (!_interceptingValueProviders.TryGetValue(propertyName, out Providers? entry))
                     {
-                        entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> { valueProvider });
+                        entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>>(1) { valueProvider });
                         _interceptingValueProviders.Add(propertyName, entry);
                     }
-
-                    entry.Exports.Add(valueProvider);
+                    else
+                    {
+                        entry.Exports.Add(valueProvider);
+                    }
                 }
             }
         }
@@ -50,37 +52,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
     internal class Providers
     {
-        public Providers(List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> exports)
+        public Providers(List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> exports)
         {
             Exports = exports;
         }
 
-        public List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> Exports { get; private set; }
+        public List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> Exports { get; }
 
         public IInterceptingPropertyValueProvider? GetFilteredProvider(
             string propertyName,
             Func<string, bool> appliesToEvaluator)
         {
             // todo consider caching this based on capability
-            var foundExports = Exports.Where(lazyProvider =>
+            IInterceptingPropertyValueProvider? firstProvider = null;
+            foreach (var lazyProvider in Exports)
             {
-                string? appliesToExpression = lazyProvider.Value.GetType()
-                    .GetCustomAttributes(typeof(AppliesToAttribute), inherit: true)
-                    .OfType<AppliesToAttribute>()
-                    .FirstOrDefault()?.AppliesTo;
+                string? appliesToExpression = lazyProvider.Metadata.AppliesTo;
+                if (appliesToExpression is null || appliesToEvaluator(appliesToExpression))
+                {
+                    if (firstProvider is null)
+                    {
+                        firstProvider = lazyProvider.Value;
+                    }
+                    else if (lazyProvider.Value.GetType() != firstProvider.GetType())
+                    {
+                        throw new ArgumentException($"Duplicate property value providers for same property name: {propertyName}");
+                    }
+                }
+            }
 
-                return appliesToExpression is null || appliesToEvaluator(appliesToExpression);
-            })
-                .GroupBy(x => x.Value.GetType()) // in case we end up importing multiple of the same provider, which *has happened with TargetFrameworkMoniker* 
-                .Select(x => x.First())
-                .ToList();
-
-            return foundExports.Count switch
-            {
-                0 => null,
-                1 => foundExports.First().Value,
-                _ => throw new ArgumentException($"Duplicate property value providers for same property name: {propertyName}")
-            };
+            return firstProvider;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         public TestProjectFileOrAssemblyInfoPropertiesProvider(
             UnconfiguredProject? project = null,
-            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? interceptingProvider = null,
+            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>? interceptingProvider = null,
             Workspace? workspace = null,
             IProjectThreadingService? threadingService = null,
             IProjectProperties? defaultProperties = null,
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public TestProjectFileOrAssemblyInfoPropertiesProvider(
             Workspace workspace,
             UnconfiguredProject project,
-            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? interceptingProvider = null,
+            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>? interceptingProvider = null,
             IProjectThreadingService? threadingService = null,
             IProjectProperties? defaultProperties = null,
             IProjectInstancePropertiesProvider? instanceProvider = null,
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             : base(delegatedProvider: IProjectPropertiesProviderFactory.Create(defaultProperties ?? IProjectPropertiesFactory.MockWithProperty("").Object),
                   instanceProvider: instanceProvider ?? IProjectInstancePropertiesProviderFactory.Create(),
                   interceptingValueProviders: interceptingProvider is null
-                    ? new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
+                    ? new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>(
                         () => IInterceptingPropertyValueProviderFactory.Create(),
                         IInterceptingPropertyValueProviderMetadataFactory.Create("TestPropertyName")) }
                     : new[] { interceptingProvider },
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private static TestProjectFileOrAssemblyInfoPropertiesProvider CreateProviderForSourceFileValidation(
             string code,
             out Workspace workspace,
-            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? interceptingProvider = null,
+            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>? interceptingProvider = null,
             Dictionary<string, string?>? additionalProps = null)
         {
             var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string propertyName,
             string propertyValueInProjectFile,
             out Workspace workspace,
-            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? interceptingProvider = null,
+            Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>? interceptingProvider = null,
             Dictionary<string, string?>? additionalProps = null)
         {
             var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
@@ -279,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         internal async Task SourceFileProperties_DefaultValues_GetEvaluatedPropertyAsync(string code, string propertyName, string expectedValue, Type interceptingProviderType)
         {
             var interceptingProvider = interceptingProviderType is not null
-                ? new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
+                ? new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>(
                     valueFactory: () => (IInterceptingPropertyValueProvider)Activator.CreateInstance(interceptingProviderType),
                     metadata: IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName))
                 : null;
@@ -353,7 +353,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         internal async Task ProjectFileProperties_WithInterception_SetEvaluatedPropertyAsync(string propertyName, string existingPropertyValue, string propertyValueToSet, string expectedValue, Type interceptingProviderType)
         {
             var interceptingProvider = interceptingProviderType is not null
-                ? new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
+                ? new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>(
                     valueFactory: () => (IInterceptingPropertyValueProvider)Activator.CreateInstance(interceptingProviderType),
                     metadata: IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName))
                 : null;

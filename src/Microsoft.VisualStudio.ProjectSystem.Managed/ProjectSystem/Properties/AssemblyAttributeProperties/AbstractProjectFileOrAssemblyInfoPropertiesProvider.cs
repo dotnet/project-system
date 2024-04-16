@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         protected AbstractProjectFileOrAssemblyInfoPropertiesProvider(
             IProjectPropertiesProvider delegatedProvider,
             IProjectInstancePropertiesProvider instanceProvider,
-            IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders,
+            IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> interceptingValueProviders,
             UnconfiguredProject project,
             Func<ProjectId?> getActiveProjectId,
             Workspace workspace,

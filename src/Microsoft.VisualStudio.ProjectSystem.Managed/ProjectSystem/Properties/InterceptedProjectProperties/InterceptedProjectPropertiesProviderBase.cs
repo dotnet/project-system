@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectPropertiesProvider provider,
             IProjectInstancePropertiesProvider instanceProvider,
             UnconfiguredProject project,
-            IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
+            IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> interceptingValueProviders)
             : base(provider, instanceProvider, project, interceptingValueProviders)
         {
             _project = project;
