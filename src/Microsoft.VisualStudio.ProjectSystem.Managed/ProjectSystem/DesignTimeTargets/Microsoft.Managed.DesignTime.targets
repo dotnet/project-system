@@ -443,7 +443,7 @@
   <Target Name="CollectResolvedCompilationReferencesDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(ReferencePathWithRefAssemblies)" />
 
   <PropertyGroup Condition="'$(CollectUpToDateCheckInputDesignTimeDependsOn)' == ''">
-    <CollectUpToDateCheckInputDesignTimeDependsOn>CompileDesignTime;_GetPackageFiles</CollectUpToDateCheckInputDesignTimeDependsOn>
+    <CollectUpToDateCheckInputDesignTimeDependsOn>CompileDesignTime</CollectUpToDateCheckInputDesignTimeDependsOn>
     <!-- F# projects do not have the ResolveCodeAnalysisRuleSet target. -->
     <CollectUpToDateCheckInputDesignTimeDependsOn Condition="'$(Language)' == 'C#' or '$(Language)' == 'VB'">$(CollectUpToDateCheckInputDesignTimeDependsOn);ResolveCodeAnalysisRuleSet</CollectUpToDateCheckInputDesignTimeDependsOn>
   </PropertyGroup>
@@ -455,8 +455,6 @@
       <UpToDateCheckInput Condition=" '$(ApplicationManifest)' != '' " Include="$(ApplicationManifest)" />
       <!-- .ruleset file, if any -->
       <UpToDateCheckInput Condition=" '$(ResolvedCodeAnalysisRuleSet)' != '' " Include="$(ResolvedCodeAnalysisRuleSet)" />
-      <!-- Items that would be packaged during build. Note that we cannot condition this on GeneratePackageOnBuild as this property is forced to false during design-time builds via GeneratePackageOnBuildDesignTimeBuildPropertyProvider. -->
-      <UpToDateCheckInput Include="@(_PackageFiles)" />
     </ItemGroup>
   </Target>
 
