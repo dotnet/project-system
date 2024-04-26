@@ -67,7 +67,7 @@ internal class CopyItemAggregator : ICopyItemAggregator
                 if (!data.ProduceReferenceAssembly && project != targetPath)
                 {
                     // One of the referenced projects does not produce a reference assembly.
-                    referencesNotProducingReferenceAssembly ??= new();
+                    referencesNotProducingReferenceAssembly ??= [];
                     referencesNotProducingReferenceAssembly.Add(data.TargetPath);
                 }
 
@@ -78,7 +78,7 @@ internal class CopyItemAggregator : ICopyItemAggregator
 
                 if (!data.CopyItems.IsEmpty)
                 {
-                    contributingProjects ??= new();
+                    contributingProjects ??= [];
                     contributingProjects.Add(data);
                 }
             }

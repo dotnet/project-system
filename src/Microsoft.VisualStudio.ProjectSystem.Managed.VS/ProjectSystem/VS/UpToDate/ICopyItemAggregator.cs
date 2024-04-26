@@ -59,5 +59,5 @@ internal record struct ProjectCopyData(
     ImmutableArray<CopyItem> CopyItems,
     ImmutableArray<string> ReferencedProjectTargetPaths)
 {
-    public bool IsDefault => CopyItems.IsDefault;
+    public readonly bool IsDefault => CopyItems.IsDefault;
 }

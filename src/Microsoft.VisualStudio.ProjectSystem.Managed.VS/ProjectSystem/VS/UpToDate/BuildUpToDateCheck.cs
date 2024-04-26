@@ -955,7 +955,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 // The subscription object calls GetLatestVersionAsync for project data, which can take a while.
                 // We separate out the wait time from the overall time, so we can more easily identify when the
                 // wait is long, versus the check's actual execution time.
-                var waitTime = sw.Elapsed;
+                TimeSpan waitTime = sw.Elapsed;
 
                 token.ThrowIfCancellationRequested();
 
