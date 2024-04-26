@@ -59,7 +59,6 @@
     <StartArguments>/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /log</StartArguments>
 
     <Ngen>true</Ngen>
-    <NgenArchitecture>All</NgenArchitecture>
     <NgenPriority>3</NgenPriority>
   </PropertyGroup>
 
