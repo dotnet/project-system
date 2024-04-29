@@ -92,9 +92,11 @@ Build acceleration runs with the FUTDC, and outputs details of its operation in 
 > Tools | Options | Projects and Solutions | SDK-Style Projects
 
 _Traditional view:_
+
 <img src="repo/images/options.png" width="528" alt="SDK-style project options, in the legacy settings view">
 
 _Unified settings view:_
+
 <img src="repo/images/options-unified.png" width="528" alt="SDK-style project options, in the modern unified settings view">
 
 Setting _Logging Level_ to a value other than `None` results in messages prefixed with `FastUpToDate:` in Visual Studio's build output.
