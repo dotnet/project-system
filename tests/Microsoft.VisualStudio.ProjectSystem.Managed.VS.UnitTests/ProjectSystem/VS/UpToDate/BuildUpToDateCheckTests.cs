@@ -752,10 +752,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         [CombinatorialData]
         public async Task IsUpToDateAsync_CopyReference_InputsOlderThanMarkerOutput(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies)
         {
-            _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
-            _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
-
-            _targetsWithoutReferenceAssemblies = allReferencesProduceReferenceAssemblies ? null : new[] { "WithoutReferenceAssembly1", "WithoutReferenceAssembly2" };
+            SetUpAcceleratedTestCase(isBuildAccelerationEnabledInProject, allReferencesProduceReferenceAssemblies);
 
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
@@ -869,17 +866,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             };
 
             var lastBuildTime = DateTime.UtcNow.AddMinutes(-5);
-
-            // We only check copy markers when build acceleration is disabled (null or false).
-            _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
-            _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
-
-            await SetupAsync(projectSnapshot: projectSnapshot, lastSuccessfulBuildStartTimeUtc: lastBuildTime);
-
             var outputTime   = DateTime.UtcNow.AddMinutes(-4);
             var resolvedTime = DateTime.UtcNow.AddMinutes(-3);
             var markerTime   = DateTime.UtcNow.AddMinutes(-2);
             var originalTime = DateTime.UtcNow.AddMinutes(-1);
+
+            // We only check copy markers when build acceleration is disabled (null or false).
+            SetUpAcceleratedTestCase(isBuildAccelerationEnabledInProject, allReferencesProduceReferenceAssemblies: true);
+
+            await SetupAsync(projectSnapshot: projectSnapshot, lastSuccessfulBuildStartTimeUtc: lastBuildTime);
 
             _fileSystem.AddFile(@"C:\Dev\Solution\Project\OutputMarker", outputTime);
             _fileSystem.AddFile("Reference1ResolvedPath", resolvedTime);
@@ -1616,9 +1611,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         [CombinatorialData]
         public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies)
         {
-            _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
-            _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
-            _targetsWithoutReferenceAssemblies = allReferencesProduceReferenceAssemblies ? null : new[] { "WithoutReferenceAssembly1", "WithoutReferenceAssembly2" };
+            SetUpAcceleratedTestCase(isBuildAccelerationEnabledInProject, allReferencesProduceReferenceAssemblies);
 
             var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
             var sourcePath2 = @"C:\Dev\Solution\Project\Item2";
@@ -1734,9 +1727,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         [CombinatorialData]
         public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination_TargetPath(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies)
         {
-            _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
-            _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
-            _targetsWithoutReferenceAssemblies = allReferencesProduceReferenceAssemblies ? null : new[] { "WithoutReferenceAssembly1", "WithoutReferenceAssembly2" };
+            SetUpAcceleratedTestCase(isBuildAccelerationEnabledInProject, allReferencesProduceReferenceAssemblies);
 
             var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
             var sourcePath2 = @"C:\Dev\Solution\Project\Item2";
@@ -1852,9 +1843,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         [CombinatorialData]
         public async Task IsUpToDateAsync_CopyToOutputDirectory_SourceIsNewerThanDestination_CustomOutDir(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies)
         {
-            _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
-            _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
-            _targetsWithoutReferenceAssemblies = allReferencesProduceReferenceAssemblies ? null : new[] { "WithoutReferenceAssembly1", "WithoutReferenceAssembly2" };
+            SetUpAcceleratedTestCase(isBuildAccelerationEnabledInProject, allReferencesProduceReferenceAssemblies);
 
             const string outDirSnapshot = "newOutDir";
 
@@ -2029,9 +2018,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         [CombinatorialData]
         public async Task IsUpToDateAsync_CopyToOutputDirectory_DestinationDoesNotExist(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies)
         {
-            _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
-            _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
-            _targetsWithoutReferenceAssemblies = allReferencesProduceReferenceAssemblies ? null : new[] { "WithoutReferenceAssembly1", "WithoutReferenceAssembly2" };
+            SetUpAcceleratedTestCase(isBuildAccelerationEnabledInProject, allReferencesProduceReferenceAssemblies);
 
             var sourcePath1 = @"C:\Dev\Solution\Project\Item1";
             var sourcePath2 = @"C:\Dev\Solution\Project\Item2";
@@ -2309,6 +2296,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         private static string ToLocalTime(DateTime time)
         {
             return time.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff");
+        }
+
+        private void SetUpAcceleratedTestCase(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies)
+        {
+            _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
+            _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
+            _targetsWithoutReferenceAssemblies = allReferencesProduceReferenceAssemblies ? null : new[] { "WithoutReferenceAssembly1", "WithoutReferenceAssembly2" };
         }
 
         private async Task AssertNotUpToDateAsync(string? expectedLogOutput = null, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "", string targetFramework = "", bool skipValidation = false)
