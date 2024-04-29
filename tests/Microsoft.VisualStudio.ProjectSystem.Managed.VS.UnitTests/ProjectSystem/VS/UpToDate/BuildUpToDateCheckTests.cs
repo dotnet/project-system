@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
             _lastSuccessfulBuildStartTime = lastSuccessfulBuildStartTimeUtc;
 
-            projectSnapshot ??= new Dictionary<string, IProjectRuleSnapshotModel>();
+            projectSnapshot ??= new Dictionary<string, IProjectRuleSnapshotModel>(StringComparers.RuleNames);
 
             if (!projectSnapshot.ContainsKey(ConfigurationGeneral.SchemaName))
             {
