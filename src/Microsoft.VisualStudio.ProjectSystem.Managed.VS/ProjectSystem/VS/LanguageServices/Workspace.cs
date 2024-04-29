@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
@@ -525,16 +526,16 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                     isActiveEditorContext: _activeEditorContextTracker.IsActiveEditorContext(ContextId),
                     isActiveConfiguration: IsPrimary);
 
-                Context.StartBatch();
-
                 try
                 {
+                    IAsyncDisposable disposableBatchScope = await Context.CreateBatchScopeAsync(CancellationToken.None);
+
+                    await using ConfiguredAsyncDisposable _ = disposableBatchScope.ConfigureAwait(false);
+
                     applyFunc(update, contextState, cancellationToken);
                 }
                 finally
                 {
-                    await Context.EndBatchAsync();
-
                     UpdateProgressRegistration();
                 }
             }

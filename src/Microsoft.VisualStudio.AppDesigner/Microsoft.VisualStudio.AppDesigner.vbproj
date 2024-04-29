@@ -20,7 +20,9 @@
 
   <ItemGroup>
     <PackageReference Remove="Microsoft.VisualStudio.ProjectSystem*" />
+    <PackageReference Include="StreamJsonRpc" />
   </ItemGroup>
+  
   <ItemGroup>
     <Compile Include="..\Common\ManagedCodeMarkers.vb">
       <Link>ManagedCodeMarkers.vb</Link>

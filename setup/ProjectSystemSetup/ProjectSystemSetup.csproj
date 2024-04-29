@@ -27,6 +27,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="StreamJsonRpc" />
+
     <Content Include="UnifiedSettings\ManagedProjectSystem.registration.json">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>

@@ -1,9 +1,16 @@
 ﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
+
   <Import Project="..\..\eng\imports\VisualStudioIntegration.props" />
+
   <PropertyGroup>
     <PlatformTarget>x86</PlatformTarget>
     <TargetFramework>net472</TargetFramework>
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StreamJsonRpc" />
+  </ItemGroup>
+
 </Project>

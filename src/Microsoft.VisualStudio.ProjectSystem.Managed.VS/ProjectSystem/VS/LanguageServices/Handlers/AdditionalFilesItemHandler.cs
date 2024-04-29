@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!_paths.Contains(fullPath))
             {
                 logger.WriteLine("Adding additional file '{0}'", fullPath);
-                context.AddAdditionalFile(fullPath, isActiveContext);
+                context.AddAdditionalFile(fullPath, folderNames: [], isActiveContext);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }

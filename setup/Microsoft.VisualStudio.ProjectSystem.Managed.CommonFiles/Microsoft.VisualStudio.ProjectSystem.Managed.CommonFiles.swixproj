@@ -9,10 +9,6 @@
     <PackagePreprocessorDefinitions>$(PackagePreprocessorDefinitions);VisualStudioXamlRulesDir=$(VisualStudioXamlRulesDir);VisualStudioExtensionSetupDir=$(VisualStudioExtensionSetupDir)</PackagePreprocessorDefinitions>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.Swix" />
-  </ItemGroup>
-
   <!-- ConstructSwrFile in swix.targets in Microsoft.DevDiv.Tasks2 assumes %(GeneratedSwrFiles.PackageName)\%(GeneratedSwrFiles.Differentiator) in the file path. -->
   <!-- We don't want that as part of this path for our SWIX-based VSIX, so we replace it here. -->
   <Target Name="FixSwixInputsPaths" AfterTargets="ConstructSwrFile">

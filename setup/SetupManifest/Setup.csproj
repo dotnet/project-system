@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="StreamJsonRpc" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- If ReferenceOutputAssembly is not set to false, it will attempt to compile the VSMAN file itself (somehow ends up in the list of Compile items). -->
     <!-- CSC error CS0009: Metadata file 'C:\Code\project-system\artifacts\Release\VSSetup\Insertion\SetupManifest.vsman' could not be opened. Image is too small. [C:\Code\project-system\setup\SetupManifest\Setup.csproj] -->
     <!-- If Restore isn't explicitly sent, the Microsoft.VisualStudio.Internal.MicroBuild.Vsman PackageReference in the vsmanproj will not be restored. -->

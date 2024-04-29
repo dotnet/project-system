@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="StreamJsonRpc" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\Common\ThrowingTraceListener.cs" Link="Diagnostics\ThrowingTraceListener.cs" />
   </ItemGroup>
 
