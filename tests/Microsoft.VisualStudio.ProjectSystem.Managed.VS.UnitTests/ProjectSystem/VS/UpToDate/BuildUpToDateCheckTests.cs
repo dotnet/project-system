@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
         private readonly DateTime _projectFileTimeUtc = new(1999, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        private readonly List<ITelemetryServiceFactory.TelemetryParameters> _telemetryEvents = new();
+        private readonly List<ITelemetryServiceFactory.TelemetryParameters> _telemetryEvents = [];
         private DateTime? _lastSuccessfulBuildStartTime;
 
         private readonly BuildUpToDateCheck _buildUpToDateCheck;
@@ -43,6 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         private bool? _expectedIsBuildAccelerationEnabled;
         private IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> _copyItems = Enumerable.Empty<(string Path, ImmutableArray<CopyItem> CopyItems)>();
         private bool _isCopyItemsComplete = true;
+        private IReadOnlyList<string>? _duplicateCopyItemRelativeTargetPaths;
         private IReadOnlyList<string>? _targetsWithoutReferenceAssemblies;
 
         private UpToDateCheckConfiguredInput? _state;
@@ -105,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             var upToDateCheckHost = new Mock<IUpToDateCheckHost>(MockBehavior.Strict);
 
             var copyItemAggregator = new Mock<ICopyItemAggregator>(MockBehavior.Strict);
-            copyItemAggregator.Setup(o => o.TryGatherCopyItemsForProject(It.IsAny<string>(), It.IsAny<BuildUpToDateCheck.Log>())).Returns(() => new CopyItemsResult(_copyItems, _isCopyItemsComplete, _targetsWithoutReferenceAssemblies));
+            copyItemAggregator.Setup(o => o.TryGatherCopyItemsForProject(It.IsAny<string>(), It.IsAny<BuildUpToDateCheck.Log>())).Returns(() => new CopyItemsResult(_isCopyItemsComplete, _copyItems, _duplicateCopyItemRelativeTargetPaths, _targetsWithoutReferenceAssemblies));
 
             _currentSolutionBuildContext = new SolutionBuildContext(_fileSystem);
 
@@ -750,9 +751,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
         [Theory]
         [CombinatorialData]
-        public async Task IsUpToDateAsync_CopyReference_InputsOlderThanMarkerOutput(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies)
+        public async Task IsUpToDateAsync_CopyReference_InputsOlderThanMarkerOutput(
+            bool? isBuildAccelerationEnabledInProject,
+            bool allReferencesProduceReferenceAssemblies,
+            bool hasDuplicateCopyItemRelativeTargetPaths)
         {
-            SetUpAcceleratedTestCase(isBuildAccelerationEnabledInProject, allReferencesProduceReferenceAssemblies);
+            SetUpAcceleratedTestCase(isBuildAccelerationEnabledInProject, allReferencesProduceReferenceAssemblies, hasDuplicateCopyItemRelativeTargetPaths: hasDuplicateCopyItemRelativeTargetPaths);
 
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
@@ -773,13 +777,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             };
 
             var lastBuildTime = DateTime.UtcNow.AddMinutes(-5);
+            var resolvedTime  = DateTime.UtcNow.AddMinutes(-4);
+            var markerTime    = DateTime.UtcNow.AddMinutes(-3);
+            var originalTime  = DateTime.UtcNow.AddMinutes(-2);
+            var outputTime    = DateTime.UtcNow.AddMinutes(-1);
 
             await SetupAsync(projectSnapshot: projectSnapshot, lastSuccessfulBuildStartTimeUtc: lastBuildTime);
-
-            var resolvedTime = DateTime.UtcNow.AddMinutes(-4);
-            var markerTime   = DateTime.UtcNow.AddMinutes(-3);
-            var originalTime = DateTime.UtcNow.AddMinutes(-2);
-            var outputTime   = DateTime.UtcNow.AddMinutes(-1);
 
             _fileSystem.AddFile(@"C:\Dev\Solution\Project\OutputMarker", outputTime);
             _fileSystem.AddFile("Reference1ResolvedPath", resolvedTime);
@@ -790,24 +793,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             {
                 if (allReferencesProduceReferenceAssemblies)
                 {
-                    await AssertUpToDateAsync(
-                        $"""
-                        Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
-                        Comparing timestamps of inputs and outputs:
-                            No build outputs defined.
-                        Project is up-to-date.
-                        """);
+                    if (hasDuplicateCopyItemRelativeTargetPaths)
+                    {
+                        _expectedIsBuildAccelerationEnabled = false;
+
+                        await AssertUpToDateAsync(
+                            $"""
+                            Build acceleration is not available for this project because it copies duplicate files to the output directory: 'appsettings.json', 'AnotherFile.dll'
+                            Comparing timestamps of inputs and outputs:
+                                No build outputs defined.
+                            Comparing timestamps of copy marker inputs and output:
+                                Write timestamp on output marker is {ToLocalTime(outputTime)} on 'C:\Dev\Solution\Project\OutputMarker'.
+                                Adding input reference copy markers:
+                                    Reference1OriginalPath
+                                    Reference1MarkerPath
+                            Project is up-to-date.
+                            """);
+                    }
+                    else
+                    {
+                        await AssertUpToDateAsync(
+                            $"""
+                            Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
+                            Comparing timestamps of inputs and outputs:
+                                No build outputs defined.
+                            Project is up-to-date.
+                            """);
+                    }
                 }
                 else
                 {
-                    await AssertUpToDateAsync(
-                        $"""
-                        Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
-                        Comparing timestamps of inputs and outputs:
-                            No build outputs defined.
-                        Project is up-to-date.
-                        This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': 'WithoutReferenceAssembly1', 'WithoutReferenceAssembly2'. See https://aka.ms/vs-build-acceleration for more information.
-                        """);
+                    if (hasDuplicateCopyItemRelativeTargetPaths)
+                    {
+                        _expectedIsBuildAccelerationEnabled = false;
+                        
+                        await AssertUpToDateAsync(
+                            $"""
+                            Build acceleration is not available for this project because it copies duplicate files to the output directory: 'appsettings.json', 'AnotherFile.dll'
+                            Comparing timestamps of inputs and outputs:
+                                No build outputs defined.
+                            Comparing timestamps of copy marker inputs and output:
+                                Write timestamp on output marker is {ToLocalTime(outputTime)} on 'C:\Dev\Solution\Project\OutputMarker'.
+                                Adding input reference copy markers:
+                                    Reference1OriginalPath
+                                    Reference1MarkerPath
+                            Project is up-to-date.
+                            """);
+                    }
+                    else
+                    {
+                        await AssertUpToDateAsync(
+                            $"""
+                            Build acceleration is enabled for this project via the 'AccelerateBuildsInVisualStudio' MSBuild property. See https://aka.ms/vs-build-acceleration.
+                            Comparing timestamps of inputs and outputs:
+                                No build outputs defined.
+                            Project is up-to-date.
+                            This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': 'WithoutReferenceAssembly1', 'WithoutReferenceAssembly2'. See https://aka.ms/vs-build-acceleration for more information.
+                            """);
+                    }
                 }
             }
             else if (isBuildAccelerationEnabledInProject is false)
@@ -2314,11 +2357,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             return time.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.fff");
         }
 
-        private void SetUpAcceleratedTestCase(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies)
+        private void SetUpAcceleratedTestCase(bool? isBuildAccelerationEnabledInProject, bool allReferencesProduceReferenceAssemblies, bool hasDuplicateCopyItemRelativeTargetPaths = false)
         {
             _isBuildAccelerationEnabledInProject = isBuildAccelerationEnabledInProject;
             _expectedIsBuildAccelerationEnabled = isBuildAccelerationEnabledInProject;
             _targetsWithoutReferenceAssemblies = allReferencesProduceReferenceAssemblies ? null : new[] { "WithoutReferenceAssembly1", "WithoutReferenceAssembly2" };
+            _duplicateCopyItemRelativeTargetPaths = hasDuplicateCopyItemRelativeTargetPaths ? new[] { "appsettings.json", "AnotherFile.dll" } : null;
         }
 
         private async Task AssertNotUpToDateAsync(string? expectedLogOutput = null, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "", string targetFramework = "", bool skipValidation = false)

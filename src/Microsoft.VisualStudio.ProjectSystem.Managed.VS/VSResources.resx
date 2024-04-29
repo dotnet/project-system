@@ -543,6 +543,10 @@ In order to debug this project, add an executable project to this solution which
   <data name="FUTD_AccelerationDisabledCopyItemsIncomplete" xml:space="preserve">
     <value>Build acceleration is not available for this project because not all transitively referenced projects have provided acceleration data.</value>
   </data>
+  <data name="FUTD_AccelerationDisabledDuplicateCopyItemsIncomplete_1" xml:space="preserve">
+    <value>Build acceleration is not available for this project because it copies duplicate files to the output directory: {0}</value>
+    <comment>{0} is a list of one or more relative file paths.</comment>
+  </data>
   <data name="FUTDC_AccelerationDataMissingForProject_1" xml:space="preserve">
     <value>Build acceleration data is unavailable for project with target '{0}'. See https://aka.ms/vs-build-acceleration.</value>
     <comment>{0} is a file path.</comment>

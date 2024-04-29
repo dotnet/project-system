@@ -91,7 +91,7 @@ internal class CopyItemAggregator : ICopyItemAggregator
             }
         }
 
-        return new(GenerateCopyItems(), isComplete, referencesNotProducingReferenceAssembly);
+        return new(isComplete, GenerateCopyItems(), GetDuplicateCopyItems(), referencesNotProducingReferenceAssembly);
 
         IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> GenerateCopyItems()
         {
@@ -104,6 +104,30 @@ internal class CopyItemAggregator : ICopyItemAggregator
             {
                 yield return (contributingProject.ProjectFullPath ?? contributingProject.TargetPath, contributingProject.CopyItems);
             }
+        }
+
+        IReadOnlyList<string>? GetDuplicateCopyItems()
+        {
+            HashSet<string>? duplicates = null;
+
+            if (contributingProjects is not null)
+            {
+                HashSet<string> targetPaths = new(StringComparers.Paths);
+
+                foreach (ProjectCopyData contributingProject in contributingProjects)
+                {
+                    foreach (CopyItem copyItem in contributingProject.CopyItems)
+                    {
+                        if (!targetPaths.Add(copyItem.RelativeTargetPath))
+                        {
+                            duplicates ??= new(StringComparers.Paths);
+                            duplicates.Add(copyItem.RelativeTargetPath);
+                        }
+                    }
+                }
+            }
+
+            return duplicates?.ToList();
         }
     }
 }

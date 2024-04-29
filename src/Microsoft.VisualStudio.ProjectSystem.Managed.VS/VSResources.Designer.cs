@@ -259,6 +259,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Build acceleration is not available for this project because it copies duplicate files to the output directory: {0}.
+        /// </summary>
+        internal static string FUTD_AccelerationDisabledDuplicateCopyItemsIncomplete_1 {
+            get {
+                return ResourceManager.GetString("FUTD_AccelerationDisabledDuplicateCopyItemsIncomplete_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Build acceleration is disabled for this project via the &apos;AccelerateBuildsInVisualStudio&apos; MSBuild property. See https://aka.ms/vs-build-acceleration..
         /// </summary>
         internal static string FUTD_AccelerationDisabledForProject {

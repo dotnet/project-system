@@ -144,6 +144,12 @@ Looking through the build output with the following points in mind:
 
 - ⛔ If you see:
 
+   > Build acceleration is not available for this project because it copies duplicate files to the output directory: '<path1>', '<path2>'
+
+   Then multiple projects want to copy the same file to the output directory. Currently, Build Acceleration does not attempt to discover which of these source files should win. Instead, when this situation occurs, Build Acceleration is disabled.
+
+- ⛔ If you see:
+
    > This project has enabled build acceleration, but not all referenced projects produce a reference assembly. Ensure projects producing the following outputs have the 'ProduceReferenceAssembly' MSBuild property set to 'true': '&lt;path1&gt;', '&lt;path2&gt;'.
 
    Then build acceleration will not know whether it is safe to copy a modified output DLL from a referenced project or not. We rely on the use of reference assemblies to convey this information. To address this, ensure all referenced projects have the `ProduceReferenceAssembly` property set to `true`. You may like to add this to your `Directory.Build.props` file alongside the `AccelerateBuildsInVisualStudio` property. Note that projects targeting `net5.0` or later produce reference assemblies by default. Projects that target .NET Standard may require this to be specified manually (see https://github.com/dotnet/project-system/issues/8865).

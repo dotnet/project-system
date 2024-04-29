@@ -25,6 +25,11 @@
       {1} is the profile command, which is usually an internal string but is helpful when diagnosing issues here.
     </note>
       </trans-unit>
+      <trans-unit id="FUTD_AccelerationDisabledDuplicateCopyItemsIncomplete_1">
+        <source>Build acceleration is not available for this project because it copies duplicate files to the output directory: {0}</source>
+        <target state="new">Build acceleration is not available for this project because it copies duplicate files to the output directory: {0}</target>
+        <note>{0} is a list of one or more relative file paths.</note>
+      </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
         <source>The name of the framework assembly.</source>
         <target state="translated">Nazwa zestawu struktury.</target>
