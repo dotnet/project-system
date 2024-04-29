@@ -1193,7 +1193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                         }
                         else
                         {
-                            logger.Verbose(nameof(VSResources.FUTD_BuildAccelerationIsNotEnabledForThisProject));
+                            logger.Info(nameof(VSResources.FUTD_BuildAccelerationIsNotEnabledForThisProject));
                             return null;
                         }
                     }
