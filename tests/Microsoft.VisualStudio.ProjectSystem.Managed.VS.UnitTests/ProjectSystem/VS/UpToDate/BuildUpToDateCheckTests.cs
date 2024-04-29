@@ -912,6 +912,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     """,
                     "InputMarkerNewerThanOutputMarker");
             }
+            else
+            {
+                await AssertNotUpToDateAsync(
+                    $"""
+                    Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
+                    Comparing timestamps of inputs and outputs:
+                        No build outputs defined.
+                    Comparing timestamps of copy marker inputs and output:
+                        Write timestamp on output marker is {ToLocalTime(outputTime)} on 'C:\Dev\Solution\Project\OutputMarker'.
+                        Adding input reference copy markers:
+                            Reference1OriginalPath
+                    Input marker 'Reference1OriginalPath' is newer ({ToLocalTime(originalTime)}) than output marker 'C:\Dev\Solution\Project\OutputMarker' ({ToLocalTime(outputTime)}), not up-to-date.
+                    This project appears to be a candidate for build acceleration. To opt in, set the 'AccelerateBuildsInVisualStudio' MSBuild property to 'true'. See https://aka.ms/vs-build-acceleration.
+                    """,
+                    "InputMarkerNewerThanOutputMarker");
+            }
         }
 
         [Fact]
