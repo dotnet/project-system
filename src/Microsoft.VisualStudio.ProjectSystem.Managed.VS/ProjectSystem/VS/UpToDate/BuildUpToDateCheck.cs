@@ -1233,13 +1233,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             return _projectSystemOptions.GetIsFastUpToDateCheckEnabledAsync(cancellationToken);
         }
 
-        internal readonly struct TestAccessor
+        internal readonly struct TestAccessor(BuildUpToDateCheck check)
         {
-            private readonly BuildUpToDateCheck _check;
-
-            public TestAccessor(BuildUpToDateCheck check) => _check = check;
-
-            public void SetSubscription(ISubscription subscription) => _check._subscription = subscription;
+            public void SetSubscription(ISubscription subscription) => check._subscription = subscription;
         }
 
         /// <summary>For unit testing only.</summary>
