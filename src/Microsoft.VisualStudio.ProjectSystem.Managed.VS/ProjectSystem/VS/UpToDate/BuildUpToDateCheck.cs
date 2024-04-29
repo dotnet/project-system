@@ -1180,11 +1180,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                     bool isEnabled;
 
-                    if (isEnabledInProject is null)
+                    if (isEnabledInProject is bool b)
                     {
-                        // No value has been specified in the project. Look to the feature flag to determine
-                        // the default behavior in this case.
-
+                        isEnabled = b;
+                    }
+                    else
+                    {
+                        // No value has been specified in the project. Query the environment to decide (e.g. feature flag).
                         if (await _projectSystemOptions.IsBuildAccelerationEnabledByDefaultAsync(cancellationToken))
                         {
                             // The user has opted-in via feature flag. Set this to true and carry on with further checks.
@@ -1196,10 +1198,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                             logger.Info(nameof(VSResources.FUTD_BuildAccelerationIsNotEnabledForThisProject));
                             return null;
                         }
-                    }
-                    else
-                    {
-                        isEnabled = isEnabledInProject.Value;
                     }
 
                     if (isEnabled)
