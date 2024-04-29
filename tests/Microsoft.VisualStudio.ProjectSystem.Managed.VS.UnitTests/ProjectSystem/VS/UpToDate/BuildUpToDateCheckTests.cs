@@ -135,9 +135,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     TimeSpan waitTime,
                     LogLevel logLevel) =>
                     {
-                        Assert.Equal(_expectedUpToDate, upToDate);
-                        Assert.Equal(_logLevel, logLevel);
-                        Assert.Equal(_expectedIsBuildAccelerationEnabled, buildAccelerationEnabled);
+                        if (_expectedUpToDate != upToDate)
+                        {
+                            Assert.Fail($"Expected up-to-date to be {_expectedUpToDate} but was {upToDate}.");
+                        }
+                        else if (_logLevel != logLevel)
+                        {
+                            Assert.Fail($"Expected log level to be {_logLevel} but was {logLevel}.");
+                        }
+                        else if (_expectedIsBuildAccelerationEnabled != buildAccelerationEnabled)
+                        {
+                            Assert.Fail($"Expected build acceleration enablement to be {_expectedIsBuildAccelerationEnabled} but was {buildAccelerationEnabled}.");
+                        }
                     });
 
             _buildUpToDateCheck = new BuildUpToDateCheck(
