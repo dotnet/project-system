@@ -1,3 +1,4 @@
+appsettings
 args
 async
 awaiter
@@ -15,6 +16,7 @@ dirs
 docdata
 enum
 enums
+fsproj
 fsscript
 func
 futdcache
@@ -44,6 +46,7 @@ netcoreapp
 nuget
 pbstr
 phier
+pkgdef
 prev
 proj
 projectsystem
