@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public IDisposable SuppressProjectExecutionContext()
             {
-                return new DisposableObject();
+                return DisposableObject.Instance;
             }
 
             public void Fork(
@@ -66,6 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             private class DisposableObject : IDisposable
             {
+                public static IDisposable Instance { get; } = new DisposableObject();
                 public void Dispose()
                 {
                 }
