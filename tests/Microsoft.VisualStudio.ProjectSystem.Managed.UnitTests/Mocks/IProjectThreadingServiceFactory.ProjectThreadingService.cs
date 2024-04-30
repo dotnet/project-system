@@ -13,9 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public ProjectThreadingService(bool verifyOnUIThread = true) => _verifyOnUIThread = verifyOnUIThread;
 
-#pragma warning disable VSSDK005
             public JoinableTaskContextNode JoinableTaskContext { get; } = new JoinableTaskContextNode(new JoinableTaskContext());
-#pragma warning restore VSSDK005
 
             public JoinableTaskFactory JoinableTaskFactory => JoinableTaskContext.Factory;
 
