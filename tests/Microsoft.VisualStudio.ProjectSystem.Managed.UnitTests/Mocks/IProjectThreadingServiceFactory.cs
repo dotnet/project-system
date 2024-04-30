@@ -8,15 +8,5 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             return new ProjectThreadingService(verifyOnUIThread);
         }
-
-        public static IProjectThreadingService ImplementVerifyOnUIThread(Action action)
-        {
-            var mock = new Mock<IProjectThreadingService>();
-
-            mock.Setup(s => s.VerifyOnUIThread())
-                .Callback(action);
-
-            return mock.Object;
-        }
     }
 }
