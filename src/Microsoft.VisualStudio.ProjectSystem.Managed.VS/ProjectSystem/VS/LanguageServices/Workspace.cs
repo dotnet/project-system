@@ -528,9 +528,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
                 try
                 {
-                    IAsyncDisposable disposableBatchScope = await Context.CreateBatchScopeAsync(cancellationToken);
-
-                    await using ConfiguredAsyncDisposable _ = disposableBatchScope.ConfigureAwait(false);
+                    await using IAsyncDisposable _ = await Context.CreateBatchScopeAsync(cancellationToken);
 
                     applyFunc(update, contextState, cancellationToken);
                 }
