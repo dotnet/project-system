@@ -19,7 +19,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public void AddOrUpdatePropertyValue(string propertyName, string propertyValue)
         {
-            ImmutableInterlocked.AddOrUpdate(ref _properties, propertyName, propertyValue, (_, _) => propertyValue);
+            ImmutableInterlocked.Update(
+                ref _properties,
+                static (dic, pair) => dic.SetItem(pair.Key, pair.Value),
+                (Key: propertyName, Value: propertyValue));
         }
 
         public string? GetPropertyValue(string propertyName)
