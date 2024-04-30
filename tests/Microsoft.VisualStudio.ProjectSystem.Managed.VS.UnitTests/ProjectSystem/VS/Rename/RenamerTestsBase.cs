@@ -84,6 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             string language, 
             IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService)
         {
+            // Configure mocks.
             var unconfiguredProject = UnconfiguredProjectFactory.Create(fullPath: $@"C:\project1.{ProjectFileExtension}");
             var projectServices = IUnconfiguredProjectVsServicesFactory.Implement(
                 threadingServiceCreator: () => IProjectThreadingServiceFactory.Create(),
@@ -92,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             using var ws = new AdhocWorkspace();
             ws.AddSolution(InitializeWorkspace(ProjectId.CreateNewId(), oldFilePath, sourceCode, language));
 
-            var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
+            var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement<bool>((_, _, _, _) => true);
             var waitIndicator = Mock.Of<IWaitIndicator>();
             var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
             var projectThreadingService = IProjectThreadingServiceFactory.Create();
@@ -106,22 +107,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             mockNode.SetupGet(x => x.IsFolder).Returns(false);
             var node = mockNode.Object;
 
-            var renamer = new TestRenamerProjectTreeActionHandler(unconfiguredProject,
-                                                              projectServices,
-                                                              new Lazy<Workspace>(() => ws),
-                                                              environmentOptionsFactory,
-                                                              userNotificationServices,
-                                                              roslynServices,
-                                                              waitIndicator,
-                                                              vsOnlineServices,
-                                                              projectAsynchronousTasksService,
-                                                              projectThreadingService,
-                                                              extensibility,
-                                                              operationProgressMock,
-                                                              settingsManagerService);
+            // Construct the renamer.
+            var renamer = new TestRenamerProjectTreeActionHandler(
+                unconfiguredProject,
+                projectServices,
+                new Lazy<Workspace>(() => ws),
+                environmentOptionsFactory,
+                userNotificationServices,
+                roslynServices,
+                waitIndicator,
+                vsOnlineServices,
+                projectAsynchronousTasksService,
+                projectThreadingService,
+                extensibility,
+                operationProgressMock,
+                settingsManagerService);
 
-            await renamer.RenameAsync(context, node, newFilePath)
-                         .TimeoutAfter(TimeSpan.FromSeconds(1));
+            // Perform the rename, with a one second timeout.
+            await renamer
+                .RenameAsync(context, node, newFilePath)
+                .TimeoutAfter(TimeSpan.FromSeconds(1));
         }
     }
 }
