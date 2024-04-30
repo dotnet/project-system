@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <PackageReference Remove="Microsoft.VisualStudio.ProjectSystem*" />
-    <PackageReference Include="StreamJsonRpc" />
   </ItemGroup>
   
   <ItemGroup>

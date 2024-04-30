@@ -10,10 +10,6 @@
     <_EditorsProjectName>Microsoft.VisualStudio.Editors</_EditorsProjectName>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="StreamJsonRpc" />
-  </ItemGroup>
-
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <TargetFramework>net472</TargetFramework>

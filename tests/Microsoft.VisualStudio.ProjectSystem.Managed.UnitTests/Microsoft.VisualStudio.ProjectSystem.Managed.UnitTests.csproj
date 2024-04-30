@@ -12,10 +12,6 @@
     <TargetFrameworks>net472;$(NetCoreTargetFramework)</TargetFrameworks>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="StreamJsonRpc" />
-  </ItemGroup>
-
   <!-- TODO: Re-enable nullability and clean up warnings. -->
   <PropertyGroup Condition="'$(TargetFramework)' == '$(NetCoreTargetFramework)'">
     <Nullable>annotations</Nullable>

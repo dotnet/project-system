@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
-    <PackageReference Include="StreamJsonRpc" />
   </ItemGroup>
 
   <ItemGroup>
