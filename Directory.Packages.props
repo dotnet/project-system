@@ -29,6 +29,7 @@
     <PackageVersion Include="Microsoft.SourceLink.GitHub"                                            Version="1.1.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Internal.MicroBuild"                             Version="2.0.115" />
     <PackageVersion Include="Microsoft.VisualStudio.Internal.MicroBuild.NpmPack"                     Version="2.0.117" />
+    <PackageVersion Include="Microsoft.VisualStudio.Internal.MicroBuild.Swix"                        Version="2.0.115" />
     <PackageVersion Include="Microsoft.VisualStudio.Internal.MicroBuild.Vsman"                       Version="2.0.115" />
     <PackageVersion Include="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
     <PackageVersion Include="Nerdbank.GitVersioning"                                                 Version="3.6.79-alpha" />
