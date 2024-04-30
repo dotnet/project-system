@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
         }
 
         [Fact]
-        public async Task Rename_Symbol_Should_ExitEarlyWhenFileDoesntChangeName()
+        public async Task Rename_Symbol_Should_ExitEarlyWhenFileDoesNotChangeName()
         {
             string sourceCode =
                 """
