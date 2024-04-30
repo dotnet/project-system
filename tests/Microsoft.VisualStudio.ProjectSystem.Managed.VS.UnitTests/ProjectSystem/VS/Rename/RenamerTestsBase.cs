@@ -93,13 +93,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             ws.AddSolution(InitializeWorkspace(ProjectId.CreateNewId(), oldFilePath, sourceCode, language));
 
             var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
-            var waitIndicator = new Mock<IWaitIndicator>().Object;
+            var waitIndicator = Mock.Of<IWaitIndicator>();
             var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
             var projectThreadingService = IProjectThreadingServiceFactory.Create();
-            var refactorNotifyService = new Mock<IRefactorNotifyService>().Object;
-            var extensibility = new Mock<IVsUIService<IVsExtensibility, IVsExtensibility3>>().Object;
-            var operationProgressMock = new Mock<IVsService<SVsOperationProgress, IVsOperationProgressStatusService>>().Object;
-            var context = new Mock<IProjectTreeActionHandlerContext>().Object;
+            var refactorNotifyService = Mock.Of<IRefactorNotifyService>();
+            var extensibility = Mock.Of<IVsUIService<IVsExtensibility, IVsExtensibility3>>();
+            var operationProgressMock = Mock.Of<IVsService<SVsOperationProgress, IVsOperationProgressStatusService>>();
+            var context = Mock.Of<IProjectTreeActionHandlerContext>();
 
             var mockNode = new Mock<IProjectTree>();
             mockNode.SetupGet(x => x.FilePath).Returns(oldFilePath);
