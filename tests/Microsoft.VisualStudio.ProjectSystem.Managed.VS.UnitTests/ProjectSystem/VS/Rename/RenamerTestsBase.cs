@@ -93,10 +93,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             ws.AddSolution(InitializeWorkspace(ProjectId.CreateNewId(), oldFilePath, sourceCode, language));
 
             var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
-            var waitIndicator = (new Mock<IWaitIndicator>()).Object;
+            var waitIndicator = new Mock<IWaitIndicator>().Object;
             var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
             var projectThreadingService = IProjectThreadingServiceFactory.Create();
-            var refactorNotifyService = (new Mock<IRefactorNotifyService>()).Object;
+            var refactorNotifyService = new Mock<IRefactorNotifyService>().Object;
             var extensibility = new Mock<IVsUIService<IVsExtensibility, IVsExtensibility3>>().Object;
             var operationProgressMock = new Mock<IVsService<SVsOperationProgress, IVsOperationProgressStatusService>>().Object;
             var context = new Mock<IProjectTreeActionHandlerContext>().Object;
