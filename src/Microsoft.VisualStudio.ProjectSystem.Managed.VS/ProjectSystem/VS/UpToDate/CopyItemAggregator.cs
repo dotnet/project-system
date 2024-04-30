@@ -62,7 +62,7 @@ internal class CopyItemAggregator : ICopyItemAggregator
                 if (!_projectData.TryGetValue(project, out ProjectCopyData data))
                 {
                     // We don't have a list of project references for this project, so we cannot continue
-                    // walking the project reference tree. As we might now know all possible copy items,
+                    // walking the project reference tree. As we might not know all possible copy items,
                     // we disable build acceleration. Note that we still walk the rest of the tree in order
                     // to detect copy items, so that we can decide whether the project is up to date.
                     logger.Verbose(nameof(VSResources.FUTDC_AccelerationDataMissingForProject_1), project);
