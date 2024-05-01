@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock;
         }
 
-        public static Mock<IProjectProperties> MockWithPropertyAndValue(string propertyName, string setValue)
+        public static Mock<IProjectProperties> MockWithPropertyAndValue(string propertyName, string? setValue)
         {
             return MockWithPropertiesAndValues(new Dictionary<string, string?>() { { propertyName, setValue } });
         }
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectProperties CreateWithProperty(string propertyName)
             => MockWithProperty(propertyName).Object;
 
-        public static IProjectProperties CreateWithPropertyAndValue(string propertyName, string setValue)
+        public static IProjectProperties CreateWithPropertyAndValue(string propertyName, string? setValue)
             => MockWithPropertyAndValue(propertyName, setValue).Object;
 
         public static IProjectProperties CreateWithPropertiesAndValues(IDictionary<string, string?> propertyNameAndValues, HashSet<string>? inheritedPropertyNames = null)

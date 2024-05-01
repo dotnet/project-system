@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             return mock.Object;
         }
 
-        public static IVsHierarchy ImplementGetProperty(object result)
+        public static IVsHierarchy ImplementGetProperty(object? result)
         {
             var mock = new Mock<IVsHierarchy>();
             mock.Setup(h => h.GetProperty(It.IsAny<uint>(), It.IsAny<int>(), out result))

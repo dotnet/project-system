@@ -13,7 +13,7 @@ namespace Xunit
 
             if (actualCount != expectedCount)
             {
-                throw new CollectionException(collection, expectedCount, actualCount);
+                throw CollectionException.ForMismatchedItemCount(expectedCount, actualCount, "Collection lengths not equal.");
             }
         }
 
@@ -42,7 +42,7 @@ namespace Xunit
                 }
                 else
                 {
-                    throw new XunitException("Sequences have different lengths");
+                    throw new XunitException("Sequences have different lengths.");
                 }
             }
         }

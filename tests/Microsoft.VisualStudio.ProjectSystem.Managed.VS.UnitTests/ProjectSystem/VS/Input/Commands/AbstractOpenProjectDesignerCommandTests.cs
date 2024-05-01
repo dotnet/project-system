@@ -7,11 +7,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     public abstract class AbstractOpenProjectDesignerCommandTests
     {
         [Fact]
-        public void GetCommandStatusAsync_NullAsNodes_ThrowsArgumentNull()
+        public async Task GetCommandStatusAsync_NullAsNodes_ThrowsArgumentNull()
         {
             var command = CreateInstance();
 
-            Assert.ThrowsAsync<ArgumentNullException>("nodes", () =>
+            await Assert.ThrowsAsync<ArgumentNullException>("nodes", () =>
             {
                 return command.GetCommandStatusAsync(null!, GetCommandId(), true, "commandText", CommandStatus.Enabled);
             });

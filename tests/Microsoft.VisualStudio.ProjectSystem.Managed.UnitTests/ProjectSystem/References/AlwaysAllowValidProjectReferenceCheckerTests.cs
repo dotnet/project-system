@@ -5,44 +5,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
     public class AlwaysAllowValidProjectReferenceCheckerTests
     {
         [Fact]
-        public void CanAddProjectReferenceAsync_NullAsReferencedProject_ThrowsArgumentNull()
+        public async Task CanAddProjectReferenceAsync_NullAsReferencedProject_ThrowsArgumentNull()
         {
             var checker = CreateInstance();
 
-            Assert.ThrowsAsync<ArgumentNullException>("referencedProject", () =>
+            await Assert.ThrowsAsync<ArgumentNullException>("referencedProject", () =>
             {
                 return checker.CanAddProjectReferenceAsync(null!);
             });
         }
 
         [Fact]
-        public void CanAddProjectReferencesAsync_NullAsReferencedProjects_ThrowsArgumentNull()
+        public async Task CanAddProjectReferencesAsync_NullAsReferencedProjects_ThrowsArgumentNull()
         {
             var checker = CreateInstance();
 
-            Assert.ThrowsAsync<ArgumentNullException>("referencedProjects", () =>
+            await Assert.ThrowsAsync<ArgumentNullException>("referencedProjects", () =>
             {
                 return checker.CanAddProjectReferencesAsync(null!);
             });
         }
 
         [Fact]
-        public void CanAddProjectReferencesAsync_EmptyAsReferencedProjects_ThrowsArgument()
+        public async Task CanAddProjectReferencesAsync_EmptyAsReferencedProjects_ThrowsArgument()
         {
             var checker = CreateInstance();
 
-            Assert.ThrowsAsync<ArgumentException>("referencedProjects", () =>
+            await Assert.ThrowsAsync<ArgumentException>("referencedProjects", () =>
             {
                 return checker.CanAddProjectReferencesAsync(ImmutableHashSet<object>.Empty);
             });
         }
 
         [Fact]
-        public void CanBeReferencedAsync_NullAsReferencingProject_ThrowsArgumentNull()
+        public async Task CanBeReferencedAsync_NullAsReferencingProject_ThrowsArgumentNull()
         {
             var checker = CreateInstance();
 
-            Assert.ThrowsAsync<ArgumentNullException>("referencingProject", () =>
+            await Assert.ThrowsAsync<ArgumentNullException>("referencingProject", () =>
             {
                 return checker.CanBeReferencedAsync(null!);
             });
