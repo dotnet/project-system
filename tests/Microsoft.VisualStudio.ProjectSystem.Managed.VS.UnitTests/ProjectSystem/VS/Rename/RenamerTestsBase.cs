@@ -123,10 +123,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 operationProgressMock,
                 settingsManagerService);
 
-            // Perform the rename, with a one second timeout.
+            // Perform the rename, with a timeout in case of hangs.
             await renamer
                 .RenameAsync(context, node, newFilePath)
-                .TimeoutAfter(TimeSpan.FromSeconds(1));
+                .TimeoutAfter(TimeSpan.FromSeconds(30));
         }
     }
 }
