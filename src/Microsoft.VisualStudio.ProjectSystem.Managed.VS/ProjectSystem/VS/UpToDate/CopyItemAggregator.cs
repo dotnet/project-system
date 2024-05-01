@@ -27,6 +27,8 @@ internal class CopyItemAggregator : ICopyItemAggregator
 
         // The queue of projects yet to be visited.
         Queue<string> frontier = new();
+
+        // Start with the requested project.
         frontier.Enqueue(targetPath);
 
         // If we find a reference to a project that did not call SetProjectData then we will not know the
@@ -59,6 +61,10 @@ internal class CopyItemAggregator : ICopyItemAggregator
 
                 if (!_projectData.TryGetValue(project, out ProjectCopyData data))
                 {
+                    // We don't have a list of project references for this project, so we cannot continue
+                    // walking the project reference tree. As we might not know all possible copy items,
+                    // we disable build acceleration. Note that we still walk the rest of the tree in order
+                    // to detect copy items, so that we can decide whether the project is up to date.
                     logger.Verbose(nameof(VSResources.FUTDC_AccelerationDataMissingForProject_1), project);
                     isComplete = false;
                     continue;
@@ -67,10 +73,11 @@ internal class CopyItemAggregator : ICopyItemAggregator
                 if (!data.ProduceReferenceAssembly && project != targetPath)
                 {
                     // One of the referenced projects does not produce a reference assembly.
-                    referencesNotProducingReferenceAssembly ??= new();
+                    referencesNotProducingReferenceAssembly ??= [];
                     referencesNotProducingReferenceAssembly.Add(data.TargetPath);
                 }
 
+                // Breadth-first traversal of the tree.
                 foreach (string referencedProjectTargetPath in data.ReferencedProjectTargetPaths)
                 {
                     frontier.Enqueue(referencedProjectTargetPath);
@@ -78,13 +85,13 @@ internal class CopyItemAggregator : ICopyItemAggregator
 
                 if (!data.CopyItems.IsEmpty)
                 {
-                    contributingProjects ??= new();
+                    contributingProjects ??= [];
                     contributingProjects.Add(data);
                 }
             }
         }
 
-        return new(GenerateCopyItems(), isComplete, referencesNotProducingReferenceAssembly);
+        return new(isComplete, GenerateCopyItems(), GetDuplicateCopyItems(), referencesNotProducingReferenceAssembly);
 
         IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> GenerateCopyItems()
         {
@@ -97,6 +104,30 @@ internal class CopyItemAggregator : ICopyItemAggregator
             {
                 yield return (contributingProject.ProjectFullPath ?? contributingProject.TargetPath, contributingProject.CopyItems);
             }
+        }
+
+        IReadOnlyList<string>? GetDuplicateCopyItems()
+        {
+            HashSet<string>? duplicates = null;
+
+            if (contributingProjects is not null)
+            {
+                HashSet<string> targetPaths = new(StringComparers.Paths);
+
+                foreach (ProjectCopyData contributingProject in contributingProjects)
+                {
+                    foreach (CopyItem copyItem in contributingProject.CopyItems)
+                    {
+                        if (!targetPaths.Add(copyItem.RelativeTargetPath))
+                        {
+                            duplicates ??= new(StringComparers.Paths);
+                            duplicates.Add(copyItem.RelativeTargetPath);
+                        }
+                    }
+                }
+            }
+
+            return duplicates?.ToList();
         }
     }
 }

@@ -955,7 +955,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 // The subscription object calls GetLatestVersionAsync for project data, which can take a while.
                 // We separate out the wait time from the overall time, so we can more easily identify when the
                 // wait is long, versus the check's actual execution time.
-                var waitTime = sw.Elapsed;
+                TimeSpan waitTime = sw.Elapsed;
 
                 token.ThrowIfCancellationRequested();
 
@@ -1077,7 +1077,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                         // We check timestamps of whatever items we can find, but only perform acceleration when the full set is available.
                         CopyItemsResult copyInfo = _copyItemAggregator.TryGatherCopyItemsForProject(implicitState.ProjectTargetPath, logger);
 
-                        bool? isBuildAccelerationEnabled = await IsBuildAccelerationEnabledAsync(copyInfo.IsComplete, implicitState);
+                        bool? isBuildAccelerationEnabled = await IsBuildAccelerationEnabledAsync(copyInfo.IsComplete, copyInfo.DuplicateCopyItemRelativeTargetPaths, implicitState);
 
                         var configuredFileSystemOperations = new ConfiguredFileSystemOperationAggregator(fileSystemOperations, isBuildAccelerationEnabled, copyInfo.TargetsWithoutReferenceAssemblies);
 
@@ -1150,13 +1150,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     _lastCopyTargetsFromThisProject = copyItemPaths;
                 }
 
-                async ValueTask<bool?> IsBuildAccelerationEnabledAsync(bool isCopyItemsComplete, UpToDateCheckImplicitConfiguredInput implicitState)
+                async ValueTask<bool?> IsBuildAccelerationEnabledAsync(bool isCopyItemsComplete, IReadOnlyList<string>? duplicateCopyItemRelativeTargetPaths, UpToDateCheckImplicitConfiguredInput implicitState)
                 {
                     // Build acceleration requires:
                     //
                     // 1. being enabled, either in the project or via feature flags, and
                     // 2. having a full set of copy items, and
-                    // 3. not having any project references known to be incompatible with Build Acceleration.
+                    // 3. not having any project references known to be incompatible with Build Acceleration, and
+                    // 4. not having any duplicate copy items that would overwrite one another in the output directory (due to ordering issues).
                     //
                     // Being explicitly disabled in the project overrides any feature flag.
 
@@ -1180,11 +1181,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                     bool isEnabled;
 
-                    if (isEnabledInProject is null)
+                    if (isEnabledInProject is bool b)
                     {
-                        // No value has been specified in the project. Look to the feature flag to determine
-                        // the default behavior in this case.
-
+                        isEnabled = b;
+                    }
+                    else
+                    {
+                        // No value has been specified in the project. Query the environment to decide (e.g. feature flag).
                         if (await _projectSystemOptions.IsBuildAccelerationEnabledByDefaultAsync(cancellationToken))
                         {
                             // The user has opted-in via feature flag. Set this to true and carry on with further checks.
@@ -1193,32 +1196,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                         }
                         else
                         {
-                            logger.Verbose(nameof(VSResources.FUTD_BuildAccelerationIsNotEnabledForThisProject));
+                            logger.Info(nameof(VSResources.FUTD_BuildAccelerationIsNotEnabledForThisProject));
                             return null;
                         }
-                    }
-                    else
-                    {
-                        isEnabled = isEnabledInProject.Value;
                     }
 
                     if (isEnabled)
                     {
-                        if (isCopyItemsComplete)
-                        {
-                            if (isEnabledInProject is not null)
-                            {
-                                // Don't log if isEnabledInProject is null, as we already log that status above
-                                logger.Info(nameof(VSResources.FUTD_BuildAccelerationEnabledViaProperty));
-                            }
-
-                            return true;
-                        }
-                        else
+                        if (!isCopyItemsComplete)
                         {
                             logger.Info(nameof(VSResources.FUTD_AccelerationDisabledCopyItemsIncomplete));
                             return false;
                         }
+
+                        if (duplicateCopyItemRelativeTargetPaths is not null)
+                        {
+                            logger.Info(nameof(VSResources.FUTD_AccelerationDisabledDuplicateCopyItemsIncomplete_1), string.Join(", ", duplicateCopyItemRelativeTargetPaths.Select(path => $"'{path}'")));
+                            return false;
+                        }
+
+                        if (isEnabledInProject is not null)
+                        {
+                            // Don't log if isEnabledInProject is null, as we already log that status above.
+                            logger.Info(nameof(VSResources.FUTD_BuildAccelerationEnabledViaProperty));
+                        }
+
+                        return true;
                     }
                     else
                     {
@@ -1235,13 +1238,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             return _projectSystemOptions.GetIsFastUpToDateCheckEnabledAsync(cancellationToken);
         }
 
-        internal readonly struct TestAccessor
+        internal readonly struct TestAccessor(BuildUpToDateCheck check)
         {
-            private readonly BuildUpToDateCheck _check;
-
-            public TestAccessor(BuildUpToDateCheck check) => _check = check;
-
-            public void SetSubscription(ISubscription subscription) => _check._subscription = subscription;
+            public void SetSubscription(ISubscription subscription) => check._subscription = subscription;
         }
 
         /// <summary>For unit testing only.</summary>

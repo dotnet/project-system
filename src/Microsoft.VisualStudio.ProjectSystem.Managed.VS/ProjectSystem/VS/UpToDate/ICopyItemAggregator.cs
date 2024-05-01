@@ -9,10 +9,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate;
 internal interface ICopyItemAggregator
 {
     /// <summary>
-    /// Stores the set of copy items produced by the calling project, and modelled
-    /// in <paramref name="projectCopyData"/>.
+    /// Integrates data from a project, for use within <see cref="TryGatherCopyItemsForProject"/>.
     /// </summary>
-    /// <param name="projectCopyData">The set of items to copy, and some details about the provider project.</param>
+    /// <param name="projectCopyData">All necessary data about the project that's providing the data.</param>
     void SetProjectData(ProjectCopyData projectCopyData);
 
     /// <summary>
@@ -20,8 +19,22 @@ internal interface ICopyItemAggregator
     /// from the project identified by <paramref name="targetPath"/>.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// We use the <c>TargetPath</c> property to identify projects, as that path takes
-    /// other dimensions (such as target framework) into account.
+    /// other dimensions (such as target framework, platform, etc.) into account when projects
+    /// have multiple configurations.
+    /// </para>
+    /// <para>
+    /// When multiple copy items want to write to the same relative output path, the set of duplicate
+    /// items is written to <see cref="CopyItemsResult.DuplicateCopyItemRelativeTargetPaths"/>.
+    /// Build Acceleration disables itself when items exist in this collection, as it does not
+    /// attempt to reproduce the full behaviour of MSBuild for this scenario.
+    /// </para>
+    /// <para>
+    /// If we find a reference to a project that did not call <see cref="SetProjectData"/> then
+    /// the returned <see cref="CopyItemsResult.IsComplete"/> will be <see langword="false"/>.
+    /// Build Acceleration disables itself when copy items from a reachable project is unavailable.
+    /// </para>
     /// </remarks>
     /// <param name="targetPath">The target path of the project to query from.</param>
     /// <param name="logger">An object for writing log messages.</param>
@@ -33,15 +46,23 @@ internal interface ICopyItemAggregator
 /// Results of gathering the items that must be copied as part of a project's build
 /// by <see cref="ICopyItemAggregator.TryGatherCopyItemsForProject(string, BuildUpToDateCheck.Log)"/>.
 /// </summary>
-/// <param name="ItemsByProject">A sequence of items by project, that are reachable from the current project</param>
 /// <param name="IsComplete">Indicates whether we have items from all reachable projects.</param>
+/// <param name="ItemsByProject">
+///     A sequence of items by project, that are reachable from the current project. The path is that
+///     of the project file, such as <c>c:\repos\MyProject\MyProject.csproj</c>.
+/// </param>
+/// <param name="DuplicateCopyItemRelativeTargetPaths">
+///     A list of relative target paths for which more than one project produces an item, or <see langword="null"/> if
+///     no duplicates exists.
+/// </param>
 /// <param name="TargetsWithoutReferenceAssemblies">
 ///     A list of target paths for projects that do not produce reference assemblies, or <see langword="null"/> if
 ///     all reachable projects do in fact produce reference assemblies.
 /// </param>
 internal record struct CopyItemsResult(
-    IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> ItemsByProject,
     bool IsComplete,
+    IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> ItemsByProject,
+    IReadOnlyList<string>? DuplicateCopyItemRelativeTargetPaths,
     IReadOnlyList<string>? TargetsWithoutReferenceAssemblies);
 
 /// <summary>
@@ -59,5 +80,5 @@ internal record struct ProjectCopyData(
     ImmutableArray<CopyItem> CopyItems,
     ImmutableArray<string> ReferencedProjectTargetPaths)
 {
-    public bool IsDefault => CopyItems.IsDefault;
+    public readonly bool IsDefault => CopyItems.IsDefault;
 }

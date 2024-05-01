@@ -92,9 +92,11 @@ Build acceleration runs with the FUTDC, and outputs details of its operation in 
 > Tools | Options | Projects and Solutions | SDK-Style Projects
 
 _Traditional view:_
+
 <img src="repo/images/options.png" width="528" alt="SDK-style project options, in the legacy settings view">
 
 _Unified settings view:_
+
 <img src="repo/images/options-unified.png" width="528" alt="SDK-style project options, in the modern unified settings view">
 
 Setting _Logging Level_ to a value other than `None` results in messages prefixed with `FastUpToDate:` in Visual Studio's build output.
@@ -139,6 +141,12 @@ Looking through the build output with the following points in mind:
    > Build acceleration data is unavailable for project with target 'C:\Solution\Project\bin\Debug\Project.dll'.
 
    Then any project that references the indicated project (directly or transitively) cannot be accelerated. This can happen if the mentioned project uses the legacy `.csproj` format, or for any other project system within Visual Studio that doesn't support build acceleration. Currently only .NET SDK-style projects (loaded with the project system from this GitHub repository) provide the needed data.
+
+- ⛔ If you see:
+
+   > Build acceleration is not available for this project because it copies duplicate files to the output directory: '<path1>', '<path2>'
+
+   Then multiple projects want to copy the same file to the output directory. Currently, Build Acceleration does not attempt to discover which of these source files should win. Instead, when this situation occurs, Build Acceleration is disabled.
 
 - ⛔ If you see:
 
