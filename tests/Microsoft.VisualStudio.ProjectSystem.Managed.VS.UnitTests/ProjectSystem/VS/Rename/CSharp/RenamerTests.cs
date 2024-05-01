@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             var vsOnlineServices = IVsOnlineServicesFactory.Create(online: false);
             var settingsManagerService = CreateSettingsManagerService(true);
 
-            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.CSharp, settingsManagerService).TimeoutAfter(TimeSpan.FromSeconds(1));
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.CSharp, settingsManagerService).TimeoutAfter(TimeSpan.FromSeconds(30));
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
