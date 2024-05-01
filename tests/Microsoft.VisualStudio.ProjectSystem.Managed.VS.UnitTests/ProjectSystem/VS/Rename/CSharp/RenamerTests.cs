@@ -71,8 +71,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
         [InlineData("class Foo{}", "Foo.cs", "Folder1\\Foo.cs")]
         public async Task Rename_Symbol_Should_Not_HappenAsync(string sourceCode, string oldFilePath, string newFilePath)
         {
-            using var _ = SynchronizationContextUtil.Suppress();
-
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
             var vsOnlineServices = IVsOnlineServicesFactory.Create(online: false);
