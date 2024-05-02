@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             /// <summary>
             /// Prevent overlapping requests.
             /// </summary>
-            private readonly AsyncSemaphore _semaphore = new(1);
+            private readonly ReentrantSemaphore _semaphore;
 
             private int _disposed;
 
@@ -67,6 +67,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 _configuredProject = configuredProject;
                 _host = host;
                 _persistence = persistence;
+                
+                _semaphore = ReentrantSemaphore.Create(
+                    initialCount: 1,
+                    joinableTaskContext: configuredProject.UnconfiguredProject.Services.ThreadingPolicy.JoinableTaskContext.Context,
+                    mode: ReentrantSemaphore.ReentrancyMode.NotAllowed);
             }
 
             public async Task<bool> RunAsync(
@@ -95,24 +100,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     return false;
                 }
 
-                // Prevent overlapping requests
-                using AsyncSemaphore.Releaser _ = await _semaphore.EnterAsync(token);
-
                 token.ThrowIfCancellationRequested();
 
-                IProjectVersionedValue<UpToDateCheckConfiguredInput> state;
+                // Prevent overlapping requests
+                return await _semaphore.ExecuteAsync(
+                    async () =>
+                    {
+                        IProjectVersionedValue<UpToDateCheckConfiguredInput> state;
 
-                using (_inputDataSource.Join())
-                {
-                    // Wait for our state to be up to date with that of the project
-                    state = await _inputDataSource.SourceBlock.GetLatestVersionAsync(
-                        _configuredProject,
-                        cancellationToken: token);
-                }
+                        using (_inputDataSource.Join())
+                        {
+                            // Wait for our state to be up to date with that of the project
+                            state = await _inputDataSource.SourceBlock.GetLatestVersionAsync(
+                                _configuredProject,
+                                cancellationToken: token);
+                        }
 
-                (bool upToDate, _lastCheckedConfigurations) = await func(state.Value, _persistence, token);
+                        (bool upToDate, _lastCheckedConfigurations) = await func(state.Value, _persistence, token);
 
-                return upToDate;
+                        return upToDate;
+                    },
+                    token);
             }
 
             public async Task UpdateLastSuccessfulBuildStartTimeUtcAsync(DateTime lastSuccessfulBuildStartTimeUtc, bool isRebuild)
