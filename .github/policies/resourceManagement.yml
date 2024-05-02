@@ -8,7 +8,9 @@ where:
 configuration:
   resourceManagementConfiguration:
     scheduledSearches: []
+
     eventResponderTasks:
+
     - if:
       - payloadType: Pull_Request
       - hasLabel:
@@ -17,13 +19,15 @@ configuration:
       - enableAutoMerge:
           mergeMethod: Merge
       description: Automatically merge PR once CI passes
+
     - if:
       - payloadType: Pull_Request
       - labelRemoved:
           label: auto-merge
       then:
       - disableAutoMerge
-      description: Automatically merge PR once CI passes
+      description: Cancel auto-merge when label removed from PRs
+
     - if:
       - payloadType: Pull_Request
       - labelAdded:
@@ -33,8 +37,34 @@ configuration:
           issueAuthor: False
       then:
       - approvePullRequest:
-          comment: Auto-approval of dotnet-bot PRs
-      description: Auto-approve PRs labeled with "auto-merge" opened by dotnet-bot
+          comment: Auto-approval of dotnet-bot PRs labelled with "auto-merge"
+      description: Auto-approve dotnet-bot's "auto-merge" PRs
+
+    - if:
+      - payloadType: Issue_Comment
+      then:
+      - cleanEmailReply
+      description: Email cleanser
+
+    - if:
+      - payloadType: Pull_Request
+      then:
+      - labelSync:
+          pattern: Area-
+      - labelSync:
+          pattern: Feature
+      - labelSync:
+          pattern: Performance
+      - labelSync:
+          pattern: Tenet
+      - labelSync:
+          pattern: Parity-
+      - labelSync:
+          pattern: Block
+      - labelSync:
+          pattern: Bug
+      description: Sync labels from issues -> PR
+
     - if:
       - payloadType: Pull_Request
       - isAction:
@@ -44,22 +74,10 @@ configuration:
           branch: main
       then:
       - addMilestone:
-          milestone: 17.10
-
+          milestone: 17.11
       description: Milestone tracking - main
       triggerOnOwnActions: true
-    - if:
-      - payloadType: Pull_Request
-      - targetsBranch:
-          branch: dev17.2.x
-      - isAction:
-          action: Closed
-      - isMerged
-      then:
-      - addMilestone:
-          milestone: 17.2
-      description: Milestone tracking - 17.2
-      triggerOnOwnActions: true
+
     - if:
       - payloadType: Pull_Request
       - isAction:
@@ -67,89 +85,17 @@ configuration:
       then:
       - addCodeFlowLink
       description: CodeFlow
-    - if:
-      - payloadType: Pull_Request
-      - targetsBranch:
-          branch: dev16.8.x
-      - isAction:
-          action: Closed
-      - isMerged
-      then:
-      - addMilestone:
-          milestone: 16.8
-      description: Milestone tracking - 16.8
-    - if:
-      - payloadType: Issue_Comment
-      then:
-      - cleanEmailReply
-      description: Email cleanser
-    - if:
-      - payloadType: Pull_Request
-      then:
-      - labelSync:
-          pattern: Feature-
-      - labelSync:
-          pattern: Performance
-      - labelSync:
-          pattern: Tenet
-      - labelSync:
-          pattern: Parity
-      description: Sync labels from issues -> PR
-    - if:
-      - payloadType: Pull_Request
-      - targetsBranch:
-          branch: dev16.9.x
-      - isAction:
-          action: Closed
-      - isMerged
-      then:
-      - addMilestone:
-          milestone: 16.9
-      description: Milestone tracking - 16.9
-    - if:
-      - payloadType: Pull_Request
-      - targetsBranch:
-          branch: dev16.10.x
-      - isAction:
-          action: Closed
-      - isMerged
-      then:
-      - addMilestone:
-          milestone: 16.10
-      description: Milestone tracking - 16.10
-    - if:
-      - payloadType: Pull_Request
-      - targetsBranch:
-          branch: dev17.0.x
-      - isAction:
-          action: Closed
-      - isMerged
-      then:
-      - addMilestone:
-          milestone: 17.0
-      description: Milestone tracking - 17.0
-    - if:
-      - payloadType: Pull_Request
-      - targetsBranch:
-          branch: dev16.11.x
-      - isAction:
-          action: Closed
-      - isMerged
-      then:
-      - addMilestone:
-          milestone: 16.11
-      description: Milestone tracking - 16.11
-    - if:
-      - payloadType: Pull_Request
-      - targetsBranch:
-          branch: dev17.1.x
-      - isAction:
-          action: Closed
-      - isMerged
-      then:
-      - addMilestone:
-          milestone: 17.1
-      description: Milestone tracking - 17.1
+
+    # MILESTONE TRACKING PER RELEASE BRANCH
+    #
+    # Only for branches present in https://github.com/dotnet/project-system/branches/all
+    #
+    # dev17.9.x
+    # dev17.8.x
+    # dev17.7.x
+    # dev17.4.x
+    # dev16.11.x
+
     - if:
       - payloadType: Pull_Request
       - isAction:
@@ -157,13 +103,38 @@ configuration:
       - isMerged
       - or:
         - targetsBranch:
-            branch: dev17.3.x
-        - targetsBranch:
-            branch: dev17.3-preview2
+            branch: dev17.9.x
       then:
       - addMilestone:
-          milestone: 17.3
-      description: Milestone tracking - 17.3
+          milestone: 17.8
+      description: Milestone tracking - 17.9
+
+    - if:
+      - payloadType: Pull_Request
+      - isAction:
+          action: Closed
+      - isMerged
+      - or:
+        - targetsBranch:
+            branch: dev17.8.x
+      then:
+      - addMilestone:
+          milestone: 17.8
+      description: Milestone tracking - 17.8
+
+    - if:
+      - payloadType: Pull_Request
+      - isAction:
+          action: Closed
+      - isMerged
+      - or:
+        - targetsBranch:
+            branch: dev17.7-x
+      then:
+      - addMilestone:
+          milestone: 17.7
+      description: Milestone tracking - 17.7
+
     - if:
       - payloadType: Pull_Request
       - isAction:
@@ -180,41 +151,18 @@ configuration:
       - addMilestone:
           milestone: 17.4
       description: Milestone tracking - 17.4
+
     - if:
       - payloadType: Pull_Request
+      - targetsBranch:
+          branch: dev16.11.x
       - isAction:
           action: Closed
       - isMerged
-      - or:
-        - targetsBranch:
-            branch: dev17.5-x
       then:
       - addMilestone:
-          milestone: 17.5
-      description: Milestone tracking - 17.5
-    - if:
-      - payloadType: Pull_Request
-      - isAction:
-          action: Closed
-      - isMerged
-      - or:
-        - targetsBranch:
-            branch: dev17.7-x
-      then:
-      - addMilestone:
-          milestone: 17.7
-      description: Milestone tracking - 17.7
-    - if:
-      - payloadType: Pull_Request
-      - isAction:
-          action: Closed
-      - isMerged
-      - or:
-        - targetsBranch:
-            branch: dev17.8.x
-      then:
-      - addMilestone:
-          milestone: 17.8
-      description: Milestone tracking - 17.8
+          milestone: 16.11
+      description: Milestone tracking - 16.11
+
 onFailure: 
 onSuccess:
