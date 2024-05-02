@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.Internal.VisualStudio.AppId.Interop;
+using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
@@ -8,31 +10,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     [Export(typeof(IUpToDateCheckHost))]
     internal sealed class UpToDateCheckHost : IUpToDateCheckHost
     {
-        private readonly IVsUIService<IVsShell> _vsShell;
-        private readonly IVsUIService<IVsAppCommandLine> _vsAppCommandLine;
+        private readonly IVsService<IVsAppId, IVsAppId> _vsAppId;
+        private readonly IVsService<IVsAppCommandLine> _vsAppCommandLine;
         private readonly JoinableTaskContext _joinableTaskContext;
 
         private bool? _hasDesignTimeBuild;
 
         [ImportingConstructor]
-        public UpToDateCheckHost(IVsUIService<SVsShell, IVsShell> vsShell, IVsUIService<SVsAppCommandLine, IVsAppCommandLine> vsAppCommandLine, JoinableTaskContext joinableTaskContext)
+        public UpToDateCheckHost(
+            IVsService<IVsAppId, IVsAppId> vsAppId,
+            IVsService<SVsAppCommandLine, IVsAppCommandLine> vsAppCommandLine,
+            JoinableTaskContext joinableTaskContext)
         {
-            _vsShell = vsShell;
+            _vsAppId = vsAppId;
             _vsAppCommandLine = vsAppCommandLine;
             _joinableTaskContext = joinableTaskContext;
         }
 
         public async ValueTask<bool> HasDesignTimeBuildsAsync(CancellationToken cancellationToken)
         {
-            _hasDesignTimeBuild ??= await ComputeValueAsync();
+            _hasDesignTimeBuild ??= await HasDesignTimeBuildsInternalAsync();
 
             return _hasDesignTimeBuild.Value;
 
-            async ValueTask<bool> ComputeValueAsync()
+            async Task<bool> HasDesignTimeBuildsInternalAsync()
             {
-                await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
+                IVsAppCommandLine vsAppCommandLine = await _vsAppCommandLine.GetValueAsync(cancellationToken);
 
-                if (ErrorHandler.Succeeded(_vsAppCommandLine.Value.GetOption("populateSolutionCache", out int populateSolutionCachePresent, out string _)))
+                if (ErrorHandler.Succeeded(vsAppCommandLine.GetOption("populateSolutionCache", out int populateSolutionCachePresent, out string _)))
                 {
                     if (populateSolutionCachePresent != 0)
                     {
@@ -41,7 +46,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     }
                 }
 
-                if (ErrorHandler.Succeeded(_vsShell.Value.GetProperty((int)__VSSPROPID.VSSPROPID_IsInCommandLineMode, out object value)))
+                IVsAppId vsAppId = await _vsAppId.GetValueAsync(cancellationToken);
+
+                if (ErrorHandler.Succeeded(vsAppId.GetProperty((int)__VSAPROPID10.VSAPROPID_IsInCommandLineMode, out object value)))
                 {
                     if (value is bool isInCommandLineMode)
                     {
