@@ -183,6 +183,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     """[assembly: System.AssemblyDescriptionAttribute("MyDescription")]""")]
         public async Task SourceFileProperties_SetPropertyValueAsync(string code, string propertyName, string propertyValue, string expectedCode)
         {
+            using var _ = SynchronizationContextUtil.Suppress();
+
             var provider = CreateProviderForSourceFileValidation(code, out Workspace workspace);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
             Assumes.NotNull(projectFilePath);

@@ -18,18 +18,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public CommandLineNotificationHandler(UnconfiguredProject project)
         {
             // See FSharpCommandLineParserService.HandleCommandLineNotifications for an example of this export
-            CommandLineNotifications = new OrderPrecedenceImportCollection<Action<string, BuildOptions, BuildOptions>>(projectCapabilityCheckProvider: project);
+            CommandLineNotifications = new OrderPrecedenceImportCollection<Action<string?, BuildOptions, BuildOptions>>(projectCapabilityCheckProvider: project);
         }
 
         /// <remarks>
         /// See <see cref="FSharpCommandLineParserService.HandleCommandLineNotifications"/> for an export.
         /// </remarks>
         [ImportMany]
-        public OrderPrecedenceImportCollection<Action<string, BuildOptions, BuildOptions>> CommandLineNotifications { get; }
+        public OrderPrecedenceImportCollection<Action<string?, BuildOptions, BuildOptions>> CommandLineNotifications { get; }
 
         public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
         {
-            foreach (Lazy<Action<string, BuildOptions, BuildOptions>, IOrderPrecedenceMetadataView> value in CommandLineNotifications)
+            foreach (Lazy<Action<string?, BuildOptions, BuildOptions>, IOrderPrecedenceMetadataView> value in CommandLineNotifications)
             {
                 value.Value(context.BinOutputPath, added, removed);
             }

@@ -18,8 +18,6 @@
       https://github.com/dotnet/sourcelink#using-source-link-in-net-projects
     -->
     <PackageReference Include="Microsoft.SourceLink.GitHub"         PrivateAssets="all" />
-    <!-- Path Property: PkgMicrosoft_VisualStudioEng_MicroBuild_Core -->
-    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all" GeneratePathProperty="true" />
     <!-- Note: We require Nerdbank.GitVersioning beyond simply generating version numbers. It also produces some assembly information such as AssemblyName and PublicKeyToken into a *.ThisAssembly.cs file. -->
     <PackageReference Include="Nerdbank.GitVersioning"              PrivateAssets="all" />
     <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="all" />
@@ -58,6 +56,9 @@
 
     <!-- Host-Agnostic Visual Studio -->
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />
+
+    <!-- To resolve assembly versioning issue by pinning a specific version. Should remove in future when packages fixed. -->
+    <PackageReference Include="StreamJsonRpc" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'">
