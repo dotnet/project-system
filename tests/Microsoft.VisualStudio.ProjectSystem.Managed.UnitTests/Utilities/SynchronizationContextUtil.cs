@@ -33,13 +33,13 @@ internal static class SynchronizationContextUtil
 
     private sealed class SuppressionReleaser(SynchronizationContext old) : IDisposable
     {
-        private SynchronizationContext? old = old;
+        private int _isDisposed;
 
         public void Dispose()
         {
-            if (Interlocked.Exchange(ref old, null) is { } restoreMe)
+            if (Interlocked.Exchange(ref _isDisposed, 1) is 0)
             {
-                SynchronizationContext.SetSynchronizationContext(restoreMe);
+                SynchronizationContext.SetSynchronizationContext(old);
             }
         }
     }
