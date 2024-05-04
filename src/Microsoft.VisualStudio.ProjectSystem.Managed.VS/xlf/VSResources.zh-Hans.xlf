@@ -27,7 +27,7 @@
       </trans-unit>
       <trans-unit id="FUTD_AccelerationDisabledDuplicateCopyItemsIncomplete_1">
         <source>Build acceleration is not available for this project because it copies duplicate files to the output directory: {0}</source>
-        <target state="new">Build acceleration is not available for this project because it copies duplicate files to the output directory: {0}</target>
+        <target state="translated">生成加速对此项目不可用，因为它将重复文件复制到输出目录: {0}</target>
         <note>{0} is a list of one or more relative file paths.</note>
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
