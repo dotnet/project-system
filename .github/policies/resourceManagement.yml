@@ -37,7 +37,7 @@ configuration:
           issueAuthor: False
       then:
       - approvePullRequest:
-          comment: Auto-approval of dotnet-bot PRs labelled with "auto-merge"
+          comment: Auto-approval of dotnet-bot PRs labeled with "auto-merge"
       description: Auto-approve dotnet-bot's "auto-merge" PRs
 
     - if:
