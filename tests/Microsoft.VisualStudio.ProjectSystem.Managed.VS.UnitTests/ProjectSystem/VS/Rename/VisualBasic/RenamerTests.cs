@@ -91,8 +91,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
                     """)]
         public async Task Rename_Symbol_Should_Not_HappenAsync(string oldFilePath, string newFilePath, string sourceCode)
         {
-            using var _ = SynchronizationContextUtil.Suppress();
-
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new VisualBasicSyntaxFactsService());
             var vsOnlineServices = IVsOnlineServicesFactory.Create(online: false);
@@ -154,8 +152,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
             """)]
         public async Task Rename_Symbol_Should_TriggerUserConfirmationAsync(string oldFilePath, string newFilePath, string sourceCode)
         {
-            using var _ = SynchronizationContextUtil.Suppress();
-
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new VisualBasicSyntaxFactsService());
             var vsOnlineServices = IVsOnlineServicesFactory.Create(online: false);
@@ -212,10 +208,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
         }
 
         [Fact]
-        public async Task Rename_Symbol_Should_ExitEarlyWhenFileDoesNotChangeName()
+        public async Task Rename_Symbol_Should_ExitEarlyWhenFileDoesntChangeName()
         {
-            using var _ = SynchronizationContextUtil.Suppress();
-
             string sourceCode =
                 """
                 Class Foo
