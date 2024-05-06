@@ -17,11 +17,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 public class WorkspaceTests
 {
     private static BuildOptions EmptyBuildOptions { get; } = new BuildOptions(
-        sourceFiles: [],
-        additionalFiles: [],
-        metadataReferences: [],
-        analyzerReferences: [],
-        analyzerConfigFiles: []);
+            sourceFiles: ImmutableArray<CommandLineSourceFile>.Empty,
+            additionalFiles: ImmutableArray<CommandLineSourceFile>.Empty,
+            metadataReferences: ImmutableArray<CommandLineReference>.Empty,
+            analyzerReferences: ImmutableArray<CommandLineAnalyzerReference>.Empty,
+            analyzerConfigFiles: ImmutableArray<string>.Empty);
 
     [Fact]
     public async Task Dispose_DisposesChainedDisposables()
@@ -366,7 +366,7 @@ public class WorkspaceTests
             }
             """);
 
-        Mock<IWorkspaceProjectContext> workspaceProjectContext = new IWorkspaceProjectContextMock();
+        Mock<IWorkspaceProjectContext> workspaceProjectContext = new(MockBehavior.Loose);
         Mock<IWorkspaceUpdateHandler> updateHandler = new(MockBehavior.Strict);
         Mock<IProjectEvaluationHandler> projectEvaluationHandler = updateHandler.As<IProjectEvaluationHandler>();
 
@@ -426,7 +426,7 @@ public class WorkspaceTests
             }
             """);
 
-        Mock<IWorkspaceProjectContext> workspaceProjectContext = new IWorkspaceProjectContextMock();
+        Mock<IWorkspaceProjectContext> workspaceProjectContext = new(MockBehavior.Loose);
         Mock<IWorkspaceUpdateHandler> updateHandler = new(MockBehavior.Strict);
         Mock<IProjectEvaluationHandler> projectEvaluationHandler = updateHandler.As<IProjectEvaluationHandler>();
 
@@ -474,7 +474,7 @@ public class WorkspaceTests
             }
             """);
 
-        Mock<IWorkspaceProjectContext> workspaceProjectContext = new IWorkspaceProjectContextMock();
+        Mock<IWorkspaceProjectContext> workspaceProjectContext = new(MockBehavior.Loose);
         Mock<IWorkspaceUpdateHandler> updateHandler = new(MockBehavior.Strict);
         Mock<ISourceItemsHandler> sourceItemsHandler = updateHandler.As<ISourceItemsHandler>();
 
@@ -534,7 +534,7 @@ public class WorkspaceTests
               }
               """);
 
-        Mock<IWorkspaceProjectContext> workspaceProjectContext = new IWorkspaceProjectContextMock();
+        Mock<IWorkspaceProjectContext> workspaceProjectContext = new(MockBehavior.Loose);
         Mock<IWorkspaceUpdateHandler> updateHandler = new(MockBehavior.Strict);
         Mock<ICommandLineHandler> commandLineHandler = updateHandler.As<ICommandLineHandler>();
 
@@ -622,14 +622,14 @@ public class WorkspaceTests
     }
 
     [Fact]
-    public async Task Update_CreateBatchScopeAsyncThrows()
+    public async Task Update_StartBatchThrows()
     {
         Exception ex = new("Error starting batch");
 
         Mock<IWorkspaceProjectContext> workspaceProjectContext = new(MockBehavior.Strict);
 
-        // CreateBatchScopeAsync throws
-        workspaceProjectContext.Setup(o => o.CreateBatchScopeAsync(It.IsAny<CancellationToken>())).Throws(ex);
+        // StartBatch throws
+        workspaceProjectContext.Setup(o => o.StartBatch()).Throws(ex);
 
         // Expect disposal
         workspaceProjectContext.Setup(o => o.Dispose());
@@ -640,17 +640,15 @@ public class WorkspaceTests
     }
 
     [Fact]
-    public async Task Update_BatchScopeDisposalThrows()
+    public async Task Update_EndBatchAsyncThrows()
     {
         Exception ex = new("Error starting batch");
 
         Mock<IWorkspaceProjectContext> workspaceProjectContext = new(MockBehavior.Strict);
-        Mock<IAsyncDisposable> batchScopeDisposable = new();
 
-        // DisposeAsync throws
-        batchScopeDisposable.Setup(o => o.DisposeAsync()).Throws(ex);
-
-        workspaceProjectContext.Setup(o => o.CreateBatchScopeAsync(It.IsAny<CancellationToken>())).Returns(new ValueTask<IAsyncDisposable>(batchScopeDisposable.Object));
+        // EndBatchAsync throws
+        workspaceProjectContext.Setup(o => o.StartBatch());
+        workspaceProjectContext.Setup(o => o.EndBatchAsync()).Throws(ex);
 
         // Expect disposal
         workspaceProjectContext.Setup(o => o.Dispose());
@@ -819,7 +817,7 @@ public class WorkspaceTests
         activeWorkspaceProjectContextTracker ??= IActiveEditorContextTrackerFactory.Create();
         commandLineParserServices ??= new(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst) { commandLineParserService.Object };
         dataProgressTrackerService ??= IDataProgressTrackerServiceFactory.Create();
-        workspaceProjectContext ??= new IWorkspaceProjectContextMock().Object;
+        workspaceProjectContext ??= Mock.Of<IWorkspaceProjectContext>(MockBehavior.Loose);
         workspaceProjectContextFactory ??= IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext(delegate { return workspaceProjectContext; });
         faultHandlerService ??= IProjectFaultHandlerServiceFactory.Create();
 #pragma warning disable VSSDK005

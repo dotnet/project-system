@@ -84,7 +84,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             string language, 
             IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService)
         {
-            // Configure mocks.
             var unconfiguredProject = UnconfiguredProjectFactory.Create(fullPath: $@"C:\project1.{ProjectFileExtension}");
             var projectServices = IUnconfiguredProjectVsServicesFactory.Implement(
                 threadingServiceCreator: () => IProjectThreadingServiceFactory.Create(),
@@ -93,40 +92,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             using var ws = new AdhocWorkspace();
             ws.AddSolution(InitializeWorkspace(ProjectId.CreateNewId(), oldFilePath, sourceCode, language));
 
-            var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement<bool>((_, _, _, _) => true);
-            var waitIndicator = Mock.Of<IWaitIndicator>();
+            var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
+            var waitIndicator = (new Mock<IWaitIndicator>()).Object;
             var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
             var projectThreadingService = IProjectThreadingServiceFactory.Create();
-            var refactorNotifyService = Mock.Of<IRefactorNotifyService>();
-            var extensibility = Mock.Of<IVsUIService<IVsExtensibility, IVsExtensibility3>>();
-            var operationProgressMock = Mock.Of<IVsService<SVsOperationProgress, IVsOperationProgressStatusService>>();
-            var context = Mock.Of<IProjectTreeActionHandlerContext>();
+            var refactorNotifyService = (new Mock<IRefactorNotifyService>()).Object;
+            var extensibility = new Mock<IVsUIService<IVsExtensibility, IVsExtensibility3>>().Object;
+            var operationProgressMock = new Mock<IVsService<SVsOperationProgress, IVsOperationProgressStatusService>>().Object;
+            var context = new Mock<IProjectTreeActionHandlerContext>().Object;
 
             var mockNode = new Mock<IProjectTree>();
             mockNode.SetupGet(x => x.FilePath).Returns(oldFilePath);
             mockNode.SetupGet(x => x.IsFolder).Returns(false);
             var node = mockNode.Object;
 
-            // Construct the renamer.
-            var renamer = new TestRenamerProjectTreeActionHandler(
-                unconfiguredProject,
-                projectServices,
-                new Lazy<Workspace>(() => ws),
-                environmentOptionsFactory,
-                userNotificationServices,
-                roslynServices,
-                waitIndicator,
-                vsOnlineServices,
-                projectAsynchronousTasksService,
-                projectThreadingService,
-                extensibility,
-                operationProgressMock,
-                settingsManagerService);
+            var renamer = new TestRenamerProjectTreeActionHandler(unconfiguredProject,
+                                                              projectServices,
+                                                              new Lazy<Workspace>(() => ws),
+                                                              environmentOptionsFactory,
+                                                              userNotificationServices,
+                                                              roslynServices,
+                                                              waitIndicator,
+                                                              vsOnlineServices,
+                                                              projectAsynchronousTasksService,
+                                                              projectThreadingService,
+                                                              extensibility,
+                                                              operationProgressMock,
+                                                              settingsManagerService);
 
-            // Perform the rename, with a timeout in case of hangs.
-            await renamer
-                .RenameAsync(context, node, newFilePath)
-                .TimeoutAfter(TimeSpan.FromSeconds(30));
+            await renamer.RenameAsync(context, node, newFilePath)
+                         .TimeoutAfter(TimeSpan.FromSeconds(1));
         }
     }
 }

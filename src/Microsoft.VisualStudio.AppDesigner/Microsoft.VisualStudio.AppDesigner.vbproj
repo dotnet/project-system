@@ -21,7 +21,6 @@
   <ItemGroup>
     <PackageReference Remove="Microsoft.VisualStudio.ProjectSystem*" />
   </ItemGroup>
-  
   <ItemGroup>
     <Compile Include="..\Common\ManagedCodeMarkers.vb">
       <Link>ManagedCodeMarkers.vb</Link>

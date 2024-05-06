@@ -21,8 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
         [InlineData("namespace n1 {class Foo{}} namespace n2 {class Foo{}}", "Foo.cs", "Bar.cs")]
         public async Task Rename_Symbol_Should_TriggerUserConfirmationAsync(string sourceCode, string oldFilePath, string newFilePath)
         {
-            using var _ = SynchronizationContextUtil.Suppress();
-
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
             var vsOnlineServices = IVsOnlineServicesFactory.Create(online: false);
@@ -44,8 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
         [InlineData("namespace n1 {class Foo{}} namespace n2 {class Foo{}}", "Foo.cs", "Bar.cs")]
         public async Task Rename_Symbol_ShouldNot_TriggerUserConfirmationAsync(string sourceCode, string oldFilePath, string newFilePath)
         {
-            using var _ = SynchronizationContextUtil.Suppress();
-
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
             var vsOnlineServices = IVsOnlineServicesFactory.Create(online: false);
@@ -76,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             var vsOnlineServices = IVsOnlineServicesFactory.Create(online: false);
             var settingsManagerService = CreateSettingsManagerService(true);
 
-            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.CSharp, settingsManagerService).TimeoutAfter(TimeSpan.FromSeconds(30));
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.CSharp, settingsManagerService).TimeoutAfter(TimeSpan.FromSeconds(1));
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
@@ -120,10 +116,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
         }
 
         [Fact]
-        public async Task Rename_Symbol_Should_ExitEarlyWhenFileDoesNotChangeName()
+        public async Task Rename_Symbol_Should_ExitEarlyWhenFileDoesntChangeName()
         {
-            using var _ = SynchronizationContextUtil.Suppress();
-
             string sourceCode = "class Foo { }";
             string oldFilePath = "Foo.cs";
             string newFilePath = "FOO.cs";
