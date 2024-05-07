@@ -131,10 +131,7 @@ extends:
     - stage: Build
       displayName: Build
       variables:
-        # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
-        # Variables used:
-        # - ApiScanConnectionString
-        - group: DotNet-Project-System
+        - group: VSEng sponsored APIScan # Expected to provide ApiScanClientId
       jobs:
         - template: eng/pipelines/templates/build-official-release.yml@self
           parameters:

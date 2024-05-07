@@ -67,4 +67,4 @@ steps:
     # - https://microsoft.sharepoint.com/teams/apiscan/Lists/Contacts%20%20System%20Account%20and%20Wrappers/AllItems.aspx?skipSignal=true
     # This value is provided from the DotNet-Project-System variable group, defined in the stage variables.
     env:
-      AzureServicesAuthConnectionString: $(ApiScanConnectionString)
+      AzureServicesAuthConnectionString: runAs=App;AppId=$(ApiScanClientId)
