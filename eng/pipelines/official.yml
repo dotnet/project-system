@@ -143,11 +143,6 @@ extends:
     - stage: Publish
       displayName: Publish
       dependsOn: Build
-      variables:
-      # https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=434&path=DotNet-Project-System
-      # Variables used:
-      # - SymbolsUncPath
-      - group: DotNet-Project-System
       jobs:
       - template: eng/pipelines/templates/publish-assets-and-packages.yml@self
       - template: eng/pipelines/templates/publish-symbols.yml@self
