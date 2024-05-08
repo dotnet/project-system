@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="de" original="../VSPackage.resx">
     <body>
       <trans-unit id="1100">
-        <source>Managed Resources Editor</source>
-        <target state="translated">Editor für verwaltete Ressourcen</target>
+        <source>Managed Resources Editor (Legacy)</source>
+        <target state="needs-review-translation">Editor für verwaltete Ressourcen</target>
         <note>Used for the resource editor in the shell's "Open With..." dialog plus the editor name for the key-binding it the Tools | Options | Environment | Keyboard | Use new shourtcut.</note>
       </trans-unit>
       <trans-unit id="1200">

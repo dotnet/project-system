@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="1100" xml:space="preserve">
-    <value>Managed Resources Editor</value>
+    <value>Managed Resources Editor (Legacy)</value>
     <comment>Used for the resource editor in the shell's "Open With..." dialog plus the editor name for the key-binding it the Tools | Options | Environment | Keyboard | Use new shourtcut.</comment>
   </data>
   <data name="1200" xml:space="preserve">
