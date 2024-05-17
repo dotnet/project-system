@@ -11,33 +11,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 ///     interface for NuGet;
 /// </summary>
 [DebuggerDisplay("TargetFrameworkMoniker = {TargetFrameworkMoniker}")]
-internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo3
+internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo4
 {
     private readonly TargetFrameworkInfo _targetFrameworkInfo;
     
-    private VsReferenceItems? _packageDownloads;
-    private VsReferenceItems? _frameworkReferences;
-    private VsReferenceItems? _projectReferences;
-    private VsReferenceItems? _packageReferences;
-    private VsReferenceItems? _centralPackageVersions;
-    private VsProjectProperties? _properties;
+    private IReadOnlyDictionary<string, string?>? _properties;
+    private IReadOnlyDictionary<string, IReadOnlyList<IVsReferenceItem2>>? _items;
 
     public VsTargetFrameworkInfo(TargetFrameworkInfo targetFrameworkInfo)
     {
         _targetFrameworkInfo = targetFrameworkInfo;
     }
 
-    public IVsReferenceItems PackageDownloads => _packageDownloads ??= new VsReferenceItems(_targetFrameworkInfo.PackageDownloads);
-
-    public IVsReferenceItems FrameworkReferences => _frameworkReferences ??= new VsReferenceItems(_targetFrameworkInfo.FrameworkReferences);
-
     public string TargetFrameworkMoniker => _targetFrameworkInfo.TargetFrameworkMoniker;
 
-    public IVsReferenceItems ProjectReferences => _projectReferences ??= new VsReferenceItems(_targetFrameworkInfo.ProjectReferences);
+    public IReadOnlyDictionary<string, string?> Properties => _properties ??= _targetFrameworkInfo.Properties!;
 
-    public IVsReferenceItems PackageReferences => _packageReferences ??= new VsReferenceItems(_targetFrameworkInfo.PackageReferences);
-
-    public IVsProjectProperties Properties => _properties ??= new VsProjectProperties(_targetFrameworkInfo.Properties);
-
-    public IVsReferenceItems CentralPackageVersions => _centralPackageVersions ??= new VsReferenceItems(_targetFrameworkInfo.CentralPackageVersions);
+    public IReadOnlyDictionary<string, IReadOnlyList<IVsReferenceItem2>> Items => _items ??= ImmutableDictionary.CreateRange(
+        [
+            new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("FrameworkReference", ImmutableList.CreateRange(_targetFrameworkInfo.FrameworkReferences.Select(r => new VsReferenceItem(r)))),
+            new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageDownload", ImmutableList.CreateRange(_targetFrameworkInfo.PackageDownloads.Select(r => new VsReferenceItem(r)))),
+            new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageReference", ImmutableList.CreateRange(_targetFrameworkInfo.PackageReferences.Select(r => new VsReferenceItem(r)))),
+            new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageVersion", ImmutableList.CreateRange(_targetFrameworkInfo.CentralPackageVersions.Select(r => new VsReferenceItem(r)))),
+            new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("ProjectReference", ImmutableList.CreateRange(_targetFrameworkInfo.ProjectReferences.Select(r => new VsReferenceItem(r)))),
+        ]);
 }

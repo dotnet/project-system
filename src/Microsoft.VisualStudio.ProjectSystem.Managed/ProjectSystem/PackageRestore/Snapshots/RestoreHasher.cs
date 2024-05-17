@@ -34,9 +34,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 
         private static void AppendFrameworkProperties(this IncrementalHasher hasher, TargetFrameworkInfo framework)
         {
-            foreach (ProjectProperty property in framework.Properties)
+            foreach (var (key, value) in framework.Properties)
             {
-                AppendProperty(hasher, property.Name, property.Value);
+                AppendProperty(hasher, key, value);
             }
         }
 
@@ -51,9 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 
         private static void AppendReferenceProperties(this IncrementalHasher hasher, ReferenceItem reference)
         {
-            foreach (ReferenceProperty property in reference.Properties)
+            foreach (var (key, value) in reference.Properties)
             {
-                AppendProperty(hasher, property.Name, property.Value);
+                AppendProperty(hasher, key, value);
             }
         }
 

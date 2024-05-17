@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 if (!StringComparers.ItemNames.Equals(x.Name, y.Name))
                     return false;
 
-                return x.Properties.SequenceEqual(y.Properties, ReferenceProperties);
+                return Enumerable.SequenceEqual(x.Properties.OrderBy(kvp => kvp.Key), y.Properties.OrderBy(kvp => kvp.Key));
             }
 
             public override int GetHashCode(ReferenceItem? obj)
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 if (obj is null)
                     return 0;
 
-                return obj.Name.GetHashCode();
+                return StringComparers.ItemNames.GetHashCode(obj.Name);
             }
         }
     }

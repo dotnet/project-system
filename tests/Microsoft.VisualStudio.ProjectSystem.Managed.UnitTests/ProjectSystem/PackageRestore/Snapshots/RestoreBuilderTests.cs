@@ -402,22 +402,12 @@ public class RestoreBuilderTests
         AssertContainsProperty("Version", "[4.9.4]", download2.Properties);
     }
 
-    private static void AssertContainsProperty(string name, string value, ImmutableArray<ProjectProperty> properties)
+    private static void AssertContainsProperty(string name, string value, IImmutableDictionary<string, string> properties)
     {
-        var property = properties.FirstOrDefault(p => p.Name == name);
+        var exists = properties.TryGetValue(name, out var actualValue);
 
-        Assert.NotNull(property);
-        Assert.Equal(name, property.Name);
-        Assert.Equal(value, property.Value);
-    }
-
-    private static void AssertContainsProperty(string name, string value, ImmutableArray<ReferenceProperty> properties)
-    {
-        var property = properties.FirstOrDefault(p => p.Name == name);
-
-        Assert.NotNull(property);
-        Assert.Equal(name, property.Name);
-        Assert.Equal(value, property.Value);
+        Assert.True(exists);
+        Assert.Equal(value, actualValue);
     }
 
     private static void AssertNoItems(ProjectRestoreInfo result)

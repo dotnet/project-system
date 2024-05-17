@@ -7,15 +7,13 @@ using NuGet.SolutionRestoreManager;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 
 /// <summary>
-///     Wraps a <see cref="ReferenceItem"/> instance to implement the <see cref="IVsReferenceItem"/>
+///     Wraps a <see cref="ReferenceItem"/> instance to implement the <see cref="IVsReferenceItem2"/>
 ///     interface for NuGet.
 /// </summary>
 [DebuggerDisplay("Name = {Name}")]
-internal class VsReferenceItem : IVsReferenceItem
+internal class VsReferenceItem : IVsReferenceItem2
 {
     private readonly ReferenceItem _referenceItem;
-
-    private VsReferenceProperties? _properties;
 
     public VsReferenceItem(ReferenceItem referenceItem)
     {
@@ -24,5 +22,5 @@ internal class VsReferenceItem : IVsReferenceItem
 
     public string Name => _referenceItem.Name;
 
-    public IVsReferenceProperties Properties => _properties ??= new VsReferenceProperties(_referenceItem.Properties);
+    public IReadOnlyDictionary<string, string?>? Properties => _referenceItem.Properties!;
 }
