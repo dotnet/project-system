@@ -60,6 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             LogReferenceItems(logger, "Package Downloads", targetFrameworkInfo.PackageDownloads);
             LogReferenceItems(logger, "Project References", targetFrameworkInfo.ProjectReferences);
             LogReferenceItems(logger, "Package References", targetFrameworkInfo.PackageReferences);
+            LogReferenceItems(logger, "NuGet Audit Suppressions", targetFrameworkInfo.NuGetAuditSuppress);
             LogProperties(logger, "Target Framework Properties", targetFrameworkInfo.Properties);
 
             logger.IndentLevel--;

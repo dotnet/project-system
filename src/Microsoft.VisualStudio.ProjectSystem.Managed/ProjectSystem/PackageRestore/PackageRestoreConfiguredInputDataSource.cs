@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             .Add(CollectedFrameworkReference.SchemaName)        // Build
             .Add(CollectedPackageDownload.SchemaName)           // Build
             .Add(CollectedPackageVersion.SchemaName)            // Build
+            .Add(CollectedNuGetAuditSuppressions.SchemaName)    // Build
             .Add(CollectedPackageReference.SchemaName);         // Build
 
         private readonly UnconfiguredProject _containingProject;

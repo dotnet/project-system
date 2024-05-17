@@ -23,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             IProjectRuleSnapshot projectReferences = update.GetSnapshotOrEmpty(EvaluatedProjectReference.SchemaName);
             IProjectRuleSnapshot packageReferences = update.GetSnapshotOrEmpty(CollectedPackageReference.SchemaName);
             IProjectRuleSnapshot packageVersions = update.GetSnapshotOrEmpty(CollectedPackageVersion.SchemaName);
+            IProjectRuleSnapshot nuGetAuditSuppress = update.GetSnapshotOrEmpty(CollectedNuGetAuditSuppressions.SchemaName);
             IProjectRuleSnapshot toolReferences = update.GetSnapshotOrEmpty(DotNetCliToolReference.SchemaName);
 
             // For certain project types such as UWP, "TargetFrameworkMoniker" != the moniker that restore uses
@@ -37,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 ToReferenceItems(projectReferences.Items),
                 ToReferenceItems(packageReferences.Items),
                 ToReferenceItems(packageVersions.Items),
+                ToReferenceItems(nuGetAuditSuppress.Items),
                 properties);
 
             return new ProjectRestoreInfo(

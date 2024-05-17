@@ -376,6 +376,18 @@
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
+    <Compile Update="ProjectSystem\Rules\CollectedNuGetAuditSuppressions.cs">
+      <DependentUpon>CollectedNuGetAuditSuppressions.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CollectedNuGetAuditSuppressions.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
     <Compile Update="ProjectSystem\Rules\CollectedPackageDownload.cs">
       <DependentUpon>CollectedPackageDownload.xaml</DependentUpon>
     </Compile>

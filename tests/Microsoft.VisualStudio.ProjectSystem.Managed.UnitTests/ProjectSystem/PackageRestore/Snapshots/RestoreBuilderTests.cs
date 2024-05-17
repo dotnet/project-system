@@ -290,6 +290,30 @@ public class RestoreBuilderTests
     }
 
     [Fact]
+    public void ToProjectRestoreInfo_SetsNuGetAuditSuppressions()
+    {
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
+                {
+                    "CurrentState": {
+                        "CollectedNuGetAuditSuppressions": {
+                            "Items" : {
+                                "https://cve.contoso.com/1" : {
+                                }
+                            }
+                        }
+                    }
+                }
+                """);
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+
+        var suppressions = Assert.Single(result.TargetFrameworks).NuGetAuditSuppress;
+
+        var reference1 = Assert.Single(suppressions);
+        Assert.Equal("https://cve.contoso.com/1", reference1.Name);
+    }
+
+    [Fact]
     public void ToProjectRestoreInfo_SetsProjectReferences()
     {
         var update = IProjectSubscriptionUpdateFactory.FromJson(

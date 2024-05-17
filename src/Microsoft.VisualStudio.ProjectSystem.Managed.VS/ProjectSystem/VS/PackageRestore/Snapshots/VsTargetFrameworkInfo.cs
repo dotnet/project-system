@@ -30,6 +30,7 @@ internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo4
     public IReadOnlyDictionary<string, IReadOnlyList<IVsReferenceItem2>> Items => _items ??= ImmutableDictionary.CreateRange(
         [
             new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("FrameworkReference", ImmutableList.CreateRange(_targetFrameworkInfo.FrameworkReferences.Select(r => new VsReferenceItem(r)))),
+            new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("NuGetAuditSuppress", ImmutableList.CreateRange(_targetFrameworkInfo.NuGetAuditSuppress.Select(r => new VsReferenceItem(r)))),
             new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageDownload", ImmutableList.CreateRange(_targetFrameworkInfo.PackageDownloads.Select(r => new VsReferenceItem(r)))),
             new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageReference", ImmutableList.CreateRange(_targetFrameworkInfo.PackageReferences.Select(r => new VsReferenceItem(r)))),
             new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageVersion", ImmutableList.CreateRange(_targetFrameworkInfo.CentralPackageVersions.Select(r => new VsReferenceItem(r)))),

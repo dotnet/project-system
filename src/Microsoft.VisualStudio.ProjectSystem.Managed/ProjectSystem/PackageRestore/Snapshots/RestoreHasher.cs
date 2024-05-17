@@ -25,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 hasher.AppendReferences(framework.FrameworkReferences);
                 hasher.AppendReferences(framework.PackageDownloads);
                 hasher.AppendReferences(framework.CentralPackageVersions);
+                hasher.AppendReferences(framework.NuGetAuditSuppress);
             }
 
             AppendReferences(hasher, restoreInfo.ToolReferences);
