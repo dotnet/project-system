@@ -11,7 +11,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     internal class TargetFrameworkInfo
     {
         // If additional fields/properties are added to this class, please update RestoreHasher
-        public TargetFrameworkInfo(string targetFrameworkMoniker, ImmutableArray<ReferenceItem> frameworkReferences, ImmutableArray<ReferenceItem> packageDownloads, ImmutableArray<ReferenceItem> projectReferences, ImmutableArray<ReferenceItem> packageReferences, ImmutableArray<ReferenceItem> centralPackageVersions, ImmutableArray<ReferenceItem> nuGetAuditSuppress, IImmutableDictionary<string, string> properties)
+        public TargetFrameworkInfo(
+            string targetFrameworkMoniker,
+            ImmutableArray<ReferenceItem> frameworkReferences,
+            ImmutableArray<ReferenceItem> packageDownloads,
+            ImmutableArray<ReferenceItem> projectReferences,
+            ImmutableArray<ReferenceItem> packageReferences,
+            ImmutableArray<ReferenceItem> centralPackageVersions,
+            ImmutableArray<ReferenceItem> nuGetAuditSuppress,
+            IImmutableDictionary<string, string> properties)
         {
             TargetFrameworkMoniker = targetFrameworkMoniker;
             FrameworkReferences = frameworkReferences;

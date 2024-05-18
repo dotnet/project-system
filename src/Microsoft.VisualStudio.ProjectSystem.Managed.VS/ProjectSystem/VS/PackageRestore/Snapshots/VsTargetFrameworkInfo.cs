@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo4
 {
     private readonly TargetFrameworkInfo _targetFrameworkInfo;
-    
+
     private IReadOnlyDictionary<string, string?>? _properties;
     private IReadOnlyDictionary<string, IReadOnlyList<IVsReferenceItem2>>? _items;
 
@@ -27,13 +27,51 @@ internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo4
 
     public IReadOnlyDictionary<string, string?> Properties => _properties ??= _targetFrameworkInfo.Properties!;
 
-    public IReadOnlyDictionary<string, IReadOnlyList<IVsReferenceItem2>> Items => _items ??= ImmutableDictionary.CreateRange(
-        [
-            new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("FrameworkReference", ImmutableList.CreateRange(_targetFrameworkInfo.FrameworkReferences.Select(r => new VsReferenceItem(r)))),
-            new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("NuGetAuditSuppress", ImmutableList.CreateRange(_targetFrameworkInfo.NuGetAuditSuppress.Select(r => new VsReferenceItem(r)))),
-            new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageDownload", ImmutableList.CreateRange(_targetFrameworkInfo.PackageDownloads.Select(r => new VsReferenceItem(r)))),
-            new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageReference", ImmutableList.CreateRange(_targetFrameworkInfo.PackageReferences.Select(r => new VsReferenceItem(r)))),
-            new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageVersion", ImmutableList.CreateRange(_targetFrameworkInfo.CentralPackageVersions.Select(r => new VsReferenceItem(r)))),
-            new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("ProjectReference", ImmutableList.CreateRange(_targetFrameworkInfo.ProjectReferences.Select(r => new VsReferenceItem(r)))),
-        ]);
+    public IReadOnlyDictionary<string, IReadOnlyList<IVsReferenceItem2>> Items
+    {
+        get
+        {
+            if (_items is null)
+            {
+                Span<int> lengths = stackalloc int[]
+                {
+                    _targetFrameworkInfo.FrameworkReferences.Length,
+                    _targetFrameworkInfo.NuGetAuditSuppress.Length,
+                    _targetFrameworkInfo.PackageDownloads.Length,
+                    _targetFrameworkInfo.PackageReferences.Length,
+                    _targetFrameworkInfo.CentralPackageVersions.Length,
+                    _targetFrameworkInfo.ProjectReferences.Length,
+                };
+                int capacity = lengths[0];
+                for (int i = 1; i < lengths.Length; i++)
+                {
+                    if (lengths[i] > capacity)
+                        capacity = lengths[i];
+                }
+
+                ImmutableArray<IVsReferenceItem2>.Builder builder = ImmutableArray.CreateBuilder<IVsReferenceItem2>(capacity);
+                _items = ImmutableDictionary.CreateRange(
+                [
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("FrameworkReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.FrameworkReferences, builder)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("NuGetAuditSuppress", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.NuGetAuditSuppress, builder)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageDownload", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.PackageDownloads, builder)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.PackageReferences, builder)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageVersion", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.CentralPackageVersions, builder)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("ProjectReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.ProjectReferences, builder)),
+                ]);
+            }
+            return _items;
+        }
+    }
+
+    private static IReadOnlyList<IVsReferenceItem2> CreateImmutableVsReferenceItemList(ImmutableArray<ReferenceItem> referenceItems, ImmutableArray<IVsReferenceItem2>.Builder builder)
+    {
+        builder.Clear();
+        foreach (var referenceItem in referenceItems)
+        {
+            VsReferenceItem vsReferenceItem = new VsReferenceItem(referenceItem);
+            builder.Add(vsReferenceItem);
+        }
+        return builder.ToImmutable();
+    }
 }

@@ -14,7 +14,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 if (!StringComparers.ItemNames.Equals(x.Name, y.Name))
                     return false;
 
-                return Enumerable.SequenceEqual(x.Properties.OrderBy(kvp => kvp.Key), y.Properties.OrderBy(kvp => kvp.Key));
+                if (x.Properties.Count != y.Properties.Count)
+                    return false;
+
+                foreach (KeyValuePair<string, string> property in x.Properties)
+                {
+                    if (!y.Properties.TryGetValue(property.Key, out string yValue))
+                    {
+                        return false;
+                    }
+
+                    if (!StringComparer.Ordinal.Equals(Equals(property.Key, yValue)))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
             }
 
             public override int GetHashCode(ReferenceItem? obj)
