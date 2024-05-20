@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ProjectSystem\VS\PackageRestore\Snapshots\" />
+    <PackageReference Include="Microsoft.Build" />
   </ItemGroup>
 
 </Project>
