@@ -103,8 +103,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             items = await itemProvider.GetItemsAsync(LaunchProfileProjectItemProvider.ItemType, "Profile2");
 
-            Assert.Collection(items,
-                item => Assert.Equal("Profile2", item.EvaluatedInclude));
+            var item = Assert.Single(items);
+            Assert.Equal("Profile2", item.EvaluatedInclude);
         }
 
         [Fact]

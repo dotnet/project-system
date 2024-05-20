@@ -107,7 +107,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var results = UIPropertyEditorDataProducer.CreateEditorValues(context, parentEntity, rule, "MyProperty", properties);
 
-            Assert.Collection(results, entity => assertEqual(entity, expectedName: "FilePath"));
+            var entity = Assert.Single(results);
+            assertEqual(entity, expectedName: "FilePath");
 
             static void assertEqual(IEntityValue entity, string expectedName)
             {
@@ -135,7 +136,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var results = UIPropertyEditorDataProducer.CreateEditorValues(context, parentEntity, rule, "MyProperty", properties);
 
-            Assert.Collection(results, entity => assertEqual(entity, expectedName: "DirectoryPath"));
+            var entity = Assert.Single(results);
+            assertEqual(entity, expectedName: "DirectoryPath");
 
             static void assertEqual(IEntityValue entity, string expectedName)
             {
