@@ -7,6 +7,11 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
 
+  <!--
+      NOTE packages and their versions listed here must be specified in the dotnet-project-system-public-packages feed here:
+      https://dev.azure.com/azure-public/vside/_artifacts/feed/dotnet-project-system-public-packages
+  -->
+
   <ItemGroup>
     <!-- Infrastructure -->
     <!-- This package is deprecated. CodecovUploader is now the recommended package. -->
@@ -30,6 +35,7 @@
     <PackageVersion Include="Nerdbank.GitVersioning"                                                 Version="3.6.79-alpha" />
     <PackageVersion Include="Nerdbank.Streams"                                                       Version="2.11.72" />
     <PackageVersion Include="System.IO.Pipelines"                                                    Version="8.0.0" />
+    <PackageVersion Include="StreamJsonRpc"                                                          Version="2.18.53" />
 
     <!-- VS SDK -->
     <!-- https://dev.azure.com/azure-public/vside/_artifacts/feed/vssdk -->
@@ -77,18 +83,18 @@
     <PackageVersion Include="Microsoft.VisualStudio.ProjectSystem.XamlTypes"                         Version="$(CPSPackageVersion)" />
 
     <!-- Roslyn -->
-    <PackageVersion Include="Microsoft.CodeAnalysis"                                                 Version="4.8.0-3.final" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Common"                                          Version="4.8.0-3.final" />
+    <PackageVersion Include="Microsoft.CodeAnalysis"                                                 Version="4.11.0-1.24225.10" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Common"                                          Version="4.11.0-1.24225.10" />
     <PackageVersion Include="Microsoft.CSharp"                                                       Version="4.7.0" />
-    <PackageVersion Include="Microsoft.Net.Compilers.Toolset"                                        Version="4.10.0-3.24157.9" />
+    <PackageVersion Include="Microsoft.Net.Compilers.Toolset"                                        Version="4.11.0-1.24225.10" />
     <PackageVersion Include="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
-    <PackageVersion Include="Microsoft.VisualStudio.LanguageServices"                                Version="4.8.0-3.final" />
+    <PackageVersion Include="Microsoft.VisualStudio.LanguageServices"                                Version="4.11.0-1.24225.10" />
 
     <!-- Analyzers -->
     <PackageVersion Include="CSharpIsNullAnalyzer"                                                   Version="0.1.329" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.11.0-beta1.23472.1" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="4.8.0-3.final" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="4.8.0-3.final" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="4.11.0-1.24225.10" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="4.11.0-1.24225.10" />
     <PackageVersion Include="Roslyn.Diagnostics.Analyzers"                                           Version="3.11.0-beta1.23472.1" />
 
     <!-- NuGet -->
