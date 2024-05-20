@@ -15,8 +15,4 @@
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ProjectSystem\VS\PackageRestore\Snapshots\" />
-  </ItemGroup>
-
 </Project>
