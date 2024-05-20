@@ -98,7 +98,7 @@
     <PackageVersion Include="Microsoft.IO.Redist"                                                    Version="6.0.0" />
 
     <!-- MSBuild (for tests only) -->
-    <PackageVersion Include="Microsoft.Build"                                                        Version="17.9.5" />
+    <PackageVersion Include="Microsoft.Build"                                                        Version="17.11.0-preview-24229-04" />
 
     <!-- Hot Reload -->
     <PackageVersion Include="Microsoft.VisualStudio.HotReload.Components"                            Version="6.0.0-preview.6.21380.4" />
