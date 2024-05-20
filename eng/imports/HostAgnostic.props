@@ -58,6 +58,9 @@
 
     <!-- Host-Agnostic Visual Studio -->
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />
+
+    <!-- To resolve assembly versioning issue by pinning a specific version. Should remove in future when packages fixed. -->
+    <PackageReference Include="StreamJsonRpc" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'">

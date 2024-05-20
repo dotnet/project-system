@@ -7,6 +7,13 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
         public IWorkspaceProjectContextMock()
         {
             SetupAllProperties();
+
+            Mock<IAsyncDisposable> batchScopeDisposable = new();
+
+            batchScopeDisposable.Setup(o => o.DisposeAsync());
+
+            Setup(o => o.CreateBatchScopeAsync(It.IsAny<CancellationToken>()))
+                .Returns(new ValueTask<IAsyncDisposable>(batchScopeDisposable.Object));
         }
     }
 }

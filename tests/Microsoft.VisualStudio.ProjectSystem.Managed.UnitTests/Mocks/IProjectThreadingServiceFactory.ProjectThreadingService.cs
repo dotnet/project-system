@@ -7,28 +7,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal partial class IProjectThreadingServiceFactory
     {
-        private class ProjectThreadingService : IProjectThreadingService
+        private class ProjectThreadingService(bool verifyOnUIThread = true) : IProjectThreadingService
         {
-            private readonly bool _verifyOnUIThread;
-
-            public ProjectThreadingService(bool verifyOnUIThread = true) => _verifyOnUIThread = verifyOnUIThread;
-
-#pragma warning disable VSSDK005
             public JoinableTaskContextNode JoinableTaskContext { get; } = new JoinableTaskContextNode(new JoinableTaskContext());
-#pragma warning restore VSSDK005
 
             public JoinableTaskFactory JoinableTaskFactory => JoinableTaskContext.Factory;
 
-            public bool IsOnMainThread
-            {
-                get
-                {
-                    if (!_verifyOnUIThread)
-                        return true;
-
-                    return JoinableTaskContext.IsOnMainThread;
-                }
-            }
+            public bool IsOnMainThread => !verifyOnUIThread || JoinableTaskContext.IsOnMainThread;
 
             public void ExecuteSynchronously(Func<Task> asyncAction)
             {
@@ -42,16 +27,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public void VerifyOnUIThread()
             {
-                if (!_verifyOnUIThread)
-                    return;
-
-                if (!IsOnMainThread)
+                if (verifyOnUIThread && !IsOnMainThread)
+                {
                     throw new InvalidOperationException();
+                }
             }
 
             public IDisposable SuppressProjectExecutionContext()
             {
-                return new DisposableObject();
+                return DisposableObject.Instance;
             }
 
             public void Fork(
@@ -68,6 +52,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             private class DisposableObject : IDisposable
             {
+                public static IDisposable Instance { get; } = new DisposableObject();
+
                 public void Dispose()
                 {
                 }

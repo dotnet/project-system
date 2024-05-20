@@ -656,7 +656,7 @@
     <ItemGroup>
       <NpmContent Include="exports.json" />
       <!-- We have a runtime dependency on Microsoft.CodeAnalysis.dll in VS Code scenarios. -->
-      <NpmContent Include="$(PkgMicrosoft_CodeAnalysis_Common)\lib\net7.0\Microsoft.CodeAnalysis.dll" />
+      <NpmContent Include="$(PkgMicrosoft_CodeAnalysis_Common)\lib\net8.0\Microsoft.CodeAnalysis.dll" />
       <NpmContent Include="@(SatelliteDllsProjectOutputGroupOutput)">
         <PackagePath>%(SatelliteDllsProjectOutputGroupOutput.TargetPath)</PackagePath>
       </NpmContent>
