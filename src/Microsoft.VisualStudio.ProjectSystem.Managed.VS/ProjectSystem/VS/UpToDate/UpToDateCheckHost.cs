@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     [Export(typeof(IUpToDateCheckHost))]
     internal sealed class UpToDateCheckHost : IUpToDateCheckHost
     {
-        private readonly IVsService<IVsAppId, IVsAppId> _vsAppId;
+        private readonly IVsService<IVsAppId> _vsAppId;
         private readonly IVsService<IVsAppCommandLine> _vsAppCommandLine;
         private readonly JoinableTaskContext _joinableTaskContext;
 
@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
         [ImportingConstructor]
         public UpToDateCheckHost(
-            IVsService<IVsAppId, IVsAppId> vsAppId,
+            IVsService<IVsAppId> vsAppId,
             IVsService<SVsAppCommandLine, IVsAppCommandLine> vsAppCommandLine,
             JoinableTaskContext joinableTaskContext)
         {
