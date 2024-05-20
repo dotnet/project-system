@@ -12,9 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     {
         private readonly IVsService<IVsAppId> _vsAppId;
         private readonly IVsService<IVsAppCommandLine> _vsAppCommandLine;
-        private readonly JoinableTaskContext _joinableTaskContext;
 
-        private bool? _hasDesignTimeBuild;
+        private readonly AsyncLazy<bool> _hasDesignTimeBuild;
+        private readonly CancellationTokenSource _cancellationTokenSource = new();
 
         [ImportingConstructor]
         public UpToDateCheckHost(
@@ -24,45 +24,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         {
             _vsAppId = vsAppId;
             _vsAppCommandLine = vsAppCommandLine;
-            _joinableTaskContext = joinableTaskContext;
+
+            _hasDesignTimeBuild = new(HasDesignTimeBuildsInternalAsync, joinableTaskContext.Factory);
         }
 
         public async ValueTask<bool> HasDesignTimeBuildsAsync(CancellationToken cancellationToken)
         {
-            _hasDesignTimeBuild ??= await HasDesignTimeBuildsInternalAsync();
+            cancellationToken.Register(_cancellationTokenSource.Cancel);
 
-            return _hasDesignTimeBuild.Value;
+            return await _hasDesignTimeBuild.GetValueAsync(cancellationToken);
+        }
 
-            async Task<bool> HasDesignTimeBuildsInternalAsync()
+        private async Task<bool> HasDesignTimeBuildsInternalAsync()
+        {
+            CancellationToken token = _cancellationTokenSource.Token;
+
+            IVsAppCommandLine vsAppCommandLine = await _vsAppCommandLine.GetValueAsync(token);
+
+            if (ErrorHandler.Succeeded(vsAppCommandLine.GetOption("populateSolutionCache", out int populateSolutionCachePresent, out string _)))
             {
-                IVsAppCommandLine vsAppCommandLine = await _vsAppCommandLine.GetValueAsync(cancellationToken);
-
-                if (ErrorHandler.Succeeded(vsAppCommandLine.GetOption("populateSolutionCache", out int populateSolutionCachePresent, out string _)))
+                if (populateSolutionCachePresent != 0)
                 {
-                    if (populateSolutionCachePresent != 0)
-                    {
-                        // Design time builds are available when running with /populateSolutionCache.
-                        return true;
-                    }
+                    // Design time builds are available when running with /populateSolutionCache.
+                    return true;
                 }
-
-                IVsAppId vsAppId = await _vsAppId.GetValueAsync(cancellationToken);
-
-                if (ErrorHandler.Succeeded(vsAppId.GetProperty((int)__VSAPROPID10.VSAPROPID_IsInCommandLineMode, out object value)))
-                {
-                    if (value is bool isInCommandLineMode)
-                    {
-                        // Design-time builds do not occur in command line mode, other than with /populateSolutionCache (checked earlier).
-                        return !isInCommandLineMode;
-                    }
-                }
-
-                // We shouldn't reach this point.
-                System.Diagnostics.Debug.Fail($"{nameof(UpToDateCheckHost)}.{nameof(HasDesignTimeBuildsAsync)} was unable to determine result reliably.");
-
-                // Assume we don't have design-time builds, to prevent hangs from waiting for snapshot data that will never arrive.
-                return false;
             }
+
+            IVsAppId vsAppId = await _vsAppId.GetValueAsync(token);
+
+            if (ErrorHandler.Succeeded(vsAppId.GetProperty((int)__VSAPROPID10.VSAPROPID_IsInCommandLineMode, out object value)))
+            {
+                if (value is bool isInCommandLineMode)
+                {
+                    // Design-time builds do not occur in command line mode, other than with /populateSolutionCache (checked earlier).
+                    return !isInCommandLineMode;
+                }
+            }
+
+            // We shouldn't reach this point.
+            System.Diagnostics.Debug.Fail($"{nameof(UpToDateCheckHost)}.{nameof(HasDesignTimeBuildsAsync)} was unable to determine result reliably.");
+
+            // Assume we don't have design-time builds, to prevent hangs from waiting for snapshot data that will never arrive.
+            return false;
         }
     }
 }
