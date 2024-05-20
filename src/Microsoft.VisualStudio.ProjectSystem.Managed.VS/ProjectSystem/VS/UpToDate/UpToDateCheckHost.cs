@@ -12,9 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     {
         private readonly IVsService<IVsAppId> _vsAppId;
         private readonly IVsService<IVsAppCommandLine> _vsAppCommandLine;
-
         private readonly AsyncLazy<bool> _hasDesignTimeBuild;
-        private readonly CancellationTokenSource _cancellationTokenSource = new();
 
         [ImportingConstructor]
         public UpToDateCheckHost(
@@ -30,16 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
         public async ValueTask<bool> HasDesignTimeBuildsAsync(CancellationToken cancellationToken)
         {
-            cancellationToken.Register(_cancellationTokenSource.Cancel);
-
             return await _hasDesignTimeBuild.GetValueAsync(cancellationToken);
         }
 
         private async Task<bool> HasDesignTimeBuildsInternalAsync()
         {
-            CancellationToken token = _cancellationTokenSource.Token;
-
-            IVsAppCommandLine vsAppCommandLine = await _vsAppCommandLine.GetValueAsync(token);
+            IVsAppCommandLine vsAppCommandLine = await _vsAppCommandLine.GetValueAsync();
 
             if (ErrorHandler.Succeeded(vsAppCommandLine.GetOption("populateSolutionCache", out int populateSolutionCachePresent, out string _)))
             {
@@ -50,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 }
             }
 
-            IVsAppId vsAppId = await _vsAppId.GetValueAsync(token);
+            IVsAppId vsAppId = await _vsAppId.GetValueAsync();
 
             if (ErrorHandler.Succeeded(vsAppId.GetProperty((int)__VSAPROPID10.VSAPROPID_IsInCommandLineMode, out object value)))
             {
