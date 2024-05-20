@@ -75,6 +75,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 unconfiguredProjectServicesMock.Setup(u => u.ProjectAsynchronousTasks)
                                            .Returns(projectAsynchronousTasksService!);
 
+                var projectThreadingService = IProjectThreadingServiceFactory.Create(verifyOnUIThread: false);
+                unconfiguredProjectServicesMock.Setup(u => u.ThreadingPolicy)
+                                           .Returns(projectThreadingService);
+
                 unconfiguredProjectServices = unconfiguredProjectServicesMock.Object;
             }
 
