@@ -25,7 +25,7 @@ internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo4
 
     public string TargetFrameworkMoniker => _targetFrameworkInfo.TargetFrameworkMoniker;
 
-    public IReadOnlyDictionary<string, string?> Properties => _properties ??= _targetFrameworkInfo.Properties!;
+    public IReadOnlyDictionary<string, string?> Properties => _properties ??= _targetFrameworkInfo.Properties;
 
     public IReadOnlyDictionary<string, IReadOnlyList<IVsReferenceItem2>> Items
     {
@@ -33,45 +33,28 @@ internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo4
         {
             if (_items is null)
             {
-                Span<int> lengths = stackalloc int[]
-                {
-                    _targetFrameworkInfo.FrameworkReferences.Length,
-                    _targetFrameworkInfo.NuGetAuditSuppress.Length,
-                    _targetFrameworkInfo.PackageDownloads.Length,
-                    _targetFrameworkInfo.PackageReferences.Length,
-                    _targetFrameworkInfo.CentralPackageVersions.Length,
-                    _targetFrameworkInfo.ProjectReferences.Length,
-                };
-                int capacity = lengths[0];
-                for (int i = 1; i < lengths.Length; i++)
-                {
-                    if (lengths[i] > capacity)
-                        capacity = lengths[i];
-                }
-
-                ImmutableArray<IVsReferenceItem2>.Builder builder = ImmutableArray.CreateBuilder<IVsReferenceItem2>(capacity);
                 _items = ImmutableDictionary.CreateRange(
                 [
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("FrameworkReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.FrameworkReferences, builder)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("NuGetAuditSuppress", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.NuGetAuditSuppress, builder)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageDownload", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.PackageDownloads, builder)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.PackageReferences, builder)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageVersion", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.CentralPackageVersions, builder)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("ProjectReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.ProjectReferences, builder)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("FrameworkReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.FrameworkReferences)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("NuGetAuditSuppress", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.NuGetAuditSuppress)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageDownload", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.PackageDownloads)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.PackageReferences)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageVersion", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.CentralPackageVersions)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("ProjectReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.ProjectReferences)),
                 ]);
             }
             return _items;
         }
     }
 
-    private static IReadOnlyList<IVsReferenceItem2> CreateImmutableVsReferenceItemList(ImmutableArray<ReferenceItem> referenceItems, ImmutableArray<IVsReferenceItem2>.Builder builder)
+    private static IReadOnlyList<IVsReferenceItem2> CreateImmutableVsReferenceItemList(ImmutableArray<ReferenceItem> referenceItems)
     {
-        builder.Clear();
+        var builder = ImmutableArray.CreateBuilder<IVsReferenceItem2>(referenceItems.Length);
         foreach (var referenceItem in referenceItems)
         {
             VsReferenceItem vsReferenceItem = new VsReferenceItem(referenceItem);
             builder.Add(vsReferenceItem);
         }
-        return builder.ToImmutable();
+        return builder.MoveToImmutable();
     }
 }

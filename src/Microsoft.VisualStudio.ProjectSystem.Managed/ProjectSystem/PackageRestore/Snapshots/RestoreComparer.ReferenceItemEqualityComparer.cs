@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Xaml.Schema;
+
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     internal static partial class RestoreComparer
@@ -14,23 +16,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 if (!StringComparers.ItemNames.Equals(x.Name, y.Name))
                     return false;
 
-                if (x.Properties.Count != y.Properties.Count)
+                if (!PropertiesAreEqual(x.Properties, y.Properties))
                     return false;
 
-                foreach (KeyValuePair<string, string> property in x.Properties)
-                {
-                    if (!y.Properties.TryGetValue(property.Key, out string yValue))
-                    {
-                        return false;
-                    }
-
-                    if (!StringComparer.Ordinal.Equals(Equals(property.Key, yValue)))
-                    {
-                        return false;
-                    }
-                }
-
                 return true;
+
+                static bool PropertiesAreEqual(IImmutableDictionary<string, string> x, IImmutableDictionary<string, string> y)
+                {
+                    if (x.Count != y.Count)
+                        return false;
+
+                    foreach ((string xKey, string xValue) in x)
+                    {
+                        if (!y.TryGetValue(xKey, out string yValue))
+                        {
+                            return false;
+                        }
+
+                        if (!StringComparers.PropertyValues.Equals(xValue, yValue))
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
             }
 
             public override int GetHashCode(ReferenceItem? obj)
