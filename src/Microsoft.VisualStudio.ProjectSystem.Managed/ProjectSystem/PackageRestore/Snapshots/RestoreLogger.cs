@@ -61,6 +61,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             LogReferenceItems(logger, "Project References", targetFrameworkInfo.ProjectReferences);
             LogReferenceItems(logger, "Package References", targetFrameworkInfo.PackageReferences);
             LogReferenceItems(logger, "NuGet Audit Suppressions", targetFrameworkInfo.NuGetAuditSuppress);
+
+            // CPM typically adds a lot of items, normally the same set for all projects in the solution, and for individual projects
+            // many of the items aren't referenced by the project. While this is diagnostic logging, PackageVersions are particularly
+            // spammy, so we'll only output the count for basic problem investigation, rather than the full list.
+            logger.WriteLine($"Package Versions -- {targetFrameworkInfo.CentralPackageVersions.Length} (count only)");
+
             LogProperties(logger, "Target Framework Properties", targetFrameworkInfo.Properties);
 
             logger.IndentLevel--;
