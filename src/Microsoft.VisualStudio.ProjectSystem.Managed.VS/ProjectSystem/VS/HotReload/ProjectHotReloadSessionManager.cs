@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _semaphore = ReentrantSemaphore.Create(
                 initialCount: 1,
                 joinableTaskContext: project.Services.ThreadingPolicy.JoinableTaskContext.Context,
-                mode: ReentrantSemaphore.ReentrancyMode.NotAllowed);
+                mode: ReentrantSemaphore.ReentrancyMode.Freeform);
         }
 
         public async Task ActivateSessionAsync(int processId, bool runningUnderDebugger, string projectName)
