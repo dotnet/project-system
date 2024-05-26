@@ -23,9 +23,9 @@ internal class VsProjectRestoreInfo : IVsProjectRestoreInfo3
 
     public string MSBuildProjectExtensionsPath => _info.MSBuildProjectExtensionsPath;
 
-    public IReadOnlyList<IVsTargetFrameworkInfo4> TargetFrameworks => _targetFrameworks ??= ImmutableList.CreateRange(_info.TargetFrameworks.Select(r => new VsTargetFrameworkInfo(r)));
+    public IReadOnlyList<IVsTargetFrameworkInfo4> TargetFrameworks => _targetFrameworks ??= _info.TargetFrameworks.SelectImmutableArray(r => new VsTargetFrameworkInfo(r));
 
-    public IReadOnlyList<IVsReferenceItem2> ToolReferences => _toolReferences ??= ImmutableList.CreateRange(_info.ToolReferences.Select(r => new VsReferenceItem(r)));
+    public IReadOnlyList<IVsReferenceItem2> ToolReferences => _toolReferences ??= _info.ToolReferences.SelectImmutableArray(r => new VsReferenceItem(r));
 
     public string OriginalTargetFrameworks => _info.OriginalTargetFrameworks;
 }
