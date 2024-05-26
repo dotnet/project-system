@@ -50,9 +50,9 @@ internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo4
     private static IReadOnlyList<IVsReferenceItem2> CreateImmutableVsReferenceItemList(ImmutableArray<ReferenceItem> referenceItems)
     {
         var builder = ImmutableArray.CreateBuilder<IVsReferenceItem2>(referenceItems.Length);
-        foreach (var referenceItem in referenceItems)
+        foreach (ReferenceItem referenceItem in referenceItems)
         {
-            VsReferenceItem vsReferenceItem = new VsReferenceItem(referenceItem);
+            VsReferenceItem vsReferenceItem = new(referenceItem);
             builder.Add(vsReferenceItem);
         }
         return builder.MoveToImmutable();
