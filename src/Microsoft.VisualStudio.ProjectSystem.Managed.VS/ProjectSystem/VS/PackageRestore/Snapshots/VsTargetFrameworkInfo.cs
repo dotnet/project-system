@@ -31,9 +31,7 @@ internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo4
     {
         get
         {
-            if (_items is null)
-            {
-                _items = ImmutableDictionary.CreateRange(
+            _items ??= ImmutableDictionary.CreateRange(
                 [
                     new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("FrameworkReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.FrameworkReferences)),
                     new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("NuGetAuditSuppress", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.NuGetAuditSuppress)),
@@ -42,7 +40,6 @@ internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo4
                     new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageVersion", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.CentralPackageVersions)),
                     new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("ProjectReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.ProjectReferences)),
                 ]);
-            }
             return _items;
         }
     }
