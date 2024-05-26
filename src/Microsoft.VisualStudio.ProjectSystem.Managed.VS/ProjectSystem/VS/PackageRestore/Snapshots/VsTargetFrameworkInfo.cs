@@ -32,6 +32,7 @@ internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo4
         get
         {
             _items ??= ImmutableDictionary.CreateRange(
+                StringComparers.ItemNames,
                 [
                     new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("FrameworkReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.FrameworkReferences)),
                     new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("NuGetAuditSuppress", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.NuGetAuditSuppress)),
