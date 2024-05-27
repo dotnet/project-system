@@ -27,19 +27,19 @@ internal class VsTargetFrameworkInfo(TargetFrameworkInfo targetFrameworkInfo) : 
             _items ??= ImmutableDictionary.CreateRange(
                 StringComparers.ItemNames,
                 [
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("FrameworkReference", CreateImmutableVsReferenceItemList(targetFrameworkInfo.FrameworkReferences)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("NuGetAuditSuppress", CreateImmutableVsReferenceItemList(targetFrameworkInfo.NuGetAuditSuppress)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageDownload", CreateImmutableVsReferenceItemList(targetFrameworkInfo.PackageDownloads)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageReference", CreateImmutableVsReferenceItemList(targetFrameworkInfo.PackageReferences)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageVersion", CreateImmutableVsReferenceItemList(targetFrameworkInfo.CentralPackageVersions)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("ProjectReference", CreateImmutableVsReferenceItemList(targetFrameworkInfo.ProjectReferences)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("FrameworkReference", ToItems(targetFrameworkInfo.FrameworkReferences)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("NuGetAuditSuppress", ToItems(targetFrameworkInfo.NuGetAuditSuppress)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageDownload", ToItems(targetFrameworkInfo.PackageDownloads)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageReference", ToItems(targetFrameworkInfo.PackageReferences)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageVersion", ToItems(targetFrameworkInfo.CentralPackageVersions)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("ProjectReference", ToItems(targetFrameworkInfo.ProjectReferences)),
                 ]);
             return _items;
-        }
-    }
 
-    private static IReadOnlyList<IVsReferenceItem2> CreateImmutableVsReferenceItemList(ImmutableArray<ReferenceItem> referenceItems)
-    {
-        return referenceItems.SelectImmutableArray(static r => new VsReferenceItem(r));
+            static IReadOnlyList<IVsReferenceItem2> ToItems(ImmutableArray<ReferenceItem> referenceItems)
+            {
+                return referenceItems.SelectImmutableArray(static r => new VsReferenceItem(r));
+            }
+        }
     }
 }
