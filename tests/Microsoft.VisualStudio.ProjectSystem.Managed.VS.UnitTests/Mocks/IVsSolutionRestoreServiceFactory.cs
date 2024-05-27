@@ -4,7 +4,7 @@ namespace NuGet.SolutionRestoreManager
 {
     internal class IVsSolutionRestoreServiceFactory
     {
-        Mock<IVsSolutionRestoreService5> _mock = new Mock<IVsSolutionRestoreService5>();
+        private readonly Mock<IVsSolutionRestoreService5> _mock = new();
 
         internal IVsSolutionRestoreServiceFactory WithNominateProjectAsync(Action<string, IVsProjectRestoreInfo3, CancellationToken> action)
         {
