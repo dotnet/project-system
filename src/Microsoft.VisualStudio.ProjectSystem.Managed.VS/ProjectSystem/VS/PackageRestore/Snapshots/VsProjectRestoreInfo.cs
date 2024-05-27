@@ -9,23 +9,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 ///     Wraps a <see cref="ProjectRestoreInfo"/> instance to implement the <see cref="IVsProjectRestoreInfo3"/>
 ///     interface for NuGet.
 /// </summary>
-internal class VsProjectRestoreInfo : IVsProjectRestoreInfo3
+internal class VsProjectRestoreInfo(ProjectRestoreInfo info) : IVsProjectRestoreInfo3
 {
-    private readonly ProjectRestoreInfo _info;
-    
     private IReadOnlyList<IVsTargetFrameworkInfo4>? _targetFrameworks;
     private IReadOnlyList<IVsReferenceItem2>? _toolReferences;
 
-    public VsProjectRestoreInfo(ProjectRestoreInfo info)
-    {
-        _info = info;
-    }
+    public string MSBuildProjectExtensionsPath => info.MSBuildProjectExtensionsPath;
 
-    public string MSBuildProjectExtensionsPath => _info.MSBuildProjectExtensionsPath;
+    public IReadOnlyList<IVsTargetFrameworkInfo4> TargetFrameworks => _targetFrameworks ??= info.TargetFrameworks.SelectImmutableArray(r => new VsTargetFrameworkInfo(r));
 
-    public IReadOnlyList<IVsTargetFrameworkInfo4> TargetFrameworks => _targetFrameworks ??= _info.TargetFrameworks.SelectImmutableArray(r => new VsTargetFrameworkInfo(r));
+    public IReadOnlyList<IVsReferenceItem2> ToolReferences => _toolReferences ??= info.ToolReferences.SelectImmutableArray(r => new VsReferenceItem(r));
 
-    public IReadOnlyList<IVsReferenceItem2> ToolReferences => _toolReferences ??= _info.ToolReferences.SelectImmutableArray(r => new VsReferenceItem(r));
-
-    public string OriginalTargetFrameworks => _info.OriginalTargetFrameworks;
+    public string OriginalTargetFrameworks => info.OriginalTargetFrameworks;
 }

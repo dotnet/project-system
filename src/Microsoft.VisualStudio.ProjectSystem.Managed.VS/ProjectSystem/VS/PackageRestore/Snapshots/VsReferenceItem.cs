@@ -11,16 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 ///     interface for NuGet.
 /// </summary>
 [DebuggerDisplay("Name = {Name}")]
-internal class VsReferenceItem : IVsReferenceItem2
+internal class VsReferenceItem(ReferenceItem referenceItem) : IVsReferenceItem2
 {
-    private readonly ReferenceItem _referenceItem;
+    public string Name => referenceItem.Name;
 
-    public VsReferenceItem(ReferenceItem referenceItem)
-    {
-        _referenceItem = referenceItem;
-    }
-
-    public string Name => _referenceItem.Name;
-
-    public IReadOnlyDictionary<string, string?>? Metadata => _referenceItem.Properties!;
+    public IReadOnlyDictionary<string, string?>? Metadata => referenceItem.Properties!;
 }

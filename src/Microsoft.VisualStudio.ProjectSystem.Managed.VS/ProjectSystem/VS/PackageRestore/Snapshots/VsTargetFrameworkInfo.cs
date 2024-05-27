@@ -11,21 +11,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 ///     interface for NuGet;
 /// </summary>
 [DebuggerDisplay("TargetFrameworkMoniker = {TargetFrameworkMoniker}")]
-internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo4
+internal class VsTargetFrameworkInfo(TargetFrameworkInfo targetFrameworkInfo) : IVsTargetFrameworkInfo4
 {
-    private readonly TargetFrameworkInfo _targetFrameworkInfo;
-
     private IReadOnlyDictionary<string, string?>? _properties;
     private IReadOnlyDictionary<string, IReadOnlyList<IVsReferenceItem2>>? _items;
 
-    public VsTargetFrameworkInfo(TargetFrameworkInfo targetFrameworkInfo)
-    {
-        _targetFrameworkInfo = targetFrameworkInfo;
-    }
+    public string TargetFrameworkMoniker => targetFrameworkInfo.TargetFrameworkMoniker;
 
-    public string TargetFrameworkMoniker => _targetFrameworkInfo.TargetFrameworkMoniker;
-
-    public IReadOnlyDictionary<string, string?> Properties => _properties ??= _targetFrameworkInfo.Properties;
+    public IReadOnlyDictionary<string, string?> Properties => _properties ??= targetFrameworkInfo.Properties;
 
     public IReadOnlyDictionary<string, IReadOnlyList<IVsReferenceItem2>> Items
     {
@@ -34,12 +27,12 @@ internal class VsTargetFrameworkInfo : IVsTargetFrameworkInfo4
             _items ??= ImmutableDictionary.CreateRange(
                 StringComparers.ItemNames,
                 [
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("FrameworkReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.FrameworkReferences)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("NuGetAuditSuppress", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.NuGetAuditSuppress)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageDownload", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.PackageDownloads)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.PackageReferences)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageVersion", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.CentralPackageVersions)),
-                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("ProjectReference", CreateImmutableVsReferenceItemList(_targetFrameworkInfo.ProjectReferences)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("FrameworkReference", CreateImmutableVsReferenceItemList(targetFrameworkInfo.FrameworkReferences)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("NuGetAuditSuppress", CreateImmutableVsReferenceItemList(targetFrameworkInfo.NuGetAuditSuppress)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageDownload", CreateImmutableVsReferenceItemList(targetFrameworkInfo.PackageDownloads)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageReference", CreateImmutableVsReferenceItemList(targetFrameworkInfo.PackageReferences)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageVersion", CreateImmutableVsReferenceItemList(targetFrameworkInfo.CentralPackageVersions)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("ProjectReference", CreateImmutableVsReferenceItemList(targetFrameworkInfo.ProjectReferences)),
                 ]);
             return _items;
         }
