@@ -159,6 +159,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             public static int CollectedPackageVersionRule;
 
             /// <summary>
+            ///     Represents the design-time build items containing the versions of direct and indirect package references that are passed to restore.
+            /// </summary>
+            [ExportRule(nameof(CollectedNuGetAuditSuppressions), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.PackageReferences)]
+            [Order(Order.Default)]
+            public static int CollectedNuGetAuditSuppressionsRule;
+
+            /// <summary>
             ///     Represents the evaluation properties that are passed that are passed to restore.
             /// </summary>
             [ExportRule(nameof(NuGetRestore), PropertyPageContexts.ProjectSubscriptionService)]

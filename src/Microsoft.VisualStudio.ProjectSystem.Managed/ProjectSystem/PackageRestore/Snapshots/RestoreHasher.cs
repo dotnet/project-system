@@ -25,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 hasher.AppendReferences(framework.FrameworkReferences);
                 hasher.AppendReferences(framework.PackageDownloads);
                 hasher.AppendReferences(framework.CentralPackageVersions);
+                hasher.AppendReferences(framework.NuGetAuditSuppress);
             }
 
             AppendReferences(hasher, restoreInfo.ToolReferences);
@@ -34,9 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 
         private static void AppendFrameworkProperties(this IncrementalHasher hasher, TargetFrameworkInfo framework)
         {
-            foreach (ProjectProperty property in framework.Properties)
+            foreach ((string key, string value) in framework.Properties)
             {
-                AppendProperty(hasher, property.Name, property.Value);
+                AppendProperty(hasher, key, value);
             }
         }
 
@@ -51,9 +52,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 
         private static void AppendReferenceProperties(this IncrementalHasher hasher, ReferenceItem reference)
         {
-            foreach (ReferenceProperty property in reference.Properties)
+            foreach ((string key, string value) in reference.Properties)
             {
-                AppendProperty(hasher, property.Name, property.Value);
+                AppendProperty(hasher, key, value);
             }
         }
 

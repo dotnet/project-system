@@ -13,11 +13,10 @@ public class NuGetRestoreServiceTests
         bool nominateCalled = false;
 
         var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Test\Test.csproj");
-        var vsNuGetSolutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((path, info, ct) => nominateCalled = true);
-        var vsNuGetSolutionRestoreService4 = IVsSolutionRestoreService4Factory.Create();
+        var vsNuGetSolutionRestoreService = new IVsSolutionRestoreServiceFactory().WithNominateProjectAsync((path, info, ct) => nominateCalled = true).Build();
         var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
         var faultHandlerService = IProjectFaultHandlerServiceFactory.Create();
-        var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, vsNuGetSolutionRestoreService4, projectAsynchronousTasksService, faultHandlerService);
+        var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, projectAsynchronousTasksService, faultHandlerService);
 
         var restoreInfo = ProjectRestoreInfoFactory.Create(msbuildProjectExtensionsPath: @"C:\Alpha\Beta");
         var configuredInputs = PackageRestoreConfiguredInputFactory.Create(restoreInfo);
@@ -33,11 +32,10 @@ public class NuGetRestoreServiceTests
         bool nominateCalled = false;
 
         var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Test\Test.csproj");
-        var vsNuGetSolutionRestoreService = IVsSolutionRestoreServiceFactory.ImplementNominateProjectAsync((path, info, ct) => nominateCalled = true);
-        var vsNuGetSolutionRestoreService4 = IVsSolutionRestoreService4Factory.Create();
+        var vsNuGetSolutionRestoreService = new IVsSolutionRestoreServiceFactory().WithNominateProjectAsync((path, info, ct) => nominateCalled = true).Build();
         var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
         var faultHandlerService = IProjectFaultHandlerServiceFactory.Create();
-        var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, vsNuGetSolutionRestoreService4, projectAsynchronousTasksService, faultHandlerService);
+        var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, projectAsynchronousTasksService, faultHandlerService);
 
         var restoreInfo = ProjectRestoreInfoFactory.Create(msbuildProjectExtensionsPath: @"C:\Alpha\Beta");
         var configuredInputs = PackageRestoreConfiguredInputFactory.Create(restoreInfo);
@@ -55,11 +53,10 @@ public class NuGetRestoreServiceTests
 
         var configuredProject = ConfiguredProjectFactory.Create(projectConfiguration: ProjectConfigurationFactory.Create("Debug|x64"));
         var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Test\Test.csproj", configuredProject: configuredProject);
-        var vsNuGetSolutionRestoreService = IVsSolutionRestoreServiceFactory.Create();
-        var vsNuGetSolutionRestoreService4 = IVsSolutionRestoreService4Factory.ImplementRegisterRestoreInfoSourceAsync((source, ct) => restoreSource = source);
+        var vsNuGetSolutionRestoreService = new IVsSolutionRestoreServiceFactory().WithRegisterRestoreInfoSourceAsync((source, ct) => restoreSource = source).Build();
         var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
         var faultHandlerService = IProjectFaultHandlerServiceFactory.ImplementForget((task, settings, severity, project) => faultHandlerRegisteredTask = task);
-        var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, vsNuGetSolutionRestoreService4, projectAsynchronousTasksService, faultHandlerService);
+        var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, projectAsynchronousTasksService, faultHandlerService);
 
         await restoreService.LoadAsync();
 
@@ -88,11 +85,10 @@ public class NuGetRestoreServiceTests
 
         var configuredProject = ConfiguredProjectFactory.Create(projectConfiguration: ProjectConfigurationFactory.Create("Debug|x64"));
         var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Test\Test.csproj", configuredProject: configuredProject);
-        var vsNuGetSolutionRestoreService = IVsSolutionRestoreServiceFactory.Create();
-        var vsNuGetSolutionRestoreService4 = IVsSolutionRestoreService4Factory.ImplementRegisterRestoreInfoSourceAsync((source, ct) => restoreSource = source);
+        var vsNuGetSolutionRestoreService = new IVsSolutionRestoreServiceFactory().WithRegisterRestoreInfoSourceAsync((source, ct) => restoreSource = source).Build();
         var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
         var faultHandlerService = IProjectFaultHandlerServiceFactory.ImplementForget((task, settings, severity, project) => faultHandlerRegisteredTask = task);
-        var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, vsNuGetSolutionRestoreService4, projectAsynchronousTasksService, faultHandlerService);
+        var restoreService = new NuGetRestoreService(project, vsNuGetSolutionRestoreService, projectAsynchronousTasksService, faultHandlerService);
 
         await restoreService.LoadAsync();
 

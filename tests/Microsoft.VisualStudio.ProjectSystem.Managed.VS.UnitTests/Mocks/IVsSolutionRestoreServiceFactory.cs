@@ -2,21 +2,33 @@
 
 namespace NuGet.SolutionRestoreManager
 {
-    internal static class IVsSolutionRestoreServiceFactory
+    internal class IVsSolutionRestoreServiceFactory
     {
-        public static IVsSolutionRestoreService3 Create()
+        private readonly Mock<IVsSolutionRestoreService5> _mock = new();
+
+        internal IVsSolutionRestoreServiceFactory WithNominateProjectAsync(Action<string, IVsProjectRestoreInfo3, CancellationToken> action)
         {
-            return Mock.Of<IVsSolutionRestoreService3>();
+            _mock.Setup(s => s.NominateProjectAsync(It.IsAny<string>(), It.IsAny<IVsProjectRestoreInfo3>(), It.IsAny<CancellationToken>()))
+                 .Callback(action)
+                 .ReturnsAsync(true);
+
+            return this;
         }
 
-        internal static IVsSolutionRestoreService3 ImplementNominateProjectAsync(Action<string, IVsProjectRestoreInfo2, CancellationToken> action)
+        internal IVsSolutionRestoreServiceFactory WithRegisterRestoreInfoSourceAsync(Action<IVsProjectRestoreInfoSource, CancellationToken>? registerAction = null)
         {
-            var mock = new Mock<IVsSolutionRestoreService3>();
-            mock.Setup(s => s.NominateProjectAsync(It.IsAny<string>(), It.IsAny<IVsProjectRestoreInfo2>(), It.IsAny<CancellationToken>()))
-                .Callback(action)
-                .ReturnsAsync(true);
+            if (registerAction is not null)
+            {
+                _mock.Setup(s => s.RegisterRestoreInfoSourceAsync(It.IsAny<IVsProjectRestoreInfoSource>(), It.IsAny<CancellationToken>()))
+                     .Callback(registerAction);
+            }
 
-            return mock.Object;
+            return this;
+        }
+
+        internal IVsSolutionRestoreService5 Build()
+        {
+            return _mock.Object;
         }
     }
 }

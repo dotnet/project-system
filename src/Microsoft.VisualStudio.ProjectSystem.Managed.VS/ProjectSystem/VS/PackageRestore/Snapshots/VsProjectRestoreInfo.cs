@@ -6,26 +6,19 @@ using NuGet.SolutionRestoreManager;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 
 /// <summary>
-///     Wraps a <see cref="ProjectRestoreInfo"/> instance to implement the <see cref="IVsProjectRestoreInfo2"/>
+///     Wraps a <see cref="ProjectRestoreInfo"/> instance to implement the <see cref="IVsProjectRestoreInfo3"/>
 ///     interface for NuGet.
 /// </summary>
-internal class VsProjectRestoreInfo : IVsProjectRestoreInfo2
+internal class VsProjectRestoreInfo(ProjectRestoreInfo info) : IVsProjectRestoreInfo3
 {
-    private readonly ProjectRestoreInfo _info;
-    
-    private VsTargetFrameworks? _targetFrameworks;
-    private VsReferenceItems? _toolReferences;
+    private IReadOnlyList<IVsTargetFrameworkInfo4>? _targetFrameworks;
+    private IReadOnlyList<IVsReferenceItem2>? _toolReferences;
 
-    public VsProjectRestoreInfo(ProjectRestoreInfo info)
-    {
-        _info = info;
-    }
+    public string MSBuildProjectExtensionsPath => info.MSBuildProjectExtensionsPath;
 
-    public string BaseIntermediatePath => _info.MSBuildProjectExtensionsPath;
+    public IReadOnlyList<IVsTargetFrameworkInfo4> TargetFrameworks => _targetFrameworks ??= info.TargetFrameworks.SelectImmutableArray(r => new VsTargetFrameworkInfo(r));
 
-    public IVsTargetFrameworks2 TargetFrameworks => _targetFrameworks ??= new VsTargetFrameworks(_info.TargetFrameworks);
+    public IReadOnlyList<IVsReferenceItem2> ToolReferences => _toolReferences ??= info.ToolReferences.SelectImmutableArray(r => new VsReferenceItem(r));
 
-    public IVsReferenceItems ToolReferences => _toolReferences ??= new VsReferenceItems(_info.ToolReferences);
-
-    public string OriginalTargetFrameworks => _info.OriginalTargetFrameworks;
+    public string OriginalTargetFrameworks => info.OriginalTargetFrameworks;
 }

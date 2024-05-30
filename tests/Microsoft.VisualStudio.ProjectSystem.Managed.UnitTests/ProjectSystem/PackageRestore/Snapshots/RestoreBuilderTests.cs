@@ -290,6 +290,30 @@ public class RestoreBuilderTests
     }
 
     [Fact]
+    public void ToProjectRestoreInfo_SetsNuGetAuditSuppressions()
+    {
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
+                {
+                    "CurrentState": {
+                        "CollectedNuGetAuditSuppressions": {
+                            "Items" : {
+                                "https://cve.contoso.com/1" : {
+                                }
+                            }
+                        }
+                    }
+                }
+                """);
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+
+        var suppressions = Assert.Single(result.TargetFrameworks).NuGetAuditSuppress;
+
+        var reference1 = Assert.Single(suppressions);
+        Assert.Equal("https://cve.contoso.com/1", reference1.Name);
+    }
+
+    [Fact]
     public void ToProjectRestoreInfo_SetsProjectReferences()
     {
         var update = IProjectSubscriptionUpdateFactory.FromJson(
@@ -402,22 +426,12 @@ public class RestoreBuilderTests
         AssertContainsProperty("Version", "[4.9.4]", download2.Properties);
     }
 
-    private static void AssertContainsProperty(string name, string value, ImmutableArray<ProjectProperty> properties)
+    private static void AssertContainsProperty(string name, string value, IImmutableDictionary<string, string> properties)
     {
-        var property = properties.FirstOrDefault(p => p.Name == name);
+        var exists = properties.TryGetValue(name, out var actualValue);
 
-        Assert.NotNull(property);
-        Assert.Equal(name, property.Name);
-        Assert.Equal(value, property.Value);
-    }
-
-    private static void AssertContainsProperty(string name, string value, ImmutableArray<ReferenceProperty> properties)
-    {
-        var property = properties.FirstOrDefault(p => p.Name == name);
-
-        Assert.NotNull(property);
-        Assert.Equal(name, property.Name);
-        Assert.Equal(value, property.Value);
+        Assert.True(exists);
+        Assert.Equal(value, actualValue);
     }
 
     private static void AssertNoItems(ProjectRestoreInfo result)

@@ -22,6 +22,7 @@ CollectAnalyzersDesignTime                     | DNPS       | Returns `Analyzer`
 CollectCentralPackageVersions                  | NuGet      | Returns `PackageVersion` items.
 CollectCopyToOutputDirectoryItemDesignTime     | DNPS       | Identifies items the project contributes to the output directory during build. Supports the Fast Up-to-date Check and Build Acceleration.
 CollectFrameworkReferences                     | NuGet      | Returns non-transitive `FrameworkReference` items. Supports package restore.
+CollectNuGetAuditSuppressions                  | NuGet      | Returns `NuGetAuditSuppress` items. Supports package restore.
 CollectPackageDownloads                        | NuGet      | Returns `PackageDownload` items. Supports package restore.
 CollectPackageReferences                       | NuGet      | Returns `PackageReference` items. Supports package restore.
 CollectResolvedCompilationReferencesDesignTime | DNPS       |

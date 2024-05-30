@@ -23,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             IProjectRuleSnapshot projectReferences = update.GetSnapshotOrEmpty(EvaluatedProjectReference.SchemaName);
             IProjectRuleSnapshot packageReferences = update.GetSnapshotOrEmpty(CollectedPackageReference.SchemaName);
             IProjectRuleSnapshot packageVersions = update.GetSnapshotOrEmpty(CollectedPackageVersion.SchemaName);
+            IProjectRuleSnapshot nuGetAuditSuppress = update.GetSnapshotOrEmpty(CollectedNuGetAuditSuppressions.SchemaName);
             IProjectRuleSnapshot toolReferences = update.GetSnapshotOrEmpty(DotNetCliToolReference.SchemaName);
 
             // For certain project types such as UWP, "TargetFrameworkMoniker" != the moniker that restore uses
@@ -37,7 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 ToReferenceItems(projectReferences.Items),
                 ToReferenceItems(packageReferences.Items),
                 ToReferenceItems(packageVersions.Items),
-                ToProjectProperties(properties));
+                ToReferenceItems(nuGetAuditSuppress.Items),
+                properties);
 
             return new ProjectRestoreInfo(
                 properties.GetPropertyOrEmpty(NuGetRestore.MSBuildProjectExtensionsPathProperty),
@@ -45,11 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworksProperty),
                 EmptyTargetFrameworks.Add(frameworkInfo),
                 ToReferenceItems(toolReferences.Items));
-
-            static ImmutableArray<ProjectProperty> ToProjectProperties(IImmutableDictionary<string, string> properties)
-            {
-                return properties.ToImmutableArray(static (key, value) => new ProjectProperty(key, value));
-            }
 
             static ImmutableArray<ReferenceItem> ToReferenceItems(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
             {
@@ -59,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 {
                     var properties = metadata.ToImmutableArray(static (key, value) => new ReferenceProperty(key, value));
 
-                    return new ReferenceItem(name, properties);
+                    return new ReferenceItem(name, metadata);
                 }
             }
         }

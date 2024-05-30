@@ -5,6 +5,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     internal static partial class RestoreComparer
     {
         public static readonly IEqualityComparer<ReferenceItem?> ReferenceItems = new ReferenceItemEqualityComparer();
-        public static readonly IEqualityComparer<ReferenceProperty?> ReferenceProperties = new ReferencePropertyEqualityComparer();
     }
 }

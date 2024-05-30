@@ -60,15 +60,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             LogReferenceItems(logger, "Package Downloads", targetFrameworkInfo.PackageDownloads);
             LogReferenceItems(logger, "Project References", targetFrameworkInfo.ProjectReferences);
             LogReferenceItems(logger, "Package References", targetFrameworkInfo.PackageReferences);
+            LogReferenceItems(logger, "NuGet Audit Suppressions", targetFrameworkInfo.NuGetAuditSuppress);
+
+            // CPM typically adds a lot of items, normally the same set for all projects in the solution, and for individual projects
+            // many of the items aren't referenced by the project. While this is diagnostic logging, PackageVersions are particularly
+            // spammy, so we'll only output the count for basic problem investigation, rather than the full list.
+            logger.WriteLine($"Package Versions -- {targetFrameworkInfo.CentralPackageVersions.Length} (count only)");
+
             LogProperties(logger, "Target Framework Properties", targetFrameworkInfo.Properties);
 
             logger.IndentLevel--;
         }
 
-        private static void LogProperties(BatchLogger logger, string heading, ImmutableArray<ProjectProperty> projectProperties)
+        private static void LogProperties(BatchLogger logger, string heading, IImmutableDictionary<string, string> projectProperties)
         {
-            IEnumerable<string> properties = projectProperties.Cast<ProjectProperty>()
-                    .Select(prop => $"{prop.Name}:{prop.Value}");
+            IEnumerable<string> properties = projectProperties.Select(prop => $"{prop.Key}:{prop.Value}");
             logger.WriteLine($"{heading} -- ({string.Join(" | ", properties)})");
         }
 
@@ -79,8 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 
             foreach (ReferenceItem reference in references)
             {
-                IEnumerable<string> properties = reference.Properties.Cast<ReferenceProperty>()
-                                                                     .Select(prop => $"{prop.Name}:{prop.Value}");
+                IEnumerable<string> properties = reference.Properties.Select(prop => $"{prop.Key}:{prop.Value}");
 
                 logger.WriteLine($"{reference.Name} -- ({string.Join(" | ", properties)})");
             }
