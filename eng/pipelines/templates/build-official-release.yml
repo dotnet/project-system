@@ -26,12 +26,12 @@ jobs:
         zipSources: false
       sbom:
         enabled: true
-    outputParentDirectory: $(Build.SourcesDirectory)/artifacts
+    outputParentDirectory: $(Build.SourcesDirectory)/artifacts/output
     outputs:
       # Publish artifacts
       - output: pipelineArtifact
         displayName: Publish Build Artifacts
-        targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
+        targetPath: $(Build.SourcesDirectory)/artifacts/output
         artifactName: $(Build.BuildNumber)
         condition: succeededOrFailed()
       - output: pipelineArtifact
@@ -41,13 +41,13 @@ jobs:
         condition: succeededOrFailed()
       - output: pipelineArtifact
         displayName: Publish Loc Artifacts
-        targetPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/
+        targetPath: $(Build.SourcesDirectory)/artifacts/output/bin/Dlls/
         artifactName: Loc
         condition: succeededOrFailed()
     
       # Publish VS drop
       - output: microBuildVstsDrop
-        dropFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
+        dropFolder: $(Build.SourcesDirectory)/artifacts/output/VSSetup/Insertion
         # TODO: Consider using $(GitBuildVersion) instead of $(Build.BuildNumber) as it better correlates the build of the code to the VS insertion.
         # Meaning, instead of VS Insertion -> Pipeline BuildNumber -> Code BuildVersion, it would just be VS Insertion -> Code BuildVersion.
         # If this is updated, VstsDropNames set in build-official-release.yml would also need to be updated.
@@ -250,8 +250,27 @@ jobs:
   - powershell: Copy-Item -Path '$(Build.SourcesDirectory)/eng/pipelines/configuration/staging.artifactignore' -Destination '$(Build.StagingDirectory)/.artifactignore'
     displayName: Copy Staging Artifact Filter
     condition: succeededOrFailed()
-
-  # Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
+    
+    # This output folder is used for 1ES code signing validation
+  - task: CopyFiles@2
+    displayName: Copy necessary files to output folder
+    inputs:
+      SourceFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
+      TargetFolder: $(Build.SourcesDirectory)/artifacts/output
+      Contents: |
+        *\**
+        !obj\**
+        !bin\UnitTests\**
+        !bin\IntegrationTests\**
+        !bin\Dlls\net472\ProjectSystemSetup.dll
+        !bin\Dlls\net472\ProjectSystem.dll
+        !bin\Dlls\net472\VisualStudioEditorsSetup.dll
+        !bin\Dlls\net472\Setup.dll
+        !SymStore\**    
+        !VSSetup\Insertion\bootstrapper\**\vs_enterprise.exe
+        
+    
+    # Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
   # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
   # This connecction is used in the templateContext nuget outputs.
   - task: NuGetAuthenticate@1

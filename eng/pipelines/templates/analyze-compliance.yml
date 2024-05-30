@@ -6,7 +6,7 @@ parameters:
 
 steps:
   # Most SDL tasks are run through the 1ES official pipeline template: https://eng.ms/docs/cloud-ai-platform/devdiv/one-engineering-system-1es/1es-docs/1es-pipeline-templates/features/sdlanalysis/overview
-  # However, we still must run CodeSign and APIScan ourselves
+  # However, we still must run APIScan ourselves
 
   ###################################################################################################################################################################
   # RUN ANALYSIS
@@ -18,33 +18,6 @@ steps:
   - script:
     displayName: === Run Analysis ===
     condition: false
-
-  # Verify the loose DLLs are signed appropriately.
-  # Note: This task takes ~3 minutes only because it is the first Guardian task in this job. So, it installs the Guardian components so the other tasks don't have to.
-  # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/code-signing-validation-build-task#v1-preview
-  - task: CodeSign@1
-    displayName: Verify Signed DLLs
-    inputs:
-      Path: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/bin/Dlls/
-      # Glob Format: https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1378/Glob-Format
-      Targets: '**/Microsoft.VisualStudio.AppDesigner*.dll;**/Microsoft.VisualStudio.Editors*.dll;**/Microsoft.VisualStudio.ProjectSystem.Managed*.dll'
-    condition: succeededOrFailed()
-
-  # Verifies the packages (and files within) are signed appropriately.
-  - task: MicroBuildCodesignVerify@3
-    displayName: Verify Signed Packages
-    inputs:
-      TargetFolders: |
-        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-        $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion
-      # Filters out certain files (usually by extension) for Authenticode certificate verification.
-      # File Format:
-      #   Wildcards (* and ?) can be used and paths are relative to the TargetFolders locations.
-      #   Format is one entry per line followed by a comma and then a comment as to why the entry is approved.
-      ApprovalListPathForCerts: $(Build.SourcesDirectory)/eng/pipelines/configuration/AuthenticodeSigningFilter.txt
-      # The bootstrapper folder is placed inside the VSSetup/Insertion folder. We don't want to verify the VS bootstrapper for signing.
-      ExcludeFolders: bootstrapper
-    condition: succeededOrFailed()
 
   # Scan for the use of undocumented APIs.
   # YAML reference: https://eng.ms/docs/security-compliance-identity-and-management-scim/security/azure-security/cloudai-security-fundamentals-engineering/security-integration/guardian-wiki/sdl-azdo-extension/apiscan-build-task#v2
