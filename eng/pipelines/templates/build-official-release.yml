@@ -262,8 +262,12 @@ jobs:
         !obj\**
         !bin\UnitTests\**
         !bin\IntegrationTests\**
+        !bin\Dlls\net472\ProjectSystemSetup.dll
+        !bin\Dlls\net472\VisualStudioEditorsSetup.dll
         !bin\Dlls\net472\Setup.dll
         !SymStore\**    
+        !VSSetup\Insertion\bootstrapper\**\vs_enterprise.exe
+        
     
     # Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
   # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
