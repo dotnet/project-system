@@ -536,6 +536,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Select Case msg
                 Case Win32Constant.WM_PALETTECHANGED, Win32Constant.WM_SYSCOLORCHANGE, Win32Constant.WM_THEMECHANGED
                     OnThemeChanged()
+                Case Win32Constant.WM_SETTINGCHANGE
+                    Dim newFont As Font = ShellUtil.FontChangeMonitor.GetDialogFont(Me)
+                    If Not newFont.Equals(Font) Then
+                        Font = newFont
+                    End If
             End Select
         End Sub
 
