@@ -13,12 +13,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 [DebuggerDisplay("TargetFrameworkMoniker = {TargetFrameworkMoniker}")]
 internal class VsTargetFrameworkInfo(TargetFrameworkInfo targetFrameworkInfo) : IVsTargetFrameworkInfo4
 {
-    private IReadOnlyDictionary<string, string?>? _properties;
+    private IReadOnlyDictionary<string, string>? _properties;
     private IReadOnlyDictionary<string, IReadOnlyList<IVsReferenceItem2>>? _items;
 
     public string TargetFrameworkMoniker => targetFrameworkInfo.TargetFrameworkMoniker;
 
-    public IReadOnlyDictionary<string, string?> Properties => _properties ??= targetFrameworkInfo.Properties;
+    public IReadOnlyDictionary<string, string> Properties => _properties ??= targetFrameworkInfo.Properties;
 
     public IReadOnlyDictionary<string, IReadOnlyList<IVsReferenceItem2>> Items
     {

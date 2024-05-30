@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             [ExportRule(nameof(CollectedNuGetAuditSuppressions), PropertyPageContexts.ProjectSubscriptionService)]
             [AppliesTo(ProjectCapability.PackageReferences)]
             [Order(Order.Default)]
-            public static int CollectedNuGetAuditSuppressions;
+            public static int CollectedNuGetAuditSuppressionsRule;
 
             /// <summary>
             ///     Represents the evaluation properties that are passed that are passed to restore.
