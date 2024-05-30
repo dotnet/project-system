@@ -263,6 +263,7 @@ jobs:
         !bin\UnitTests\**
         !bin\IntegrationTests\**
         !bin\Dlls\net472\ProjectSystemSetup.dll
+        !bin\Dlls\net472\ProjectSystem.dll
         !bin\Dlls\net472\VisualStudioEditorsSetup.dll
         !bin\Dlls\net472\Setup.dll
         !SymStore\**    
