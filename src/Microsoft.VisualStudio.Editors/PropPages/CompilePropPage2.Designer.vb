@@ -32,6 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents TargetCPULabel As System.Windows.Forms.Label
         Friend WithEvents TargetCPUComboBox As System.Windows.Forms.ComboBox
         Friend WithEvents Prefer32BitCheckBox As System.Windows.Forms.CheckBox
+        Friend WithEvents PreferNativeArm64CheckBox As System.Windows.Forms.CheckBox
         Friend WithEvents AdvancedCompileOptionsLabelLine As System.Windows.Forms.Label
         Private _components As System.ComponentModel.IContainer
         'put this bock in
@@ -79,6 +80,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.TargetCPULabel = New System.Windows.Forms.Label()
             Me.TargetCPUComboBox = New System.Windows.Forms.ComboBox()
             Me.Prefer32BitCheckBox = New System.Windows.Forms.CheckBox()
+            Me.PreferNativeArm64CheckBox = New System.Windows.Forms.CheckBox()
             Me.overarchingTableLayoutPanel.SuspendLayout()
             Me.buildOutputTableLayoutPanel.SuspendLayout()
             Me.CompileOptionsGroupBox.SuspendLayout()
@@ -155,6 +157,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.TargetCPULabel, 0, 4)
             Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.TargetCPUComboBox, 0, 5)
             Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.Prefer32BitCheckBox, 0, 6)
+            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.PreferNativeArm64CheckBox, 0, 7)
             Me.CompileOptionsTableLayoutPanel.Name = "CompileOptionsTableLayoutPanel"
             '
             'AdvancedCompileOptionsLabelLine
@@ -298,6 +301,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             resources.ApplyResources(Me.Prefer32BitCheckBox, "Prefer32BitCheckBox")
             Me.Prefer32BitCheckBox.Name = "Prefer32BitCheckBox"
+            '
+            'PreferNativeArm64CheckBox
+            '
+            resources.ApplyResources(Me.PreferNativeArm64CheckBox, "PreferNativeArm64CheckBox")
+            Me.PreferNativeArm64CheckBox.Name = "PreferNativeArm64CheckBox"
             '
             'CompilePropPage2
             '
