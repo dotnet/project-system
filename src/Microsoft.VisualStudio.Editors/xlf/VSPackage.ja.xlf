@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="1100">
         <source>Managed Resources Editor (Legacy)</source>
-        <target state="new">Managed Resources Editor (Legacy)</target>
+        <target state="translated">管理対象リソース エディター (レガシ)</target>
         <note>Used for the resource editor in the shell's "Open With..." dialog plus the editor name for the key-binding it the Tools | Options | Environment | Keyboard | Use new shourtcut.</note>
       </trans-unit>
       <trans-unit id="1200">
