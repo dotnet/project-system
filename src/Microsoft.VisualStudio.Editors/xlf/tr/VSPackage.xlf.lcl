@@ -12,10 +12,13 @@
       <Disp Icon="Str" Disp="true" LocTbl="false" />
       <Item ItemId=";1100" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Managed Resources Editor]]></Val>
+          <Val><![CDATA[Managed Resources Editor (Legacy)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Yönetilen Kaynak Düzenleyicisi]]></Val>
+            <Val><![CDATA[Yönetilen Kaynak Düzenleyicisi (Eski)]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Managed Resources Editor]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
