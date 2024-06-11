@@ -137,6 +137,10 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="SdkAnalysisLevel"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="TargetFramework"
                   ReadOnly="True"
                   Visible="False" />
