@@ -70,5 +70,11 @@ namespace Microsoft.VisualStudio.Telemetry
         ///     Indicates that the NuGet restore detected a cycle.
         /// </summary>
         public const string NuGetRestoreCycleDetected = "vs/projectsystem/managed/nugetrestore/cycledetected";
+
+        /// <summary>
+        ///     Notifies that the legacy CodeModel was requested for a given project.
+        ///     Only fires once per unconfigured project.
+        /// </summary>
+        public const string CodeModelRequested = "vs/projectsystem/managed/codemodel/requested";
     }
 }

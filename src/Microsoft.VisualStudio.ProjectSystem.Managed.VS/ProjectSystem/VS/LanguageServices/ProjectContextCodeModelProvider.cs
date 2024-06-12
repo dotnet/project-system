@@ -3,7 +3,8 @@
 using EnvDTE;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using TaskResult = Microsoft.VisualStudio.Threading.TaskResult;
+using Microsoft.VisualStudio.Telemetry;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
@@ -18,18 +19,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly IProjectThreadingService _threadingService;
         private readonly ICodeModelFactory _codeModelFactory;
         private readonly IWorkspaceWriter _workspaceWriter;
+        private readonly ITelemetryService _telemetryService;
+        private int _telemetrySent;
 
         [ImportingConstructor]
-        public ProjectContextCodeModelProvider(IProjectThreadingService threadingService, ICodeModelFactory codeModelFactory, IWorkspaceWriter workspaceWriter)
+        public ProjectContextCodeModelProvider(IProjectThreadingService threadingService, ICodeModelFactory codeModelFactory, IWorkspaceWriter workspaceWriter, ITelemetryService telemetryService)
         {
             _threadingService = threadingService;
             _codeModelFactory = codeModelFactory;
             _workspaceWriter = workspaceWriter;
+            _telemetryService = telemetryService;
         }
 
         public CodeModel? GetCodeModel(Project project)
         {
             Requires.NotNull(project);
+
+            SendTelemetry();
 
             return _threadingService.ExecuteSynchronously(() =>
             {
@@ -40,6 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         public FileCodeModel? GetFileCodeModel(ProjectItem fileItem)
         {
             Requires.NotNull(fileItem);
+
+            SendTelemetry();
 
             return _threadingService.ExecuteSynchronously(() =>
             {
@@ -73,6 +81,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
                 return TaskResult.Null<FileCodeModel>();
             });
+        }
+
+        private void SendTelemetry()
+        {
+            // Send a telemetry event once per unconfigured project
+            if (Interlocked.CompareExchange(ref _telemetrySent, value: 1, comparand: 0) == 0)
+            {
+                _telemetryService.PostEvent(TelemetryEventName.CodeModelRequested);
+            }
         }
     }
 }
