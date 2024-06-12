@@ -239,7 +239,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             ' PreferNativeArm64 is enabled only if Prefer32Bit is disabled
-
             Return CBool(controlValue) = False
 
         End Function

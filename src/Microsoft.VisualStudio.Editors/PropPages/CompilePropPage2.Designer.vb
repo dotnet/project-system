@@ -157,7 +157,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.TargetCPULabel, 0, 4)
             Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.TargetCPUComboBox, 0, 5)
             Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.Prefer32BitCheckBox, 0, 6)
-            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.PreferNativeArm64CheckBox, 0, 7)
+            Me.CompileOptionsTableLayoutPanel.Controls.Add(Me.PreferNativeArm64CheckBox, 1, 6)
             Me.CompileOptionsTableLayoutPanel.Name = "CompileOptionsTableLayoutPanel"
             '
             'AdvancedCompileOptionsLabelLine

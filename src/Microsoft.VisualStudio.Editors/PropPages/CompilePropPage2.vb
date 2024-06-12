@@ -235,7 +235,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         New PropertyControlData(VsProjPropId80.VBPROJPROPID_ComVisible, "ComVisible", Nothing, AddressOf ComVisibleSet, AddressOf ComVisibleGet, ControlDataFlags.Hidden Or ControlDataFlags.PersistedInAssemblyInfoFile),
                         New PropertyControlData(VsProjPropId80.VBPROJPROPID_PlatformTarget, "PlatformTarget", TargetCPUComboBox, AddressOf PlatformTargetSet, AddressOf PlatformTargetGet, ControlDataFlags.None, New Control() {TargetCPULabel}),
                         New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", Prefer32BitCheckBox, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet),
-                        New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "PreferNativeArm64", PreferNativeArm64CheckBox, AddressOf PreferNativeArm64Set, AddressOf PreferNativeArm64Get)
+                        New PropertyControlData(17311, "PreferNativeArm64", PreferNativeArm64CheckBox, AddressOf PreferNativeArm64Set, AddressOf PreferNativeArm64Get)
                     }
                 End If
                 Return m_ControlData

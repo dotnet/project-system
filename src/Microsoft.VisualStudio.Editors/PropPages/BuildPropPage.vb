@@ -85,7 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                      New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
                         VsProjPropId80.VBPROJPROPID_GenerateSerializationAssemblies, "GenerateSerializationAssemblies", cboSGenOption, New Control() {lblSGenOption}),
                      New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", chkPrefer32Bit, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet),
-                     New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "PreferNativeArm64", chkPreferNativeArm64, AddressOf PreferNativeArm64Set, AddressOf PreferNativeArm64Get),
+                     New PropertyControlData(17311, "PreferNativeArm64", chkPreferNativeArm64, AddressOf PreferNativeArm64Set, AddressOf PreferNativeArm64Get),
                      New HiddenIfMissingPropertyControlData(1, "Nullable", cboNullable, AddressOf NullableSet, AddressOf NullableGet, ControlDataFlags.None, New Control() {lblNullable}),
                      New PropertyControlData(CSharpProjPropId.CSPROJPROPID_LanguageVersion, "LanguageVersion", Nothing, AddressOf LanguageVersionSet, Nothing, ControlDataFlags.None, Nothing)
                      }
