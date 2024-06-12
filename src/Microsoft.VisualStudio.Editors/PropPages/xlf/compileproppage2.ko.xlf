@@ -22,11 +22,6 @@
         <target state="translated">모든 경고 사용 안 함(&amp;I)</target>
         <note />
       </trans-unit>
-      <trans-unit id="PreferNativeArm64CheckBox.Text">
-        <source>&amp;Prefer native ARM64</source>
-        <target state="new">&amp;Prefer native ARM64</target>
-        <note />
-      </trans-unit>
       <trans-unit id="WarningsAsErrorCheckBox.Text">
         <source>Treat a&amp;ll warnings as errors</source>
         <target state="translated">모든 경고를 오류로 처리(&amp;L)</target>
