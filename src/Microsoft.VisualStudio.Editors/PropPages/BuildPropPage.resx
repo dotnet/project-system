@@ -997,7 +997,7 @@
     <value>113, 17</value>
   </data>
   <data name="chkAllowUnsafeCode.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>11</value>
   </data>
   <data name="chkAllowUnsafeCode.Text" xml:space="preserve">
     <value>Allow unsa&amp;fe code</value>
