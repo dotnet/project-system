@@ -22,6 +22,11 @@
         <target state="translated">すべての警告を表示しない(&amp;I)</target>
         <note />
       </trans-unit>
+      <trans-unit id="PreferNativeArm64CheckBox.Text">
+        <source>&amp;Prefer native ARM64</source>
+        <target state="new">&amp;Prefer native ARM64</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WarningsAsErrorCheckBox.Text">
         <source>Treat a&amp;ll warnings as errors</source>
         <target state="translated">すべての警告をエラーとして扱う(&amp;L)</target>

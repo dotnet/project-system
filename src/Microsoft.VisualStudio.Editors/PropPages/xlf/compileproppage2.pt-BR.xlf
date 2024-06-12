@@ -22,6 +22,11 @@
         <target state="translated">Desab&amp;ilitar todos os avisos</target>
         <note />
       </trans-unit>
+      <trans-unit id="PreferNativeArm64CheckBox.Text">
+        <source>&amp;Prefer native ARM64</source>
+        <target state="new">&amp;Prefer native ARM64</target>
+        <note />
+      </trans-unit>
       <trans-unit id="WarningsAsErrorCheckBox.Text">
         <source>Treat a&amp;ll warnings as errors</source>
         <target state="translated">Tratar &amp;todos os avisos como erros</target>
