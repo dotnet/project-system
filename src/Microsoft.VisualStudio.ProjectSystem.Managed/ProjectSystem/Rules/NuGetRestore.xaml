@@ -141,6 +141,10 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="UsingMicrosoftNETSdk"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="TargetFramework"
                   ReadOnly="True"
                   Visible="False" />
