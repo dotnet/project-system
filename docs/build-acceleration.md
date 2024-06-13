@@ -2,7 +2,7 @@
 
 Build acceleration is a feature of Visual Studio that reduces the time required to build projects.
 
-The feature was added in 17.5 and is currently opt-in. It applies to SDK-style .NET projects only. It is simple to try, and in most cases will improve build times. Larger solutions will see greater gains.
+The feature was added in 17.5 for SDK-style .NET projects and in 17.8 for non SDK-style .NET projects and is currently opt-in. It is simple to try, and in most cases will improve build times. Larger solutions will see greater gains.
 
 This document will outline what the feature does, how to enable it, and when it might not be suitable.
 
