@@ -756,17 +756,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             RefreshEnabledStatusForPreferNativeArm64(chkPreferNativeArm64)
         End Sub
 
-        Private Sub Prefer32Bit_CheckboxChangeCommitted(sender As Object, e As EventArgs) Handles chkPrefer32Bit.CheckedChanged
-            If m_fInsideInit OrElse InsideInternalUpdate Then
-                Return
-            End If
-
-            ' Changes to the Prefer32Bit may affect PreferNativeArm64 is enabled
-            RefreshEnabledStatusForPrefer32Bit(chkPrefer32Bit)
-            RefreshEnabledStatusForPreferNativeArm64(chkPreferNativeArm64)
-        End Sub
-
-        Private Sub PreferNativeArm64_CheckboxChangeCommitted(sender As Object, e As EventArgs) Handles chkPreferNativeArm64.CheckedChanged
+        Private Sub Prefer32Bit_PreferNativeArm64_CheckboxChangeCommitted(sender As Object, e As EventArgs) Handles chkPrefer32Bit.CheckedChanged, chkPreferNativeArm64.CheckedChanged
             If m_fInsideInit OrElse InsideInternalUpdate Then
                 Return
             End If

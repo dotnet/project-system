@@ -17,37 +17,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend MustInherit Class BuildPropPageBase
         Inherits PropPageUserControlBase
 
+        Private ReadOnly _prefer32BitControlName As String = "Prefer32Bit"
+        Private ReadOnly _preferNativeArm64ControlName As String = "PreferNativeArm64"
+
         Protected Const Const_OutputTypeEx As String = "OutputTypeEx"
-
-#Region "Prefer32Bit flag handling"
-
-        Private Function IsPrefer32BitSupportedForPlatformTarget() As Boolean
-
-            ' Get the current value of PlatformTarget
-
-            Dim controlValue As Object = GetControlValueNative("PlatformTarget")
-
-            If PropertyControlData.IsSpecialValue(controlValue) Then
-                ' Property is missing or indeterminate
-                Return False
-            End If
-
-            If TypeOf controlValue IsNot String Then
-                Return False
-            End If
-
-            ' Prefer32Bit is only allowed for AnyCPU
-
-            Dim stringValue As String = CStr(controlValue)
-
-            If String.IsNullOrEmpty(stringValue) Then
-                ' Allow if the value is blank (means AnyCPU)
-                Return True
-            End If
-
-            Return String.Equals(stringValue, "AnyCPU", StringComparison.Ordinal)
-
-        End Function
 
         Private Function IsPrefer32BitSupportedForOutputType() As Boolean
 
@@ -92,33 +65,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Function
 
-        Private Function IsPreferNativeArm64Disabled() As Boolean
-
-            ' Get the current value of PreferNativeArm64 control
-
-            Dim controlValue As Object = GetControlValueNative("PreferNativeArm64")
-
-            If PropertyControlData.IsSpecialValue(controlValue) Then
-                ' Property is missing or indeterminate
-                Return False
-            End If
-
-            If TypeOf controlValue IsNot Boolean Then
-                Return False
-            End If
-
-            ' Prefer32Bit is enabled only if PreferNativeArm64 is disabled
-
-            Return CBool(controlValue) = False
-
-        End Function
-
         Private Function IsPrefer32BitSupported() As Boolean
 
-            Return IsPrefer32BitSupportedForPlatformTarget() AndAlso
+            Return IsAnyCPUPlatformTarget() AndAlso
                    IsPrefer32BitSupportedForOutputType() AndAlso
                    IsPrefer32BitSupportedForTargetFramework() AndAlso
-                   IsPreferNativeArm64Disabled()
+                   IsFlagDisabled(_preferNativeArm64ControlName)
 
         End Function
 
@@ -191,11 +143,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return True
         End Function
-#End Region
 
-#Region "PreferNativeArm64 flag handling"
-
-        Private Function IsPreferNativeArm64SupportedForPlatformTarget() As Boolean
+        Private Function IsAnyCPUPlatformTarget() As Boolean
 
             ' Get the current value of PlatformTarget
 
@@ -210,7 +159,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End If
 
-            ' PreferNativeArm64 is only allowed for AnyCPU
+            ' A flag is only allowed for AnyCPU
 
             Dim stringValue As String = CStr(controlValue)
 
@@ -223,11 +172,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Function
 
-        Private Function IsPrefer32BitDisabled() As Boolean
+        Private Function IsFlagDisabled(flagName As String) As Boolean
 
-            ' Get the current value of Prefer32Bit control
+            ' Get the current value of control
 
-            Dim controlValue As Object = GetControlValueNative("Prefer32Bit")
+            Dim controlValue As Object = GetControlValueNative(flagName)
 
             If PropertyControlData.IsSpecialValue(controlValue) Then
                 ' Property is missing or indeterminate
@@ -238,15 +187,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End If
 
-            ' PreferNativeArm64 is enabled only if Prefer32Bit is disabled
             Return CBool(controlValue) = False
 
         End Function
 
         Private Function IsPreferNativeArm64Supported() As Boolean
 
-            Return IsPreferNativeArm64SupportedForPlatformTarget() AndAlso
-                IsPrefer32BitDisabled()
+            Return IsAnyCPUPlatformTarget() AndAlso
+                IsFlagDisabled(_prefer32BitControlName)
 
         End Function
 
@@ -319,7 +267,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return True
         End Function
-#End Region
 
     End Class
 

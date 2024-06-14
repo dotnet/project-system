@@ -1242,22 +1242,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             RefreshEnabledStatusForPreferNativeArm64(PreferNativeArm64CheckBox)
         End Sub
 
-        Private Sub Prefer32Bit_CheckboxChangeCommitted(sender As Object, e As EventArgs) Handles Prefer32BitCheckBox.CheckedChanged
+        Private Sub Prefer32Bit_PreferNativeArm64_CheckboxChangeCommitted(sender As Object, e As EventArgs) Handles Prefer32BitCheckBox.CheckedChanged, PreferNativeArm64CheckBox.CheckedChanged
             If m_fInsideInit Then
                 Return
             End If
 
             ' Changes to the Prefer32Bit may affect PreferNativeArm64 is enabled
-            RefreshEnabledStatusForPrefer32Bit(Prefer32BitCheckBox)
-            RefreshEnabledStatusForPreferNativeArm64(PreferNativeArm64CheckBox)
-        End Sub
-
-        Private Sub PreferNativeArm64_CheckboxChangeCommitted(sender As Object, e As EventArgs) Handles PreferNativeArm64CheckBox.CheckedChanged
-            If m_fInsideInit Then
-                Return
-            End If
-
-            ' Changes to the PreferNativeArm64 may affect whether Prefer32Bit is enabled
             RefreshEnabledStatusForPrefer32Bit(Prefer32BitCheckBox)
             RefreshEnabledStatusForPreferNativeArm64(PreferNativeArm64CheckBox)
         End Sub
