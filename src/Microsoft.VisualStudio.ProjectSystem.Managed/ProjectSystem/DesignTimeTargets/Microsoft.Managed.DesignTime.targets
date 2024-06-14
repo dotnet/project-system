@@ -421,6 +421,12 @@
        sent to NuGet to be restored.-->
   <Target Name="CollectPackageReferences" Returns="@(PackageReference)" />
 
+  <!-- This target is used to collect the NuGet audit supression items. It is defined by the .NET SDK starting in version 8.0.400, but we need this no-op
+       implementation when using older SDKs that don't have it; otherwise our design-time builds will fail. The NuGet.targets file in the SDK is imported
+       _after_ this file, and will override this implementation with the real one (when present).
+       This can (and should) be removed when we no longer need to support SDKs older than 8.0.400. -->
+  <Target Name="CollectNuGetAuditSuppressions" Returns="@(NuGetAuditSuppress)" />
+  
   <!-- This target is used to collect the SuggestedWorkload items in the project.-->
   <Target Name="CollectSuggestedWorkloads"
           Returns="@(SuggestedWorkload)"
