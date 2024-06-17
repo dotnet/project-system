@@ -17,8 +17,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend MustInherit Class BuildPropPageBase
         Inherits PropPageUserControlBase
 
-        Private ReadOnly _prefer32BitControlName As String = "Prefer32Bit"
-        Private ReadOnly _preferNativeArm64ControlName As String = "PreferNativeArm64"
+        Private Const _prefer32BitControlName As String = "Prefer32Bit"
+        Private Const _preferNativeArm64ControlName As String = "PreferNativeArm64"
 
         Protected Const Const_OutputTypeEx As String = "OutputTypeEx"
 
