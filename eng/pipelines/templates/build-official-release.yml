@@ -55,7 +55,8 @@ jobs:
         # Issue: https://github.com/dotnet/project-system/issues/8431
         # Example of current path: 'Products/[DevDiv]/[vs-resource-explorer]/[main]/[x.x]'
         dropName: Products/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildNumber)
-        dropRetentionDays: 60
+        # See https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/35351/Retain-Drops
+        dropRetentionDays: 183
         # When this isn't provided, the tool sets the --AadAuth flag instead of using --PatAuthEnvVar. The AadAuth doesn't seem to work for this situation.
         accessToken: $(System.AccessToken)
 
