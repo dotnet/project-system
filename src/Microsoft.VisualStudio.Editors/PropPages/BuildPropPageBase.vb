@@ -17,35 +17,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend MustInherit Class BuildPropPageBase
         Inherits PropPageUserControlBase
 
+        Private Const _prefer32BitControlName As String = "Prefer32Bit"
+        Private Const _preferNativeArm64ControlName As String = "PreferNativeArm64"
+
         Protected Const Const_OutputTypeEx As String = "OutputTypeEx"
-
-        Private Function IsPrefer32BitSupportedForPlatformTarget() As Boolean
-
-            ' Get the current value of PlatformTarget
-
-            Dim controlValue As Object = GetControlValueNative("PlatformTarget")
-
-            If PropertyControlData.IsSpecialValue(controlValue) Then
-                ' Property is missing or indeterminate
-                Return False
-            End If
-
-            If TypeOf controlValue IsNot String Then
-                Return False
-            End If
-
-            ' Prefer32Bit is only allowed for AnyCPU
-
-            Dim stringValue As String = CStr(controlValue)
-
-            If String.IsNullOrEmpty(stringValue) Then
-                ' Allow if the value is blank (means AnyCPU)
-                Return True
-            End If
-
-            Return String.Equals(stringValue, "AnyCPU", StringComparison.Ordinal)
-
-        End Function
 
         Private Function IsPrefer32BitSupportedForOutputType() As Boolean
 
@@ -92,9 +67,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function IsPrefer32BitSupported() As Boolean
 
-            Return IsPrefer32BitSupportedForPlatformTarget() AndAlso
+            Return IsAnyCPUPlatformTarget() AndAlso
                    IsPrefer32BitSupportedForOutputType() AndAlso
-                   IsPrefer32BitSupportedForTargetFramework()
+                   IsPrefer32BitSupportedForTargetFramework() AndAlso
+                   IsFlagDisabled(_preferNativeArm64ControlName)
 
         End Function
 
@@ -167,6 +143,131 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return True
         End Function
+
+        Private Function IsAnyCPUPlatformTarget() As Boolean
+
+            ' Get the current value of PlatformTarget
+
+            Dim controlValue As Object = GetControlValueNative("PlatformTarget")
+
+            If PropertyControlData.IsSpecialValue(controlValue) Then
+                ' Property is missing or indeterminate
+                Return False
+            End If
+
+            If TypeOf controlValue IsNot String Then
+                Return False
+            End If
+
+            ' A flag is only allowed for AnyCPU
+
+            Dim stringValue As String = CStr(controlValue)
+
+            If String.IsNullOrEmpty(stringValue) Then
+                ' Allow if the value is blank (means AnyCPU)
+                Return True
+            End If
+
+            Return String.Equals(stringValue, "AnyCPU", StringComparison.Ordinal)
+
+        End Function
+
+        Private Function IsFlagDisabled(flagName As String) As Boolean
+
+            ' Get the current value of control
+
+            Dim controlValue As Object = GetControlValueNative(flagName)
+
+            If PropertyControlData.IsSpecialValue(controlValue) Then
+                ' Property is missing or indeterminate
+                Return False
+            End If
+
+            If TypeOf controlValue IsNot Boolean Then
+                Return False
+            End If
+
+            Return CBool(controlValue) = False
+
+        End Function
+
+        Private Function IsPreferNativeArm64Supported() As Boolean
+
+            Return IsAnyCPUPlatformTarget() AndAlso
+                IsFlagDisabled(_prefer32BitControlName)
+
+        End Function
+
+        ' Holds the last value the PreferNativeArm64 check box had when enabled (or explicitly
+        ' set by the project system), so that the proper state is restored if the 
+        ' control is disabled and then later enabled
+        Private _lastPreferNativeArm64Value As Boolean
+
+        Protected Sub RefreshEnabledStatusForPreferNativeArm64(control As CheckBox)
+
+            Dim enabledBefore As Boolean = control.Enabled
+
+            If control.Enabled Then
+                _lastPreferNativeArm64Value = control.Checked
+            End If
+
+            EnableControl(control, IsPreferNativeArm64Supported())
+
+            If enabledBefore AndAlso Not control.Enabled Then
+                ' If transitioning from enabled to disabled, clear the checkbox.  When disabled, we
+                ' want to show an unchecked checkbox regardless of the underlying property value.
+                control.Checked = False
+
+            ElseIf Not enabledBefore AndAlso control.Enabled Then
+
+                ' If transitioning from disabled to enabled, restore the value of the checkbox.
+                control.Checked = _lastPreferNativeArm64Value
+
+            End If
+
+        End Sub
+
+        Protected Function PreferNativeArm64Set(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
+
+            If PropertyControlData.IsSpecialValue(value) Then
+                ' Don't do anything if the value is missing or indeterminate
+                Return False
+            End If
+
+            If TypeOf value IsNot Boolean Then
+                ' Don't do anything if the value isn't of the expected type
+                Return False
+            End If
+
+            If control.Enabled Then
+                CType(control, CheckBox).Checked = CBool(value)
+            Else
+                ' The project is setting the property value while the control is disabled, so store the
+                ' value for when the control is enabled
+                _lastPreferNativeArm64Value = CBool(value)
+            End If
+
+            Return True
+        End Function
+
+        Protected Function PreferNativeArm64Get(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
+
+            If Not control.Enabled Then
+
+                ' If the control is not enabled, the checked state does not reflect the actual value
+                ' of the property (the checkbox is always unchecked when disabled).  So we return the
+                ' property value that we cached from when the control was last enabled (or explicitly
+                ' set by the the project system while the control was disabled)
+                value = _lastPreferNativeArm64Value
+                Return True
+            End If
+
+            Dim checkBox As CheckBox = CType(control, CheckBox)
+            value = checkBox.Checked
+
+            Return True
+        End Function
+
     End Class
 
 End Namespace

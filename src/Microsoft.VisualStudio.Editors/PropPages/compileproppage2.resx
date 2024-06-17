@@ -787,7 +787,7 @@
     <value>6, 19</value>
   </data>
   <data name="CompileOptionsTableLayoutPanel.RowCount" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="CompileOptionsTableLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
     <value>443, 394</value>
@@ -808,7 +808,7 @@
     <value>0</value>
   </data>
   <data name="CompileOptionsTableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="TargetCPULabel" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TargetCPUComboBox" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Prefer32BitCheckBox" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AdvancedCompileOptionsLabelLine" Row="14" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="OptionExplicitLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="DisableAllWarningsCheckBox" Row="10" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="WarningsAsErrorCheckBox" Row="11" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="OptionExplicitComboBox" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="BuildEventsButton" Row="13" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RegisterForComInteropCheckBox" Row="13" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="OptionCompareComboBox" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="GenerateXMLCheckBox" Row="12" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="OptionStrictLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="OptionStrictComboBox" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="OptionCompareLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="OptionInferLabel" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="OptionInferComboBox" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="WarningsConfigurationsGridViewLabel" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="WarningsGridView" Row="8" RowSpan="2" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="AdvancedOptionsButton" Row="15" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Absolute,14,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="AdvancedCompileOptionsLabelLine" Row="15" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="OptionExplicitLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="DisableAllWarningsCheckBox" Row="11" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="WarningsAsErrorCheckBox" Row="12" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="OptionExplicitComboBox" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="BuildEventsButton" Row="14" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="RegisterForComInteropCheckBox" Row="14" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="OptionCompareComboBox" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="GenerateXMLCheckBox" Row="13" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="OptionStrictLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="OptionStrictComboBox" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="OptionCompareLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="OptionInferLabel" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="OptionInferComboBox" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="WarningsConfigurationsGridViewLabel" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="WarningsGridView" Row="9" RowSpan="2" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="AdvancedOptionsButton" Row="16" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="TargetCPULabel" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TargetCPUComboBox" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Prefer32BitCheckBox" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PreferNativeArm64CheckBox" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Absolute,16,AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="CompileOptionsGroupBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -992,6 +992,36 @@
   </data>
   <data name="&gt;&gt;Prefer32BitCheckBox.ZOrder" xml:space="preserve">
     <value>19</value>
+  </data>
+   <data name="PreferNativeArm64CheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="PreferNativeArm64CheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="PreferNativeArm64CheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 160</value>
+  </data>
+  <data name="PreferNativeArm64CheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 33</value>
+  </data>
+  <data name="PreferNativeArm64CheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="PreferNativeArm64CheckBox.Text" xml:space="preserve">
+    <value>&amp;Prefer native ARM64</value>
+  </data>
+  <data name="&gt;&gt;PreferNativeArm64CheckBox.Name" xml:space="preserve">
+    <value>PreferNativeArm64CheckBox</value>
+  </data>
+  <data name="&gt;&gt;PreferNativeArm64CheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;PreferNativeArm64CheckBox.Parent" xml:space="preserve">
+    <value>CompileOptionsTableLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;PreferNativeArm64CheckBox.ZOrder" xml:space="preserve">
+    <value>20</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

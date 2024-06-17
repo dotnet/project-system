@@ -10,6 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents chkDefineTrace As System.Windows.Forms.CheckBox
         Friend WithEvents cboPlatformTarget As System.Windows.Forms.ComboBox
         Friend WithEvents chkPrefer32Bit As System.Windows.Forms.CheckBox
+        Friend WithEvents chkPreferNativeArm64 As System.Windows.Forms.CheckBox
         Friend WithEvents chkAllowUnsafeCode As System.Windows.Forms.CheckBox
         Friend WithEvents chkOptimizeCode As System.Windows.Forms.CheckBox
         Friend WithEvents lblWarningLevel As System.Windows.Forms.Label
@@ -58,6 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.lblPlatformTarget = New System.Windows.Forms.Label()
             Me.cboPlatformTarget = New System.Windows.Forms.ComboBox()
             Me.chkPrefer32Bit = New System.Windows.Forms.CheckBox()
+            Me.chkPreferNativeArm64 = New System.Windows.Forms.CheckBox()
             Me.chkAllowUnsafeCode = New System.Windows.Forms.CheckBox()
             Me.chkOptimizeCode = New System.Windows.Forms.CheckBox()
             Me.lblWarningLevel = New System.Windows.Forms.Label()
@@ -138,6 +140,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.chkPrefer32Bit, "chkPrefer32Bit")
             Me.generalTableLayoutPanel.SetColumnSpan(Me.chkPrefer32Bit, 3)
             Me.chkPrefer32Bit.Name = "chkPrefer32Bit"
+            '
+            'chkPreferNativeArm64
+            '
+            resources.ApplyResources(Me.chkPreferNativeArm64, "chkPreferNativeArm64")
+            Me.generalTableLayoutPanel.SetColumnSpan(Me.chkPreferNativeArm64, 3)
+            Me.chkPreferNativeArm64.Name = "chkPreferNativeArm64"
             '
             'chkAllowUnsafeCode
             '
@@ -253,8 +261,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.generalTableLayoutPanel.Controls.Add(Me.lblNullable, 0, 4)
             Me.generalTableLayoutPanel.Controls.Add(Me.cboNullable, 1, 4)
             Me.generalTableLayoutPanel.Controls.Add(Me.chkPrefer32Bit, 0, 5)
-            Me.generalTableLayoutPanel.Controls.Add(Me.chkAllowUnsafeCode, 0, 6)
-            Me.generalTableLayoutPanel.Controls.Add(Me.chkOptimizeCode, 0, 7)
+            Me.generalTableLayoutPanel.Controls.Add(Me.chkPreferNativeArm64, 0, 6)
+            Me.generalTableLayoutPanel.Controls.Add(Me.chkAllowUnsafeCode, 0, 7)
+            Me.generalTableLayoutPanel.Controls.Add(Me.chkOptimizeCode, 0, 8)
             Me.generalTableLayoutPanel.Name = "generalTableLayoutPanel"
             '
             'errorsAndWarningsTableLayoutPanel

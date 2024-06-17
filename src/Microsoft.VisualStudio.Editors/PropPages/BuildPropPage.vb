@@ -85,6 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                      New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
                         VsProjPropId80.VBPROJPROPID_GenerateSerializationAssemblies, "GenerateSerializationAssemblies", cboSGenOption, New Control() {lblSGenOption}),
                      New PropertyControlData(VsProjPropId110.VBPROJPROPID_Prefer32Bit, "Prefer32Bit", chkPrefer32Bit, AddressOf Prefer32BitSet, AddressOf Prefer32BitGet),
+                     New PropertyControlData(17311, "PreferNativeArm64", chkPreferNativeArm64, AddressOf PreferNativeArm64Set, AddressOf PreferNativeArm64Get),
                      New HiddenIfMissingPropertyControlData(1, "Nullable", cboNullable, AddressOf NullableSet, AddressOf NullableGet, ControlDataFlags.None, New Control() {lblNullable}),
                      New PropertyControlData(CSharpProjPropId.CSPROJPROPID_LanguageVersion, "LanguageVersion", Nothing, AddressOf LanguageVersionSet, Nothing, ControlDataFlags.None, Nothing)
                      }
@@ -166,6 +167,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             rbWarningSpecific.Enabled = rbWarningAll.Enabled
 
             RefreshEnabledStatusForPrefer32Bit(chkPrefer32Bit)
+            RefreshEnabledStatusForPreferNativeArm64(chkPreferNativeArm64)
             RefreshVisibleStatusForNullable()
         End Sub
 
@@ -264,6 +266,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If Not m_fInsideInit AndAlso Not InsideInternalUpdate Then
                 ' Changes to the OutputType may affect whether Prefer32Bit is enabled
                 RefreshEnabledStatusForPrefer32Bit(chkPrefer32Bit)
+                ' Changes to the Prefer32Bit may affect whether PreferNativeArm64 is enabled
+                RefreshEnabledStatusForPreferNativeArm64(chkPreferNativeArm64)
             End If
 
             Return True
@@ -747,8 +751,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return
             End If
 
-            ' Changes to the PlatformTarget may affect whether Prefer32Bit is enabled
+            ' Changes to the PlatformTarget may affect whether Prefer32Bit/PreferNativeArm64 are enabled
             RefreshEnabledStatusForPrefer32Bit(chkPrefer32Bit)
+            RefreshEnabledStatusForPreferNativeArm64(chkPreferNativeArm64)
+        End Sub
+
+        Private Sub Prefer32Bit_PreferNativeArm64_CheckboxChangeCommitted(sender As Object, e As EventArgs) Handles chkPrefer32Bit.CheckedChanged, chkPreferNativeArm64.CheckedChanged
+            If m_fInsideInit OrElse InsideInternalUpdate Then
+                Return
+            End If
+
+            ' Changes to the PreferNativeArm64 may affect whether Prefer32Bit is enabled
+            RefreshEnabledStatusForPrefer32Bit(chkPrefer32Bit)
+            RefreshEnabledStatusForPreferNativeArm64(chkPreferNativeArm64)
         End Sub
 
 #Region "Special handling of the conditional compilation constants textbox and the Define DEBUG/TRACE checkboxes"

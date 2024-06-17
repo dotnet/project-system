@@ -7,6 +7,11 @@
         <target state="translated">5</target>
         <note />
       </trans-unit>
+      <trans-unit id="chkPreferNativeArm64.Text">
+        <source>&amp;Prefer native ARM64</source>
+        <target state="new">&amp;Prefer native ARM64</target>
+        <note />
+      </trans-unit>
       <trans-unit id="lblConditionalCompilationSymbols.Text">
         <source>Conditional compilation s&amp;ymbols:</source>
         <target state="translated">S&amp;ymboles de compilation conditionnelle :</target>
