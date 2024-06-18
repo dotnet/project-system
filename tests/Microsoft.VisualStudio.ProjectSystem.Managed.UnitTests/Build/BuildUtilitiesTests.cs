@@ -44,7 +44,8 @@ namespace Microsoft.VisualStudio.Build
         public void GetPropertyValues_SingleValue()
         {
             var values = BuildUtilities.GetPropertyValues("MyPropertyValue");
-            Assert.Collection(values, firstValue => Assert.Equal("MyPropertyValue", firstValue));
+            var firstValue = Assert.Single(values);
+            Assert.Equal("MyPropertyValue", firstValue);
         }
 
         [Fact]
@@ -89,9 +90,9 @@ namespace Microsoft.VisualStudio.Build
             var project = ProjectRootElementFactory.Create();
             BuildUtilities.GetOrAddProperty(project, "MyProperty");
             Assert.Single(project.Properties);
-            Assert.Collection(project.PropertyGroups,
-                group => Assert.Collection(group.Properties,
-                    firstProperty => Assert.Equal(string.Empty, firstProperty.Value)));
+            var group = Assert.Single(project.PropertyGroups);
+            var property = Assert.Single(group.Properties);
+            Assert.Equal(string.Empty, property.Value);
         }
 
         [Fact]

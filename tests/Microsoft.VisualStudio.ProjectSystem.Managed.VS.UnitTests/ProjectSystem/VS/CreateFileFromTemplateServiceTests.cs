@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [InlineData(@"C:\Path\To\TemplateFile", true)]
         [InlineData(@"C:\Path\To\TemplateFile", false)]
         [InlineData(null, false)]
-        public async Task CreateFile(string templateFilePath, bool expectedResult)
+        public async Task CreateFile(string? templateFilePath, bool expectedResult)
         {
             string templateName = "SettingsInternal.zip";
             string fileName = "Settings.settings";
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var solution = (Solution)SolutionFactory.CreateWithGetProjectItemTemplate((templateFile, language) =>
             {
                 Assert.Equal(templateName, templateFile);
-                return templateFilePath;
+                return templateFilePath!;
             });
 
             var vsProject = (IVsProject4)IVsHierarchyFactory.Create();
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 Assert.Equal(VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, itemOperation);
                 Assert.Equal(fileName, itemName);
                 Assert.Equal((uint)1, cOpen);
-                Assert.Equal(new string[] { templateFilePath }, files);
+                Assert.Equal(new string?[] { templateFilePath }, files);
 
                 result[0] = expectedResult ? VSADDRESULT.ADDRESULT_Success : VSADDRESULT.ADDRESULT_Failure;
 
