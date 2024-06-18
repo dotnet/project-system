@@ -59,11 +59,6 @@
     <!-- Package for creating an NPM package during build. -->
     <!-- See: https://dev.azure.com/devdiv/DevDiv/_git/vs-green?path=/components&anchor=packaging-components -->
     <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.NpmPack" PrivateAssets="all" />
-
-    <!-- Force a particular version of this package to resolve a Component Governance issue. -->
-    <!-- ExcludeAssets="all" is specified because we don't actually want to _use_ the package. -->
-    <!-- TODO: This can be removed when CPS and/or MSBuild no longer depend (directly or transitively) on the bad version. -->
-    <PackageReference Include="System.Security.Cryptography.Pkcs" VersionOverride="7.0.2" ExcludeAssets="all" />
   </ItemGroup>
 
   <!-- Dependencies -->
