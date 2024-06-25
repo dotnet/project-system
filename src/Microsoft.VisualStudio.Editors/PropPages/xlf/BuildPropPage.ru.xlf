@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="chkPreferNativeArm64.Text">
         <source>&amp;Prefer native ARM64</source>
-        <target state="new">&amp;Prefer native ARM64</target>
+        <target state="translated">&amp;Предпочитать собственный ARM64</target>
         <note />
       </trans-unit>
       <trans-unit id="lblConditionalCompilationSymbols.Text">

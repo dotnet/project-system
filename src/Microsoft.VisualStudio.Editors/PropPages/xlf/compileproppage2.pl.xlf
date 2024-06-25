@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="PreferNativeArm64CheckBox.Text">
         <source>&amp;Prefer native ARM64</source>
-        <target state="new">&amp;Prefer native ARM64</target>
+        <target state="translated">&amp;Preferowana natywna architektura ARM64</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningsAsErrorCheckBox.Text">
