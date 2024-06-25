@@ -127,6 +127,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";chkPreferNativeArm64.Text" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[&Prefer native ARM64]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[&Preferir ARM64 nativo]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";chkRegisterForCOM.Text" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Register for &COM interop]]></Val>
