@@ -82,7 +82,6 @@ jobs:
         displayName: Publish Nuget Packages to azure-publish
         packagesToPush: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages/*.nupkg
         packageParentPath: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-        publishVstsFeed: DevDiv/vs-green
         publishFeedCredentials: azure-public/vs-impl
         allowPackageConflicts: true
         nuGetFeedType: external
@@ -269,12 +268,9 @@ jobs:
         !bin\Dlls\net472\Setup.dll
         !SymStore\**    
         !VSSetup\Insertion\bootstrapper\**\vs_enterprise.exe
-        
-    
-    # Authenticate with a service connection to be able to publish packages to external (different DevOps organization) NuGet feeds.
-  # See: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
-  # This connecction is used in the templateContext nuget outputs.
-  - task: NuGetAuthenticate@1
-    displayName: Authenticate NuGet
-    inputs:
-      nuGetServiceConnections: azure-public/vs-impl
+
+  - template: WIFtoPATauth.yml
+    parameters:
+      wifServiceConnectionName: azure-public/vside package push
+      deadPATServiceConnectionId: 207efd62-fd0f-43e7-aeae-17c4febcc660 # azure-public/vs-impl
+
