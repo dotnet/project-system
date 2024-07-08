@@ -19,7 +19,6 @@ jobs:
     artifact: $(Build.BuildNumber)
     # Only download the necessary files for publishing.
     patterns: |
-      VSSetup/Insertion/**
       packages/**
   
   # Download the staging artifacts from the Build job.
@@ -29,58 +28,6 @@ jobs:
     # Only download the necessary files for publishing.
     patterns: |
       MicroBuild/**
-      OptProf/**
-          
-  # Use a disabled, empty script to display the section header in the pipeline UI.
-  - script:
-    displayName: === Publish OptProf ===
-    condition: false
-    
-  ###################################################################################################################################################################
-  # PUBLISH OptProf
-  ###################################################################################################################################################################
-  
-  # This is required to deploy the tests to devdiv.artifacts.visualstudio.com for the 'Deploy tests' step in the release pipeline.
-  # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
-  - task: 1ES.PublishArtifactsDrop@1
-    displayName: Publish ProfilingInputs
-    inputs:
-      dropServiceURI: https://devdiv.artifacts.visualstudio.com
-      buildNumber: ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
-      sourcePath: $(Pipeline.Workspace)/Staging/OptProf/ProfilingInputs
-      toLowerCase: false
-      # For deeper investigation, uncomment the following line:
-      # detailedLog: true
-      # This task uploads the drop metadata to the pipeline artifacts using this name. There does not seem to be an option of not uploading this metadata.
-      dropMetadataContainerName: OptProf-ProfilingInputs
-    
-  # The current artifactDropTask seems to try making the DropMetadata folder every time it runs. After running this artifactDropTask for ProfilingInputs, we need to delete the folder so the artifactDropTask for RunSettings succeeds.
-  # Otherwise, the error is shown as follows:
-  #   ##[warning]Can't find loc string for key: FailedToRunClientTool
-  #   ##[error]FailedToRunClientTool EEXIST: file already exists, mkdir 'D:\a\_work\1\a\DropMetadata'
-  - powershell: Remove-Item -Path '$(Build.StagingDirectory)/DropMetadata/' -Recurse -Force
-    displayName: Delete DropMetadata Folder
-    
-  # Using the VS bootstrapper data, update the runsettings with the appropriate information for this build.
-  - powershell: . '$(Build.SourcesDirectory)/eng/scripts/UpdateRunSettings.ps1' -profilingInputsPath 'ProfilingInputs/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)' -bootstrapperInfoPath '$(Pipeline.Workspace)/Staging/MicroBuild/Output/BootstrapperInfo.json'
-    displayName: Update RunSettings
-    failOnStderr: true
-    # Name is required to reference the variables created within this build step in other stages.
-    name: UpdateRunSettings
-    
-  # The runsettings drives the test process for producing optimization data.
-  # https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-docs/azure-artifacts/drop-service/using-azure-devops-drop-in-devops-build
-  - task: 1ES.PublishArtifactsDrop@1
-    displayName: Publish RunSettings
-    inputs:
-      dropServiceURI: https://devdiv.artifacts.visualstudio.com
-      buildNumber: RunSettings/$(System.TeamProject)/$(Build.Repository.Name)/$(Build.SourceBranchName)/$(Build.BuildId)
-      sourcePath: $(Build.SourcesDirectory)/eng/scripts/runsettings
-      toLowerCase: false
-      # For deeper investigation, uncomment the following line:
-      # detailedLog: true
-      # This task uploads the drop metadata to the pipeline artifacts using this name. There does not seem to be an option of not uploading this metadata.
-      dropMetadataContainerName: OptProf-RunSettings
       
   ###################################################################################################################################################################
   # PUBLISH NPM Packages
