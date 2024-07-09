@@ -20,14 +20,6 @@ jobs:
     # Only download the necessary files for publishing.
     patterns: |
       packages/**
-  
-  # Download the staging artifacts from the Build job.
-  - download: current
-    displayName: Download Staging Artifacts
-    artifact: Staging
-    # Only download the necessary files for publishing.
-    patterns: |
-      MicroBuild/**
       
   ###################################################################################################################################################################
   # PUBLISH NPM Packages

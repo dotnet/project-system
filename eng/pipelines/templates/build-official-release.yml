@@ -34,11 +34,6 @@ jobs:
         targetPath: $(Build.SourcesDirectory)/artifacts/output
         artifactName: $(Build.BuildNumber)
       - output: pipelineArtifact
-        displayName: Publish Staging Artifacts
-        targetPath: $(Build.StagingDirectory)
-        artifactName: Staging
-        condition: succeededOrFailed()
-      - output: pipelineArtifact
         displayName: Publish Loc Artifacts
         targetPath: $(Build.SourcesDirectory)/artifacts/output/bin/Dlls/
         artifactName: Loc
