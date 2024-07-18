@@ -36,6 +36,7 @@
     <PackageVersion Include="Nerdbank.Streams"                                                       Version="2.11.74" />
     <PackageVersion Include="System.IO.Pipelines"                                                    Version="8.0.0" />
     <PackageVersion Include="StreamJsonRpc"                                                          Version="2.19.23" />
+    <PackageVersion Include="System.Formats.Asn1"                                                    Version="8.0.1" />
 
     <!-- VS SDK -->
     <!-- https://dev.azure.com/azure-public/vside/_artifacts/feed/vssdk -->
