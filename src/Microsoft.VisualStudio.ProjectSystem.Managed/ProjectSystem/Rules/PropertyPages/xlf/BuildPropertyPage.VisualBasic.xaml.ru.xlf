@@ -52,6 +52,16 @@
         <target state="translated">Предпочитать 32-разрядный режим</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|PreferNativeArm64|Description">
+        <source>Run on native hardware platform by default.</source>
+        <target state="new">Run on native hardware platform by default.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PreferNativeArm64|DisplayName">
+        <source>Prefer Native ARM64</source>
+        <target state="new">Prefer Native ARM64</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|PublishDocumentationFile|Description">
         <source>When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.</source>
         <target state="translated">Если этому свойству присвоено значение true, XML-файл документации для проекта (в случае создания) включается в выходные данные публикации для проекта. Этому свойству по умолчанию присвоено значение true.</target>

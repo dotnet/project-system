@@ -52,6 +52,16 @@
         <target state="translated">Preferir 32 bits</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|PreferNativeArm64|Description">
+        <source>Run on native hardware platform by default.</source>
+        <target state="new">Run on native hardware platform by default.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PreferNativeArm64|DisplayName">
+        <source>Prefer Native ARM64</source>
+        <target state="new">Prefer Native ARM64</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|PublishDocumentationFile|Description">
         <source>When this property is true, the XML documentation file for the project, if one is generated, is included in the publish output for the project. This property defaults to true.</source>
         <target state="translated">Cuando esta propiedad es verdadera, el archivo de documentación XML del proyecto, si se genera uno, se incluye en la salida de publicación del proyecto. El valor predeterminado de esta propiedad es verdadero.</target>

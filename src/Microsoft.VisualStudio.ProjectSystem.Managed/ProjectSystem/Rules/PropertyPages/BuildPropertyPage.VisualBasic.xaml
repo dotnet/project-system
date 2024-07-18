@@ -177,7 +177,32 @@
       </NameValuePair>
     </BoolProperty.Metadata>
   </BoolProperty>
-
+  
+  <BoolProperty Name="PreferNativeArm64"
+                DisplayName="Prefer Native ARM64"
+                Description="Run on native hardware platform by default."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166468"
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Build::PlatformTarget" />
+      <NameValuePair Name="DependsOn" Value="Application::OutputType" />
+      <NameValuePair Name="VisibilityCondition">
+        <!-- Visibility based on: https://github.com/dotnet/msbuild/blob/9bcc06cbe19ae2482ab18eab90a82fd079b26897/src/Tasks/Microsoft.NETFramework.CurrentVersion.props#L87 -->
+        <NameValuePair.Value>
+          (and
+            (has-net-framework)
+            (has-evaluated-value "Build" "PlatformTarget" "Any CPU")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")
+              (has-evaluated-value "Application" "OutputType" "AppContainerExe")
+            )
+          )
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+  
   <EnumProperty Name="WarningSeverity"
                 DisplayName="Warning severity"
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2196261"
