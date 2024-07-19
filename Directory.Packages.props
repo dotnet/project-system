@@ -136,6 +136,8 @@
 
     <!-- Localization -->
     <PackageVersion Include="CommandLineParser"                                                     Version="2.8.0" />
+
+    <PackageVersion Include="System.Formats.Asn1"                                                    Version="8.0.0" />
   </ItemGroup>
 
 </Project>
