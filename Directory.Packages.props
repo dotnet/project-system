@@ -101,7 +101,7 @@
     <PackageVersion Include="NuGet.VisualStudio"                                                     Version="17.11.0-preview.2.71" />
 
     <!-- Framework packages -->
-    <PackageVersion Include="Microsoft.IO.Redist"                                                    Version="6.0.0" />
+    <PackageVersion Include="Microsoft.IO.Redist"                                                    Version="6.0.1" />
 
     <!-- MSBuild (for tests only) -->
     <PackageVersion Include="Microsoft.Build"                                                        Version="17.11.0-preview-24229-04" />
