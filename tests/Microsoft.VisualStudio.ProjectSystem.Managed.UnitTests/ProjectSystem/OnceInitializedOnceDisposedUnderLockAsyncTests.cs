@@ -364,7 +364,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             // Run first task and wait until we've entered it
             var firstTask = firstAction();
-            await firstEntered.WaitAsync();
+            await firstEntered.WaitAsync().WithTimeout(TimeSpan.FromSeconds(30));
 
             // Run second task, we should never enter it
             var secondTask = secondAction();
@@ -374,7 +374,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             firstRelease.Set();
 
             // Now we should enter first one
-            await secondEntered.WaitAsync();
+            await secondEntered.WaitAsync().WithTimeout(TimeSpan.FromSeconds(30));
             await Task.WhenAll(firstTask, secondTask);
         }
 
