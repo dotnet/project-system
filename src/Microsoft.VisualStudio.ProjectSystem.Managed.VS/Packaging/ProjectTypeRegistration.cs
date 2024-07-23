@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     Capabilities = ProjectTypeCapabilities.VisualBasic,
     DisableAsynchronousProjectTreeLoad = true,
     PossibleProjectExtensions = "vbproj",
+    PreferredPersistProjectTypeGuid = ProjectType.LegacyVisualBasic,
     NewProjectRequireNewFolderVsTemplate = true,
     SupportsCodespaces = true,
     SupportsSolutionChangeWithoutReload = true)]
@@ -32,6 +33,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     Capabilities = ProjectTypeCapabilities.FSharp,
     DisableAsynchronousProjectTreeLoad = true,
     PossibleProjectExtensions = "fsproj",
+    PreferredPersistProjectTypeGuid = ProjectType.LegacyFSharp,
     NewProjectRequireNewFolderVsTemplate = true,
     SupportsCodespaces = true,
     SupportsSolutionChangeWithoutReload = true)]
@@ -49,6 +51,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     Capabilities = ProjectTypeCapabilities.CSharp,
     DisableAsynchronousProjectTreeLoad = true,
     PossibleProjectExtensions = "csproj",
+    PreferredPersistProjectTypeGuid = ProjectType.LegacyCSharp,
     NewProjectRequireNewFolderVsTemplate = true,
     SupportsCodespaces = true,
     SupportsSolutionChangeWithoutReload = true)]
