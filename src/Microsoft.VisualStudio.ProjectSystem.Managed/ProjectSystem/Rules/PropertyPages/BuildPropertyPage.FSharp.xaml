@@ -75,6 +75,37 @@
     <EnumValue Name="embedded" DisplayName="Embedded in DLL/EXE, portable across platforms" />
   </EnumProperty>
 
+  <!--
+    From: https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-options
+    
+  	"warn:warning-level" Sets a warning level (0 to 5). The default level is 3. Each warning is given a level based on its severity. Level 5 gives more, but less severe, warnings than level 1.
+  -->
+  <EnumProperty Name="WarningLevel"
+                DisplayName="Warning level"
+                Description="Specifies the level to display for compiler warnings. Higher levels produce more warnings, and include all warnings from lower levels."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2146798"
+                Category="ErrorsAndWarnings">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="EditabilityCondition">
+        <NameValuePair.Value>
+          (has-evaluated-value "Build" "WarningLevelOverridden" false)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="0"
+               DisplayName="0 - Fewest warnings, including most severe issues" />
+    <EnumValue Name="1"
+               DisplayName="1" />
+    <EnumValue Name="2"
+               DisplayName="2" />
+    <EnumValue Name="3"
+               DisplayName="3 - Default warning level" />
+    <EnumValue Name="4"
+               DisplayName="4" />
+    <EnumValue Name="5"
+               DisplayName="5 - Most warnings, including less severe issues" />
+  </EnumProperty>
+
   <StringProperty Name="LangVersion" Visible="False" />
 
   <BoolProperty Name="CheckForOverflowUnderflow" Visible="False" />
