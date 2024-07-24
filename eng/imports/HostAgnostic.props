@@ -32,6 +32,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" />
+    
+    <PackageReference Include="Microsoft.IO.Redist" Condition="'$(TargetFramework)' == 'net472'" />
 
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
