@@ -457,6 +457,11 @@
         <target state="translated">7 – Upozornění z jazyka C# 11</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|WarningLevel.8|DisplayName">
+        <source>8 - Warnings from C# 13</source>
+        <target state="new">8 - Warnings from C# 13</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.9999|DisplayName">
         <source>9999 - All warnings</source>
         <target state="translated">9999 – Všechna upozornění</target>
