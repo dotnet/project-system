@@ -286,6 +286,8 @@
                DisplayName="6 - Warnings from C# 10" />
     <EnumValue Name="7"
                DisplayName="7 - Warnings from C# 11" />
+    <EnumValue Name="8"
+               DisplayName="8 - Warnings from C# 13" />
     <EnumValue Name="9999"
                DisplayName="9999 - All warnings" />
   </EnumProperty>
