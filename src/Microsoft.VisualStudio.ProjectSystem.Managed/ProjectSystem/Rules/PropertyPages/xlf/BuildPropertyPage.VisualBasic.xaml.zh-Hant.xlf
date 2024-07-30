@@ -54,12 +54,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PreferNativeArm64|Description">
         <source>Run on native hardware platform by default.</source>
-        <target state="new">Run on native hardware platform by default.</target>
+        <target state="translated">預設會在原生硬體平台上執行。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PreferNativeArm64|DisplayName">
         <source>Prefer Native ARM64</source>
-        <target state="new">Prefer Native ARM64</target>
+        <target state="translated">建議使用原生 ARM64</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PublishDocumentationFile|Description">
