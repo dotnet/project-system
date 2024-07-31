@@ -69,12 +69,12 @@
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
         <source>Specifies the level to display for compiler warnings. Higher levels produce more warnings, and include all warnings from lower levels.</source>
-        <target state="new">Specifies the level to display for compiler warnings. Higher levels produce more warnings, and include all warnings from lower levels.</target>
+        <target state="translated">コンパイラの警告で表示するレベルを指定します。レベルが高いほどより多くの警告が生成され、下位レベルのすべての警告が含まれます。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
         <source>Warning level</source>
-        <target state="new">Warning level</target>
+        <target state="translated">警告レベル</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
@@ -99,32 +99,32 @@
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
         <source>0 - Fewest warnings, including most severe issues</source>
-        <target state="new">0 - Fewest warnings, including most severe issues</target>
+        <target state="translated">0 - 最も少ない警告 (最も重大な問題を含む)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.1|DisplayName">
         <source>1</source>
-        <target state="new">1</target>
+        <target state="translated">1</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.2|DisplayName">
         <source>2</source>
-        <target state="new">2</target>
+        <target state="translated">2</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.3|DisplayName">
         <source>3 - Default warning level</source>
-        <target state="new">3 - Default warning level</target>
+        <target state="translated">3 - 既定の警告レベル</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.4|DisplayName">
         <source>4</source>
-        <target state="new">4</target>
+        <target state="translated">4</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.5|DisplayName">
         <source>5 - Most warnings, including less severe issues</source>
-        <target state="new">5 - Most warnings, including less severe issues</target>
+        <target state="translated">5 - 最も多い警告 (重大度が低い問題を含む)</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OtherFlags|Description">

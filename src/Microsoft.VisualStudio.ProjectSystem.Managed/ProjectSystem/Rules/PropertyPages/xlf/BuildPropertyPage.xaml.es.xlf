@@ -129,12 +129,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PreferNativeArm64|Description">
         <source>Run on native hardware platform by default.</source>
-        <target state="new">Run on native hardware platform by default.</target>
+        <target state="translated">Ejecutar en la plataforma de hardware nativa de forma predeterminada.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PreferNativeArm64|DisplayName">
         <source>Prefer Native ARM64</source>
-        <target state="new">Prefer Native ARM64</target>
+        <target state="translated">Preferir ARM64 nativo</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
@@ -469,7 +469,7 @@
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.8|DisplayName">
         <source>8 - Warnings from C# 13</source>
-        <target state="new">8 - Warnings from C# 13</target>
+        <target state="translated">8 - Advertencias de C# 13</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.9999|DisplayName">
