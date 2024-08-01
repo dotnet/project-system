@@ -124,6 +124,8 @@ extends:
         enabled: true
       policheck:
         enabled: true  
+      codeSignValidation:
+        additionalTargetsGlobPattern: -|$(Build.SourcesDirectory)\artifacts\output\VSSetup\Insertion\bootstrapper\**
     pool:
       # Agent Queue: https://devdiv.visualstudio.com/DevDiv/_settings/agentqueues?queueId=3123&view=jobs
       name: VSEngSS-MicroBuild2022-1ES
