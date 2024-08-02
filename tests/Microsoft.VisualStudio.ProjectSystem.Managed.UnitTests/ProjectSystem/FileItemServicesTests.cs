@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("C:\\Folder\\Project",                          "C:\\Folder\\Project\\Source.cs",        "Folder\\..\\..\\Source.cs",                    null)]
         [InlineData("C:\\Folder\\Project",                          "C:\\Folder\\Project\\Source.cs",        "D:\\Folder\\Source.cs",                        null)]
         [InlineData("C:\\Folder\\Project",                          "C:\\Folder\\Project\\Source.cs",        "C:\\Folder\\Project\\Source.cs",               null)]
-        public void GetLogicalFolderNames_Returns(string basePath, string fullPath, string link, params string[] expected)
+        public void GetLogicalFolderNames_Returns(string basePath, string fullPath, string? link, params string?[] expected)
         {
             var metadata = ImmutableDictionary<string, string>.Empty;
             if (link is not null)

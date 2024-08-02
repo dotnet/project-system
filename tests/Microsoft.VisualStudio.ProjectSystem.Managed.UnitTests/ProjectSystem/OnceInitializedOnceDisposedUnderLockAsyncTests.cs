@@ -7,22 +7,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class OnceInitializedOnceDisposedUnderLockAsyncTests
     {
         [Fact]
-        public void ExecuteUnderLockAsync_NullAsAction_ThrowsArgumentNullException()
+        public async Task ExecuteUnderLockAsync_NullAsAction_ThrowsArgumentNullException()
         {
             var instance = CreateInstance();
 
-            Assert.ThrowsAsync<ArgumentNullException>(() =>
+            await Assert.ThrowsAsync<ArgumentNullException>(() =>
             {
                 return instance.ExecuteUnderLockAsync(null!, CancellationToken.None);
             });
         }
 
         [Fact]
-        public void ExecuteUnderLockAsyncOfT_NullAsAction_ThrowsArgumentNullException()
+        public async Task ExecuteUnderLockAsyncOfT_NullAsAction_ThrowsArgumentNullException()
         {
             var instance = CreateInstance();
 
-            Assert.ThrowsAsync<ArgumentNullException>(() =>
+            await Assert.ThrowsAsync<ArgumentNullException>(() =>
             {
                 return instance.ExecuteUnderLockAsync<string>(null!, CancellationToken.None);
             });
@@ -364,7 +364,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             // Run first task and wait until we've entered it
             var firstTask = firstAction();
-            await firstEntered.WaitAsync();
+            await firstEntered.WaitAsync().WithTimeout(TimeSpan.FromSeconds(30));
 
             // Run second task, we should never enter it
             var secondTask = secondAction();
@@ -374,7 +374,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             firstRelease.Set();
 
             // Now we should enter first one
-            await secondEntered.WaitAsync();
+            await secondEntered.WaitAsync().WithTimeout(TimeSpan.FromSeconds(30));
             await Task.WhenAll(firstTask, secondTask);
         }
 

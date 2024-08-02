@@ -24,13 +24,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public void ShowProjectDesignerAsync_WhenSupportsProjectDesignerFalse_ThrowsInvalidOperation()
+        public async Task ShowProjectDesignerAsync_WhenSupportsProjectDesignerFalse_ThrowsInvalidOperation()
         {
             var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => false);
 
             var designerService = CreateInstance(vsProjectDesignerPageService);
 
-            Assert.ThrowsAsync<InvalidOperationException>(designerService.ShowProjectDesignerAsync);
+            await Assert.ThrowsAsync<InvalidOperationException>(designerService.ShowProjectDesignerAsync);
         }
 
         [Fact]
