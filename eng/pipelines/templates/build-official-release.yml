@@ -267,7 +267,6 @@ jobs:
         !bin\Dlls\net472\VisualStudioEditorsSetup.dll
         !bin\Dlls\net472\Setup.dll
         !SymStore\**    
-        !VSSetup\Insertion\bootstrapper\**\vs_enterprise.exe
 
   - template: WIFtoPATauth.yml
     parameters:
