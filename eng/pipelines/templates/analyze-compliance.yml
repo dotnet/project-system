@@ -28,7 +28,7 @@ steps:
       softwareName: Dotnet-Project-System
       softwareVersionNum: ${{ parameters.SoftwareVersion }}
       softwareBuildNum: $(Build.BuildId)
-      symbolsFolder: SRV*http://symweb
+      symbolsFolder: SRV*https://symweb.azurefd.net
       noCopySymbols: true
       noCopyBinaries: true
       noDecompress: true
