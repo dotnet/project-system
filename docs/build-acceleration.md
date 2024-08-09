@@ -2,7 +2,7 @@
 
 Build acceleration is a feature of Visual Studio that reduces the time required to build projects.
 
-The feature was added in 17.5 and is currently opt-in. It applies to SDK-style .NET projects only. It is simple to try, and in most cases will improve build times. Larger solutions will see greater gains.
+The feature was added in 17.5 and applies to SDK-style .NET projects only. It will reduce the times of most multi-project builds. Larger solutions will see greater gains.
 
 This document will outline what the feature does, how to enable it, and when it might not be suitable.
 
@@ -33,32 +33,13 @@ With build acceleration enabled MSBuild is called only once, after which VS copi
 
 ## Configuration
 
-Build acceleration is currently opt-in.
+Build Acceleration is enabled by default in Visual Studio 17.8 and later, for all SDK-style .NET projects. This flag is enabled by default, and is found under _Tools | Options_.
 
-To enable it in your solution, add or edit a top-level [`Directory.Build.props`](https://learn.microsoft.com/visualstudio/msbuild/customize-your-build) file to include:
+You can explicitly opt a project in or out by setting the `AccelerateBuildsInVisualStudio` MSBuild property to `true` or `false` respectively. This can be set in the project file, or in a [`Directory.Build.props`](https://learn.microsoft.com/visualstudio/msbuild/customize-your-build) file that applies to multiple projects at once. This property takes precedence over the feature flag, so you can use it to override the default behavior of the IDE for specific projects.
 
-```xml
-<Project>
-  <!--
-    This Directory.Build.props files sets default properties that apply to all projects found in
-    this folder or subfolders, recursively.
-  -->
-  <PropertyGroup>
-    <!-- Enable Build Acceleration in Visual Studio. -->
-    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+If you are targeting frameworks earlier than `net5.0`, you may also need to set the `ProduceReferenceAssembly` property to true. See [Reference Assemblies](#reference-assemblies) for more information.
 
-    <!--
-      If you target a framework earlier than .NET 5 (including .NET Framework and .NET Standard),
-      you should set ProduceReferenceAssembly to true in order to speed incremental builds.
-      If you multi-target and any target is before .NET 5, you need this.
-      Even if you target .NET 5 or later, having this property is fine.
-    -->
-    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-  </PropertyGroup>
-</Project>
-```
-
-You may disable build acceleration for specific projects in your solution by redefining the `AccelerateBuildsInVisualStudio` property as `false` in those projects.
+Be sure to follow the steps in [Validate builds are accelerated](#validate-builds-are-accelerated) to ensure that build acceleration is working correctly for your projects.
 
 ### Disabling Build Acceleration for projects referencing specific NuGet packages
 
