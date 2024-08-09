@@ -6,7 +6,7 @@ Components that are exported through MEF will be automatically discovered as nec
 * A package is installed with the capability
 * It comes and goes dynamically from other sources
 
-A capability can also be fixed for the lifetime of a project, in which case it cannot be changed without reloading the project. Fixed capabilities tend to come from `[assembly: ProjectTypeRegsitration(Capabilities = "A;B;C")]`.
+A capability can also be fixed for the lifetime of a project, in which case it cannot be changed without reloading the project. Fixed capabilities tend to come from `[assembly: ProjectTypeRegistration(Capabilities = "A;B;C")]`.
 
 Why is a "targets file" considered dynamic? Because the outer UnconfiguredProject "inherits" capabilities from any active configuration, targets are only ever evaluated inside a configuration. There is a time early in a project's lifetime before `ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished` where there is no active configuration, or the active configuration's capabilities haven't been applied to the UnconfiguredProject. Also, the active configuration can change causing a new set of capabilities to be applied to the UnconfiguredProject.
 
