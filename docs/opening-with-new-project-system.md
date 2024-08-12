@@ -21,12 +21,12 @@ There may be situations where more than one project system is capable of loading
 
 One option is to provide some sort of upgrade tool that can analyze the solution file and project, recommend the user switch that project to a different project system, and then make the required changes to the solution file on their behalf. However, this requires interactions with the user (which may become noisy if there are a lot of projects to upgrade) changes to the solution file (which the user may not understand) and reloading the project. This is also not a particularly dynamic approach as the change to the project system is persisted in the solution file.
 
-To better address the situation where you may need to dynamically choose the project system, VS provides the [IVsProjectSystemSelector](https://learn.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.shell.interop.ivsprojectselector) interface. Implementations of this interface are associated with a particular project system, and are called before a project is loaded in order to redirect the load to a different project system.
+To better address the situation where you may need to dynamically choose the project system, VS provides the [IVSProjectSelector](https://learn.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.shell.interop.ivsprojectselector) interface. Implementations of this interface are associated with a particular project system, and are called before a project is loaded in order to redirect the load to a different project system.
 
-When an IVsProjectSystemSelector is in play, the following sequence of events occurs before a project is loaded:
+When an IVSProjectSelector is in play, the following sequence of events occurs before a project is loaded:
 
 1. The solution loader reads the project system GUID specified in the .sln file.
-2. If an implementation of IVsProjectSystemSelector has been associated with that project system GUID it is invoked with the following information:
+2. If an implementation of IVSProjectSelector has been associated with that project system GUID it is invoked with the following information:
     1. The original project system GUID
     2. The path to the project file
 3. The selector can respond in one of two ways:
@@ -35,9 +35,9 @@ When an IVsProjectSystemSelector is in play, the following sequence of events oc
 
 ## C#/VB/F# Specifics
 
-### Our IVsProjectSystemSelector implementation
+### Our IVSProjectSelector implementation
 
-The implementation of our IVsProjectSystemSelector lives in the VS repo as it is associated with the older CSProj project system. However, the registry keys that actually associated the selector with the CSProj project system can be found in [ProjectSelectors.pkgdef](https://github.com/dotnet/project-system/blob/1aa6689827ba43e8cd7b9d29a6d15b3eabf6842c/setup/ProjectSystemSetup/ProjectSelectors.pkgdef); we only want the selector to be active when this project system is installed.
+The implementation of our IVSProjectSelector lives in the VS repo as it is associated with the older CSProj project system. However, the registry keys that actually associated the selector with the CSProj project system can be found in [ProjectSelectors.pkgdef](https://github.com/dotnet/project-system/blob/1aa6689827ba43e8cd7b9d29a6d15b3eabf6842c/setup/ProjectSystemSetup/ProjectSelectors.pkgdef); we only want the selector to be active when this project system is installed.
 
 ***NOTE:** The behaviors listed below are subject to change as we add support for more project types in the new project system.*
 
