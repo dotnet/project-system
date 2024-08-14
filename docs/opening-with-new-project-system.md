@@ -11,7 +11,7 @@ EndProject
 
 Here the "Library3.csproj" project should be opened with the project system designated by the "FAE04EC0-301F-11D3-BF4B-00C04F79EFBC" GUID.
 
-While the solution file entry associates a specific project with a specific project system, ultimately this information comes from the [ProviderProjectFactoryAttribute](https://learn.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.shell.provideprojectfactoryattribute)--or the equivalent entries in a .pkgdef file--which associates a file extension (like .csproj) with a project system.
+While the solution file entry associates a specific project with a specific project system, ultimately this information comes from the [ProviderProjectFactoryAttribute](https://learn.microsoft.com/dotnet/api/microsoft.visualstudio.shell.provideprojectfactoryattribute)--or the equivalent entries in a .pkgdef file--which associates a file extension (like .csproj) with a project system.
 
 ## Problem
 
@@ -21,7 +21,7 @@ There may be situations where more than one project system is capable of loading
 
 One option is to provide some sort of upgrade tool that can analyze the solution file and project, recommend the user switch that project to a different project system, and then make the required changes to the solution file on their behalf. However, this requires interactions with the user (which may become noisy if there are a lot of projects to upgrade) changes to the solution file (which the user may not understand) and reloading the project. This is also not a particularly dynamic approach as the change to the project system is persisted in the solution file.
 
-To better address the situation where you may need to dynamically choose the project system, VS provides the [IVSProjectSelector](https://learn.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.shell.interop.ivsprojectselector) interface. Implementations of this interface are associated with a particular project system, and are called before a project is loaded in order to redirect the load to a different project system.
+To better address the situation where you may need to dynamically choose the project system, VS provides the [IVSProjectSelector](https://learn.microsoft.com/dotnet/api/microsoft.visualstudio.shell.interop.ivsprojectselector) interface. Implementations of this interface are associated with a particular project system, and are called before a project is loaded in order to redirect the load to a different project system.
 
 When an IVSProjectSelector is in play, the following sequence of events occurs before a project is loaded:
 
