@@ -121,6 +121,10 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="RestoreUseLegacyDependencyResolver"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="RuntimeIdentifier"
                   ReadOnly="True"
                   Visible="False" />
