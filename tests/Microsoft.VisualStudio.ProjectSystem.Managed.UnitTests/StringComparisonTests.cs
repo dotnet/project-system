@@ -54,10 +54,10 @@ public sealed class StringComparersTests
             if (extraComparers.Count + extraComparisons.Count != 0)
             {
                 Assert.Fail($"""
-                Mismatched {nameof(StringComparers)} and {nameof(StringComparisons)}:
-                - Comparers without matching comparisons: {string.Join(", ", extraComparers)}
-                - Comparisons without matching comparers: {string.Join(", ", extraComparisons)}
-                """);
+                    Mismatched {nameof(StringComparers)} and {nameof(StringComparisons)}:
+                    - Comparers without matching comparisons: {string.Join(", ", extraComparers)}
+                    - Comparisons without matching comparers: {string.Join(", ", extraComparisons)}
+                    """);
             }
         }
 
@@ -77,10 +77,10 @@ public sealed class StringComparersTests
                 if (!string.Equals(comparerKind, comparisonKind, StringComparison.Ordinal))
                 {
                     Assert.Fail($"""
-                    Mismatched comparisons:
-                    - {nameof(StringComparers)}.{comparer.Name} = {comparerKind}
-                    - {nameof(StringComparisons)}.{comparer.Name} = {comparisonKind}
-                    """);
+                        Mismatched comparisons:
+                        - {nameof(StringComparers)}.{comparer.Name} = {comparerKind}
+                        - {nameof(StringComparisons)}.{comparer.Name} = {comparisonKind}
+                        """);
                 }
             }
 
@@ -97,7 +97,7 @@ public sealed class StringComparersTests
                 }
 
                 Assert.Fail("Unknown comparer: " + comparer);
-                return null!; // Unreachable
+                throw Assumes.NotReachable();
 
                 static IEnumerable<(StringComparer, string)> Comparers()
                 {
@@ -121,7 +121,7 @@ public sealed class StringComparersTests
                 }
 
                 Assert.Fail("Unknown comparison: " + comparison);
-                return null!; // Unreachable
+                throw Assumes.NotReachable();
 
                 static IEnumerable<(StringComparison, string)> Comparisons()
                 {
