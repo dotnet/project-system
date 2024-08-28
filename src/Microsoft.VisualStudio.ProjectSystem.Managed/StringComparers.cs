@@ -55,6 +55,7 @@ namespace Microsoft.VisualStudio
         public static StringComparison PropertyLiteralValues => StringComparison.OrdinalIgnoreCase;
         public static StringComparison PropertyValues => StringComparison.Ordinal;
         public static StringComparison RuleNames => StringComparison.OrdinalIgnoreCase;
+        public static StringComparison CategoryNames => StringComparison.OrdinalIgnoreCase;
         public static StringComparison ConfigurationDimensionNames => StringComparison.Ordinal;
         public static StringComparison ConfigurationDimensionValues => StringComparison.Ordinal;
         public static StringComparison DependencyIds => StringComparison.OrdinalIgnoreCase;

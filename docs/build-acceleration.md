@@ -169,7 +169,7 @@ Looking through the build output with the following points in mind:
 
 ## Reference Assemblies
 
-A reference assembly is a DLLs that models the public API of a project, without any actual implementation.
+A reference assembly is a DLL that models the public API of a project, without any actual implementation.
 
 During build, reference assembly timestamps are only updated when their project's public API changes. Incremental build systems use file system timestamps for many of their optimisations. If project changes are internal-only (e.g. method bodies, private members added/removed, documentation changed) then the timestamp is not changed. Knowing the time at which a public API was last changed allows skipping some compilation.
 
@@ -184,7 +184,7 @@ In our example, `A` only need to recompile if it has its own changes, or if `B`'
 
 Production of a reference assembly is controlled by the `ProduceReferenceAssembly` MSBuild property, and the feature is part of MSBuild directly. This means it works well outside of VS, in case you also do CLI builds. Note that most CI builds are non-incremental (they happen on fresh clones), so this property has no impact there.
 
-When `ProduceReferenceAssembly` was introduced in .NET 5, it was only enabled by default for .NET 5 and later. We investigated changing the default for earlier frameworks too, but this caused issues in a very small number of highly customised builds and we take backwards compatability very seriously. That said, it's generally desirable to configure projects to produce reference assemblies, regardless of whether you use Build Acceleration or not.
+When `ProduceReferenceAssembly` was introduced in .NET 5, it was only enabled by default for .NET 5 and later. We investigated changing the default for earlier frameworks too, but this caused issues in a very small number of highly customised builds and we take backwards compatibility very seriously. That said, it's generally desirable to configure projects to produce reference assemblies, regardless of whether you use Build Acceleration or not.
 
 For more information, see [Reference Assemblies](https://learn.microsoft.com/dotnet/standard/assembly/reference-assemblies) on Microsoft Learn.
 
