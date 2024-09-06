@@ -80,8 +80,6 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
         _isEnabled = new(
             async () =>
             {
-                await threadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
-
                 // If VS is running in command line mode (e.g. "devenv.exe /build my.sln"),
                 // language services should not be enabled. The one exception to this is
                 // when we're populating a solution cache via "/populateSolutionCache".
