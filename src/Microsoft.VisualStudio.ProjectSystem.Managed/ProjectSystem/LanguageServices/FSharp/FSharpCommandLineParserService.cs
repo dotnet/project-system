@@ -73,17 +73,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
             }
 
             return new FSharpBuildOptions(
-                    sourceFiles: sourceFiles.ToImmutableArray(),
-                    additionalFiles: ImmutableArray<CommandLineSourceFile>.Empty,
-                    metadataReferences: metadataReferences.ToImmutableArray(),
-                    analyzerReferences: ImmutableArray<CommandLineAnalyzerReference>.Empty,
-                    compileOptions: commandLineOptions.ToImmutableArray());
+                sourceFiles: sourceFiles.ToImmutableArray(),
+                additionalFiles: [],
+                metadataReferences: metadataReferences.ToImmutableArray(),
+                analyzerReferences: [],
+                compileOptions: commandLineOptions.ToImmutableArray());
         }
 
         [Export]
         [AppliesTo(ProjectCapability.FSharp)]
         public void HandleCommandLineNotifications(string binPath, BuildOptions added, BuildOptions removed)
         {
+            // NOTE this method is imported in CommandLineNotificationHandler as an Action<string?, BuildOptions, BuildOptions>
+
             if (added is FSharpBuildOptions fscAdded)
             {
                 foreach (Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>> handler in _handlers)
