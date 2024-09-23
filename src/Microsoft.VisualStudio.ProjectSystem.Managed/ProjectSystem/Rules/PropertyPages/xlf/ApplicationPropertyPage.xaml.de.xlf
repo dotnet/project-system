@@ -143,8 +143,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|NuGetAuditLevel|Description">
-        <source>The minimum vulnerability severity level to report when a package has a known vulnerability. Known vulnerabilities with a lower severity level will not be reported..</source>
-        <target state="new">The minimum vulnerability severity level to report when a package has a known vulnerability. Known vulnerabilities with a lower severity level will not be reported..</target>
+        <source>The minimum vulnerability severity level to report when a package has a known vulnerability. Known vulnerabilities with a lower severity level will not be reported.</source>
+        <target state="new">The minimum vulnerability severity level to report when a package has a known vulnerability. Known vulnerabilities with a lower severity level will not be reported.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|NuGetAuditLevel|DisplayName">
@@ -183,23 +183,23 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditLevel.critical|DisplayName">
-        <source>Critical</source>
-        <target state="new">Critical</target>
+        <source>Critical only</source>
+        <target state="new">Critical only</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditLevel.high|DisplayName">
-        <source>High</source>
-        <target state="new">High</target>
+        <source>High and above</source>
+        <target state="new">High and above</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditLevel.low|DisplayName">
-        <source>Low</source>
-        <target state="new">Low</target>
+        <source>Low and above (all levels)</source>
+        <target state="new">Low and above (all levels)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditLevel.moderate|DisplayName">
-        <source>Moderate</source>
-        <target state="new">Moderate</target>
+        <source>Moderate and above</source>
+        <target state="new">Moderate and above</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditMode.all|DisplayName">

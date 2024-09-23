@@ -323,13 +323,13 @@
       </NameValuePair>
     </EnumProperty.Metadata>
     <EnumValue Name="low"
-               DisplayName="Low" />
+               DisplayName="Low and above (all levels)" />
     <EnumValue Name="moderate"
-               DisplayName="Moderate" />
+               DisplayName="Moderate and above" />
     <EnumValue Name="high"
-               DisplayName="High" />
+               DisplayName="High and above" />
     <EnumValue Name="critical"
-               DisplayName="Critical" />
+               DisplayName="Critical only" />
   </EnumProperty>
   
 </Rule>
