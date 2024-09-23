@@ -106,23 +106,25 @@ internal sealed class MSBuildDependency : Dependency
         return this;
     }
 
-    internal MSBuildDependency With(bool isResolved, ProjectImageMoniker icon, ProjectTreeFlags flags, DiagnosticLevel diagnosticLevel)
+    internal MSBuildDependency With(bool isResolved, ProjectImageMoniker icon, ProjectTreeFlags flags, DiagnosticLevel diagnosticLevel, string caption, string? filePath)
     {
         if (isResolved != IsResolved ||
             diagnosticLevel != DiagnosticLevel ||
             icon != Icon ||
-            flags != Flags)
+            flags != Flags ||
+            caption != Caption ||
+            filePath != FilePath)
         {
             return new MSBuildDependency(
                 _factory,
                 Id,
-                Caption,
+                caption,
                 icon,
                 flags,
                 diagnosticLevel,
                 isResolved,
                 IsImplicit,
-                FilePath,
+                filePath,
                 BrowseObjectProperties);
         }
 

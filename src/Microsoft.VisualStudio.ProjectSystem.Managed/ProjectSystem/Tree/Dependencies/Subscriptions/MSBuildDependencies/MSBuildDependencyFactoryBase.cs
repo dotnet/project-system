@@ -423,7 +423,8 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
         DiagnosticLevel diagnosticLevel = dependency.DiagnosticLevel <= DiagnosticLevel.Warning ? DiagnosticLevel.Warning : dependency.DiagnosticLevel;
         ProjectTreeFlags flags = UpdateTreeFlags(dependency.Id, FlagCache.Get(isResolved: false, dependency.IsImplicit));
         ProjectImageMoniker icon = GetIcon(dependency.IsImplicit, diagnosticLevel);
-        updated = dependency.With(isResolved: false, icon: icon, flags: flags, diagnosticLevel: diagnosticLevel);
+        string caption = GetUnresolvedCaption(dependency.Id, dependency.BrowseObjectProperties);
+        updated = dependency.With(isResolved: false, icon: icon, flags: flags, diagnosticLevel: diagnosticLevel, caption: caption, filePath: dependency.Id);
         return !ReferenceEquals(dependency, updated);
     }
 
