@@ -259,7 +259,7 @@ internal sealed class MSBuildDependencyCollection
 
                     if (id is not null && _dependencyById.TryGetValue(id, out MSBuildDependency? dependency))
                     {
-                        if (!_factory.ResolvedItemRequiresEvaluatedItem && !evaluationProjectChange.Before.Items.ContainsKey(id))
+                        if (!_factory.ResolvedItemRequiresEvaluatedItem && !evaluationProjectChange.After.Items.ContainsKey(id))
                         {
                             // The item is not present in evaluation, and this factory doesn't require an evaluated item.
                             // The removal of the build item means that the item must be removed altogether, as there's no
