@@ -292,11 +292,10 @@
                DisplayName="Resource file" />
   </EnumProperty>
 
-  <!-- TODO convert to fwlink -->
   <BoolProperty Name="NuGetAudit"
                 DisplayName="Audit NuGet dependencies"
                 Description="Audit package dependencies for security vulnerabilities."
-                HelpUrl="https://learn.microsoft.com/nuget/concepts/auditing-packages"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2288404"
                 Category="Dependencies" />
 
   <EnumProperty Name="NuGetAuditMode"
@@ -316,7 +315,7 @@
 
   <EnumProperty Name="NuGetAuditLevel"
                 DisplayName="Audit Severity Level"
-                Description="The minimum vulnerability severity level to report when a package has a known vulnerability. Known vulnerabilities with a lower severity level will not be reported.."
+                Description="The minimum vulnerability severity level to report when a package has a known vulnerability. Known vulnerabilities with a lower severity level will not be reported."
                 Category="Dependencies">
     <EnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
