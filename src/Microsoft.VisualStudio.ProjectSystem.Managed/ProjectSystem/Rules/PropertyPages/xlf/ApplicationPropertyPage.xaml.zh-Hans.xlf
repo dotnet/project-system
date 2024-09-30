@@ -14,12 +14,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|NuGetAudit|Description">
         <source>Audit package dependencies for security vulnerabilities.</source>
-        <target state="new">Audit package dependencies for security vulnerabilities.</target>
+        <target state="translated">审核安全漏洞的包依赖项。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NuGetAudit|DisplayName">
         <source>Audit NuGet dependencies</source>
-        <target state="new">Audit NuGet dependencies</target>
+        <target state="translated">审核 NuGet 依赖项</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|UseWPF|Description">
@@ -44,12 +44,12 @@
       </trans-unit>
       <trans-unit id="Category|Dependencies|Description">
         <source>Dependency management settings for the application.</source>
-        <target state="new">Dependency management settings for the application.</target>
+        <target state="translated">应用程序的依赖项管理设置。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Dependencies|DisplayName">
         <source>Dependencies</source>
-        <target state="new">Dependencies</target>
+        <target state="translated">依赖项</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
@@ -144,22 +144,22 @@
       </trans-unit>
       <trans-unit id="EnumProperty|NuGetAuditLevel|Description">
         <source>The minimum vulnerability severity level to report when a package has a known vulnerability. Known vulnerabilities with a lower severity level will not be reported.</source>
-        <target state="new">The minimum vulnerability severity level to report when a package has a known vulnerability. Known vulnerabilities with a lower severity level will not be reported.</target>
+        <target state="translated">当包具有已知漏洞时要报告的最小漏洞严重性级别。不会报告严重性级别较低的已知漏洞。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|NuGetAuditLevel|DisplayName">
         <source>Audit Severity Level</source>
-        <target state="new">Audit Severity Level</target>
+        <target state="translated">事件严重性级别</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|NuGetAuditMode|Description">
         <source>Specifies which packages to include in the audit.</source>
-        <target state="new">Specifies which packages to include in the audit.</target>
+        <target state="translated">指定要包含在审核中的包。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|NuGetAuditMode|DisplayName">
         <source>Audit Mode</source>
-        <target state="new">Audit Mode</target>
+        <target state="translated">审核模式</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|Description">
@@ -184,32 +184,32 @@
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditLevel.critical|DisplayName">
         <source>Critical only</source>
-        <target state="new">Critical only</target>
+        <target state="translated">仅限严重</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditLevel.high|DisplayName">
         <source>High and above</source>
-        <target state="new">High and above</target>
+        <target state="translated">高及以上</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditLevel.low|DisplayName">
         <source>Low and above (all levels)</source>
-        <target state="new">Low and above (all levels)</target>
+        <target state="translated">低和更高(所有级别)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditLevel.moderate|DisplayName">
         <source>Moderate and above</source>
-        <target state="new">Moderate and above</target>
+        <target state="translated">中等及以上</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditMode.all|DisplayName">
         <source>All dependencies (direct and transitive)</source>
-        <target state="new">All dependencies (direct and transitive)</target>
+        <target state="translated">所有依赖项(直接和可传递)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditMode.direct|DisplayName">
         <source>Direct dependencies</source>
-        <target state="new">Direct dependencies</target>
+        <target state="translated">直接依赖项</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">

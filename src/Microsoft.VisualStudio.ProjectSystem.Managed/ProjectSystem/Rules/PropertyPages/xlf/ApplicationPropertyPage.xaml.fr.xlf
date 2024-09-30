@@ -14,12 +14,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|NuGetAudit|Description">
         <source>Audit package dependencies for security vulnerabilities.</source>
-        <target state="new">Audit package dependencies for security vulnerabilities.</target>
+        <target state="translated">Auditez les dépendances de package pour les failles de sécurité.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NuGetAudit|DisplayName">
         <source>Audit NuGet dependencies</source>
-        <target state="new">Audit NuGet dependencies</target>
+        <target state="translated">Auditer les dépendances NuGet</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|UseWPF|Description">
@@ -44,12 +44,12 @@
       </trans-unit>
       <trans-unit id="Category|Dependencies|Description">
         <source>Dependency management settings for the application.</source>
-        <target state="new">Dependency management settings for the application.</target>
+        <target state="translated">Paramètres de gestion des dépendances pour l’application.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Dependencies|DisplayName">
         <source>Dependencies</source>
-        <target state="new">Dependencies</target>
+        <target state="translated">Dépendances</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
@@ -144,22 +144,22 @@
       </trans-unit>
       <trans-unit id="EnumProperty|NuGetAuditLevel|Description">
         <source>The minimum vulnerability severity level to report when a package has a known vulnerability. Known vulnerabilities with a lower severity level will not be reported.</source>
-        <target state="new">The minimum vulnerability severity level to report when a package has a known vulnerability. Known vulnerabilities with a lower severity level will not be reported.</target>
+        <target state="translated">Le niveau minimum de gravité de la vulnérabilité à signaler lorsqu'un paquet présente une vulnérabilité connue. Les vulnérabilités connues avec un niveau de gravité inférieur ne seront pas signalées.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|NuGetAuditLevel|DisplayName">
         <source>Audit Severity Level</source>
-        <target state="new">Audit Severity Level</target>
+        <target state="translated">Niveau de gravité de l’audit</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|NuGetAuditMode|Description">
         <source>Specifies which packages to include in the audit.</source>
-        <target state="new">Specifies which packages to include in the audit.</target>
+        <target state="translated">Spécifie les packages à inclure dans l’audit.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|NuGetAuditMode|DisplayName">
         <source>Audit Mode</source>
-        <target state="new">Audit Mode</target>
+        <target state="translated">Mode d’audit</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|Description">
@@ -184,32 +184,32 @@
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditLevel.critical|DisplayName">
         <source>Critical only</source>
-        <target state="new">Critical only</target>
+        <target state="translated">Critique uniquement</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditLevel.high|DisplayName">
         <source>High and above</source>
-        <target state="new">High and above</target>
+        <target state="translated">Haut et supérieur</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditLevel.low|DisplayName">
         <source>Low and above (all levels)</source>
-        <target state="new">Low and above (all levels)</target>
+        <target state="translated">Bas et supérieurs (tous niveaux)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditLevel.moderate|DisplayName">
         <source>Moderate and above</source>
-        <target state="new">Moderate and above</target>
+        <target state="translated">Modéré et supérieur</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditMode.all|DisplayName">
         <source>All dependencies (direct and transitive)</source>
-        <target state="new">All dependencies (direct and transitive)</target>
+        <target state="translated">Toutes les dépendances (directes et transitives)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|NuGetAuditMode.direct|DisplayName">
         <source>Direct dependencies</source>
-        <target state="new">Direct dependencies</target>
+        <target state="translated">Dépendances directes</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
