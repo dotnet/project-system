@@ -33,17 +33,17 @@
     <PackageVersion Include="Microsoft.VisualStudio.Internal.MicroBuild.Vsman"                       Version="2.0.115" />
     <PackageVersion Include="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
     <PackageVersion Include="Nerdbank.GitVersioning"                                                 Version="3.6.79-alpha" />
-    <PackageVersion Include="Nerdbank.Streams"                                                       Version="2.11.74" />
+    <PackageVersion Include="Nerdbank.Streams"                                                       Version="2.11.79" />
     <PackageVersion Include="System.IO.Pipelines"                                                    Version="8.0.0" />
-    <PackageVersion Include="StreamJsonRpc"                                                          Version="2.19.23" />
+    <PackageVersion Include="StreamJsonRpc"                                                          Version="2.20.15" />
 
     <!-- VS SDK -->
     <!-- https://dev.azure.com/azure-public/vside/_artifacts/feed/vssdk -->
     <PackageVersion Include="EnvDTE"                                                                 Version="17.11.38822-preview.1" />
     <PackageVersion Include="Microsoft.Internal.VisualStudio.Interop"                                Version="17.11.38822-preview.1" />
-    <PackageVersion Include="Microsoft.ServiceHub.Framework"                                         Version="4.6.13" />
+    <PackageVersion Include="Microsoft.ServiceHub.Framework"                                         Version="4.7.36" />
     <PackageVersion Include="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.11.111-preview" />
-    <PackageVersion Include="Microsoft.VisualStudio.Composition"                                     Version="17.11.9" />
+    <PackageVersion Include="Microsoft.VisualStudio.Composition"                                     Version="17.12.18" />
     <PackageVersion Include="Microsoft.VisualStudio.Data.Core"                                       Version="17.0.0-preview-2-31223-026" />
     <PackageVersion Include="Microsoft.VisualStudio.Data.Services"                                   Version="17.0.0-preview-2-31223-026" />
     <PackageVersion Include="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026" />
@@ -54,17 +54,17 @@
     <PackageVersion Include="Microsoft.VisualStudio.ImageCatalog"                                    Version="17.11.38822-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Interop"                                         Version="17.11.38822-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50728" />
-    <PackageVersion Include="Microsoft.VisualStudio.RpcContracts"                                    Version="17.11.8" />
+    <PackageVersion Include="Microsoft.VisualStudio.RpcContracts"                                    Version="17.12.12" />
     <PackageVersion Include="Microsoft.VisualStudio.Settings.15.0"                                   Version="17.11.38822-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="3.2.2146" />
     <PackageVersion Include="Microsoft.VisualStudio.Shell.15.0"                                      Version="17.11.38822-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Shell.Design"                                    Version="17.11.38822-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Shell.Framework"                                 Version="17.11.38822-preview.1" />
-    <PackageVersion Include="Microsoft.VisualStudio.Telemetry"                                       Version="17.11.8" />
+    <PackageVersion Include="Microsoft.VisualStudio.Telemetry"                                       Version="17.12.40" />
     <PackageVersion Include="Microsoft.VisualStudio.TemplateWizardInterface"                         Version="17.11.38822-preview.1" />
-    <PackageVersion Include="Microsoft.VisualStudio.Threading"                                       Version="17.11.20" />
-    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.11.20" />
-    <PackageVersion Include="Microsoft.VisualStudio.Utilities"                                       Version="17.11.39607" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading"                                       Version="17.12.17" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.12.17" />
+    <PackageVersion Include="Microsoft.VisualStudio.Utilities"                                       Version="17.12.40093" />
     <PackageVersion Include="Microsoft.VisualStudio.Validation"                                      Version="17.8.8" />
     <PackageVersion Include="Microsoft.VisualStudio.XmlEditor"                                       Version="17.11.0-preview-1-34901-010" />
     <PackageVersion Include="Microsoft.VSSDK.BuildTools"                                             Version="17.11.54-preview1" />
