@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Build;
 
 #pragma warning disable 0649
 
@@ -27,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     for a project.
             /// </summary>
             [ExportRule(nameof(SupportedTargetFrameworkAlias), PropertyPageContexts.ProjectSubscriptionService)]
+            [ExportDesignTimeBuildTargets(nameof(SupportedTargetFrameworkAlias))]
             [AppliesTo(ProjectCapability.DotNet)]
             [Order(Order.Default)]
             public static int SupportedTargetFrameworkAliasRule;
@@ -92,6 +94,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             [AppliesTo(ProjectCapability.DotNet)]
             [Order(Order.Default)]
             public static int ConfigurationGeneralRule;
+
+            /// <summary>
+            ///     Represents the design-time build items containing references to frameworks that are passed to restore.
+            /// </summary>
+            [ExportRule(nameof(CollectedFrameworkReference), PropertyPageContexts.ProjectSubscriptionService)]
+            [ExportDesignTimeBuildTargets(nameof(CollectedFrameworkReference))]
+            [AppliesTo(ProjectCapability.PackageReferences)]
+            [Order(Order.Default)]
+            public static int CollectedFrameworkReferenceRule;
         }
 
         private static class AppDesignerRules
@@ -130,6 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents the design-time build items containing references to frameworks that are passed to restore.
             /// </summary>
             [ExportRule(nameof(CollectedFrameworkReference), PropertyPageContexts.ProjectSubscriptionService)]
+            [ExportDesignTimeBuildTargets(nameof(CollectedFrameworkReference))]
             [AppliesTo(ProjectCapability.PackageReferences)]
             [Order(Order.Default)]
             public static int CollectedFrameworkReferenceRule;
@@ -138,6 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents the design-time build items containing packages to be downloaded that are passed to restore.
             /// </summary>
             [ExportRule(nameof(CollectedPackageDownload), PropertyPageContexts.ProjectSubscriptionService)]
+            [ExportDesignTimeBuildTargets(nameof(CollectedPackageDownload))]
             [AppliesTo(ProjectCapability.PackageReferences)]
             [Order(Order.Default)]
             public static int CollectedPackageDownloadRule;
@@ -146,6 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents the design-time build items containing the packages that the project references that are passed to restore.
             /// </summary>
             [ExportRule(nameof(CollectedPackageReference), PropertyPageContexts.ProjectSubscriptionService)]
+            [ExportDesignTimeBuildTargets(nameof(CollectedPackageReference))]
             [AppliesTo(ProjectCapability.PackageReferences)]
             [Order(Order.Default)]
             public static int CollectedPackageReferenceRule;
@@ -154,6 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents the design-time build items containing the versions of direct and indirect package references that are passed to restore.
             /// </summary>
             [ExportRule(nameof(CollectedPackageVersion), PropertyPageContexts.ProjectSubscriptionService)]
+            [ExportDesignTimeBuildTargets(nameof(CollectedPackageVersion))]
             [AppliesTo(ProjectCapability.PackageReferences)]
             [Order(Order.Default)]
             public static int CollectedPackageVersionRule;
@@ -162,6 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents the design-time build items containing the versions of direct and indirect package references that are passed to restore.
             /// </summary>
             [ExportRule(nameof(CollectedNuGetAuditSuppressions), PropertyPageContexts.ProjectSubscriptionService)]
+            [ExportDesignTimeBuildTargets(nameof(CollectedNuGetAuditSuppressions))]
             [AppliesTo(ProjectCapability.PackageReferences)]
             [Order(Order.Default)]
             public static int CollectedNuGetAuditSuppressionsRule;
@@ -184,6 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents the design-time build items containing the compiler command-line that is passed to Roslyn.
             /// </summary>
             [ExportRule(nameof(CompilerCommandLineArgs), PropertyPageContexts.ProjectSubscriptionService)]
+            [ExportDesignTimeBuildTargets(nameof(CompilerCommandLineArgs))]
             [AppliesTo(ProjectCapability.DotNetLanguageService)]
             [Order(Order.Default)]
             public static int CompilerCommandLineArgsRule;
@@ -214,9 +231,56 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents the evaluation items representing optional workloads.
             /// </summary>
             [ExportRule(nameof(SuggestedWorkload), PropertyPageContexts.ProjectSubscriptionService)]
+            [ExportDesignTimeBuildTargets(nameof(SuggestedWorkload))]
             [AppliesTo(ProjectCapability.DotNet)]
             [Order(Order.Default)]
             public static int SuggestedWorkloadRule;
+        }
+
+        /// <summary>
+        /// Contains rules applicable to the dependencies tree.
+        /// </summary>
+        private static class DependenciesTreeRules
+        {
+            /// <summary>
+            ///     Represents the design-time build items containing COM references.
+            /// </summary>
+            [ExportDesignTimeBuildTargets(ResolvedCOMReference.SchemaName)]
+            [AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.ComReferences)]
+            [Order(Order.Default)]
+            public static int ResolvedCOMReferenceRule;
+
+            /// <summary>
+            ///     Represents the design-time build items containing sdk references.
+            /// </summary>
+            [ExportDesignTimeBuildTargets(ResolvedSdkReference.SchemaName)]
+            [AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.SdkReferences)]
+            [Order(Order.Default)]
+            public static int ResolvedSdkReferenceRule;
+
+            /// <summary>
+            ///     Represents the design-time build items containing assembly references.
+            /// </summary>
+            [ExportDesignTimeBuildTargets(ResolvedAssemblyReference.SchemaName)]
+            [AppliesTo(ProjectCapability.DependenciesTree + " & (" + ProjectCapabilities.AssemblyReferences + " | " + ProjectCapabilities.WinRTReferences + ")")]
+            [Order(Order.Default)]
+            public static int ResolvedAssemblyReferenceRule;
+
+            /// <summary>
+            ///     Represents the design-time build items containing package references.
+            /// </summary>
+            [ExportDesignTimeBuildTargets(ResolvedPackageReference.SchemaName)]
+            [AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.PackageReferences)]
+            [Order(Order.Default)]
+            public static int ResolvedPackageReferenceRule;
+
+            /// <summary>
+            ///     Represents the design-time build items containing framework references.
+            /// </summary>
+            [ExportDesignTimeBuildTargets(ResolvedFrameworkReference.SchemaName)]
+            [AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int ResolvedFrameworkReferenceRule;
         }
     }
 }
