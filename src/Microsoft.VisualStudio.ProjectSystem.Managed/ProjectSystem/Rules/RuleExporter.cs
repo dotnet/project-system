@@ -94,15 +94,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             [AppliesTo(ProjectCapability.DotNet)]
             [Order(Order.Default)]
             public static int ConfigurationGeneralRule;
-
-            /// <summary>
-            ///     Represents the design-time build items containing references to frameworks that are passed to restore.
-            /// </summary>
-            [ExportRule(nameof(CollectedFrameworkReference), PropertyPageContexts.ProjectSubscriptionService)]
-            [ExportDesignTimeBuildTargets(nameof(CollectedFrameworkReference))]
-            [AppliesTo(ProjectCapability.PackageReferences)]
-            [Order(Order.Default)]
-            public static int CollectedFrameworkReferenceRule;
         }
 
         private static class AppDesignerRules
