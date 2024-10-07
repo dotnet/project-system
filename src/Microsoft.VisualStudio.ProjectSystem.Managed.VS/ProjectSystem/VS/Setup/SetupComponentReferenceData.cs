@@ -38,7 +38,8 @@ internal static class SetupComponentReferenceData
         .Add("v5.0", "Microsoft.NetCore.Component.Runtime.5.0")
         .Add("v6.0", "Microsoft.NetCore.Component.Runtime.6.0")
         .Add("v7.0", "Microsoft.NetCore.Component.Runtime.7.0")
-        .Add("v8.0", "Microsoft.NetCore.Component.Runtime.8.0");
+        .Add("v8.0", "Microsoft.NetCore.Component.Runtime.8.0")
+        .Add("v9.0", "Microsoft.NetCore.Component.Runtime.9.0");
 
     /// <summary>
     /// Attempts to map a .NET Core <c>TargetFrameworkVersion</c> to the corresponding VS Setup component ID for that version's runtime.
