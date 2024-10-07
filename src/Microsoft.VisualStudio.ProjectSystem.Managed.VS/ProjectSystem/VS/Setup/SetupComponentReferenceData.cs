@@ -29,7 +29,7 @@ internal static class SetupComponentReferenceData
     /// versions of .NET Core.
     /// </para>
     /// </remarks>
-    private static readonly ImmutableDictionary<string, string> s_componentIdByRuntimeVersion = ImmutableStringDictionary<string>.EmptyOrdinalIgnoreCase
+    private static readonly ImmutableDictionary<string, string> s_componentIdByFrameworkVersion = ImmutableStringDictionary<string>.EmptyOrdinalIgnoreCase
         .Add("v2.0", "Microsoft.Net.Core.Component.SDK.2.1")    // mismatch
         .Add("v2.1", "Microsoft.Net.Core.Component.SDK.2.1")
         .Add("v2.2", "Microsoft.Net.Core.Component.SDK.2.1")    // mismatch
@@ -46,7 +46,7 @@ internal static class SetupComponentReferenceData
     /// </summary>
     public static bool TryGetComponentIdByNetCoreTargetFrameworkVersion(string netCoreTargetFrameworkVersion, [NotNullWhen(returnValue: true)] out string? runtimeComponentId)
     {
-        return s_componentIdByRuntimeVersion.TryGetValue(netCoreTargetFrameworkVersion, out runtimeComponentId);
+        return s_componentIdByFrameworkVersion.TryGetValue(netCoreTargetFrameworkVersion, out runtimeComponentId);
     }
 
     /// <summary>
