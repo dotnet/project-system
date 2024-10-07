@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 /// Reported requirements are:
 /// <list type="bullet">
 ///   <item><see cref="SuggestedWorkload"/> items from the <c>CollectSuggestedWorkloads</c> target (yay!).</item>
-///   <item>Specific workloads based on project capabilities and hard-coded knowledge about project types and .NET features (boo!).</item>
+///   <item>Specific workloads based on project capabilities and hard-coded knowledge about project types and .NET features from <see cref="SetupComponentReferenceData"/> (boo!).</item>
 ///   <item>The .NET runtime version (for .NET Core project configurations only).</item>
 /// </list>
 /// Components are gathered from all active configured projects within the project.

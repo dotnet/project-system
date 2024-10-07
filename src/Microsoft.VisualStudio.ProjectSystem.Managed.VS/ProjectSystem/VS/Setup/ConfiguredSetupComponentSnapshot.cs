@@ -20,6 +20,9 @@ internal sealed class ConfiguredSetupComponentSnapshot
     
     public bool IsEmpty { get; }
 
+    /// <summary>
+    /// Creates the <see cref="Empty"/> singleton instance.
+    /// </summary>
     private ConfiguredSetupComponentSnapshot()
     {
         _suggestedWorkloadComponentIds = ComponentIds = ImmutableStringHashSet.EmptyVisualStudioSetupComponentIds;
@@ -47,6 +50,10 @@ internal sealed class ConfiguredSetupComponentSnapshot
         ComponentIds = componentIds;
     }
 
+    /// <summary>
+    /// Applies changes to the current (immutable) snapshot, producing a new snapshot.
+    /// </summary>
+    /// <returns>The updated snapshot, or the same instance if no changes were required.</returns>
     public ConfiguredSetupComponentSnapshot Update(
         IProjectSubscriptionUpdate evaluationUpdate,
         IProjectSubscriptionUpdate buildUpdate,

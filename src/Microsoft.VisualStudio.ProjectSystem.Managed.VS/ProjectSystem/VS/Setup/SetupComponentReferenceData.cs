@@ -21,7 +21,7 @@ internal static class SetupComponentReferenceData
     /// the SDK instead, tracked in https://github.com/dotnet/sdk/issues/25575.
     /// </para>
     /// <para>
-    /// The source of truth for the available VS Setup components is:
+    /// The source of truth for the available VS Setup components is various <c>.swr</c> files, such as:
     /// https://dev.azure.com/devdiv/DevDiv/_git/VS?path=/src/SetupPackages/Group/Product/Shared/product.shared.swr
     /// </para>
     /// <para>
