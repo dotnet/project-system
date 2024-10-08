@@ -480,7 +480,7 @@ internal abstract class MSBuildDependencyFactoryBase : IMSBuildDependencyFactory
         bool? isImplicitMetadata = buildProperties?.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined);
         isImplicitMetadata ??= evaluationProperties?.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined);
 
-        if (isImplicitMetadata != null)
+        if (isImplicitMetadata is not null)
         {
             return isImplicitMetadata.Value;
         }

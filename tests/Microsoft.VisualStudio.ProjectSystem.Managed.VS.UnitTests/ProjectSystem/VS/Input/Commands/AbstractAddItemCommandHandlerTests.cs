@@ -8,11 +8,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     public class AbstractAddItemCommandHandlerTests
     {
         [Fact]
-        public void GetCommandStatusAsync_NullAsNodes_ThrowsArgumentNull()
+        public async Task GetCommandStatusAsync_NullAsNodes_ThrowsArgumentNull()
         {
             var command = CreateInstance();
 
-            Assert.ThrowsAsync<ArgumentNullException>("nodes", () =>
+            await Assert.ThrowsAsync<ArgumentNullException>("nodes", () =>
             {
                 return command.GetCommandStatusAsync(null!, TestAddItemCommand.CommandId, true, "commandText", CommandStatus.Enabled);
             });
