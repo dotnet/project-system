@@ -10,9 +10,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 
         public SequentialTaskExecutorTests()
         {
-#pragma warning disable VSSDK005
             _joinableTaskContext = new JoinableTaskContext();
-#pragma warning restore VSSDK005
         }
 
         public void Dispose()
@@ -73,7 +71,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             await Task.WhenAll(tasks);
             for (int i = 0; i < NumberOfTasks; i++)
             {
-                Assert.Equal(i, tasks[i].Result);
+                Assert.Equal(i, await tasks[i]);
             }
         }
 
@@ -110,11 +108,11 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
 
         [Fact]
-        public void CallToDisposedObjectShouldThrow()
+        public async Task CallToDisposedObjectShouldThrow()
         {
             var sequencer = new SequentialTaskExecutor(new(_joinableTaskContext), "UnitTests");
             sequencer.Dispose();
-            Assert.ThrowsAsync<ObjectDisposedException>(() => sequencer.ExecuteTask(() => Task.CompletedTask));
+            await Assert.ThrowsAsync<ObjectDisposedException>(() => sequencer.ExecuteTask(() => Task.CompletedTask));
         }
 
         [Fact]

@@ -28,10 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<IActiveConfiguredProjectProvider>();
             mock.SetupGet(p => p.ActiveProjectConfiguration)
-                .Returns(getActiveProjectConfiguration);
+                .Returns(() => getActiveProjectConfiguration is not null ? getActiveProjectConfiguration() : null);
 
             mock.SetupGet(p => p.ActiveConfiguredProject)
-                .Returns(getActiveConfiguredProject);
+                .Returns(() => getActiveConfiguredProject is not null ? getActiveConfiguredProject() : null);
 
             return mock.Object;
         }

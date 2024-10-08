@@ -13,7 +13,7 @@ namespace Xunit
 
             if (actualCount != expectedCount)
             {
-                throw new CollectionException(collection, expectedCount, actualCount);
+                throw CollectionException.ForMismatchedItemCount(expectedCount, actualCount, string.Join(",", collection.Select(e => e?.ToString() ?? "")));
             }
         }
 

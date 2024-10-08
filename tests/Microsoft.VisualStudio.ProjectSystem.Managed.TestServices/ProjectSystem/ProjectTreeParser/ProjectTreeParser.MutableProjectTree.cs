@@ -203,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 if (filePath is not null)
                     FilePath = filePath;
 
-                if (visible != null)
+                if (visible is not null)
                     Visible = visible.Value;
 
                 if (flags is not null)

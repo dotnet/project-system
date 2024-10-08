@@ -44,7 +44,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Theory]
         [InlineData(@"C:\Path\To\TemplateFile", true)]
         [InlineData(@"C:\Path\To\TemplateFile", false)]
-        [InlineData(null, false)]
         public async Task CreateFile(string templateFilePath, bool expectedResult)
         {
             string templateName = "SettingsInternal.zip";

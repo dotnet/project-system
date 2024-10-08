@@ -7,22 +7,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class OnceInitializedOnceDisposedUnderLockAsyncTests
     {
         [Fact]
-        public void ExecuteUnderLockAsync_NullAsAction_ThrowsArgumentNullException()
+        public async Task ExecuteUnderLockAsync_NullAsAction_ThrowsArgumentNullException()
         {
             var instance = CreateInstance();
 
-            Assert.ThrowsAsync<ArgumentNullException>(() =>
+            await Assert.ThrowsAsync<ArgumentNullException>(() =>
             {
                 return instance.ExecuteUnderLockAsync(null!, CancellationToken.None);
             });
         }
 
         [Fact]
-        public void ExecuteUnderLockAsyncOfT_NullAsAction_ThrowsArgumentNullException()
+        public async Task ExecuteUnderLockAsyncOfT_NullAsAction_ThrowsArgumentNullException()
         {
             var instance = CreateInstance();
 
-            Assert.ThrowsAsync<ArgumentNullException>(() =>
+            await Assert.ThrowsAsync<ArgumentNullException>(() =>
             {
                 return instance.ExecuteUnderLockAsync<string>(null!, CancellationToken.None);
             });

@@ -38,16 +38,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
         // Values returned by mocks that may be modified in test cases as needed
         private bool _isTaskQueueEmpty = true;
         private bool _isFastUpToDateCheckEnabledInSettings = true;
-        private bool _isBuildAccelerationEnabledInSettings;
+        private readonly bool _isBuildAccelerationEnabledInSettings;
         private bool? _isBuildAccelerationEnabledInProject;
         private bool? _expectedIsBuildAccelerationEnabled;
         private IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> _copyItems = Enumerable.Empty<(string Path, ImmutableArray<CopyItem> CopyItems)>();
-        private bool _isCopyItemsComplete = true;
+        private readonly bool _isCopyItemsComplete = true;
         private IReadOnlyList<string>? _duplicateCopyItemRelativeTargetPaths;
         private IReadOnlyList<string>? _targetsWithoutReferenceAssemblies;
 
         private UpToDateCheckConfiguredInput? _state;
-        private SolutionBuildContext? _currentSolutionBuildContext;
+        private readonly SolutionBuildContext? _currentSolutionBuildContext;
         private bool _expectedUpToDate;
 
         public BuildUpToDateCheckTests(ITestOutputHelper output)
@@ -2444,36 +2444,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             Assert.NotNull(telemetryEvent.Properties);
             Assert.Equal(10, telemetryEvent.Properties.Count);
 
-            var reasonProp = Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.FailReason));
+            var reasonProp = Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.FailReason);
             Assert.Equal(reason, reasonProp.Value);
 
-            var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.DurationMillis));
+            var durationProp = Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.DurationMillis);
             var duration = Assert.IsType<double>(durationProp.Value);
             Assert.True(duration > 0.0);
 
-            var waitDurationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.WaitDurationMillis));
+            var waitDurationProp = Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.WaitDurationMillis);
             var waitDuration = Assert.IsType<double>(waitDurationProp.Value);
             Assert.True(waitDuration > 0.0);
 
-            var fileCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.FileCount));
+            var fileCountProp = Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.FileCount);
             var fileCount = Assert.IsType<int>(fileCountProp.Value);
             Assert.True(fileCount >= 0);
 
-            var configurationCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.ConfigurationCount));
+            var configurationCountProp = Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.ConfigurationCount);
             var configurationCount = Assert.IsType<int>(configurationCountProp.Value);
             Assert.Equal(1, configurationCount);
 
-            var logLevelProp = Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.LogLevel));
+            var logLevelProp = Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.LogLevel);
             var logLevel = Assert.IsType<LogLevel>(logLevelProp.Value);
             Assert.Equal(_logLevel, logLevel);
 
-            var ignoreKindsProp = Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.IgnoreKinds));
+            var ignoreKindsProp = Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.IgnoreKinds);
             var ignoreKindsStr = Assert.IsType<string>(ignoreKindsProp.Value);
             Assert.Equal(ignoreKinds, ignoreKindsStr);
 
-            Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.Project));
-            Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.CheckNumber));
-            Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.AccelerationResult));
+            Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.Project);
+            Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.CheckNumber);
+            Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.AccelerationResult);
 
             _telemetryEvents.Clear();
         }
@@ -2487,34 +2487,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             Assert.NotNull(telemetryEvent.Properties);
             Assert.Equal(10, telemetryEvent.Properties.Count);
 
-            var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.DurationMillis));
+            var durationProp = Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.DurationMillis);
             var duration = Assert.IsType<double>(durationProp.Value);
             Assert.True(duration > 0.0);
 
-            var waitDurationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.WaitDurationMillis));
+            var waitDurationProp = Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.WaitDurationMillis);
             var waitDuration = Assert.IsType<double>(waitDurationProp.Value);
             Assert.True(waitDuration > 0.0);
 
-            var fileCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.FileCount));
+            var fileCountProp = Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.FileCount);
             var fileCount = Assert.IsType<int>(fileCountProp.Value);
             Assert.True(fileCount >= 0);
 
-            var configurationCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.ConfigurationCount));
+            var configurationCountProp = Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.ConfigurationCount);
             var configurationCount = Assert.IsType<int>(configurationCountProp.Value);
             Assert.True(configurationCount == 1);
 
-            var logLevelProp = Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.LogLevel));
+            var logLevelProp = Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.LogLevel);
             var logLevel = Assert.IsType<LogLevel>(logLevelProp.Value);
             Assert.True(logLevel == _logLevel);
 
-            var ignoreKindsProp = Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.IgnoreKinds));
+            var ignoreKindsProp = Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.IgnoreKinds);
             var ignoreKindsStr = Assert.IsType<string>(ignoreKindsProp.Value);
             Assert.Equal(ignoreKinds, ignoreKindsStr);
 
-            Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.Project));
-            Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.CheckNumber));
-            Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.AcceleratedCopyCount));
-            Assert.Single(telemetryEvent.Properties.Where(p => p.Name == TelemetryPropertyName.UpToDateCheck.AccelerationResult));
+            Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.Project);
+            Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.CheckNumber);
+            Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.AcceleratedCopyCount);
+            Assert.Single(telemetryEvent.Properties, p => p.Name == TelemetryPropertyName.UpToDateCheck.AccelerationResult);
 
             _telemetryEvents.Clear();
         }

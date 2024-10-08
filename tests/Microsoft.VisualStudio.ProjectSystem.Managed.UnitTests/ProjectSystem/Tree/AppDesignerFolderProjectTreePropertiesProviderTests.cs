@@ -689,7 +689,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
             if (folderName is not null)
                 ruleSnapshots = ruleSnapshots.Add(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, folderName);
 
-            if (contentOnlyVisibleInShowAllFiles != null)
+            if (contentOnlyVisibleInShowAllFiles is not null)
                 ruleSnapshots = ruleSnapshots.Add(AppDesigner.SchemaName, AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, contentOnlyVisibleInShowAllFiles.Value.ToString());
 
             provider.UpdateProjectTreeSettings(ruleSnapshots, ref projectTreeSettings);

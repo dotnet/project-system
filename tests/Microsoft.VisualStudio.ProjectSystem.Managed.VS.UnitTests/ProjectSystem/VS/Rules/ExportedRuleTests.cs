@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rules
                     return;
             }
 
-            Assert.True(false, $"'{GetTypeQualifiedName(member)}' must live in the PropertyPageContexts.BrowseObject context.");
+            Assert.Fail($"'{GetTypeQualifiedName(member)}' must live in the PropertyPageContexts.BrowseObject context.");
         }
 
         [Theory]
