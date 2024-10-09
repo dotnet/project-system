@@ -157,7 +157,7 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
 
             transform.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
 
-            JoinUpstreamDataSources(projectSubscriptionService.ProjectRuleSource, projectSubscriptionService.ProjectBuildRuleSource, configuredProject.Capabilities);
+            JoinUpstreamDataSources(projectSubscriptionService.ProjectBuildRuleSource, configuredProject.Capabilities);
 
             return ProjectDataSources.SyncLinkTo(
                 projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(s_buildRuleNames)),
