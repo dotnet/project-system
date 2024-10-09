@@ -9,7 +9,7 @@ internal sealed record class UnconfiguredSetupComponentSnapshot(ImmutableHashSet
 {
     public static UnconfiguredSetupComponentSnapshot Empty { get; } = new(ImmutableStringHashSet.EmptyVisualStudioSetupComponentIds);
 
-    public static bool TryUpdate(ref UnconfiguredSetupComponentSnapshot snapshot, IReadOnlyCollection<ConfiguredSetupComponentSnapshot> configuredSnapshots)
+    public static UnconfiguredSetupComponentSnapshot Update(UnconfiguredSetupComponentSnapshot snapshot, IReadOnlyCollection<ConfiguredSetupComponentSnapshot> configuredSnapshots)
     {
         ImmutableHashSet<string>.Builder? builder = null;
 
@@ -24,19 +24,17 @@ internal sealed record class UnconfiguredSetupComponentSnapshot(ImmutableHashSet
 
         if (builder is null)
         {
-            bool wasEmpty = ReferenceEquals(snapshot, Empty);
-            snapshot = Empty;
-            return !wasEmpty;
+            return Empty;
         }
 
         ImmutableHashSet<string> componentIds = builder.ToImmutable();
 
         if (snapshot is not null && componentIds.SetEquals(snapshot.ComponentIds))
         {
-            return false;
+            // Unchanged.
+            return snapshot;
         }
 
-        snapshot = new UnconfiguredSetupComponentSnapshot(componentIds);
-        return true;
+        return new(componentIds);
     }
 }
