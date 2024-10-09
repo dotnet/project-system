@@ -41,12 +41,14 @@ internal sealed class ConfiguredSetupComponentSnapshot
 
         void ProcessCapabilities()
         {
+            const string webComponentId = "Microsoft.VisualStudio.Component.Web";
+
             requiresWebComponent = RequiresWebComponent();
 
             componentIds = (requiresWebComponent, _requiresWebComponent) switch
             {
-                (true, false) => ComponentIds.Add(SetupComponentReferenceData.WebComponentId),
-                (false, true) => ComponentIds.Remove(SetupComponentReferenceData.WebComponentId),
+                (true, false) => ComponentIds.Add(webComponentId),
+                (false, true) => ComponentIds.Remove(webComponentId),
                 _ => ComponentIds
             };
 

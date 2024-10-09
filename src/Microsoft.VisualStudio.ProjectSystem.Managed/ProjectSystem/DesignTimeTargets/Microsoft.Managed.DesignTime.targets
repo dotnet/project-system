@@ -438,6 +438,19 @@
 
     <!-- Runtime pack for the current target framework version. -->
     <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp'">
+      <!--
+        Mapping from .NET Core TargetFrameworkVersion to VS Setup component ID.
+
+        Having this data in design-time targets is suboptimal. It should really be coming from the SDK.
+        We are tracking moving this in https://github.com/dotnet/project-system/issues/8186.
+        SDK work tracked in https://github.com/dotnet/sdk/issues/25575.
+
+        The source of truth for the available VS Setup components is various <c>.swr</c> files, such as:
+        https://dev.azure.com/devdiv/DevDiv/_git/VS?path=/src/SetupPackages/Group/Product/Shared/product.shared.swr
+
+        Note there are some mismatches in the below data, as VS doesn't ship installable components for all older
+        versions of .NET Core.
+      -->
       <SuggestedVisualStudioComponentId Condition="'$(TargetFrameworkVersion)' == 'v2.0'" Include="Microsoft.Net.Core.Component.SDK.2.1" /> <!-- mismatch -->
       <SuggestedVisualStudioComponentId Condition="'$(TargetFrameworkVersion)' == 'v2.1'" Include="Microsoft.Net.Core.Component.SDK.2.1" />
       <SuggestedVisualStudioComponentId Condition="'$(TargetFrameworkVersion)' == 'v2.2'" Include="Microsoft.Net.Core.Component.SDK.2.1" /> <!-- mismatch -->
