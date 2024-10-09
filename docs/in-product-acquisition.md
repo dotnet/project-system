@@ -177,3 +177,15 @@ It is possible to have M resolutions applied to N projects, where M > N. This me
 ### Global resolutions
 
 Some resolutions may be global and not a per-project thing. For example, resolving a missing .NET SDK from a `global.json` is not a per-project action.
+
+## Debugging IPA
+
+To see the set of Visual Studio setup components that a project requires, add the `DiagnoseVisualStudioComponents` project capability to your project. To do this in MSBuild, add this to your project:
+
+```xml
+<ItemGroup>
+  <ProjectCapability Include="DiagnoseVisualStudioComponents" />
+</ItemGroup>
+```
+
+This will cause Visual Studio to show the set of components the project requires in Solution Explorer, which is useful for debugging.
