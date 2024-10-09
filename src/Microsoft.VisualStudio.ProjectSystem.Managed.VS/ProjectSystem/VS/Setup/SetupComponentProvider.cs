@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 /// <remarks>
 /// Reported requirements are:
 /// <list type="bullet">
-///   <item><see cref="SuggestedWorkload"/> items from the <c>CollectSuggestedWorkloads</c> target (yay!).</item>
+///   <item><see cref="SuggestedVisualStudioComponentId"/> items from the <c>CollectSuggestedVisualStudioComponentIds</c> target (yay!).</item>
 ///   <item>Specific workloads based on project capabilities and hard-coded knowledge about project types and .NET features from <see cref="SetupComponentReferenceData"/> (boo!).</item>
 ///   <item>The .NET runtime version (for .NET Core project configurations only).</item>
 /// </list>
@@ -23,8 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 [AppliesTo(ProjectCapability.DotNet)]
 internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
 {
-    private static readonly IImmutableSet<string> s_evaluationRuleNames = ImmutableStringHashSet.EmptyRuleNames.Add(ConfigurationGeneral.SchemaName);
-    private static readonly IImmutableSet<string> s_buildRuleNames = ImmutableStringHashSet.EmptyRuleNames.Add(SuggestedWorkload.SchemaName);
+    private static readonly IImmutableSet<string> s_buildRuleNames = ImmutableStringHashSet.EmptyRuleNames.Add(SuggestedVisualStudioComponentId.SchemaName);
 
     private readonly UnconfiguredProject _unconfiguredProject;
     private readonly ISafeProjectGuidService _safeProjectGuidService;
@@ -32,7 +31,7 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
     private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
     private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
-    private readonly DisposableBag _disposables = new();
+    private readonly DisposableBag _disposables = [];
 
     private Guid _projectGuid;
 
@@ -93,7 +92,7 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
 
         _disposables.Add(joinBlock);
 
-        UnconfiguredSetupComponentSnapshot? snapshot = null;
+        var snapshot = UnconfiguredSetupComponentSnapshot.Empty;
 
         // Combine data across all configurations.
         var mergeBlock = DataflowBlockSlim.CreateTransformManyBlock<IProjectVersionedValue<IReadOnlyCollection<ConfiguredSetupComponentSnapshot>>, UnconfiguredSetupComponentSnapshot>(
@@ -140,27 +139,16 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
     }
 
     [Export(typeof(ConfiguredSetupComponentDataSource))]
-    private sealed class ConfiguredSetupComponentDataSource : ChainedProjectValueDataSourceBase<ConfiguredSetupComponentSnapshot>
+    [method: ImportingConstructor]
+    private sealed class ConfiguredSetupComponentDataSource(ConfiguredProject configuredProject, IProjectSubscriptionService projectSubscriptionService)
+        : ChainedProjectValueDataSourceBase<ConfiguredSetupComponentSnapshot>(projectService: configuredProject.UnconfiguredProject.ProjectService, synchronousDisposal: false, registerDataSource: false)
     {
-        private readonly ConfiguredProject _configuredProject;
-        private readonly IProjectSubscriptionService _projectSubscriptionService;
-
-        [ImportingConstructor]
-        public ConfiguredSetupComponentDataSource(
-            ConfiguredProject configuredProject,
-            IProjectSubscriptionService projectSubscriptionService)
-            : base(configuredProject.UnconfiguredProject.ProjectService, synchronousDisposal: false, registerDataSource: false)
-        {
-            _configuredProject = configuredProject;
-            _projectSubscriptionService = projectSubscriptionService;
-        }
-
         protected override IDisposable? LinkExternalInput(ITargetBlock<IProjectVersionedValue<ConfiguredSetupComponentSnapshot>> targetBlock)
         {
             ConfiguredSetupComponentSnapshot snapshot = ConfiguredSetupComponentSnapshot.Empty;
 
             var transform = DataflowBlockSlim.CreateTransformBlock<
-                IProjectVersionedValue<(IProjectSubscriptionUpdate EvaluationUpdate, IProjectSubscriptionUpdate BuildUpdate, IProjectCapabilitiesSnapshot Capabilities)>,
+                IProjectVersionedValue<(IProjectSubscriptionUpdate Update, IProjectCapabilitiesSnapshot Capabilities)>,
                 IProjectVersionedValue<ConfiguredSetupComponentSnapshot>>(
                     Transform,
                     nameFormat: $"{nameof(ConfiguredSetupComponentDataSource)} transform {{1}}",
@@ -169,21 +157,20 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
 
             transform.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
 
-            JoinUpstreamDataSources(_projectSubscriptionService.ProjectRuleSource, _projectSubscriptionService.ProjectBuildRuleSource, _configuredProject.Capabilities);
+            JoinUpstreamDataSources(projectSubscriptionService.ProjectRuleSource, projectSubscriptionService.ProjectBuildRuleSource, configuredProject.Capabilities);
 
             return ProjectDataSources.SyncLinkTo(
-                _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(s_evaluationRuleNames)),
-                _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(s_buildRuleNames)),
-                _configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
+                projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(s_buildRuleNames)),
+                configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
                 target: transform,
                 linkOptions: DataflowOption.PropagateCompletion);
 
-            IProjectVersionedValue<ConfiguredSetupComponentSnapshot> Transform(IProjectVersionedValue<(IProjectSubscriptionUpdate EvaluationUpdate, IProjectSubscriptionUpdate BuildUpdate, IProjectCapabilitiesSnapshot Capabilities)> update)
+            IProjectVersionedValue<ConfiguredSetupComponentSnapshot> Transform(IProjectVersionedValue<(IProjectSubscriptionUpdate Update, IProjectCapabilitiesSnapshot Capabilities)> update)
             {
                 // Apply the update. Note that this may return the same instance as before, however because
                 // we join the output of this block with that of other blocks, we must always return a value
                 // with the latest versions.
-                snapshot = snapshot.Update(update.Value.EvaluationUpdate, update.Value.BuildUpdate, update.Value.Capabilities);
+                snapshot = snapshot.Update(update.Value.Update, update.Value.Capabilities);
 
                 return new ProjectVersionedValue<ConfiguredSetupComponentSnapshot>(snapshot, update.DataSourceVersions);
             }
