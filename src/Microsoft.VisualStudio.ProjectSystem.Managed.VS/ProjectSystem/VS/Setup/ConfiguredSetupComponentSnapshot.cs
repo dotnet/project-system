@@ -1,72 +1,56 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.Text;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
 /// <summary>
-/// Immutable snapshot of the components required by a configured project.
+/// Immutable snapshot of the VS setup components required by a configured project.
 /// </summary>
 internal sealed class ConfiguredSetupComponentSnapshot
 {
-    public static ConfiguredSetupComponentSnapshot Empty { get; } = new();
+    public static ConfiguredSetupComponentSnapshot Empty { get; } = new(requiresWebComponent: false, componentIds: ImmutableStringHashSet.EmptyVisualStudioSetupComponentIds);
 
     private readonly bool _requiresWebComponent;
-    private readonly string? _netCoreTargetFrameworkVersion;
-    private readonly ImmutableHashSet<string> _suggestedWorkloadComponentIds;
 
     public ImmutableHashSet<string> ComponentIds { get; }
-    
-    public bool IsEmpty { get; }
 
-    private ConfiguredSetupComponentSnapshot()
-    {
-        _suggestedWorkloadComponentIds = ComponentIds = ImmutableStringHashSet.EmptyVisualStudioSetupComponentIds;
-        IsEmpty = true;
-    }
-    
-    private ConfiguredSetupComponentSnapshot(bool requiresWebComponent, string? netCoreTargetFrameworkVersion, ImmutableHashSet<string> suggestedWorkloadComponentIds)
+    private ConfiguredSetupComponentSnapshot(bool requiresWebComponent, ImmutableHashSet<string> componentIds)
     {
         _requiresWebComponent = requiresWebComponent;
-        _netCoreTargetFrameworkVersion = netCoreTargetFrameworkVersion;
-        _suggestedWorkloadComponentIds = suggestedWorkloadComponentIds;
-
-        ImmutableHashSet<string> componentIds = suggestedWorkloadComponentIds;
-
-        if (requiresWebComponent)
-        {
-            componentIds = componentIds.Add(SetupComponentReferenceData.WebComponentId);
-        }
-
-        if (netCoreTargetFrameworkVersion is not null && SetupComponentReferenceData.TryGetComponentIdByNetCoreTargetFrameworkVersion(netCoreTargetFrameworkVersion, out string? runtimeComponentId))
-        {
-            componentIds = componentIds.Add(runtimeComponentId);
-        }
-
         ComponentIds = componentIds;
     }
 
-    public ConfiguredSetupComponentSnapshot Update(
-        IProjectSubscriptionUpdate evaluationUpdate,
-        IProjectSubscriptionUpdate buildUpdate,
-        IProjectCapabilitiesSnapshot capabilities)
+    /// <summary>
+    /// Applies changes to the current (immutable) snapshot, producing a new snapshot.
+    /// </summary>
+    /// <returns>The updated snapshot, or the same instance if no changes were required.</returns>
+    public ConfiguredSetupComponentSnapshot Update(IProjectSubscriptionUpdate buildUpdate, IProjectCapabilitiesSnapshot capabilities)
     {
-        // We use bitwise | here instead of logical || to prevent short circuiting.
-        if (IsEmpty |
-            ProcessCapabilities(out bool requiresWebComponent) |
-            ProcessEvaluationUpdate(out string? netCoreTargetFrameworkVersion) |
-            ProcessBuildUpdate(out ImmutableHashSet<string> suggestedWorkloadComponentIds))
+        ImmutableHashSet<string> componentIds;
+
+        bool requiresWebComponent;
+
+        ProcessCapabilities();
+        ProcessBuildUpdate();
+
+        if (ReferenceEquals(componentIds, ComponentIds))
         {
-            return new(requiresWebComponent, netCoreTargetFrameworkVersion, suggestedWorkloadComponentIds);
+            return this;
         }
 
-        return this;
+        return new(requiresWebComponent, componentIds);
 
-        bool ProcessCapabilities(out bool requiresWebComponent)
+        void ProcessCapabilities()
         {
+            const string webComponentId = "Microsoft.VisualStudio.Component.Web";
+
             requiresWebComponent = RequiresWebComponent();
-            return requiresWebComponent != _requiresWebComponent;
+
+            componentIds = (requiresWebComponent, _requiresWebComponent) switch
+            {
+                (true, false) => ComponentIds.Add(webComponentId),
+                (false, true) => ComponentIds.Remove(webComponentId),
+                _ => ComponentIds
+            };
 
             bool RequiresWebComponent()
             {
@@ -79,62 +63,34 @@ internal sealed class ConfiguredSetupComponentSnapshot
             }
         }
 
-        bool ProcessEvaluationUpdate(out string? netCoreTargetFrameworkVersion)
+        void ProcessBuildUpdate()
         {
-            IProjectChangeDescription change = evaluationUpdate.ProjectChanges[ConfigurationGeneral.SchemaName];
-
-            if (change.Difference.ChangedProperties.Count == 0)
-            {
-                netCoreTargetFrameworkVersion = _netCoreTargetFrameworkVersion;
-                return false;
-            }
-
-            IImmutableDictionary<string, string> properties = change.After.Properties;
-
-            string? targetFrameworkIdentifier = properties.GetStringProperty(ConfigurationGeneral.TargetFrameworkIdentifierProperty);
-
-            netCoreTargetFrameworkVersion = StringComparers.FrameworkIdentifiers.Equals(targetFrameworkIdentifier, TargetFrameworkIdentifiers.NetCoreApp)
-                ? properties.GetStringProperty(ConfigurationGeneral.TargetFrameworkVersionProperty)
-                : null;
-            return netCoreTargetFrameworkVersion != _netCoreTargetFrameworkVersion;
-        }
-
-        bool ProcessBuildUpdate(out ImmutableHashSet<string> suggestedWorkloadComponentIds)
-        {
-            IProjectChangeDescription change = buildUpdate.ProjectChanges[SuggestedWorkload.SchemaName];
+            IProjectChangeDescription change = buildUpdate.ProjectChanges[SuggestedVisualStudioComponentId.SchemaName];
 
             if (!change.Difference.AnyChanges)
             {
-                suggestedWorkloadComponentIds = _suggestedWorkloadComponentIds;
-                return false;
+                return;
             }
 
-            IImmutableDictionary<string, IImmutableDictionary<string, string>> suggestedWorkloads = change.After.Items;
+            var builder = ComponentIds.ToBuilder();
 
-            if (suggestedWorkloads.Count == 0)
+            foreach (string addedItem in change.Difference.AddedItems)
             {
-                suggestedWorkloadComponentIds = ImmutableHashSet<string>.Empty;
-                return false;
+                builder.Add(addedItem);
             }
 
-            ImmutableHashSet<string>.Builder? componentIds = null;
-
-            foreach ((string workloadName, IImmutableDictionary<string, string> metadata) in suggestedWorkloads)
+            foreach (string removedItem in change.Difference.RemovedItems)
             {
-                if (metadata.GetStringProperty(SuggestedWorkload.VisualStudioComponentIdsProperty) is string ids)
-                {
-                    componentIds ??= ImmutableStringHashSet.EmptyVisualStudioSetupComponentIds.ToBuilder();
-                    componentIds.AddRange(new LazyStringSplit(ids, ';').Where(id => !string.IsNullOrWhiteSpace(id)).Select(id => id.Trim()));
-                }
-                else if (metadata.GetStringProperty(SuggestedWorkload.VisualStudioComponentIdProperty) is string id)
-                {
-                    componentIds ??= ImmutableStringHashSet.EmptyVisualStudioSetupComponentIds.ToBuilder();
-                    componentIds.Add(id.Trim());
-                }
+                builder.Remove(removedItem);
             }
 
-            suggestedWorkloadComponentIds = componentIds?.ToImmutable() ?? ImmutableHashSet<string>.Empty;
-            return true;
+            foreach ((string before, string after) in change.Difference.RenamedItems)
+            {
+                builder.Remove(before);
+                builder.Add(after);
+            }
+
+            componentIds = builder.ToImmutable();
         }
     }
 }

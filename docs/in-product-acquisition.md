@@ -1,4 +1,4 @@
-# In-product acquisition (IPA) for projects loaded by CPS
+# In-product acquisition (IPA)
 
 Visual Studio supports in-product acquisition (IPA) when it attempts to load a project that requires components or workloads that you are missing from your installation.
 
@@ -76,9 +76,9 @@ In the future, ASP.NET Core may be factored into a .NET SDK Workload that will b
 
 ### No xamarin workload installed, need xamarin dependencies
 
-When loading a pre-net5 Xamarin project or set of projects, IPA should trigger and offer a resolution for all relevant projects to install the .NET Mobole development VS workload.
+When loading a pre-net5 Xamarin project or set of projects, IPA should trigger and offer a resolution for all relevant projects to install the .NET Mobile development VS workload.
 
-If the workload is installed but optional Components that are needed by the project or set of projects are missing (such as the HAXM eumulator Component), then IPA should trigger and offer a resolution for all reelvant projects to install the necessary components. **Note:** use of these components may not be present in MSBuild evaluation data. It may not be possible to fully handle this sub-scenario.
+If the workload is installed but optional Components that are needed by the project or set of projects are missing (such as the HAXM emulator Component), then IPA should trigger and offer a resolution for all relevant projects to install the necessary components. **Note:** use of these components may not be present in MSBuild evaluation data. It may not be possible to fully handle this sub-scenario.
 
 A `net5` Xamarin project is designated by its TFM: `net5-ios`, `net5-android`, etc. _REDACTED_ will have another designation. This could be multi-TFM. In any case, whenever the user tries to load a project or set of projects and is missing the Xamarin workload, IPA should trigger and offer a resolution for all relevant projects to install the .NET Mobile development VS workload.
 
@@ -130,7 +130,7 @@ If a `global.json` is present and it specifies an SDK version that the user does
 
 **Note:** the SDK resolver likely needs to be involved here. For example, a user could specify `rollForward": "major"` which would most likely allow the SDK installed with VS to work with their codebase.
 
-**Open question:** What about nested `global.json`? Is one compatible with the other (thus making their specification of the nested `global.json` unecessary)? etc.
+**Open question:** What about nested `global.json`? Is one compatible with the other (thus making their specification of the nested `global.json` unnecessary)? etc.
 
 ## UX
 
@@ -172,8 +172,20 @@ TODO - this needs a mockup to be more clear
 
 There may be N projects that need a particular resolution applied to them (e.g., 50 .NET Framework projects might need a specific targeting pack). In such a scenario, we should group each project affected by a resolution together underneath that resolution.
 
-It is possible to have M resolutions applied to N projects, where M > N. This means that grouping projects under resolutions could lead to a seemingly unecessary UI. For example, a single project could require 10 different things. This would imply a UI where there are 10 different "resolution groups" with only a single project listed underneath it. This is probably fine since it's probably more likely that N > M.
+It is possible to have M resolutions applied to N projects, where M > N. This means that grouping projects under resolutions could lead to a seemingly unnecessary UI. For example, a single project could require 10 different things. This would imply a UI where there are 10 different "resolution groups" with only a single project listed underneath it. This is probably fine since it's probably more likely that N > M.
 
 ### Global resolutions
 
 Some resolutions may be global and not a per-project thing. For example, resolving a missing .NET SDK from a `global.json` is not a per-project action.
+
+## Debugging IPA
+
+To see the set of Visual Studio setup components that a project requires, add the `DiagnoseVisualStudioComponents` project capability to your project. To do this in MSBuild, add this to your project:
+
+```xml
+<ItemGroup>
+  <ProjectCapability Include="DiagnoseVisualStudioComponents" />
+</ItemGroup>
+```
+
+This will cause Visual Studio to show the set of components the project requires in Solution Explorer, which is useful for debugging.
