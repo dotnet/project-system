@@ -449,7 +449,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             }
         }
 
-        private class HotReloadState : IProjectHotReloadSessionCallback
+        internal class HotReloadState : IProjectHotReloadSessionCallback
         {
             private readonly ProjectHotReloadSessionManager _sessionManager;
 

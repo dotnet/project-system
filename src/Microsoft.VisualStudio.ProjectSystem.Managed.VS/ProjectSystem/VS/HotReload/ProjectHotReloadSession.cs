@@ -2,10 +2,11 @@
 
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
+using static Microsoft.VisualStudio.ProjectSystem.VS.HotReload.ProjectHotReloadSessionManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
-    internal class ProjectHotReloadSession : IManagedHotReloadAgent, IProjectHotReloadSession, IProjectHotReloadSessionInternal
+    internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotReloadAgent2, IProjectHotReloadSession, IProjectHotReloadSessionInternal
     {
         private readonly string _variant;
         private readonly string _runtimeVersion;
@@ -287,6 +288,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 _deltaApplier = _callback.GetDeltaApplier()
                     ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(_runtimeVersion);
             }
+        }
+
+        public ValueTask<int?> GetTargetLocalProcessIdAsync(CancellationToken cancellationToken)
+        {
+            if (_callback is HotReloadState hotReloadState)
+            {
+                return new ValueTask<int?>(hotReloadState.Process?.Id);
+            }
+
+            return new ValueTask<int?>();
         }
     }
 }
