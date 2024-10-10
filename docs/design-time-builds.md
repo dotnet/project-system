@@ -27,7 +27,7 @@ CollectPackageDownloads                        | NuGet      | Returns `PackageDo
 CollectPackageReferences                       | NuGet      | Returns `PackageReference` items. Supports package restore.
 CollectResolvedCompilationReferencesDesignTime | DNPS       |
 CollectResolvedSDKReferencesDesignTime         | SDK        |
-SuggestedVisualStudioComponentIds              | DNPS       | Supports in-product acquisition (IPA).
+CollectSuggestedVisualStudioComponentIds       | DNPS       | Supports in-product acquisition (IPA).
 CollectUpToDateCheckBuiltDesignTime            | DNPS       | Supports the Fast Up-to-date Check.
 CollectUpToDateCheckInputDesignTime            | DNPS       | Supports the Fast Up-to-date Check.
 CollectUpToDateCheckOutputDesignTime           | DNPS       | Supports the Fast Up-to-date Check.
