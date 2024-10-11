@@ -459,9 +459,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             // TODO: Support restarting the session.
             public bool SupportsRestart => false;
 
+            public UnconfiguredProject? Project { get; }
+
             public HotReloadState(ProjectHotReloadSessionManager sessionManager)
             {
                 _sessionManager = sessionManager;
+                Project = _sessionManager._project;
             }
 
             internal void OnProcessExited(object sender, EventArgs e)

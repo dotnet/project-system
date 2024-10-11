@@ -299,5 +299,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             return new ValueTask<int?>();
         }
+
+        public ValueTask<string?> GetProjectFullPathAsync(CancellationToken cancellationToken)
+        {
+            if (_callback is HotReloadState hrs)
+            {
+                return new ValueTask<string?>(hrs.Project?.FullPath);
+            }
+
+            return new ValueTask<string?>();
+        }
     }
 }
