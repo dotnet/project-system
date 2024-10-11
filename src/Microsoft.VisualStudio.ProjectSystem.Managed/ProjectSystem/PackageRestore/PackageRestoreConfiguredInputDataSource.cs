@@ -12,6 +12,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     /// </summary>
     [Export(typeof(IPackageRestoreConfiguredInputDataSource))]
     [AppliesTo(ProjectCapability.PackageReferences)]
+    [ExportRequiredDesignTimeBuildRules([
+        CollectedFrameworkReference.SchemaName,
+        CollectedPackageDownload.SchemaName,
+        CollectedPackageVersion.SchemaName,
+        CollectedNuGetAuditSuppressions.SchemaName,
+        CollectedPackageReference.SchemaName])]
     internal class PackageRestoreConfiguredInputDataSource : ChainedProjectValueDataSourceBase<PackageRestoreConfiguredInput>, IPackageRestoreConfiguredInputDataSource
     {
         private static readonly ImmutableHashSet<string> s_rules = Empty.OrdinalIgnoreCaseStringSet

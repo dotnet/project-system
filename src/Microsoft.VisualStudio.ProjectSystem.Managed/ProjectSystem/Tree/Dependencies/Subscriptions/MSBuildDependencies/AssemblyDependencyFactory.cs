@@ -7,6 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.M
 
 [Export(typeof(IMSBuildDependencyFactory))]
 [AppliesTo(ProjectCapability.DependenciesTree + " & (" + ProjectCapabilities.AssemblyReferences + " | " + ProjectCapabilities.WinRTReferences + ")")]
+[ExportRequiredDesignTimeBuildRules(ResolvedAssemblyReference.SchemaName)]
 internal sealed class AssemblyDependencyFactory : MSBuildDependencyFactoryBase
 {
     private static readonly DependencyFlagCache s_flagCache = new(
