@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="it" original="../PropertyPageResources.resx">
+    <body>
+      <trans-unit id="ApplicationPage_Description">
+        <source>Specifies the project's application settings and properties.</source>
+        <target state="new">Specifies the project's application settings and properties.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_DisplayName">
+        <source>Application</source>
+        <target state="new">Application</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_GeneralCategory_Description">
+        <source>General settings for the application.</source>
+        <target state="new">General settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_GeneralCategory_DisplayName">
+        <source>General</source>
+        <target state="new">General</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_InstallOtherFrameworksProperty_DisplayName">
+        <source>Install other frameworks</source>
+        <target state="new">Install other frameworks</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_InterceptedTargetFrameworkProperty_Description">
+        <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
+        <target state="new">Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_InterceptedTargetFrameworkProperty_DisplayName">
+        <source>Target framework</source>
+        <target state="new">Target framework</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_InterceptedTargetFrameworkProperty_SearchTerms">
+        <source>TFM</source>
+        <target state="new">TFM</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_OutputTypeProperty_Description">
+        <source>Specifies the type of application to build.</source>
+        <target state="new">Specifies the type of application to build.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_OutputTypeProperty_DisplayName">
+        <source>Output type</source>
+        <target state="new">Output type</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_OutputTypeProperty_ExeValue_DisplayName">
+        <source>ConsoleApplication</source>
+        <target state="new">ConsoleApplication</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_OutputTypeProperty_LibraryValue_DisplayName">
+        <source>Class Library</source>
+        <target state="new">Class Library</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_OutputTypeProperty_WinExeValue_DisplayName">
+        <source>WindowsApplication</source>
+        <target state="new">WindowsApplication</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_PackagingCategory_Description">
+        <source>Packaging settings for the application.</source>
+        <target state="new">Packaging settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_PackagingCategory_DisplayName">
+        <source>Packaging</source>
+        <target state="new">Packaging</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_ResourcesCategory_Description">
+        <source>Resource settings for the application.</source>
+        <target state="new">Resource settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_ResourcesCategory_DisplayName">
+        <source>Win32 Resources</source>
+        <target state="new">Win32 Resources</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_TargetFrameworksProperty_Description">
+        <source>Specifies the semicolon-delimited list of frameworks that this project will target.</source>
+        <target state="new">Specifies the semicolon-delimited list of frameworks that this project will target.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_TargetFrameworksProperty_DisplayName">
+        <source>Target frameworks</source>
+        <target state="new">Target frameworks</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_TargetFrameworksProperty_SearchTerms">
+        <source>TFM</source>
+        <target state="new">TFM</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_TargetMultipleFrameworksProperty_Description">
+        <source>Build this project for multiple target frameworks.</source>
+        <target state="new">Build this project for multiple target frameworks.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_TargetMultipleFrameworksProperty_DisplayName">
+        <source>Target multiple frameworks</source>
+        <target state="new">Target multiple frameworks</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_TargetPlatformIdentifierProperty_Description">
+        <source>Specifies the operating system that this project will target.</source>
+        <target state="new">Specifies the operating system that this project will target.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_TargetPlatformIdentifierProperty_DisplayName">
+        <source>Target OS</source>
+        <target state="new">Target OS</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_TargetPlatformIdentifierProperty_SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_TargetPlatformVersionProperty_Description">
+        <source>Specifies the version of the operating system this project will target.</source>
+        <target state="new">Specifies the version of the operating system this project will target.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_TargetPlatformVersionProperty_DisplayName">
+        <source>Target OS version</source>
+        <target state="new">Target OS version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationPage_TargetPlatformVersionProperty_SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
