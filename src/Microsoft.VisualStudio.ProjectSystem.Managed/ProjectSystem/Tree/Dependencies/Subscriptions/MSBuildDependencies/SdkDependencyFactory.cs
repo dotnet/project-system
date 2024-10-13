@@ -7,7 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.M
 
 [Export(typeof(IMSBuildDependencyFactory))]
 [AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.SdkReferences)]
-[ExportRequiredDesignTimeBuildRules(ResolvedSdkReference.SchemaName)]
 internal class SdkDependencyFactory : MSBuildDependencyFactoryBase
 {
     private static readonly DependencyFlagCache s_flagCache = new(

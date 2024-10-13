@@ -5,7 +5,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.M
 [Export(typeof(IMSBuildDependencyFactory))]
 // There's no "AnalyzerReferences" capability, and F# doesn't have analyzers
 [AppliesTo(ProjectCapability.DependenciesTree + " & (" + ProjectCapability.CSharp + " | " + ProjectCapability.VisualBasic + ")")]
-[ExportRequiredDesignTimeBuildRules(ResolvedAnalyzerReference.SchemaName)]
 internal sealed class AnalyzerDependencyFactory : MSBuildDependencyFactoryBase
 {
     // NOTE we include ProjectTreeFlags.FileSystemEntity here so that Roslyn can correctly identify the

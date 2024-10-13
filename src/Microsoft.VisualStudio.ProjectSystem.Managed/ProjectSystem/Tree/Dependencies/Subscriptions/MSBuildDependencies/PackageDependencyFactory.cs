@@ -6,7 +6,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.M
 {
     [Export(typeof(IMSBuildDependencyFactory))]
     [AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.PackageReferences)]
-    [ExportRequiredDesignTimeBuildRules(ResolvedPackageReference.SchemaName)]
     internal sealed class PackageDependencyFactory : MSBuildDependencyFactoryBase
     {
         private static readonly DependencyFlagCache s_flagCache = new(

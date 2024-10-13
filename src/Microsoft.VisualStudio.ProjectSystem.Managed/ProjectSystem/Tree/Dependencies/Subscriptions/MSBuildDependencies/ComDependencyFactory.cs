@@ -4,7 +4,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.M
 
 [Export(typeof(IMSBuildDependencyFactory))]
 [AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.ComReferences)]
-[ExportRequiredDesignTimeBuildRules(ResolvedCOMReference.SchemaName)]
 internal sealed class ComDependencyFactory : MSBuildDependencyFactoryBase
 {
     private static readonly DependencyFlagCache s_flagCache = new(
