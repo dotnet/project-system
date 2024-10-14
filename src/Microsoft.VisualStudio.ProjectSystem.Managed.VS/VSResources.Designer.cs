@@ -484,6 +484,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checking for existence of expected output reference assembly:.
+        /// </summary>
+        internal static string FUTD_CheckingProducedReferenceAssemblyExists_1 {
+            get {
+                return ResourceManager.GetString("FUTD_CheckingProducedReferenceAssemblyExists_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comparing timestamps of copy marker inputs and output:.
         /// </summary>
         internal static string FUTD_ComparingCopyMarkerTimestamps {
@@ -759,6 +768,24 @@ namespace Microsoft.VisualStudio {
         internal static string FUTD_OutputDoesNotExist_1 {
             get {
                 return ResourceManager.GetString("FUTD_OutputDoesNotExist_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output reference assembly &apos;{0}&apos; not found, not up-to-date..
+        /// </summary>
+        internal static string FUTD_OutputReferenceAssemblyNotFound_1 {
+            get {
+                return ResourceManager.GetString("FUTD_OutputReferenceAssemblyNotFound_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output reference assembly &apos;{0}&apos; found, with timestamp {1}..
+        /// </summary>
+        internal static string FUTD_ReferenceAssemblyTimeAndPath_2 {
+            get {
+                return ResourceManager.GetString("FUTD_ReferenceAssemblyTimeAndPath_2", resourceCulture);
             }
         }
         

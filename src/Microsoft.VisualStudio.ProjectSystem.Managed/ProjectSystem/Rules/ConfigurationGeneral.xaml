@@ -314,6 +314,9 @@
   <StringProperty Name="TargetPath"
                   Visible="False" />
 
+  <StringProperty Name="TargetRefPath"
+                  Visible="False" />
+
   <StringProperty Name="TargetPlatformIdentifier"
                   Visible="False" />
 

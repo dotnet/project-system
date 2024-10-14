@@ -324,6 +324,17 @@ In order to debug this project, add an executable project to this solution which
   <data name="FUTD_ComparingCopyMarkerTimestamps" xml:space="preserve">
     <value>Comparing timestamps of copy marker inputs and output:</value>
   </data>
+  <data name="FUTD_CheckingProducedReferenceAssemblyExists_1" xml:space="preserve">
+    <value>Checking for existence of expected output reference assembly:</value>
+  </data>
+  <data name="FUTD_OutputReferenceAssemblyNotFound_1" xml:space="preserve">
+    <value>Output reference assembly '{0}' not found, not up-to-date.</value>
+    <comment>{0} is an absolute file path.</comment>
+  </data>
+  <data name="FUTD_ReferenceAssemblyTimeAndPath_2" xml:space="preserve">
+    <value>Output reference assembly '{0}' found, with timestamp {1}.</value>
+    <comment>{0} is an absolute file path. {1} is a datetime.</comment>
+  </data>
   <data name="FUTD_SetOfItemsChangedMoreRecentlyThanOutput_2" xml:space="preserve">
     <value>The set of project items was changed more recently ({0}) than the last successful build start time ({1}), not up-to-date.</value>
     <comment>{0} and {1} are datetimes.</comment>
