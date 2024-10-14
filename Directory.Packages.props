@@ -5,6 +5,7 @@
 
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <VSDebuggerVersion>17.12.0-dev</VSDebuggerVersion>
   </PropertyGroup>
 
   <!--
@@ -48,8 +49,8 @@
     <PackageVersion Include="Microsoft.VisualStudio.Data.Services"                                   Version="17.0.0-preview-2-31223-026" />
     <PackageVersion Include="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026" />
     <PackageVersion Include="Microsoft.VisualStudio.DataTools.Interop"                               Version="17.0.0-preview-2-31223-026" />
-    <PackageVersion Include="Microsoft.VisualStudio.Debugger.Contracts"                              Version="17.4.0-beta.22470.1" />
-    <PackageVersion Include="Microsoft.VisualStudio.Debugger.UI.Interfaces"                          Version="17.4.0-beta.22470.1" />
+    <PackageVersion Include="Microsoft.VisualStudio.Debugger.Contracts"                              Version="$(VSDebuggerVersion)" />
+    <PackageVersion Include="Microsoft.VisualStudio.Debugger.UI.Interfaces"                          Version="$(VSDebuggerVersion)" />
     <PackageVersion Include="Microsoft.VisualStudio.Designer.Interfaces"                             Version="17.11.38822-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.ImageCatalog"                                    Version="17.11.38822-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Interop"                                         Version="17.11.38822-preview.1" />
