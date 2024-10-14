@@ -7,7 +7,7 @@ using static Microsoft.VisualStudio.ProjectSystem.VS.HotReload.ProjectHotReloadS
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
-    internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotReloadAgent2, IManagedHotReloadAgent3, IManagedHotReloadAgent4, IProjectHotReloadSession, IProjectHotReloadSessionInternal
+    internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotReloadAgent2, IManagedHotReloadAgent4, IProjectHotReloadSession, IProjectHotReloadSessionInternal
     {
         private readonly string _variant;
         private readonly string _runtimeVersion;
@@ -309,11 +309,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             }
 
             return new ValueTask<string?>();
-        }
-
-        public ValueTask<ManagedEditAndContinueProcessInfo> GetProcessInformationAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
         }
     }
 }
