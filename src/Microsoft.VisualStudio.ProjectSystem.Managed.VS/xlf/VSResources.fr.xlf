@@ -30,6 +30,21 @@
         <target state="translated">L’accélération de build n’est pas disponible pour ce projet, car il copie les fichiers dupliqués dans le répertoire de sortie : {0}</target>
         <note>{0} is a list of one or more relative file paths.</note>
       </trans-unit>
+      <trans-unit id="FUTD_CheckingProducedReferenceAssemblyExists_1">
+        <source>Checking for existence of expected output reference assembly:</source>
+        <target state="new">Checking for existence of expected output reference assembly:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FUTD_OutputReferenceAssemblyNotFound_1">
+        <source>Output reference assembly '{0}' not found, not up-to-date.</source>
+        <target state="new">Output reference assembly '{0}' not found, not up-to-date.</target>
+        <note>{0} is an absolute file path.</note>
+      </trans-unit>
+      <trans-unit id="FUTD_ReferenceAssemblyTimeAndPath_2">
+        <source>Output reference assembly '{0}' found, with timestamp {1}.</source>
+        <target state="new">Output reference assembly '{0}' found, with timestamp {1}.</target>
+        <note>{0} is an absolute file path. {1} is a datetime.</note>
+      </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
         <source>The name of the framework assembly.</source>
         <target state="translated">Nom de l'assembly de framework.</target>

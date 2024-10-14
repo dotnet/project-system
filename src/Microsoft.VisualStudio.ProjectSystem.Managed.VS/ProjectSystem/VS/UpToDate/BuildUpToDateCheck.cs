@@ -222,6 +222,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 }
             }
 
+            // If the project produces a reference assembly, validate that it's present on disk.
+            string? referenceAssemblyPath = state.ProjectCopyData.TargetRefPath;
+
+            if (state.ProjectCopyData.ProduceReferenceAssembly && referenceAssemblyPath is not null)
+            {
+                log.Verbose(nameof(VSResources.FUTD_CheckingProducedReferenceAssemblyExists_1), referenceAssemblyPath);
+                DateTime? referenceAssemblyTime = timestampCache.GetTimestampUtc(referenceAssemblyPath);
+
+                if (referenceAssemblyTime is null)
+                {
+                    return log.Fail("OutputReferenceAssemblyNotFound", nameof(VSResources.FUTD_OutputReferenceAssemblyNotFound_1), referenceAssemblyPath);
+                }
+                
+                using Log.Scope _ = log.IndentScope();
+                log.Verbose(nameof(VSResources.FUTD_ReferenceAssemblyTimeAndPath_2), referenceAssemblyPath, referenceAssemblyTime);
+            }
+
             // Validation passed
             return true;
 

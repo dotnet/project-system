@@ -245,7 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             CopyReferenceInputs = ImmutableArray<string>.Empty;
             PresentBuildAccelerationIncompatiblePackages = ImmutableArray<string>.Empty;
             LastItemChanges = ImmutableArray<(bool IsAdd, string ItemType, string)>.Empty;
-            ProjectCopyData = new(null, "", false, ImmutableArray<CopyItem>.Empty, ImmutableArray<string>.Empty);
+            ProjectCopyData = new(null, "", null, false, ImmutableArray<CopyItem>.Empty, ImmutableArray<string>.Empty);
         }
 
         private UpToDateCheckImplicitConfiguredInput(
@@ -694,7 +694,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                         bool produceReferenceAssembly = change3.After.Properties.GetBoolProperty(ConfigurationGeneral.ProduceReferenceAssemblyProperty) ?? false;
 
-                        return new ProjectCopyData(msBuildProjectFullPath, targetPath, produceReferenceAssembly, copyItems, referenceItems);
+                        change3.After.Properties.TryGetStringProperty(ConfigurationGeneral.TargetRefPathProperty, out string? targetRefPath);
+
+                        return new ProjectCopyData(msBuildProjectFullPath, targetPath, targetRefPath, produceReferenceAssembly, copyItems, referenceItems);
                     }
                 }
 

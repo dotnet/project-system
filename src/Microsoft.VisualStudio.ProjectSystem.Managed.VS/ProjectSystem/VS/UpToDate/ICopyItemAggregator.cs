@@ -70,12 +70,14 @@ internal record struct CopyItemsResult(
 /// </summary>
 /// <param name="ProjectFullPath">The full path to the project file (e.g. the <c>.csproj</c> file).</param>
 /// <param name="TargetPath">The full path to the target file (e.g. a <c>.dll</c> file), which should be unique to the configuration.</param>
+/// <param name="TargetRefPath">The full path to the target reference assembly file (e.g. a <c>.dll</c> file), which should be unique to the configuration. <see langword="null"/> if the project doesn't produce a reference assembly.</param>
 /// <param name="ProduceReferenceAssembly">Whether this project produces a reference assembly or not, determined by the <c>ProduceReferenceAssembly</c> MSBuild property.</param>
 /// <param name="CopyItems">The set of items the project provider to the output directory of itself and other projects.</param>
 /// <param name="ReferencedProjectTargetPaths">The target paths resolved from this project's references to other projects.</param>
 internal record struct ProjectCopyData(
     string? ProjectFullPath,
     string TargetPath,
+    string? TargetRefPath,
     bool ProduceReferenceAssembly,
     ImmutableArray<CopyItem> CopyItems,
     ImmutableArray<string> ReferencedProjectTargetPaths)
