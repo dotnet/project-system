@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     /// <inheritdoc cref="IUpToDateCheckImplicitConfiguredInputDataSource" />
     [Export(typeof(IUpToDateCheckImplicitConfiguredInputDataSource))]
     [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
-    [ExportRequiredDesignTimeBuildRules([
+    [ExportInitialBuildRulesSubscriptions([
         ResolvedAnalyzerReference.SchemaName,
         ResolvedCompilationReference.SchemaName,
         ResolvedProjectReference.SchemaName,

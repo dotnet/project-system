@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 /// </remarks>
 [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
 [AppliesTo(ProjectCapability.DotNet)]
-[ExportRequiredDesignTimeBuildRules(SuggestedWorkload.SchemaName)]
+[ExportInitialBuildRulesSubscriptions(SuggestedWorkload.SchemaName)]
 internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
 {
     private static readonly IImmutableSet<string> s_evaluationRuleNames = ImmutableStringHashSet.EmptyRuleNames.Add(ConfigurationGeneral.SchemaName);

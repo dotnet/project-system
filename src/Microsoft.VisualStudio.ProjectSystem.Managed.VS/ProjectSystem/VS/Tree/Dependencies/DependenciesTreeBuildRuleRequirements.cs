@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 /// <item>In VS Code (which uses the shared layer) the tree is loaded lazily, and we don't want these targets included in the first design-time build.</item>
 /// </list>
 /// </remarks>
-[ExportRequiredDesignTimeBuildRules([
+[ExportInitialBuildRulesSubscriptions([
     ResolvedAnalyzerReference.SchemaName,
     ResolvedAssemblyReference.SchemaName,
     ResolvedCOMReference.SchemaName,

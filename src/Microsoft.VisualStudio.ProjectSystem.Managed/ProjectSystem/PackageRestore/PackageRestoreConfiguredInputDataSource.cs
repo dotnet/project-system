@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     /// </summary>
     [Export(typeof(IPackageRestoreConfiguredInputDataSource))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    [ExportRequiredDesignTimeBuildRules([
+    [ExportInitialBuildRulesSubscriptions([
         CollectedFrameworkReference.SchemaName,
         CollectedPackageDownload.SchemaName,
         CollectedPackageVersion.SchemaName,
