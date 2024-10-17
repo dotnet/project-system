@@ -5,9 +5,11 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.MSBuildDependencies
 {
     [Export(typeof(IMSBuildDependencyFactory))]
-    [AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.PackageReferences)]
+    [AppliesTo(AppliesTo)]
     internal sealed class PackageDependencyFactory : MSBuildDependencyFactoryBase
     {
+        public const string AppliesTo = ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.PackageReferences;
+
         private static readonly DependencyFlagCache s_flagCache = new(
             resolved: DependencyTreeFlags.PackageDependency + DependencyTreeFlags.SupportsFolderBrowse,
             unresolved: DependencyTreeFlags.PackageDependency);
