@@ -16,8 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 [ExportInitialBuildRulesSubscriptions(CompilerCommandLineArgs.SchemaName)]
 internal class WorkspaceFactory : IWorkspaceFactory
 {
-    private const string ProjectBuildRuleName = CompilerCommandLineArgs.SchemaName;
-
     private readonly UnconfiguredProject _unconfiguredProject;
     private readonly IProjectService _projectService;
     private readonly IProjectThreadingService _threadingService;
@@ -143,7 +141,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
         {
             ProjectDataSources.SyncLinkTo(
                 source.ActiveConfiguredProjectSource.SourceBlock.SyncLinkOptions(),
-                source.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectBuildRuleName)),
+                source.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(CompilerCommandLineArgs.SchemaName)),
                 target: buildTransformBlock,
                 linkOptions: DataflowOption.PropagateCompletion,
                 cancellationToken: cancellationToken),
