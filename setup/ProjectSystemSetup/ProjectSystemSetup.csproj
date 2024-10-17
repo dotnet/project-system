@@ -15,7 +15,7 @@
     <!-- Note: No idea why ProjectSystem is the AssemblyName instead of using the MSBuildProjectName of ProjectSystemSetup. -->
     <AssemblyName>ProjectSystem</AssemblyName>
     <TargetFramework>net472</TargetFramework>
-
+    <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
     <!-- VSIX -->
     <ExtensionInstallationRoot>Extensions</ExtensionInstallationRoot>
     <ExtensionInstallationFolder>Microsoft\ManagedProjectSystem</ExtensionInstallationFolder>

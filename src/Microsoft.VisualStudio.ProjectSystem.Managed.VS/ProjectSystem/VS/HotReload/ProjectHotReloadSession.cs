@@ -1,11 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Debugger.Contracts.EditAndContinue;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
+using Microsoft.VisualStudio.ProjectSystem.VS.Build;
+using static Microsoft.VisualStudio.ProjectSystem.VS.HotReload.ProjectHotReloadSessionManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
-    internal class ProjectHotReloadSession : IManagedHotReloadAgent, IProjectHotReloadSession, IProjectHotReloadSessionInternal
+    internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotReloadAgent2, IManagedHotReloadAgent4, IProjectHotReloadSession, IProjectHotReloadSessionInternal
     {
         private readonly string _variant;
         private readonly string _runtimeVersion;
@@ -13,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
         private readonly Lazy<IManagedDeltaApplierCreator> _deltaApplierCreator;
         private readonly IProjectHotReloadSessionCallback _callback;
+        private readonly Lazy<ISolutionBuildManager> _solutionBuildManager;
 
         private bool _sessionActive;
         private IDeltaApplier? _deltaApplier;
@@ -24,7 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
             Lazy<IHotReloadDiagnosticOutputService> hotReloadOutputService,
             Lazy<IManagedDeltaApplierCreator> deltaApplierCreator,
-            IProjectHotReloadSessionCallback callback)
+            IProjectHotReloadSessionCallback callback,
+            Lazy<ISolutionBuildManager> solutionBuildManager)
         {
             Name = name;
             _variant = variant.ToString();
@@ -33,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _hotReloadOutputService = hotReloadOutputService;
             _deltaApplierCreator = deltaApplierCreator;
             _callback = callback;
+            _solutionBuildManager = solutionBuildManager;
         }
 
         // IProjectHotReloadSession
@@ -287,6 +293,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 _deltaApplier = _callback.GetDeltaApplier()
                     ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(_runtimeVersion);
             }
+        }
+
+        public ValueTask<int?> GetTargetLocalProcessIdAsync(CancellationToken cancellationToken)
+        {
+            if (_callback is HotReloadState hotReloadState)
+            {
+                return new ValueTask<int?>(hotReloadState.Process?.Id);
+            }
+
+            return new ValueTask<int?>();
+        }
+
+        public ValueTask<string?> GetProjectFullPathAsync(CancellationToken cancellationToken)
+        {
+            if (_callback is HotReloadState hrs)
+            {
+                return new ValueTask<string?>(hrs.Project?.FullPath);
+            }
+
+            return new ValueTask<string?>();
         }
     }
 }

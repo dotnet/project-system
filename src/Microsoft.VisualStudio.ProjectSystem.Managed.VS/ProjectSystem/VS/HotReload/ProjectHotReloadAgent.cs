@@ -2,6 +2,7 @@
 
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
+using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
@@ -11,16 +12,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
         private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
         private readonly Lazy<IManagedDeltaApplierCreator> _managedDeltaApplierCreator;
+        private readonly Lazy<ISolutionBuildManager> _solutionBuildManager;
 
         [ImportingConstructor]
         public ProjectHotReloadAgent(
             Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
             Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
-            Lazy<IManagedDeltaApplierCreator> managedDeltaApplierCreator)
+            Lazy<IManagedDeltaApplierCreator> managedDeltaApplierCreator,
+            Lazy<ISolutionBuildManager> solutionBuildManager)
         {
             _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
             _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
             _managedDeltaApplierCreator = managedDeltaApplierCreator;
+            _solutionBuildManager = solutionBuildManager;
         }
 
         public IProjectHotReloadSession? CreateHotReloadSession(string id, int variant, string runtimeVersion, IProjectHotReloadSessionCallback callback)
@@ -32,7 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 _hotReloadAgentManagerClient,
                 _hotReloadDiagnosticOutputService,
                 _managedDeltaApplierCreator,
-                callback);
+                callback,
+                _solutionBuildManager);
         }
 
         public IProjectHotReloadSession? CreateHotReloadSession(string id, string runtimeVersion, IProjectHotReloadSessionCallback callback)
