@@ -13,7 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 /// keep such instances updated over time as project data changes.
 /// </summary>
 [Export(typeof(IWorkspaceFactory))]
-[ExportInitialBuildRulesSubscriptions(CompilerCommandLineArgs.SchemaName)]
 internal class WorkspaceFactory : IWorkspaceFactory
 {
     private readonly UnconfiguredProject _unconfiguredProject;

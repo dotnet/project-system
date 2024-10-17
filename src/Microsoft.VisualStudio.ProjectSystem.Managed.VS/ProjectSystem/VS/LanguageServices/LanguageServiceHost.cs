@@ -32,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 /// </remarks>
 [Export(typeof(IWorkspaceWriter))]
 [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
+[ExportInitialBuildRulesSubscriptions(CompilerCommandLineArgs.SchemaName)]
 [AppliesTo(ProjectCapability.DotNetLanguageService)]
 internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent, IWorkspaceWriter
 {
