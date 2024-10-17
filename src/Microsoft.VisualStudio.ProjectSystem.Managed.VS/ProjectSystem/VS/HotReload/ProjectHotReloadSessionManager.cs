@@ -385,9 +385,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             // Any dependent projects will just do a normal build
             buildFlags[0] = VSConstants.VS_BUILDABLEPROJECTCFGOPTS_PACKAGE;
 
-            _solutionBuildManager.Value.StartUpdateSpecificProjectConfigurations(projects.ToArray(), buildFlags, dwFlags);
-            
-            return true;
+            //_solutionBuildManager.Value.StartUpdateSpecificProjectConfigurations(projects.ToArray(), buildFlags, dwFlags);
+            _solutionBuildManager.Value.SetStartupProject(projectVsHierarchy);
+            var result = _solutionBuildManager.Value.DebugLaunch((uint)__VSDBGLAUNCHFLAGS.DBGLAUNCH_NoDebug);
+
+            return result == HResult.OK;
         }
 
         private static Task OnAfterChangesAppliedAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)

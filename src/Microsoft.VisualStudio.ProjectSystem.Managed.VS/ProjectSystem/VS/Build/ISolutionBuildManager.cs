@@ -28,6 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         IVsHierarchy[] GetProjectDependencies(IVsHierarchy hierarchy);
 
+        int SetStartupProject(IVsHierarchy hierarchy);
+
+        int DebugLaunch(uint grfLaunch);
+
         void StartUpdateSpecificProjectConfigurations(IVsHierarchy[] hierarchy, uint[] buildFlags, uint dwFlags);
     }
 }
