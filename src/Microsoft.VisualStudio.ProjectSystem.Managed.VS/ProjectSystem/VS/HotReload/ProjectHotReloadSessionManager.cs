@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.VS.Build;
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
@@ -19,6 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly Lazy<IProjectHotReloadAgent> _projectHotReloadAgent;
         private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
         private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
+        private readonly Lazy<ISolutionBuildManager> _solutionBuildManager;
+        private readonly IProjectThreadingService _projectThreadingService;
 
         // Protect the state from concurrent access. For example, our Process.Exited event
         // handler may run on one thread while we're still setting up the session on
@@ -39,15 +43,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             IActiveDebugFrameworkServices activeDebugFrameworkServices,
             Lazy<IProjectHotReloadAgent> projectHotReloadAgent,
             Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
-            Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService)
+            Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
+            Lazy<ISolutionBuildManager> solutionBuilderManager)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
+            _projectThreadingService = threadingService;
             _projectFaultHandlerService = projectFaultHandlerService;
             _activeDebugFrameworkServices = activeDebugFrameworkServices;
             _projectHotReloadAgent = projectHotReloadAgent;
             _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
             _projectHotReloadNotificationService = projectHotReloadNotificationService;
+            _solutionBuildManager = solutionBuilderManager;
 
             _semaphore = ReentrantSemaphore.Create(
                 initialCount: 1,
@@ -352,10 +359,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             return null;
         }
 
-        private static Task<bool> RestartProjectAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
+        private async Task<bool> RestartProjectAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
         {
             // TODO: Support restarting the project.
-            return TaskResult.False;
+            Assumes.NotNull(_project.Services.HostObject);
+            await _projectThreadingService.SwitchToUIThread();
+
+            var projectVsHierarchy = (IVsHierarchy)_project.Services.HostObject;
+            _solutionBuildManager.Value.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, docCookie: 0);
+            // We need to make sure dependencies are built so they can go into the package
+            _solutionBuildManager.Value.CalculateProjectDependencies();
+
+            // Assembly our list of projects to build
+            var projects = new List<IVsHierarchy>
+                {
+                    projectVsHierarchy
+                };
+
+            projects.AddRange(_solutionBuildManager.Value.GetProjectDependencies(projectVsHierarchy));
+
+            uint dwFlags = (uint)(VSSOLNBUILDUPDATEFLAGS.SBF_SUPPRESS_SAVEBEFOREBUILD_QUERY | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD);
+
+            uint[] buildFlags = new uint[projects.Count];
+            // We tell the Solution Build Manager to Package our project, which will call the Pack target, which will build if necessary.
+            // Any dependent projects will just do a normal build
+            buildFlags[0] = VSConstants.VS_BUILDABLEPROJECTCFGOPTS_PACKAGE;
+
+            _solutionBuildManager.Value.StartUpdateSpecificProjectConfigurations(projects.ToArray(), buildFlags, dwFlags);
+            
+            return true;
         }
 
         private static Task OnAfterChangesAppliedAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
@@ -457,7 +489,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             public IProjectHotReloadSession? Session { get; set; }
 
             // TODO: Support restarting the session.
-            public bool SupportsRestart => false;
+            public bool SupportsRestart => true;
 
             public UnconfiguredProject? Project { get; }
 
@@ -484,7 +516,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
             {
-                return ProjectHotReloadSessionManager.RestartProjectAsync(this, cancellationToken);
+                return _sessionManager.RestartProjectAsync(this, cancellationToken);
             }
 
             public IDeltaApplier? GetDeltaApplier()
