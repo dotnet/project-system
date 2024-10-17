@@ -426,14 +426,55 @@
        _after_ this file, and will override this implementation with the real one (when present).
        This can (and should) be removed when we no longer need to support SDKs older than 8.0.400. -->
   <Target Name="CollectNuGetAuditSuppressions" Returns="@(NuGetAuditSuppress)" />
-  
-  <!-- This target is used to collect the SuggestedWorkload items in the project.-->
-  <Target Name="CollectSuggestedWorkloads"
-          Returns="@(SuggestedWorkload)"
-          DependsOnTargets="GetSuggestedWorkloads"
-          Condition="'@(MissingWorkloadPack)' != '' And '$(UsingMicrosoftNETSdk)' == 'true'" />
 
-  <!-- Validates that the correct properties have been set for design-time compiles  -->
+  <!-- Collect any VS setup component IDs that should be installed for this project to work correctly in VS. -->
+  <Target Name="CollectSuggestedVisualStudioComponentIds"
+          Returns="@(SuggestedVisualStudioComponentId)"
+          DependsOnTargets="_CollectSuggestedWorkloadsFromSdk">
+    <ItemGroup>
+      <!-- VS setup component ID for ".NET Compiler Platform SDK". Sourced from https://dev.azure.com/devdiv/DevDiv/_git/VS?path=/src/SetupPackages/Group/Component/Microsoft.CodeAnalysis.SDK/component.swr -->
+      <SuggestedVisualStudioComponentId Condition="'$(IsRoslynComponent)' == 'true'" Include="Microsoft.Component.CodeAnalysis.SDK" />
+    </ItemGroup>
+
+    <!-- Runtime pack for the current target framework version. -->
+    <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp'">
+      <!--
+        Mapping from .NET Core TargetFrameworkVersion to VS Setup component ID.
+
+        Having this data in design-time targets is suboptimal. It should really be coming from the SDK.
+        We are tracking moving this in https://github.com/dotnet/project-system/issues/8186.
+        SDK work tracked in https://github.com/dotnet/sdk/issues/25575.
+
+        The source of truth for the available VS Setup components is various <c>.swr</c> files, such as:
+        https://dev.azure.com/devdiv/DevDiv/_git/VS?path=/src/SetupPackages/Group/Product/Shared/product.shared.swr
+
+        Note there are some mismatches in the below data, as VS doesn't ship installable components for all older
+        versions of .NET Core.
+      -->
+      <SuggestedVisualStudioComponentId Condition="'$(TargetFrameworkVersion)' == 'v2.0'" Include="Microsoft.Net.Core.Component.SDK.2.1" /> <!-- mismatch -->
+      <SuggestedVisualStudioComponentId Condition="'$(TargetFrameworkVersion)' == 'v2.1'" Include="Microsoft.Net.Core.Component.SDK.2.1" />
+      <SuggestedVisualStudioComponentId Condition="'$(TargetFrameworkVersion)' == 'v2.2'" Include="Microsoft.Net.Core.Component.SDK.2.1" /> <!-- mismatch -->
+      <SuggestedVisualStudioComponentId Condition="'$(TargetFrameworkVersion)' == 'v3.0'" Include="Microsoft.NetCore.Component.Runtime.3.1" /> <!-- mismatch -->
+      <SuggestedVisualStudioComponentId Condition="'$(TargetFrameworkVersion)' == 'v3.1'" Include="Microsoft.NetCore.Component.Runtime.3.1" />
+      <SuggestedVisualStudioComponentId Condition="'$(TargetFrameworkVersion)' == 'v5.0'" Include="Microsoft.NetCore.Component.Runtime.5.0" />
+      <SuggestedVisualStudioComponentId Condition="'$(TargetFrameworkVersion)' == 'v6.0'" Include="Microsoft.NetCore.Component.Runtime.6.0" />
+      <SuggestedVisualStudioComponentId Condition="'$(TargetFrameworkVersion)' == 'v7.0'" Include="Microsoft.NetCore.Component.Runtime.7.0" />
+      <SuggestedVisualStudioComponentId Condition="'$(TargetFrameworkVersion)' == 'v8.0'" Include="Microsoft.NetCore.Component.Runtime.8.0" />
+      <SuggestedVisualStudioComponentId Condition="'$(TargetFrameworkVersion)' == 'v9.0'" Include="Microsoft.NetCore.Component.Runtime.9.0" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_CollectSuggestedWorkloadsFromSdk"
+          DependsOnTargets="GetSuggestedWorkloads"
+          Condition="'@(MissingWorkloadPack)' != '' And '$(UsingMicrosoftNETSdk)' == 'true'">
+    <ItemGroup>
+      <!-- SuggestedWorkload has both ComponentIds and ComponentId metadata. Include both. -->
+      <SuggestedVisualStudioComponentId Include="%(SuggestedWorkload.ComponentIds)" />
+      <SuggestedVisualStudioComponentId Include="%(SuggestedWorkload.ComponentId)" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Validates that the correct properties have been set for design-time compiles. -->
   <Target Name="_CheckCompileDesignTimePrerequisite">
 
     <Error Condition="'$(SkipCompilerExecution)|$(ProvideCommandLineArgs)' != 'true|true'"
