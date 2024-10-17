@@ -274,7 +274,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
 
     #region Runtime component ID handling
 
-    private static string? TryGetNetCoreRuntimeComponentId(string versionString)
+    internal static string? TryGetNetCoreRuntimeComponentId(string versionString)
     {
         int firstDotIndex = versionString.IndexOf('.');
         int secondDotIndex = versionString.IndexOf('.', firstDotIndex + 1);
@@ -292,7 +292,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
                 {
                     // From .NET 5 onwards, the format has been stable.
                     // If the format changes this will need to be updated.
-                    > 5.0m => $"Microsoft.NetCore.Component.Runtime.{version}",
+                    >= 5.0m => $"Microsoft.NetCore.Component.Runtime.{version}",
                     // .NET Core 3.x uses the 3.1 runtime.
                     3.0m or 3.1m => "Microsoft.NetCore.Component.Runtime.3.1",
                     // .NET Core 2.x uses the 2.1 runtime.
@@ -306,7 +306,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         return null;
     }
 
-    private static bool IsRuntimeComponentId(string componentId)
+    internal static bool IsRuntimeComponentId(string componentId)
     {
         // Look for specific prefixes. If the format changes this will need to be updated.
         return componentId.StartsWith("Microsoft.NetCore.Component.Runtime.", StringComparisons.VisualStudioSetupComponentIds)
