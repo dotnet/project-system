@@ -26,8 +26,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         Disposed
     }
 
-    private const string ProjectBuildRuleName = CompilerCommandLineArgs.SchemaName;
-
     private readonly DisposableBag _disposableBag;
 
     private readonly ProjectConfigurationSlice _slice;
@@ -418,7 +416,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         await OnProjectChangedAsync(
             _buildProgressRegistration,
             update,
-            hasChange: e => e.Value.BuildRuleUpdate.ProjectChanges[ProjectBuildRuleName].Difference.AnyChanges,
+            hasChange: e => e.Value.BuildRuleUpdate.ProjectChanges[CompilerCommandLineArgs.SchemaName].Difference.AnyChanges,
             applyFunc: ApplyProjectBuild,
             _unloadCancellationToken);
 
@@ -429,7 +427,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             ContextState state,
             CancellationToken cancellationToken)
         {
-            IProjectChangeDescription projectChange = update.Value.BuildRuleUpdate.ProjectChanges[ProjectBuildRuleName];
+            IProjectChangeDescription projectChange = update.Value.BuildRuleUpdate.ProjectChanges[CompilerCommandLineArgs.SchemaName];
 
             ProcessCommandLine();
 
