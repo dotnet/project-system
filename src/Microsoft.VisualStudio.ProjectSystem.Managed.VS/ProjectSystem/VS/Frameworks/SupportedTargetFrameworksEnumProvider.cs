@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
     [ExportDynamicEnumValuesProvider("SupportedTargetFrameworksEnumProvider")]
     [AppliesTo(ProjectCapability.DotNet)]
     [method: ImportingConstructor]
-    internal class SupportedTargetFrameworksEnumProvider(ConfiguredProject project, IProjectSubscriptionService subscriptionService)
+    internal sealed class SupportedTargetFrameworksEnumProvider(ConfiguredProject project, IProjectSubscriptionService subscriptionService)
         : SupportedValuesProvider(project, subscriptionService)
     {
         protected override string[] RuleNames => [SupportedNETCoreAppTargetFramework.SchemaName, SupportedNETFrameworkTargetFramework.SchemaName, SupportedNETStandardTargetFramework.SchemaName, ConfigurationGeneral.SchemaName];
