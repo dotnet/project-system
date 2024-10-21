@@ -2,7 +2,6 @@
 
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using EnumCollection = System.Collections.Generic.ICollection<Microsoft.VisualStudio.ProjectSystem.Properties.IEnumValue>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
 {
@@ -21,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
         {
         }
 
-        protected override EnumCollection Transform(IProjectSubscriptionUpdate input)
+        protected override ICollection<IEnumValue> Transform(IProjectSubscriptionUpdate input)
         {
             IProjectRuleSnapshot configurationGeneral = input.CurrentState[ConfigurationGeneral.SchemaName];
 
@@ -61,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
                 return Array.Empty<IEnumValue>();
             }
 
-            EnumCollection GetSupportedTargetFrameworksFromItems(string ruleName)
+            ICollection<IEnumValue> GetSupportedTargetFrameworksFromItems(string ruleName)
             {
                 IProjectRuleSnapshot snapshot = input.CurrentState[ruleName];
 
