@@ -53,7 +53,10 @@ internal sealed class SupportedTargetFrameworksEnumProvider(ConfiguredProject pr
                 ];
             }
 
-            return [];
+            // The user has not entered a value for the TargetFramework property. We've had a report of
+            // seeing this during a manual attempt to migrate a project from legacy CSPROJ to SDK-style.
+            // We should not show an empty list. Instead, assume the user wants to use .NETCoreApp.
+            return GetSupportedTargetFrameworksFromItems(SupportedNETCoreAppTargetFramework.SchemaName);
         }
 
         ICollection<IEnumValue> GetSupportedTargetFrameworksFromItems(string ruleName)
