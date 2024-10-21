@@ -10,15 +10,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
     /// </summary>
     [ExportDynamicEnumValuesProvider("SupportedTargetFrameworksEnumProvider")]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class SupportedTargetFrameworksEnumProvider : SupportedValuesProvider
+    [method: ImportingConstructor]
+    internal class SupportedTargetFrameworksEnumProvider(ConfiguredProject project, IProjectSubscriptionService subscriptionService)
+        : SupportedValuesProvider(project, subscriptionService)
     {
         protected override string[] RuleNames => [SupportedNETCoreAppTargetFramework.SchemaName, SupportedNETFrameworkTargetFramework.SchemaName, SupportedNETStandardTargetFramework.SchemaName, ConfigurationGeneral.SchemaName];
-
-        [ImportingConstructor]
-        public SupportedTargetFrameworksEnumProvider(ConfiguredProject project, IProjectSubscriptionService subscriptionService)
-            : base(project, subscriptionService)
-        {
-        }
 
         protected override ICollection<IEnumValue> Transform(IProjectSubscriptionUpdate input)
         {
