@@ -370,20 +370,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             // We need to make sure dependencies are built so they can go into the package
             _solutionBuildManager.Value.CalculateProjectDependencies();
 
-            // Assembly our list of projects to build
-            var projects = new List<IVsHierarchy>
-                {
-                    projectVsHierarchy
-                };
-
-            projects.AddRange(_solutionBuildManager.Value.GetProjectDependencies(projectVsHierarchy));
-
-            uint dwFlags = (uint)(VSSOLNBUILDUPDATEFLAGS.SBF_SUPPRESS_SAVEBEFOREBUILD_QUERY | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD);
-
-            uint[] buildFlags = new uint[projects.Count];
-            // We tell the Solution Build Manager to Package our project, which will call the Pack target, which will build if necessary.
-            // Any dependent projects will just do a normal build
-            buildFlags[0] = VSConstants.VS_BUILDABLEPROJECTCFGOPTS_PACKAGE;
 
             //_solutionBuildManager.Value.StartUpdateSpecificProjectConfigurations(projects.ToArray(), buildFlags, dwFlags);
             _solutionBuildManager.Value.SetStartupProject(projectVsHierarchy);
