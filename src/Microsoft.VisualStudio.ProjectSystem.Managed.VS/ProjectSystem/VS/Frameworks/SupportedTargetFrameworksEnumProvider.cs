@@ -85,6 +85,29 @@ internal sealed class SupportedTargetFrameworksEnumProvider(ConfiguredProject pr
 
     protected override int SortValues(IEnumValue a, IEnumValue b)
     {
-        return NaturalStringComparer.Instance.Compare(a.DisplayName, b.DisplayName);
+        // Order by family first, then by version (descending).
+        int comparison = GetFamilyRank(a.DisplayName) - GetFamilyRank(b.DisplayName);
+
+        if (comparison is not 0)
+        {
+            // Ranks differ.
+            return comparison;
+        }
+
+        // Same rank. Large numbers first.
+        return NaturalStringComparer.Instance.Compare(a.DisplayName, b.DisplayName) * -1;
+
+        static int GetFamilyRank(string displayName)
+        {
+            if (displayName.StartsWith(".NET Core ", StringComparison.OrdinalIgnoreCase))
+                return 1;
+            if (displayName.StartsWith(".NET Standard ", StringComparison.OrdinalIgnoreCase))
+                return 2;
+            if (displayName.StartsWith(".NET Framework ", StringComparison.OrdinalIgnoreCase))
+                return 3;
+            if (displayName.StartsWith(".NET ", StringComparison.OrdinalIgnoreCase))
+                return 0;
+            return 4;
+        }
     }
 }
