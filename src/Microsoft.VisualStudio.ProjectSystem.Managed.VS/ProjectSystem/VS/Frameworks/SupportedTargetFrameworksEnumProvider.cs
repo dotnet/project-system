@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
     [AppliesTo(ProjectCapability.DotNet)]
     internal class SupportedTargetFrameworksEnumProvider : SupportedValuesProvider
     {
-        protected override string[] RuleNames => new[] { SupportedNETCoreAppTargetFramework.SchemaName, SupportedNETFrameworkTargetFramework.SchemaName, SupportedNETStandardTargetFramework.SchemaName, ConfigurationGeneral.SchemaName };
+        protected override string[] RuleNames => [SupportedNETCoreAppTargetFramework.SchemaName, SupportedNETFrameworkTargetFramework.SchemaName, SupportedNETStandardTargetFramework.SchemaName, ConfigurationGeneral.SchemaName];
 
         [ImportingConstructor]
         public SupportedTargetFrameworksEnumProvider(ConfiguredProject project, IProjectSubscriptionService subscriptionService)
@@ -47,17 +47,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
                 // We decided we will show it in the UI.
                 if (!Strings.IsNullOrEmpty(targetFramework))
                 {
-                    return new IEnumValue[]
-                    {
+                    return
+                    [
                         new PageEnumValue(new EnumValue
                         {
                             Name = targetFrameworkMoniker ?? targetFramework,
                             DisplayName = targetFrameworkIdentifier ?? targetFramework
                         })
-                    };
+                    ];
                 }
 
-                return Array.Empty<IEnumValue>();
+                return [];
             }
 
             ICollection<IEnumValue> GetSupportedTargetFrameworksFromItems(string ruleName)
