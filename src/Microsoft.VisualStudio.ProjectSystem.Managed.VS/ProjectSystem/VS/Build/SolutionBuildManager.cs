@@ -168,5 +168,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 dwFlags: dwFlags,
                 fSuppressUI: 0));
         }
+
+        public int SetStartupProject(IVsHierarchy hierarchy)
+        {
+            Assumes.NotNull(_vsSolutionBuildManager2);
+
+            JoinableFactory.Context.VerifyIsOnMainThread();
+            return ErrorHandler.ThrowOnFailure(_vsSolutionBuildManager2.set_StartupProject(hierarchy));
+        }
+
+        public int DebugLaunch(uint grfLaunch)
+        {
+            Assumes.NotNull(_vsSolutionBuildManager2);
+            JoinableFactory.Context.VerifyIsOnMainThread();
+            
+            return ErrorHandler.ThrowOnFailure(_vsSolutionBuildManager2.DebugLaunch(grfLaunch));
+        }
     }
 }
