@@ -3,10 +3,12 @@
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.MSBuildDependencies;
 
 [Export(typeof(IMSBuildDependencyFactory))]
-// There's no "AnalyzerReferences" capability, and F# doesn't have analyzers
-[AppliesTo(ProjectCapability.DependenciesTree + " & (" + ProjectCapability.CSharp + " | " + ProjectCapability.VisualBasic + ")")]
+[AppliesTo(AppliesTo)]
 internal sealed class AnalyzerDependencyFactory : MSBuildDependencyFactoryBase
 {
+    // There's no "AnalyzerReferences" capability, and F# doesn't have analyzers
+    public const string AppliesTo = ProjectCapability.DependenciesTree + " & (" + ProjectCapability.CSharp + " | " + ProjectCapability.VisualBasic + ")";
+
     // NOTE we include ProjectTreeFlags.FileSystemEntity here so that Roslyn can correctly identify the
     // analyzer's path in order to attach child nodes to these dependency items in Solution Explorer.
     // Without this flag, CPS will remove whatever file path we pass during tree construction (for
