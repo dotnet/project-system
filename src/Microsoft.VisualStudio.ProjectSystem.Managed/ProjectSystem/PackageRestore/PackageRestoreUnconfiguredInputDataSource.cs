@@ -110,7 +110,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             // Every config should had same value
             bool hasConflicts = updates.Select(u => propertyGetter(u.RestoreInfo))
                                        .Distinct(StringComparers.PropertyNames)
-                                       .Count() > 1;
+                                       .Skip(1)
+                                       .Any();
 
             if (hasConflicts)
             {
