@@ -36,8 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             var instance = CreateInitializedInstance(nugetRestoreService: nugetRestoreService);
 
             var restoreInfo = ProjectRestoreInfoFactory.Create(msbuildProjectExtensionsPath: @"C:\Alpha\Beta");
-            var ConfigureInputs = PackageRestoreConfiguredInputFactory.Create(restoreInfo);
-            var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(restoreInfo, ConfigureInputs!));
+            var configuredInputs = PackageRestoreConfiguredInputFactory.Create(restoreInfo);
+            var activeConfiguration = ProjectConfigurationFactory.Create("Debug|AnyCPU");
+
+            var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(restoreInfo, configuredInputs, activeConfiguration));
 
             await instance.RestoreAsync(value);
 
@@ -52,8 +54,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             var nugetRestoreService = INuGetRestoreServiceFactory.ImplementNominateProjectAsync((restoreInfo, versionInfo, cancellationToken) => { callCount++; });
 
             var instance = CreateInitializedInstance(nugetRestoreService: nugetRestoreService);
+            var activeConfiguration = ProjectConfigurationFactory.Create("Debug|AnyCPU");
 
-            var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(null, new PackageRestoreConfiguredInput[0]));
+            var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(null, [], activeConfiguration));
 
             await instance.RestoreAsync(value);
 
@@ -69,7 +72,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             var instance = CreateInitializedInstance(nugetRestoreService: nugetRestoreService);
 
             var restoreInfo = ProjectRestoreInfoFactory.Create();
-            var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(restoreInfo, new PackageRestoreConfiguredInput[0]));
+            var activeConfiguration = ProjectConfigurationFactory.Create("Debug|AnyCPU");
+
+            var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(restoreInfo, [], activeConfiguration));
 
             await instance.RestoreAsync(value);
 
@@ -101,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             nuGetRestoreService ??= INuGetRestoreServiceFactory.Create();
 
             var cycleDetector = new Mock<IPackageRestoreCycleDetector>();
-            cycleDetector.Setup(o => o.IsCycleDetectedAsync(It.IsAny<Hash>(), It.IsAny<CancellationToken>())).ReturnsAsync(isCycleDetected);
+            cycleDetector.Setup(o => o.IsCycleDetectedAsync(It.IsAny<Hash>(), It.IsAny<ProjectConfiguration>(), It.IsAny<CancellationToken>())).ReturnsAsync(isCycleDetected);
 
             return new PackageRestoreDataSourceMocked(
                 project,

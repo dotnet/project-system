@@ -24,13 +24,32 @@ public sealed class PackageRestoreCycleDetectorTests
 
     private async Task ValidateAsync(PackageRestoreCycleDetector instance, string sequence, bool isCycleDetected)
     {
+        var activeConfiguration = ProjectConfigurationFactory.Create("Debug|AnyCPU");
+
         for (var i = 0; i < sequence.Length; i++)
         {
             var hash = CreateHash((byte)sequence[i]);
 
             bool expected = (i == sequence.Length - 1) && isCycleDetected;
 
-            Assert.Equal(expected, await instance.IsCycleDetectedAsync(hash, CancellationToken.None));
+            Assert.Equal(expected, await instance.IsCycleDetectedAsync(hash, activeConfiguration, CancellationToken.None));
+        }
+    }
+
+    [Fact]
+    public async Task IsCycleDetectedAsync_ChangingConfiguration_DoesNotDetectCycleAsync()
+    {
+        var hash1 = CreateHash(0x01);
+        var hash2 = CreateHash(0x02);
+        var configuration1 = ProjectConfigurationFactory.Create("Debug|AnyCPU");
+        var configuration2 = ProjectConfigurationFactory.Create("Release|AnyCPU");
+
+        var instance = CreateInstance();
+
+        for (int i = 0; i < 10; i++)
+        {
+            Assert.False(await instance.IsCycleDetectedAsync(hash1, configuration1, CancellationToken.None));
+            Assert.False(await instance.IsCycleDetectedAsync(hash2, configuration2, CancellationToken.None));
         }
     }
 

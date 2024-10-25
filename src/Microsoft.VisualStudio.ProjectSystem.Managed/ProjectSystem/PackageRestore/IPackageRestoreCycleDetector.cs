@@ -30,9 +30,11 @@ internal interface IPackageRestoreCycleDetector
     /// The implementation may take some action internally, such as alerting the user and/or sending telemetry.
     /// The caller is expected to use a return value of <see langword="true"/> to halt further restores from
     /// occurring and consuming resources indefinitely.
+    /// This method uses the active project configuration so that cycle state can be reset when it changes.
     /// </remarks>
     /// <param name="hash">The most recent restore hash value, computed from all inputs to the restore operation.</param>
+    /// <param name="activeProjectConfiguration">The active project configuration.</param>
     /// <param name="cancellationToken">A token that can signal a loss of interest in the result.</param>
     /// <returns><see langword="true"/> if a cycle is detected, otherwise <see langword="false"/>.</returns>
-    Task<bool> IsCycleDetectedAsync(Hash hash, CancellationToken cancellationToken);
+    Task<bool> IsCycleDetectedAsync(Hash hash, ProjectConfiguration activeProjectConfiguration, CancellationToken cancellationToken);
 }
