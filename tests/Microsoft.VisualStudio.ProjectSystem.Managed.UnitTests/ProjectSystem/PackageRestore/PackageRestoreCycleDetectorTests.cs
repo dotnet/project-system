@@ -53,7 +53,7 @@ public sealed class PackageRestoreCycleDetectorTests
         }
     }
 
-    private static Hash CreateHash(byte b) => new(new[] { b });
+    private static Hash CreateHash(byte b) => new([b]);
 
     private static PackageRestoreCycleDetector CreateInstance()
     {
