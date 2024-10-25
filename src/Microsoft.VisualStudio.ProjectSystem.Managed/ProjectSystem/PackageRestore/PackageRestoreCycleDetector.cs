@@ -140,10 +140,13 @@ internal sealed class PackageRestoreCycleDetector(
 
         void Reset()
         {
-            _stopwatch.Reset();
-            _counter = 0;
-            _values.Clear();
-            _lookupTable.Clear();
+            lock (_lock)
+            {
+                _stopwatch.Reset();
+                _counter = 0;
+                _values.Clear();
+                _lookupTable.Clear();
+            }
         }
     }
 }
