@@ -50,14 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 
             static ImmutableArray<ReferenceItem> ToReferenceItems(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
             {
-                return items.ToImmutableArray(static (key, value) => ToReferenceItem(key, value));
-
-                static ReferenceItem ToReferenceItem(string name, IImmutableDictionary<string, string> metadata)
-                {
-                    var properties = metadata.ToImmutableArray(static (key, value) => new ReferenceProperty(key, value));
-
-                    return new ReferenceItem(name, metadata);
-                }
+                return items.ToImmutableArray(static (name, metadata) => new ReferenceItem(name, metadata));
             }
         }
     }
