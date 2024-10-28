@@ -136,6 +136,12 @@
 
     <!-- Localization -->
     <PackageVersion Include="CommandLineParser"                                                     Version="2.9.1" />
+
+    <!-- MessagePack -->
+    <!-- Fix: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/2286088/ -->
+    <!-- The security vulnerable version of MessagePack package dependency is introduced by `Microsoft.VisualStudio.Utilities 17.12.40093` -->
+    <!-- We should be able to no longer explicitly-pinned MessagePack version after Microsoft.VisualStudio.Utilities update their MessagePack dependency -->
+    <PackageVersion Include="MessagePack"                                                           Version=" 2.5.187" />
   </ItemGroup>
 
 </Project>
