@@ -68,7 +68,7 @@
     <PackageVersion Include="Microsoft.VisualStudio.Validation"                                      Version="17.8.8" />
     <PackageVersion Include="Microsoft.VisualStudio.XmlEditor"                                       Version="17.13.0-preview-1-35408-014" />
     <PackageVersion Include="Microsoft.VSSDK.BuildTools"                                             Version="17.13.17-preview1-ga15b669c04" />
-    <PackageVersion Include="System.Threading.Tasks.Dataflow"                                        Version="9.0.0-rc.2.24473.5" />
+    <PackageVersion Include="System.Threading.Tasks.Dataflow"                                        Version="8.0.0" />
     <PackageVersion Include="System.Formats.Asn1"                                                    Version="8.0.1" />
     <PackageVersion Include="Microsoft.VSDesigner"                                                   Version="17.13.38055-preview.1" />
     <PackageVersion Include="VsWebSite.Interop"                                                      Version="17.13.38055-preview.1" />
