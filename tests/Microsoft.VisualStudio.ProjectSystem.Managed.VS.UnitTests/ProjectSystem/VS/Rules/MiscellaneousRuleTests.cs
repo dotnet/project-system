@@ -271,7 +271,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rules
             foreach (var rule in GetAllRules())
             {
                 string ruleName = (string)rule[0];
-                string fullPath = (string)rule[1];
 
                 if (s_embeddedRuleNames.Contains(ruleName))
                 {

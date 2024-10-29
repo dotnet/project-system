@@ -40,8 +40,6 @@ public sealed class PackageRestoreCycleDetectorTests
     {
         var project = UnconfiguredProjectFactory.CreateWithActiveConfiguredProjectProvider(IProjectThreadingServiceFactory.Create());
 
-        var projectSystemOptions = new Mock<IProjectSystemOptions>();
-
         var telemetryService = new Mock<ITelemetryService>();
         var nonModelNotificationService = new Mock<INonModalNotificationService>();
 
