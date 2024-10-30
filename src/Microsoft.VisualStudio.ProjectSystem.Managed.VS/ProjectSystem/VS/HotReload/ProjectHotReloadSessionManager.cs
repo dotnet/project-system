@@ -370,15 +370,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Assumes.NotNull(_project.Services.HostObject);
             await _projectThreadingService.SwitchToUIThread();
 
-            // Step 0: Dispose existing solution build events subscription if any
-            if (_solutionBuildEventsSubscription is not null)
-            {
-                await _solutionBuildEventsSubscription.DisposeAsync();
-                _solutionBuildEventsSubscription = null;
-            }
-
             // Step 1: Stop running project
             await StopProjectAsync(hotReloadState, cancellationToken);
+            Assumes.Null(_solutionBuildEventsSubscription);
 
             // Step 2: Debug or NonDebug?
             uint dbgLaunchFlag = isRunningUnderDebug ? (uint)0 : (uint)__VSDBGLAUNCHFLAGS.DBGLAUNCH_NoDebug;
@@ -463,6 +457,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                     if (sessionCountOnEntry == 1 && _activeSessions.Count == 0)
                     {
                         await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: false);
+                    }
+
+                    // Dispose the solution build events subscription if there are no active sessions
+                    if (_solutionBuildEventsSubscription is not null)
+                    {
+                        await _solutionBuildEventsSubscription.DisposeAsync();
+                        _solutionBuildEventsSubscription = null;
                     }
                 }
 
