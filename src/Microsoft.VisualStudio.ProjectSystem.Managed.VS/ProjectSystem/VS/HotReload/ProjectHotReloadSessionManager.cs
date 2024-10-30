@@ -1,11 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Build;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
@@ -32,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly Dictionary<int, HotReloadState> _activeSessions = [];
         private HotReloadState? _pendingSessionState = null;
         private int _nextUniqueId = 1;
+        private IAsyncDisposable? _solutionBuildEventsSubscription = null;
 
         public bool HasActiveHotReloadSessions => _activeSessions.Count != 0;
 
@@ -359,22 +362,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             return null;
         }
 
-        private async Task<bool> RestartProjectAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
+        private async Task<bool> RestartProjectAsync(
+            HotReloadState hotReloadState,
+            bool isRunningUnderDebug,
+            CancellationToken cancellationToken)
         {
-            // TODO: Support restarting the project.
             Assumes.NotNull(_project.Services.HostObject);
             await _projectThreadingService.SwitchToUIThread();
 
+            // Step 0: Dispose existing solution build events subscription if any
+            if (_solutionBuildEventsSubscription is not null)
+            {
+                await _solutionBuildEventsSubscription.DisposeAsync();
+                _solutionBuildEventsSubscription = null;
+            }
+
+            // Step 1: Stop running project
+            await StopProjectAsync(hotReloadState, cancellationToken);
+
+            // Step 2: Debug or NonDebug?
+            uint dbgLaunchFlag = isRunningUnderDebug ? (uint)0 : (uint)__VSDBGLAUNCHFLAGS.DBGLAUNCH_NoDebug;
+
+            // Step 3: Find IVsDebuggableProjectCfg
             var projectVsHierarchy = (IVsHierarchy)_project.Services.HostObject;
-            _solutionBuildManager.Value.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, docCookie: 0);
-            // We need to make sure dependencies are built so they can go into the package
-            _solutionBuildManager.Value.CalculateProjectDependencies();
+            var activeCfg = _solutionBuildManager.Value.FindActiveProjectCfg(IntPtr.Zero, IntPtr.Zero, projectVsHierarchy);
+            Equals(activeCfg.Length, 1);
+            var result = activeCfg[0].get_CfgType(typeof(IVsDebuggableProjectCfg).GUID, out var cfgType);
+            Equals(result, HResult.OK);
 
+            var debuggableCfg = Marshal.GetObjectForIUnknown(cfgType) as IVsDebuggableProjectCfg;
+            Assumes.NotNull(debuggableCfg);
 
-            //_solutionBuildManager.Value.StartUpdateSpecificProjectConfigurations(projects.ToArray(), buildFlags, dwFlags);
-            _solutionBuildManager.Value.SetStartupProject(projectVsHierarchy);
-            var result = _solutionBuildManager.Value.DebugLaunch((uint)__VSDBGLAUNCHFLAGS.DBGLAUNCH_NoDebug);
+            result = debuggableCfg.get_BuildableProjectCfg(out var buildableProjectCfg);
+            Equals(result, HResult.OK);
+            Assumes.NotNull(buildableProjectCfg);
 
+            // register for the solution build events
+            var slnEvent = new SlnEvent(projectVsHierarchy, debuggableCfg, (int)dbgLaunchFlag);
+            _solutionBuildEventsSubscription = await _solutionBuildManager.Value.SubscribeSolutionEventsAsync(slnEvent);
+
+            result = _solutionBuildManager.Value.StartSimpleUpdateProjectConfiguration(
+                pIVsHierarchyToBuild: projectVsHierarchy,
+                pIVsHierarchyDependent: null,
+                pszDependentConfigurationCanonicalName: null,
+                dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD,
+                dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
+                fSuppressUI: 0);
+                
             return result == HResult.OK;
         }
 
@@ -471,24 +505,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         internal class HotReloadState : IProjectHotReloadSessionCallback
         {
-            private readonly ProjectHotReloadSessionManager _sessionManager;
-
             public Process? Process { get; set; }
             public IProjectHotReloadSession? Session { get; set; }
 
-            // TODO: Support restarting the session.
-            public bool SupportsRestart => true;
+            public ProjectHotReloadSessionManager SessionManager { get; }
 
-            public UnconfiguredProject? Project => _sessionManager._project;
+            public bool SupportsRestart => false;
+
+            public UnconfiguredProject? Project => SessionManager._project;
 
             public HotReloadState(ProjectHotReloadSessionManager sessionManager)
             {
-                _sessionManager = sessionManager;
+                SessionManager = sessionManager;
             }
 
             internal void OnProcessExited(object sender, EventArgs e)
             {
-                _sessionManager.OnProcessExited(this);
+                SessionManager.OnProcessExited(this);
             }
 
             public Task OnAfterChangesAppliedAsync(CancellationToken cancellationToken)
@@ -498,17 +531,80 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             public Task<bool> StopProjectAsync(CancellationToken cancellationToken)
             {
-                return _sessionManager.StopProjectAsync(this, cancellationToken).AsTask();
+                return SessionManager.StopProjectAsync(this, cancellationToken).AsTask();
             }
 
             public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
             {
-                return _sessionManager.RestartProjectAsync(this, cancellationToken);
+                return Task.FromResult(false);
+            }
+
+            public Task<bool> RestartProjectAsync(bool isRunningUnderDebug, CancellationToken cancellationToken)
+            {
+                return SessionManager.RestartProjectAsync(this, isRunningUnderDebug, cancellationToken);
             }
 
             public IDeltaApplier? GetDeltaApplier()
             {
                 return ProjectHotReloadSessionManager.GetDeltaApplier(this);
+            }
+        }
+
+        internal class SlnEvent : IVsUpdateSolutionEvents2
+        {
+            private readonly IVsDebuggableProjectCfg _debuggableProjectCfg;
+            private readonly IVsHierarchy _pHierProj;
+            private readonly int _dbgLaunchFlag;
+
+            // resolved when done
+
+            public SlnEvent(IVsHierarchy pHierProj, IVsDebuggableProjectCfg debuggableProjectCfg, int dbgLaunchFlag)
+            {
+                _debuggableProjectCfg = debuggableProjectCfg;
+                _pHierProj = pHierProj;
+                _dbgLaunchFlag = dbgLaunchFlag;
+            }
+
+            public int UpdateSolution_Begin(ref int pfCancelUpdate)
+            {
+                return HResult.OK;
+            }
+
+            public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
+            {
+                return HResult.OK;
+            }
+
+            public int UpdateSolution_StartUpdate(ref int pfCancelUpdate)
+            {
+                return HResult.OK;
+            }
+
+            public int UpdateSolution_Cancel()
+            {
+                return HResult.OK;
+            }
+
+            public int OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy)
+            {
+                return HResult.OK;
+            }
+
+            public int UpdateProjectCfg_Begin(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, ref int pfCancel)
+            {
+                return HResult.OK;
+            }
+
+            public int UpdateProjectCfg_Done(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, int fSuccess, int fCancel)
+            {
+                var projectName = pHierProj.GetProjectFilePath();
+                var thisProjectName = _pHierProj.GetProjectFilePath();
+                if (projectName == thisProjectName)
+                {
+                    return _debuggableProjectCfg.DebugLaunch((uint)_dbgLaunchFlag);
+                }
+
+                return HResult.OK;
             }
         }
     }

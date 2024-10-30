@@ -19,6 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly Lazy<ISolutionBuildManager> _solutionBuildManager;
 
         private bool _sessionActive;
+
+        // This flag is used to identify Debug|NonDebug cases
+        private bool _isRunningUnderDebugger;
         private IDeltaApplier? _deltaApplier;
 
         public ProjectHotReloadSession(
@@ -105,6 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 ),
                 default);
             _sessionActive = true;
+            _isRunningUnderDebugger = runningUnderDebugger;
             EnsureDeltaApplierforSession();
         }
 
@@ -113,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             if (_sessionActive)
             {
                 _sessionActive = false;
-
+                _isRunningUnderDebugger = false;
                 await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
                 WriteToOutputWindow(
                     new HotReloadLogMessage(
@@ -254,10 +258,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 ),
                 cancellationToken);
 
-            await _callback.RestartProjectAsync(cancellationToken);
 
-            // TODO: Should we stop the session here? Or does someone else do it?
-            // TODO: Should we handle rebuilding here? Or do we expect the callback to handle it?
+            if (_callback is HotReloadState hrs)
+            {
+                await hrs.RestartProjectAsync(_isRunningUnderDebugger, cancellationToken);
+
+                return;
+            }
+
+            await _callback.RestartProjectAsync(cancellationToken);
         }
 
         public async ValueTask StopAsync(CancellationToken cancellationToken)
@@ -278,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public ValueTask<bool> SupportsRestartAsync(CancellationToken cancellationToken)
         {
-            return new ValueTask<bool>(_callback.SupportsRestart);
+            return new ValueTask<bool>(_callback is HotReloadState);
         }
 
         private void WriteToOutputWindow(HotReloadLogMessage hotReloadLogMessage, CancellationToken cancellationToken)
