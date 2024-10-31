@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             WriteElementString("SplashScreen", "", o.SplashScreenNoRootNS)
             WriteElementStringRaw("MinimumSplashScreenDisplayTime", "", Xml.XmlConvert.ToString(CType(o.MinimumSplashScreenDisplayTime, Integer)))
             WriteElementStringRaw("SaveMySettingsOnExit", "", Xml.XmlConvert.ToString(CType(o.SaveMySettingsOnExit, Boolean)))
-            WriteElementStringRaw("HighDpiMpde", "", Xml.XmlConvert.ToString(CType(o.HighDpiMode, Boolean)))
+            WriteElementStringRaw("HighDpiMode", "", Xml.XmlConvert.ToString(CType(o.HighDpiMode, Boolean)))
             WriteEndElement(o)
         End Sub 'Write2_MyApplicationData
 
