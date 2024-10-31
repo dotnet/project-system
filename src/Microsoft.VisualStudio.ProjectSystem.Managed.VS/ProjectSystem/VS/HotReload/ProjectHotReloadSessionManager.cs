@@ -375,31 +375,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Assumes.Null(_solutionBuildEventsSubscription);
 
             // Step 2: Debug or NonDebug?
-            uint dbgLaunchFlag = isRunningUnderDebug ? (uint)0 : (uint)__VSDBGLAUNCHFLAGS.DBGLAUNCH_NoDebug;
+            uint dbgLaunchFlag = isRunningUnderDebug ? (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCHDEBUG : (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCH;
 
-            // Step 3: Find IVsDebuggableProjectCfg
+            // Step 3: Build and Launch Debug
             var projectVsHierarchy = (IVsHierarchy)_project.Services.HostObject;
-            var activeCfg = _solutionBuildManager.Value.FindActiveProjectCfg(IntPtr.Zero, IntPtr.Zero, projectVsHierarchy);
-            Equals(activeCfg.Length, 1);
-            var result = activeCfg[0].get_CfgType(typeof(IVsDebuggableProjectCfg).GUID, out var cfgType);
-            Equals(result, HResult.OK);
 
-            var debuggableCfg = Marshal.GetObjectForIUnknown(cfgType) as IVsDebuggableProjectCfg;
-            Assumes.NotNull(debuggableCfg);
-
-            result = debuggableCfg.get_BuildableProjectCfg(out var buildableProjectCfg);
-            Equals(result, HResult.OK);
-            Assumes.NotNull(buildableProjectCfg);
-
-            // register for the solution build events
-            var slnEvent = new SlnEvent(projectVsHierarchy, debuggableCfg, (int)dbgLaunchFlag);
-            _solutionBuildEventsSubscription = await _solutionBuildManager.Value.SubscribeSolutionEventsAsync(slnEvent);
-
-            result = _solutionBuildManager.Value.StartSimpleUpdateProjectConfiguration(
+            var result = _solutionBuildManager.Value.StartSimpleUpdateProjectConfiguration(
                 pIVsHierarchyToBuild: projectVsHierarchy,
                 pIVsHierarchyDependent: null,
                 pszDependentConfigurationCanonicalName: null,
-                dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD,
+                dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD | dbgLaunchFlag,
                 dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
                 fSuppressUI: 0);
                 
@@ -548,64 +533,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             public IDeltaApplier? GetDeltaApplier()
             {
                 return ProjectHotReloadSessionManager.GetDeltaApplier(this);
-            }
-        }
-
-        internal class SlnEvent : IVsUpdateSolutionEvents2
-        {
-            private readonly IVsDebuggableProjectCfg _debuggableProjectCfg;
-            private readonly IVsHierarchy _pHierProj;
-            private readonly int _dbgLaunchFlag;
-
-            // resolved when done
-
-            public SlnEvent(IVsHierarchy pHierProj, IVsDebuggableProjectCfg debuggableProjectCfg, int dbgLaunchFlag)
-            {
-                _debuggableProjectCfg = debuggableProjectCfg;
-                _pHierProj = pHierProj;
-                _dbgLaunchFlag = dbgLaunchFlag;
-            }
-
-            public int UpdateSolution_Begin(ref int pfCancelUpdate)
-            {
-                return HResult.OK;
-            }
-
-            public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
-            {
-                return HResult.OK;
-            }
-
-            public int UpdateSolution_StartUpdate(ref int pfCancelUpdate)
-            {
-                return HResult.OK;
-            }
-
-            public int UpdateSolution_Cancel()
-            {
-                return HResult.OK;
-            }
-
-            public int OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy)
-            {
-                return HResult.OK;
-            }
-
-            public int UpdateProjectCfg_Begin(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, ref int pfCancel)
-            {
-                return HResult.OK;
-            }
-
-            public int UpdateProjectCfg_Done(IVsHierarchy pHierProj, IVsCfg pCfgProj, IVsCfg pCfgSln, uint dwAction, int fSuccess, int fCancel)
-            {
-                var projectName = pHierProj.GetProjectFilePath();
-                var thisProjectName = _pHierProj.GetProjectFilePath();
-                if (projectName == thisProjectName)
-                {
-                    return _debuggableProjectCfg.DebugLaunch((uint)_dbgLaunchFlag);
-                }
-
-                return HResult.OK;
             }
         }
     }
