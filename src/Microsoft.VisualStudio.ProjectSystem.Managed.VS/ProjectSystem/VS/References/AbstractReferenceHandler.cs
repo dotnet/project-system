@@ -67,7 +67,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         private static async Task<bool> GetAttributeTreatAsUsedAsync(IProjectProperties metadata)
         {
-            var propertyNames = await metadata.GetPropertyNamesAsync();
             string? value = await metadata.GetEvaluatedPropertyValueAsync(ProjectReference.TreatAsUsedProperty);
 
             return value is not null && PropertySerializer.SimpleTypes.ToValue<bool>(value);

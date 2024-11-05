@@ -178,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     guidProject: Guid.Empty,
                     fVersionSpecific: true,
                     fEnsureCreated: true,
-                    out bool isTemporary,
+                    out _, // isTemporary
                     out string workingFolderPath);
 
                 return Path.Combine(workingFolderPath, ProjectItemCacheFileName);

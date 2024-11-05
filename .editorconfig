@@ -386,6 +386,7 @@ dotnet_diagnostic.IDE0030WithoutSuggestion.severity = error
 dotnet_diagnostic.IDE0031.severity = warning      # Use null propagation (nullable)
 dotnet_diagnostic.IDE0051.severity = warning      # Private member unused
 dotnet_diagnostic.IDE0052.severity = warning      # Remove unread private members
+dotnet_diagnostic.IDE0059.severity = error        # Unnecessary assignment
 dotnet_diagnostic.IDE0079.severity = warning      # Unused suppresion
 dotnet_diagnostic.IDE0083.severity = warning      # Use pattern matching
 dotnet_diagnostic.IDE0084.severity = warning      # Use IsNot
