@@ -182,6 +182,16 @@ namespace Microsoft.VisualStudio.Telemetry
             ///     Indicates the targets and their times during a design-time build.
             /// </summary>
             public const string Targets = "vs.projectsystem.managed.designtimebuildcomplete.targets";
+
+            /// <summary>
+            ///     The number of errors reported during the design-time build.
+            /// </summary>
+            public const string ErrorCount = "vs.projectsystem.managed.designtimebuildcomplete.errorcount";
+
+            /// <summary>
+            ///     The names of targets that failed during the design-time build.
+            /// </summary>
+            public const string ErrorTargets = "vs.projectsystem.managed.designtimebuildcomplete.errortargets";
         }
 
         public static class SDKVersion
