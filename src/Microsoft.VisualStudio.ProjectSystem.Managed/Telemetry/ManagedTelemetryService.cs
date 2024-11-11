@@ -86,10 +86,13 @@ internal class ManagedTelemetryService : ITelemetryService
         return new TelemetryOperation(TelemetryService.DefaultSession.StartOperation(eventName));
     }
 
+    /// <summary>Internal, for testing purposes only.</summary>
+    internal bool IsUserMicrosoftInternal { get; set; } = TelemetryService.DefaultSession.IsUserMicrosoftInternal;
+
     public string HashValue(string value)
     {
         // Don't hash PII for internal users since we don't need to.
-        if (TelemetryService.DefaultSession.IsUserMicrosoftInternal)
+        if (IsUserMicrosoftInternal)
         {
             return value;
         }
@@ -103,7 +106,22 @@ internal class ManagedTelemetryService : ITelemetryService
         byte[] hash = cryptoServiceProvider.ComputeHash(inputBytes);
 #endif
 
-        return BitConverter.ToString(hash);
+        return ByteArrayToHexString(hash, byteCount: 8);
+
+        static string ByteArrayToHexString(byte[] bytes, int byteCount)
+        {
+            char[] hexChars = new char[byteCount * 2];
+            const string hexDigits = "0123456789abcdef";
+
+            for (int i = 0; i < byteCount; i++)
+            {
+                int b = bytes[i];
+                hexChars[i * 2] = hexDigits[b >> 4];
+                hexChars[i * 2 + 1] = hexDigits[b & 0x0F];
+            }
+
+            return new string(hexChars);
+        }
     }
 
     private class TelemetryOperation : ITelemetryOperation
