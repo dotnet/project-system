@@ -140,13 +140,7 @@ internal class ManagedTelemetryService : ITelemetryService
     {
         public void Dispose()
         {
-#if DEBUG
             Assumes.True(scope.IsEnd, $"Failed to call '{nameof(ITelemetryOperation.End)}' on {nameof(ITelemetryOperation)} instance.");
-#endif
-            if (!scope.IsEnd)
-            {
-                scope.End(TelemetryResult.None);
-            }
         }
 
         public void End(TelemetryResult result)
