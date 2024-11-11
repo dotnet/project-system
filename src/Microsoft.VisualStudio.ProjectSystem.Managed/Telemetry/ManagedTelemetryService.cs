@@ -95,8 +95,15 @@ internal class ManagedTelemetryService : ITelemetryService
         }
 
         byte[] inputBytes = Encoding.UTF8.GetBytes(value);
+
+#if NET8_0_OR_GREATER
+        byte[] hash = SHA256.HashData(inputBytes);
+#else
         using var cryptoServiceProvider = SHA256.Create();
-        return BitConverter.ToString(cryptoServiceProvider.ComputeHash(inputBytes));
+        byte[] hash = cryptoServiceProvider.ComputeHash(inputBytes);
+#endif
+
+        return BitConverter.ToString(hash);
     }
 
     private class TelemetryOperation : ITelemetryOperation
