@@ -162,13 +162,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             void LogTelemetry(bool cancelled)
             {
                 compileStopWatch!.Stop();
-                _telemetryService.PostProperties(TelemetryEventName.TempPEProcessQueue, new[]
-                {
-                    ( TelemetryPropertyName.TempPE.CompileCount,        (object)compileCount),
-                    ( TelemetryPropertyName.TempPE.InitialQueueLength,  initialQueueLength),
-                    ( TelemetryPropertyName.TempPE.CompileWasCancelled, cancelled),
-                    ( TelemetryPropertyName.TempPE.CompileDuration,     compileStopWatch.ElapsedMilliseconds)
-                });
+                _telemetryService.PostProperties(TelemetryEventName.TempPEProcessQueue,
+                [
+                    (TelemetryPropertyName.TempPE.CompileCount,        compileCount),
+                    (TelemetryPropertyName.TempPE.InitialQueueLength,  initialQueueLength),
+                    (TelemetryPropertyName.TempPE.CompileWasCancelled, cancelled),
+                    (TelemetryPropertyName.TempPE.CompileDuration,     compileStopWatch.ElapsedMilliseconds)
+                ]);
             }
         }
 
@@ -202,10 +202,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             if (compiled)
             {
-                _telemetryService.PostProperties(TelemetryEventName.TempPECompileOnDemand, new[]
-                {
-                    ( TelemetryPropertyName.TempPE.InitialQueueLength, (object)initialQueueLength)
-                });
+                _telemetryService.PostProperties(TelemetryEventName.TempPECompileOnDemand,
+                [
+                    (TelemetryPropertyName.TempPE.InitialQueueLength, initialQueueLength)
+                ]);
             }
 
             return $@"<root>

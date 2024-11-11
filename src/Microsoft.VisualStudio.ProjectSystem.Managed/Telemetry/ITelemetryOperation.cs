@@ -27,7 +27,7 @@ internal interface ITelemetryOperation : IDisposable
     /// <exception cref="ArgumentException">
     ///     <paramref name="properties"/> is contains no elements.
     /// </exception>
-    void SetProperties(IEnumerable<(string propertyName, object propertyValue)> properties);
+    void SetProperties(IEnumerable<(string propertyName, object? propertyValue)> properties);
 
     /// <summary>
     ///     Ends the operation and reports the result.

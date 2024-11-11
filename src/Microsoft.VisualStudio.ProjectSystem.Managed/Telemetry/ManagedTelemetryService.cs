@@ -20,11 +20,10 @@ internal class ManagedTelemetryService : ITelemetryService
         PostTelemetryEvent(new TelemetryEvent(eventName));
     }
 
-    public void PostProperty(string eventName, string propertyName, object propertyValue)
+    public void PostProperty(string eventName, string propertyName, object? propertyValue)
     {
         Requires.NotNullOrEmpty(eventName);
         Requires.NotNullOrEmpty(propertyName);
-        Requires.NotNull(propertyValue);
 
         TelemetryEvent telemetryEvent = new(eventName);
         telemetryEvent.Properties.Add(propertyName, propertyValue);
@@ -32,7 +31,7 @@ internal class ManagedTelemetryService : ITelemetryService
         PostTelemetryEvent(telemetryEvent);
     }
 
-    public void PostProperties(string eventName, IEnumerable<(string propertyName, object propertyValue)> properties)
+    public void PostProperties(string eventName, IEnumerable<(string propertyName, object? propertyValue)> properties)
     {
         Requires.NotNullOrEmpty(eventName);
         Requires.NotNullOrEmpty(properties);
@@ -43,9 +42,9 @@ internal class ManagedTelemetryService : ITelemetryService
         PostTelemetryEvent(telemetryEvent);
     }
 
-    private static void AddPropertiesToEvent(IEnumerable<(string propertyName, object propertyValue)> properties, TelemetryEvent telemetryEvent)
+    private static void AddPropertiesToEvent(IEnumerable<(string propertyName, object? propertyValue)> properties, TelemetryEvent telemetryEvent)
     {
-        foreach ((string propertyName, object propertyValue) in properties)
+        foreach ((string propertyName, object? propertyValue) in properties)
         {
             if (propertyValue is ComplexPropertyValue complexProperty)
             {
@@ -125,7 +124,7 @@ internal class ManagedTelemetryService : ITelemetryService
             _scope.End(result);
         }
 
-        public void SetProperties(IEnumerable<(string propertyName, object propertyValue)> properties)
+        public void SetProperties(IEnumerable<(string propertyName, object? propertyValue)> properties)
         {
             Requires.NotNullOrEmpty(properties);
             

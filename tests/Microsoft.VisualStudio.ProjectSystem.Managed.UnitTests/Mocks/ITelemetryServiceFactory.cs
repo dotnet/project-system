@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.Telemetry
                     };
                 });
 
-            telemetryService.Setup(t => t.PostProperties(It.IsAny<string>(), It.IsAny<IEnumerable<(string propertyName, object propertyValue)>>()))
+            telemetryService.Setup(t => t.PostProperties(It.IsAny<string>(), It.IsAny<IEnumerable<(string propertyName, object? propertyValue)>>()))
                 .Callback((string e, IEnumerable<(string propertyName, object propertyValue)> p) =>
                 {
                     callParameters.EventName = e;
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.Telemetry
                     onTelemetryLogged(callParameters);
                 });
 
-            telemetryService.Setup(t => t.PostProperties(It.IsAny<string>(), It.IsAny<IEnumerable<(string propertyName, object propertyValue)>>()))
+            telemetryService.Setup(t => t.PostProperties(It.IsAny<string>(), It.IsAny<IEnumerable<(string propertyName, object? propertyValue)>>()))
                 .Callback((string e, IEnumerable<(string propertyName, object propertyValue)> p) =>
                 {
                     var callParameters = new TelemetryParameters

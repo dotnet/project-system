@@ -120,12 +120,12 @@ internal sealed class PackageRestoreCycleDetector(
             _nuGetRestoreCyclesDetected++;
 
             // Send telemetry.
-            _telemetryService.PostProperties(TelemetryEventName.NuGetRestoreCycleDetected, new[]
-            {
-                (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
+            _telemetryService.PostProperties(TelemetryEventName.NuGetRestoreCycleDetected,
+            [
+                (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreDurationMillis, _stopwatch.Elapsed.TotalMilliseconds),
                 (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreSuccesses, _nuGetRestoreSuccesses),
                 (TelemetryPropertyName.NuGetRestoreCycleDetected.RestoreCyclesDetected, _nuGetRestoreCyclesDetected)
-            });
+            ]);
 
             // Notify the user.
             await _userNotificationService.ShowErrorAsync(

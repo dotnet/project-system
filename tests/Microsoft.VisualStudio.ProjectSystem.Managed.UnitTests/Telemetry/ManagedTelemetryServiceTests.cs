@@ -73,14 +73,11 @@ namespace Microsoft.VisualStudio.Telemetry
         }
 
         [Fact]
-        public void PostProperty_NullAsPropertyValue_ThrowArgumentNull()
+        public void PostProperty_NullAsPropertyValue()
         {
             var service = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("propertyValue", () =>
-            {
-                service.PostProperty("event1", "propName", null!);
-            });
+            service.PostProperty("vs/projectsystem/managed/test", "vs.projectsystem.managed.test", null);
         }
 
         [Fact]
@@ -90,7 +87,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentNullException>("eventName", () =>
             {
-                service.PostProperties(null!, new[] { ("propertyName", (object)"propertyValue") });
+                service.PostProperties(null!, [("propertyName", "propertyValue")]);
             });
         }
 
@@ -101,7 +98,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentException>("eventName", () =>
             {
-                service.PostProperties(string.Empty, new[] { ("propertyName", (object)"propertyValue") });
+                service.PostProperties(string.Empty, [("propertyName", "propertyValue")]);
             });
         }
 
@@ -123,7 +120,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentException>("properties", () =>
             {
-                service.PostProperties("event1", Enumerable.Empty<(string propertyName, object propertyValue)>());
+                service.PostProperties("event1", []);
             });
         }
 
@@ -136,7 +133,7 @@ namespace Microsoft.VisualStudio.Telemetry
             service.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
 
             Assert.NotNull(result);
-            Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, result!.Name);
+            Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, result.Name);
         }
 
         [Fact]
@@ -158,11 +155,11 @@ namespace Microsoft.VisualStudio.Telemetry
             TelemetryEvent? result = null;
             var service = CreateInstance((e) => { result = e; });
 
-            service.PostProperties(TelemetryEventName.DesignTimeBuildComplete, new[]
-            {
-                (TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, (object)true),
+            service.PostProperties(TelemetryEventName.DesignTimeBuildComplete,
+            [
+                (TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, true),
                 (TelemetryPropertyName.DesignTimeBuildComplete.Targets, "Compile")
-            });
+            ]);
 
             Assert.NotNull(result);
             Assert.Equal(TelemetryEventName.DesignTimeBuildComplete, result.Name);
