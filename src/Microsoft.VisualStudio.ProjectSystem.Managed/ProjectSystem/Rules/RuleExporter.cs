@@ -208,15 +208,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             public static int WindowsFormsConfigurationRule;
         }
 
-        private static class OptionalWorkloadRules
+        private static class InProductAcquisitionRules
         {
             /// <summary>
-            ///     Represents the evaluation items representing optional workloads.
+            ///     Represents items that indicate which Visual Studio components should
+            ///     be installed for the project to work correctly.
             /// </summary>
-            [ExportRule(nameof(SuggestedWorkload), PropertyPageContexts.ProjectSubscriptionService)]
+            [ExportRule(nameof(SuggestedVisualStudioComponentId), PropertyPageContexts.ProjectSubscriptionService)]
             [AppliesTo(ProjectCapability.DotNet)]
             [Order(Order.Default)]
-            public static int SuggestedWorkloadRule;
+            public static int SuggestedVisualStudioComponentIdRule;
         }
     }
 }

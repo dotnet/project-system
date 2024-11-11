@@ -16,6 +16,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
     /// <inheritdoc cref="IUpToDateCheckImplicitConfiguredInputDataSource" />
     [Export(typeof(IUpToDateCheckImplicitConfiguredInputDataSource))]
     [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
+    [ExportInitialBuildRulesSubscriptions([
+        ResolvedAnalyzerReference.SchemaName,
+        ResolvedCompilationReference.SchemaName,
+        ResolvedProjectReference.SchemaName,
+        UpToDateCheckInput.SchemaName,
+        UpToDateCheckOutput.SchemaName,
+        UpToDateCheckBuilt.SchemaName,
+        CopyToOutputDirectoryItem.SchemaName,
+        BuildAccelerationIncompatiblePackage.SchemaName])]
     internal sealed class UpToDateCheckImplicitConfiguredInputDataSource : ChainedProjectValueDataSourceBase<UpToDateCheckImplicitConfiguredInput>, IUpToDateCheckImplicitConfiguredInputDataSource
     {
         private readonly ConfiguredProject _configuredProject;

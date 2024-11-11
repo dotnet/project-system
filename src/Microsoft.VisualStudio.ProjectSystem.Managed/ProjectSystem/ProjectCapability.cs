@@ -37,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string WindowsForms = nameof(WindowsForms);
         public const string WPF = nameof(WPF);
         public const string SupportUniversalAuthentication = nameof(SupportUniversalAuthentication);
+        public const string DiagnoseVisualStudioComponents = nameof(DiagnoseVisualStudioComponents);
 
         public const string DotNet = ".NET";
         public const string DotNetCoreRazor = "DotNetCoreRazor";

@@ -12,6 +12,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
     /// </summary>
     [Export(typeof(IPackageRestoreConfiguredInputDataSource))]
     [AppliesTo(ProjectCapability.PackageReferences)]
+    [ExportInitialBuildRulesSubscriptions([
+        CollectedFrameworkReference.SchemaName,
+        CollectedPackageDownload.SchemaName,
+        CollectedPackageVersion.SchemaName,
+        CollectedNuGetAuditSuppressions.SchemaName,
+        CollectedPackageReference.SchemaName])]
     internal class PackageRestoreConfiguredInputDataSource : ChainedProjectValueDataSourceBase<PackageRestoreConfiguredInput>, IPackageRestoreConfiguredInputDataSource
     {
         private static readonly ImmutableHashSet<string> s_rules = Empty.OrdinalIgnoreCaseStringSet
@@ -24,20 +30,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             .Add(CollectedNuGetAuditSuppressions.SchemaName)    // Build
             .Add(CollectedPackageReference.SchemaName);         // Build
 
-        private readonly UnconfiguredProject _containingProject;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
         [ImportingConstructor]
         public PackageRestoreConfiguredInputDataSource(ConfiguredProject project, IProjectSubscriptionService projectSubscriptionService)
             : base(project, synchronousDisposal: false, registerDataSource: false)
         {
-            _containingProject = project.UnconfiguredProject;
             _projectSubscriptionService = projectSubscriptionService;
-        }
-
-        protected override UnconfiguredProject ContainingProject
-        {
-            get { return _containingProject; }
         }
 
         protected override IDisposable LinkExternalInput(ITargetBlock<RestoreUpdate> targetBlock)

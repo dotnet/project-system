@@ -38,6 +38,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Telemetry" />
     <PackageReference Include="Microsoft.VisualStudio.Utilities" />
     <PackageReference Include="NuGet.VisualStudio" />
+    <PackageReference Include="MessagePack" />
     
     <!-- Roslyn -->
     <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />

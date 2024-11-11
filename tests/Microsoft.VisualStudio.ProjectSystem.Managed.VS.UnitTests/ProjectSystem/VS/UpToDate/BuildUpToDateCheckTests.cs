@@ -679,7 +679,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
             var t0 = DateTime.UtcNow.AddMinutes(-3); // t0 Input file timestamp
             var t1 = DateTime.UtcNow.AddMinutes(-2); // t1 Rebuild (sets output file timestamp)
-            var t2 = DateTime.UtcNow.AddMinutes(-1); // t2 Check up-to-date (true)
 
             _fileSystem.AddFile(_inputPath, t0);
 
