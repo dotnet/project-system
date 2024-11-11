@@ -62,7 +62,7 @@ internal class ManagedTelemetryService : ITelemetryService
 #if DEBUG
         Assumes.True(telemetryEvent.Name.StartsWith(EventNamePrefix, StringComparisons.TelemetryEventNames));
 
-        foreach (string propertyName in telemetryEvent.Properties.Keys)
+        foreach ((string propertyName, _) in telemetryEvent.Properties)
         {
             Assumes.True(propertyName.StartsWith(PropertyNamePrefix, StringComparisons.TelemetryEventNames));
         }
@@ -79,11 +79,11 @@ internal class ManagedTelemetryService : ITelemetryService
     public ITelemetryOperation BeginOperation(string eventName)
     {
         Requires.NotNullOrEmpty(eventName);
-        
+
 #if DEBUG
         Assumes.True(eventName.StartsWith(EventNamePrefix, StringComparisons.TelemetryEventNames));
 #endif
-        return new TelemetryOperation(TelemetryService.DefaultSession.StartOperation(eventName));            
+        return new TelemetryOperation(TelemetryService.DefaultSession.StartOperation(eventName));
     }
 
     public string HashValue(string value)
