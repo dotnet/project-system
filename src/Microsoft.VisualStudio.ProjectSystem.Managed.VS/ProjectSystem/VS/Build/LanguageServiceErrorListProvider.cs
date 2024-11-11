@@ -47,15 +47,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
         }
 
-        public Task<AddMessageResult> AddMessageAsync(TargetGeneratedError error)
+        public async Task<AddMessageResult> AddMessageAsync(TargetGeneratedError error)
         {
             Requires.NotNull(error);
 
-            return AddMessageCoreAsync(error);
-        }
-
-        private async Task<AddMessageResult> AddMessageCoreAsync(TargetGeneratedError error)
-        {
             // We only want to pass compiler, analyzers, etc to the language
             // service, so we skip tasks that do not have a code
             if (!TryExtractErrorListDetails(error.BuildEventArgs, out ErrorListDetails details) || string.IsNullOrEmpty(details.Code))
