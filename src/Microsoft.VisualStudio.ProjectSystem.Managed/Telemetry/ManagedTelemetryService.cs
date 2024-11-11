@@ -124,29 +124,22 @@ internal class ManagedTelemetryService : ITelemetryService
         }
     }
 
-    private class TelemetryOperation : ITelemetryOperation
+    private sealed class TelemetryOperation(TelemetryScope<OperationEvent> scope) : ITelemetryOperation
     {
-        private readonly TelemetryScope<OperationEvent> _scope;
-
-        public TelemetryOperation(TelemetryScope<OperationEvent> scope)
-        {
-            _scope = scope;
-        }
-
         public void Dispose()
         {
 #if DEBUG
-            Assumes.True(_scope.IsEnd, $"Failed to call '{nameof(ITelemetryOperation.End)}' on {nameof(ITelemetryOperation)} instance.");
+            Assumes.True(scope.IsEnd, $"Failed to call '{nameof(ITelemetryOperation.End)}' on {nameof(ITelemetryOperation)} instance.");
 #endif
-            if (!_scope.IsEnd)
+            if (!scope.IsEnd)
             {
-                _scope.End(TelemetryResult.None);
+                scope.End(TelemetryResult.None);
             }
         }
 
         public void End(TelemetryResult result)
         {
-            _scope.End(result);
+            scope.End(result);
         }
 
         public void SetProperties(IEnumerable<(string propertyName, object? propertyValue)> properties)
@@ -160,7 +153,7 @@ internal class ManagedTelemetryService : ITelemetryService
             }
 #endif
 
-            AddPropertiesToEvent(properties, _scope.EndEvent);
+            AddPropertiesToEvent(properties, scope.EndEvent);
         }
     }
 }
