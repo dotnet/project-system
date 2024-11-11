@@ -208,16 +208,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 ]);
             }
 
-            return $@"<root>
-  <Application private_binpath = ""{Path.GetDirectoryName(outputFileName)}""/>
-  <Assembly
-    codebase = ""{Path.GetFileName(outputFileName)}""
-    name = ""{relativeFileName}""
-    version = ""0.0.0.0""
-    snapshot_id = ""1""
-    replaceable = ""True""
-  />
-</root>";
+            return $"""
+                <root>
+                  <Application private_binpath = "{Path.GetDirectoryName(outputFileName)}"/>
+                  <Assembly
+                    codebase = "{Path.GetFileName(outputFileName)}"
+                    name = "{relativeFileName}"
+                    version = "0.0.0.0"
+                    snapshot_id = "1"
+                    replaceable = "True"
+                  />
+                </root>
+                """;
         }
 
         private async Task<bool> CompileDesignTimeInputAsync(IWorkspaceProjectContext context, string designTimeInput, string outputFileName, ImmutableHashSet<string> sharedInputs, bool ignoreFileWriteTime, CancellationToken token = default)
