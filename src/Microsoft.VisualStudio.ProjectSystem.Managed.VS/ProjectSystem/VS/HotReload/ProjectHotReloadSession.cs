@@ -264,11 +264,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         private void EnsureDeltaApplierforSession()
         {
-            if (_deltaApplier is null)
-            {
-                _deltaApplier = _callback.GetDeltaApplier()
-                    ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(_runtimeVersion);
-            }
+            _deltaApplier ??= _callback.GetDeltaApplier() ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(_runtimeVersion);
         }
     }
 }
