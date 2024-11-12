@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public async Task<bool> ApplyLaunchVariablesAsync(IDictionary<string, string> envVars, CancellationToken cancellationToken)
         {
-            EnsureDeltaApplierforSession();
+            EnsureDeltaApplierForSession();
 
             if (_deltaApplier is not null)
             {
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             WriteToOutputWindow(VSResources.HotReloadStartSession, default);
             _sessionActive = true;
-            EnsureDeltaApplierforSession();
+            EnsureDeltaApplierForSession();
         }
 
         public async Task StopSessionAsync(CancellationToken cancellationToken)
@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 cancellationToken);
         }
 
-        private void EnsureDeltaApplierforSession()
+        private void EnsureDeltaApplierForSession()
         {
             _deltaApplier ??= _callback.GetDeltaApplier() ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(_runtimeVersion);
         }
