@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 
@@ -53,12 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         {
             EnsureDeltaApplierForSession();
 
-            if (_deltaApplier is not null)
-            {
-                return await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVars, cancellationToken);
-            }
-
-            return false;
+            return await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVars, cancellationToken);
         }
 
         // TODO: remove when Web Tools is no longer calling this method.
@@ -197,9 +193,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 cancellationToken);
         }
 
+        [MemberNotNull(nameof(_deltaApplier))]
         private void EnsureDeltaApplierForSession()
         {
             _deltaApplier ??= _callback.GetDeltaApplier() ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(_runtimeVersion);
+
+            Assumes.NotNull(_deltaApplier);
         }
     }
 }
