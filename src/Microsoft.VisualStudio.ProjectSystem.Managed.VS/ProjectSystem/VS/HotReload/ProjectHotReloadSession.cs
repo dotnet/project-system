@@ -52,24 +52,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         public async Task<bool> ApplyLaunchVariablesAsync(IDictionary<string, string> envVars, CancellationToken cancellationToken)
         {
             EnsureDeltaApplierforSession();
+
             if (_deltaApplier is not null)
             {
-                // TODO: Simplify this once ApplyProcessEnvironmentVariablesAsync takes an IDictionary instead of a Dictionary.
-                if (envVars is Dictionary<string, string> envVarsAsDictionary)
-                {
-                    return await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVarsAsDictionary, cancellationToken);
-                }
-                else
-                {
-                    envVarsAsDictionary = new Dictionary<string, string>(envVars);
-                    bool result = await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVarsAsDictionary, cancellationToken);
-                    foreach ((string name, string value) in envVarsAsDictionary)
-                    {
-                        envVars[name] = value;
-                    }
-
-                    return result;
-                }
+                return await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVars, cancellationToken);
             }
 
             return false;
