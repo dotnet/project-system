@@ -66,7 +66,7 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
         /// <summary>
         /// Whether the build succeeded.
         /// </summary>
-        private bool _succeeded;
+        private bool? _succeeded;
 
         /// <summary>
         /// The number of errors reported during the build.
