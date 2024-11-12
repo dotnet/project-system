@@ -147,10 +147,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                         _variant
                     ),
                     default);
-            }
-
-            if (!_sessionActive || _deltaApplier is null)
-            {
                 return;
             }
 
