@@ -199,9 +199,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     logLevel: Level);
 
                 // Send telemetry.
-                _telemetryService?.PostProperties(TelemetryEventName.UpToDateCheckFail, new[]
-                {
-                    (TelemetryPropertyName.UpToDateCheck.FailReason, (object)reason),
+                _telemetryService?.PostProperties(TelemetryEventName.UpToDateCheckFail,
+                [
+                    (TelemetryPropertyName.UpToDateCheck.FailReason, reason),
                     (TelemetryPropertyName.UpToDateCheck.DurationMillis, _stopwatch.Elapsed.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheck.WaitDurationMillis, _waitTime.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheck.FileCount, _timestampCache.Count),
@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     (TelemetryPropertyName.UpToDateCheck.CheckNumber, _checkNumber),
                     (TelemetryPropertyName.UpToDateCheck.IgnoreKinds, _ignoreKinds ?? ""),
                     (TelemetryPropertyName.UpToDateCheck.AccelerationResult, FileSystemOperations.AccelerationResult)
-                });
+                ]);
 
                 // Remember the failure reason and description for use in IncrementalBuildFailureDetector.
                 // First, ensure times are converted to local time (in case logging is not enabled).
@@ -245,9 +245,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     logLevel: Level);
 
                 // Send telemetry.
-                _telemetryService?.PostProperties(TelemetryEventName.UpToDateCheckSuccess, new[]
-                {
-                    (TelemetryPropertyName.UpToDateCheck.DurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
+                _telemetryService?.PostProperties(TelemetryEventName.UpToDateCheckSuccess,
+                [
+                    (TelemetryPropertyName.UpToDateCheck.DurationMillis, _stopwatch.Elapsed.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheck.WaitDurationMillis, _waitTime.TotalMilliseconds),
                     (TelemetryPropertyName.UpToDateCheck.FileCount, _timestampCache.Count),
                     (TelemetryPropertyName.UpToDateCheck.ConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length),
@@ -257,7 +257,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     (TelemetryPropertyName.UpToDateCheck.IgnoreKinds, _ignoreKinds ?? ""),
                     (TelemetryPropertyName.UpToDateCheck.AccelerationResult, FileSystemOperations.AccelerationResult),
                     (TelemetryPropertyName.UpToDateCheck.AcceleratedCopyCount, copyCount)
-                });
+                ]);
 
                 Info(nameof(VSResources.FUTD_UpToDate));
 

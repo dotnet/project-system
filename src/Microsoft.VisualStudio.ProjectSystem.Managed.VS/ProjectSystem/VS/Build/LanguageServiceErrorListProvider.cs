@@ -47,15 +47,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
         }
 
-        public Task<AddMessageResult> AddMessageAsync(TargetGeneratedError error)
+        public async Task<AddMessageResult> AddMessageAsync(TargetGeneratedError error)
         {
             Requires.NotNull(error);
 
-            return AddMessageCoreAsync(error);
-        }
-
-        private async Task<AddMessageResult> AddMessageCoreAsync(TargetGeneratedError error)
-        {
             // We only want to pass compiler, analyzers, etc to the language
             // service, so we skip tasks that do not have a code
             if (!TryExtractErrorListDetails(error.BuildEventArgs, out ErrorListDetails details) || string.IsNullOrEmpty(details.Code))
@@ -121,9 +116,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         /// <summary>
         ///     Attempts to extract the details required by the VS Error List from an MSBuild build event.
         /// </summary>
-        /// <param name="eventArgs">The build event.  May be null.</param>
-        /// <param name="result">The extracted details, or <see langword="null"/> if <paramref name="eventArgs"/> was <see langword="null"/> or of an unrecognized type.</param>
-        internal static bool TryExtractErrorListDetails(BuildEventArgs eventArgs, out ErrorListDetails result)
+        /// <param name="eventArgs">The build event.</param>
+        /// <param name="result">The extracted details, or <see langword="default"/> if <paramref name="eventArgs"/> was <see langword="null"/> or of an unrecognized type.</param>
+        internal static bool TryExtractErrorListDetails(BuildEventArgs? eventArgs, out ErrorListDetails result)
         {
             if (eventArgs is BuildErrorEventArgs errorMessage)
             {

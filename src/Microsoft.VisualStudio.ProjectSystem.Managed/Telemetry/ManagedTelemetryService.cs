@@ -20,11 +20,10 @@ internal class ManagedTelemetryService : ITelemetryService
         PostTelemetryEvent(new TelemetryEvent(eventName));
     }
 
-    public void PostProperty(string eventName, string propertyName, object propertyValue)
+    public void PostProperty(string eventName, string propertyName, object? propertyValue)
     {
         Requires.NotNullOrEmpty(eventName);
         Requires.NotNullOrEmpty(propertyName);
-        Requires.NotNull(propertyValue);
 
         TelemetryEvent telemetryEvent = new(eventName);
         telemetryEvent.Properties.Add(propertyName, propertyValue);
@@ -32,7 +31,7 @@ internal class ManagedTelemetryService : ITelemetryService
         PostTelemetryEvent(telemetryEvent);
     }
 
-    public void PostProperties(string eventName, IEnumerable<(string propertyName, object propertyValue)> properties)
+    public void PostProperties(string eventName, IEnumerable<(string propertyName, object? propertyValue)> properties)
     {
         Requires.NotNullOrEmpty(eventName);
         Requires.NotNullOrEmpty(properties);
@@ -43,9 +42,9 @@ internal class ManagedTelemetryService : ITelemetryService
         PostTelemetryEvent(telemetryEvent);
     }
 
-    private static void AddPropertiesToEvent(IEnumerable<(string propertyName, object propertyValue)> properties, TelemetryEvent telemetryEvent)
+    private static void AddPropertiesToEvent(IEnumerable<(string propertyName, object? propertyValue)> properties, TelemetryEvent telemetryEvent)
     {
-        foreach ((string propertyName, object propertyValue) in properties)
+        foreach ((string propertyName, object? propertyValue) in properties)
         {
             if (propertyValue is ComplexPropertyValue complexProperty)
             {
@@ -63,7 +62,7 @@ internal class ManagedTelemetryService : ITelemetryService
 #if DEBUG
         Assumes.True(telemetryEvent.Name.StartsWith(EventNamePrefix, StringComparisons.TelemetryEventNames));
 
-        foreach (string propertyName in telemetryEvent.Properties.Keys)
+        foreach ((string propertyName, _) in telemetryEvent.Properties)
         {
             Assumes.True(propertyName.StartsWith(PropertyNamePrefix, StringComparisons.TelemetryEventNames));
         }
@@ -80,11 +79,11 @@ internal class ManagedTelemetryService : ITelemetryService
     public ITelemetryOperation BeginOperation(string eventName)
     {
         Requires.NotNullOrEmpty(eventName);
-        
+
 #if DEBUG
         Assumes.True(eventName.StartsWith(EventNamePrefix, StringComparisons.TelemetryEventNames));
 #endif
-        return new TelemetryOperation(TelemetryService.DefaultSession.StartOperation(eventName));            
+        return new TelemetryOperation(TelemetryService.DefaultSession.StartOperation(eventName));
     }
 
     public string HashValue(string value)
@@ -96,8 +95,15 @@ internal class ManagedTelemetryService : ITelemetryService
         }
 
         byte[] inputBytes = Encoding.UTF8.GetBytes(value);
+
+#if NET8_0_OR_GREATER
+        byte[] hash = SHA256.HashData(inputBytes);
+#else
         using var cryptoServiceProvider = SHA256.Create();
-        return BitConverter.ToString(cryptoServiceProvider.ComputeHash(inputBytes));
+        byte[] hash = cryptoServiceProvider.ComputeHash(inputBytes);
+#endif
+
+        return BitConverter.ToString(hash);
     }
 
     private class TelemetryOperation : ITelemetryOperation
@@ -125,7 +131,7 @@ internal class ManagedTelemetryService : ITelemetryService
             _scope.End(result);
         }
 
-        public void SetProperties(IEnumerable<(string propertyName, object propertyValue)> properties)
+        public void SetProperties(IEnumerable<(string propertyName, object? propertyValue)> properties)
         {
             Requires.NotNullOrEmpty(properties);
             

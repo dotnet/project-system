@@ -162,13 +162,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             void LogTelemetry(bool cancelled)
             {
                 compileStopWatch!.Stop();
-                _telemetryService.PostProperties(TelemetryEventName.TempPEProcessQueue, new[]
-                {
-                    ( TelemetryPropertyName.TempPE.CompileCount,        (object)compileCount),
-                    ( TelemetryPropertyName.TempPE.InitialQueueLength,  initialQueueLength),
-                    ( TelemetryPropertyName.TempPE.CompileWasCancelled, cancelled),
-                    ( TelemetryPropertyName.TempPE.CompileDuration,     compileStopWatch.ElapsedMilliseconds)
-                });
+                _telemetryService.PostProperties(TelemetryEventName.TempPEProcessQueue,
+                [
+                    (TelemetryPropertyName.TempPE.CompileCount,        compileCount),
+                    (TelemetryPropertyName.TempPE.InitialQueueLength,  initialQueueLength),
+                    (TelemetryPropertyName.TempPE.CompileWasCancelled, cancelled),
+                    (TelemetryPropertyName.TempPE.CompileDuration,     compileStopWatch.ElapsedMilliseconds)
+                ]);
             }
         }
 
@@ -202,22 +202,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             if (compiled)
             {
-                _telemetryService.PostProperties(TelemetryEventName.TempPECompileOnDemand, new[]
-                {
-                    ( TelemetryPropertyName.TempPE.InitialQueueLength, (object)initialQueueLength)
-                });
+                _telemetryService.PostProperties(TelemetryEventName.TempPECompileOnDemand,
+                [
+                    (TelemetryPropertyName.TempPE.InitialQueueLength, initialQueueLength)
+                ]);
             }
 
-            return $@"<root>
-  <Application private_binpath = ""{Path.GetDirectoryName(outputFileName)}""/>
-  <Assembly
-    codebase = ""{Path.GetFileName(outputFileName)}""
-    name = ""{relativeFileName}""
-    version = ""0.0.0.0""
-    snapshot_id = ""1""
-    replaceable = ""True""
-  />
-</root>";
+            return $"""
+                <root>
+                  <Application private_binpath = "{Path.GetDirectoryName(outputFileName)}"/>
+                  <Assembly
+                    codebase = "{Path.GetFileName(outputFileName)}"
+                    name = "{relativeFileName}"
+                    version = "0.0.0.0"
+                    snapshot_id = "1"
+                    replaceable = "True"
+                  />
+                </root>
+                """;
         }
 
         private async Task<bool> CompileDesignTimeInputAsync(IWorkspaceProjectContext context, string designTimeInput, string outputFileName, ImmutableHashSet<string> sharedInputs, bool ignoreFileWriteTime, CancellationToken token = default)

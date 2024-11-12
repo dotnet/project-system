@@ -46,11 +46,10 @@ internal class SdkVersionReporter : IProjectDynamicLoadComponent
                 {
                     _telemetryService.PostProperties(
                         TelemetryEventName.SDKVersion,
-                        new[]
-                        {
-                            (TelemetryPropertyName.SDKVersion.Project, (object)projectGuid.ToString()),
+                        [
+                            (TelemetryPropertyName.SDKVersion.Project, projectGuid.ToString()),
                             (TelemetryPropertyName.SDKVersion.NETCoreSDKVersion, version)
-                        });
+                        ]);
                 }
             },
             unconfiguredProject: _projectVsServices.Project);

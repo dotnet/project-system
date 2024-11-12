@@ -40,10 +40,6 @@ internal interface ITelemetryService
     ///         -or-
     ///     </para>
     ///     <paramref name="propertyName"/> is <see langword="null"/>.
-    ///     <para>
-    ///         -or-
-    ///     </para>
-    ///     <paramref name="propertyValue"/> is <see langword="null"/>.
     /// </exception>
     /// <exception cref="ArgumentException">
     ///     <paramref name="eventName"/> is an empty string ("").
@@ -52,7 +48,7 @@ internal interface ITelemetryService
     ///     </para>
     ///     <paramref name="propertyName"/> is an empty string ("").
     /// </exception>
-    void PostProperty(string eventName, string propertyName, object propertyValue);
+    void PostProperty(string eventName, string propertyName, object? propertyValue);
 
     /// <summary>
     ///     Posts an event with the specified event name and properties with the
@@ -78,7 +74,7 @@ internal interface ITelemetryService
     ///     </para>
     ///     <paramref name="properties"/> is contains no elements.
     /// </exception>
-    void PostProperties(string eventName, IEnumerable<(string propertyName, object propertyValue)> properties);
+    void PostProperties(string eventName, IEnumerable<(string propertyName, object? propertyValue)> properties);
 
     /// <summary>
     ///     Begins an operation with a recorded duration. Consumers must call <see cref="ITelemetryOperation.End(TelemetryResult)"/>
