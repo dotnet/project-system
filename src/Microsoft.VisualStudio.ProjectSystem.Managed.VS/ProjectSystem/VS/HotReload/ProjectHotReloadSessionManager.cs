@@ -492,7 +492,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             public ProjectHotReloadSessionManager SessionManager { get; }
 
-            public bool SupportsRestart => false;
+            public bool SupportsRestart => true;
 
             public UnconfiguredProject? Project => SessionManager._project;
 

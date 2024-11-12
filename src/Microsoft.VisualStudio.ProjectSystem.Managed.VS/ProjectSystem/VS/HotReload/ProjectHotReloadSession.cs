@@ -16,7 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
         private readonly Lazy<IManagedDeltaApplierCreator> _deltaApplierCreator;
         private readonly IProjectHotReloadSessionCallback _callback;
-        private readonly Lazy<ISolutionBuildManager> _solutionBuildManager;
 
         private bool _sessionActive;
 
@@ -31,8 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
             Lazy<IHotReloadDiagnosticOutputService> hotReloadOutputService,
             Lazy<IManagedDeltaApplierCreator> deltaApplierCreator,
-            IProjectHotReloadSessionCallback callback,
-            Lazy<ISolutionBuildManager> solutionBuildManager)
+            IProjectHotReloadSessionCallback callback)
         {
             Name = name;
             _variant = variant.ToString();
@@ -41,7 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _hotReloadOutputService = hotReloadOutputService;
             _deltaApplierCreator = deltaApplierCreator;
             _callback = callback;
-            _solutionBuildManager = solutionBuildManager;
         }
 
         // IProjectHotReloadSession
@@ -286,7 +283,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public ValueTask<bool> SupportsRestartAsync(CancellationToken cancellationToken)
         {
-            return new ValueTask<bool>(_callback is HotReloadState);
+            return new ValueTask<bool>(_callback.SupportsRestart);
         }
 
         private void WriteToOutputWindow(HotReloadLogMessage hotReloadLogMessage, CancellationToken cancellationToken)

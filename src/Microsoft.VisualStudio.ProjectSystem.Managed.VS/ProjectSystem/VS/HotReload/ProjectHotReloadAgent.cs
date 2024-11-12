@@ -36,8 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 _hotReloadAgentManagerClient,
                 _hotReloadDiagnosticOutputService,
                 _managedDeltaApplierCreator,
-                callback,
-                _solutionBuildManager);
+                callback);
         }
 
         public IProjectHotReloadSession? CreateHotReloadSession(string id, string runtimeVersion, IProjectHotReloadSessionCallback callback)
