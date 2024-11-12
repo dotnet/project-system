@@ -22,7 +22,9 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
 
         IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
-        return await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.OutDirProperty);
+        var outDir = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.OutDirProperty);
+
+        return ReplaceSlashWithSystemDefault(outDir);
     }
 
     /// <summary>
@@ -212,5 +214,10 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
         string runArguments = await properties.GetEvaluatedPropertyValueAsync("RunArguments");
 
         return (exeToRun, runArguments, runWorkingDirectory);
+    }
+
+    private static string ReplaceSlashWithSystemDefault(string path)
+    {
+        return path.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
     }
 }
