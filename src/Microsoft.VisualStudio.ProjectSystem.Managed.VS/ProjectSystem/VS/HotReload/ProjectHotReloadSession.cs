@@ -115,7 +115,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 WriteToOutputWindow(VSResources.HotReloadSendingUpdates, cancellationToken, HotReloadVerbosity.Detailed);
 
                 ApplyResult result = await _deltaApplier.ApplyUpdatesAsync(updates, cancellationToken);
-                if (result == ApplyResult.Success || result == ApplyResult.SuccessRefreshUI)
+
+                if (result is ApplyResult.Success or ApplyResult.SuccessRefreshUI)
                 {
                     WriteToOutputWindow(VSResources.HotReloadApplyUpdatesSuccessful, cancellationToken, HotReloadVerbosity.Detailed);
 
