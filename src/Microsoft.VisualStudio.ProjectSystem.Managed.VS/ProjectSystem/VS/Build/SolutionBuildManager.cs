@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Runtime.InteropServices;
-using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -99,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             JoinableFactory.Context.VerifyIsOnMainThread();
 
             ErrorHandler.ThrowOnFailure(_vsSolutionBuildManager2.QueryBuildManagerBusy(out int flags));
-            
+
             return flags;
         }
 
@@ -113,13 +111,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             return flags;
         }
 
-        public int QueryDebugLaunch(uint grfLaunch)
-        {
-            Assumes.NotNull(_vsSolutionBuildManager2);
-            JoinableFactory.Context.VerifyIsOnMainThread();
-            ErrorHandler.ThrowOnFailure(_vsSolutionBuildManager2.QueryDebugLaunch(grfLaunch, out int pfCanLaunch));
-            return pfCanLaunch;
-        }
 
         public void SaveDocumentsBeforeBuild(IVsHierarchy hierarchy, uint itemId, uint docCookie)
         {
@@ -178,37 +169,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 fSuppressUI: 0));
         }
 
-        public int SetStartupProject(IVsHierarchy hierarchy)
-        {
-            Assumes.NotNull(_vsSolutionBuildManager2);
-
-            JoinableFactory.Context.VerifyIsOnMainThread();
-            return ErrorHandler.ThrowOnFailure(_vsSolutionBuildManager2.set_StartupProject(hierarchy));
-        }
-
-        public int DebugLaunch(uint grfLaunch)
-        {
-            Assumes.NotNull(_vsSolutionBuildManager2);
-            JoinableFactory.Context.VerifyIsOnMainThread();
-            
-            return ErrorHandler.ThrowOnFailure(_vsSolutionBuildManager2.DebugLaunch(grfLaunch));
-        }
-
         public int StartSimpleUpdateProjectConfiguration(IVsHierarchy pIVsHierarchyToBuild, IVsHierarchy? pIVsHierarchyDependent, string? pszDependentConfigurationCanonicalName, uint dwFlags, uint dwDefQueryResults, int fSuppressUI)
         {
             Assumes.NotNull(_vsSolutionBuildManager2);
             JoinableFactory.Context.VerifyIsOnMainThread();
 
             return ErrorHandler.ThrowOnFailure(_vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(pIVsHierarchyToBuild, pIVsHierarchyDependent, pszDependentConfigurationCanonicalName, dwFlags, dwDefQueryResults, fSuppressUI));
-        }
-
-        public IVsProjectCfg2[] FindActiveProjectCfg(IntPtr pvReserved1, IntPtr pvReserved2, IVsHierarchy pIVsHierarchy_RequestedProject)
-        {
-            Assumes.NotNull(_vsSolutionBuildManager2);
-            JoinableFactory.Context.VerifyIsOnMainThread();
-            IVsProjectCfg2[] ppIVsProjectCfg_Active = new IVsProjectCfg2[1];
-            ErrorHandler.ThrowOnFailure(_vsSolutionBuildManager2.FindActiveProjectCfg(pvReserved1, pvReserved2, pIVsHierarchy_RequestedProject, ppIVsProjectCfg_Active));
-            return ppIVsProjectCfg_Active;
         }
     }
 }

@@ -28,12 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
         IVsHierarchy[] GetProjectDependencies(IVsHierarchy hierarchy);
 
-        int SetStartupProject(IVsHierarchy hierarchy);
-
-        int DebugLaunch(uint grfLaunch);
-
-        int QueryDebugLaunch(uint grfLaunch);
-
         void StartUpdateSpecificProjectConfigurations(IVsHierarchy[] hierarchy, uint[] buildFlags, uint dwFlags);
 
         int StartSimpleUpdateProjectConfiguration(
@@ -43,7 +37,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             uint dwFlags,
             uint dwDefQueryResults,
             int fSuppressUI);
-
-        IVsProjectCfg2[] FindActiveProjectCfg(IntPtr pvReserved1, IntPtr pvReserved2, IVsHierarchy pIVsHierarchy_RequestedProject);
     }
 }
