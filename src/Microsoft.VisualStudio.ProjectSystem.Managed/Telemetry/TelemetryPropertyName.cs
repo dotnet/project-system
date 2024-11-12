@@ -179,9 +179,19 @@ namespace Microsoft.VisualStudio.Telemetry
             public const string Succeeded = "vs.projectsystem.managed.designtimebuildcomplete.succeeded";
 
             /// <summary>
-            ///     Indicates the targets and their times during a design-time build.
+            ///     A complex value, with a map from target name to duration (in milliseconds).
             /// </summary>
-            public const string Targets = "vs.projectsystem.managed.designtimebuildcomplete.targets";
+            /// <remarks>
+            /// <para>
+            ///     If the task is not known to be shipped by Microsoft (i.e. in the VS or .NET SDK folders),
+            ///     the target name is hashed as potential PII.
+            /// </para>
+            /// <para>
+            ///     This is version 2 of the property. Version 1 was a single string, was always hashed,
+            ///     and used a longer form of hash value.
+            /// </para>
+            /// </remarks>
+            public const string Targets = "vs.projectsystem.managed.designtimebuildcomplete.targets2";
 
             /// <summary>
             ///     The number of errors reported during the design-time build.
