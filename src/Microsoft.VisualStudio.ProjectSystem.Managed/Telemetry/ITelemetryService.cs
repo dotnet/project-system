@@ -74,7 +74,7 @@ internal interface ITelemetryService
     ///     </para>
     ///     <paramref name="properties"/> is contains no elements.
     /// </exception>
-    void PostProperties(string eventName, IEnumerable<(string propertyName, object? propertyValue)> properties);
+    void PostProperties(string eventName, IEnumerable<(string Name, object? Value)> properties);
 
     /// <summary>
     ///     Begins an operation with a recorded duration. Consumers must call <see cref="ITelemetryOperation.End(TelemetryResult)"/>

@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -8,11 +9,6 @@ namespace Microsoft.VisualStudio.Telemetry;
 [Export(typeof(ITelemetryService))]
 internal class ManagedTelemetryService : ITelemetryService
 {
-#if DEBUG
-    private const string EventNamePrefix = "vs/projectsystem/managed/";
-    private const string PropertyNamePrefix = "vs.projectsystem.managed.";
-#endif
-
     public void PostEvent(string eventName)
     {
         Requires.NotNullOrEmpty(eventName);
@@ -31,7 +27,7 @@ internal class ManagedTelemetryService : ITelemetryService
         PostTelemetryEvent(telemetryEvent);
     }
 
-    public void PostProperties(string eventName, IEnumerable<(string propertyName, object? propertyValue)> properties)
+    public void PostProperties(string eventName, IEnumerable<(string Name, object? Value)> properties)
     {
         Requires.NotNullOrEmpty(eventName);
         Requires.NotNullOrEmpty(properties);
@@ -42,31 +38,25 @@ internal class ManagedTelemetryService : ITelemetryService
         PostTelemetryEvent(telemetryEvent);
     }
 
-    private static void AddPropertiesToEvent(IEnumerable<(string propertyName, object? propertyValue)> properties, TelemetryEvent telemetryEvent)
+    private static void AddPropertiesToEvent(IEnumerable<(string Name, object? Value)> properties, TelemetryEvent telemetryEvent)
     {
-        foreach ((string propertyName, object? propertyValue) in properties)
+        foreach ((string name, object? value) in properties)
         {
-            if (propertyValue is ComplexPropertyValue complexProperty)
+            if (value is ComplexPropertyValue complex)
             {
-                telemetryEvent.Properties.Add(propertyName, new TelemetryComplexProperty(complexProperty.Data));
+                telemetryEvent.Properties.Add(name, new TelemetryComplexProperty(complex.Data));
             }
             else
             {
-                telemetryEvent.Properties.Add(propertyName, propertyValue);
+                telemetryEvent.Properties.Add(name, value);
             }
         }
     }
 
     private void PostTelemetryEvent(TelemetryEvent telemetryEvent)
     {
-#if DEBUG
-        Assumes.True(telemetryEvent.Name.StartsWith(EventNamePrefix, StringComparisons.TelemetryEventNames));
-
-        foreach ((string propertyName, _) in telemetryEvent.Properties)
-        {
-            Assumes.True(propertyName.StartsWith(PropertyNamePrefix, StringComparisons.TelemetryEventNames));
-        }
-#endif
+        ValidateEventName(telemetryEvent.Name);
+        ValidatePropertyNames(telemetryEvent.Properties.Keys);
 
         PostEventToSession(telemetryEvent);
     }
@@ -80,16 +70,18 @@ internal class ManagedTelemetryService : ITelemetryService
     {
         Requires.NotNullOrEmpty(eventName);
 
-#if DEBUG
-        Assumes.True(eventName.StartsWith(EventNamePrefix, StringComparisons.TelemetryEventNames));
-#endif
+        ValidateEventName(eventName);
+
         return new TelemetryOperation(TelemetryService.DefaultSession.StartOperation(eventName));
     }
+
+    /// <summary>Internal, for testing purposes only.</summary>
+    internal bool IsUserMicrosoftInternal { get; set; } = TelemetryService.DefaultSession.IsUserMicrosoftInternal;
 
     public string HashValue(string value)
     {
         // Don't hash PII for internal users since we don't need to.
-        if (TelemetryService.DefaultSession.IsUserMicrosoftInternal)
+        if (IsUserMicrosoftInternal)
         {
             return value;
         }
@@ -103,46 +95,66 @@ internal class ManagedTelemetryService : ITelemetryService
         byte[] hash = cryptoServiceProvider.ComputeHash(inputBytes);
 #endif
 
-        return BitConverter.ToString(hash);
+        return ByteArrayToHexString(hash, byteCount: 8);
+
+        static string ByteArrayToHexString(byte[] bytes, int byteCount)
+        {
+            char[] hexChars = new char[byteCount * 2];
+            const string hexDigits = "0123456789abcdef";
+
+            for (int i = 0; i < byteCount; i++)
+            {
+                int b = bytes[i];
+                hexChars[i * 2] = hexDigits[b >> 4];
+                hexChars[i * 2 + 1] = hexDigits[b & 0x0F];
+            }
+
+            return new string(hexChars);
+        }
     }
 
-    private class TelemetryOperation : ITelemetryOperation
+    #region Validation (Debug builds only)
+
+    [Conditional("DEBUG")]
+    private static void ValidateEventName(string eventName)
     {
-        private readonly TelemetryScope<OperationEvent> _scope;
+        const string EventNamePrefix = "vs/projectsystem/managed/";
 
-        public TelemetryOperation(TelemetryScope<OperationEvent> scope)
+        Assumes.True(eventName.StartsWith(EventNamePrefix, StringComparisons.TelemetryEventNames));
+    }
+
+    [Conditional("DEBUG")]
+    private static void ValidatePropertyNames(IEnumerable<string> propertyNames)
+    {
+        const string PropertyNamePrefix = "vs.projectsystem.managed.";
+
+        foreach (string propertyName in propertyNames)
         {
-            _scope = scope;
+            Assumes.True(propertyName.StartsWith(PropertyNamePrefix, StringComparisons.TelemetryEventNames));
         }
+    }
 
+    #endregion
+
+    private sealed class TelemetryOperation(TelemetryScope<OperationEvent> scope) : ITelemetryOperation
+    {
         public void Dispose()
         {
-#if DEBUG
-            Assumes.True(_scope.IsEnd, $"Failed to call '{nameof(ITelemetryOperation.End)}' on {nameof(ITelemetryOperation)} instance.");
-#endif
-            if (!_scope.IsEnd)
-            {
-                _scope.End(TelemetryResult.None);
-            }
+            Assumes.True(scope.IsEnd, $"Failed to call '{nameof(ITelemetryOperation.End)}' on {nameof(ITelemetryOperation)} instance.");
         }
 
         public void End(TelemetryResult result)
         {
-            _scope.End(result);
+            scope.End(result);
         }
 
-        public void SetProperties(IEnumerable<(string propertyName, object? propertyValue)> properties)
+        public void SetProperties(IEnumerable<(string Name, object? Value)> properties)
         {
             Requires.NotNullOrEmpty(properties);
-            
-#if DEBUG
-            foreach ((string propertyName, _) in properties)
-            {
-                Assumes.True(propertyName.StartsWith(PropertyNamePrefix, StringComparisons.TelemetryEventNames));
-            }
-#endif
 
-            AddPropertiesToEvent(properties, _scope.EndEvent);
+            ValidatePropertyNames(properties.Select(property => property.Name));
+
+            AddPropertiesToEvent(properties, scope.EndEvent);
         }
     }
 }

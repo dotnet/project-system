@@ -124,6 +124,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred during a design-time build. Some features may not work correctly. See the Error List for details..
+        /// </summary>
+        internal static string DesignTimeBuildErrorDetectedInfoBarMessage {
+            get {
+                return ResourceManager.GetString("DesignTimeBuildErrorDetectedInfoBarMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The project doesn&apos;t know how to run the profile with name &apos;{0}&apos; and command &apos;{1}&apos;..
         /// </summary>
         internal static string DontKnowHowToRunProfile_2 {

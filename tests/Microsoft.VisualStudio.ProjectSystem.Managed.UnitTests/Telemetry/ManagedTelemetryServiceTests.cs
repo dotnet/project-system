@@ -189,6 +189,26 @@ namespace Microsoft.VisualStudio.Telemetry
             });
         }
 
+        [Fact]
+        public void HashValue()
+        {
+            var service = CreateInstance();
+
+            service.IsUserMicrosoftInternal = true;
+
+            Assert.Equal("Hello", service.HashValue("Hello"));
+            Assert.Equal("World", service.HashValue("World"));
+            Assert.Equal("", service.HashValue(""));
+            Assert.Equal(" ", service.HashValue(" "));
+
+            service.IsUserMicrosoftInternal = false;
+
+            Assert.Equal("185f8db32271fe25", service.HashValue("Hello"));
+            Assert.Equal("78ae647dc5544d22", service.HashValue("World"));
+            Assert.Equal("e3b0c44298fc1c14", service.HashValue(""));
+            Assert.Equal("36a9e7f1c95b82ff", service.HashValue(" "));
+        }
+
         private static ManagedTelemetryService CreateInstance(Action<TelemetryEvent>? action = null)
         {
             if (action is null)
