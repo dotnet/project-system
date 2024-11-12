@@ -24,11 +24,9 @@ namespace Microsoft.VisualStudio
         public static StringComparer ItemTypes => StringComparer.OrdinalIgnoreCase;
         public static StringComparer TargetNames => StringComparer.OrdinalIgnoreCase;
         public static StringComparer FrameworkIdentifiers => StringComparer.OrdinalIgnoreCase;
-        public static StringComparer LibraryNames => StringComparer.Ordinal;
         public static StringComparer EnvironmentVariableNames => StringComparer.OrdinalIgnoreCase;
         public static StringComparer TelemetryEventNames => StringComparer.Ordinal;
         public static StringComparer NamedExports => StringComparer.OrdinalIgnoreCase;
-        public static StringComparer UIPropertyNames => StringComparer.OrdinalIgnoreCase;
         public static StringComparer LaunchSettingsPropertyNames => StringComparer.Ordinal;
         public static StringComparer LaunchProfileNames => StringComparer.Ordinal;
         public static StringComparer LaunchProfileProperties => StringComparer.Ordinal;
@@ -38,7 +36,6 @@ namespace Microsoft.VisualStudio
         public static StringComparer LanguageIdentifiers => StringComparer.Ordinal;
         public static StringComparer LanguageIdentifiersIgnoreCase => StringComparer.OrdinalIgnoreCase;
         public static StringComparer VisualStudioSetupComponentIds => StringComparer.OrdinalIgnoreCase;
-        public static StringComparer WorkloadNames => StringComparer.OrdinalIgnoreCase;
     }
 
     /// <summary>
@@ -63,11 +60,9 @@ namespace Microsoft.VisualStudio
         public static StringComparison ItemTypes => StringComparison.OrdinalIgnoreCase;
         public static StringComparison TargetNames => StringComparison.OrdinalIgnoreCase;
         public static StringComparison FrameworkIdentifiers => StringComparison.OrdinalIgnoreCase;
-        public static StringComparison LibraryNames => StringComparison.Ordinal;
         public static StringComparison EnvironmentVariableNames => StringComparison.OrdinalIgnoreCase;
         public static StringComparison TelemetryEventNames => StringComparison.Ordinal;
         public static StringComparison NamedExports => StringComparison.OrdinalIgnoreCase;
-        public static StringComparison UIPropertyNames => StringComparison.OrdinalIgnoreCase;
         public static StringComparison LaunchSettingsPropertyNames => StringComparison.Ordinal;
         public static StringComparison LaunchProfileNames => StringComparison.Ordinal;
         public static StringComparison LaunchProfileProperties => StringComparison.Ordinal;
@@ -77,6 +72,5 @@ namespace Microsoft.VisualStudio
         public static StringComparison LanguageIdentifiers => StringComparison.Ordinal;
         public static StringComparison LanguageIdentifiersIgnoreCase => StringComparison.OrdinalIgnoreCase;
         public static StringComparison VisualStudioSetupComponentIds => StringComparison.OrdinalIgnoreCase;
-        public static StringComparison WorkloadNames => StringComparison.OrdinalIgnoreCase;
     }
 }

@@ -117,7 +117,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             if (_sessionActive)
             {
                 _sessionActive = false;
-                _isRunningUnderDebugger = false;
                 await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
                 WriteToOutputWindow(
                     new HotReloadLogMessage(

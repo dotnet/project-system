@@ -370,10 +370,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Assumes.NotNull(_project.Services.HostObject);
             await _projectThreadingService.SwitchToUIThread();
 
-            // Step 1: Stop running project
-            await StopProjectAsync(hotReloadState, cancellationToken);
-            Assumes.Null(_solutionBuildEventsSubscription);
-
             // Step 2: Debug or NonDebug?
             uint dbgLaunchFlag = isRunningUnderDebug ? (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCHDEBUG : (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCH;
 

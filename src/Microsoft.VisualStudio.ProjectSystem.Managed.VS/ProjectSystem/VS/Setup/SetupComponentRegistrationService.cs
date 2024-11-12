@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Globalization;
 using System.Runtime.InteropServices;
 using Microsoft.ServiceHub.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
@@ -61,6 +62,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
             // We currently assume that the project will run on the same architecture as VS.
             // This will be the common case, but does not cover situations where a project runs
             // under emulation (e.g. an x64 build running on an ARM64 system).
+
             // TODO consider the architecture of the project itself
             Architecture architecture = RuntimeInformation.ProcessArchitecture;
 
@@ -71,7 +73,9 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
                 return null;
             }
 
-            HashSet<string> installedRuntimeComponentIds = new(StringComparers.VisualStudioSetupComponentIds);
+            HashSet<string> installedRuntimeComponentIds = new(
+                capacity: runtimeVersions.Length,
+                comparer: StringComparers.VisualStudioSetupComponentIds);
 
             foreach (string runtimeVersion in runtimeVersions)
             {
@@ -82,17 +86,18 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
                 // - "8.0.0-preview.7.23375.6"
                 // - "8.0.0-rc.1.23419.4"
                 //
-                // We only want the major/minor version, in the same format as TargetFrameworkVersion (e.g. "v8.0").
+                // We only want the major/minor version, e.g. "8.0".
 
-                int firstDotIndex = runtimeVersion.IndexOf('.');
-                int secondDotIndex = runtimeVersion.IndexOf('.', firstDotIndex + 1);
-                string versionNumber = runtimeVersion.Substring(0, secondDotIndex);
-                string version = $"v{versionNumber}";
+                string? componentId = TryGetNetCoreRuntimeComponentId(runtimeVersion);
 
-                if (SetupComponentReferenceData.TryGetComponentIdByNetCoreTargetFrameworkVersion(version, out string? runtimeComponentId))
+                if (componentId is not null)
                 {
-                    installedRuntimeComponentIds.Add(runtimeComponentId);
+                    // All runtime version strings should reach this point.
+                    installedRuntimeComponentIds.Add(componentId);
+                    continue;
                 }
+
+                System.Diagnostics.Debug.Fail($"Unexpected runtime version: {runtimeVersion}");
             }
 
             return installedRuntimeComponentIds;
@@ -182,14 +187,14 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
             {
                 if (IsMissingComponent(componentId))
                 {
-                    missingComponents ??= new();
+                    missingComponents ??= [];
                     missingComponents.Add(componentId);
                 }
             }
 
             if (missingComponents is not null)
             {
-                missingComponentsByProjectGuid ??= new();
+                missingComponentsByProjectGuid ??= [];
                 missingComponentsByProjectGuid.Add(projectGuid, missingComponents);
             }
         }
@@ -228,7 +233,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
             {
                 // We couldn't determine installed runtimes, so err on the side of not reporting missing runtimes
                 // rather than warning the user about something they do actually have installed.
-                if (SetupComponentReferenceData.IsRuntimeComponentId(componentId))
+                if (IsRuntimeComponentId(componentId))
                 {
                     // This looks like a runtime component.
                     return false;
@@ -263,6 +268,49 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         _snapshotByProjectGuid = ImmutableDictionary<Guid, UnconfiguredSetupComponentSnapshot?>.Empty;
 
         return HResult.OK;
+    }
+
+    #endregion
+
+    #region Runtime component ID handling
+
+    internal static string? TryGetNetCoreRuntimeComponentId(string versionString)
+    {
+        int firstDotIndex = versionString.IndexOf('.');
+        int secondDotIndex = versionString.IndexOf('.', firstDotIndex + 1);
+
+        if (secondDotIndex >= 0)
+        {
+            if (decimal.TryParse(
+                versionString.Substring(0, secondDotIndex),
+                NumberStyles.AllowDecimalPoint,
+                CultureInfo.InvariantCulture,
+                out decimal version))
+            {
+                // Map known runtime versions to component IDs.
+                return version switch
+                {
+                    // From .NET 5 onwards, the format has been stable.
+                    // If the format changes this will need to be updated.
+                    >= 5.0m => $"Microsoft.NetCore.Component.Runtime.{version}",
+                    // .NET Core 3.x uses the 3.1 runtime.
+                    3.0m or 3.1m => "Microsoft.NetCore.Component.Runtime.3.1",
+                    // .NET Core 2.x uses the 2.1 runtime.
+                    2.0m or 2.1m or 2.2m => "Microsoft.Net.Core.Component.SDK.2.1",
+                    // Unexpected version. Not expected in practice.
+                    _ => null
+                };
+            }
+        }
+
+        return null;
+    }
+
+    internal static bool IsRuntimeComponentId(string componentId)
+    {
+        // Look for specific prefixes. If the format changes this will need to be updated.
+        return componentId.StartsWith("Microsoft.NetCore.Component.Runtime.", StringComparisons.VisualStudioSetupComponentIds)
+            || componentId.StartsWith("Microsoft.Net.Core.Component.SDK.", StringComparisons.VisualStudioSetupComponentIds);
     }
 
     #endregion

@@ -6,9 +6,11 @@ using Microsoft.VisualStudio.Text;
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.MSBuildDependencies;
 
 [Export(typeof(IMSBuildDependencyFactory))]
-[AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.SdkReferences)]
+[AppliesTo(AppliesTo)]
 internal class SdkDependencyFactory : MSBuildDependencyFactoryBase
 {
+    public const string AppliesTo = ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.SdkReferences;
+
     private static readonly DependencyFlagCache s_flagCache = new(
         resolved: DependencyTreeFlags.SdkDependency + DependencyTreeFlags.SupportsFolderBrowse,
         unresolved: DependencyTreeFlags.SdkDependency);
