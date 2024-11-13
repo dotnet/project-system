@@ -300,7 +300,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public ValueTask<int?> GetTargetLocalProcessIdAsync(CancellationToken cancellationToken)
         {
-            if (_callback is HotReloadState hotReloadState)
+            if (_callback is IProjectHotReloadSessionCallback2 hotReloadState)
             {
                 return new ValueTask<int?>(hotReloadState.Process?.Id);
             }
@@ -310,7 +310,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public ValueTask<string?> GetProjectFullPathAsync(CancellationToken cancellationToken)
         {
-            if (_callback is HotReloadState hrs)
+            if (_callback is IProjectHotReloadSessionCallback2 hrs)
             {
                 return new ValueTask<string?>(hrs.Project?.FullPath);
             }
