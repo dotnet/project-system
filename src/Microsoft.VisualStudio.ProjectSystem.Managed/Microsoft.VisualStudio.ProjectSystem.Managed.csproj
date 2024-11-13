@@ -50,6 +50,8 @@
   <ItemGroup>
     <!-- Needed to break assembly conflict on StreamJsonRpc between microsoft.visualstudio.projectsystem.query and microsoft.visualstudio.languageservices -->
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
+    <!--Pin MessagePack to a patched version with security vulnerable fix-->
+    <PackageReference Include="MessagePack" />
     <!-- Path property: PkgMicrosoft_CodeAnalysis_Common -->
     <!-- The path is needed so we can copy the runtime assembly into the NPM package. -->
     <PackageReference Include="Microsoft.CodeAnalysis.Common" GeneratePathProperty="true" />
