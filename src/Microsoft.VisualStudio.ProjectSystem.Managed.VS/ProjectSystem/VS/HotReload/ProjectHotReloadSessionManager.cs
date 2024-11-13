@@ -34,7 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly Dictionary<int, HotReloadState> _activeSessions = [];
         private HotReloadState? _pendingSessionState = null;
         private int _nextUniqueId = 1;
-        private IAsyncDisposable? _solutionBuildEventsSubscription = null;
 
         public bool HasActiveHotReloadSessions => _activeSessions.Count != 0;
 
@@ -370,10 +369,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Assumes.NotNull(_project.Services.HostObject);
             await _projectThreadingService.SwitchToUIThread();
 
-            // Step 2: Debug or NonDebug?
+            // Step 1: Debug or NonDebug?
             uint dbgLaunchFlag = isRunningUnderDebug ? (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCHDEBUG : (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCH;
 
-            // Step 3: Build and Launch Debug
+            // Step 2: Build and Launch Debug
             var projectVsHierarchy = (IVsHierarchy)_project.Services.HostObject;
 
             var result = _solutionBuildManager.Value.StartSimpleUpdateProjectConfiguration(
@@ -438,13 +437,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                     if (sessionCountOnEntry == 1 && _activeSessions.Count == 0)
                     {
                         await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: false);
-                    }
-
-                    // Dispose the solution build events subscription if there are no active sessions
-                    if (_solutionBuildEventsSubscription is not null)
-                    {
-                        await _solutionBuildEventsSubscription.DisposeAsync();
-                        _solutionBuildEventsSubscription = null;
                     }
                 }
 
