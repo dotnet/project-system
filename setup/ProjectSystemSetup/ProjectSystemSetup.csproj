@@ -8,7 +8,6 @@
   <!-- Local properties -->
   <PropertyGroup>
     <_ManagedProjectName>Microsoft.VisualStudio.ProjectSystem.Managed</_ManagedProjectName>
-    <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
   </PropertyGroup>
 
   <PropertyGroup>

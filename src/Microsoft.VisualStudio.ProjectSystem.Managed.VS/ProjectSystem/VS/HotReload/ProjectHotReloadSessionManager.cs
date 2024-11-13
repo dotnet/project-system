@@ -23,7 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly Lazy<IProjectHotReloadAgent> _projectHotReloadAgent;
         private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
         private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
-        private readonly Lazy<ISolutionBuildManager> _solutionBuildManager;
+        private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
+        private IVsSolutionBuildManager2? _vsSolutionBuildManager2;
         private readonly IProjectThreadingService _projectThreadingService;
 
         // Protect the state from concurrent access. For example, our Process.Exited event
@@ -46,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Lazy<IProjectHotReloadAgent> projectHotReloadAgent,
             Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
             Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
-            Lazy<ISolutionBuildManager> solutionBuilderManager)
+            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
@@ -56,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _projectHotReloadAgent = projectHotReloadAgent;
             _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
             _projectHotReloadNotificationService = projectHotReloadNotificationService;
-            _solutionBuildManager = solutionBuilderManager;
+            _vsSolutionBuildManagerService = solutionBuildManagerService;
 
             _semaphore = ReentrantSemaphore.Create(
                 initialCount: 1,
@@ -369,20 +370,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Assumes.NotNull(_project.Services.HostObject);
             await _projectThreadingService.SwitchToUIThread();
 
+            if (_vsSolutionBuildManager2 is null)
+            {
+                _vsSolutionBuildManager2 = await _vsSolutionBuildManagerService.GetValueAsync(cancellationToken);
+            }
+
             // Step 1: Debug or NonDebug?
             uint dbgLaunchFlag = isRunningUnderDebug ? (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCHDEBUG : (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCH;
 
             // Step 2: Build and Launch Debug
             var projectVsHierarchy = (IVsHierarchy)_project.Services.HostObject;
 
-            var result = _solutionBuildManager.Value.StartSimpleUpdateProjectConfiguration(
+            var result = _vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(
                 pIVsHierarchyToBuild: projectVsHierarchy,
                 pIVsHierarchyDependent: null,
                 pszDependentConfigurationCanonicalName: null,
                 dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD | dbgLaunchFlag,
                 dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
                 fSuppressUI: 0);
-                
+
+            ErrorHandler.ThrowOnFailure(result);
+
             return result == HResult.OK;
         }
 

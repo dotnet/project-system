@@ -2,6 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Build;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
@@ -170,6 +171,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 .ImplementGetConfiguredProjectForActiveFrameworkAsync(activeConfiguredProject)
                 .Object;
 
+            var iVSSolutionBuildManagerServiceMock = new Mock<IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2>>();
+
             var manager = new ProjectHotReloadSessionManager(
                 UnconfiguredProjectFactory.Create(),
                 IProjectThreadingServiceFactory.Create(),
@@ -178,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 new Lazy<IProjectHotReloadAgent>(() => IProjectHotReloadAgentFactory.Create()),
                 new Lazy<IHotReloadDiagnosticOutputService>(() => IHotReloadDiagnosticOutputServiceFactory.Create(outputServiceCallback)),
                 new Lazy<IProjectHotReloadNotificationService>(() => IProjectHotReloadNotificationServiceFactory.Create()),
-                new Lazy<ISolutionBuildManager>(() => ISolutionBuildManagerFactory.Create(null, null, false, false)));
+                iVSSolutionBuildManagerServiceMock.Object);
 
             return manager;
         }

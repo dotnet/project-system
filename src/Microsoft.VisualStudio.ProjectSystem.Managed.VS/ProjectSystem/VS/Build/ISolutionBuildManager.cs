@@ -29,13 +29,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         IVsHierarchy[] GetProjectDependencies(IVsHierarchy hierarchy);
 
         void StartUpdateSpecificProjectConfigurations(IVsHierarchy[] hierarchy, uint[] buildFlags, uint dwFlags);
-
-        int StartSimpleUpdateProjectConfiguration(
-            IVsHierarchy pIVsHierarchyToBuild,
-            IVsHierarchy? pIVsHierarchyDependent,
-            string? pszDependentConfigurationCanonicalName,
-            uint dwFlags,
-            uint dwDefQueryResults,
-            int fSuppressUI);
     }
 }
