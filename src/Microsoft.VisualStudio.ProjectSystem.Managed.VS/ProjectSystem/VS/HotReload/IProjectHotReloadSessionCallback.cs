@@ -16,4 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         IDeltaApplier? GetDeltaApplier();
     }
+
+    internal interface IProjectHotReloadSessionCallback2 : IProjectHotReloadSessionCallback
+    {
+        Task<bool> RestartProjectAsync(bool isRunningUnderDebug, CancellationToken cancellationToken);
+    }
 }

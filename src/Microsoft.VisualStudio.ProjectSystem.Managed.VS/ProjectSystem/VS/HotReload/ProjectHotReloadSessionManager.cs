@@ -485,25 +485,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             }
         }
 
-        internal class HotReloadState : IProjectHotReloadSessionCallback
+        private class HotReloadState : IProjectHotReloadSessionCallback2
         {
+            private readonly ProjectHotReloadSessionManager _sessionManager;
+
             public Process? Process { get; set; }
             public IProjectHotReloadSession? Session { get; set; }
 
-            public ProjectHotReloadSessionManager SessionManager { get; }
-
             public bool SupportsRestart => true;
 
-            public UnconfiguredProject? Project => SessionManager._project;
+            public UnconfiguredProject? Project => _sessionManager._project;
 
             public HotReloadState(ProjectHotReloadSessionManager sessionManager)
             {
-                SessionManager = sessionManager;
+                _sessionManager = sessionManager;
             }
 
             internal void OnProcessExited(object sender, EventArgs e)
             {
-                SessionManager.OnProcessExited(this);
+                _sessionManager.OnProcessExited(this);
             }
 
             public Task OnAfterChangesAppliedAsync(CancellationToken cancellationToken)
@@ -513,7 +513,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             public Task<bool> StopProjectAsync(CancellationToken cancellationToken)
             {
-                return SessionManager.StopProjectAsync(this, cancellationToken).AsTask();
+                return _sessionManager.StopProjectAsync(this, cancellationToken).AsTask();
             }
 
             public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
@@ -523,7 +523,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             public Task<bool> RestartProjectAsync(bool isRunningUnderDebug, CancellationToken cancellationToken)
             {
-                return SessionManager.RestartProjectAsync(this, isRunningUnderDebug, cancellationToken);
+                return _sessionManager.RestartProjectAsync(this, isRunningUnderDebug, cancellationToken);
             }
 
             public IDeltaApplier? GetDeltaApplier()

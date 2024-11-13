@@ -1,9 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.Debugger.Contracts.EditAndContinue;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
-using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 using static Microsoft.VisualStudio.ProjectSystem.VS.HotReload.ProjectHotReloadSessionManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
@@ -255,14 +253,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 cancellationToken);
 
 
-            if (_callback is HotReloadState hrs)
+            if (_callback is IProjectHotReloadSessionCallback2 callBack2)
             {
-                await hrs.RestartProjectAsync(_isRunningUnderDebugger, cancellationToken);
-
-                return;
+                await callBack2.RestartProjectAsync(_isRunningUnderDebugger, cancellationToken);
             }
-
-            await _callback.RestartProjectAsync(cancellationToken);
+            else
+            {
+                await _callback.RestartProjectAsync(cancellationToken);
+            }
         }
 
         public async ValueTask StopAsync(CancellationToken cancellationToken)
