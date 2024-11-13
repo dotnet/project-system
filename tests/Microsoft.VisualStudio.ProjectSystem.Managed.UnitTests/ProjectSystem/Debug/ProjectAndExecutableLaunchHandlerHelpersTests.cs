@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
@@ -7,11 +8,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
 public class ProjectAndExecutableLaunchHandlerHelpersTests
 {
-    [Fact]
-    public async Task GetOutputDirectoryAsync_Returns_OutputDirectory_When_FullPath()
+    [Theory]
+    [InlineData("C:\\OutputDirectory", "/C:/OutputDirectory", "C:\\OutputDirectory")] // Windows
+    [InlineData("\\mnt\\OutputDirectory", "/mnt/OutputDirectory", "/mnt/OutputDirectory")] // Linux
+    [InlineData("\\mnt\\OutputDirectory", "/mnt/OutputDirectory", "/mnt\\OutputDirectory")] // mixed
+    public async Task GetOutputDirectoryAsync_Returns_OutputDirectory_When_FullPath(string expectedOutputDirectoryOnWindows, string expectedOutputDirectoryOnLinux, string actualOutputDirectory)
     {
-        // Arrange
-        var expectedOutputDirectory = @"C:\OutputDirectory";
+        var expectedOutputDirectory = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? expectedOutputDirectoryOnWindows : expectedOutputDirectoryOnLinux;
         var project = CreateConfiguredProject(new() { { "OutDir", expectedOutputDirectory } });
 
         // Act
