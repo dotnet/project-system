@@ -9,24 +9,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
 {
     [Export(typeof(IPackageRestoreUnconfiguredInputDataSource))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal class PackageRestoreUnconfiguredInputDataSource : ChainedProjectValueDataSourceBase<PackageRestoreUnconfiguredInput>, IPackageRestoreUnconfiguredInputDataSource
+    [method: ImportingConstructor]
+    internal class PackageRestoreUnconfiguredInputDataSource(
+        UnconfiguredProject project,
+        IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
+        IActiveConfigurationGroupService activeConfigurationGroupService)
+        : ChainedProjectValueDataSourceBase<PackageRestoreUnconfiguredInput>(
+            project,
+            synchronousDisposal: false,
+            registerDataSource: false),
+        IPackageRestoreUnconfiguredInputDataSource
     {
-        private readonly UnconfiguredProject _project;
-        private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
-
-        [ImportingConstructor]
-        public PackageRestoreUnconfiguredInputDataSource(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
-            : base(project, synchronousDisposal: false, registerDataSource: false)
-        {
-            _project = project;
-            _activeConfigurationGroupService = activeConfigurationGroupService;
-        }
-
-        protected override UnconfiguredProject ContainingProject
-        {
-            get { return _project; }
-        }
-
         protected override IDisposable LinkExternalInput(ITargetBlock<RestoreInfo> targetBlock)
         {
             // At a high-level, we want to combine all implicitly active configurations (ie the active config of each TFM) restore data
@@ -34,51 +27,65 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             // made to a configuration, such as adding a PackageReference, we should react to it and push a new version of our output. If the 
             // active configuration changes, we should react to it, and publish data from the new set of implicitly active configurations.
 
+            // Merge across configurations
             var joinBlock = new ConfiguredProjectDataSourceJoinBlock<PackageRestoreConfiguredInput>(
                 project => project.Services.ExportProvider.GetExportedValueOrDefault<IPackageRestoreConfiguredInputDataSource>(),
                 JoinableFactory,
-                _project);
+                ContainingProject!);
 
             // Transform all restore data -> combined restore data
-            DisposableValue<ISourceBlock<RestoreInfo>> mergeBlock = joinBlock.TransformWithNoDelta(update => update.Derive(MergeRestoreInputs));
+            IPropagatorBlock<IProjectVersionedValue<(IReadOnlyList<PackageRestoreConfiguredInput>, ConfiguredProject)>, RestoreInfo> transformBlock =
+                DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<(IReadOnlyList<PackageRestoreConfiguredInput>, ConfiguredProject)>, RestoreInfo>(
+                    transformFunction: update => update.Derive(MergeRestoreInputs));
 
-            JoinUpstreamDataSources(_activeConfigurationGroupService.ActiveConfiguredProjectGroupSource);
+            // Sync link in the active configuration
+            IDisposable syncLink = ProjectDataSources.SyncLinkTo(
+                joinBlock.SyncLinkOptions(),
+                activeConfiguredProjectProvider.SourceBlock.SyncLinkOptions(),
+                target: transformBlock,
+                linkOptions: DataflowOption.PropagateCompletion);
+
+            JoinUpstreamDataSources(activeConfigurationGroupService.ActiveConfiguredProjectGroupSource, activeConfiguredProjectProvider);
 
             // Set the link up so that we publish changes to target block
-            mergeBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
+            transformBlock.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
 
             return new DisposableBag
             {
                 joinBlock,
+                syncLink,
 
                 // Link the active configured projects to our join block
-                _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkTo(joinBlock, DataflowOption.PropagateCompletion),
+                activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkTo(joinBlock, DataflowOption.PropagateCompletion),
             };
         }
 
-        private PackageRestoreUnconfiguredInput MergeRestoreInputs(IReadOnlyCollection<PackageRestoreConfiguredInput> inputs)
+        private PackageRestoreUnconfiguredInput MergeRestoreInputs((IReadOnlyList<PackageRestoreConfiguredInput> Inputs, ConfiguredProject ActiveConfiguredProject) data)
         {
+            (IReadOnlyList<PackageRestoreConfiguredInput> inputs, ConfiguredProject activeConfiguredProject) = data;
+
             // If there are no updates, we have no active configurations
             ProjectRestoreInfo? restoreInfo = null;
-            if (inputs.Count != 0)
+
+            if (inputs.Count is not 0)
             {
                 // We need to combine the snapshots from each implicitly active configuration (ie per TFM), 
                 // resolving any conflicts, which we'll report to the user.
-                string msbuildProjectExtensionsPath = ResolveMSBuildProjectExtensionsPathConflicts(inputs);
+                string msBuildProjectExtensionsPath = ResolveMSBuildProjectExtensionsPathConflicts(inputs);
                 string originalTargetFrameworks = ResolveOriginalTargetFrameworksConflicts(inputs);
                 string projectAssetsFilePath = ResolveProjectAssetsFilePathConflicts(inputs);
                 ImmutableArray<ReferenceItem> toolReferences = ResolveToolReferenceConflicts(inputs);
                 ImmutableArray<TargetFrameworkInfo> targetFrameworks = GetAllTargetFrameworks(inputs);
 
                 restoreInfo = new ProjectRestoreInfo(
-                    msbuildProjectExtensionsPath,
+                    msBuildProjectExtensionsPath,
                     projectAssetsFilePath,
                     originalTargetFrameworks,
                     targetFrameworks,
                     toolReferences);
             }
 
-            return new PackageRestoreUnconfiguredInput(restoreInfo, inputs);
+            return new PackageRestoreUnconfiguredInput(restoreInfo, inputs, activeConfiguredProject.ProjectConfiguration);
         }
 
         private string ResolveProjectAssetsFilePathConflicts(IReadOnlyCollection<PackageRestoreConfiguredInput> updates)
@@ -110,7 +117,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             // Every config should had same value
             bool hasConflicts = updates.Select(u => propertyGetter(u.RestoreInfo))
                                        .Distinct(StringComparers.PropertyNames)
-                                       .Count() > 1;
+                                       .Skip(1)
+                                       .Any();
 
             if (hasConflicts)
             {
@@ -208,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
                 ReportDataSourceUserFault(
                   ex,
                   ProjectFaultSeverity.LimitedFunctionality,
-                  ContainingProject);
+                  ContainingProject!);
             }
         }
     }

@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             // them to actually contains changes, only nominate if there are any.
             Hash hash = RestoreHasher.CalculateHash(restoreInfo);
 
-            if (await _cycleDetector.IsCycleDetectedAsync(hash, token))
+            if (await _cycleDetector.IsCycleDetectedAsync(hash, value.ActiveConfiguration, token))
             {
                 _lastHash = hash;
                 return false;
