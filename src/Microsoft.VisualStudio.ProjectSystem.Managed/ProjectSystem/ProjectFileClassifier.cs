@@ -32,9 +32,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private static readonly string? s_windows;
         private static readonly string? s_programFiles86;
         private static readonly string? s_programFiles64;
+        private static readonly string? s_dotNetSdk86;
+        private static readonly string? s_dotNetSdk64;
         private static readonly string? s_vsInstallationDirectory;
 
-        private string[] _nuGetPackageFolders = Array.Empty<string>();
+        private string[] _nuGetPackageFolders = [];
         private string _nuGetPackageFoldersString = "";
         private string? _projectExtensionsPath;
 
@@ -105,12 +107,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // The 64-bit path is available via an environment variable however.
             s_programFiles64 = Environment.GetEnvironmentVariable("ProgramW6432");
 
+            s_dotNetSdk86 = Path.Combine(s_programFiles86, "dotnet", "sdk");
+            s_dotNetSdk64 = Path.Combine(s_programFiles64, "dotnet", "sdk");
+
             s_vsInstallationDirectory = GetVSInstallationDirectory();
 
             EnsureTrailingSlash(ref s_windows);
             EnsureTrailingSlash(ref s_programFiles86);
             EnsureTrailingSlash(ref s_programFiles64);
             EnsureTrailingSlash(ref s_vsInstallationDirectory);
+            EnsureTrailingSlash(ref s_dotNetSdk86);
+            EnsureTrailingSlash(ref s_dotNetSdk64);
 
             return;
 
@@ -164,6 +171,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 || (s_programFiles86 is not null && filePath.StartsWith(s_programFiles86, StringComparisons.Paths))
                 || (s_windows is not null && filePath.StartsWith(s_windows, StringComparisons.Paths))
                 || _nuGetPackageFolders.Any(static (nuGetFolder, filePath) => filePath.StartsWith(nuGetFolder, StringComparisons.Paths), filePath)
+                || (s_vsInstallationDirectory is not null && filePath.StartsWith(s_vsInstallationDirectory, StringComparisons.Paths));
+        }
+
+        /// <summary>
+        /// Gets whether the file exists in one of a few well-known folders that are shipped by Microsoft.
+        /// </summary>
+        /// <param name="filePath">The path to the file to test.</param>
+        /// <returns><see langword="true"/> if the file is known to have been shipped by Microsoft, otherwise <see langword="false"/>.</returns>
+        public static bool IsShippedByMicrosoft(string filePath)
+        {
+            return (s_dotNetSdk86 is not null && filePath.StartsWith(s_dotNetSdk86, StringComparisons.Paths))
+                || (s_dotNetSdk64 is not null && filePath.StartsWith(s_dotNetSdk64, StringComparisons.Paths))
                 || (s_vsInstallationDirectory is not null && filePath.StartsWith(s_vsInstallationDirectory, StringComparisons.Paths));
         }
     }

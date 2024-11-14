@@ -17,6 +17,11 @@
         <target state="translated">Perfil {0}</target>
         <note>Default name for new launch profiles. The {0} is a decimal number chosen to guarantee the name is unique.</note>
       </trans-unit>
+      <trans-unit id="DesignTimeBuildErrorDetectedInfoBarMessage">
+        <source>An error occurred during a design-time build. Some features may not work correctly. See the Error List for details.</source>
+        <target state="translated">Error durante una compilación en tiempo de diseño. Es posible que algunas características no funcionen correctamente. Consulte la Lista de errores para obtener más detalles.</target>
+        <note>"Error List" is the title of the Visual Studio tool window that error messages are listed in.</note>
+      </trans-unit>
       <trans-unit id="DontKnowHowToRunProfile_2">
         <source>The project doesn't know how to run the profile with name '{0}' and command '{1}'.</source>
         <target state="translated">El proyecto no sabe cómo ejecutar el perfil con el nombre “{0}” y el comando “{1}”.</target>
