@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             WriteToOutputWindow(VSResources.HotReloadStartSession, default);
             _sessionActive = true;
             _isRunningUnderDebugger = runningUnderDebugger;
-            EnsureDeltaApplierforSession();
+            EnsureDeltaApplierForSession();
         }
 
         public async Task StopSessionAsync(CancellationToken cancellationToken)
