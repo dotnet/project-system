@@ -105,6 +105,7 @@
 
     <!-- Framework packages -->
     <PackageVersion Include="Microsoft.IO.Redist"                                                    Version="6.0.1" />
+    <!-- Pin version to avoid CVE in System.Text.Json 8.0.4 -->
     <PackageVersion Include="System.Text.Json"                                                    Version="8.0.5" />
 
     <!-- MSBuild (for tests only) -->
