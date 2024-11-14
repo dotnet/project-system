@@ -34,6 +34,7 @@
     <PackageReference Include="System.Threading.Tasks.Dataflow" />
     
     <PackageReference Include="Microsoft.IO.Redist" Condition="'$(TargetFramework)' == 'net472'" />
+    <PackageReference Include="System.Text.Json" />
 
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
