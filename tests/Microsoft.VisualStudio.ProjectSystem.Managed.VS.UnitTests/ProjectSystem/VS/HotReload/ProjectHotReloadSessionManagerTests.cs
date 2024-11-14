@@ -1,6 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.VS.Build;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
@@ -169,6 +171,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 .ImplementGetConfiguredProjectForActiveFrameworkAsync(activeConfiguredProject)
                 .Object;
 
+            var iVSSolutionBuildManagerServiceMock = new Mock<IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2>>();
+
             var manager = new ProjectHotReloadSessionManager(
                 UnconfiguredProjectFactory.Create(),
                 IProjectThreadingServiceFactory.Create(),
@@ -176,7 +180,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 activeDebugFrameworkServices,
                 new Lazy<IProjectHotReloadAgent>(() => IProjectHotReloadAgentFactory.Create()),
                 new Lazy<IHotReloadDiagnosticOutputService>(() => IHotReloadDiagnosticOutputServiceFactory.Create(outputServiceCallback)),
-                new Lazy<IProjectHotReloadNotificationService>(() => IProjectHotReloadNotificationServiceFactory.Create()));
+                new Lazy<IProjectHotReloadNotificationService>(() => IProjectHotReloadNotificationServiceFactory.Create()),
+                iVSSolutionBuildManagerServiceMock.Object);
 
             return manager;
         }
