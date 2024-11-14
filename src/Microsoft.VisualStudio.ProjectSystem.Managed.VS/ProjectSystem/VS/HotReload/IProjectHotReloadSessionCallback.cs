@@ -20,11 +20,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
     internal interface IProjectHotReloadSessionCallback2 : IProjectHotReloadSessionCallback
     {
-        public UnconfiguredProject? Project { get; }
+        UnconfiguredProject? Project { get; }
 
-        public Process? Process { get; set; }
+        Process? Process { get; }
 
-        public IProjectHotReloadSession? Session { get; set; }
+        IProjectHotReloadSession? Session { get; }
 
         Task<bool> RestartProjectAsync(bool isRunningUnderDebug, CancellationToken cancellationToken);
     }
