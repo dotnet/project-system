@@ -518,7 +518,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
             {
-                return Task.FromResult(false);
+                return TaskResult.False;
             }
 
             public Task<bool> RestartProjectAsync(bool isRunningUnderDebug, CancellationToken cancellationToken)
