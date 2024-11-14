@@ -1,14 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS.Build;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
@@ -23,9 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly Lazy<IProjectHotReloadAgent> _projectHotReloadAgent;
         private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
         private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
-        private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
-        private IVsSolutionBuildManager2? _vsSolutionBuildManager2;
-        private readonly IProjectThreadingService _projectThreadingService;
 
         // Protect the state from concurrent access. For example, our Process.Exited event
         // handler may run on one thread while we're still setting up the session on
@@ -46,18 +39,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             IActiveDebugFrameworkServices activeDebugFrameworkServices,
             Lazy<IProjectHotReloadAgent> projectHotReloadAgent,
             Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
-            Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
-            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService)
+            Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
-            _projectThreadingService = threadingService;
             _projectFaultHandlerService = projectFaultHandlerService;
             _activeDebugFrameworkServices = activeDebugFrameworkServices;
             _projectHotReloadAgent = projectHotReloadAgent;
             _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
             _projectHotReloadNotificationService = projectHotReloadNotificationService;
-            _vsSolutionBuildManagerService = solutionBuildManagerService;
 
             _semaphore = ReentrantSemaphore.Create(
                 initialCount: 1,
@@ -362,36 +352,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             return null;
         }
 
-        private async Task<bool> RestartProjectAsync(
-            HotReloadState hotReloadState,
-            bool isRunningUnderDebug,
-            CancellationToken cancellationToken)
+        private static Task<bool> RestartProjectAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
         {
-            Assumes.NotNull(_project.Services.HostObject);
-            await _projectThreadingService.SwitchToUIThread();
-
-            if (_vsSolutionBuildManager2 is null)
-            {
-                _vsSolutionBuildManager2 = await _vsSolutionBuildManagerService.GetValueAsync(cancellationToken);
-            }
-
-            // Step 1: Debug or NonDebug?
-            uint dbgLaunchFlag = isRunningUnderDebug ? (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCHDEBUG : (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCH;
-
-            // Step 2: Build and Launch Debug
-            var projectVsHierarchy = (IVsHierarchy)_project.Services.HostObject;
-
-            var result = _vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(
-                pIVsHierarchyToBuild: projectVsHierarchy,
-                pIVsHierarchyDependent: null,
-                pszDependentConfigurationCanonicalName: null,
-                dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD | dbgLaunchFlag,
-                dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
-                fSuppressUI: 0);
-
-            ErrorHandler.ThrowOnFailure(result);
-
-            return result == HResult.OK;
+            // TODO: Support restarting the project.
+            return TaskResult.False;
         }
 
         private static Task OnAfterChangesAppliedAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
@@ -485,16 +449,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             }
         }
 
-        private class HotReloadState : IProjectHotReloadSessionCallback2
+        private class HotReloadState : IProjectHotReloadSessionCallback
         {
             private readonly ProjectHotReloadSessionManager _sessionManager;
 
             public Process? Process { get; set; }
             public IProjectHotReloadSession? Session { get; set; }
 
-            public bool SupportsRestart => true;
-
-            public UnconfiguredProject? Project => _sessionManager._project;
+            // TODO: Support restarting the session.
+            public bool SupportsRestart => false;
 
             public HotReloadState(ProjectHotReloadSessionManager sessionManager)
             {
@@ -518,12 +481,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
             {
-                return TaskResult.False;
-            }
-
-            public Task<bool> RestartProjectAsync(bool isRunningUnderDebug, CancellationToken cancellationToken)
-            {
-                return _sessionManager.RestartProjectAsync(this, isRunningUnderDebug, cancellationToken);
+                return ProjectHotReloadSessionManager.RestartProjectAsync(this, cancellationToken);
             }
 
             public IDeltaApplier? GetDeltaApplier()

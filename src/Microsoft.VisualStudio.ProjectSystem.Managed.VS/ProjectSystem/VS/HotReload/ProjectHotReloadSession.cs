@@ -2,11 +2,10 @@
 
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
-using static Microsoft.VisualStudio.ProjectSystem.VS.HotReload.ProjectHotReloadSessionManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
-    internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotReloadAgent2, IManagedHotReloadAgent4, IProjectHotReloadSession, IProjectHotReloadSessionInternal
+    internal class ProjectHotReloadSession : IManagedHotReloadAgent, IProjectHotReloadSession, IProjectHotReloadSessionInternal
     {
         private readonly string _variant;
         private readonly string _runtimeVersion;
@@ -16,9 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly IProjectHotReloadSessionCallback _callback;
 
         private bool _sessionActive;
-
-        // This flag is used to identify Debug|NonDebug cases
-        private bool _isRunningUnderDebugger;
         private IDeltaApplier? _deltaApplier;
 
         public ProjectHotReloadSession(
@@ -103,7 +99,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 ),
                 default);
             _sessionActive = true;
-            _isRunningUnderDebugger = runningUnderDebugger;
             EnsureDeltaApplierforSession();
         }
 
@@ -112,6 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             if (_sessionActive)
             {
                 _sessionActive = false;
+
                 await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
                 WriteToOutputWindow(
                     new HotReloadLogMessage(
@@ -252,15 +248,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 ),
                 cancellationToken);
 
+            await _callback.RestartProjectAsync(cancellationToken);
 
-            if (_callback is IProjectHotReloadSessionCallback2 callBack2)
-            {
-                await callBack2.RestartProjectAsync(_isRunningUnderDebugger, cancellationToken);
-            }
-            else
-            {
-                await _callback.RestartProjectAsync(cancellationToken);
-            }
+            // TODO: Should we stop the session here? Or does someone else do it?
+            // TODO: Should we handle rebuilding here? Or do we expect the callback to handle it?
         }
 
         public async ValueTask StopAsync(CancellationToken cancellationToken)
@@ -296,26 +287,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 _deltaApplier = _callback.GetDeltaApplier()
                     ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(_runtimeVersion);
             }
-        }
-
-        public ValueTask<int?> GetTargetLocalProcessIdAsync(CancellationToken cancellationToken)
-        {
-            if (_callback is IProjectHotReloadSessionCallback2 callback2)
-            {
-                return new ValueTask<int?>(callback2.Process?.Id);
-            }
-
-            return new ValueTask<int?>();
-        }
-
-        public ValueTask<string?> GetProjectFullPathAsync(CancellationToken cancellationToken)
-        {
-            if (_callback is IProjectHotReloadSessionCallback2 callback2)
-            {
-                return new ValueTask<string?>(callback2.Project?.FullPath);
-            }
-
-            return new ValueTask<string?>();
         }
     }
 }
