@@ -73,6 +73,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";DesignTimeBuildErrorDetectedInfoBarMessage" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[An error occurred during a design-time build. Some features may not work correctly. See the Error List for details.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Une erreur s'est produite lors d'une génération au moment de la conception. Certaines fonctionnalités peuvent ne pas fonctionner correctement. Consultez la Liste d’erreurs pour plus de détails.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";DontKnowHowToRunProfile_2" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The project doesn't know how to run the profile with name '{0}' and command '{1}'.]]></Val>
