@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="DesignTimeBuildErrorDetectedInfoBarMessage">
         <source>An error occurred during a design-time build. Some features may not work correctly. See the Error List for details.</source>
-        <target state="new">An error occurred during a design-time build. Some features may not work correctly. See the Error List for details.</target>
+        <target state="translated">設計階段組建期間發生錯誤。某些功能可能無法正確運作。如需詳細資料，請參閱錯誤清單。</target>
         <note>"Error List" is the title of the Visual Studio tool window that error messages are listed in.</note>
       </trans-unit>
       <trans-unit id="DontKnowHowToRunProfile_2">
