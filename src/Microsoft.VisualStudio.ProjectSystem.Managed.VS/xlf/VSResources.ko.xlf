@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="DesignTimeBuildErrorDetectedInfoBarMessage">
         <source>An error occurred during a design-time build. Some features may not work correctly. See the Error List for details.</source>
-        <target state="new">An error occurred during a design-time build. Some features may not work correctly. See the Error List for details.</target>
+        <target state="translated">디자인 타임 빌드 중에 오류가 발생했습니다. 일부 기능이 제대로 작동하지 않을 수 있습니다. 자세한 내용은 오류 목록을 참조하세요.</target>
         <note>"Error List" is the title of the Visual Studio tool window that error messages are listed in.</note>
       </trans-unit>
       <trans-unit id="DontKnowHowToRunProfile_2">
