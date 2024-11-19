@@ -38,6 +38,9 @@
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
 
+    <!-- Pin MessagePack to a patched version with security vulnerable fix -->
+    <PackageReference Include="MessagePack" />
+
     <!-- Roslyn -->
     <PackageReference Include="Microsoft.CSharp" />
     <PackageReference Include="Microsoft.CodeAnalysis" />
