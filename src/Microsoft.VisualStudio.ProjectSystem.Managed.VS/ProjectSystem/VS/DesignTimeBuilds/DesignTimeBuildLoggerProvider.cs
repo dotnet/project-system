@@ -146,6 +146,7 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
                 object[][] targetDurations = _targetRecordById.Values
                     .Where(static record => record.Elapsed > new TimeSpan(ticks: 5 * TimeSpan.TicksPerMillisecond))
                     .OrderByDescending(record => record.Elapsed)
+                    .Take(10)
                     .Select(record => new object[] { GetHashedTargetName(record), record.Elapsed.Milliseconds })
                     .ToArray();
 
