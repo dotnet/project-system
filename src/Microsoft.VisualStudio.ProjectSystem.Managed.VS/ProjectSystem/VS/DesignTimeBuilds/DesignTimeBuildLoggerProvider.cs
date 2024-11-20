@@ -142,16 +142,19 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
             void SendTelemetry()
             {
                 // Filter out very fast targets (to reduce the cost of ordering) then take the top ten by elapsed time.
-                var durationByTarget = _targetRecordById.Values
+                // Note that targets can run multiple times, so the same target may appear more than once in the results.
+                object[][] targetDurations = _targetRecordById.Values
                     .Where(static record => record.Elapsed > new TimeSpan(ticks: 5 * TimeSpan.TicksPerMillisecond))
                     .OrderByDescending(record => record.Elapsed)
-                    .ToDictionary(GetHashedTargetName, record => record.Elapsed.Milliseconds, StringComparers.TargetNames);
+                    .Take(10)
+                    .Select(record => new object[] { GetHashedTargetName(record), record.Elapsed.Milliseconds })
+                    .ToArray();
 
                 telemetryService.PostProperties(
                     TelemetryEventName.DesignTimeBuildComplete,
                     [
                         (TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, _succeeded),
-                        (TelemetryPropertyName.DesignTimeBuildComplete.Targets, new ComplexPropertyValue(durationByTarget)),
+                        (TelemetryPropertyName.DesignTimeBuildComplete.Targets, new ComplexPropertyValue(targetDurations)),
                         (TelemetryPropertyName.DesignTimeBuildComplete.ErrorCount, _errorCount),
                         (TelemetryPropertyName.DesignTimeBuildComplete.ErrorTargets, _errorTargets),
                     ]);
@@ -179,11 +182,11 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
         /// <remarks>
         /// If the target is shipped by Microsoft (or the user is internal), the target's name is returned unchanged.
         /// </remarks>
-        private string GetHashedTargetName(TargetRecord target)
+        private string GetHashedTargetName(TargetRecord record)
         {
             return ImmutableInterlocked.GetOrAdd(
                 ref s_hashByTargetName,
-                (target.TargetName, target.IsMicrosoft),
+                (record.TargetName, record.IsMicrosoft),
                 GetHashedTargetName,
                 telemetryService);
 
