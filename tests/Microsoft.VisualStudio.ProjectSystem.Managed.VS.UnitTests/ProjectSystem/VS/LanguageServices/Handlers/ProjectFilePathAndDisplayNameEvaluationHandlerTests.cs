@@ -129,10 +129,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private static ProjectFilePathAndDisplayNameEvaluationHandler CreateInstance(IImplicitlyActiveDimensionProvider? implicitlyActiveDimensionProvider = null, IWorkspaceProjectContext? context = null)
         {
-            var project = UnconfiguredProjectFactory.Create();
             implicitlyActiveDimensionProvider ??= IImplicitlyActiveDimensionProviderFactory.Create();
 
-            return new ProjectFilePathAndDisplayNameEvaluationHandler(project, implicitlyActiveDimensionProvider);
+            return new ProjectFilePathAndDisplayNameEvaluationHandler(implicitlyActiveDimensionProvider);
         }
     }
 }

@@ -65,7 +65,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         //
         private readonly HashSet<string> _paths = new(StringComparers.Paths);
         private readonly Queue<VersionedProjectChangeDiff> _projectEvaluations = new();
-        private readonly UnconfiguredProject _project = Requires.NotNull(project);
+
+        protected UnconfiguredProject Project { get; } = Requires.NotNull(project);
 
         /// <summary>
         ///     Applies the specified version of the project evaluation <see cref="IProjectChangeDiff"/> and metadata to the underlying
@@ -222,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 {
                     // No change to ExcludeFromCurrentConfiguration; handle as an update.
 
-                    string fullPath = _project.MakeRooted(includePath);
+                    string fullPath = Project.MakeRooted(includePath);
 
                     if (_paths.Contains(fullPath))
                     {
@@ -237,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void RemoveFromContextIfPresent(IWorkspaceProjectContext context, string includePath, IManagedProjectDiagnosticOutputService logger)
         {
-            string fullPath = _project.MakeRooted(includePath);
+            string fullPath = Project.MakeRooted(includePath);
 
             if (_paths.Contains(fullPath))
             {
@@ -251,7 +252,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void AddToContextIfNotPresent(IWorkspaceProjectContext context, string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IManagedProjectDiagnosticOutputService logger)
         {
-            string fullPath = _project.MakeRooted(includePath);
+            string fullPath = Project.MakeRooted(includePath);
 
             if (!_paths.Contains(fullPath))
             {

@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
 /// </summary>
 [Export(typeof(IWorkspaceUpdateHandler))]
 [method: ImportingConstructor]
-internal class ProjectFilePathAndDisplayNameEvaluationHandler(UnconfiguredProject _, IImplicitlyActiveDimensionProvider implicitlyActiveDimensionProvider) : IWorkspaceUpdateHandler, IProjectEvaluationHandler
+internal class ProjectFilePathAndDisplayNameEvaluationHandler(IImplicitlyActiveDimensionProvider implicitlyActiveDimensionProvider) : IWorkspaceUpdateHandler, IProjectEvaluationHandler
 {
     public string ProjectEvaluationRule => ConfigurationGeneral.SchemaName;
 

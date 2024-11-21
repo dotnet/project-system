@@ -36,14 +36,14 @@ internal class CompileItemHandler(UnconfiguredProject project) : AbstractEvaluat
 
             IEnumerable<string> GetFilePaths(BuildOptions options)
             {
-                return options.SourceFiles.Select(f => project.MakeRelative(f.Path));
+                return options.SourceFiles.Select(f => Project.MakeRelative(f.Path));
             }
         }
     }
 
     protected override void AddToContext(IWorkspaceProjectContext context, string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IManagedProjectDiagnosticOutputService logger)
     {
-        string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(project.FullPath), fullPath, metadata);
+        string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(Project.FullPath), fullPath, metadata);
 
         logger.WriteLine("Adding source file '{0}'", fullPath);
         context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);

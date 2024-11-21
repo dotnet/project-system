@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         internal override IProjectEvaluationHandler CreateInstance()
         {
-            return new ProjectPropertiesItemHandler(UnconfiguredProjectFactory.Create());
+            return new ProjectPropertiesItemHandler();
         }
     }
 }
