@@ -1,7 +1,5 @@
 # Design-time builds
 
-## What is a design-time build
-
 Visual Studio needs various information about your projects, including source files, references and options. In .NET, much of this data is defined in MSBuild `<Project>` files, such as `MyProject.csproj`. Visual Studio uses the MSBuild engine to obtain data about a project via a so-called _design-time build_ (DTB).
 
 DTBs differ from normal builds in a few key ways:
@@ -11,7 +9,7 @@ DTBs differ from normal builds in a few key ways:
 - No compilation occurs, and outputs aren't modified.
 - Additional MSBuild targets are invoked to obtain various data.
 
-## What features do design-time builds support
+## Features that design-time builds support
 
 Data obtained from DTBs drive many IDE features, including:
 
@@ -19,11 +17,11 @@ Data obtained from DTBs drive many IDE features, including:
 
 - **NuGet** needs information in order to restore packages used by the project. Without this, types from NuGet packages are unavailable in the IDE and code that uses them will show errors. Packages can also contribute their own targets to DTBs to extend IDE behavior.
 
-- **Dependencies tree** shows the project's declared dependencies, and the DTB attempts to resolve them. Any failures are shown as warnings in the tree.
+- **Dependencies tree** shows the project's declared dependencies, and the DTB attempts to resolve them. Any items that couldn't be resolved during the DTB are shown as warnings in the tree.
 
 And many others.
 
-## When do design-time builds occur
+## Design-time builds triggers
 
 Design-time builds occur during project load, and in response to project changes. For example, changing the project's target framework, or adding a NuGet package, are both operations that modify the project (e.g. `.csproj`) file. Those changes trigger a design-time builds, which are scheduled behind the scenes.
 
@@ -39,7 +37,7 @@ Changing `Directory.*.props` and `Directory.*.targets` files will trigger DTBs i
 
 The easiest way to manually trigger a DTB is to make a white-space change in the project file and save it. This can be helpful when capturing DTB logs (discussed below in [Diagnosing design-time builds](#Diagnosing-design-time-builds)).
 
-## What can go wrong
+## Problems with design-time builds
 
 DTBs run in the IDE (i.e. at design time). A problematic DTB will manifest its problems in the IDE experience.
 
