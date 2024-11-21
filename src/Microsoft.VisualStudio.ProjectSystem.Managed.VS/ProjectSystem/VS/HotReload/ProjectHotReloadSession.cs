@@ -3,7 +3,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
-using static Microsoft.VisualStudio.ProjectSystem.VS.HotReload.ProjectHotReloadSessionManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {

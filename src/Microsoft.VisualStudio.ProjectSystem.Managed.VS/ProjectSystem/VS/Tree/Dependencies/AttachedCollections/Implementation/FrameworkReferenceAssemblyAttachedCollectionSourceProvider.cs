@@ -17,13 +17,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     [VisualStudio.Utilities.Order(Before = HierarchyItemsProviderNames.Contains)]
     internal sealed class FrameworkReferenceAssemblyAttachedCollectionSourceProvider : DependenciesAttachedCollectionSourceProviderBase
     {
-        private readonly IRelationProvider _relationProvider;
-
         [ImportingConstructor]
-        public FrameworkReferenceAssemblyAttachedCollectionSourceProvider(IRelationProvider relationProvider)
+        public FrameworkReferenceAssemblyAttachedCollectionSourceProvider()
             : base(Flags.FrameworkDependency)
         {
-            _relationProvider = relationProvider;
         }
 
         protected override bool TryCreateCollectionSource(
@@ -48,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                     var framework = new FrameworkReferenceIdentity(path, profile, name);
                     var item = new FrameworkReferenceItem(framework);
-                    if (AggregateContainsRelationCollection.TryCreate(item, _relationProvider, out AggregateContainsRelationCollection? collection))
+                    if (AggregateContainsRelationCollection.TryCreate(item, relationProvider, out AggregateContainsRelationCollection? collection))
                     {
                         containsCollectionSource = new AggregateRelationCollectionSource(hierarchyItem, collection);
                         return true;
