@@ -13,12 +13,12 @@ namespace Microsoft.VisualStudio.Packaging
     [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.Assembly, UseManagedResourcesOnly = true)]
     [ProvideProjectFactory(typeof(XprojProjectFactory), null, "#27", "xproj", "xproj", null)]
     [ProvideAutoLoad(ActivationContextGuid, PackageAutoLoadFlags.BackgroundLoad)]
-    [ProvideUIContextRule(ActivationContextGuid,
+    [ProvideUIContextRule(
+        contextGuid: ActivationContextGuid,
         name: "Load Managed Project Package",
         expression: "dotnetcore",
-        termNames: new[] { "dotnetcore" },
-        termValues: new[] { "SolutionHasProjectCapability:.NET & CPS" }
-        )]
+        termNames: ["dotnetcore"],
+        termValues: ["SolutionHasProjectCapability:.NET & CPS"])]
     [ProvideMenuResource("Menus.ctmenu", 5)]
     internal sealed class ManagedProjectSystemPackage : AsyncPackage
     {
