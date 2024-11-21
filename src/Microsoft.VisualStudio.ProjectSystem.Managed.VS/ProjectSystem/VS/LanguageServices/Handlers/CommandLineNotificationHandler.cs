@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp;
 
@@ -29,9 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
         {
-            foreach (Lazy<Action<string?, BuildOptions, BuildOptions>, IOrderPrecedenceMetadataView> value in CommandLineNotifications)
+            foreach (Action<string?, BuildOptions, BuildOptions> value in CommandLineNotifications.ExtensionValues())
             {
-                value.Value(context.BinOutputPath, added, removed);
+                value(context.BinOutputPath, added, removed);
             }
         }
     }
