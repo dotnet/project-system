@@ -32,36 +32,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 string fullPath = _project.MakeRooted(additionalFile.Path);
 
-                RemoveFromContextIfPresent(context, fullPath, logger);
+                RemoveFromContextIfPresent(fullPath);
             }
 
             foreach (CommandLineSourceFile additionalFile in added.AdditionalFiles)
             {
                 string fullPath = _project.MakeRooted(additionalFile.Path);
 
-                AddToContextIfNotPresent(context, fullPath, state.IsActiveEditorContext, logger);
+                AddToContextIfNotPresent(fullPath);
             }
-        }
 
-        private void AddToContextIfNotPresent(IWorkspaceProjectContext context, string fullPath, bool isActiveContext, IManagedProjectDiagnosticOutputService logger)
-        {
-            if (!_paths.Contains(fullPath))
+            void AddToContextIfNotPresent(string fullPath)
             {
-                logger.WriteLine("Adding additional file '{0}'", fullPath);
-                context.AddAdditionalFile(fullPath, folderNames: [], isActiveContext);
-                bool added = _paths.Add(fullPath);
-                Assumes.True(added);
+                if (!_paths.Contains(fullPath))
+                {
+                    logger.WriteLine("Adding additional file '{0}'", fullPath);
+                    context.AddAdditionalFile(fullPath, folderNames: [], state.IsActiveEditorContext);
+                    bool added = _paths.Add(fullPath);
+                    Assumes.True(added);
+                }
             }
-        }
 
-        private void RemoveFromContextIfPresent(IWorkspaceProjectContext context, string fullPath, IManagedProjectDiagnosticOutputService logger)
-        {
-            if (_paths.Contains(fullPath))
+            void RemoveFromContextIfPresent(string fullPath)
             {
-                logger.WriteLine("Removing additional file '{0}'", fullPath);
-                context.RemoveAdditionalFile(fullPath);
-                bool removed = _paths.Remove(fullPath);
-                Assumes.True(removed);
+                if (_paths.Contains(fullPath))
+                {
+                    logger.WriteLine("Removing additional file '{0}'", fullPath);
+                    context.RemoveAdditionalFile(fullPath);
+                    bool removed = _paths.Remove(fullPath);
+                    Assumes.True(removed);
+                }
             }
         }
     }

@@ -22,10 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _project = project;
         }
 
-        public string ProjectEvaluationRule
-        {
-            get { return Compile.SchemaName; }
-        }
+        public string ProjectEvaluationRule => Compile.SchemaName;
 
         public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IManagedProjectDiagnosticOutputService logger)
         {
@@ -37,6 +34,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             IProjectChangeDiff difference = ConvertToProjectDiff(added, removed);
 
             ApplyProjectBuild(context, version, difference, state.IsActiveEditorContext, logger);
+
+            IProjectChangeDiff ConvertToProjectDiff(BuildOptions added, BuildOptions removed)
+            {
+                var addedSet = GetFilePaths(added).ToImmutableHashSet(StringComparers.Paths);
+                var removedSet = GetFilePaths(removed).ToImmutableHashSet(StringComparers.Paths);
+
+                return new ProjectChangeDiff(addedSet, removedSet);
+
+                IEnumerable<string> GetFilePaths(BuildOptions options)
+                {
+                    return options.SourceFiles.Select(f => _project.MakeRelative(f.Path));
+                }
+            }
         }
 
         protected override void AddToContext(IWorkspaceProjectContext context, string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IManagedProjectDiagnosticOutputService logger)
@@ -61,27 +71,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 RemoveFromContext(context, fullPath, logger);
                 AddToContext(context, fullPath, currentMetadata, isActiveContext, logger);
             }
-        }
 
-        private static bool LinkMetadataChanged(IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata)
-        {
-            string previousLink = previousMetadata.GetValueOrDefault(Compile.LinkProperty, string.Empty);
-            string currentLink = currentMetadata.GetValueOrDefault(Compile.LinkProperty, string.Empty);
+            static bool LinkMetadataChanged(IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata)
+            {
+                string previousLink = previousMetadata.GetValueOrDefault(Compile.LinkProperty, string.Empty);
+                string currentLink = currentMetadata.GetValueOrDefault(Compile.LinkProperty, string.Empty);
 
-            return previousLink != currentLink;
-        }
-
-        private IProjectChangeDiff ConvertToProjectDiff(BuildOptions added, BuildOptions removed)
-        {
-            var addedSet = GetFilePaths(added).ToImmutableHashSet(StringComparers.Paths);
-            var removedSet = GetFilePaths(removed).ToImmutableHashSet(StringComparers.Paths);
-
-            return new ProjectChangeDiff(addedSet, removedSet);
-        }
-
-        private IEnumerable<string> GetFilePaths(BuildOptions options)
-        {
-            return options.SourceFiles.Select(f => _project.MakeRelative(f.Path));
+                return previousLink != currentLink;
+            }
         }
     }
 }

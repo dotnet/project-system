@@ -31,36 +31,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 string fullPath = _project.MakeRooted(analyzerConfigFile);
 
-                RemoveFromContextIfPresent(context, fullPath, logger);
+                RemoveFromContextIfPresent(fullPath);
             }
 
             foreach (string analyzerConfigFile in added.AnalyzerConfigFiles)
             {
                 string fullPath = _project.MakeRooted(analyzerConfigFile);
 
-                AddToContextIfNotPresent(context, fullPath, logger);
+                AddToContextIfNotPresent(fullPath);
             }
-        }
 
-        private void AddToContextIfNotPresent(IWorkspaceProjectContext context, string fullPath, IManagedProjectDiagnosticOutputService logger)
-        {
-            if (!_paths.Contains(fullPath))
+            void AddToContextIfNotPresent(string fullPath)
             {
-                logger.WriteLine("Adding analyzer config file '{0}'", fullPath);
-                context.AddAnalyzerConfigFile(fullPath);
-                bool added = _paths.Add(fullPath);
-                Assumes.True(added);
+                if (!_paths.Contains(fullPath))
+                {
+                    logger.WriteLine("Adding analyzer config file '{0}'", fullPath);
+                    context.AddAnalyzerConfigFile(fullPath);
+                    bool added = _paths.Add(fullPath);
+                    Assumes.True(added);
+                }
             }
-        }
 
-        private void RemoveFromContextIfPresent(IWorkspaceProjectContext context, string fullPath, IManagedProjectDiagnosticOutputService logger)
-        {
-            if (_paths.Contains(fullPath))
+            void RemoveFromContextIfPresent(string fullPath)
             {
-                logger.WriteLine("Removing analyzer config file '{0}'", fullPath);
-                context.RemoveAnalyzerConfigFile(fullPath);
-                bool removed = _paths.Remove(fullPath);
-                Assumes.True(removed);
+                if (_paths.Contains(fullPath))
+                {
+                    logger.WriteLine("Removing analyzer config file '{0}'", fullPath);
+                    context.RemoveAnalyzerConfigFile(fullPath);
+                    bool removed = _paths.Remove(fullPath);
+                    Assumes.True(removed);
+                }
             }
         }
     }

@@ -32,36 +32,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 string fullPath = _project.MakeRooted(analyzer.FilePath);
 
-                RemoveFromContextIfPresent(context, fullPath, logger);
+                RemoveFromContextIfPresent(fullPath);
             }
 
             foreach (CommandLineAnalyzerReference analyzer in added.AnalyzerReferences)
             {
                 string fullPath = _project.MakeRooted(analyzer.FilePath);
 
-                AddToContextIfNotPresent(context, fullPath, logger);
+                AddToContextIfNotPresent(fullPath);
             }
-        }
 
-        private void AddToContextIfNotPresent(IWorkspaceProjectContext context, string fullPath, IManagedProjectDiagnosticOutputService logger)
-        {
-            if (!_paths.Contains(fullPath))
+            void AddToContextIfNotPresent(string fullPath)
             {
-                logger.WriteLine("Adding analyzer '{0}'", fullPath);
-                context.AddAnalyzerReference(fullPath);
-                bool added = _paths.Add(fullPath);
-                Assumes.True(added);
+                if (!_paths.Contains(fullPath))
+                {
+                    logger.WriteLine("Adding analyzer '{0}'", fullPath);
+                    context.AddAnalyzerReference(fullPath);
+                    bool added = _paths.Add(fullPath);
+                    Assumes.True(added);
+                }
             }
-        }
 
-        private void RemoveFromContextIfPresent(IWorkspaceProjectContext context, string fullPath, IManagedProjectDiagnosticOutputService logger)
-        {
-            if (_paths.Contains(fullPath))
+            void RemoveFromContextIfPresent(string fullPath)
             {
-                logger.WriteLine("Removing analyzer '{0}'", fullPath);
-                context.RemoveAnalyzerReference(fullPath);
-                bool removed = _paths.Remove(fullPath);
-                Assumes.True(removed);
+                if (_paths.Contains(fullPath))
+                {
+                    logger.WriteLine("Removing analyzer '{0}'", fullPath);
+                    context.RemoveAnalyzerReference(fullPath);
+                    bool removed = _paths.Remove(fullPath);
+                    Assumes.True(removed);
+                }
             }
         }
     }

@@ -17,10 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
         }
 
-        public string ProjectEvaluationRule
-        {
-            get { return LanguageService.SchemaName; }
-        }
+        public string ProjectEvaluationRule => LanguageService.SchemaName;
 
         public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IManagedProjectDiagnosticOutputService logger)
         {
@@ -29,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 string value = projectChange.After.Properties[name];
 
                 // Is it a property we're specifically aware of?
-                if (TryHandleSpecificProperties(context, name, value, logger))
+                if (TryHandleSpecificProperties(name, value))
                     continue;
 
                 // Otherwise, just pass it through
@@ -39,29 +36,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             // NOTE: Roslyn treats "unset" as true, so always set it.
             context.IsPrimary = state.IsActiveConfiguration;
-        }
 
-        private static bool TryHandleSpecificProperties(IWorkspaceProjectContext context, string name, string value, IManagedProjectDiagnosticOutputService logger)
-        {
-            // The language service wants both the intermediate (bin\obj) and output (bin\debug)) paths
-            // so that it can automatically hook up project-to-project references. It does this by matching the 
-            // bin output path with the another project's /reference argument, if they match, then it automatically 
-            // introduces a project reference between the two. We pass the intermediate path via the /out 
-            // command-line argument and set via one of the other handlers, where as the latter is calculated via 
-            // the TargetPath property and explicitly set on the context.
-
-            if (StringComparers.PropertyNames.Equals(name, LanguageService.TargetPathProperty))
+            bool TryHandleSpecificProperties(string name, string value)
             {
-                if (!string.IsNullOrEmpty(value))
+                // The language service wants both the intermediate (bin\obj) and output (bin\debug)) paths
+                // so that it can automatically hook up project-to-project references. It does this by matching the 
+                // bin output path with the another project's /reference argument, if they match, then it automatically 
+                // introduces a project reference between the two. We pass the intermediate path via the /out 
+                // command-line argument and set via one of the other handlers, where as the latter is calculated via 
+                // the TargetPath property and explicitly set on the context.
+
+                if (StringComparers.PropertyNames.Equals(name, LanguageService.TargetPathProperty))
                 {
-                    logger.WriteLine("BinOutputPath: {0}", value);
-                    context.BinOutputPath = value;
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        logger.WriteLine("BinOutputPath: {0}", value);
+                        context.BinOutputPath = value;
+                    }
+
+                    return true;
                 }
 
-                return true;
+                return false;
             }
-
-            return false;
         }
     }
 }

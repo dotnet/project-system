@@ -21,10 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _implicitlyActiveDimensionProvider = implicitlyActiveDimensionProvider;
         }
 
-        public string ProjectEvaluationRule
-        {
-            get { return ConfigurationGeneral.SchemaName; }
-        }
+        public string ProjectEvaluationRule => ConfigurationGeneral.SchemaName;
 
         public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IManagedProjectDiagnosticOutputService logger)
         {
@@ -39,28 +36,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 context.ProjectFilePath = projectFilePath;
                 context.DisplayName = displayName;
             }
-        }
 
-        private string GetDisplayName(string projectFilePath, ProjectConfiguration projectConfiguration)
-        {
-            // Calculate the display name to use for the editor context switch and project column
-            // in the Error List.
-            //
-            // When multi-targeting, we want to include the implicit dimension values in 
-            // the name to disambiguate it from other contexts in the same project. For example:
-            //
-            // ClassLibrary (net45)
-            // ClassLibrary (net46)
+            string GetDisplayName(string projectFilePath, ProjectConfiguration projectConfiguration)
+            {
+                // Calculate the display name to use for the editor context switch and project column
+                // in the Error List.
+                //
+                // When multi-targeting, we want to include the implicit dimension values in 
+                // the name to disambiguate it from other contexts in the same project. For example:
+                //
+                // ClassLibrary (net45)
+                // ClassLibrary (net46)
 
-            string projectName = Path.GetFileNameWithoutExtension(projectFilePath);
+                string projectName = Path.GetFileNameWithoutExtension(projectFilePath);
 
-            IEnumerable<string> dimensionNames = _implicitlyActiveDimensionProvider.GetImplicitlyActiveDimensions(projectConfiguration.Dimensions.Keys);
+                IEnumerable<string> dimensionNames = _implicitlyActiveDimensionProvider.GetImplicitlyActiveDimensions(projectConfiguration.Dimensions.Keys);
 
-            string disambiguation = string.Join(", ", dimensionNames.Select(dimensionName => projectConfiguration.Dimensions[dimensionName]));
-            if (disambiguation.Length == 0)
-                return projectName;
+                string disambiguation = string.Join(", ", dimensionNames.Select(dimensionName => projectConfiguration.Dimensions[dimensionName]));
+                if (disambiguation.Length == 0)
+                    return projectName;
 
-            return $"{projectName} ({disambiguation})";
+                return $"{projectName} ({disambiguation})";
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     {
         private const string RazorPagesExtension = ".cshtml";
         private const string RazorComponentsExtension = ".razor";
+
         private readonly UnconfiguredProject _project;
         private readonly HashSet<string> _paths = new(StringComparers.Paths);
 
@@ -36,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 {
                     if (IsDynamicFile(includePath))
                     {
-                        RemoveFromContextIfPresent(context, includePath, logger);
+                        RemoveFromContextIfPresent(includePath);
                     }
                 }
 
@@ -46,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                     {
                         IImmutableDictionary<string, string> metadata = projectChange.After.Items.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
 
-                        AddToContextIfNotPresent(context, includePath, metadata, logger);
+                        AddToContextIfNotPresent(includePath, metadata);
                     }
                 }
 
@@ -57,47 +58,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                     {
                         IImmutableDictionary<string, string> metadata = projectChange.After.Items.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
 
-                        RemoveFromContextIfPresent(context, includePath, logger);
-                        AddToContextIfNotPresent(context, includePath, metadata, logger);
+                        RemoveFromContextIfPresent(includePath);
+                        AddToContextIfNotPresent(includePath, metadata);
                     }
                 }
             }
-        }
 
-        private void AddToContextIfNotPresent(IWorkspaceProjectContext context, string includePath, IImmutableDictionary<string, string> metadata, IManagedProjectDiagnosticOutputService logger)
-        {
-            string fullPath = _project.MakeRooted(includePath);
-
-            if (!_paths.Contains(fullPath))
+            void AddToContextIfNotPresent(string includePath, IImmutableDictionary<string, string> metadata)
             {
-                string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
+                string fullPath = _project.MakeRooted(includePath);
 
-                logger.WriteLine("Adding dynamic file '{0}'", fullPath);
-                context.AddDynamicFile(fullPath, folderNames);
-                bool added = _paths.Add(fullPath);
-                Assumes.True(added);
+                if (!_paths.Contains(fullPath))
+                {
+                    string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
+
+                    logger.WriteLine("Adding dynamic file '{0}'", fullPath);
+                    context.AddDynamicFile(fullPath, folderNames);
+                    bool added = _paths.Add(fullPath);
+                    Assumes.True(added);
+                }
             }
-        }
 
-        private void RemoveFromContextIfPresent(IWorkspaceProjectContext context, string includePath, IManagedProjectDiagnosticOutputService logger)
-        {
-            string fullPath = _project.MakeRooted(includePath);
-
-            if (_paths.Contains(fullPath))
+            void RemoveFromContextIfPresent(string includePath)
             {
-                logger.WriteLine("Removing dynamic file '{0}'", fullPath);
-                context.RemoveDynamicFile(fullPath);
+                string fullPath = _project.MakeRooted(includePath);
 
-                bool removed = _paths.Remove(fullPath);
-                Assumes.True(removed);
+                if (_paths.Contains(fullPath))
+                {
+                    logger.WriteLine("Removing dynamic file '{0}'", fullPath);
+                    context.RemoveDynamicFile(fullPath);
+
+                    bool removed = _paths.Remove(fullPath);
+                    Assumes.True(removed);
+                }
             }
-        }
 
-        private static bool IsDynamicFile(string includePath)
-        {
-            // Note a file called just '.cshtml' is still considered a Razor file
-            return includePath.EndsWith(RazorPagesExtension, StringComparisons.Paths) ||
-                   includePath.EndsWith(RazorComponentsExtension, StringComparisons.Paths);
+            static bool IsDynamicFile(string includePath)
+            {
+                // Note a file called just '.cshtml' is still considered a Razor file
+                return includePath.EndsWith(RazorPagesExtension, StringComparisons.Paths) ||
+                       includePath.EndsWith(RazorComponentsExtension, StringComparisons.Paths);
+            }
         }
     }
 }
