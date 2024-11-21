@@ -3,62 +3,61 @@
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
+
+/// <summary>
+///     Handles changes to project properties defined in the <c>LanguageService.xaml</c> rule,
+///     and updates the language service via <see cref="IWorkspaceProjectContext.SetProperty(string, string)"/>.
+/// </summary>
+[Export(typeof(IWorkspaceUpdateHandler))]
+internal class ProjectPropertiesItemHandler : IWorkspaceUpdateHandler, IProjectEvaluationHandler
 {
-    /// <summary>
-    ///     Handles changes to project properties defined in the <c>LanguageService.xaml</c> rule,
-    ///     and updates the language service via <see cref="IWorkspaceProjectContext.SetProperty(string, string)"/>.
-    /// </summary>
-    [Export(typeof(IWorkspaceUpdateHandler))]
-    internal class ProjectPropertiesItemHandler : IWorkspaceUpdateHandler, IProjectEvaluationHandler
+    [ImportingConstructor]
+    public ProjectPropertiesItemHandler(UnconfiguredProject project)
     {
-        [ImportingConstructor]
-        public ProjectPropertiesItemHandler(UnconfiguredProject project)
+    }
+
+    public string ProjectEvaluationRule => LanguageService.SchemaName;
+
+    public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IManagedProjectDiagnosticOutputService logger)
+    {
+        foreach (string name in projectChange.Difference.ChangedProperties)
         {
+            string value = projectChange.After.Properties[name];
+
+            // Is it a property we're specifically aware of?
+            if (TryHandleSpecificProperties(name, value))
+                continue;
+
+            // Otherwise, just pass it through
+            logger.WriteLine("{0}: {1}", name, value);
+            context.SetProperty(name, value);
         }
 
-        public string ProjectEvaluationRule => LanguageService.SchemaName;
+        // NOTE: Roslyn treats "unset" as true, so always set it.
+        context.IsPrimary = state.IsActiveConfiguration;
 
-        public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IManagedProjectDiagnosticOutputService logger)
+        bool TryHandleSpecificProperties(string name, string value)
         {
-            foreach (string name in projectChange.Difference.ChangedProperties)
+            // The language service wants both the intermediate (bin\obj) and output (bin\debug)) paths
+            // so that it can automatically hook up project-to-project references. It does this by matching the 
+            // bin output path with the another project's /reference argument, if they match, then it automatically 
+            // introduces a project reference between the two. We pass the intermediate path via the /out 
+            // command-line argument and set via one of the other handlers, where as the latter is calculated via 
+            // the TargetPath property and explicitly set on the context.
+
+            if (StringComparers.PropertyNames.Equals(name, LanguageService.TargetPathProperty))
             {
-                string value = projectChange.After.Properties[name];
-
-                // Is it a property we're specifically aware of?
-                if (TryHandleSpecificProperties(name, value))
-                    continue;
-
-                // Otherwise, just pass it through
-                logger.WriteLine("{0}: {1}", name, value);
-                context.SetProperty(name, value);
-            }
-
-            // NOTE: Roslyn treats "unset" as true, so always set it.
-            context.IsPrimary = state.IsActiveConfiguration;
-
-            bool TryHandleSpecificProperties(string name, string value)
-            {
-                // The language service wants both the intermediate (bin\obj) and output (bin\debug)) paths
-                // so that it can automatically hook up project-to-project references. It does this by matching the 
-                // bin output path with the another project's /reference argument, if they match, then it automatically 
-                // introduces a project reference between the two. We pass the intermediate path via the /out 
-                // command-line argument and set via one of the other handlers, where as the latter is calculated via 
-                // the TargetPath property and explicitly set on the context.
-
-                if (StringComparers.PropertyNames.Equals(name, LanguageService.TargetPathProperty))
+                if (!string.IsNullOrEmpty(value))
                 {
-                    if (!string.IsNullOrEmpty(value))
-                    {
-                        logger.WriteLine("BinOutputPath: {0}", value);
-                        context.BinOutputPath = value;
-                    }
-
-                    return true;
+                    logger.WriteLine("BinOutputPath: {0}", value);
+                    context.BinOutputPath = value;
                 }
 
-                return false;
+                return true;
             }
+
+            return false;
         }
     }
 }

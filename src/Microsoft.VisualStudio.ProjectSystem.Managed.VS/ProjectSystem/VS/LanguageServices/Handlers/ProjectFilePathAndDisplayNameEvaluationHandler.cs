@@ -4,60 +4,59 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
-{
-    /// <summary>
-    ///     Handles changes to the project file, and updates <see cref="IWorkspaceProjectContext.ProjectFilePath"/>
-    ///     and <see cref="IWorkspaceProjectContext.DisplayName"/>.
-    /// </summary>
-    [Export(typeof(IWorkspaceUpdateHandler))]
-    internal class ProjectFilePathAndDisplayNameEvaluationHandler : IWorkspaceUpdateHandler, IProjectEvaluationHandler
-    {
-        private readonly IImplicitlyActiveDimensionProvider _implicitlyActiveDimensionProvider;
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
 
-        [ImportingConstructor]
-        public ProjectFilePathAndDisplayNameEvaluationHandler(UnconfiguredProject _, IImplicitlyActiveDimensionProvider implicitlyActiveDimensionProvider)
+/// <summary>
+///     Handles changes to the project file, and updates <see cref="IWorkspaceProjectContext.ProjectFilePath"/>
+///     and <see cref="IWorkspaceProjectContext.DisplayName"/>.
+/// </summary>
+[Export(typeof(IWorkspaceUpdateHandler))]
+internal class ProjectFilePathAndDisplayNameEvaluationHandler : IWorkspaceUpdateHandler, IProjectEvaluationHandler
+{
+    private readonly IImplicitlyActiveDimensionProvider _implicitlyActiveDimensionProvider;
+
+    [ImportingConstructor]
+    public ProjectFilePathAndDisplayNameEvaluationHandler(UnconfiguredProject _, IImplicitlyActiveDimensionProvider implicitlyActiveDimensionProvider)
+    {
+        _implicitlyActiveDimensionProvider = implicitlyActiveDimensionProvider;
+    }
+
+    public string ProjectEvaluationRule => ConfigurationGeneral.SchemaName;
+
+    public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IManagedProjectDiagnosticOutputService logger)
+    {
+        if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.MSBuildProjectFullPathProperty))
         {
-            _implicitlyActiveDimensionProvider = implicitlyActiveDimensionProvider;
+            string projectFilePath = projectChange.After.Properties[ConfigurationGeneral.MSBuildProjectFullPathProperty];
+            string displayName = GetDisplayName(projectFilePath, projectConfiguration);
+
+            logger.WriteLine("DisplayName: {0}", displayName);
+            logger.WriteLine("ProjectFilePath: {0}", projectFilePath);
+
+            context.ProjectFilePath = projectFilePath;
+            context.DisplayName = displayName;
         }
 
-        public string ProjectEvaluationRule => ConfigurationGeneral.SchemaName;
-
-        public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IManagedProjectDiagnosticOutputService logger)
+        string GetDisplayName(string projectFilePath, ProjectConfiguration projectConfiguration)
         {
-            if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.MSBuildProjectFullPathProperty))
-            {
-                string projectFilePath = projectChange.After.Properties[ConfigurationGeneral.MSBuildProjectFullPathProperty];
-                string displayName = GetDisplayName(projectFilePath, projectConfiguration);
+            // Calculate the display name to use for the editor context switch and project column
+            // in the Error List.
+            //
+            // When multi-targeting, we want to include the implicit dimension values in 
+            // the name to disambiguate it from other contexts in the same project. For example:
+            //
+            // ClassLibrary (net45)
+            // ClassLibrary (net46)
 
-                logger.WriteLine("DisplayName: {0}", displayName);
-                logger.WriteLine("ProjectFilePath: {0}", projectFilePath);
+            string projectName = Path.GetFileNameWithoutExtension(projectFilePath);
 
-                context.ProjectFilePath = projectFilePath;
-                context.DisplayName = displayName;
-            }
+            IEnumerable<string> dimensionNames = _implicitlyActiveDimensionProvider.GetImplicitlyActiveDimensions(projectConfiguration.Dimensions.Keys);
 
-            string GetDisplayName(string projectFilePath, ProjectConfiguration projectConfiguration)
-            {
-                // Calculate the display name to use for the editor context switch and project column
-                // in the Error List.
-                //
-                // When multi-targeting, we want to include the implicit dimension values in 
-                // the name to disambiguate it from other contexts in the same project. For example:
-                //
-                // ClassLibrary (net45)
-                // ClassLibrary (net46)
+            string disambiguation = string.Join(", ", dimensionNames.Select(dimensionName => projectConfiguration.Dimensions[dimensionName]));
+            if (disambiguation.Length == 0)
+                return projectName;
 
-                string projectName = Path.GetFileNameWithoutExtension(projectFilePath);
-
-                IEnumerable<string> dimensionNames = _implicitlyActiveDimensionProvider.GetImplicitlyActiveDimensions(projectConfiguration.Dimensions.Keys);
-
-                string disambiguation = string.Join(", ", dimensionNames.Select(dimensionName => projectConfiguration.Dimensions[dimensionName]));
-                if (disambiguation.Length == 0)
-                    return projectName;
-
-                return $"{projectName} ({disambiguation})";
-            }
+            return $"{projectName} ({disambiguation})";
         }
     }
 }

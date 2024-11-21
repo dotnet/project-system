@@ -4,36 +4,35 @@ using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
+
+/// <summary>
+///     An indirection that sends design-time build results in the form of command-line arguments to the F# language-service.
+/// </summary>
+/// <remarks>
+///     This indirection is needed because Microsoft.VisualStudio.ProjectSystem.FSharp does not have InternalsVisibleTo access to Roslyn.
+/// </remarks>
+[Export(typeof(IWorkspaceUpdateHandler))]
+internal class CommandLineNotificationHandler : IWorkspaceUpdateHandler, ICommandLineHandler
 {
-    /// <summary>
-    ///     An indirection that sends design-time build results in the form of command-line arguments to the F# language-service.
-    /// </summary>
-    /// <remarks>
-    ///     This indirection is needed because Microsoft.VisualStudio.ProjectSystem.FSharp does not have InternalsVisibleTo access to Roslyn.
-    /// </remarks>
-    [Export(typeof(IWorkspaceUpdateHandler))]
-    internal class CommandLineNotificationHandler : IWorkspaceUpdateHandler, ICommandLineHandler
+    [ImportingConstructor]
+    public CommandLineNotificationHandler(UnconfiguredProject project)
     {
-        [ImportingConstructor]
-        public CommandLineNotificationHandler(UnconfiguredProject project)
-        {
-            // See FSharpCommandLineParserService.HandleCommandLineNotifications for an example of this export
-            CommandLineNotifications = new OrderPrecedenceImportCollection<Action<string?, BuildOptions, BuildOptions>>(projectCapabilityCheckProvider: project);
-        }
+        // See FSharpCommandLineParserService.HandleCommandLineNotifications for an example of this export
+        CommandLineNotifications = new OrderPrecedenceImportCollection<Action<string?, BuildOptions, BuildOptions>>(projectCapabilityCheckProvider: project);
+    }
 
-        /// <remarks>
-        /// See <see cref="FSharpCommandLineParserService.HandleCommandLineNotifications"/> for an export.
-        /// </remarks>
-        [ImportMany]
-        public OrderPrecedenceImportCollection<Action<string?, BuildOptions, BuildOptions>> CommandLineNotifications { get; }
+    /// <remarks>
+    /// See <see cref="FSharpCommandLineParserService.HandleCommandLineNotifications"/> for an export.
+    /// </remarks>
+    [ImportMany]
+    public OrderPrecedenceImportCollection<Action<string?, BuildOptions, BuildOptions>> CommandLineNotifications { get; }
 
-        public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
+    public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
+    {
+        foreach (Action<string?, BuildOptions, BuildOptions> value in CommandLineNotifications.ExtensionValues())
         {
-            foreach (Action<string?, BuildOptions, BuildOptions> value in CommandLineNotifications.ExtensionValues())
-            {
-                value(context.BinOutputPath, added, removed);
-            }
+            value(context.BinOutputPath, added, removed);
         }
     }
 }

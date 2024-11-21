@@ -3,64 +3,63 @@
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
+
+/// <summary>
+///     Handles changes to the  &lt;EditorConfigFiles/&gt; items during design-time builds.
+/// </summary>
+[Export(typeof(IWorkspaceUpdateHandler))]
+[PartCreationPolicy(CreationPolicy.NonShared)]
+internal class AnalyzerConfigItemHandler : IWorkspaceUpdateHandler, ICommandLineHandler
 {
-    /// <summary>
-    ///     Handles changes to the  &lt;EditorConfigFiles/&gt; items during design-time builds.
-    /// </summary>
-    [Export(typeof(IWorkspaceUpdateHandler))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
-    internal class AnalyzerConfigItemHandler : IWorkspaceUpdateHandler, ICommandLineHandler
+    // WORKAROUND: To avoid Roslyn throwing when we add duplicate additional files, we remember what 
+    // sent to them and avoid sending on duplicates.
+    // See: https://github.com/dotnet/project-system/issues/2230
+
+    private readonly UnconfiguredProject _project;
+    private readonly HashSet<string> _paths = new(StringComparers.Paths);
+
+    [ImportingConstructor]
+    public AnalyzerConfigItemHandler(UnconfiguredProject project)
     {
-        // WORKAROUND: To avoid Roslyn throwing when we add duplicate additional files, we remember what 
-        // sent to them and avoid sending on duplicates.
-        // See: https://github.com/dotnet/project-system/issues/2230
+        _project = project;
+    }
 
-        private readonly UnconfiguredProject _project;
-        private readonly HashSet<string> _paths = new(StringComparers.Paths);
-
-        [ImportingConstructor]
-        public AnalyzerConfigItemHandler(UnconfiguredProject project)
+    public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
+    {
+        foreach (string analyzerConfigFile in removed.AnalyzerConfigFiles)
         {
-            _project = project;
+            string fullPath = _project.MakeRooted(analyzerConfigFile);
+
+            RemoveFromContextIfPresent(fullPath);
         }
 
-        public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
+        foreach (string analyzerConfigFile in added.AnalyzerConfigFiles)
         {
-            foreach (string analyzerConfigFile in removed.AnalyzerConfigFiles)
-            {
-                string fullPath = _project.MakeRooted(analyzerConfigFile);
+            string fullPath = _project.MakeRooted(analyzerConfigFile);
 
-                RemoveFromContextIfPresent(fullPath);
+            AddToContextIfNotPresent(fullPath);
+        }
+
+        void AddToContextIfNotPresent(string fullPath)
+        {
+            if (!_paths.Contains(fullPath))
+            {
+                logger.WriteLine("Adding analyzer config file '{0}'", fullPath);
+                context.AddAnalyzerConfigFile(fullPath);
+                bool added = _paths.Add(fullPath);
+                Assumes.True(added);
             }
+        }
 
-            foreach (string analyzerConfigFile in added.AnalyzerConfigFiles)
+        void RemoveFromContextIfPresent(string fullPath)
+        {
+            if (_paths.Contains(fullPath))
             {
-                string fullPath = _project.MakeRooted(analyzerConfigFile);
-
-                AddToContextIfNotPresent(fullPath);
-            }
-
-            void AddToContextIfNotPresent(string fullPath)
-            {
-                if (!_paths.Contains(fullPath))
-                {
-                    logger.WriteLine("Adding analyzer config file '{0}'", fullPath);
-                    context.AddAnalyzerConfigFile(fullPath);
-                    bool added = _paths.Add(fullPath);
-                    Assumes.True(added);
-                }
-            }
-
-            void RemoveFromContextIfPresent(string fullPath)
-            {
-                if (_paths.Contains(fullPath))
-                {
-                    logger.WriteLine("Removing analyzer config file '{0}'", fullPath);
-                    context.RemoveAnalyzerConfigFile(fullPath);
-                    bool removed = _paths.Remove(fullPath);
-                    Assumes.True(removed);
-                }
+                logger.WriteLine("Removing analyzer config file '{0}'", fullPath);
+                context.RemoveAnalyzerConfigFile(fullPath);
+                bool removed = _paths.Remove(fullPath);
+                Assumes.True(removed);
             }
         }
     }
