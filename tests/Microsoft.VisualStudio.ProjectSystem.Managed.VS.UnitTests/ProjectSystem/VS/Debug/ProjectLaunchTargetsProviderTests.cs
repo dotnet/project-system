@@ -580,7 +580,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public void ValidateSettings_WhenWorkingDirNotFound_Throws()
         {
             string executable = "bar.exe";
-            string workingDir = "c:\foo";
+            string workingDir = @"c:\foo";
             var debugger = GetDebugTargetsProvider();
             var profileName = "run";
 
@@ -610,7 +610,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public void ValidateSettings_WhenWorkingDirFound_DoesNotThrow()
         {
             string executable = "bar.exe";
-            string workingDir = "c:\foo";
+            string workingDir = @"c:\foo";
             var debugger = GetDebugTargetsProvider();
             var profileName = "run";
 
