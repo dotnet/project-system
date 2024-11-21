@@ -70,9 +70,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         /// <summary>
         ///     Initializes a new instance of the <see cref="AbstractEvaluationCommandLineHandler"/> class with the specified project.
         /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="project"/> is <see langword="null"/>.
-        /// </exception>
         protected AbstractEvaluationCommandLineHandler(UnconfiguredProject project)
         {
             Requires.NotNull(project);
@@ -84,25 +81,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         ///     Applies the specified version of the project evaluation <see cref="IProjectChangeDiff"/> and metadata to the underlying
         ///     <see cref="IWorkspaceProjectContext"/>, indicating if the context is the currently active one.
         /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="version"/> is <see langword="null"/>.
-        ///     <para>
-        ///         -or-
-        ///     </para>
-        ///     <paramref name="difference" /> is <see langword="null"/>.
-        ///     <para>
-        ///         -or-
-        ///     </para>
-        ///     <paramref name="previousMetadata" /> is <see langword="null"/>.
-        ///     <para>
-        ///         -or-
-        ///     </para>
-        ///     <paramref name="currentMetadata" /> is <see langword="null"/>.
-        ///     <para>
-        ///         -or-
-        ///     </para>
-        ///     <paramref name="logger" /> is <see langword="null"/>.
-        /// </exception>
         public void ApplyProjectEvaluation(IWorkspaceProjectContext context, IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IManagedProjectDiagnosticOutputService logger)
         {
             if (!difference.AnyChanges)
@@ -118,17 +96,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         ///     Applies the specified version of the project build <see cref="IProjectChangeDiff"/> to the underlying
         ///     <see cref="IWorkspaceProjectContext"/>, indicating if the context is the currently active one.
         /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="version"/> is <see langword="null"/>.
-        ///     <para>
-        ///         -or-
-        ///     </para>
-        ///     <paramref name="difference" /> is <see langword="null"/>.
-        ///     <para>
-        ///         -or-
-        ///     </para>
-        ///     <paramref name="logger" /> is <see langword="null"/>.
-        /// </exception>
         public void ApplyProjectBuild(IWorkspaceProjectContext context, IComparable version, IProjectChangeDiff difference, bool isActiveContext, IManagedProjectDiagnosticOutputService logger)
         {
             if (!difference.AnyChanges)
