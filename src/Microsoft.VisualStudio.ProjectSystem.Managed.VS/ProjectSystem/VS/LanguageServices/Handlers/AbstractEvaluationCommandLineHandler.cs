@@ -77,9 +77,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 return;
 
             difference = HandlerServices.NormalizeRenames(difference);
-            EnqueueProjectEvaluation(version, difference);
+
+            EnqueueProjectEvaluation();
 
             ApplyChangesToContext(context, difference, previousMetadata, currentMetadata, isActiveContext, logger, evaluation: true);
+
+            void EnqueueProjectEvaluation()
+            {
+                Assumes.False(_projectEvaluations.Count > 0 && version.IsEarlierThan(_projectEvaluations.Peek().Version), "Attempted to push a project evaluation that regressed in version.");
+
+                _projectEvaluations.Enqueue(new VersionedProjectChangeDiff(version, difference));
+            }
         }
 
         /// <summary>
@@ -95,6 +103,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             difference = ResolveProjectBuildConflicts(version, difference);
 
             ApplyChangesToContext(context, difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, isActiveContext, logger, evaluation: false);
+
+            IProjectChangeDiff ResolveProjectBuildConflicts(IComparable projectBuildVersion, IProjectChangeDiff projectBuildDifference)
+            {
+                DiscardOutOfDateProjectEvaluations();
+
+                // Walk all evaluations (if any) that occurred since we launched and resolve the conflicts
+                foreach (VersionedProjectChangeDiff evaluation in _projectEvaluations)
+                {
+                    Assumes.True(evaluation.Version.IsLaterThan(projectBuildVersion), "Attempted to resolve a conflict between a project build and an earlier project evaluation.");
+
+                    projectBuildDifference = ResolveConflicts(evaluation.Difference, projectBuildDifference);
+                }
+
+                return projectBuildDifference;
+
+                void DiscardOutOfDateProjectEvaluations()
+                {
+                    // Throw away evaluations that are the same version or earlier than the design-time build
+                    // version as it has more up-to-date information on the the current state of the project
+
+                    // Note, evaluations could be empty if previous evaluations resulted in no new changes
+                    while (_projectEvaluations.Count > 0)
+                    {
+                        VersionedProjectChangeDiff projectEvaluation = _projectEvaluations.Peek();
+                        if (!projectEvaluation.Version.IsEarlierThanOrEqualTo(projectBuildVersion))
+                            break;
+
+                        _projectEvaluations.Dequeue();
+                    }
+                }
+
+                static IProjectChangeDiff ResolveConflicts(IProjectChangeDiff evaluationDifferences, IProjectChangeDiff projectBuildDifferences)
+                {
+                    // Remove added items that were removed by later evaluations, and vice versa
+                    IImmutableSet<string> added = projectBuildDifferences.AddedItems.Except(evaluationDifferences.RemovedItems);
+                    IImmutableSet<string> removed = projectBuildDifferences.RemovedItems.Except(evaluationDifferences.AddedItems);
+
+                    Assumes.True(projectBuildDifferences.ChangedItems.Count == 0, "We should never see ChangedItems during project builds.");
+
+                    return new ProjectChangeDiff(added, removed, projectBuildDifferences.ChangedItems);
+                }
+            }
         }
 
         protected abstract void AddToContext(IWorkspaceProjectContext context, string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IManagedProjectDiagnosticOutputService logger);
@@ -114,7 +164,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return true;
         }
 
-        private void ApplyChangesToContext(IWorkspaceProjectContext context, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IManagedProjectDiagnosticOutputService logger, bool evaluation)
+        private void ApplyChangesToContext(
+            IWorkspaceProjectContext context, IProjectChangeDiff difference,
+            IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata,
+            IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext,
+            IManagedProjectDiagnosticOutputService logger, bool evaluation)
         {
             foreach (string includePath in difference.RemovedItems)
             {
@@ -140,11 +194,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
                 foreach (string includePath in difference.ChangedItems)
                 {
-                    HandleEvaluationMetadataChange(context, includePath, previousMetadata, currentMetadata, isActiveContext, logger);
+                    HandleEvaluationMetadataChange(includePath);
                 }
             }
 
             Assumes.True(difference.RenamedItems.Count == 0, "We should have normalized renames.");
+
+            void HandleEvaluationMetadataChange(string includePath)
+            {
+                // This should only be called for evaluation changes. The items we get from design-time builds represent
+                // command line arguments and won't have metadata.
+
+                // A change in ExcludeFromCurrentConfiguration metadata needs to be processed as an add or remove rather
+                // than an update, so check for that first.
+                bool previouslyIncluded = IsItemInCurrentConfiguration(includePath, previousMetadata);
+                bool currentlyIncluded = IsItemInCurrentConfiguration(includePath, currentMetadata);
+
+                if (previouslyIncluded && !currentlyIncluded)
+                {
+                    RemoveFromContextIfPresent(context, includePath, logger);
+                }
+                else if (!previouslyIncluded && currentlyIncluded)
+                {
+                    AddToContextIfNotPresent(context, includePath, currentMetadata, isActiveContext, logger);
+                }
+                else
+                {
+                    // No change to ExcludeFromCurrentConfiguration; handle as an update.
+
+                    string fullPath = _project.MakeRooted(includePath);
+
+                    if (_paths.Contains(fullPath))
+                    {
+                        IImmutableDictionary<string, string> previousItemMetadata = previousMetadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
+                        IImmutableDictionary<string, string> currentItemMetadata = currentMetadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
+
+                        UpdateInContext(context, fullPath, previousItemMetadata, currentItemMetadata, isActiveContext, logger);
+                    }
+                }
+            }
         }
 
         private void RemoveFromContextIfPresent(IWorkspaceProjectContext context, string includePath, IManagedProjectDiagnosticOutputService logger)
@@ -175,90 +263,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }
-        }
-
-        /// <remarks>
-        ///     This should only be called for evaluation changes. The items we get from design-time builds represent
-        ///     command line arguments and won't have metadata.
-        /// </remarks>
-        private void HandleEvaluationMetadataChange(IWorkspaceProjectContext context, string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IManagedProjectDiagnosticOutputService logger)
-        {
-            // A change in ExcludeFromCurrentConfiguration metadata needs to be processed as an add or remove rather
-            // than an update, so check for that first.
-            bool previouslyIncluded = IsItemInCurrentConfiguration(includePath, previousMetadata);
-            bool currentlyIncluded = IsItemInCurrentConfiguration(includePath, currentMetadata);
-            
-            if (previouslyIncluded && !currentlyIncluded)
-            {
-                RemoveFromContextIfPresent(context, includePath, logger);
-            }
-            else if (!previouslyIncluded && currentlyIncluded)
-            {
-                AddToContextIfNotPresent(context, includePath, currentMetadata, isActiveContext, logger);
-            }
-            else
-            {
-                // No change to ExcludeFromCurrentConfiguration; handle as an update.
-                
-                string fullPath = _project.MakeRooted(includePath);
-
-                if (_paths.Contains(fullPath))
-                {
-                    IImmutableDictionary<string, string> previousItemMetadata = previousMetadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
-                    IImmutableDictionary<string, string> currentItemMetadata = currentMetadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
-
-                    UpdateInContext(context, fullPath, previousItemMetadata, currentItemMetadata, isActiveContext, logger);
-                }
-            }
-        }
-
-        private IProjectChangeDiff ResolveProjectBuildConflicts(IComparable projectBuildVersion, IProjectChangeDiff projectBuildDifference)
-        {
-            DiscardOutOfDateProjectEvaluations(projectBuildVersion);
-
-            // Walk all evaluations (if any) that occurred since we launched and resolve the conflicts
-            foreach (VersionedProjectChangeDiff evaluation in _projectEvaluations)
-            {
-                Assumes.True(evaluation.Version.IsLaterThan(projectBuildVersion), "Attempted to resolve a conflict between a project build and an earlier project evaluation.");
-
-                projectBuildDifference = ResolveConflicts(evaluation.Difference, projectBuildDifference);
-            }
-
-            return projectBuildDifference;
-        }
-
-        private static IProjectChangeDiff ResolveConflicts(IProjectChangeDiff evaluationDifferences, IProjectChangeDiff projectBuildDifferences)
-        {
-            // Remove added items that were removed by later evaluations, and vice versa
-            IImmutableSet<string> added = projectBuildDifferences.AddedItems.Except(evaluationDifferences.RemovedItems);
-            IImmutableSet<string> removed = projectBuildDifferences.RemovedItems.Except(evaluationDifferences.AddedItems);
-
-            Assumes.True(projectBuildDifferences.ChangedItems.Count == 0, "We should never see ChangedItems during project builds.");
-
-            return new ProjectChangeDiff(added, removed, projectBuildDifferences.ChangedItems);
-        }
-
-        private void DiscardOutOfDateProjectEvaluations(IComparable version)
-        {
-            // Throw away evaluations that are the same version or earlier than the design-time build
-            // version as it has more up-to-date information on the the current state of the project
-
-            // Note, evaluations could be empty if previous evaluations resulted in no new changes
-            while (_projectEvaluations.Count > 0)
-            {
-                VersionedProjectChangeDiff projectEvaluation = _projectEvaluations.Peek();
-                if (!projectEvaluation.Version.IsEarlierThanOrEqualTo(version))
-                    break;
-
-                _projectEvaluations.Dequeue();
-            }
-        }
-
-        private void EnqueueProjectEvaluation(IComparable version, IProjectChangeDiff evaluationDifference)
-        {
-            Assumes.False(_projectEvaluations.Count > 0 && version.IsEarlierThan(_projectEvaluations.Peek().Version), "Attempted to push a project evaluation that regressed in version.");
-
-            _projectEvaluations.Enqueue(new VersionedProjectChangeDiff(version, evaluationDifference));
         }
     }
 }
