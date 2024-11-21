@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Responsible for coordinating changes and conflicts between evaluation and design-time builds, and pushing those changes
     ///     onto Roslyn via a <see cref="IWorkspaceProjectContext"/>.
     /// </summary>
-    internal abstract partial class AbstractEvaluationCommandLineHandler
+    internal abstract partial class AbstractEvaluationCommandLineHandler(UnconfiguredProject project)
     {
         // This class is not thread-safe, and the assumption is that the caller will make sure that project evaluations and builds (design-time) 
         // do not overlap inside the class at the same time.
@@ -65,17 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         //
         private readonly HashSet<string> _paths = new(StringComparers.Paths);
         private readonly Queue<VersionedProjectChangeDiff> _projectEvaluations = new();
-        private readonly UnconfiguredProject _project;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="AbstractEvaluationCommandLineHandler"/> class with the specified project.
-        /// </summary>
-        protected AbstractEvaluationCommandLineHandler(UnconfiguredProject project)
-        {
-            Requires.NotNull(project);
-
-            _project = project;
-        }
+        private readonly UnconfiguredProject _project = Requires.NotNull(project);
 
         /// <summary>
         ///     Applies the specified version of the project evaluation <see cref="IProjectChangeDiff"/> and metadata to the underlying
