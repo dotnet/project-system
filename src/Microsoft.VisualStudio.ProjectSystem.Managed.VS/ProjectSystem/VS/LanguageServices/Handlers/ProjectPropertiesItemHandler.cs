@@ -10,12 +10,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
 ///     and updates the language service via <see cref="IWorkspaceProjectContext.SetProperty(string, string)"/>.
 /// </summary>
 [Export(typeof(IWorkspaceUpdateHandler))]
-internal class ProjectPropertiesItemHandler : IWorkspaceUpdateHandler, IProjectEvaluationHandler
+[method: ImportingConstructor]
+internal class ProjectPropertiesItemHandler() : IWorkspaceUpdateHandler, IProjectEvaluationHandler
 {
-    [ImportingConstructor]
-    public ProjectPropertiesItemHandler(UnconfiguredProject project)
-    {
-    }
+    // Note this component would typically be in unconfigured project scope, but because it doesn't need to import
+    // any unconfigured services or the project itself, we can have a shared instance to avoid a few allocations.
 
     public string ProjectEvaluationRule => LanguageService.SchemaName;
 

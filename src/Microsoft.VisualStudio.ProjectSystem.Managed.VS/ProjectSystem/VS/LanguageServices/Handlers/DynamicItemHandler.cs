@@ -10,19 +10,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
 /// </summary>
 [Export(typeof(IWorkspaceUpdateHandler))]
 [PartCreationPolicy(CreationPolicy.NonShared)]
-internal class DynamicItemHandler : IWorkspaceUpdateHandler, ISourceItemsHandler
+[method: ImportingConstructor]
+internal class DynamicItemHandler(UnconfiguredProject project) : IWorkspaceUpdateHandler, ISourceItemsHandler
 {
     private const string RazorPagesExtension = ".cshtml";
     private const string RazorComponentsExtension = ".razor";
 
-    private readonly UnconfiguredProject _project;
     private readonly HashSet<string> _paths = new(StringComparers.Paths);
-
-    [ImportingConstructor]
-    public DynamicItemHandler(UnconfiguredProject project)
-    {
-        _project = project;
-    }
 
     public void Handle(IWorkspaceProjectContext context, IComparable version, IImmutableDictionary<string, IProjectChangeDescription> projectChanges, ContextState state, IManagedProjectDiagnosticOutputService logger)
     {
@@ -66,11 +60,11 @@ internal class DynamicItemHandler : IWorkspaceUpdateHandler, ISourceItemsHandler
 
         void AddToContextIfNotPresent(string includePath, IImmutableDictionary<string, string> metadata)
         {
-            string fullPath = _project.MakeRooted(includePath);
+            string fullPath = project.MakeRooted(includePath);
 
             if (!_paths.Contains(fullPath))
             {
-                string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
+                string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(project.FullPath), fullPath, metadata);
 
                 logger.WriteLine("Adding dynamic file '{0}'", fullPath);
                 context.AddDynamicFile(fullPath, folderNames);
@@ -81,7 +75,7 @@ internal class DynamicItemHandler : IWorkspaceUpdateHandler, ISourceItemsHandler
 
         void RemoveFromContextIfPresent(string includePath)
         {
-            string fullPath = _project.MakeRooted(includePath);
+            string fullPath = project.MakeRooted(includePath);
 
             if (_paths.Contains(fullPath))
             {

@@ -11,16 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
 ///     and <see cref="IWorkspaceProjectContext.DisplayName"/>.
 /// </summary>
 [Export(typeof(IWorkspaceUpdateHandler))]
-internal class ProjectFilePathAndDisplayNameEvaluationHandler : IWorkspaceUpdateHandler, IProjectEvaluationHandler
+[method: ImportingConstructor]
+internal class ProjectFilePathAndDisplayNameEvaluationHandler(UnconfiguredProject _, IImplicitlyActiveDimensionProvider implicitlyActiveDimensionProvider) : IWorkspaceUpdateHandler, IProjectEvaluationHandler
 {
-    private readonly IImplicitlyActiveDimensionProvider _implicitlyActiveDimensionProvider;
-
-    [ImportingConstructor]
-    public ProjectFilePathAndDisplayNameEvaluationHandler(UnconfiguredProject _, IImplicitlyActiveDimensionProvider implicitlyActiveDimensionProvider)
-    {
-        _implicitlyActiveDimensionProvider = implicitlyActiveDimensionProvider;
-    }
-
     public string ProjectEvaluationRule => ConfigurationGeneral.SchemaName;
 
     public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IManagedProjectDiagnosticOutputService logger)
@@ -50,7 +43,7 @@ internal class ProjectFilePathAndDisplayNameEvaluationHandler : IWorkspaceUpdate
 
             string projectName = Path.GetFileNameWithoutExtension(projectFilePath);
 
-            IEnumerable<string> dimensionNames = _implicitlyActiveDimensionProvider.GetImplicitlyActiveDimensions(projectConfiguration.Dimensions.Keys);
+            IEnumerable<string> dimensionNames = implicitlyActiveDimensionProvider.GetImplicitlyActiveDimensions(projectConfiguration.Dimensions.Keys);
 
             string disambiguation = string.Join(", ", dimensionNames.Select(dimensionName => projectConfiguration.Dimensions[dimensionName]));
             if (disambiguation.Length == 0)

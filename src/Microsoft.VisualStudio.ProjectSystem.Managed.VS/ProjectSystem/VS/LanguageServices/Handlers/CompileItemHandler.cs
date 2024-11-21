@@ -11,17 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
 /// </summary>
 [Export(typeof(IWorkspaceUpdateHandler))]
 [PartCreationPolicy(CreationPolicy.NonShared)]
-internal class CompileItemHandler : AbstractEvaluationCommandLineHandler, IWorkspaceUpdateHandler, IProjectEvaluationHandler, ICommandLineHandler
+[method: ImportingConstructor]
+internal class CompileItemHandler(UnconfiguredProject project) : AbstractEvaluationCommandLineHandler(project), IWorkspaceUpdateHandler, IProjectEvaluationHandler, ICommandLineHandler
 {
-    private readonly UnconfiguredProject _project;
-
-    [ImportingConstructor]
-    public CompileItemHandler(UnconfiguredProject project)
-        : base(project)
-    {
-        _project = project;
-    }
-
     public string ProjectEvaluationRule => Compile.SchemaName;
 
     public void Handle(IWorkspaceProjectContext context, ProjectConfiguration projectConfiguration, IComparable version, IProjectChangeDescription projectChange, ContextState state, IManagedProjectDiagnosticOutputService logger)
@@ -44,14 +36,14 @@ internal class CompileItemHandler : AbstractEvaluationCommandLineHandler, IWorks
 
             IEnumerable<string> GetFilePaths(BuildOptions options)
             {
-                return options.SourceFiles.Select(f => _project.MakeRelative(f.Path));
+                return options.SourceFiles.Select(f => project.MakeRelative(f.Path));
             }
         }
     }
 
     protected override void AddToContext(IWorkspaceProjectContext context, string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IManagedProjectDiagnosticOutputService logger)
     {
-        string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
+        string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(project.FullPath), fullPath, metadata);
 
         logger.WriteLine("Adding source file '{0}'", fullPath);
         context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);

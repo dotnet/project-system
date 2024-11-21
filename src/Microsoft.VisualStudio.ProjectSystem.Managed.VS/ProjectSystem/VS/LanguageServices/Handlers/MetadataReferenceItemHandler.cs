@@ -11,7 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
 /// </summary>
 [Export(typeof(IWorkspaceUpdateHandler))]
 [PartCreationPolicy(CreationPolicy.NonShared)]
-internal class MetadataReferenceItemHandler : IWorkspaceUpdateHandler, ICommandLineHandler
+[method: ImportingConstructor]
+internal class MetadataReferenceItemHandler(UnconfiguredProject project) : IWorkspaceUpdateHandler, ICommandLineHandler
 {
     private static readonly ImmutableArray<string> s_listWithGlobalAlias = [MetadataReferenceProperties.GlobalAlias];
 
@@ -19,27 +20,20 @@ internal class MetadataReferenceItemHandler : IWorkspaceUpdateHandler, ICommandL
     // once with the same path and different properties. This dedupes the references to work around this limitation.
     // See: https://github.com/dotnet/project-system/issues/2230
 
-    private readonly UnconfiguredProject _project;
     private readonly Dictionary<string, MetadataReferenceProperties> _addedPathsWithMetadata = new(StringComparers.Paths);
-
-    [ImportingConstructor]
-    public MetadataReferenceItemHandler(UnconfiguredProject project)
-    {
-        _project = project;
-    }
 
     public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
     {
         foreach (CommandLineReference reference in removed.MetadataReferences)
         {
-            string fullPath = _project.MakeRooted(reference.Reference);
+            string fullPath = project.MakeRooted(reference.Reference);
 
             RemoveFromContextIfPresent(fullPath, reference.Properties);
         }
 
         foreach (CommandLineReference reference in added.MetadataReferences)
         {
-            string fullPath = _project.MakeRooted(reference.Reference);
+            string fullPath = project.MakeRooted(reference.Reference);
 
             AddToContextIfNotPresent(fullPath, reference.Properties);
         }

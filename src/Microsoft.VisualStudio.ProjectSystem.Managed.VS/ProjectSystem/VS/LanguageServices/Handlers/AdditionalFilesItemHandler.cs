@@ -11,33 +11,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
 /// </summary>
 [Export(typeof(IWorkspaceUpdateHandler))]
 [PartCreationPolicy(CreationPolicy.NonShared)]
-internal class AdditionalFilesItemHandler : IWorkspaceUpdateHandler, ICommandLineHandler
+[method: ImportingConstructor]
+internal class AdditionalFilesItemHandler(UnconfiguredProject project) : IWorkspaceUpdateHandler, ICommandLineHandler
 {
     // WORKAROUND: To avoid Roslyn throwing when we add duplicate additional files, we remember what 
     // sent to them and avoid sending on duplicates.
     // See: https://github.com/dotnet/project-system/issues/2230
 
-    private readonly UnconfiguredProject _project;
     private readonly HashSet<string> _paths = new(StringComparers.Paths);
-
-    [ImportingConstructor]
-    public AdditionalFilesItemHandler(UnconfiguredProject project)
-    {
-        _project = project;
-    }
 
     public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
     {
         foreach (CommandLineSourceFile additionalFile in removed.AdditionalFiles)
         {
-            string fullPath = _project.MakeRooted(additionalFile.Path);
+            string fullPath = project.MakeRooted(additionalFile.Path);
 
             RemoveFromContextIfPresent(fullPath);
         }
 
         foreach (CommandLineSourceFile additionalFile in added.AdditionalFiles)
         {
-            string fullPath = _project.MakeRooted(additionalFile.Path);
+            string fullPath = project.MakeRooted(additionalFile.Path);
 
             AddToContextIfNotPresent(fullPath);
         }

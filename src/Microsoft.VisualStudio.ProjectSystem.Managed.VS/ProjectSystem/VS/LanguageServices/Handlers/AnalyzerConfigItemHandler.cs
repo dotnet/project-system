@@ -10,33 +10,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
 /// </summary>
 [Export(typeof(IWorkspaceUpdateHandler))]
 [PartCreationPolicy(CreationPolicy.NonShared)]
-internal class AnalyzerConfigItemHandler : IWorkspaceUpdateHandler, ICommandLineHandler
+[method: ImportingConstructor]
+internal class AnalyzerConfigItemHandler(UnconfiguredProject project) : IWorkspaceUpdateHandler, ICommandLineHandler
 {
     // WORKAROUND: To avoid Roslyn throwing when we add duplicate additional files, we remember what 
     // sent to them and avoid sending on duplicates.
     // See: https://github.com/dotnet/project-system/issues/2230
 
-    private readonly UnconfiguredProject _project;
     private readonly HashSet<string> _paths = new(StringComparers.Paths);
-
-    [ImportingConstructor]
-    public AnalyzerConfigItemHandler(UnconfiguredProject project)
-    {
-        _project = project;
-    }
 
     public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
     {
         foreach (string analyzerConfigFile in removed.AnalyzerConfigFiles)
         {
-            string fullPath = _project.MakeRooted(analyzerConfigFile);
+            string fullPath = project.MakeRooted(analyzerConfigFile);
 
             RemoveFromContextIfPresent(fullPath);
         }
 
         foreach (string analyzerConfigFile in added.AnalyzerConfigFiles)
         {
-            string fullPath = _project.MakeRooted(analyzerConfigFile);
+            string fullPath = project.MakeRooted(analyzerConfigFile);
 
             AddToContextIfNotPresent(fullPath);
         }
