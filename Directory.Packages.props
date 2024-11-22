@@ -51,8 +51,6 @@
     <PackageVersion Include="Microsoft.VisualStudio.Data.Services"                                   Version="17.13.38055-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.13.38055-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.DataTools.Interop"                               Version="17.13.38055-preview.1" />
-    <PackageVersion Include="Microsoft.VisualStudio.Debugger.Contracts"                              Version="17.12.0-beta.24403.1" />
-    <PackageVersion Include="Microsoft.VisualStudio.Debugger.UI.Interfaces"                          Version="17.12.0-beta.24403.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Designer.Interfaces"                             Version="17.13.38055-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.ImageCatalog"                                    Version="17.13.38055-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Interop"                                         Version="17.13.38055-preview.1" />
@@ -105,6 +103,8 @@
 
     <!-- Framework packages -->
     <PackageVersion Include="Microsoft.IO.Redist"                                                    Version="6.0.1" />
+    <!-- Pin version to avoid CVE in System.Text.Json 8.0.4 -->
+    <PackageVersion Include="System.Text.Json"                                                    Version="8.0.5" />
 
     <!-- MSBuild (for tests only) -->
     <PackageVersion Include="Microsoft.Build"                                                        Version="17.13.0-preview-24504-04" />
