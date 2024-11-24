@@ -266,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 if (_outputProduced.Count != numberOfOutputExpected)
                 {
-                    throw new AssertActualExpectedException(numberOfOutputExpected, _outputProduced.Count, $"Timed out after {TestTimeoutMillisecondsDelay}ms");
+                    throw NotEqualException.ForEqualValues(numberOfOutputExpected.ToString(), _outputProduced.Count.ToString(), $"Timed out after {TestTimeoutMillisecondsDelay}ms");
                 }
             }
         }

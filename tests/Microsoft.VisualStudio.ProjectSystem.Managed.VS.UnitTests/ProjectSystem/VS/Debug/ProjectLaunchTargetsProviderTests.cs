@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
-            Assert.Equal(0, targets[0].AdditionalDebugEngines.Count);
+            Assert.Empty(targets[0].AdditionalDebugEngines);
             Assert.Equal("exec \"c:\\test\\project\\bin\\project.dll\" --someArgs", targets[0].Arguments);
         }
 
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [InlineData(@"bin\")]
         [InlineData(@"doesntExist\")]
         [InlineData(null)]
-        public async Task QueryDebugTargetsAsync_ExeProfileAsyncExeRelativeNoWorkingDir(string outdir)
+        public async Task QueryDebugTargetsAsync_ExeProfileAsyncExeRelativeNoWorkingDir(string? outdir)
         {
             var properties = new Dictionary<string, string?>
             {

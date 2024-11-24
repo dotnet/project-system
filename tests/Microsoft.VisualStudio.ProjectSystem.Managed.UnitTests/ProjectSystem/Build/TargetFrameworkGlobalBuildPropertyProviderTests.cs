@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var provider = new TargetFrameworkGlobalBuildPropertyProvider(projectService, configuredProject);
 
             var properties = await provider.GetGlobalPropertiesAsync(CancellationToken.None);
-            Assert.Equal(0, properties.Count);
+            Assert.Empty(properties);
         }
     }
 }
