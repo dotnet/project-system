@@ -240,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // If no working directory specified in the profile, we default to output directory. If for some reason the output directory
             // is not specified, fall back to the project folder.
-            string projectFolderFullPath = Path.GetDirectoryName(_project.UnconfiguredProject.FullPath) ?? string.Empty;
+            string projectFolderFullPath = _project.UnconfiguredProject.GetProjectDirectory();
             string defaultWorkingDir = await ProjectAndExecutableLaunchHandlerHelpers.GetDefaultWorkingDirectoryAsync(configuredProject, projectFolderFullPath, _fileSystem);
 
             string? commandLineArgs = resolvedProfile.CommandLineArgs is null

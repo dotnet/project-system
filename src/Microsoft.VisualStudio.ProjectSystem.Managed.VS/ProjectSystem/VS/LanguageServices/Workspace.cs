@@ -41,7 +41,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     private readonly JoinableTaskCollection _joinableTaskCollection;
     private readonly JoinableTaskFactory _joinableTaskFactory;
     private readonly CancellationToken _unloadCancellationToken;
-    private readonly string _baseDirectory;
 
     /// <summary>Completes when the workspace has integrated build data.</summary>
     private readonly TaskCompletionSource _contextCreated = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -117,8 +116,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         _joinableTaskCollection = joinableTaskCollection;
         _joinableTaskFactory = joinableTaskFactory;
         _unloadCancellationToken = unloadCancellationToken;
-
-        _baseDirectory = Path.GetDirectoryName(_unconfiguredProject.FullPath);
 
         // We take ownership of the lifetime of the provided update handlers, and dispose them
         // when this workspace is disposed.
@@ -453,8 +450,10 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
                     IComparable version = GetConfiguredProjectVersion(update);
 
-                    BuildOptions added   = parser.Parse(projectChange.Difference.AddedItems,   _baseDirectory);
-                    BuildOptions removed = parser.Parse(projectChange.Difference.RemovedItems, _baseDirectory);
+                    string baseDirectory = _unconfiguredProject.GetProjectDirectory();
+
+                    BuildOptions added   = parser.Parse(projectChange.Difference.AddedItems,   baseDirectory);
+                    BuildOptions removed = parser.Parse(projectChange.Difference.RemovedItems, baseDirectory);
 
                     foreach (ICommandLineHandler commandLineHandler in _updateHandlers.CommandLineHandlers)
                     {

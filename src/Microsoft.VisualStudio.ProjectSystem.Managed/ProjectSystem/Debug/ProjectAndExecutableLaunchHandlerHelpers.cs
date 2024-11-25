@@ -208,7 +208,7 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
         // If the working directory is relative, it will be relative to the project root so make it a full path
         if (!string.IsNullOrWhiteSpace(runWorkingDirectory) && !Path.IsPathRooted(runWorkingDirectory))
         {
-            runWorkingDirectory = Path.Combine(Path.GetDirectoryName(project.UnconfiguredProject.FullPath) ?? string.Empty, runWorkingDirectory);
+            runWorkingDirectory = Path.Combine(project.UnconfiguredProject.GetProjectDirectory(), runWorkingDirectory);
         }
 
         string runArguments = await properties.GetEvaluatedPropertyValueAsync("RunArguments");

@@ -294,7 +294,7 @@ public class WorkspaceTests
         workspaceProjectContextFactory.VerifyAll();
         workspaceProjectContext.VerifyAll();
         unconfiguredProjectServices.VerifyAll();
-        unconfiguredProject.VerifyAll();
+        unconfiguredProject.Verify();
 
         Assert.Same(workspaceProjectContext.Object, workspace.Context);
     }
@@ -754,7 +754,7 @@ public class WorkspaceTests
 
         workspaceProjectContextFactory.VerifyAll();
         unconfiguredProjectServices.VerifyAll();
-        unconfiguredProject.VerifyAll();
+        unconfiguredProject.Verify();
     }
 
     [Theory] // Configurations          Project GUID                               Expected
@@ -808,12 +808,12 @@ public class WorkspaceTests
         IProjectSubscriptionUpdate? buildRuleUpdate = null)
     {
         var commandLineParserService = new Mock<ICommandLineParserService>(MockBehavior.Strict);
-        commandLineParserService.Setup(o => o.Parse(It.IsAny<IEnumerable<string>>(), """C:\MyProject""")).Returns(EmptyBuildOptions);
+        commandLineParserService.Setup(o => o.Parse(It.IsAny<IEnumerable<string>>(), """C:\MyProject\""")).Returns(EmptyBuildOptions);
 
         slice ??= ProjectConfigurationSlice.Create(ImmutableStringDictionary<string>.EmptyOrdinal.Add("TargetFramework", "net6.0"));
         unconfiguredProject ??= UnconfiguredProjectFactory.ImplementFullPath("""C:\MyProject\MyProject.csproj""");
         projectGuid ??= Guid.NewGuid();
-        updateHandlers ??= new UpdateHandlers(Array.Empty<ExportFactory<IWorkspaceUpdateHandler>>());
+        updateHandlers ??= new UpdateHandlers([]);
         logger ??= IManagedProjectDiagnosticOutputServiceFactory.Create();
         activeWorkspaceProjectContextTracker ??= IActiveEditorContextTrackerFactory.Create();
         commandLineParserServices ??= new(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst) { commandLineParserService.Object };
