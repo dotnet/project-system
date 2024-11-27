@@ -429,3 +429,4 @@ Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationS
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService.SetHotReloadStateAsync(bool isInHotReload) -> System.Threading.Tasks.Task!
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IObjectBrowserItem
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IObjectBrowserItem.AssemblyPath.get -> string?
+static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase.CreateContextMenuController(System.Guid menuGuid, int menuId) -> Microsoft.Internal.VisualStudio.PlatformUI.IContextMenuController!

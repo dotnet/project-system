@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     {
         private const int IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE = 0x04B1;
 
-        private static readonly IContextMenuController s_defaultMenuController = new MenuController(VsMenus.guidSHLMainMenu, IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE);
+        private static readonly IContextMenuController s_defaultMenuController = CreateContextMenuController(VsMenus.guidSHLMainMenu, IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE);
 
         public string AssemblyName { get; }
         public string? Path { get; }

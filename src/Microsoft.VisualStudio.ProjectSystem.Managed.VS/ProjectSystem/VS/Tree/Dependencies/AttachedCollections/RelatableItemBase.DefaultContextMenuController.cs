@@ -9,6 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 {
     public abstract partial class RelatableItemBase
     {
+        /// <summary>
+        /// Creates a <see cref="IContextMenuController"/> for use in overrides of <see cref="ContextMenuController"/>.
+        /// </summary>
+        public static IContextMenuController CreateContextMenuController(Guid menuGuid, int menuId) => new MenuController(menuGuid, menuId);
+
         internal sealed class MenuController(Guid menuGuid, int menuId) : IContextMenuController
         {
             public static ImmutableArray<IRelatableItem> CurrentItems { get; private set; } = [];
