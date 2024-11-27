@@ -13,7 +13,7 @@
     <CreateVsixContainer>false</CreateVsixContainer>
     <UseCodebase>false</UseCodebase>
 
-    <!-- Nuget -->
+    <!-- NuGet -->
     <IsPackable>true</IsPackable>
     <Description>Microsoft VisualStudio ProjectSystem for Managed Languages Project hosts that interact with VisualStudio interfaces.</Description>
     <Summary>Microsoft VisualStudio Managed Project System VS Components</Summary>
