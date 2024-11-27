@@ -11,12 +11,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     {
         internal sealed class MenuController(Guid menuGuid, int menuId) : IContextMenuController
         {
+            public static ImmutableArray<IRelatableItem> CurrentItems { get; private set; } = [];
 
             public bool ShowContextMenu(IEnumerable<object> items, Point location)
             {
-                bool shouldShowMenu = items.All(item => item is IRelatableItem);
+                ImmutableArray<IRelatableItem>? relatableItems = GetItems();
 
-                if (shouldShowMenu)
+                if (relatableItems is null)
+                {
+                    return false;
+                }
+
+                CurrentItems = relatableItems.Value;
+
+                try
+                {
+                    return ShowContextMenu();
+                }
+                finally
+                {
+                    CurrentItems = [];
+                }
+
+                ImmutableArray<IRelatableItem>? GetItems()
+                {
+                    ImmutableArray<IRelatableItem>.Builder? builder = null;
+
+                    foreach (object item in items)
+                    {
+                        if (item is IRelatableItem relatableItem)
+                        {
+                            builder ??= ImmutableArray.CreateBuilder<IRelatableItem>();
+                            builder.Add(relatableItem);
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+
+                    if (builder is null)
+                    {
+                        return null;
+                    }
+
+                    return builder.ToImmutable();
+                }
+
+                bool ShowContextMenu()
                 {
                     if (Package.GetGlobalService(typeof(SVsUIShell)) is IVsUIShell shell)
                     {
@@ -31,9 +73,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                         return ErrorHandler.Succeeded(result);
                     }
-                }
 
-                return false;
+                    return false;
+                }
             }
         }
     }

@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Implementation
 {
-    internal sealed class FrameworkReferenceAssemblyItem : RelatableItemBase
+    internal sealed class FrameworkReferenceAssemblyItem : RelatableItemBase, IObjectBrowserItem
     {
         private const int IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE = 0x04B1;
 
@@ -38,7 +38,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public override object? GetBrowseObject() => new BrowseObject(this);
 
+        string? IObjectBrowserItem.AssemblyPath => GetAssemblyPath();
 
+        private string? GetAssemblyPath() => Path is not null
+            ? System.IO.Path.GetFullPath(System.IO.Path.Combine(Framework.Path, Path))
+            : null;
 
         private sealed class BrowseObject(FrameworkReferenceAssemblyItem item) : LocalizableProperties
         {
@@ -52,9 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
             [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyPathDisplayName))]
             [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyPathDescription))]
-            public string Path => item.Path is not null
-                ? System.IO.Path.GetFullPath(System.IO.Path.Combine(item.Framework.Path, item.Path))
-                : "";
+            public string Path => item.GetAssemblyPath() ?? "";
 
             [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyAssemblyVersionDisplayName))]
             [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyAssemblyVersionDescription))]

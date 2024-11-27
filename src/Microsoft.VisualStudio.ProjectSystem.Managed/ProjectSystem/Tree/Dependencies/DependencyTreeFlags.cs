@@ -55,6 +55,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         public static readonly ProjectTreeFlags SupportsFolderBrowse = ProjectTreeFlags.Create(nameof(SupportsFolderBrowse)) + SupportsBrowse;
 
         /// <summary>
+        /// Indicates that the dependency supports the "Open in Object Browser".
+        /// </summary>
+        internal static readonly ProjectTreeFlags SupportsObjectBrowser = ProjectTreeFlags.Create(nameof(SupportsObjectBrowser));
+
+        /// <summary>
         /// Identifies nodes used to group dependencies specific to a given slice, which is most commonly the target framework.
         /// </summary>
         /// <remarks>
