@@ -80,6 +80,10 @@
       <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_ITEM_OBJECTBROWSER" priority="0x0100">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE"/>
       </Group>
+      <!-- Group added to transitive COM references -->
+      <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_ITEM_OBJECTBROWSER" priority="0x0100">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_COMREFERENCE"/>
+      </Group>
       <!-- Group added to transitive project references -->
       <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_ITEM_OBJECTBROWSER" priority="0x0100">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJECTREFERENCE"/>
@@ -260,6 +264,7 @@
     </GuidSymbol>
 
     <GuidSymbol name="guidSHLMainMenu" value="{ 0xd309f791, 0x903f, 0x11d0, { 0x9e, 0xfc, 0x00, 0xa0, 0xc9, 0x11, 0x00, 0x4f } }">
+      <IDSymbol name="IDM_VS_CTXT_COMREFERENCE" value="0x04A5" />
       <IDSymbol name="IDG_VS_CTXT_ITEM_OBJECTBROWSER" value="0x02F6" />
       <IDSymbol name="IDM_VS_CTXT_PROJECTREFERENCE" value="0x04A7"/>
       <IDSymbol name="IDM_VS_CTXT_SHAREDPROJECTREFERENCE" value="0x04A8" />
