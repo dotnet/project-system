@@ -165,7 +165,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         {
             WriteToOutputWindow(VSResources.HotReloadRestartInProgress, cancellationToken);
 
-
             if (_callback is IProjectHotReloadSessionCallback2 callBack2)
             {
                 await callBack2.RestartProjectAsync(_isRunningUnderDebugger, cancellationToken);
