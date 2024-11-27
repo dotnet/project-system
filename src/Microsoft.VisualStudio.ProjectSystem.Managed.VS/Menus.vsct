@@ -80,6 +80,10 @@
       <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_ITEM_OBJECTBROWSER" priority="0x0100">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE"/>
       </Group>
+      <!-- Group added to transitive project references -->
+      <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_ITEM_OBJECTBROWSER" priority="0x0100">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJECTREFERENCE"/>
+      </Group>
       <!-- This is the ordering group. Handles ordering files. -->
       <Group guid="guidManagedProjectSystemOrderCommandSet" id="OrderingGroup" priority="0x100">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />

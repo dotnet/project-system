@@ -30,9 +30,7 @@
                   ReadOnly="True"
                   Visible="False">
     <StringProperty.DataSource>
-      <DataSource ItemType="ProjectReference"
-                  PersistedName="Identity"
-                  Persistence="Intrinsic"
+      <DataSource PersistedName="Identity"
                   SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
