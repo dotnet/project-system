@@ -326,8 +326,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             ContextState contextState,
             CancellationToken cancellationToken)
         {
-            IComparable version = GetConfiguredProjectVersion(update);
-
             ProcessProjectEvaluationHandlers();
 
             ProcessSourceItemsHandlers();
@@ -338,6 +336,8 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                 // It may change over time, such as in response to changing the active configuration,
                 // for example from Debug to Release.
                 ConfiguredProject configuredProject = update.Value.ConfiguredProject;
+
+                IComparable version = GetConfiguredProjectVersion(update);
 
                 foreach (IProjectEvaluationHandler evaluationHandler in _updateHandlers.EvaluationHandlers)
                 {
@@ -362,7 +362,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                     {
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        sourceItemsHandler.Handle(Context, version, changes, contextState, _logger);
+                        sourceItemsHandler.Handle(Context, changes, contextState, _logger);
                     }
                 }
             }

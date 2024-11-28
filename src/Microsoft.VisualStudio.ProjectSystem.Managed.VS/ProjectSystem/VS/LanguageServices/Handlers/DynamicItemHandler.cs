@@ -3,74 +3,68 @@
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
+
+/// <summary>
+///     Handles changes to dynamic items, such as Razor CSHTML files.
+/// </summary>
+[Export(typeof(IWorkspaceUpdateHandler))]
+[PartCreationPolicy(CreationPolicy.NonShared)]
+[method: ImportingConstructor]
+internal class DynamicItemHandler(UnconfiguredProject project) : IWorkspaceUpdateHandler, ISourceItemsHandler
 {
-    /// <summary>
-    ///     Handles changes to dynamic items, such as Razor CSHTML files.
-    /// </summary>
-    [Export(typeof(IWorkspaceUpdateHandler))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
-    internal class DynamicItemHandler : IWorkspaceUpdateHandler, ISourceItemsHandler
+    private const string RazorPagesExtension = ".cshtml";
+    private const string RazorComponentsExtension = ".razor";
+
+    private readonly HashSet<string> _paths = new(StringComparers.Paths);
+
+    public void Handle(IWorkspaceProjectContext context, IImmutableDictionary<string, IProjectChangeDescription> projectChanges, ContextState state, IManagedProjectDiagnosticOutputService logger)
     {
-        private const string RazorPagesExtension = ".cshtml";
-        private const string RazorComponentsExtension = ".razor";
-        private readonly UnconfiguredProject _project;
-        private readonly HashSet<string> _paths = new(StringComparers.Paths);
-
-        [ImportingConstructor]
-        public DynamicItemHandler(UnconfiguredProject project)
+        foreach ((_, IProjectChangeDescription projectChange) in projectChanges)
         {
-            _project = project;
-        }
+            if (!projectChange.Difference.AnyChanges)
+                continue;
 
-        public void Handle(IWorkspaceProjectContext context, IComparable version, IImmutableDictionary<string, IProjectChangeDescription> projectChanges, ContextState state, IManagedProjectDiagnosticOutputService logger)
-        {
-            foreach ((_, IProjectChangeDescription projectChange) in projectChanges)
+            IProjectChangeDiff difference = HandlerServices.NormalizeRenames(projectChange.Difference);
+
+            foreach (string includePath in difference.RemovedItems)
             {
-                if (!projectChange.Difference.AnyChanges)
-                    continue;
-
-                IProjectChangeDiff difference = HandlerServices.NormalizeRenames(projectChange.Difference);
-
-                foreach (string includePath in difference.RemovedItems)
+                if (IsDynamicFile(includePath))
                 {
-                    if (IsDynamicFile(includePath))
-                    {
-                        RemoveFromContextIfPresent(context, includePath, logger);
-                    }
+                    RemoveFromContextIfPresent(includePath);
                 }
+            }
 
-                foreach (string includePath in difference.AddedItems)
+            foreach (string includePath in difference.AddedItems)
+            {
+                if (IsDynamicFile(includePath))
                 {
-                    if (IsDynamicFile(includePath))
-                    {
-                        IImmutableDictionary<string, string> metadata = projectChange.After.Items.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
+                    IImmutableDictionary<string, string> metadata = projectChange.After.Items.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
 
-                        AddToContextIfNotPresent(context, includePath, metadata, logger);
-                    }
+                    AddToContextIfNotPresent(includePath, metadata);
                 }
+            }
 
-                // We Remove then Add changed items to pick up the Linked metadata
-                foreach (string includePath in difference.ChangedItems)
+            // We Remove then Add changed items to pick up the Linked metadata
+            foreach (string includePath in difference.ChangedItems)
+            {
+                if (IsDynamicFile(includePath))
                 {
-                    if (IsDynamicFile(includePath))
-                    {
-                        IImmutableDictionary<string, string> metadata = projectChange.After.Items.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
+                    IImmutableDictionary<string, string> metadata = projectChange.After.Items.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
 
-                        RemoveFromContextIfPresent(context, includePath, logger);
-                        AddToContextIfNotPresent(context, includePath, metadata, logger);
-                    }
+                    RemoveFromContextIfPresent(includePath);
+                    AddToContextIfNotPresent(includePath, metadata);
                 }
             }
         }
 
-        private void AddToContextIfNotPresent(IWorkspaceProjectContext context, string includePath, IImmutableDictionary<string, string> metadata, IManagedProjectDiagnosticOutputService logger)
+        void AddToContextIfNotPresent(string includePath, IImmutableDictionary<string, string> metadata)
         {
-            string fullPath = _project.MakeRooted(includePath);
+            string fullPath = project.MakeRooted(includePath);
 
             if (!_paths.Contains(fullPath))
             {
-                string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(_project.FullPath), fullPath, metadata);
+                string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(project.FullPath), fullPath, metadata);
 
                 logger.WriteLine("Adding dynamic file '{0}'", fullPath);
                 context.AddDynamicFile(fullPath, folderNames);
@@ -79,9 +73,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void RemoveFromContextIfPresent(IWorkspaceProjectContext context, string includePath, IManagedProjectDiagnosticOutputService logger)
+        void RemoveFromContextIfPresent(string includePath)
         {
-            string fullPath = _project.MakeRooted(includePath);
+            string fullPath = project.MakeRooted(includePath);
 
             if (_paths.Contains(fullPath))
             {
@@ -93,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private static bool IsDynamicFile(string includePath)
+        static bool IsDynamicFile(string includePath)
         {
             // Note a file called just '.cshtml' is still considered a Razor file
             return includePath.EndsWith(RazorPagesExtension, StringComparisons.Paths) ||

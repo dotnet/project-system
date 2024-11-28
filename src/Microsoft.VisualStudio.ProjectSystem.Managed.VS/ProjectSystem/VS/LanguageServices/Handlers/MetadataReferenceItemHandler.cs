@@ -4,46 +4,41 @@ using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
+
+/// <summary>
+///     Handles changes to references that are passed to the compiler during design-time builds.
+/// </summary>
+[Export(typeof(IWorkspaceUpdateHandler))]
+[PartCreationPolicy(CreationPolicy.NonShared)]
+[method: ImportingConstructor]
+internal class MetadataReferenceItemHandler(UnconfiguredProject project) : IWorkspaceUpdateHandler, ICommandLineHandler
 {
-    /// <summary>
-    ///     Handles changes to references that are passed to the compiler during design-time builds.
-    /// </summary>
-    [Export(typeof(IWorkspaceUpdateHandler))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
-    internal class MetadataReferenceItemHandler : IWorkspaceUpdateHandler, ICommandLineHandler
+    private static readonly ImmutableArray<string> s_listWithGlobalAlias = [MetadataReferenceProperties.GlobalAlias];
+
+    // WORKAROUND: The language services through IWorkspaceProjectContext doesn't expect to see AddMetadataReference called more than
+    // once with the same path and different properties. This dedupes the references to work around this limitation.
+    // See: https://github.com/dotnet/project-system/issues/2230
+
+    private readonly Dictionary<string, MetadataReferenceProperties> _addedPathsWithMetadata = new(StringComparers.Paths);
+
+    public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
     {
-        // WORKAROUND: The language services through IWorkspaceProjectContext doesn't expect to see AddMetadataReference called more than
-        // once with the same path and different properties. This dedupes the references to work around this limitation.
-        // See: https://github.com/dotnet/project-system/issues/2230
-
-        private readonly UnconfiguredProject _project;
-        private readonly Dictionary<string, MetadataReferenceProperties> _addedPathsWithMetadata = new(StringComparers.Paths);
-
-        [ImportingConstructor]
-        public MetadataReferenceItemHandler(UnconfiguredProject project)
+        foreach (CommandLineReference reference in removed.MetadataReferences)
         {
-            _project = project;
+            string fullPath = project.MakeRooted(reference.Reference);
+
+            RemoveFromContextIfPresent(fullPath, reference.Properties);
         }
 
-        public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
+        foreach (CommandLineReference reference in added.MetadataReferences)
         {
-            foreach (CommandLineReference reference in removed.MetadataReferences)
-            {
-                string fullPath = _project.MakeRooted(reference.Reference);
+            string fullPath = project.MakeRooted(reference.Reference);
 
-                RemoveFromContextIfPresent(context, fullPath, reference.Properties, logger);
-            }
-
-            foreach (CommandLineReference reference in added.MetadataReferences)
-            {
-                string fullPath = _project.MakeRooted(reference.Reference);
-
-                AddToContextIfNotPresent(context, fullPath, reference.Properties, logger);
-            }
+            AddToContextIfNotPresent(fullPath, reference.Properties);
         }
 
-        private void AddToContextIfNotPresent(IWorkspaceProjectContext context, string fullPath, MetadataReferenceProperties properties, IManagedProjectDiagnosticOutputService logger)
+        void AddToContextIfNotPresent(string fullPath, MetadataReferenceProperties properties)
         {
             if (_addedPathsWithMetadata.TryGetValue(fullPath, out MetadataReferenceProperties existingProperties))
             {
@@ -64,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _addedPathsWithMetadata[fullPath] = properties;
         }
 
-        private void RemoveFromContextIfPresent(IWorkspaceProjectContext context, string fullPath, MetadataReferenceProperties properties, IManagedProjectDiagnosticOutputService logger)
+        void RemoveFromContextIfPresent(string fullPath, MetadataReferenceProperties properties)
         {
             if (_addedPathsWithMetadata.TryGetValue(fullPath, out MetadataReferenceProperties existingProperties))
             {
@@ -92,29 +87,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private static readonly ImmutableArray<string> s_listWithGlobalAlias = ImmutableArray.Create(MetadataReferenceProperties.GlobalAlias);
-
-        /// <summary>
-        /// Returns the list of aliases, replacing an empty list with "global".
-        /// </summary>
-        private static ImmutableArray<string> GetGlobalAliasIfEmpty(ImmutableArray<string> aliases)
+        static ImmutableArray<string> GetGlobalAliasIfEmpty(ImmutableArray<string> aliases)
         {
             if (aliases.IsDefaultOrEmpty)
             {
+                // Replace an empty list with a list containing just "global".
                 return s_listWithGlobalAlias;
             }
 
             return aliases;
         }
 
-        /// <summary>
-        /// Returns the list of aliases, replacing a list containing just "global" back to the empty list.
-        /// </summary>
-        private static ImmutableArray<string> GetEmptyIfGlobalAlias(ImmutableArray<string> aliases)
+        static ImmutableArray<string> GetEmptyIfGlobalAlias(ImmutableArray<string> aliases)
         {
             if (aliases.Length == 1 && aliases[0] == MetadataReferenceProperties.GlobalAlias)
             {
-                return ImmutableArray<string>.Empty;
+                // Replace a list containing just "global" with an empty list.
+                return [];
             }
 
             return aliases;

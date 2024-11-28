@@ -489,7 +489,6 @@ public class WorkspaceTests
                 .Setup(
                     o => o.Handle(
                         workspaceProjectContext.Object,
-                        1,
                         It.IsAny<ImmutableDictionary<string, IProjectChangeDescription>>(),
                         new ContextState(false, true),
                         It.IsAny<IManagedProjectDiagnosticOutputService>()));

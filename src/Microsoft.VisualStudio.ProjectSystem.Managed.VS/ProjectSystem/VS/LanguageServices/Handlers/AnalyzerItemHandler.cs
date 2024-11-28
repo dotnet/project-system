@@ -4,46 +4,39 @@ using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
+
+/// <summary>
+///     Handles changes to the  &lt;Analyzer/&gt; item during design-time builds.
+/// </summary>
+[Export(typeof(IWorkspaceUpdateHandler))]
+[PartCreationPolicy(CreationPolicy.NonShared)]
+[method: ImportingConstructor]
+internal class AnalyzerItemHandler(UnconfiguredProject project) : IWorkspaceUpdateHandler, ICommandLineHandler
 {
-    /// <summary>
-    ///     Handles changes to the  &lt;Analyzer/&gt; item during design-time builds.
-    /// </summary>
-    [Export(typeof(IWorkspaceUpdateHandler))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
-    internal class AnalyzerItemHandler : IWorkspaceUpdateHandler, ICommandLineHandler
+    // WORKAROUND: To avoid Roslyn throwing when we add duplicate analyzers, we remember what 
+    // sent to them and avoid sending on duplicates.
+    // See: https://github.com/dotnet/project-system/issues/2230
+
+    private readonly HashSet<string> _paths = new(StringComparers.Paths);
+
+    public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
     {
-        // WORKAROUND: To avoid Roslyn throwing when we add duplicate analyzers, we remember what 
-        // sent to them and avoid sending on duplicates.
-        // See: https://github.com/dotnet/project-system/issues/2230
-
-        private readonly UnconfiguredProject _project;
-        private readonly HashSet<string> _paths = new(StringComparers.Paths);
-
-        [ImportingConstructor]
-        public AnalyzerItemHandler(UnconfiguredProject project)
+        foreach (CommandLineAnalyzerReference analyzer in removed.AnalyzerReferences)
         {
-            _project = project;
+            string fullPath = project.MakeRooted(analyzer.FilePath);
+
+            RemoveFromContextIfPresent(fullPath);
         }
 
-        public void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger)
+        foreach (CommandLineAnalyzerReference analyzer in added.AnalyzerReferences)
         {
-            foreach (CommandLineAnalyzerReference analyzer in removed.AnalyzerReferences)
-            {
-                string fullPath = _project.MakeRooted(analyzer.FilePath);
+            string fullPath = project.MakeRooted(analyzer.FilePath);
 
-                RemoveFromContextIfPresent(context, fullPath, logger);
-            }
-
-            foreach (CommandLineAnalyzerReference analyzer in added.AnalyzerReferences)
-            {
-                string fullPath = _project.MakeRooted(analyzer.FilePath);
-
-                AddToContextIfNotPresent(context, fullPath, logger);
-            }
+            AddToContextIfNotPresent(fullPath);
         }
 
-        private void AddToContextIfNotPresent(IWorkspaceProjectContext context, string fullPath, IManagedProjectDiagnosticOutputService logger)
+        void AddToContextIfNotPresent(string fullPath)
         {
             if (!_paths.Contains(fullPath))
             {
@@ -54,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void RemoveFromContextIfPresent(IWorkspaceProjectContext context, string fullPath, IManagedProjectDiagnosticOutputService logger)
+        void RemoveFromContextIfPresent(string fullPath)
         {
             if (_paths.Contains(fullPath))
             {
