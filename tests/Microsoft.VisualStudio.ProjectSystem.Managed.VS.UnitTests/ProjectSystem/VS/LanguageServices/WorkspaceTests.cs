@@ -77,7 +77,7 @@ public class WorkspaceTests
             factory: () => Mock.Of<IWorkspaceUpdateHandler>(MockBehavior.Loose),
             disposeAction: () => disposeCount++);
 
-        var workspace = await CreateInstanceAsync(updateHandlers: new UpdateHandlers(new[] { exportFactory }));
+        var workspace = await CreateInstanceAsync(updateHandlers: new UpdateHandlers([exportFactory]));
 
         Assert.Equal(0, disposeCount);
 
@@ -382,7 +382,7 @@ public class WorkspaceTests
                 o => o.Handle(
                     workspaceProjectContext.Object,
                     It.IsAny<ProjectConfiguration>(),
-                    1,
+                    It.IsAny<IComparable>(),
                     It.IsAny<IProjectChangeDescription>(),
                     It.IsAny<ContextState>(),
                     It.IsAny<IManagedProjectDiagnosticOutputService>()));
@@ -391,7 +391,7 @@ public class WorkspaceTests
         var workspace = await CreateInstanceAsync(
             evaluationRuleUpdate: evaluationRuleUpdate,
             workspaceProjectContext: workspaceProjectContext.Object,
-            updateHandlers: new UpdateHandlers(new[] { ExportFactoryFactory.Implement(() => updateHandler.Object) }));
+            updateHandlers: new UpdateHandlers([ExportFactoryFactory.Implement(() => updateHandler.Object)]));
 
         updateHandler.Verify();
     }
@@ -443,7 +443,7 @@ public class WorkspaceTests
                     o => o.Handle(
                         workspaceProjectContext.Object,
                         It.IsAny<ProjectConfiguration>(),
-                        1,
+                        It.IsAny<IComparable>(),
                         It.IsAny<IProjectChangeDescription>(),
                         new ContextState(false, true),
                         It.IsAny<IManagedProjectDiagnosticOutputService>()));
@@ -452,7 +452,7 @@ public class WorkspaceTests
         var workspace = await CreateInstanceAsync(
             evaluationRuleUpdate: evaluationRuleUpdate,
             workspaceProjectContext: workspaceProjectContext.Object,
-            updateHandlers: new UpdateHandlers(new[] { ExportFactoryFactory.Implement(() => updateHandler.Object) }));
+            updateHandlers: new UpdateHandlers([ExportFactoryFactory.Implement(() => updateHandler.Object)]));
 
         updateHandler.Verify();
     }
@@ -497,7 +497,7 @@ public class WorkspaceTests
         var workspace = await CreateInstanceAsync(
             sourceItemsUpdate: sourceItemsUpdate,
             workspaceProjectContext: workspaceProjectContext.Object,
-            updateHandlers: new UpdateHandlers(new[] { ExportFactoryFactory.Implement(() => updateHandler.Object) }));
+            updateHandlers: new UpdateHandlers([ExportFactoryFactory.Implement(() => updateHandler.Object)]));
 
         updateHandler.Verify();
     }
@@ -546,7 +546,7 @@ public class WorkspaceTests
             commandLineHandler.Setup(
                 o => o.Handle(
                     workspaceProjectContext.Object,
-                    1,
+                    It.IsAny<IComparable>(),
                     It.Is<BuildOptions>(options => options.MetadataReferences.Select(r => r.Reference).SingleOrDefault() == "Added.dll"),
                     It.Is<BuildOptions>(options => options.MetadataReferences.Select(r => r.Reference).SingleOrDefault() == "Removed.dll"),
                     new ContextState(false, true),
@@ -567,7 +567,7 @@ public class WorkspaceTests
             buildRuleUpdate: buildRuleUpdate,
             commandLineParserServices: commandLineParserServices,
             workspaceProjectContext: workspaceProjectContext.Object,
-            updateHandlers: new UpdateHandlers(new[] { ExportFactoryFactory.Implement(() => updateHandler.Object) }));
+            updateHandlers: new UpdateHandlers([ExportFactoryFactory.Implement(() => updateHandler.Object)]));
 
         updateHandler.Verify();
     }
@@ -813,7 +813,7 @@ public class WorkspaceTests
         slice ??= ProjectConfigurationSlice.Create(ImmutableStringDictionary<string>.EmptyOrdinal.Add("TargetFramework", "net6.0"));
         unconfiguredProject ??= UnconfiguredProjectFactory.ImplementFullPath("""C:\MyProject\MyProject.csproj""");
         projectGuid ??= Guid.NewGuid();
-        updateHandlers ??= new UpdateHandlers(Array.Empty<ExportFactory<IWorkspaceUpdateHandler>>());
+        updateHandlers ??= new UpdateHandlers([]);
         logger ??= IManagedProjectDiagnosticOutputServiceFactory.Create();
         activeWorkspaceProjectContextTracker ??= IActiveEditorContextTrackerFactory.Create();
         commandLineParserServices ??= new(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst) { commandLineParserService.Object };
@@ -864,7 +864,8 @@ public class WorkspaceTests
         ConfiguredProject? configuredProject = null,
         IProjectSubscriptionUpdate? evaluationRuleUpdate = null,
         IProjectSubscriptionUpdate? sourceItemsUpdate = null,
-        int configuredProjectVersion = 1)
+        int configuredProjectVersion = 1,
+        int activeConfigurationVersion = 1)
     {
         configuredProject ??= ConfiguredProjectFactory.Create();
 
@@ -912,14 +913,20 @@ public class WorkspaceTests
         var update = WorkspaceUpdate.FromEvaluation((configuredProject, projectSnapshot, evaluationRuleUpdate, sourceItemsUpdate));
 
         await workspace.OnWorkspaceUpdateAsync(
-            IProjectVersionedValueFactory.Create(update, ProjectDataSources.ConfiguredProjectVersion, configuredProjectVersion));
+            IProjectVersionedValueFactory.Create(
+                update,
+                dataSourceVersions: ImmutableDictionary.CreateRange<NamedIdentity, IComparable>([
+                    new(ProjectDataSources.ConfiguredProjectVersion, configuredProjectVersion),
+                    new(ProjectDataSources.ActiveProjectConfiguration, activeConfigurationVersion)
+                ])));
     }
 
     private static async Task ApplyBuildAsync(
         Workspace workspace,
         ConfiguredProject? configuredProject = null,
         IProjectSubscriptionUpdate? buildRuleUpdate = null,
-        int configuredProjectVersion = 1)
+        int configuredProjectVersion = 1,
+        int activeConfigurationVersion = 1)
     {
         configuredProject ??= ConfiguredProjectFactory.Create();
 
@@ -944,6 +951,11 @@ public class WorkspaceTests
         var update = WorkspaceUpdate.FromBuild((configuredProject, buildRuleUpdate));
 
         await workspace.OnWorkspaceUpdateAsync(
-            IProjectVersionedValueFactory.Create(update, ProjectDataSources.ConfiguredProjectVersion, configuredProjectVersion));
+            IProjectVersionedValueFactory.Create(
+                update,
+                dataSourceVersions: ImmutableDictionary.CreateRange<NamedIdentity, IComparable>([
+                    new(ProjectDataSources.ConfiguredProjectVersion, configuredProjectVersion),
+                    new(ProjectDataSources.ActiveProjectConfiguration, activeConfigurationVersion)
+                ])));
     }
 }

@@ -337,7 +337,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
                 // for example from Debug to Release.
                 ConfiguredProject configuredProject = update.Value.ConfiguredProject;
 
-                IComparable version = GetConfiguredProjectVersion(update);
+                IComparable version = GetVersion(update);
 
                 foreach (IProjectEvaluationHandler evaluationHandler in _updateHandlers.EvaluationHandlers)
                 {
@@ -451,7 +451,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
                     Assumes.Present(parser);
 
-                    IComparable version = GetConfiguredProjectVersion(update);
+                    IComparable version = GetVersion(update);
 
                     BuildOptions added   = parser.Parse(projectChange.Difference.AddedItems,   _baseDirectory);
                     BuildOptions removed = parser.Parse(projectChange.Difference.RemovedItems, _baseDirectory);
@@ -544,9 +544,9 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         }
     }
 
-    private static IComparable GetConfiguredProjectVersion(IProjectValueVersions update)
+    private static IComparable GetVersion(IProjectValueVersions update)
     {
-        return update.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
+        return new CompositeVersion(update.DataSourceVersions);
     }
 
     public async Task WriteAsync(Func<IWorkspace, Task> action, CancellationToken cancellationToken)
@@ -598,6 +598,46 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     {
         // Ensure we unblock any code waiting for initialization, and surface the error to the caller.
         _contextCreated.TrySetException(exception);
+    }
+
+    /// <summary>
+    /// Combines both the configured project version and the active configured project version
+    /// into a single comparable value. In this way, we can ensure we order updates correctly,
+    /// even when the active configuration changes.
+    /// </summary>
+    private sealed class CompositeVersion(IImmutableDictionary<NamedIdentity, IComparable> versions) : IComparable
+    {
+        private readonly IComparable _configuredProjectVersion = versions[ProjectDataSources.ConfiguredProjectVersion];
+        private readonly IComparable _activeConfigurationVersion = versions[ProjectDataSources.ActiveProjectConfiguration];
+
+        public int CompareTo(object obj)
+        {
+            if (obj is not CompositeVersion other)
+            {
+                throw new ArgumentException("Cannot compare to a non-CompositeVersion object.");
+            }
+
+            // The active configuration version will only increase. Every time the configuration
+            // changes, this value goes up.
+            //
+            // We check this *before* checking the configured project version, because when
+            // switching active configuration, the configured project version can go *down*.
+            // However, it's important for our processing of evaluation and build data that
+            // the version is monotonic (only increases).
+            //
+            // We achieve monotonicity by combining these two versions.
+            int c = _activeConfigurationVersion.CompareTo(other._activeConfigurationVersion);
+
+            if (c is not 0)
+            {
+                // Active configuration differs, so compare on this alone.
+                return c;
+            }
+
+            // Active configuration is identical. Compare the configured project versions
+            // for that configuration directly.
+            return _configuredProjectVersion.CompareTo(other._configuredProjectVersion);
+        }
     }
 
     /// <summary>
