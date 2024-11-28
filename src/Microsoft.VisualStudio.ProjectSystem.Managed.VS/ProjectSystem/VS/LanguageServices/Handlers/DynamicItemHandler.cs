@@ -18,7 +18,7 @@ internal class DynamicItemHandler(UnconfiguredProject project) : IWorkspaceUpdat
 
     private readonly HashSet<string> _paths = new(StringComparers.Paths);
 
-    public void Handle(IWorkspaceProjectContext context, IComparable version, IImmutableDictionary<string, IProjectChangeDescription> projectChanges, ContextState state, IManagedProjectDiagnosticOutputService logger)
+    public void Handle(IWorkspaceProjectContext context, IImmutableDictionary<string, IProjectChangeDescription> projectChanges, ContextState state, IManagedProjectDiagnosticOutputService logger)
     {
         foreach ((_, IProjectChangeDescription projectChange) in projectChanges)
         {
