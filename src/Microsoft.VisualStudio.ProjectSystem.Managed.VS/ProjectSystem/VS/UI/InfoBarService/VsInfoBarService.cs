@@ -35,7 +35,6 @@ internal partial class VsInfoBarService : IInfoBarService
     public async Task ShowInfoBarAsync(string message, ImageMoniker image, CancellationToken cancellationToken, params InfoBarUI[] items)
     {
         Requires.NotNullOrEmpty(message);
-        Requires.NotNull(items);
 
         if (!await _vsShellServices.IsCommandLineModeAsync(cancellationToken))
         {
@@ -122,8 +121,6 @@ internal partial class VsInfoBarService : IInfoBarService
 
     private void OnClosed(InfoBarEntry entry)
     {
-        Requires.NotNull(entry);
-
         _threadingService.VerifyOnUIThread();
 
         _entries.Remove(entry);

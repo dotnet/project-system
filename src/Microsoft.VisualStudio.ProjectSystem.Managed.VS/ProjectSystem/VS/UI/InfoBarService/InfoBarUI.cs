@@ -17,7 +17,6 @@ internal class InfoBarUI
     public InfoBarUI(string title, InfoBarUIKind kind, Action action, bool closeAfterAction = true)
     {
         Requires.NotNullOrEmpty(title);
-        Requires.NotNull(action);
 
         Title = title;
         Kind = kind;

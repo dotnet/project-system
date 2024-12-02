@@ -15,11 +15,6 @@ internal partial class VsInfoBarService
 
         public InfoBarEntry(string message, IVsInfoBarUIElement element, InfoBarUI[] items, Action<InfoBarEntry> onClose)
         {
-            Assumes.NotNull(message);
-            Assumes.NotNull(element);
-            Assumes.NotNull(items);
-            Assumes.NotNull(onClose);
-
             Message = message;
             _element = element;
             _items = items;
@@ -36,9 +31,6 @@ internal partial class VsInfoBarService
 
         public void OnActionItemClicked(IVsInfoBarUIElement element, IVsInfoBarActionItem actionItem)
         {
-            Requires.NotNull(element);
-            Requires.NotNull(actionItem);
-
             InfoBarUI item = _items.First(i => i.Title == actionItem.Text);
             item.Action();
 
@@ -50,8 +42,6 @@ internal partial class VsInfoBarService
 
         public void OnClosed(IVsInfoBarUIElement element)
         {
-            Requires.NotNull(element);
-
             _element.Unadvise(_cookie);
             _onClose(this);
         }
