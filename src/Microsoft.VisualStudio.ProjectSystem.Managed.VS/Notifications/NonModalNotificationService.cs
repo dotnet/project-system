@@ -3,7 +3,7 @@
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBars;
 
 namespace Microsoft.VisualStudio.Notifications;
 

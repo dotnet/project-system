@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.Imaging.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBars;
 
 /// <summary>
 /// Displays messages in the information bar attached to Visual Studio's main window.
