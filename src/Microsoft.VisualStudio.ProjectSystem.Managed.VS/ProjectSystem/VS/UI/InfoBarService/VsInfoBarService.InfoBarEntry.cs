@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
 
 internal partial class VsInfoBarService
 {
-    private class InfoBarEntry : IVsInfoBarUIEvents
+    private sealed class InfoBarEntry : IVsInfoBarUIEvents
     {
         private readonly IVsInfoBarUIElement _element;
         private readonly ImmutableArray<InfoBarUI> _items;

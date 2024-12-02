@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
 /// Implementation of <see cref="IInfoBarService"/> that pushes messages to the info bar attached to Visual Studio's main window.
 /// </summary>
 [Export(typeof(IInfoBarService))]
-internal partial class VsInfoBarService : IInfoBarService
+internal sealed partial class VsInfoBarService : IInfoBarService
 {
     private readonly IProjectThreadingService _threadingService;
     private readonly IVsShellServices _vsShellServices;

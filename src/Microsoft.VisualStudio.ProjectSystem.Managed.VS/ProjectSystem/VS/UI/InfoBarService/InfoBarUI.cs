@@ -5,7 +5,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
 /// <summary>
 /// Represents information bar user interface elements.
 /// </summary>
-internal class InfoBarUI
+internal sealed class InfoBarUI
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="InfoBarUI"/> class.
