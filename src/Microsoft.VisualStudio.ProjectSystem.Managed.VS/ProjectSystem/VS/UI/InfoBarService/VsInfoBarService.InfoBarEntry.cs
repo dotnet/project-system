@@ -9,11 +9,11 @@ internal partial class VsInfoBarService
     private class InfoBarEntry : IVsInfoBarUIEvents
     {
         private readonly IVsInfoBarUIElement _element;
-        private readonly InfoBarUI[] _items;
+        private readonly ImmutableArray<InfoBarUI> _items;
         private readonly Action<InfoBarEntry> _onClose;
         private readonly uint _cookie;
 
-        public InfoBarEntry(string message, IVsInfoBarUIElement element, InfoBarUI[] items, Action<InfoBarEntry> onClose)
+        public InfoBarEntry(string message, IVsInfoBarUIElement element, ImmutableArray<InfoBarUI> items, Action<InfoBarEntry> onClose)
         {
             Message = message;
             _element = element;

@@ -14,5 +14,5 @@ internal interface IInfoBarService
     /// Shows an information bar with the specified message, image and UI, replacing an existing one
     /// with the same message if there is one.
     /// </summary>
-    Task ShowInfoBarAsync(string message, ImageMoniker image, CancellationToken cancellationToken, params InfoBarUI[] items);
+    Task ShowInfoBarAsync(string message, ImageMoniker image, CancellationToken cancellationToken, params ImmutableArray<InfoBarUI> items);
 }

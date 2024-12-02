@@ -32,7 +32,7 @@ internal partial class VsInfoBarService : IInfoBarService
         _vsInfoBarFactory = vsInfoBarFactory;
     }
 
-    public async Task ShowInfoBarAsync(string message, ImageMoniker image, CancellationToken cancellationToken, params InfoBarUI[] items)
+    public async Task ShowInfoBarAsync(string message, ImageMoniker image, CancellationToken cancellationToken, params ImmutableArray<InfoBarUI> items)
     {
         Requires.NotNullOrEmpty(message);
 
@@ -45,6 +45,7 @@ internal partial class VsInfoBarService : IInfoBarService
         await _threadingService.SwitchToUIThread(cancellationToken);
 
         IVsInfoBarHost? host = FindMainWindowInfoBarHost();
+
         if (host is null)
         {
             return;
@@ -71,7 +72,7 @@ internal partial class VsInfoBarService : IInfoBarService
         return mainWindowInfoBarHost as IVsInfoBarHost;
     }
 
-    private IVsInfoBarUIElement? CreateInfoBarUIElement(string message, ImageMoniker image, InfoBarUI[] items)
+    private IVsInfoBarUIElement? CreateInfoBarUIElement(string message, ImageMoniker image, ImmutableArray<InfoBarUI> items)
     {
         if (_vsInfoBarFactory.Value is null)
         {
@@ -104,7 +105,7 @@ internal partial class VsInfoBarService : IInfoBarService
         return _vsInfoBarFactory.Value.CreateInfoBar(infoBarModel);
     }
 
-    private void AddInfoBar(IVsInfoBarHost host, string message, ImageMoniker image, InfoBarUI[] items)
+    private void AddInfoBar(IVsInfoBarHost host, string message, ImageMoniker image, ImmutableArray<InfoBarUI> items)
     {
         IVsInfoBarUIElement? element = CreateInfoBarUIElement(message, image, items);
         if (element is not null)
