@@ -11,83 +11,122 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
 /// Implementation of <see cref="IInfoBarService"/> that pushes messages to the info bar attached to Visual Studio's main window.
 /// </summary>
 [Export(typeof(IInfoBarService))]
-[method: ImportingConstructor]
-internal sealed class VsInfoBarService(
-    IProjectThreadingService threadingService,
-    IVsShellServices vsShellServices,
-    IVsUIService<SVsShell, IVsShell> vsShell,
-    IVsUIService<SVsInfoBarUIFactory, IVsInfoBarUIFactory> vsInfoBarFactory)
-    : IInfoBarService
+internal sealed class VsInfoBarService : IInfoBarService
 {
-    private readonly List<InfoBarEntry> _entries = [];
-    private IVsInfoBarHost? _host;
+    // This component exists per configured project. We track entries at the global level here, and keep track of the
+    // projects related to each info bar within the entry. This allows us to close info bars when all projects that
+    // requested them are unloaded.
+    private static readonly List<InfoBar> s_entries = [];
 
-    public async Task ShowInfoBarAsync(string message, ImageMoniker image, CancellationToken cancellationToken, params ImmutableArray<InfoBarUI> items)
+    private static IVsInfoBarHost? s_host;
+
+    private readonly UnconfiguredProject _project;
+    private readonly IProjectThreadingService _threadingService;
+    private readonly IVsShellServices _vsShellServices;
+    private readonly IVsUIService<SVsShell, IVsShell> _vsShell;
+    private readonly IVsUIService<SVsInfoBarUIFactory, IVsInfoBarUIFactory> _vsInfoBarFactory;
+
+    [ImportingConstructor]
+    public VsInfoBarService(
+        UnconfiguredProject project,
+        IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
+        IProjectThreadingService threadingService,
+        IVsShellServices vsShellServices,
+        IVsUIService<SVsShell, IVsShell> vsShell,
+        IVsUIService<SVsInfoBarUIFactory, IVsInfoBarUIFactory> vsInfoBarFactory)
     {
-        Requires.NotNullOrEmpty(message);
+        _project = project;
+        _threadingService = threadingService;
+        _vsShellServices = vsShellServices;
+        _vsShell = vsShell;
+        _vsInfoBarFactory = vsInfoBarFactory;
 
-        if (await vsShellServices.IsCommandLineModeAsync(cancellationToken))
+        // Ensure we clean up when the project unloads. If it has already unloaded when
+        // we register this callback, it is called immediately.
+        unconfiguredProjectTasksService.UnloadCancellationToken.Register(() =>
+        {
+            lock (s_entries)
+            {
+                foreach (InfoBar entry in s_entries)
+                {
+                    entry.OnProjectClosed(_project);
+                }
+            }
+        });
+    }
+
+    public async Task ShowInfoBarAsync(string message, ImageMoniker image, CancellationToken cancellationToken, params ImmutableArray<InfoBarAction> actions)
+    {
+        if (await _vsShellServices.IsCommandLineModeAsync(cancellationToken))
         {
             // We don't want to show info bars in command line mode, as there's no GUI.
             return;
         }
 
-        await threadingService.SwitchToUIThread(cancellationToken);
+        await _threadingService.SwitchToUIThread(cancellationToken);
 
-        _host ??= FindMainWindowInfoBarHost();
+        s_host ??= FindMainWindowInfoBarHost();
 
-        if (vsInfoBarFactory.Value is null || _host is null)
+        if (_vsInfoBarFactory.Value is null || s_host is null)
         {
             return;
         }
 
-        // We want to avoid posting the same message over and over again, so we remove any existing info bar
-        // with the same message, and add the new one which will cause it to float to the bottom of the host.
-        //
-        // Assumption is that message is enough to uniquely identify entries.
-        _entries.Find(e => e.Message == message)?.Close();
+        InfoBar infoBar = GetOrCreateInfoBar();
 
-        var infoBarModel = new InfoBarModel(
-            message,
-            items.Select(ToActionItem),
-            image,
-            isCloseButtonVisible: true);
+        infoBar.RegisterProject(_project);
 
-        IVsInfoBarUIElement element = vsInfoBarFactory.Value.CreateInfoBar(infoBarModel);
-
-        InfoBarEntry entry = new(message, element, items, OnClosed);
-
-        _entries.Add(entry);
-
-        _host.AddInfoBar(element);
-
-        static IVsInfoBarActionItem ToActionItem(InfoBarUI item)
+        InfoBar GetOrCreateInfoBar()
         {
-            return item.Kind switch
+            lock (s_entries)
             {
-                InfoBarUIKind.Button => new InfoBarButton(item.Title),
-                InfoBarUIKind.Hyperlink => new InfoBarHyperlink(item.Title),
-                _ => throw Assumes.NotReachable()
-            };
-        }
+                // We deduplicate info bars by their message. A single project can report the same message multiple times,
+                // or multiple projects can report the same message. In either case, we only want to show one info bar.
+                // Note that only the first instance is used to construct the message, so any difference in UI items between
+                // the first and subsequent instances will not be reflected in the info bar.
+                InfoBar? infoBar = s_entries.FirstOrDefault(e => e.Message == message);
 
-        void OnClosed(InfoBarEntry entry)
-        {
-            // Ensure we are called back on the correct thread, as we perform all other
-            // collection mutations on the UI thread.
-            threadingService.VerifyOnUIThread();
+                if (infoBar is null)
+                {
+                    // Create a new info bar.
+                    InfoBarModel infoBarModel = new(
+                        message,
+                        actions.Select(ToActionItem),
+                        image,
+                        isCloseButtonVisible: true);
 
-            _entries.Remove(entry);
+                    IVsInfoBarUIElement element = _vsInfoBarFactory.Value.CreateInfoBar(infoBarModel);
+
+                    infoBar = new(message, element, actions);
+
+                    s_entries.Add(infoBar);
+
+                    // Show it.
+                    s_host!.AddInfoBar(element);
+                }
+
+                return infoBar;
+            }
+
+            static IVsInfoBarActionItem ToActionItem(InfoBarAction action)
+            {
+                return action.Kind switch
+                {
+                    InfoBarActionKind.Button => new InfoBarButton(action.Title),
+                    InfoBarActionKind.Hyperlink => new InfoBarHyperlink(action.Title),
+                    _ => throw Assumes.NotReachable()
+                };
+            }
         }
 
         IVsInfoBarHost? FindMainWindowInfoBarHost()
         {
-            if (vsShell.Value is null)
+            if (_vsShell.Value is null)
             {
                 return null;
             }
 
-            if (ErrorHandler.Failed(vsShell.Value.GetProperty((int)__VSSPROPID7.VSSPROPID_MainWindowInfoBarHost, out object mainWindowInfoBarHost)))
+            if (ErrorHandler.Failed(_vsShell.Value.GetProperty((int)__VSSPROPID7.VSSPROPID_MainWindowInfoBarHost, out object mainWindowInfoBarHost)))
             {
                 return null;
             }
@@ -95,36 +134,42 @@ internal sealed class VsInfoBarService(
             return mainWindowInfoBarHost as IVsInfoBarHost;
         }
     }
-    private sealed class InfoBarEntry : IVsInfoBarUIEvents
+
+    /// <summary>
+    /// Tracks state of an info bar.
+    /// </summary>
+    private sealed class InfoBar : IVsInfoBarUIEvents
     {
+        private readonly HashSet<UnconfiguredProject> _projects = [];
+
         private readonly IVsInfoBarUIElement _element;
-        private readonly ImmutableArray<InfoBarUI> _items;
-        private readonly Action<InfoBarEntry> _onClose;
+        private readonly ImmutableArray<InfoBarAction> _items;
         private readonly uint _cookie;
 
-        public InfoBarEntry(string message, IVsInfoBarUIElement element, ImmutableArray<InfoBarUI> items, Action<InfoBarEntry> onClose)
+        public InfoBar(string message, IVsInfoBarUIElement element, ImmutableArray<InfoBarAction> items)
         {
             Message = message;
             _element = element;
             _items = items;
-            _onClose = onClose;
 
             Verify.HResult(element.Advise(this, out _cookie));
         }
 
         public string Message { get; }
 
-        public void Close()
+        private void Close()
         {
+            // Request the element to close. This will, in turn, invoke back into our OnClosed method,
+            // via the IVsInfoBarUIEvents interface, where we do further cleanup.
             _element.Close();
         }
 
         public void OnActionItemClicked(IVsInfoBarUIElement element, IVsInfoBarActionItem actionItem)
         {
             // Assumption is that title is enough to uniquely identify items.
-            InfoBarUI item = _items.First(i => i.Title == actionItem.Text);
+            InfoBarAction item = _items.First(i => i.Title == actionItem.Text);
 
-            item.Action();
+            item.Callback();
 
             if (item.CloseAfterAction)
             {
@@ -135,7 +180,28 @@ internal sealed class VsInfoBarService(
         public void OnClosed(IVsInfoBarUIElement element)
         {
             _element.Unadvise(_cookie);
-            _onClose(this);
+
+            lock (s_entries)
+            {
+                Assumes.True(s_entries.Remove(this));
+            }
+
+            _projects.Clear();
+        }
+
+        internal void RegisterProject(UnconfiguredProject project)
+        {
+            _projects.Add(project);
+        }
+
+        internal void OnProjectClosed(UnconfiguredProject project)
+        {
+            if (_projects.Remove(project) && _projects.Count is 0)
+            {
+                // All projects that created this info bar have been unloaded.
+                // Close the info bar and clean up.
+                Close();
+            }
         }
     }
 }

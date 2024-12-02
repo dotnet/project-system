@@ -2,6 +2,7 @@
 
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
 
 namespace Microsoft.VisualStudio.Notifications;
@@ -15,7 +16,7 @@ internal class NonModalNotificationService : INonModalNotificationService
     private readonly IInfoBarService _infoBarService;
 
     [ImportingConstructor]
-    public NonModalNotificationService(IInfoBarService infoBarService)
+    public NonModalNotificationService(UnconfiguredProject _, IInfoBarService infoBarService)
     {
         _infoBarService = infoBarService;
     }

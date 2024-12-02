@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.Notifications;
 /// <summary>
 ///     Provides methods for displaying non-blocking notifications to the user.
 /// </summary>
-[ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+[ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
 internal interface INonModalNotificationService
 {
     /// <summary>
