@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var logger = Mock.Of<IManagedProjectDiagnosticOutputService>();
 
             var handler = new MetadataReferenceItemHandler(project);
-            var projectDir = Path.GetDirectoryName(project.FullPath);
+            var projectDir = project.GetProjectDirectory();
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:C:\Assembly1.dll", @"/reference:C:\Assembly2.dll", @"/reference:C:\Assembly1.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var empty = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var logger = Mock.Of<IManagedProjectDiagnosticOutputService>();
 
             var handler = new MetadataReferenceItemHandler(project);
-            var projectDir = Path.GetDirectoryName(project.FullPath);
+            var projectDir = project.GetProjectDirectory();
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:Assembly1.dll", @"/reference:C:\ProjectFolder\Assembly2.dll", @"/reference:..\ProjectFolder\Assembly3.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 

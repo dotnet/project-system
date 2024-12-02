@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (outdir is null || outdir == @"doesntExist\")
             {
                 Assert.Equal(@"c:\test\project\test.exe", targets[0].Executable);
-                Assert.Equal(@"c:\test\project", targets[0].CurrentDirectory);
+                Assert.Equal(@"c:\test\project\", targets[0].CurrentDirectory);
             }
             else
             {

@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                 try
                 {
                     propertyValue = Path.GetFileName(unevaluatedPropertyValue);
-                    var destinationInfo = new FileInfo(Path.Combine(Path.GetDirectoryName(_unconfiguredProject.FullPath), propertyValue));
+                    var destinationInfo = new FileInfo(Path.Combine(_unconfiguredProject.GetProjectDirectory(), propertyValue));
                     if (destinationInfo.Exists && destinationInfo.IsReadOnly)
                     {
                         // The file cannot be copied over; return the previous value.

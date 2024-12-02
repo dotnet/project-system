@@ -64,7 +64,7 @@ internal class DynamicItemHandler(UnconfiguredProject project) : IWorkspaceUpdat
 
             if (!_paths.Contains(fullPath))
             {
-                string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(project.FullPath), fullPath, metadata);
+                string[]? folderNames = FileItemServices.GetLogicalFolderNames(project.GetProjectDirectory(), fullPath, metadata);
 
                 logger.WriteLine("Adding dynamic file '{0}'", fullPath);
                 context.AddDynamicFile(fullPath, folderNames);

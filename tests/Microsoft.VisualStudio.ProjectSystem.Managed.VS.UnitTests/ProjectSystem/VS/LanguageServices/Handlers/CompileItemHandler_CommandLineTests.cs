@@ -23,14 +23,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             void onSourceFileAdded(string s) => Assert.True(sourceFilesPushedToWorkspace.Add(s));
             void onSourceFileRemoved(string s) => sourceFilesPushedToWorkspace.Remove(s);
 
-            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Myproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\MyProject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
             var logger = Mock.Of<IManagedProjectDiagnosticOutputService>();
 
             var handler = new CompileItemHandler(project);
-            var projectDir = Path.GetDirectoryName(project.FullPath);
-            var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file2.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
-            var empty = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
+            var projectDir = project.GetProjectDirectory();
+            var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: [@"C:\file1.cs", @"C:\file2.cs", @"C:\file1.cs"], baseDirectory: projectDir, sdkDirectory: null));
+            var empty = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: [], baseDirectory: projectDir, sdkDirectory: null));
 
             handler.Handle(context, 10, added: added, removed: empty, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
 
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Contains(@"C:\file1.cs", sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\file2.cs", sourceFilesPushedToWorkspace);
 
-            var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
+            var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: [@"C:\file1.cs", @"C:\file1.cs"], baseDirectory: projectDir, sdkDirectory: null));
             handler.Handle(context, 10, added: empty, removed: removed, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
 
             Assert.Single(sourceFilesPushedToWorkspace);
@@ -52,14 +52,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             void onSourceFileAdded(string s) => Assert.True(sourceFilesPushedToWorkspace.Add(s));
             void onSourceFileRemoved(string s) => sourceFilesPushedToWorkspace.Remove(s);
 
-            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\ProjectFolder\Myproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\ProjectFolder\MyProject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
             var logger = Mock.Of<IManagedProjectDiagnosticOutputService>();
 
             var handler = new CompileItemHandler(project);
-            var projectDir = Path.GetDirectoryName(project.FullPath);
-            var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"file1.cs", @"..\ProjectFolder\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
-            var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
+            var projectDir = project.GetProjectDirectory();
+            var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: [@"file1.cs", @"..\ProjectFolder\file1.cs"], baseDirectory: projectDir, sdkDirectory: null));
+            var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: [], baseDirectory: projectDir, sdkDirectory: null));
 
             handler.Handle(context, 10, added: added, removed: removed, new ContextState(true, false), logger: logger);
 

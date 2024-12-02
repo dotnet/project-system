@@ -560,7 +560,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 try
                 {
-                    FileWatcher = new SimpleFileWatcher(Path.GetDirectoryName(_commonProjectServices.Project.FullPath),
+                    FileWatcher = new SimpleFileWatcher(_commonProjectServices.Project.GetProjectDirectory(),
                                                         true,
                                                         NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.LastWrite,
                                                         LaunchSettingsFilename,
@@ -894,7 +894,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // see: https://github.com/dotnet/project-system/issues/2316.
 
             // Default to the project directory if we're not able to get the AppDesigner folder.
-            string folder = Path.GetDirectoryName(_commonProjectServices.Project.FullPath);
+            string folder = _commonProjectServices.Project.GetProjectDirectory();
             
             if (_projectProperties.Value is not null)
             {
