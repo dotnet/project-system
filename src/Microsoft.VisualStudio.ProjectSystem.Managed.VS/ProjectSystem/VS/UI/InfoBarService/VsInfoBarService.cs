@@ -20,6 +20,7 @@ internal sealed partial class VsInfoBarService(
     : IInfoBarService
 {
     private readonly List<InfoBarEntry> _entries = [];
+    private IVsInfoBarHost? _host;
 
     public async Task ShowInfoBarAsync(string message, ImageMoniker image, CancellationToken cancellationToken, params ImmutableArray<InfoBarUI> items)
     {
@@ -33,89 +34,65 @@ internal sealed partial class VsInfoBarService(
 
         await threadingService.SwitchToUIThread(cancellationToken);
 
-        IVsInfoBarHost? host = FindMainWindowInfoBarHost();
+        _host ??= FindMainWindowInfoBarHost();
 
-        if (host is null)
+        if (vsInfoBarFactory.Value is null || _host is null)
         {
             return;
         }
 
         // We want to avoid posting the same message over and over again, so we remove any existing info bar
         // with the same message, and add the new one which will cause it to float to the bottom of the host.
-        RemoveInfoBar(message);
-        AddInfoBar(host, message, image, items);
-    }
-
-    private IVsInfoBarHost? FindMainWindowInfoBarHost()
-    {
-        if (vsShell.Value is null)
-        {
-            return null;
-        }
-
-        if (ErrorHandler.Failed(vsShell.Value.GetProperty((int)__VSSPROPID7.VSSPROPID_MainWindowInfoBarHost, out object mainWindowInfoBarHost)))
-        {
-            return null;
-        }
-
-        return mainWindowInfoBarHost as IVsInfoBarHost;
-    }
-
-    private IVsInfoBarUIElement? CreateInfoBarUIElement(string message, ImageMoniker image, ImmutableArray<InfoBarUI> items)
-    {
-        if (vsInfoBarFactory.Value is null)
-        {
-            return null;
-        }
-
-        var actionItems = new List<IVsInfoBarActionItem>(items.Length);
-
-        foreach (InfoBarUI item in items)
-        {
-            switch (item.Kind)
-            {
-                default:
-                case InfoBarUIKind.Button:
-                    Assumes.True(item.Kind == InfoBarUIKind.Button);
-                    actionItems.Add(new InfoBarButton(item.Title));
-                    break;
-                case InfoBarUIKind.Hyperlink:
-                    actionItems.Add(new InfoBarHyperlink(item.Title));
-                    break;
-            }
-        }
+        //
+        // Assumption is that message is enough to uniquely identify entries.
+        _entries.Find(e => e.Message == message)?.Close();
 
         var infoBarModel = new InfoBarModel(
             message,
-            actionItems.ToArray(),
+            items.Select(ToActionItem),
             image,
             isCloseButtonVisible: true);
 
-        return vsInfoBarFactory.Value.CreateInfoBar(infoBarModel);
-    }
+        IVsInfoBarUIElement element = vsInfoBarFactory.Value.CreateInfoBar(infoBarModel);
 
-    private void AddInfoBar(IVsInfoBarHost host, string message, ImageMoniker image, ImmutableArray<InfoBarUI> items)
-    {
-        IVsInfoBarUIElement? element = CreateInfoBarUIElement(message, image, items);
-        if (element is not null)
+        InfoBarEntry entry = new(message, element, items, OnClosed);
+
+        _entries.Add(entry);
+
+        _host.AddInfoBar(element);
+
+        static IVsInfoBarActionItem ToActionItem(InfoBarUI item)
         {
-            var entry = new InfoBarEntry(message, element, items, OnClosed);
-            _entries.Add(entry);
-            host.AddInfoBar(element);
+            return item.Kind switch
+            {
+                InfoBarUIKind.Button => new InfoBarButton(item.Title),
+                InfoBarUIKind.Hyperlink => new InfoBarHyperlink(item.Title),
+                _ => throw Assumes.NotReachable()
+            };
         }
-    }
 
-    private void RemoveInfoBar(string message)
-    {
-        // Assumption is that message is "good" enough to uniquely identify problems
-        InfoBarEntry entry = _entries.Find(e => e.Message == message);
-        entry?.Close();
-    }
+        void OnClosed(InfoBarEntry entry)
+        {
+            // Ensure we are called back on the correct thread, as we perform all other
+            // collection mutations on the UI thread.
+            threadingService.VerifyOnUIThread();
 
-    private void OnClosed(InfoBarEntry entry)
-    {
-        threadingService.VerifyOnUIThread();
+            _entries.Remove(entry);
+        }
 
-        _entries.Remove(entry);
+        IVsInfoBarHost? FindMainWindowInfoBarHost()
+        {
+            if (vsShell.Value is null)
+            {
+                return null;
+            }
+
+            if (ErrorHandler.Failed(vsShell.Value.GetProperty((int)__VSSPROPID7.VSSPROPID_MainWindowInfoBarHost, out object mainWindowInfoBarHost)))
+            {
+                return null;
+            }
+
+            return mainWindowInfoBarHost as IVsInfoBarHost;
+        }
     }
 }

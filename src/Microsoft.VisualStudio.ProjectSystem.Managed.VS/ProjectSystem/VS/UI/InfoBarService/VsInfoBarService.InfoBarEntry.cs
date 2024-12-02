@@ -32,7 +32,9 @@ internal partial class VsInfoBarService
 
         public void OnActionItemClicked(IVsInfoBarUIElement element, IVsInfoBarActionItem actionItem)
         {
+            // Assumption is that title is enough to uniquely identify items.
             InfoBarUI item = _items.First(i => i.Title == actionItem.Text);
+
             item.Action();
 
             if (item.CloseAfterAction)
