@@ -19,7 +19,8 @@ internal partial class VsInfoBarService
             _element = element;
             _items = items;
             _onClose = onClose;
-            element.Advise(this, out _cookie);
+
+            Verify.HResult(element.Advise(this, out _cookie));
         }
 
         public string Message { get; }
