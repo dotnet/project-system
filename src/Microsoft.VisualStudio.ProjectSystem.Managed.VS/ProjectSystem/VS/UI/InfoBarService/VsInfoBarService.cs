@@ -36,21 +36,24 @@ internal partial class VsInfoBarService : IInfoBarService
     {
         Requires.NotNullOrEmpty(message);
 
-        if (!await _vsShellServices.IsCommandLineModeAsync(cancellationToken))
+        if (await _vsShellServices.IsCommandLineModeAsync(cancellationToken))
         {
-            await _threadingService.SwitchToUIThread(cancellationToken);
-
-            IVsInfoBarHost? host = FindMainWindowInfoBarHost();
-            if (host is null)
-            {
-                return;
-            }
-
-            // We want to avoid posting the same message over and over again, so we remove any existing info bar
-            // with the same message, and add the new one which will cause it to float to the bottom of the host.
-            RemoveInfoBar(message);
-            AddInfoBar(host, message, image, items);
+            // We don't want to show info bars in command line mode, as there's no GUI.
+            return;
         }
+
+        await _threadingService.SwitchToUIThread(cancellationToken);
+
+        IVsInfoBarHost? host = FindMainWindowInfoBarHost();
+        if (host is null)
+        {
+            return;
+        }
+
+        // We want to avoid posting the same message over and over again, so we remove any existing info bar
+        // with the same message, and add the new one which will cause it to float to the bottom of the host.
+        RemoveInfoBar(message);
+        AddInfoBar(host, message, image, items);
     }
 
     private IVsInfoBarHost? FindMainWindowInfoBarHost()
