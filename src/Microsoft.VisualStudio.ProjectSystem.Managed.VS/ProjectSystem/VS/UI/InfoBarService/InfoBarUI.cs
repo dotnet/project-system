@@ -10,9 +10,9 @@ internal class InfoBarUI
     /// <summary>
     /// Initializes a new instance of the <see cref="InfoBarUI"/> class.
     /// </summary>
-    /// <param name="title">The title of the UI _element.</param>
-    /// <param name="kind">The kind of the UI _element, either <see cref="InfoBarUIKind.Button"/> or <see cref="InfoBarUIKind.Hyperlink"/></param>
-    /// <param name="action">The <see cref="Action"/> to run when the UI _element is clicked</param>
+    /// <param name="title">The title of the UI element.</param>
+    /// <param name="kind">The kind of the UI element.</param>
+    /// <param name="action">A callback to invoke when the UI element is clicked.</param>
     /// <param name="closeAfterAction"><see langword="true"/> if the information bar should close after <paramref name="action"/> is run.</param>
     public InfoBarUI(string title, InfoBarUIKind kind, Action action, bool closeAfterAction = true)
     {
@@ -25,17 +25,17 @@ internal class InfoBarUI
     }
 
     /// <summary>
-    /// Gets the title of the UI _element.
+    /// Gets the title of the UI element.
     /// </summary>
     public string Title { get; }
 
     /// <summary>
-    /// Gets the kind of the UI _element, either <see cref="InfoBarUIKind.Button"/> or <see cref="InfoBarUIKind.Hyperlink"/>.
+    /// Gets the kind of the UI element.
     /// </summary>
     public InfoBarUIKind Kind { get; }
 
     /// <summary>
-    /// Gets the <see cref="Action"/> to run when the UI _element is clicked.
+    /// Gets the <see cref="Action"/> to run when the UI element is clicked.
     /// </summary>
     public Action Action { get; }
 
