@@ -11,38 +11,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
 /// Implementation of <see cref="IInfoBarService"/> that pushes messages to the info bar attached to Visual Studio's main window.
 /// </summary>
 [Export(typeof(IInfoBarService))]
-internal sealed partial class VsInfoBarService : IInfoBarService
+[method: ImportingConstructor]
+internal sealed partial class VsInfoBarService(
+    IProjectThreadingService threadingService,
+    IVsShellServices vsShellServices,
+    IVsUIService<SVsShell, IVsShell> vsShell,
+    IVsUIService<SVsInfoBarUIFactory, IVsInfoBarUIFactory> vsInfoBarFactory)
+    : IInfoBarService
 {
-    private readonly IProjectThreadingService _threadingService;
-    private readonly IVsShellServices _vsShellServices;
-    private readonly IVsUIService<SVsShell, IVsShell> _vsShell;
-    private readonly IVsUIService<SVsInfoBarUIFactory, IVsInfoBarUIFactory> _vsInfoBarFactory;
     private readonly List<InfoBarEntry> _entries = [];
-
-    [ImportingConstructor]
-    public VsInfoBarService(
-        IProjectThreadingService threadingService,
-        IVsShellServices vsShellServices,
-        IVsUIService<SVsShell, IVsShell> vsShell,
-        IVsUIService<SVsInfoBarUIFactory, IVsInfoBarUIFactory> vsInfoBarFactory)
-    {
-        _threadingService = threadingService;
-        _vsShellServices = vsShellServices;
-        _vsShell = vsShell;
-        _vsInfoBarFactory = vsInfoBarFactory;
-    }
 
     public async Task ShowInfoBarAsync(string message, ImageMoniker image, CancellationToken cancellationToken, params ImmutableArray<InfoBarUI> items)
     {
         Requires.NotNullOrEmpty(message);
 
-        if (await _vsShellServices.IsCommandLineModeAsync(cancellationToken))
+        if (await vsShellServices.IsCommandLineModeAsync(cancellationToken))
         {
             // We don't want to show info bars in command line mode, as there's no GUI.
             return;
         }
 
-        await _threadingService.SwitchToUIThread(cancellationToken);
+        await threadingService.SwitchToUIThread(cancellationToken);
 
         IVsInfoBarHost? host = FindMainWindowInfoBarHost();
 
@@ -59,12 +48,12 @@ internal sealed partial class VsInfoBarService : IInfoBarService
 
     private IVsInfoBarHost? FindMainWindowInfoBarHost()
     {
-        if (_vsShell.Value is null)
+        if (vsShell.Value is null)
         {
             return null;
         }
 
-        if (ErrorHandler.Failed(_vsShell.Value.GetProperty((int)__VSSPROPID7.VSSPROPID_MainWindowInfoBarHost, out object mainWindowInfoBarHost)))
+        if (ErrorHandler.Failed(vsShell.Value.GetProperty((int)__VSSPROPID7.VSSPROPID_MainWindowInfoBarHost, out object mainWindowInfoBarHost)))
         {
             return null;
         }
@@ -74,7 +63,7 @@ internal sealed partial class VsInfoBarService : IInfoBarService
 
     private IVsInfoBarUIElement? CreateInfoBarUIElement(string message, ImageMoniker image, ImmutableArray<InfoBarUI> items)
     {
-        if (_vsInfoBarFactory.Value is null)
+        if (vsInfoBarFactory.Value is null)
         {
             return null;
         }
@@ -102,7 +91,7 @@ internal sealed partial class VsInfoBarService : IInfoBarService
             image,
             isCloseButtonVisible: true);
 
-        return _vsInfoBarFactory.Value.CreateInfoBar(infoBarModel);
+        return vsInfoBarFactory.Value.CreateInfoBar(infoBarModel);
     }
 
     private void AddInfoBar(IVsInfoBarHost host, string message, ImageMoniker image, ImmutableArray<InfoBarUI> items)
@@ -125,7 +114,7 @@ internal sealed partial class VsInfoBarService : IInfoBarService
 
     private void OnClosed(InfoBarEntry entry)
     {
-        _threadingService.VerifyOnUIThread();
+        threadingService.VerifyOnUIThread();
 
         _entries.Remove(entry);
     }
