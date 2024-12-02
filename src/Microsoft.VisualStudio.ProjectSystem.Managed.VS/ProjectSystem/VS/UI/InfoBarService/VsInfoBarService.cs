@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
 /// </summary>
 [Export(typeof(IInfoBarService))]
 [method: ImportingConstructor]
-internal sealed partial class VsInfoBarService(
+internal sealed class VsInfoBarService(
     IProjectThreadingService threadingService,
     IVsShellServices vsShellServices,
     IVsUIService<SVsShell, IVsShell> vsShell,
@@ -93,6 +93,49 @@ internal sealed partial class VsInfoBarService(
             }
 
             return mainWindowInfoBarHost as IVsInfoBarHost;
+        }
+    }
+    private sealed class InfoBarEntry : IVsInfoBarUIEvents
+    {
+        private readonly IVsInfoBarUIElement _element;
+        private readonly ImmutableArray<InfoBarUI> _items;
+        private readonly Action<InfoBarEntry> _onClose;
+        private readonly uint _cookie;
+
+        public InfoBarEntry(string message, IVsInfoBarUIElement element, ImmutableArray<InfoBarUI> items, Action<InfoBarEntry> onClose)
+        {
+            Message = message;
+            _element = element;
+            _items = items;
+            _onClose = onClose;
+
+            Verify.HResult(element.Advise(this, out _cookie));
+        }
+
+        public string Message { get; }
+
+        public void Close()
+        {
+            _element.Close();
+        }
+
+        public void OnActionItemClicked(IVsInfoBarUIElement element, IVsInfoBarActionItem actionItem)
+        {
+            // Assumption is that title is enough to uniquely identify items.
+            InfoBarUI item = _items.First(i => i.Title == actionItem.Text);
+
+            item.Action();
+
+            if (item.CloseAfterAction)
+            {
+                Close();
+            }
+        }
+
+        public void OnClosed(IVsInfoBarUIElement element)
+        {
+            _element.Unadvise(_cookie);
+            _onClose(this);
         }
     }
 }
