@@ -17,7 +17,7 @@ internal sealed partial class VsInfoBarService : IInfoBarService
     private readonly IVsShellServices _vsShellServices;
     private readonly IVsUIService<SVsShell, IVsShell> _vsShell;
     private readonly IVsUIService<SVsInfoBarUIFactory, IVsInfoBarUIFactory> _vsInfoBarFactory;
-    private readonly List<InfoBarEntry> _entries = new();
+    private readonly List<InfoBarEntry> _entries = [];
 
     [ImportingConstructor]
     public VsInfoBarService(
