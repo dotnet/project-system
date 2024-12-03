@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!difference.AnyChanges)
                 return;
 
-            difference = HandlerServices.NormalizeRenames(difference);
+            difference = difference.NormalizeRenames();
 
             EnqueueProjectEvaluation();
 
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!difference.AnyChanges)
                 return;
 
-            difference = HandlerServices.NormalizeRenames(difference);
+            difference = difference.NormalizeRenames();
             difference = ResolveProjectBuildConflicts(version, difference);
 
             ApplyChangesToContext(context, difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, isActiveContext, logger, evaluation: false);
