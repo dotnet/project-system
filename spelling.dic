@@ -1,6 +1,7 @@
 appsettings
 args
 async
+asynch
 awaiter
 blazor
 boolean

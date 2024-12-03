@@ -6,7 +6,7 @@ using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBarService;
+using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBars;
 using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.DesignTimeBuilds;
