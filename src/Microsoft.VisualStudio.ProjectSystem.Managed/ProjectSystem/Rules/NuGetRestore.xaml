@@ -101,6 +101,10 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="RestoreEnablePackagePruning"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="RestoreFallbackFolders"
                   ReadOnly="True"
                   Visible="False" />
