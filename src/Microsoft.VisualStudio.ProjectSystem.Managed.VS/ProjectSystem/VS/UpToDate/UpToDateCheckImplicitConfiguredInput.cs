@@ -29,18 +29,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 newestImportInput: null,
                 isDisabled: true,
                 isBuildAccelerationEnabled: false,
-                inputSourceItemTypes: ImmutableArray<string>.Empty,
+                inputSourceItemTypes: [],
                 inputSourceItemsByItemType: ImmutableDictionary<string, ImmutableArray<string>>.Empty,
                 upToDateCheckInputItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
                 upToDateCheckOutputItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
                 upToDateCheckBuiltItemsByKindBySetName: ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>>.Empty,
-                buildFromInputFileItems: ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty,
-                resolvedAnalyzerReferencePaths: ImmutableArray<string>.Empty,
-                resolvedCompilationReferencePaths: ImmutableArray<string>.Empty,
-                copyReferenceInputs: ImmutableArray<string>.Empty,
-                presentBuildAccelerationIncompatiblePackages: ImmutableArray<string>.Empty,
+                buildFromInputFileItems: [],
+                resolvedAnalyzerReferencePaths: [],
+                resolvedCompilationReferencePaths: [],
+                copyReferenceInputs: [],
+                presentBuildAccelerationIncompatiblePackages: [],
                 lastItemsChangedAtUtc: null,
-                lastItemChanges: ImmutableArray<(bool IsAdd, string ItemType, string)>.Empty,
+                lastItemChanges: [],
                 itemHash: null,
                 projectCopyData: default);
         }
@@ -232,20 +232,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
             ProjectConfiguration = projectConfiguration;
             LastItemsChangedAtUtc = null;
-            InputSourceItemTypes = ImmutableArray<string>.Empty;
+            InputSourceItemTypes = [];
             InputSourceItemsByItemType = ImmutableDictionary.Create<string, ImmutableArray<string>>(StringComparers.ItemTypes);
-            SetNames = ImmutableArray<string>.Empty;
-            KindNames = ImmutableArray<string>.Empty;
+            SetNames = [];
+            KindNames = [];
             UpToDateCheckInputItemsByKindBySetName = emptyItemBySetName;
             UpToDateCheckOutputItemsByKindBySetName = emptyItemBySetName;
             UpToDateCheckBuiltItemsByKindBySetName = emptyItemBySetName;
-            BuiltFromInputFileItems = ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty;
-            ResolvedAnalyzerReferencePaths = ImmutableArray<string>.Empty;
-            ResolvedCompilationReferencePaths = ImmutableArray<string>.Empty;
-            CopyReferenceInputs = ImmutableArray<string>.Empty;
-            PresentBuildAccelerationIncompatiblePackages = ImmutableArray<string>.Empty;
-            LastItemChanges = ImmutableArray<(bool IsAdd, string ItemType, string)>.Empty;
-            ProjectCopyData = new(null, "", false, ImmutableArray<CopyItem>.Empty, ImmutableArray<string>.Empty);
+            BuiltFromInputFileItems = [];
+            ResolvedAnalyzerReferencePaths = [];
+            ResolvedCompilationReferencePaths = [];
+            CopyReferenceInputs = [];
+            PresentBuildAccelerationIncompatiblePackages = [];
+            LastItemChanges = [];
+            ProjectCopyData = new(null, "", false, [], []);
         }
 
         private UpToDateCheckImplicitConfiguredInput(
@@ -370,7 +370,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
             bool itemTypesChanged = false;
 
-            List<(bool IsAdd, string ItemType, string)> lastItemChanges = new();
+            List<(bool IsAdd, string ItemType, string ItemSpec)> lastItemChanges = [];
 
             // If an item type was removed, remove all items of that type
             foreach (string removedItemType in itemTypeDiff.Removed)
@@ -403,7 +403,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 // Rule name (schema name) is usually the same as its item type, but not always (eg: auto-generated rules)
                 string? itemType = null;
                 if (projectCatalogSnapshot.NamedCatalogs.TryGetValue(PropertyPageContexts.File, out IPropertyPagesCatalog? fileCatalog))
+                {
                     itemType = fileCatalog.GetSchema(schemaName)?.DataSource.ItemType;
+                }
 
                 if (itemType is null || !inputSourceItemTypes.Contains(itemType))
                 {
@@ -412,13 +414,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                 if (!inputSourceItemsByItemTypeBuilder.TryGetValue(itemType, out ImmutableArray<string> before))
                 {
-                    before = ImmutableArray<string>.Empty;
+                    before = [];
                 }
 
                 projectFileClassifier ??= BuildClassifier();
 
                 var after = projectChange.After.Items
-                    .Select(item => item.Key)
+                    .Select(pair => pair.Key)
                     .Where(path => !projectFileClassifier.IsNonModifiable(path))
                     .ToHashSet(StringComparers.Paths);
 
@@ -601,7 +603,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     }
 
                     return builder is null
-                        ? ImmutableArray<string>.Empty
+                        ? []
                         : builder.Capacity == builder.Count
                             ? builder.MoveToImmutable()
                             : builder.ToImmutable();
