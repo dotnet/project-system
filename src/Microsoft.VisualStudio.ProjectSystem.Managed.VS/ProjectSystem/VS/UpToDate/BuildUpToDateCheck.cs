@@ -235,6 +235,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                 foreach (string output in outputs)
                 {
+                    System.Diagnostics.Debug.Assert(Path.IsPathRooted(output), "Output path must be rooted", output);
+
                     token.ThrowIfCancellationRequested();
 
                     DateTime? outputTime = timestampCache.GetTimestampUtc(output);
@@ -266,6 +268,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                 foreach ((string input, string? itemType, bool isRequired) in inputs)
                 {
+                    System.Diagnostics.Debug.Assert(Path.IsPathRooted(input), "Output path must be rooted", input);
+
                     token.ThrowIfCancellationRequested();
 
                     DateTime? inputTime = timestampCache.GetTimestampUtc(input);
