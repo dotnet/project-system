@@ -33,6 +33,7 @@ internal class VsTargetFrameworkInfo(TargetFrameworkInfo targetFrameworkInfo) : 
                     new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageReference", ToItems(targetFrameworkInfo.PackageReferences)),
                     new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PackageVersion", ToItems(targetFrameworkInfo.CentralPackageVersions)),
                     new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("ProjectReference", ToItems(targetFrameworkInfo.ProjectReferences)),
+                    new KeyValuePair<string, IReadOnlyList<IVsReferenceItem2>>("PrunePackageReference", ToItems(targetFrameworkInfo.PrunePackageReferences)),
                 ]);
             return _items;
 

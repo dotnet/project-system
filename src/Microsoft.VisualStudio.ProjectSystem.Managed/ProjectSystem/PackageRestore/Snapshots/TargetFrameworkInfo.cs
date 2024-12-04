@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             ImmutableArray<ReferenceItem> packageReferences,
             ImmutableArray<ReferenceItem> centralPackageVersions,
             ImmutableArray<ReferenceItem> nuGetAuditSuppress,
+            ImmutableArray<ReferenceItem> prunePackageReferences,
             IImmutableDictionary<string, string> properties)
         {
             TargetFrameworkMoniker = targetFrameworkMoniker;
@@ -28,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             PackageReferences = packageReferences;
             CentralPackageVersions = centralPackageVersions;
             NuGetAuditSuppress = nuGetAuditSuppress;
+            PrunePackageReferences = prunePackageReferences;
             Properties = properties;
         }
 
@@ -44,6 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
         public ImmutableArray<ReferenceItem> CentralPackageVersions { get; }
 
         public ImmutableArray<ReferenceItem> NuGetAuditSuppress { get; }
+
+        public ImmutableArray<ReferenceItem> PrunePackageReferences { get; }
 
         public IImmutableDictionary<string, string> Properties { get; }
     }

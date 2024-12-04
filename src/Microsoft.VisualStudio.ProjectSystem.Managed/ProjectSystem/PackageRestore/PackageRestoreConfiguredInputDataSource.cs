@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
         CollectedPackageDownload.SchemaName,
         CollectedPackageVersion.SchemaName,
         CollectedNuGetAuditSuppressions.SchemaName,
+        CollectedPrunePackageReference.SchemaName,
         CollectedPackageReference.SchemaName])]
     internal class PackageRestoreConfiguredInputDataSource : ChainedProjectValueDataSourceBase<PackageRestoreConfiguredInput>, IPackageRestoreConfiguredInputDataSource
     {
@@ -28,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
             .Add(CollectedPackageDownload.SchemaName)           // Build
             .Add(CollectedPackageVersion.SchemaName)            // Build
             .Add(CollectedNuGetAuditSuppressions.SchemaName)    // Build
+            .Add(CollectedPrunePackageReference.SchemaName)     // Build
             .Add(CollectedPackageReference.SchemaName);         // Build
 
         private readonly IProjectSubscriptionService _projectSubscriptionService;

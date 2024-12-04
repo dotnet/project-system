@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
+
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 
 public class RestoreBuilderTests
@@ -311,6 +313,50 @@ public class RestoreBuilderTests
 
         var reference1 = Assert.Single(suppressions);
         Assert.Equal("https://cve.contoso.com/1", reference1.Name);
+    }
+
+    [Fact]
+    public void ToProjectRestoreInfo_SetsPrunePackageReferences()
+    {
+        var update = IProjectSubscriptionUpdateFactory.FromJson(
+            """
+                {
+                    "CurrentState": {
+                        "CollectedPrunePackageReference": {
+                            "Items" : {
+                                "Newtonsoft.Json" : {
+                                    "Version" : "1.0",
+                                },
+                                "System.IO" : {
+                                    "Version" : "2.0",
+                                },
+                                "Microsoft.Extensions" : {
+                                    "Version" : "3.0"
+                                }
+                            }
+                        }
+                    }
+                }
+                """);
+        var result = RestoreBuilder.ToProjectRestoreInfo(update.CurrentState);
+
+        var prunePackageReferences = Assert.Single(result.TargetFrameworks).PrunePackageReferences;
+
+        Assert.Equal(3, prunePackageReferences.Length);
+
+        var reference1 = prunePackageReferences.FirstOrDefault(r => r.Name == "Newtonsoft.Json");
+        Assert.NotNull(reference1);
+        AssertContainsProperty("Version", "1.0", reference1.Properties);
+
+        var reference2 = prunePackageReferences.FirstOrDefault(r => r.Name == "System.IO");
+        Assert.NotNull(reference2);
+        AssertContainsProperty("Version", "2.0", reference2.Properties);
+
+        var reference3 = prunePackageReferences.FirstOrDefault(r => r.Name == "Microsoft.Extensions");
+        Assert.NotNull(reference3);
+        Assert.Equal("Microsoft.Extensions", reference3.Name);
+
+        AssertContainsProperty("Version", "3.0", reference3.Properties);
     }
 
     [Fact]
