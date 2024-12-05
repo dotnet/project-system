@@ -235,7 +235,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                 foreach (string output in outputs)
                 {
+                    System.Diagnostics.Debug.Assert(Path.IsPathRooted(output), "Output path must be rooted", output);
+
                     token.ThrowIfCancellationRequested();
+
+                    log.VerboseLiteral(output);
 
                     DateTime? outputTime = timestampCache.GetTimestampUtc(output);
 
@@ -266,7 +270,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                 foreach ((string input, string? itemType, bool isRequired) in inputs)
                 {
+                    System.Diagnostics.Debug.Assert(Path.IsPathRooted(input), "Output path must be rooted", input);
+
                     token.ThrowIfCancellationRequested();
+
+                    log.VerboseLiteral(input);
 
                     DateTime? inputTime = timestampCache.GetTimestampUtc(input);
 
@@ -321,10 +329,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 if (state.NewestImportInput is not null)
                 {
                     log.Verbose(nameof(VSResources.FUTD_AddingNewestImportInput));
-                    using (log.IndentScope())
-                    {
-                        log.VerboseLiteral(state.NewestImportInput);
-                    }
+                    using Log.Scope _ = log.IndentScope();
                     yield return (Path: state.NewestImportInput, ItemType: null, IsRequired: true);
                 }
 
@@ -337,7 +342,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     foreach (string item in items)
                     {
                         string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(item);
-                        log.VerboseLiteral(absolutePath);
                         yield return (Path: absolutePath, itemType, IsRequired: true);
                     }
                 }
@@ -351,7 +355,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     foreach (string path in state.ResolvedAnalyzerReferencePaths)
                     {
                         string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                        log.VerboseLiteral(absolutePath);
                         yield return (Path: absolutePath, ItemType: ResolvedAnalyzerReference.SchemaName, IsRequired: true);
                     }
                 }
@@ -365,7 +368,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                     foreach (string path in state.ResolvedCompilationReferencePaths)
                     {
                         System.Diagnostics.Debug.Assert(Path.IsPathRooted(path), "ResolvedCompilationReference path should be rooted");
-                        log.VerboseLiteral(path);
                         yield return (Path: path, ItemType: ResolvedCompilationReference.SchemaName, IsRequired: true);
                     }
                 }
@@ -388,7 +390,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                             foreach (string path in items)
                             {
                                 string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                                log.VerboseLiteral(absolutePath);
                                 yield return (Path: absolutePath, ItemType: UpToDateCheckInput.SchemaName, IsRequired: true);
                             }
                         }
@@ -415,9 +416,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                             foreach (string path in items)
                             {
-                                string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                                log.VerboseLiteral(absolutePath);
-                                yield return absolutePath;
+                                yield return _configuredProject.UnconfiguredProject.MakeRooted(path);
                             }
                         }
                     }
@@ -440,9 +439,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                             foreach (string path in items)
                             {
-                                string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                                log.VerboseLiteral(absolutePath);
-                                yield return absolutePath;
+                                yield return _configuredProject.UnconfiguredProject.MakeRooted(path);
                             }
                         }
                     }
@@ -469,7 +466,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                             foreach (string path in items)
                             {
                                 string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                                log.VerboseLiteral(absolutePath);
                                 yield return (Path: absolutePath, ItemType: UpToDateCheckInput.SchemaName, IsRequired: true);
                             }
                         }
@@ -496,9 +492,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                             foreach (string path in items)
                             {
-                                string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                                log.VerboseLiteral(absolutePath);
-                                yield return absolutePath;
+                                yield return _configuredProject.UnconfiguredProject.MakeRooted(path);
                             }
                         }
                     }
@@ -521,9 +515,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
 
                             foreach (string path in items)
                             {
-                                string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                                log.VerboseLiteral(absolutePath);
-                                yield return absolutePath;
+                                yield return _configuredProject.UnconfiguredProject.MakeRooted(path);
                             }
                         }
                     }
