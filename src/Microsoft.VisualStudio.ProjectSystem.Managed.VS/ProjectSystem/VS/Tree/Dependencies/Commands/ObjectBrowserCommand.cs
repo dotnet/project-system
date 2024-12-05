@@ -57,7 +57,7 @@ internal sealed class ObjectBrowserCommand(UnconfiguredProject project, IVsUISer
         
         if (path is not null)
         {
-            // We handle this .
+            // We handle this.
             return new CommandStatusResult(handled: true, commandText, CommandStatus.Enabled | CommandStatus.Supported);
         }
 
