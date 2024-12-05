@@ -4,14 +4,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
 internal static class KeyValuePairListEncoding
 {
-    public static IEnumerable<(string Name, string Value)> Parse(string input)
+    public static IEnumerable<(string Name, string Value)> Parse(string input, char separator = ',')
     {
         if (string.IsNullOrWhiteSpace(input))
         {
             yield break;
         }
 
-        foreach (var entry in ReadEntries(input))
+        foreach (var entry in ReadEntries(input, separator))
         {
             var (entryKey, entryValue) = SplitEntry(entry);
             var decodedEntryKey = Decode(entryKey);
@@ -23,13 +23,13 @@ internal static class KeyValuePairListEncoding
             }
         }
 
-        static IEnumerable<string> ReadEntries(string rawText)
+        static IEnumerable<string> ReadEntries(string rawText, char separator)
         {
             bool escaped = false;
             int entryStart = 0;
             for (int i = 0; i < rawText.Length; i++)
             {
-                if (rawText[i] == ',' && !escaped)
+                if (separator == rawText[i] && !escaped)
                 {
                     yield return rawText.Substring(entryStart, i - entryStart);
                     entryStart = i + 1;
@@ -67,7 +67,7 @@ internal static class KeyValuePairListEncoding
                 }
             }
 
-            return (string.Empty, string.Empty);
+            return (entry, string.Empty);
         }
 
         static string Decode(string value)
@@ -76,12 +76,13 @@ internal static class KeyValuePairListEncoding
         }
     }
 
-    public static string Format(IEnumerable<(string Name, string Value)> pairs)
+    public static string Format(IEnumerable<(string Name, string Value)> pairs, string separator = ",")
     {
         // Copied from ActiveLaunchProfileEnvironmentVariableValueProvider in the .NET Project System.
         // In future, EnvironmentVariablesNameValueListEncoding should be exported from that code base and imported here.
-
-        return string.Join(",", pairs.Select(kvp => $"{Encode(kvp.Name)}={Encode(kvp.Value)}"));
+        return string.Join(separator, pairs.Select(kvp => string.IsNullOrEmpty(kvp.Value) 
+            ? Encode(kvp.Name) 
+            : $"{Encode(kvp.Name)}={Encode(kvp.Value)}"));
 
         static string Encode(string value)
         {

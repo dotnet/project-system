@@ -40,7 +40,7 @@ internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderB
 
         return KeyValuePairListEncoding.Format(
             ParseDefinedConstantsFromUnevaluatedValue(unevaluatedDefineConstantsValue)
-                .Select(symbol => (Key: symbol, Value: bool.FalseString))
+                .Select(symbol => (symbol, bool.FalseString))
         );
     }
 
@@ -76,9 +76,18 @@ internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderB
         IEnumerable<string> innerConstants =
             ParseDefinedConstantsFromUnevaluatedValue(await defaultProperties.GetUnevaluatedPropertyValueAsync(ConfiguredBrowseObject.DefineConstantsProperty) ?? string.Empty);
 
-        IEnumerable<string> constantsToWrite = KeyValuePairListEncoding.Parse(unevaluatedPropertyValue)
+        // we receive a comma-separated list, we should convert it to a semicolon-separated list
+        // because each item may have multiple values separated by semicolons
+        // ie "A,B;C" should be converted to "A;B;C"
+        unevaluatedPropertyValue = KeyValuePairListEncoding.Format(
+            KeyValuePairListEncoding.Parse(unevaluatedPropertyValue, separator: ','),
+            separator: ";");
+        
+        IEnumerable<string> constantsToWrite = KeyValuePairListEncoding.Parse(unevaluatedPropertyValue, separator: ';')
             .Select(pair => pair.Name)
-            .Where(x => !innerConstants.Contains(x))
+            .Select(constant => constant.Trim(';')) // trim any leading or trailing semicolons, because we will add our own separating semicolons
+            .Where(constant => !innerConstants.Contains(constant))
+            .Where(constant => !string.IsNullOrEmpty(constant)) // you aren't allowed to add a semicolon as a constant
             .Distinct()
             .ToList();
 
