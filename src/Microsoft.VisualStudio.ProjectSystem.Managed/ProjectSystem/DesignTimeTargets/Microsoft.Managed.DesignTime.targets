@@ -427,6 +427,12 @@
        This can (and should) be removed when we no longer need to support SDKs older than 8.0.400. -->
   <Target Name="CollectNuGetAuditSuppressions" Returns="@(NuGetAuditSuppress)" />
 
+  <!-- This target is used to collect the PrunePackageReference items. It is defined by the .NET SDK starting in version 9.0.200, but we need this no-op
+       implementation when using older SDKs that don't have it; otherwise our design-time builds will fail. The NuGet.targets file in the SDK is imported
+       _after_ this file, and will override this implementation with the real one (when present).
+       This can (and should) be removed when we no longer need to support SDKs older than 9.0.200. -->
+  <Target Name="CollectPrunePackageReferences" Returns="@(PrunePackageReference)">
+
   <!-- Collect any VS setup component IDs that should be installed for this project to work correctly in VS. -->
   <Target Name="CollectSuggestedVisualStudioComponentIds"
           Returns="@(SuggestedVisualStudioComponentId)"

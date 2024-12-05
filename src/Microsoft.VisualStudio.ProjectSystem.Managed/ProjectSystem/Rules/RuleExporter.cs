@@ -167,6 +167,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             public static int CollectedNuGetAuditSuppressionsRule;
 
             /// <summary>
+            ///     Represents the design-time build items containing the versions of packages to be pruned that are passed to restore.
+            /// </summary>
+            [ExportRule(nameof(CollectedPrunePackageReference), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.PackageReferences)]
+            [Order(Order.Default)]
+            public static int CollectedPrunePackageReferencesRule;
+
+            /// <summary>
             ///     Represents the evaluation properties that are passed that are passed to restore.
             /// </summary>
             [ExportRule(nameof(NuGetRestore), PropertyPageContexts.ProjectSubscriptionService)]
