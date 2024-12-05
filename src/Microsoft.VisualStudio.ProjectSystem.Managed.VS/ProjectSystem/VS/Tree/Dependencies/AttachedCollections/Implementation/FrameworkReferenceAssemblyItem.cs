@@ -7,11 +7,11 @@ using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Implementation
 {
-    internal sealed class FrameworkReferenceAssemblyItem : RelatableItemBase
+    internal sealed class FrameworkReferenceAssemblyItem : RelatableItemBase, IObjectBrowserItem
     {
         private const int IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE = 0x04B1;
 
-        private static readonly IContextMenuController s_defaultMenuController = new MenuController(VsMenus.guidSHLMainMenu, IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE);
+        private static readonly IContextMenuController s_defaultMenuController = CreateContextMenuController(VsMenus.guidSHLMainMenu, IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE);
 
         public string AssemblyName { get; }
         public string? Path { get; }
@@ -38,33 +38,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public override object? GetBrowseObject() => new BrowseObject(this);
 
-        private sealed class BrowseObject : LocalizableProperties
+        string? IObjectBrowserItem.AssemblyPath => GetAssemblyPath();
+
+        private string? GetAssemblyPath() => Path is not null
+            ? System.IO.Path.GetFullPath(System.IO.Path.Combine(Framework.Path, Path))
+            : null;
+
+        private sealed class BrowseObject(FrameworkReferenceAssemblyItem item) : LocalizableProperties
         {
-            private readonly FrameworkReferenceAssemblyItem _item;
-
-            public BrowseObject(FrameworkReferenceAssemblyItem log) => _item = log;
-
-            public override string GetComponentName() => _item.AssemblyName;
+            public override string GetComponentName() => item.AssemblyName;
 
             public override string GetClassName() => VSResources.FrameworkAssemblyBrowseObjectClassName;
 
             [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyAssemblyNameDisplayName))]
             [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyAssemblyNameDescription))]
-            public string AssemblyName => _item.Text;
+            public string AssemblyName => item.Text;
 
             [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyPathDisplayName))]
             [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyPathDescription))]
-            public string Path => _item.Path is not null
-                ? System.IO.Path.GetFullPath(System.IO.Path.Combine(_item.Framework.Path, _item.Path))
-                : "";
+            public string Path => item.GetAssemblyPath() ?? "";
 
             [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyAssemblyVersionDisplayName))]
             [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyAssemblyVersionDescription))]
-            public string AssemblyVersion => _item.AssemblyVersion ?? "";
+            public string AssemblyVersion => item.AssemblyVersion ?? "";
 
             [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyFileVersionDisplayName))]
             [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyFileVersionDescription))]
-            public string FileVersion => _item.FileVersion ?? "";
+            public string FileVersion => item.FileVersion ?? "";
         }
     }
 }

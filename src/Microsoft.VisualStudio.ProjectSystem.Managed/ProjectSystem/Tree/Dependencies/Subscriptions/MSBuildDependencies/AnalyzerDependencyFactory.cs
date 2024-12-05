@@ -14,8 +14,8 @@ internal sealed class AnalyzerDependencyFactory : MSBuildDependencyFactoryBase
     // Without this flag, CPS will remove whatever file path we pass during tree construction (for
     // performance reasons).
     private static readonly DependencyFlagCache s_flagCache = new(
-        resolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse + ProjectTreeFlags.FileSystemEntity,
-        unresolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse + ProjectTreeFlags.FileSystemEntity);
+        resolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse + DependencyTreeFlags.SupportsObjectBrowser + ProjectTreeFlags.FileSystemEntity,
+        unresolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse + DependencyTreeFlags.SupportsObjectBrowser + ProjectTreeFlags.FileSystemEntity);
 
     public override DependencyGroupType DependencyGroupType => DependencyGroupTypes.Analyzers;
 

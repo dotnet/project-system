@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     {
         private const int IDM_VS_CTXT_DEPENDENCY_TRANSITIVE_ITEM = 0x04B0;
 
-        private static readonly IContextMenuController s_defaultMenuController = new MenuController(VsMenus.guidSHLMainMenu, IDM_VS_CTXT_DEPENDENCY_TRANSITIVE_ITEM);
+        private static readonly IContextMenuController s_defaultMenuController = CreateContextMenuController(VsMenus.guidSHLMainMenu, IDM_VS_CTXT_DEPENDENCY_TRANSITIVE_ITEM);
 
         private AggregateContainsRelationCollection? _containsCollection;
 

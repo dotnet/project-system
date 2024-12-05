@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
                 It.Is<object>(s => s == null),
                 It.Is<string>(s => s == null),
                 It.IsAny<bool>(),
-                It.IsInRange(0, int.MaxValue, Range.Inclusive),
+                It.IsInRange(0, int.MaxValue, Moq.Range.Inclusive),
                 It.Is<bool>(v => !v),
                 It.Is<int>(i => i == 0),
                 It.Is<int>(i => i == 0),
@@ -52,12 +52,12 @@ namespace Microsoft.VisualStudio.Shell.Interop
                 }))
                 .Returns(HResult.OK);
 
-            void cancel()
+            void Cancel()
             {
                 callback?.OnCanceled();
             }
 
-            return (threadedWaitDialogFactoryMock.Object, (Action)cancel);
+            return (threadedWaitDialogFactoryMock.Object, Cancel);
         }
     }
 }

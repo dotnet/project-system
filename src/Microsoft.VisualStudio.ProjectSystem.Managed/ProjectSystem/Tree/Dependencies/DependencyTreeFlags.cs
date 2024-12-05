@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         public static readonly ProjectTreeFlags SupportsRemove = ProjectTreeFlags.Create(nameof(SupportsRemove));
 
         /// <summary>
-        /// Indicates that the dependency supports "Open Containing Folder" and "Copy Full Path" commands.
+        /// Indicates that the dependency supports the "Open Containing Folder" and "Copy Full Path" commands.
         /// </summary>
         /// <remarks>
         /// Requires the dependency's browse object to contain a <c>BrowsePath</c> value.
@@ -47,12 +47,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         public static readonly ProjectTreeFlags SupportsBrowse = ProjectTreeFlags.Create(nameof(SupportsBrowse));
 
         /// <summary>
-        /// Indicates that the dependency supports "Open Folder in File Explorer", "Open Containing Folder" and "Copy Full Path" commands.
+        /// Indicates that the dependency supports the "Open Folder in File Explorer", "Open Containing Folder" and "Copy Full Path" commands.
         /// </summary>
         /// <remarks>
         /// Requires the dependency's browse object to contain a <c>BrowsePath</c> value.
         /// </remarks>
         public static readonly ProjectTreeFlags SupportsFolderBrowse = ProjectTreeFlags.Create(nameof(SupportsFolderBrowse)) + SupportsBrowse;
+
+        /// <summary>
+        /// Indicates that the dependency supports the "Open in Object Browser".
+        /// </summary>
+        internal static readonly ProjectTreeFlags SupportsObjectBrowser = ProjectTreeFlags.Create(nameof(SupportsObjectBrowser));
 
         /// <summary>
         /// Identifies nodes used to group dependencies specific to a given slice, which is most commonly the target framework.
