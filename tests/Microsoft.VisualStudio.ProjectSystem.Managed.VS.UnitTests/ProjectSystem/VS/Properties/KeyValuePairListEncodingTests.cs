@@ -7,16 +7,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 public class KeyValuePairListEncodingTests
 {
     [Theory]
-    [InlineData("key1=value1;key2=value2", new[] { "key1", "value1", "key2", "value2" })]
-    [InlineData("key1=value1;;key2=value2", new[] { "key1", "value1", "key2", "value2" })]
-    [InlineData("key1=value1;;;key2=value2", new[] { "key1", "value1", "key2", "value2" })]
-    [InlineData("key1=value1;key2=value2;key3=value3", new[] { "key1", "value1", "key2", "value2", "key3", "value3" })]
-    [InlineData("key1;key2=value2", new[] { "key1", "", "key2", "value2" })]
-    [InlineData("key1;key2;key3=value3", new[] { "key1", "", "key2", "", "key3", "value3" })]
-    [InlineData("key1;;;key3;;", new[] { "key1", "", "key3", "" })]
-    public void Parse_ValidInput_ReturnsExpectedPairs(string input, string[] expectedPairs)
+    [InlineData("key1=value1;key2=value2", true, new[] { "key1", "value1", "key2", "value2" })]
+    [InlineData("key1=value1;;key2=value2", true, new[] { "key1", "value1", "key2", "value2" })]
+    [InlineData("key1=value1;;;key2=value2", true, new[] { "key1", "value1", "key2", "value2" })]
+    [InlineData("key1=value1;key2=value2;key3=value3", true, new[] { "key1", "value1", "key2", "value2", "key3", "value3" })]
+    [InlineData("key1;key2=value2", true, new[] { "key1", "", "key2", "value2" })]
+    [InlineData("key1;key2;key3=value3", true, new[] { "key1", "", "key2", "", "key3", "value3" })]
+    [InlineData("key1;;;key3;;", true, new[] { "key1", "", "key3", "" })]
+    [InlineData("", true, new string[0])]
+    [InlineData(" ", true, new string[0])]
+    [InlineData("=", true, new string[0])]
+    [InlineData("", false, new string[0])]
+    [InlineData(" ", false, new string[0])]
+    [InlineData("=", false, new[] { "=", "" })] // = can count as part of the key here
+    [InlineData("key1=value1;=value2=", true, new[] { "key1", "value1", "", "value2=" })]
+    [InlineData("key1=value1;=value2=", false, new[] { "key1", "value1", "=value2", "" })]
+    [InlineData("key1=value1;=value2", false, new[] { "key1", "value1", "=value2", "" })]
+    [InlineData("==", true, new[] { "", "=" })]
+    [InlineData(";", true, new string[0])]
+    public void Parse_ValidInput_ReturnsExpectedPairs(string input, bool allowsEmptyKey, string[] expectedPairs)
     {
-        var result = KeyValuePairListEncoding.Parse(input, ';').SelectMany(pair => new[] { pair.Name, pair.Value }).ToArray();
+        var result = KeyValuePairListEncoding.Parse(input, allowsEmptyKey, ';').SelectMany(pair => new[] { pair.Name, pair.Value }).ToArray();
         Assert.Equal(expectedPairs, result);
     }
 
@@ -25,10 +36,11 @@ public class KeyValuePairListEncodingTests
     [InlineData(new[] { "key1", "value1", "key2", "value2", "key3", "value3" }, "key1=value1;key2=value2;key3=value3")]
     [InlineData(new[] { "key1", "", "key2", "value2" }, "key1;key2=value2")]
     [InlineData(new[] { "key1", "", "key2", "", "key3", "value3" }, "key1;key2;key3=value3")]
+    [InlineData(new string[0], "")]
     public void Format_ValidPairs_ReturnsExpectedString(string[] pairs, string expectedString)
     {
         var nameValuePairs = ToNameValues(pairs);
-        var result = KeyValuePairListEncoding.Format(nameValuePairs, ";");
+        var result = KeyValuePairListEncoding.Format(nameValuePairs, ';');
         Assert.Equal(expectedString, result);
         return;
 

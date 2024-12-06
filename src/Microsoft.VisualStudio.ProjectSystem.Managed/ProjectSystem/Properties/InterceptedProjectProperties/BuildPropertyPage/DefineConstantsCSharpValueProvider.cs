@@ -75,15 +75,13 @@ internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderB
         // constants recursively obtained from above in this property's hierarchy (from imported files)
         IEnumerable<string> innerConstants =
             ParseDefinedConstantsFromUnevaluatedValue(await defaultProperties.GetUnevaluatedPropertyValueAsync(ConfiguredBrowseObject.DefineConstantsProperty) ?? string.Empty);
-
-        // we receive a comma-separated list, we should convert it to a semicolon-separated list
-        // because each item may have multiple values separated by semicolons
-        // ie "A,B;C" should be converted to "A;B;C"
-        unevaluatedPropertyValue = KeyValuePairListEncoding.Format(
-            KeyValuePairListEncoding.Parse(unevaluatedPropertyValue, separator: ','),
-            separator: ";");
         
-        IEnumerable<string> constantsToWrite = KeyValuePairListEncoding.Parse(unevaluatedPropertyValue, separator: ';')
+        IEnumerable<string> constantsToWrite = KeyValuePairListEncoding
+            .Parse(unevaluatedPropertyValue, separator: ';')
+            // we receive a comma-separated list, and each item may have multiple values separated by semicolons
+            // so we should also parse each value using ; as the separator
+            // ie "A,B;C" -> [A, B;C] -> [A, B, C]
+            .SelectMany(pair => KeyValuePairListEncoding.Parse(pair.Name, separator: ';'))
             .Select(pair => pair.Name)
             .Select(constant => constant.Trim(';')) // trim any leading or trailing semicolons, because we will add our own separating semicolons
             .Where(constant => !innerConstants.Contains(constant))
