@@ -7,25 +7,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
 [ExportInterceptingPropertyValueProvider(ConfiguredBrowseObject.DefineConstantsProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
 [AppliesTo(ProjectCapability.CSharpOrFSharp)]
-internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderBase
+internal class DefineConstantsCSharpValueProvider : InterceptingPropertyValueProviderBase
 {
+    private const string DefineConstantsRecursivePrefix = "$(DefineConstants)";
+
     private readonly IProjectAccessor _projectAccessor;
     private readonly ConfiguredProject _project;
-
-    internal const string DefineConstantsRecursivePrefix = "$(DefineConstants)";
-
+    private HashSet<string> _removedValues = [];
+    
     [ImportingConstructor]
-    public DefineConstantsValueProvider(IProjectAccessor projectAccessor, ConfiguredProject project)
+    public DefineConstantsCSharpValueProvider(IProjectAccessor projectAccessor, ConfiguredProject project)
     {
         _projectAccessor = projectAccessor;
         _project = project;
     }
 
-    internal static IEnumerable<string> ParseDefinedConstantsFromUnevaluatedValue(string unevaluatedValue)
+    private static IEnumerable<string> ParseDefinedConstantsFromUnevaluatedValue(string unevaluatedValue)
     {
-        return unevaluatedValue.Length <= DefineConstantsRecursivePrefix.Length  || !unevaluatedValue.StartsWith(DefineConstantsRecursivePrefix)
-            ? Array.Empty<string>() 
-            : unevaluatedValue.Substring(DefineConstantsRecursivePrefix.Length).Split(';').Where(x => x.Length > 0);
+        string substring = unevaluatedValue.Length <= DefineConstantsRecursivePrefix.Length  || !unevaluatedValue.StartsWith(DefineConstantsRecursivePrefix)
+            ? unevaluatedValue
+            : unevaluatedValue.Substring(DefineConstantsRecursivePrefix.Length);
+
+        return substring.Split(';').Where(x => x.Length > 0);
     }
 
     public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -38,10 +41,12 @@ internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderB
             return string.Empty;
         }
 
-        return KeyValuePairListEncoding.Format(
-            ParseDefinedConstantsFromUnevaluatedValue(unevaluatedDefineConstantsValue)
-                .Select(symbol => (symbol, bool.FalseString))
-        );
+        var pairs = KeyValuePairListEncoding.Parse(unevaluatedDefineConstantsValue, separator: ';').Select(pair => pair.Name)
+            .Where(symbol => !string.IsNullOrEmpty(symbol))
+            .Select(symbol => (symbol, _removedValues.Contains(symbol) ? "null" : bool.FalseString)).ToList();
+        pairs.AddRange(_removedValues.Select(value => (value, "null")));
+        
+        return KeyValuePairListEncoding.Format(pairs, separator: ',');
     }
 
     // We cannot rely on the unevaluated property value as obtained through Project.GetProperty.UnevaluatedValue - the reason is that for a recursively-defined
@@ -51,7 +56,11 @@ internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderB
     // 2. to override IsValueDefinedInContextAsync, as this will always return false
     private async Task<string?> GetUnevaluatedDefineConstantsPropertyValueAsync()
     {
-        await ((ConfiguredProject2)_project).EnsureProjectEvaluatedAsync();
+        if (_project is ConfiguredProject2 configuredProject2)
+        {
+            await configuredProject2.EnsureProjectEvaluatedAsync();
+        }
+
         return await _projectAccessor.OpenProjectForReadAsync(_project, project =>
         {
             project.ReevaluateIfNecessary();
@@ -75,26 +84,34 @@ internal class DefineConstantsValueProvider : InterceptingPropertyValueProviderB
         // constants recursively obtained from above in this property's hierarchy (from imported files)
         IEnumerable<string> innerConstants =
             ParseDefinedConstantsFromUnevaluatedValue(await defaultProperties.GetUnevaluatedPropertyValueAsync(ConfiguredBrowseObject.DefineConstantsProperty) ?? string.Empty);
+
+        var separatedPairs = KeyValuePairListEncoding.Parse(unevaluatedPropertyValue, separator: ',').ToList();
         
-        IEnumerable<string> constantsToWrite = KeyValuePairListEncoding
-            .Parse(unevaluatedPropertyValue, separator: ';')
+        var foundConstants = separatedPairs 
             // we receive a comma-separated list, and each item may have multiple values separated by semicolons
             // so we should also parse each value using ; as the separator
             // ie "A,B;C" -> [A, B;C] -> [A, B, C]
-            .SelectMany(pair => KeyValuePairListEncoding.Parse(pair.Name, separator: ';'))
+            .SelectMany(pair => KeyValuePairListEncoding.Parse(pair.Name, allowsEmptyKey: true, separator: ';'))
             .Select(pair => pair.Name)
+            .Where(pair => !string.IsNullOrEmpty(pair))
             .Select(constant => constant.Trim(';')) // trim any leading or trailing semicolons, because we will add our own separating semicolons
-            .Where(constant => !innerConstants.Contains(constant))
             .Where(constant => !string.IsNullOrEmpty(constant)) // you aren't allowed to add a semicolon as a constant
             .Distinct()
             .ToList();
 
-        if (!constantsToWrite.Any())
+        // if a value included multiple constants (such as A;B), we should remove the value in the UI (since it's been replaced) 
+        _removedValues = separatedPairs
+            .Select(pair => pair.Name)
+            .Where(name => !foundConstants.Contains(name) && !string.IsNullOrWhiteSpace(name.Replace(";", "")))
+            .ToHashSet();
+
+        var writeableConstants = foundConstants.Where(constant => !innerConstants.Contains(constant)).ToList();
+        if (writeableConstants.Count == 0)
         {
             await defaultProperties.DeletePropertyAsync(propertyName, dimensionalConditions);
             return null;
         }
-
-        return $"{DefineConstantsRecursivePrefix};" + string.Join(";", constantsToWrite);
+        
+        return string.Join(";", writeableConstants);
     }
 }
