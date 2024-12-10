@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 [ExportDynamicEnumValuesProvider("PlatformTargetEnumProvider")]
 [AppliesTo(ProjectCapability.DotNet)]
 [method: ImportingConstructor]
-internal class PlatformTargetBuildPropertyPageEnumProvider(ProjectProperties properties) : IDynamicEnumValuesProvider, IDynamicEnumValuesGenerator
+internal sealed class PlatformTargetBuildPropertyPageEnumProvider(ProjectProperties properties) : IDynamicEnumValuesProvider, IDynamicEnumValuesGenerator
 {
     public bool AllowCustomValues => false;
 
