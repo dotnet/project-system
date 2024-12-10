@@ -63,7 +63,10 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
         /// The names of any targets that reported errors. Names may be hashed.
         /// May be empty even when errors exist, as not all errors come from a target.
         /// </summary>
-        private List<string>? _errorTargets;
+        /// <remarks>
+        /// Targets can run concurrently, so use of this collection must be protected by a lock.
+        /// </remarks>
+        private readonly List<string> _errorTargets = [];
 
         /// <summary>
         /// Whether the build succeeded.
@@ -116,8 +119,10 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
 
                 if (TryGetTargetRecord(e.BuildEventContext, out TargetRecord? record))
                 {
-                    _errorTargets ??= [];
-                    _errorTargets.Add(GetHashedTargetName(record));
+                    lock (_errorTargets)
+                    {
+                        _errorTargets.Add(GetHashedTargetName(record));
+                    }
                 }
             }
 
@@ -150,6 +155,7 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
             void SendTelemetry()
             {
                 object[][] targetDurations;
+                string[] errorTargets;
 
                 lock (_targetRecordById)
                 {
@@ -161,6 +167,8 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
                         .Take(10)
                         .Select(record => new object[] { GetHashedTargetName(record), record.Elapsed.Milliseconds })
                         .ToArray();
+
+                    errorTargets = _errorTargets.ToArray();
                 }
 
                 telemetryService.PostProperties(
@@ -169,7 +177,7 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
                         (TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, _succeeded),
                         (TelemetryPropertyName.DesignTimeBuildComplete.Targets, new ComplexPropertyValue(targetDurations)),
                         (TelemetryPropertyName.DesignTimeBuildComplete.ErrorCount, _errorCount),
-                        (TelemetryPropertyName.DesignTimeBuildComplete.ErrorTargets, _errorTargets),
+                        (TelemetryPropertyName.DesignTimeBuildComplete.ErrorTargets, errorTargets),
                     ]);
             }
 
