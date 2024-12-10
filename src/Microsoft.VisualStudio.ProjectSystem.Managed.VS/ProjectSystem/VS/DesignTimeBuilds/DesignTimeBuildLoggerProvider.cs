@@ -54,6 +54,8 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
         /// <remarks>
         /// The initial capacity here is based on an empty .NET Console App's DTB, which has
         /// around 120 targets, and aims to avoid resizing the dictionary during the build.
+        ///
+        /// Targets can run concurrently, so use of this collection must be protected by a lock.
         /// </remarks>
         private readonly Dictionary<int, TargetRecord> _targetRecordById = new(capacity: 140);
 
@@ -93,7 +95,10 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
                         e.TargetFile,
                         file => ProjectFileClassifier.IsShippedByMicrosoft(e.TargetFile));
 
-                    _targetRecordById[id] = new TargetRecord(e.TargetName, IsMicrosoft: isMicrosoft, e.Timestamp);
+                    lock (_targetRecordById)
+                    {
+                        _targetRecordById[id] = new TargetRecord(e.TargetName, IsMicrosoft: isMicrosoft, e.Timestamp);
+                    }
                 }
             }
 
@@ -123,9 +128,12 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
 
             bool TryGetTargetRecord(BuildEventContext? context, [NotNullWhen(returnValue: true)] out TargetRecord? record)
             {
-                if (context is { TargetId: int id } && _targetRecordById.TryGetValue(id, out record))
+                lock (_targetRecordById)
                 {
-                    return true;
+                    if (context is { TargetId: int id } && _targetRecordById.TryGetValue(id, out record))
+                    {
+                        return true;
+                    }
                 }
 
                 record = null;
@@ -141,14 +149,19 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
 
             void SendTelemetry()
             {
-                // Filter out very fast targets (to reduce the cost of ordering) then take the top ten by elapsed time.
-                // Note that targets can run multiple times, so the same target may appear more than once in the results.
-                object[][] targetDurations = _targetRecordById.Values
-                    .Where(static record => record.Elapsed > new TimeSpan(ticks: 5 * TimeSpan.TicksPerMillisecond))
-                    .OrderByDescending(record => record.Elapsed)
-                    .Take(10)
-                    .Select(record => new object[] { GetHashedTargetName(record), record.Elapsed.Milliseconds })
-                    .ToArray();
+                object[][] targetDurations;
+
+                lock (_targetRecordById)
+                {
+                    // Filter out very fast targets (to reduce the cost of ordering) then take the top ten by elapsed time.
+                    // Note that targets can run multiple times, so the same target may appear more than once in the results.
+                    targetDurations = _targetRecordById.Values
+                        .Where(static record => record.Elapsed > new TimeSpan(ticks: 5 * TimeSpan.TicksPerMillisecond))
+                        .OrderByDescending(record => record.Elapsed)
+                        .Take(10)
+                        .Select(record => new object[] { GetHashedTargetName(record), record.Elapsed.Milliseconds })
+                        .ToArray();
+                }
 
                 telemetryService.PostProperties(
                     TelemetryEventName.DesignTimeBuildComplete,
