@@ -21,18 +21,23 @@ internal class PlatformTargetBuildPropertyPageEnumProvider(ProjectProperties pro
 
     public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
     {
-        List<IEnumValue> result = [];
-
         ConfigurationGeneral configuration = await properties.GetConfigurationGeneralPropertiesAsync();
 
         string availablePlatformsTargets = await configuration.AvailablePlatforms.GetDisplayValueAsync();
 
+        List<IEnumValue> enumValues = [];
+        HashSet<string> targets = new(StringComparers.ConfigurationDimensionValues);
+
         foreach (string platformTarget in new LazyStringSplit(availablePlatformsTargets, ','))
         {
-            result.Add(new PageEnumValue(new EnumValue() { Name = platformTarget, DisplayName = GetDisplayName(platformTarget) }));
+            // Prevent duplicates.
+            if (targets.Add(platformTarget))
+            {
+                enumValues.Add(new PageEnumValue(new EnumValue() { Name = platformTarget, DisplayName = GetDisplayName(platformTarget) }));
+            }
         }
 
-        return result;
+        return enumValues;
 
         static string GetDisplayName(string platformTarget)
         {
