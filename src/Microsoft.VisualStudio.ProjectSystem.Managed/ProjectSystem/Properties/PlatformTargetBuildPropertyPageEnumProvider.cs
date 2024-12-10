@@ -12,18 +12,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 /// </summary>
 [ExportDynamicEnumValuesProvider("PlatformTargetEnumProvider")]
 [AppliesTo(ProjectCapability.DotNet)]
-internal class PlatformTargetBuildPropertyPageEnumProvider : IDynamicEnumValuesProvider, IDynamicEnumValuesGenerator
+[method: ImportingConstructor]
+internal class PlatformTargetBuildPropertyPageEnumProvider(ProjectProperties properties) : IDynamicEnumValuesProvider, IDynamicEnumValuesGenerator
 {
     private const string AnyCpuPlatformName = "AnyCPU";
     private const string AnyCpuDisplayName = "Any CPU";
-
-    private readonly ProjectProperties _properties;
-
-    [ImportingConstructor]
-    public PlatformTargetBuildPropertyPageEnumProvider(ProjectProperties properties)
-    {
-        _properties = properties;
-    }
 
     public bool AllowCustomValues => false;
 
@@ -31,7 +24,7 @@ internal class PlatformTargetBuildPropertyPageEnumProvider : IDynamicEnumValuesP
     {
         var result = new List<IEnumValue>();
 
-        ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+        ConfigurationGeneral configuration = await properties.GetConfigurationGeneralPropertiesAsync();
 
         string availablePlatformsTargets = await configuration.AvailablePlatforms.GetDisplayValueAsync();
 
