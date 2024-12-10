@@ -15,9 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 [method: ImportingConstructor]
 internal class PlatformTargetBuildPropertyPageEnumProvider(ProjectProperties properties) : IDynamicEnumValuesProvider, IDynamicEnumValuesGenerator
 {
-    private const string AnyCpuPlatformName = "AnyCPU";
-    private const string AnyCpuDisplayName = "Any CPU";
-
     public bool AllowCustomValues => false;
 
     public async Task<EnumCollection> GetListedValuesAsync()
@@ -30,10 +27,18 @@ internal class PlatformTargetBuildPropertyPageEnumProvider(ProjectProperties pro
 
         foreach (string platformTarget in new LazyStringSplit(availablePlatformsTargets, ','))
         {
-            result.Add(new PageEnumValue(new EnumValue() { Name = platformTarget, DisplayName = platformTarget.Equals(AnyCpuPlatformName, StringComparisons.ConfigurationDimensionValues) ? AnyCpuDisplayName : platformTarget }));
+            result.Add(new PageEnumValue(new EnumValue() { Name = platformTarget, DisplayName = GetDisplayName(platformTarget) }));
         }
 
         return result;
+
+        static string GetDisplayName(string platformTarget)
+        {
+            const string AnyCpuPlatformName = "AnyCPU";
+            const string AnyCpuDisplayName = "Any CPU";
+
+            return platformTarget.Equals(AnyCpuPlatformName, StringComparisons.ConfigurationDimensionValues) ? AnyCpuDisplayName : platformTarget;
+        }
     }
 
     public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
