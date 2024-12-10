@@ -175,8 +175,11 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
 
             void ReportBuildErrors()
             {
-                if (_errorCount is 0)
+                if (_succeeded is not false)
                 {
+                    // Only report a failure if the build failed. Specific targets can have
+                    // errors, yet if ContinueOnError is set accordingly they won't fail the
+                    // build. We don't want to report those to the user.
                     return;
                 }
 
