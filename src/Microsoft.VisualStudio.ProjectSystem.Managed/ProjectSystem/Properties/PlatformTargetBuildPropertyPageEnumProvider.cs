@@ -3,7 +3,6 @@
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
-using EnumCollection = System.Collections.Generic.ICollection<Microsoft.VisualStudio.ProjectSystem.Properties.IEnumValue>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -17,7 +16,7 @@ internal class PlatformTargetBuildPropertyPageEnumProvider(ProjectProperties pro
 {
     public bool AllowCustomValues => false;
 
-    public async Task<EnumCollection> GetListedValuesAsync()
+    public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
     {
         var result = new List<IEnumValue>();
 
