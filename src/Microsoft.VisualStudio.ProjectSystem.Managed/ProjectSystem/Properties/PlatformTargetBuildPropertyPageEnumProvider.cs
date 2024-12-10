@@ -18,7 +18,7 @@ internal class PlatformTargetBuildPropertyPageEnumProvider(ProjectProperties pro
 
     public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
     {
-        var result = new List<IEnumValue>();
+        List<IEnumValue> result = [];
 
         ConfigurationGeneral configuration = await properties.GetConfigurationGeneralPropertiesAsync();
 
