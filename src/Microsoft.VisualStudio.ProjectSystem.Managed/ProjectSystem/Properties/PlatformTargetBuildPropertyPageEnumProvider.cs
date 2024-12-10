@@ -7,8 +7,11 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
 /// <summary>
-///     Responsible for producing valid values for the TargetPlatform property from a design-time build.
+///     Responsible for producing valid values for the <c>TargetPlatform</c> MSBuild property.
 /// </summary>
+/// <remarks>
+///     Candidate values from the <c>AvailablePlatforms</c> MSBuild property.
+/// </remarks>
 [ExportDynamicEnumValuesProvider("PlatformTargetEnumProvider")]
 [AppliesTo(ProjectCapability.DotNet)]
 [method: ImportingConstructor]
