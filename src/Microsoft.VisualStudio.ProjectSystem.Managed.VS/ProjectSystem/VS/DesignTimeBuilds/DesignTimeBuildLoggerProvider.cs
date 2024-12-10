@@ -60,23 +60,21 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
         private readonly Dictionary<int, TargetRecord> _targetRecordById = new(capacity: 140);
 
         /// <summary>
-        /// The names of any targets that reported errors. Names may be hashed.
-        /// May be empty even when errors exist, as not all errors come from a target.
+        /// Data about any errors that occurred during the build. Note that design-time build
+        /// targets are supposed to be authored to respect ContinueOnError, so errors might
+        /// not fail the build. However it's still useful to know which targets reported errors.
+        /// 
+        /// Similarly, this collection may be empty even when the build fails.
         /// </summary>
         /// <remarks>
         /// Targets can run concurrently, so use of this collection must be protected by a lock.
         /// </remarks>
-        private readonly List<string> _errorTargets = [];
+        private readonly List<ErrorData> _errors = [];
 
         /// <summary>
         /// Whether the build succeeded.
         /// </summary>
         private bool? _succeeded;
-
-        /// <summary>
-        /// The number of errors reported during the build.
-        /// </summary>
-        private int _errorCount;
 
         LoggerVerbosity ILogger.Verbosity { get; set; }
 
@@ -115,14 +113,16 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
 
             void OnErrorRaised(object sender, BuildErrorEventArgs e)
             {
-                _errorCount++;
+                string? targetName = null;
 
                 if (TryGetTargetRecord(e.BuildEventContext, out TargetRecord? record))
                 {
-                    lock (_errorTargets)
-                    {
-                        _errorTargets.Add(GetHashedTargetName(record));
-                    }
+                    targetName = GetHashedTargetName(record);
+                }
+
+                lock (_errors)
+                {
+                    _errors.Add(new(targetName, e.Code));
                 }
             }
 
@@ -155,7 +155,7 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
             void SendTelemetry()
             {
                 object[][] targetDurations;
-                string[] errorTargets;
+                ErrorData[] errors;
 
                 lock (_targetRecordById)
                 {
@@ -168,7 +168,7 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
                         .Select(record => new object[] { GetHashedTargetName(record), record.Elapsed.Milliseconds })
                         .ToArray();
 
-                    errorTargets = _errorTargets.ToArray();
+                    errors = _errors.ToArray();
                 }
 
                 telemetryService.PostProperties(
@@ -176,8 +176,8 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
                     [
                         (TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, _succeeded),
                         (TelemetryPropertyName.DesignTimeBuildComplete.Targets, new ComplexPropertyValue(targetDurations)),
-                        (TelemetryPropertyName.DesignTimeBuildComplete.ErrorCount, _errorCount),
-                        (TelemetryPropertyName.DesignTimeBuildComplete.ErrorTargets, errorTargets),
+                        (TelemetryPropertyName.DesignTimeBuildComplete.ErrorCount, errors.Length),
+                        (TelemetryPropertyName.DesignTimeBuildComplete.Errors, new ComplexPropertyValue(errors)),
                     ]);
             }
 
@@ -232,5 +232,12 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
 
             public TimeSpan Elapsed => Ended - Started;
         }
+
+        /// <summary>
+        /// Data about errors reported during design-time builds.
+        /// </summary>
+        /// <param name="TargetName">Names of the targets that reported the error. May be hashed. <see langword="null"/> if the target name could not be identified.</param>
+        /// <param name="ErrorCode">An error code that identifies the type of error.</param>
+        private sealed record class ErrorData(string? TargetName, string ErrorCode);
     }
 }
