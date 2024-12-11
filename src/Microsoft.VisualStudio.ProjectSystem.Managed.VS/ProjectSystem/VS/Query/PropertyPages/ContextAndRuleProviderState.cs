@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
 /// to pass the state their child producers will need, but allows the actual binding
 /// of the <see cref="Rule"/> to be delayed until needed.
 /// </summary>
-internal sealed class ContextAndRuleProviderState
+public sealed class ContextAndRuleProviderState
 {
     public ContextAndRuleProviderState(IProjectState projectState, QueryProjectPropertiesContext propertiesContext, Rule rule)
     {
