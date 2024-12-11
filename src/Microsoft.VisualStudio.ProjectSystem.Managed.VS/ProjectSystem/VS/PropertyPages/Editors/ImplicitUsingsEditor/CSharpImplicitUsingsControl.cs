@@ -47,13 +47,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
             typeof(bool),
             typeof(CSharpImplicitUsingsControl),
             new PropertyMetadata(false));
-        
+
         public static readonly DependencyProperty ShouldShowReadonlyUsingsProperty = DependencyProperty.Register(
             nameof(ShouldShowReadonlyUsings),
             typeof(bool),
             typeof(CSharpImplicitUsingsControl),
             new PropertyMetadata(true, (o, e) => ((CSharpImplicitUsingsControl)o).OnStringListOrSupportedValuesPropertyChanged()));
-        
+
         // Used to suppress event handling during our own updates, breaking infinite loops.
         private bool _isUpdating;
 
@@ -110,13 +110,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
             get => (bool)GetValue(EnteredUserUsingIsStaticProperty);
             set => SetValue(EnteredUserUsingIsStaticProperty, value);
         }
-        
+
         public bool ShouldShowReadonlyUsings
         {
             get => (bool)GetValue(ShouldShowReadonlyUsingsProperty);
             set => SetValue(ShouldShowReadonlyUsingsProperty, value);
         }
-        
+
         public string StringList
         {
             get => (string)GetValue(StringListProperty);
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
                 {
                     return;
                 }
-                
+
                 rawImplicitUsings.Sort((x, y) =>
                 {
                     if ((x.IsReadOnly && y.IsReadOnly) || (!x.IsReadOnly && !y.IsReadOnly))
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
                 }
 
                 var currentlySetImplicitUsings = rawImplicitUsings.GroupBy(implicitUsing => implicitUsing.Include).Select(group => group.First()).ToList();
-                
+
                 if (UsingCollectionState.Count == 0)
                 {
                     foreach (ImplicitUsing implicitUsing in currentlySetImplicitUsings)
@@ -252,7 +252,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
         private string _alias;
         private bool _isStatic;
         private bool _isReadOnly;
-        
+
         private bool _forceIncludesFocus;
         private bool _forceAliasFocus;
         private bool _forceIsStaticFocus;
@@ -264,7 +264,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
             _isStatic = isStatic;
             _isReadOnly = isReadOnly;
             _parent = parent;
-            
+
             _forceIncludesFocus = false;
             _forceAliasFocus = false;
             _forceIsStaticFocus = false;
@@ -351,7 +351,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
                 _parent.NotifyPairChanged();
             }
         }
-        
+
         public bool ForceIncludesFocus
         {
             get => _forceIncludesFocus;
@@ -361,7 +361,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
                 PropertyChanged?.Invoke(this, s_forceIncludesFocusChangeArgs);
             }
         }
-        
+
         public bool ForceAliasFocus
         {
             get => _forceAliasFocus;
@@ -371,7 +371,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Controls
                 PropertyChanged?.Invoke(this, s_forceAliasFocusChangeArgs);
             }
         }
-        
+
         public bool ForceIsStaticFocus
         {
             get => _forceIsStaticFocus;

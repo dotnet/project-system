@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     {
                         return true;
                     }
-                } 
+                }
             }
 
             if (!foundStartupProjectProvider)

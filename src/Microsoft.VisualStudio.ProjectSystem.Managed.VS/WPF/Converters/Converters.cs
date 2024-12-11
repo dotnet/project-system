@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     internal static partial class Converters
     {
         private const string DimensionSeparator = " & ";
-        
+
         public static ImmutableArray<string> ImmutableStringArray => ImmutableArray<string>.Empty;
 
         public static IMultiValueConverter DimensionNames { get; } = new LambdaMultiConverter<ImmutableDictionary<string, string>, ImmutableArray<string>, string>(GetDimensionNames);
@@ -57,15 +57,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         public static IValueConverter BoolToVisibilityConverter { get; } = new LambdaConverter<bool, Visibility>(b => b ? Visibility.Visible : Visibility.Collapsed);
 
         public static IValueConverter IsEnteredUserAliasStringEnabled { get; } = new LambdaConverter<bool, bool>(isStatic => !isStatic);
-        
+
         public static IMultiValueConverter IsListViewAliasStringEnabled { get; } = new LambdaMultiConverter<bool, bool, bool>((isReadOnly, isStatic) => !isReadOnly && !isStatic);
 
         public static IMultiValueConverter IsIsStaticCheckboxEnabled { get; } = new LambdaMultiConverter<string, bool, bool>((alias, isReadOnly) => !isReadOnly && alias.Length == 0);
-        
+
         public static IValueConverter IsStaticCheckboxText { get; } = new LambdaConverter<string, string>(alias => alias.Length == 0 ? "Yes" : "No");
 
         public static IValueConverter InvertBoolean { get; } = new LambdaConverter<bool, bool>(b => !b);
-        
+
         private static string GetDimensionNames(ImmutableDictionary<string, string> map, ImmutableArray<string> dimensions)
         {
             if (map.IsEmpty || dimensions.IsEmpty)

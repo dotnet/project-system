@@ -66,12 +66,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             int hashCode = IsProjectFile.GetHashCode();
             hashCode = (hashCode * -1521134295) + StringComparers.Paths.GetHashCode(File);
-            
+
             if (ItemType is not null)
             {
                 hashCode = (hashCode * -1521134295) + StringComparers.ItemTypes.GetHashCode(ItemType);
             }
-            
+
             if (ItemName is not null)
             {
                 hashCode = (hashCode * -1521134295) + StringComparers.ItemNames.GetHashCode(ItemName);

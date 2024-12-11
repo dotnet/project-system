@@ -349,7 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                     HotReloadDiagnosticErrorLevel.Info
                 ),
                 default);
-            
+
             await StopProjectAsync(hotReloadState, default);
 
             hotReloadState.Process.Exited -= hotReloadState.OnProcessExited;

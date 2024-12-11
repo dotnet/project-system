@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public bool HasItems => _parentItems.Count != 0;
 
-        void IAggregateRelationCollection.EnsureMaterialized() {}
+        void IAggregateRelationCollection.EnsureMaterialized() { }
 
         public IEnumerator GetEnumerator() => _parentItems.GetEnumerator();
 

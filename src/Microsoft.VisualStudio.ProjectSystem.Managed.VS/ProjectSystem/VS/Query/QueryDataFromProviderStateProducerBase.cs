@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
         {
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is T providerState)
+            if (request.RequestData is IEntityValueFromProvider { ProviderState: T providerState })
             {
                 try
                 {

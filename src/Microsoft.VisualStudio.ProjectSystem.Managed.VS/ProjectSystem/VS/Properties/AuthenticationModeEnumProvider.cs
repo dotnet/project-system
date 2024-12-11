@@ -1,8 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             public Task<ICollection<IEnumValue>> GetListedValuesAsync()
             {
-                var enumValues =_remoteDebuggerAuthenticationService
+                var enumValues = _remoteDebuggerAuthenticationService
                     .GetRemoteAuthenticationModes()
                     .Select(i => new PageEnumValue(new EnumValue
                     {

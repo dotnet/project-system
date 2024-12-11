@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 _totalSteps = totalSteps.Value;
                 hasChange = true;
             }
-            
+
             if (currentStep is not null && currentStep != _currentStep)
             {
                 Requires.Argument(currentStep <= _totalSteps, nameof(currentStep), $"Must be less than or equal to the total number of steps.");

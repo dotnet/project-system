@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
 
                 yield return resultingEntry;
-                
+
             }
 
             static IEnumerable<string> ReadEntries(string rawText)
@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     return $"{EncodeCharacters(pair.Name)}={EncodeCharacters(pair.Value)}";
                 }
             }
-            
+
             static string EncodeCharacters(string value)
             {
                 int i = value.Length - 1;

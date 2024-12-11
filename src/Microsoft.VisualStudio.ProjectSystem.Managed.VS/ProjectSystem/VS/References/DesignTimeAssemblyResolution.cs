@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return HResult.OK;
         }
 
-        private uint ResolveReferences(string?[] originalNames, AssemblyName[] assemblyName, [In, Out]VsResolvedAssemblyPath[] assemblyPaths)
+        private uint ResolveReferences(string?[] originalNames, AssemblyName[] assemblyName, [In, Out] VsResolvedAssemblyPath[] assemblyPaths)
         {
             Assumes.True(originalNames.Length == assemblyName.Length && originalNames.Length == assemblyPaths.Length);
 

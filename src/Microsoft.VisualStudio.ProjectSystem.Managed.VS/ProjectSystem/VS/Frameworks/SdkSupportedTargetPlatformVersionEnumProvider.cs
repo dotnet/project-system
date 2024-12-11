@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
     {
         [ImportingConstructor]
         public SdkSupportedTargetPlatformVersionEnumProvider(
-            ConfiguredProject project, 
-            IProjectSubscriptionService subscriptionService) 
-            : base(project, subscriptionService, ruleName: SdkSupportedTargetPlatformVersion.SchemaName) {}
+            ConfiguredProject project,
+            IProjectSubscriptionService subscriptionService)
+            : base(project, subscriptionService, ruleName: SdkSupportedTargetPlatformVersion.SchemaName) { }
 
         protected override IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)
         {

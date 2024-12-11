@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             }
 
             return NullEntityValue;
-            
+
         }
     }
 }

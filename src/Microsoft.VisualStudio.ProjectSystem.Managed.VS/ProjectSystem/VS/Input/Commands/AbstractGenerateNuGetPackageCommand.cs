@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private readonly IProjectThreadingService _threadingService;
         private readonly ISolutionBuildManager _solutionBuildManager;
         private readonly GeneratePackageOnBuildPropertyProvider _generatePackageOnBuildPropertyProvider;
-        
+
         private IAsyncDisposable? _subscription;
 
         protected AbstractGenerateNuGetPackageCommand(

@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// Returns entities representing all launch profiles in the project.
         /// </summary>
         Task<IEnumerable<IEntityValue>> RetrieveAllLaunchProfileEntitiesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ILaunchProfilePropertiesAvailableStatus requestedProperties);
-        
+
         /// <summary>
         /// Returns the entity representing the launch profile specified by the given <paramref name="id"/>.
         /// </summary>

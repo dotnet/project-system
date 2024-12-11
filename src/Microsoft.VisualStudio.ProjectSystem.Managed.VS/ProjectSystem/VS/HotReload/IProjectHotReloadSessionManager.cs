@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         /// otherwise.
         /// </returns>
         Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables);
-        
+
         /// <summary>
         /// Activates the pending Hot Reload session and associates it with the specified
         /// process.

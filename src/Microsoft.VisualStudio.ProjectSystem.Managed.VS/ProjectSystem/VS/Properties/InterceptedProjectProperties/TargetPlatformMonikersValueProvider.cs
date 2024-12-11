@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 string? currentPlatformVersion = (string?)await configuration.TargetPlatformVersion.GetValueAsync();
 
                 Assumes.NotNull(currentPlatformMoniker);
-                builder.Add($"{ currentPlatformMoniker }, Version={ currentPlatformVersion }");
+                builder.Add($"{currentPlatformMoniker}, Version={currentPlatformVersion}");
             }
 
             return string.Join(";", builder.ToArrayAndFree());

@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             static IEnumerable<IFileMoveItem> GetFilesToMove(IEnumerable<IFileMoveItem> items)
             {
                 var itemQueue = new Queue<IFileMoveItem>(items);
-                while(itemQueue.Count > 0)
+                while (itemQueue.Count > 0)
                 {
                     IFileMoveItem item = itemQueue.Dequeue();
 

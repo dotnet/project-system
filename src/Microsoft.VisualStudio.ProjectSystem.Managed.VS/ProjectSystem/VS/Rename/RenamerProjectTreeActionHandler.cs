@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         public RenamerProjectTreeActionHandler(
             UnconfiguredProject unconfiguredProject,
             IUnconfiguredProjectVsServices projectVsServices,
-            [Import(typeof(VisualStudioWorkspace))]Lazy<Workspace> workspace,
+            [Import(typeof(VisualStudioWorkspace))] Lazy<Workspace> workspace,
             IEnvironmentOptions environmentOptions,
             IUserNotificationServices userNotificationServices,
             IRoslynServices roslynServices,

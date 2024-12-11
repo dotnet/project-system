@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
                 _configuredProject = configuredProject;
                 _host = host;
                 _persistence = persistence;
-                
+
                 _semaphore = ReentrantSemaphore.Create(
                     initialCount: 1,
                     joinableTaskContext: configuredProject.UnconfiguredProject.Services.ThreadingPolicy.JoinableTaskContext.Context,
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
             public async Task UpdateLastSuccessfulBuildStartTimeUtcAsync(DateTime lastSuccessfulBuildStartTimeUtc, bool isRebuild)
             {
                 IEnumerable<ProjectConfiguration> configurations;
-                
+
                 if (isRebuild)
                 {
                     // During a rebuild the fast up-to-date check is not called, so we cannot rely upon

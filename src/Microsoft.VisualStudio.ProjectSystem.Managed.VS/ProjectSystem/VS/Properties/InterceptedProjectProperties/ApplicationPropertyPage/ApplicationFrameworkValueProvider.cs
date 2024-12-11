@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         private const string EnabledValue = "WindowsForms";
         private const string DisabledValue = "WindowsFormsWithCustomSubMain";
-        
+
         private const string WinExeOutputType = "WinExe";
         private const string NoneItemType = "None";
         private const string ApplicationDefinitionItemType = "ApplicationDefinition";
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             else
             {
                 return await SetPropertyValueAsync(propertyName, unevaluatedPropertyValue);
-            }     
+            }
         }
 
         public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private async Task<string?> SetPropertyValueForDefaultProjectTypesAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             string rootNamespace = await defaultProperties.GetEvaluatedPropertyValueAsync("RootNamespace");
-            
+
             if (bool.TryParse(unevaluatedPropertyValue, out bool value))
             {
                 if (value)
@@ -358,7 +358,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }
             }
 
-            await (propertyName switch 
+            await (propertyName switch
             {
                 ApplicationFramework => _myAppXmlFileAccessor.SetMySubMainAsync(unevaluatedPropertyValue),
                 EnableVisualStyles => _myAppXmlFileAccessor.SetEnableVisualStylesAsync(Convert.ToBoolean(unevaluatedPropertyValue)),

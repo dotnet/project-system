@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             JoinableFactory.Context.VerifyIsOnMainThread();
 
             ErrorHandler.ThrowOnFailure(_vsSolutionBuildManager2.QueryBuildManagerBusy(out int flags));
-            
+
             return flags;
         }
 
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             JoinableFactory.Context.VerifyIsOnMainThread();
 
             ErrorHandler.ThrowOnFailure(_vsSolutionBuildManager3.QueryBuildManagerBusyEx(out uint flags));
-            
+
             return flags;
         }
 

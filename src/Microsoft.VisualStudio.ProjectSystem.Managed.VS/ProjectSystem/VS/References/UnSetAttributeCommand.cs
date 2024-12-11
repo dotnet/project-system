@@ -7,7 +7,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     internal class UnsetAttributeCommand : SetTreatAsUsedAttributeCommand
     {
         public UnsetAttributeCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, string itemSpecification)
-        : base(abstractReferenceHandler, selectedConfiguredProject, itemSpecification) {
+        : base(abstractReferenceHandler, selectedConfiguredProject, itemSpecification)
+        {
 
             UnsetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(false);
             SetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(true);

@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         where TInterface : class?
     {
         [ImportingConstructor]
-        public VsUIService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, JoinableTaskContext joinableTaskContext)
+        public VsUIService([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, JoinableTaskContext joinableTaskContext)
             : base(serviceProvider, joinableTaskContext)
         {
         }

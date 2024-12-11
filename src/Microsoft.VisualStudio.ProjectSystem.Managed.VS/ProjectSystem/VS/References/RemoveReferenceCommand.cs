@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             {
                 await _referenceHandler.SetAttributesAsync(_selectedConfiguredProject, _itemSpecification, _projectPropertiesValues);
             }
-            
+
             return true;
         }
     }

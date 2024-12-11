@@ -116,20 +116,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 string? dimensionVisibilityCondition = property.GetMetadataValueOrNull("DimensionVisibilityCondition");
                 newUIProperty.DimensionVisibilityCondition = dimensionVisibilityCondition ?? string.Empty;
             }
-            
-            
+
             if (requestedProperties.ConfiguredValueVisibilityCondition)
             {
                 string? configuredValueVisibilityCondition = property.GetMetadataValueOrNull("ConfiguredValueVisibilityCondition");
                 newUIProperty.ConfiguredValueVisibilityCondition = configuredValueVisibilityCondition ?? string.Empty;
             }
-            
+
             if (requestedProperties.IsReadOnlyCondition)
             {
                 string? isReadOnlyCondition = property.GetMetadataValueOrNull("IsReadOnlyCondition");
                 newUIProperty.IsReadOnlyCondition = isReadOnlyCondition ?? string.Empty;
             }
-            
+
             ((IEntityValueFromProvider)newUIProperty).ProviderState = new PropertyProviderState(cache, property.ContainingRule, propertiesContext, property.Name);
 
             return newUIProperty;
