@@ -2,25 +2,24 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace Microsoft.VisualStudio.Mocks;
+
+internal static class ILaunchProfileExtensionValueProviderMetadataFactory
 {
-    internal static class ILaunchProfileExtensionValueProviderMetadataFactory
+    public static ILaunchProfileExtensionValueProviderMetadata Create(string[]? propertyNames = null)
     {
-        public static ILaunchProfileExtensionValueProviderMetadata Create(string[]? propertyNames = null)
+        var metadataMock = new Mock<ILaunchProfileExtensionValueProviderMetadata>();
+
+        if (propertyNames is not null)
         {
-            var metadataMock = new Mock<ILaunchProfileExtensionValueProviderMetadata>();
-
-            if (propertyNames is not null)
-            {
-                metadataMock.Setup(t => t.PropertyNames).Returns(propertyNames);
-            }
-
-            return metadataMock.Object;
+            metadataMock.Setup(t => t.PropertyNames).Returns(propertyNames);
         }
 
-        public static ILaunchProfileExtensionValueProviderMetadata Create(string propertyName)
-        {
-            return Create(new[] { propertyName });
-        }
+        return metadataMock.Object;
+    }
+
+    public static ILaunchProfileExtensionValueProviderMetadata Create(string propertyName)
+    {
+        return Create(new[] { propertyName });
     }
 }

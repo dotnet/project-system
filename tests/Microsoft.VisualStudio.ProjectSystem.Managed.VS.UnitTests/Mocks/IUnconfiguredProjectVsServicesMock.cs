@@ -2,40 +2,39 @@
 
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+internal class IUnconfiguredProjectVsServicesMock : AbstractMock<IUnconfiguredProjectVsServices>
 {
-    internal class IUnconfiguredProjectVsServicesMock : AbstractMock<IUnconfiguredProjectVsServices>
+    public IUnconfiguredProjectVsServicesMock ImplementVsHierarchy(IVsHierarchy? hierarchy)
     {
-        public IUnconfiguredProjectVsServicesMock ImplementVsHierarchy(IVsHierarchy? hierarchy)
-        {
-            SetupGet<IVsHierarchy?>(m => m.VsHierarchy)
-                .Returns(hierarchy);
+        SetupGet<IVsHierarchy?>(m => m.VsHierarchy)
+            .Returns(hierarchy);
 
-            return this;
-        }
+        return this;
+    }
 
-        public IUnconfiguredProjectVsServicesMock ImplementVsProject(IVsProject4 project)
-        {
-            SetupGet(m => m.VsProject)
-                .Returns(project);
+    public IUnconfiguredProjectVsServicesMock ImplementVsProject(IVsProject4 project)
+    {
+        SetupGet(m => m.VsProject)
+            .Returns(project);
 
-            return this;
-        }
+        return this;
+    }
 
-        public IUnconfiguredProjectVsServicesMock ImplementThreadingService(IProjectThreadingService threadingService)
-        {
-            SetupGet(m => m.ThreadingService)
-                .Returns(threadingService);
+    public IUnconfiguredProjectVsServicesMock ImplementThreadingService(IProjectThreadingService threadingService)
+    {
+        SetupGet(m => m.ThreadingService)
+            .Returns(threadingService);
 
-            return this;
-        }
+        return this;
+    }
 
-        public IUnconfiguredProjectVsServicesMock ImplementActiveConfiguredProjectProperties(ProjectProperties? projectProperties)
-        {
-            SetupGet<ProjectProperties?>(m => m.ActiveConfiguredProjectProperties)
-                .Returns(projectProperties);
+    public IUnconfiguredProjectVsServicesMock ImplementActiveConfiguredProjectProperties(ProjectProperties? projectProperties)
+    {
+        SetupGet<ProjectProperties?>(m => m.ActiveConfiguredProjectProperties)
+            .Returns(projectProperties);
 
-            return this;
-        }
+        return this;
     }
 }

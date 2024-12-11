@@ -3,36 +3,35 @@
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks;
+
+/// <summary>
+///     Responsible for producing valid values for the SdkSupportedTargetPlatformIdentifier property from evaluation.
+/// </summary>
+[ExportDynamicEnumValuesProvider("SdkSupportedTargetPlatformIdentifierEnumProvider")]
+[AppliesTo(ProjectCapability.DotNet)]
+internal class SdkSupportedTargetPlatformIdentifierEnumProvider : SingleRuleSupportedValuesProvider
 {
-    /// <summary>
-    ///     Responsible for producing valid values for the SdkSupportedTargetPlatformIdentifier property from evaluation.
-    /// </summary>
-    [ExportDynamicEnumValuesProvider("SdkSupportedTargetPlatformIdentifierEnumProvider")]
-    [AppliesTo(ProjectCapability.DotNet)]
-    internal class SdkSupportedTargetPlatformIdentifierEnumProvider : SingleRuleSupportedValuesProvider
+    [ImportingConstructor]
+    public SdkSupportedTargetPlatformIdentifierEnumProvider(
+        ConfiguredProject project,
+        IProjectSubscriptionService subscriptionService)
+        : base(project, subscriptionService, ruleName: SdkSupportedTargetPlatformIdentifier.SchemaName, useNoneValue: true) { }
+
+    protected override IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)
     {
-        [ImportingConstructor]
-        public SdkSupportedTargetPlatformIdentifierEnumProvider(
-            ConfiguredProject project,
-            IProjectSubscriptionService subscriptionService)
-            : base(project, subscriptionService, ruleName: SdkSupportedTargetPlatformIdentifier.SchemaName, useNoneValue: true) { }
-
-        protected override IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)
+        return new PageEnumValue(new EnumValue()
         {
-            return new PageEnumValue(new EnumValue()
-            {
-                // Example: <SdkSupportedTargetPlatformIdentifier Include="windows" DisplayName="Windows"/>
-                //          <SdkSupportedTargetPlatformIdentifier Include="ios" DisplayName="iOS"/>
+            // Example: <SdkSupportedTargetPlatformIdentifier Include="windows" DisplayName="Windows"/>
+            //          <SdkSupportedTargetPlatformIdentifier Include="ios" DisplayName="iOS"/>
 
-                Name = item.Key,
-                DisplayName = item.Value[SdkSupportedTargetPlatformIdentifier.DisplayNameProperty]
-            });
-        }
+            Name = item.Key,
+            DisplayName = item.Value[SdkSupportedTargetPlatformIdentifier.DisplayNameProperty]
+        });
+    }
 
-        protected override int SortValues(IEnumValue a, IEnumValue b)
-        {
-            return StringComparer.OrdinalIgnoreCase.Compare(a.DisplayName, b.DisplayName);
-        }
+    protected override int SortValues(IEnumValue a, IEnumValue b)
+    {
+        return StringComparer.OrdinalIgnoreCase.Compare(a.DisplayName, b.DisplayName);
     }
 }

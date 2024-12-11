@@ -3,59 +3,58 @@
 using System.Reflection;
 using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.References
+namespace Microsoft.VisualStudio.ProjectSystem.VS.References;
+
+internal class AssemblyReferenceHandler : AbstractReferenceHandler
 {
-    internal class AssemblyReferenceHandler : AbstractReferenceHandler
+    internal AssemblyReferenceHandler()
+        : base(ProjectSystemReferenceType.Assembly)
+    { }
+
+    protected override Task RemoveReferenceAsync(ConfiguredProjectServices services,
+        string itemSpecification)
     {
-        internal AssemblyReferenceHandler()
-            : base(ProjectSystemReferenceType.Assembly)
-        { }
+        Assumes.Present(services.AssemblyReferences);
 
-        protected override Task RemoveReferenceAsync(ConfiguredProjectServices services,
-            string itemSpecification)
+        AssemblyName? assemblyName = null;
+        string? assemblyPath = null;
+
+        if (Path.IsPathRooted(itemSpecification))
         {
-            Assumes.Present(services.AssemblyReferences);
-
-            AssemblyName? assemblyName = null;
-            string? assemblyPath = null;
-
-            if (Path.IsPathRooted(itemSpecification))
-            {
-                assemblyPath = itemSpecification;
-            }
-            else
-            {
-                assemblyName = new AssemblyName(itemSpecification);
-            }
-
-            return services.AssemblyReferences.RemoveAsync(assemblyName, assemblyPath);
+            assemblyPath = itemSpecification;
+        }
+        else
+        {
+            assemblyName = new AssemblyName(itemSpecification);
         }
 
-        protected override Task AddReferenceAsync(ConfiguredProjectServices services, string itemSpecification)
+        return services.AssemblyReferences.RemoveAsync(assemblyName, assemblyPath);
+    }
+
+    protected override Task AddReferenceAsync(ConfiguredProjectServices services, string itemSpecification)
+    {
+        Assumes.Present(services.AssemblyReferences);
+
+        AssemblyName? assemblyName = null;
+        string? assemblyPath = null;
+
+        if (Path.IsPathRooted(itemSpecification))
         {
-            Assumes.Present(services.AssemblyReferences);
-
-            AssemblyName? assemblyName = null;
-            string? assemblyPath = null;
-
-            if (Path.IsPathRooted(itemSpecification))
-            {
-                assemblyPath = itemSpecification;
-            }
-            else
-            {
-                assemblyName = new AssemblyName(itemSpecification);
-            }
-
-            // todo: get path from the Remove Command
-            return services.AssemblyReferences.AddAsync(assemblyName, assemblyPath);
+            assemblyPath = itemSpecification;
+        }
+        else
+        {
+            assemblyName = new AssemblyName(itemSpecification);
         }
 
-        protected override async Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProjectServices services)
-        {
-            Assumes.Present(services.AssemblyReferences);
+        // todo: get path from the Remove Command
+        return services.AssemblyReferences.AddAsync(assemblyName, assemblyPath);
+    }
 
-            return (await services.AssemblyReferences.GetUnresolvedReferencesAsync()).Cast<IProjectItem>();
-        }
+    protected override async Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProjectServices services)
+    {
+        Assumes.Present(services.AssemblyReferences);
+
+        return (await services.AssemblyReferences.GetUnresolvedReferencesAsync()).Cast<IProjectItem>();
     }
 }

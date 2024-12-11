@@ -3,21 +3,20 @@
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+internal static class IHotReloadDiagnosticOutputServiceFactory
 {
-    internal static class IHotReloadDiagnosticOutputServiceFactory
+    public static IHotReloadDiagnosticOutputService Create(Action? writeLineCallback = null)
     {
-        public static IHotReloadDiagnosticOutputService Create(Action? writeLineCallback = null)
+        var mock = new Mock<IHotReloadDiagnosticOutputService>();
+
+        if (writeLineCallback is not null)
         {
-            var mock = new Mock<IHotReloadDiagnosticOutputService>();
-
-            if (writeLineCallback is not null)
-            {
-                mock.Setup(service => service.WriteLine(It.IsAny<HotReloadLogMessage>(), CancellationToken.None))
-                    .Callback(writeLineCallback);
-            }
-
-            return mock.Object;
+            mock.Setup(service => service.WriteLine(It.IsAny<HotReloadLogMessage>(), CancellationToken.None))
+                .Callback(writeLineCallback);
         }
+
+        return mock.Object;
     }
 }

@@ -2,69 +2,68 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem
-{
-    internal static class IProjectChangeDescriptionFactory
-    {
-        public static IProjectChangeDescription Create()
-        {
-            return FromJson(
-                """
-                {
-                    "Difference": {
-                        "AnyChanges": false,
-                        "AddedItems": [],
-                        "ChangedItems": [],
-                        "ChangedProperties": [],
-                        "RemovedItems": [],
-                        "RenamedItems": {}
-                    },
-                    "Before": {
-                        "RuleName": "SomeRule",
-                        "EvaluationSucceeded": true,
-                        "Properties" : {},
-                        "Items" : {}
-                    },
-                    "After": {
-                        "RuleName": "SomeRule",
-                        "EvaluationSucceeded": true,
-                        "Properties" : {},
-                        "Items" : {}
-                    }
-                }
-                """);
-        }
+namespace Microsoft.VisualStudio.ProjectSystem;
 
-        public static IProjectChangeDescription FromJson(string jsonString)
-        {
-            var model = new IProjectChangeDescriptionModel();
-            return model.FromJson(jsonString);
-        }
+internal static class IProjectChangeDescriptionFactory
+{
+    public static IProjectChangeDescription Create()
+    {
+        return FromJson(
+            """
+            {
+                "Difference": {
+                    "AnyChanges": false,
+                    "AddedItems": [],
+                    "ChangedItems": [],
+                    "ChangedProperties": [],
+                    "RemovedItems": [],
+                    "RenamedItems": {}
+                },
+                "Before": {
+                    "RuleName": "SomeRule",
+                    "EvaluationSucceeded": true,
+                    "Properties" : {},
+                    "Items" : {}
+                },
+                "After": {
+                    "RuleName": "SomeRule",
+                    "EvaluationSucceeded": true,
+                    "Properties" : {},
+                    "Items" : {}
+                }
+            }
+            """);
     }
 
-    internal class IProjectChangeDescriptionModel : JsonModel<IProjectChangeDescription>
+    public static IProjectChangeDescription FromJson(string jsonString)
     {
-        public IProjectRuleSnapshotModel After { get; set; } = new IProjectRuleSnapshotModel();
-        public IProjectRuleSnapshotModel Before { get; set; } = new IProjectRuleSnapshotModel();
-        public IProjectChangeDiffModel Difference { get; set; } = new IProjectChangeDiffModel();
+        var model = new IProjectChangeDescriptionModel();
+        return model.FromJson(jsonString);
+    }
+}
 
-        public override IProjectChangeDescription ToActualModel()
+internal class IProjectChangeDescriptionModel : JsonModel<IProjectChangeDescription>
+{
+    public IProjectRuleSnapshotModel After { get; set; } = new IProjectRuleSnapshotModel();
+    public IProjectRuleSnapshotModel Before { get; set; } = new IProjectRuleSnapshotModel();
+    public IProjectChangeDiffModel Difference { get; set; } = new IProjectChangeDiffModel();
+
+    public override IProjectChangeDescription ToActualModel()
+    {
+        return new ActualModel(After.ToActualModel(), Before.ToActualModel(), Difference);
+    }
+
+    private sealed class ActualModel : IProjectChangeDescription
+    {
+        public IProjectRuleSnapshot After { get; }
+        public IProjectRuleSnapshot Before { get; }
+        public IProjectChangeDiff Difference { get; }
+
+        public ActualModel(IProjectRuleSnapshot after, IProjectRuleSnapshot before, IProjectChangeDiff difference)
         {
-            return new ActualModel(After.ToActualModel(), Before.ToActualModel(), Difference);
-        }
-
-        private sealed class ActualModel : IProjectChangeDescription
-        {
-            public IProjectRuleSnapshot After { get; }
-            public IProjectRuleSnapshot Before { get; }
-            public IProjectChangeDiff Difference { get; }
-
-            public ActualModel(IProjectRuleSnapshot after, IProjectRuleSnapshot before, IProjectChangeDiff difference)
-            {
-                After = after;
-                Before = before;
-                Difference = difference;
-            }
+            After = after;
+            Before = before;
+            Difference = difference;
         }
     }
 }

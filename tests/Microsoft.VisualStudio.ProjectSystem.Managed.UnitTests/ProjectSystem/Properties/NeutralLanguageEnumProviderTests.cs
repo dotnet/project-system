@@ -2,37 +2,36 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties.Package;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.Properties;
+
+public class NeutralLanguageEnumProviderTests
 {
-    public class NeutralLanguageEnumProviderTests
+    [Fact]
+    public async Task GetProviderAsync_ReturnsNonNullGenerator()
     {
-        [Fact]
-        public async Task GetProviderAsync_ReturnsNonNullGenerator()
-        {
-            var provider = new NeutralLanguageEnumProvider();
-            var generator = await provider.GetProviderAsync(options: null);
+        var provider = new NeutralLanguageEnumProvider();
+        var generator = await provider.GetProviderAsync(options: null);
 
-            Assert.NotNull(generator);
-        }
+        Assert.NotNull(generator);
+    }
 
-        [Fact]
-        public async Task GetListedValuesAsync_ReturnsSpecialNoneValueAsFirstItem()
-        {
-            var provider = new NeutralLanguageEnumProvider();
-            var generator = await provider.GetProviderAsync(options: null);
-            var values = await generator.GetListedValuesAsync();
-            var firstValue = values.First();
+    [Fact]
+    public async Task GetListedValuesAsync_ReturnsSpecialNoneValueAsFirstItem()
+    {
+        var provider = new NeutralLanguageEnumProvider();
+        var generator = await provider.GetProviderAsync(options: null);
+        var values = await generator.GetListedValuesAsync();
+        var firstValue = values.First();
 
-            Assert.Equal(expected: NeutralLanguageValueProvider.NoneValue, actual: firstValue.Name);
-        }
+        Assert.Equal(expected: NeutralLanguageValueProvider.NoneValue, actual: firstValue.Name);
+    }
 
-        [Fact]
-        public async Task TryCreateEnumValueAsync_ReturnsNull()
-        {
-            var provider = new NeutralLanguageEnumProvider();
-            var generator = await provider.GetProviderAsync(options: null);
+    [Fact]
+    public async Task TryCreateEnumValueAsync_ReturnsNull()
+    {
+        var provider = new NeutralLanguageEnumProvider();
+        var generator = await provider.GetProviderAsync(options: null);
 
-            Assert.Null(await generator.TryCreateEnumValueAsync("abc-abc"));
-        }
+        Assert.Null(await generator.TryCreateEnumValueAsync("abc-abc"));
     }
 }

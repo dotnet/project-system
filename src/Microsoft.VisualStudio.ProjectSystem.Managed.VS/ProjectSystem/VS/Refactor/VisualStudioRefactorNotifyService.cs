@@ -4,120 +4,119 @@ using EnvDTE;
 using Microsoft.VisualStudio.ProjectSystem.Refactor;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor;
+
+[Export(typeof(IRefactorNotifyService))]
+[AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+internal class VisualStudioRefactorNotifyService : IRefactorNotifyService
 {
-    [Export(typeof(IRefactorNotifyService))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    internal class VisualStudioRefactorNotifyService : IRefactorNotifyService
+    private readonly IVsUIService<DTE> _dte;
+    private readonly IVsUIService<IVsSolution> _solution;
+
+    [ImportingConstructor]
+    public VisualStudioRefactorNotifyService(IVsUIService<SDTE, DTE> dte, IVsUIService<SVsSolution, IVsSolution> solution)
     {
-        private readonly IVsUIService<DTE> _dte;
-        private readonly IVsUIService<IVsSolution> _solution;
+        _dte = dte;
+        _solution = solution;
+    }
 
-        [ImportingConstructor]
-        public VisualStudioRefactorNotifyService(IVsUIService<SDTE, DTE> dte, IVsUIService<SVsSolution, IVsSolution> solution)
+    public void OnBeforeGlobalSymbolRenamed(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
+    {
+        IVsHierarchy? projectHierarchy = GetProjectHierarchy(projectPath);
+        if (projectHierarchy is null)
         {
-            _dte = dte;
-            _solution = solution;
+            return;
         }
 
-        public void OnBeforeGlobalSymbolRenamed(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
+        if (projectHierarchy is not IVsHierarchyRefactorNotify refactorNotify)
         {
-            IVsHierarchy? projectHierarchy = GetProjectHierarchy(projectPath);
-            if (projectHierarchy is null)
-            {
-                return;
-            }
-
-            if (projectHierarchy is not IVsHierarchyRefactorNotify refactorNotify)
-            {
-                return;
-            }
-
-            uint[] ids = GetIdsForFiles(projectHierarchy, filePaths).ToArray();
-
-            refactorNotify.OnBeforeGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
-                                                       rgItemsAffected: ids,
-                                                       cRQNames: 1,
-                                                       rglpszRQName: new[] { rqName },
-                                                       lpszNewName: newName,
-                                                       promptContinueOnFail: 1);
+            return;
         }
 
-        public void OnAfterGlobalSymbolRenamed(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
+        uint[] ids = GetIdsForFiles(projectHierarchy, filePaths).ToArray();
+
+        refactorNotify.OnBeforeGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
+                                                   rgItemsAffected: ids,
+                                                   cRQNames: 1,
+                                                   rglpszRQName: new[] { rqName },
+                                                   lpszNewName: newName,
+                                                   promptContinueOnFail: 1);
+    }
+
+    public void OnAfterGlobalSymbolRenamed(string projectPath, IEnumerable<string> filePaths, string rqName, string newName)
+    {
+        IVsHierarchy? projectHierarchy = GetProjectHierarchy(projectPath);
+        if (projectHierarchy is null)
         {
-            IVsHierarchy? projectHierarchy = GetProjectHierarchy(projectPath);
-            if (projectHierarchy is null)
-            {
-                return;
-            }
-
-            if (projectHierarchy is not IVsHierarchyRefactorNotify refactorNotify)
-            {
-                return;
-            }
-
-            uint[] ids = GetIdsForFiles(projectHierarchy, filePaths).ToArray();
-
-            refactorNotify.OnGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
-                                                 rgItemsAffected: ids,
-                                                 cRQNames: 1,
-                                                 rglpszRQName: new[] { rqName },
-                                                 lpszNewName: newName);
+            return;
         }
 
-        private IVsHierarchy? GetProjectHierarchy(string projectPath)
+        if (projectHierarchy is not IVsHierarchyRefactorNotify refactorNotify)
         {
-            Project? project = TryGetProjectFromPath(projectPath);
-            if (project is null)
-            {
-                return null;
-            }
-
-            return TryGetIVsHierarchy(project);
+            return;
         }
 
-        private Project? TryGetProjectFromPath(string projectPath)
+        uint[] ids = GetIdsForFiles(projectHierarchy, filePaths).ToArray();
+
+        refactorNotify.OnGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
+                                             rgItemsAffected: ids,
+                                             cRQNames: 1,
+                                             rglpszRQName: new[] { rqName },
+                                             lpszNewName: newName);
+    }
+
+    private IVsHierarchy? GetProjectHierarchy(string projectPath)
+    {
+        Project? project = TryGetProjectFromPath(projectPath);
+        if (project is null)
         {
-            foreach (Project project in _dte.Value.Solution.Projects.OfType<Project>())
-            {
-                string? fullName;
-                try
-                {
-                    fullName = project.FullName;
-                }
-                catch (Exception)
-                {
-                    // DTE COM calls can fail for any number of valid reasons.
-                    continue;
-                }
-
-                if (StringComparers.Paths.Equals(fullName, projectPath))
-                {
-                    return project;
-                }
-            }
-
             return null;
         }
 
-        private IVsHierarchy? TryGetIVsHierarchy(Project project)
+        return TryGetIVsHierarchy(project);
+    }
+
+    private Project? TryGetProjectFromPath(string projectPath)
+    {
+        foreach (Project project in _dte.Value.Solution.Projects.OfType<Project>())
         {
-            if (_solution.Value.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
+            string? fullName;
+            try
             {
-                return projectHierarchy;
+                fullName = project.FullName;
+            }
+            catch (Exception)
+            {
+                // DTE COM calls can fail for any number of valid reasons.
+                continue;
             }
 
-            return null;
+            if (StringComparers.Paths.Equals(fullName, projectPath))
+            {
+                return project;
+            }
         }
 
-        private static IEnumerable<uint> GetIdsForFiles(IVsHierarchy projectHierarchy, IEnumerable<string> filePaths)
+        return null;
+    }
+
+    private IVsHierarchy? TryGetIVsHierarchy(Project project)
+    {
+        if (_solution.Value.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
         {
-            foreach (string filePath in filePaths)
+            return projectHierarchy;
+        }
+
+        return null;
+    }
+
+    private static IEnumerable<uint> GetIdsForFiles(IVsHierarchy projectHierarchy, IEnumerable<string> filePaths)
+    {
+        foreach (string filePath in filePaths)
+        {
+            if (projectHierarchy.ParseCanonicalName(filePath, out uint id) == HResult.OK)
             {
-                if (projectHierarchy.ParseCanonicalName(filePath, out uint id) == HResult.OK)
-                {
-                    yield return id;
-                }
+                yield return id;
             }
         }
     }

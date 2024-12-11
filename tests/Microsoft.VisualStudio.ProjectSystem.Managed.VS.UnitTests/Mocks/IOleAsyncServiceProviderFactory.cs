@@ -2,18 +2,17 @@
 
 using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.COMAsyncServiceProvider.IAsyncServiceProvider;
 
-namespace Microsoft.VisualStudio.Shell.Interop
+namespace Microsoft.VisualStudio.Shell.Interop;
+
+internal static class IOleAsyncServiceProviderFactory
 {
-    internal static class IOleAsyncServiceProviderFactory
+    public static IOleAsyncServiceProvider ImplementQueryServiceAsync(object? service, Guid clsid)
     {
-        public static IOleAsyncServiceProvider ImplementQueryServiceAsync(object? service, Guid clsid)
-        {
-            var mock = new Mock<IOleAsyncServiceProvider>();
+        var mock = new Mock<IOleAsyncServiceProvider>();
 
-            mock.Setup(p => p.QueryServiceAsync(ref clsid))
-              .Returns(IVsTaskFactory.FromResult(service));
+        mock.Setup(p => p.QueryServiceAsync(ref clsid))
+          .Returns(IVsTaskFactory.FromResult(service));
 
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }

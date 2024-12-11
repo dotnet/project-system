@@ -2,37 +2,36 @@
 
 using Microsoft.Build.Construction;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.CSharp
+namespace Microsoft.VisualStudio.ProjectSystem.VS.CSharp;
+
+public class CSharpProjectCompatibilityProviderTests
 {
-    public class CSharpProjectCompatibilityProviderTests
+    [Fact]
+    public async Task IsProjectCompatibleAsync_ReturnsTrue()
     {
-        [Fact]
-        public async Task IsProjectCompatibleAsync_ReturnsTrue()
-        {
-            var provider = CreateInstance();
+        var provider = CreateInstance();
 
-            var element = ProjectRootElement.Create();
+        var element = ProjectRootElement.Create();
 
-            var result = await provider.IsProjectCompatibleAsync(element);
+        var result = await provider.IsProjectCompatibleAsync(element);
 
-            Assert.True(result);
-        }
+        Assert.True(result);
+    }
 
-        [Fact]
-        public async Task IsProjectNeedBeUpgradedAsync_ReturnsFalse()
-        {
-            var provider = CreateInstance();
+    [Fact]
+    public async Task IsProjectNeedBeUpgradedAsync_ReturnsFalse()
+    {
+        var provider = CreateInstance();
 
-            var element = ProjectRootElement.Create();
+        var element = ProjectRootElement.Create();
 
-            var result = await provider.IsProjectNeedBeUpgradedAsync(element);
+        var result = await provider.IsProjectNeedBeUpgradedAsync(element);
 
-            Assert.False(result);
-        }
+        Assert.False(result);
+    }
 
-        private static CSharpProjectCompatibilityProvider CreateInstance()
-        {
-            return new CSharpProjectCompatibilityProvider();
-        }
+    private static CSharpProjectCompatibilityProvider CreateInstance()
+    {
+        return new CSharpProjectCompatibilityProvider();
     }
 }

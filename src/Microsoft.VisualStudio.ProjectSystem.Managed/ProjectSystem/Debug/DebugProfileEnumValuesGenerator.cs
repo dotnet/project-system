@@ -5,74 +5,73 @@ using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.Debug;
+
+/// <summary>
+/// Provides the IEnumValue's for the ActiveDebugProfile property. This is what is used to drive
+/// the debug target selection dropdown.
+/// </summary>
+internal class DebugProfileEnumValuesGenerator : IDynamicEnumValuesGenerator
 {
-    /// <summary>
-    /// Provides the IEnumValue's for the ActiveDebugProfile property. This is what is used to drive
-    /// the debug target selection dropdown.
-    /// </summary>
-    internal class DebugProfileEnumValuesGenerator : IDynamicEnumValuesGenerator
+    private readonly AsyncLazy<ICollection<IEnumValue>> _listedValues;
+
+    internal DebugProfileEnumValuesGenerator(
+        ILaunchSettingsProvider profileProvider,
+        IProjectThreadingService threadingService)
     {
-        private readonly AsyncLazy<ICollection<IEnumValue>> _listedValues;
+        Requires.NotNull(profileProvider);
+        Requires.NotNull(threadingService);
 
-        internal DebugProfileEnumValuesGenerator(
-            ILaunchSettingsProvider profileProvider,
-            IProjectThreadingService threadingService)
-        {
-            Requires.NotNull(profileProvider);
-            Requires.NotNull(threadingService);
-
-            _listedValues = new AsyncLazy<ICollection<IEnumValue>>(
-                () =>
-                {
-                    ILaunchSettings? snapshot = profileProvider.CurrentSnapshot;
-
-                    ICollection<IEnumValue> values = snapshot is null
-                        ? Array.Empty<IEnumValue>()
-                        : GetEnumeratorEnumValues(snapshot);
-
-                    return Task.FromResult(values);
-                },
-                threadingService.JoinableTaskFactory);
-        }
-
-        public Task<ICollection<IEnumValue>> GetListedValuesAsync()
-        {
-            return _listedValues.GetValueAsync();
-        }
-
-        public bool AllowCustomValues
-        {
-            get { return false; }
-        }
-
-        public async Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
-        {
-            ICollection<IEnumValue> enumValues = await _listedValues.GetValueAsync();
-
-            return enumValues.FirstOrDefault(v => LaunchProfile.IsSameProfileName(v.Name, userSuppliedValue));
-        }
-
-        internal static ImmutableArray<IEnumValue> GetEnumeratorEnumValues(ILaunchSettings launchSettings)
-        {
-            ImmutableArray<IEnumValue>.Builder builder = ImmutableArray.CreateBuilder<IEnumValue>(initialCapacity: launchSettings.Profiles.Count);
-
-            builder.AddRange(launchSettings.Profiles.Select(ToEnumValue));
-
-            return builder.MoveToImmutable();
-
-            static IEnumValue ToEnumValue(ILaunchProfile profile)
+        _listedValues = new AsyncLazy<ICollection<IEnumValue>>(
+            () =>
             {
-                var enumValue = new EnumValue { Name = profile.Name, DisplayName = EscapeMnemonics(profile.Name) };
+                ILaunchSettings? snapshot = profileProvider.CurrentSnapshot;
 
-                return new PageEnumValue(enumValue);
-            }
-        }
+                ICollection<IEnumValue> values = snapshot is null
+                    ? Array.Empty<IEnumValue>()
+                    : GetEnumeratorEnumValues(snapshot);
 
-        [return: NotNullIfNotNull(nameof(text))]
-        private static string? EscapeMnemonics(string? text)
+                return Task.FromResult(values);
+            },
+            threadingService.JoinableTaskFactory);
+    }
+
+    public Task<ICollection<IEnumValue>> GetListedValuesAsync()
+    {
+        return _listedValues.GetValueAsync();
+    }
+
+    public bool AllowCustomValues
+    {
+        get { return false; }
+    }
+
+    public async Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
+    {
+        ICollection<IEnumValue> enumValues = await _listedValues.GetValueAsync();
+
+        return enumValues.FirstOrDefault(v => LaunchProfile.IsSameProfileName(v.Name, userSuppliedValue));
+    }
+
+    internal static ImmutableArray<IEnumValue> GetEnumeratorEnumValues(ILaunchSettings launchSettings)
+    {
+        ImmutableArray<IEnumValue>.Builder builder = ImmutableArray.CreateBuilder<IEnumValue>(initialCapacity: launchSettings.Profiles.Count);
+
+        builder.AddRange(launchSettings.Profiles.Select(ToEnumValue));
+
+        return builder.MoveToImmutable();
+
+        static IEnumValue ToEnumValue(ILaunchProfile profile)
         {
-            return text?.Replace("&", "&&");
+            var enumValue = new EnumValue { Name = profile.Name, DisplayName = EscapeMnemonics(profile.Name) };
+
+            return new PageEnumValue(enumValue);
         }
+    }
+
+    [return: NotNullIfNotNull(nameof(text))]
+    private static string? EscapeMnemonics(string? text)
+    {
+        return text?.Replace("&", "&&");
     }
 }

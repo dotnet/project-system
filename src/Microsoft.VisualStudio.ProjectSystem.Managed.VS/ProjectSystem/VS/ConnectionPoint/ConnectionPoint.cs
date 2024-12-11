@@ -3,66 +3,65 @@
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.OLE.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
+namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
+
+/// <summary>
+/// This implementation is a copy from CPS
+/// </summary>
+internal class ConnectionPoint<TSinkType> : IConnectionPoint
+        where TSinkType : class
 {
-    /// <summary>
-    /// This implementation is a copy from CPS
-    /// </summary>
-    internal class ConnectionPoint<TSinkType> : IConnectionPoint
-            where TSinkType : class
+    private readonly Dictionary<uint, TSinkType> _sinks = new();
+    private readonly ConnectionPointContainer _container;
+    private readonly IEventSource<TSinkType> _source;
+
+    private uint _nextCookie;
+
+    internal ConnectionPoint(ConnectionPointContainer container, IEventSource<TSinkType> source)
     {
-        private readonly Dictionary<uint, TSinkType> _sinks = new();
-        private readonly ConnectionPointContainer _container;
-        private readonly IEventSource<TSinkType> _source;
+        Requires.NotNull(container);
+        Requires.NotNull(source);
 
-        private uint _nextCookie;
+        _container = container;
+        _source = source;
+        _nextCookie = 1;
+    }
 
-        internal ConnectionPoint(ConnectionPointContainer container, IEventSource<TSinkType> source)
+    public void Advise(object pUnkSink, out uint pdwCookie)
+    {
+        if (pUnkSink is TSinkType sink)
         {
-            Requires.NotNull(container);
-            Requires.NotNull(source);
-
-            _container = container;
-            _source = source;
-            _nextCookie = 1;
+            _sinks.Add(_nextCookie, sink);
+            pdwCookie = _nextCookie;
+            _source.OnSinkAdded(sink);
+            _nextCookie++;
+            return;
         }
 
-        public void Advise(object pUnkSink, out uint pdwCookie)
-        {
-            if (pUnkSink is TSinkType sink)
-            {
-                _sinks.Add(_nextCookie, sink);
-                pdwCookie = _nextCookie;
-                _source.OnSinkAdded(sink);
-                _nextCookie++;
-                return;
-            }
+        Marshal.ThrowExceptionForHR(HResult.NoInterface);
+        pdwCookie = default;
+    }
 
-            Marshal.ThrowExceptionForHR(HResult.NoInterface);
-            pdwCookie = default;
-        }
+    public void EnumConnections(out IEnumConnections ppEnum)
+    {
+        throw new NotImplementedException();
+    }
 
-        public void EnumConnections(out IEnumConnections ppEnum)
-        {
-            throw new NotImplementedException();
-        }
+    public void GetConnectionInterface(out Guid pIID)
+    {
+        pIID = typeof(TSinkType).GUID;
+    }
 
-        public void GetConnectionInterface(out Guid pIID)
-        {
-            pIID = typeof(TSinkType).GUID;
-        }
+    public void GetConnectionPointContainer(out IConnectionPointContainer ppCPC)
+    {
+        ppCPC = _container;
+    }
 
-        public void GetConnectionPointContainer(out IConnectionPointContainer ppCPC)
-        {
-            ppCPC = _container;
-        }
-
-        public void Unadvise(uint dwCookie)
-        {
-            // This will throw if the cookie is not in the list.
-            TSinkType sink = _sinks[dwCookie];
-            _sinks.Remove(dwCookie);
-            _source.OnSinkRemoved(sink);
-        }
+    public void Unadvise(uint dwCookie)
+    {
+        // This will throw if the cookie is not in the list.
+        TSinkType sink = _sinks[dwCookie];
+        _sinks.Remove(dwCookie);
+        _source.OnSinkRemoved(sink);
     }
 }

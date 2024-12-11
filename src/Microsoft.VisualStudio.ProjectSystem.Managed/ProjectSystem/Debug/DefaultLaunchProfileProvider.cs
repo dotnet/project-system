@@ -2,26 +2,25 @@
 
 using ExportOrder = Microsoft.VisualStudio.ProjectSystem.OrderAttribute;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.Debug;
+
+[Export(typeof(IDefaultLaunchProfileProvider))]
+[AppliesTo(ProjectCapability.LaunchProfiles)]
+[ExportOrder(Order.Default)] 
+internal class DefaultLaunchProfileProvider : IDefaultLaunchProfileProvider
 {
-    [Export(typeof(IDefaultLaunchProfileProvider))]
-    [AppliesTo(ProjectCapability.LaunchProfiles)]
-    [ExportOrder(Order.Default)] 
-    internal class DefaultLaunchProfileProvider : IDefaultLaunchProfileProvider
+    private readonly UnconfiguredProject _project;
+
+    [ImportingConstructor]
+    public DefaultLaunchProfileProvider(UnconfiguredProject project)
     {
-        private readonly UnconfiguredProject _project;
+        _project = project;
+    }
 
-        [ImportingConstructor]
-        public DefaultLaunchProfileProvider(UnconfiguredProject project)
-        {
-            _project = project;
-        }
-
-        public ILaunchProfile? CreateDefaultProfile()
-        {
-            return new LaunchProfile(
-                name: Path.GetFileNameWithoutExtension(_project.FullPath),
-                commandName: LaunchSettingsProvider.RunProjectCommandName);
-        }
+    public ILaunchProfile? CreateDefaultProfile()
+    {
+        return new LaunchProfile(
+            name: Path.GetFileNameWithoutExtension(_project.FullPath),
+            commandName: LaunchSettingsProvider.RunProjectCommandName);
     }
 }

@@ -4,77 +4,76 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
 
-namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
+namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste;
+
+/// <summary>
+///     Packages dependency <see cref="IProjectTree"/> nodes as text for the "Copy Full Path" command.
+/// </summary>
+[Export(typeof(ICopyPackager))]
+[AppliesTo(ProjectCapability.DependenciesTree)]
+[Order(Order.Default)]
+internal class DependencyTextPackager : ICopyPackager
 {
-    /// <summary>
-    ///     Packages dependency <see cref="IProjectTree"/> nodes as text for the "Copy Full Path" command.
-    /// </summary>
-    [Export(typeof(ICopyPackager))]
-    [AppliesTo(ProjectCapability.DependenciesTree)]
-    [Order(Order.Default)]
-    internal class DependencyTextPackager : ICopyPackager
+    private static readonly ImmutableHashSet<int> s_formats = ImmutableHashSet.Create<int>(ClipboardFormat.CF_TEXT, ClipboardFormat.CF_UNICODETEXT);
+
+    private readonly UnconfiguredProject _project;
+
+    [ImportingConstructor]
+    public DependencyTextPackager(UnconfiguredProject project)
     {
-        private static readonly ImmutableHashSet<int> s_formats = ImmutableHashSet.Create<int>(ClipboardFormat.CF_TEXT, ClipboardFormat.CF_UNICODETEXT);
+        _project = project;
+    }
 
-        private readonly UnconfiguredProject _project;
+    public IImmutableSet<int> ClipboardDataFormats
+    {
+        get { return s_formats; }
+    }
 
-        [ImportingConstructor]
-        public DependencyTextPackager(UnconfiguredProject project)
+    public CopyPasteOperations GetAllowedOperations(IEnumerable<IProjectTree> selectedNodes, IProjectTreeProvider currentProvider)
+    {
+        return IsValidSetOfNodes(selectedNodes) ? CopyPasteOperations.Copy : CopyPasteOperations.None;
+    }
+
+    public async Task<IEnumerable<Tuple<int, IntPtr>>> GetPointerToDataAsync(IReadOnlyCollection<int> types, IEnumerable<IProjectTree> selectedNodes, IProjectTreeProvider currentProvider)
+    {
+        var paths = new StringBuilder();
+        var data = new List<Tuple<int, IntPtr>>();
+
+        foreach (IProjectTree node in selectedNodes)
         {
-            _project = project;
-        }
+            string? path = await DependencyServices.GetBrowsePathAsync(_project, node);
+            if (path is null)
+                continue;
 
-        public IImmutableSet<int> ClipboardDataFormats
-        {
-            get { return s_formats; }
-        }
+            // Note we leave trailing slashes to mimic what happens with normal folders
+            if (node.Flags.Contains(DependencyTreeFlags.SupportsFolderBrowse))
+                path = PathHelper.EnsureTrailingSlash(path);
 
-        public CopyPasteOperations GetAllowedOperations(IEnumerable<IProjectTree> selectedNodes, IProjectTreeProvider currentProvider)
-        {
-            return IsValidSetOfNodes(selectedNodes) ? CopyPasteOperations.Copy : CopyPasteOperations.None;
-        }
-
-        public async Task<IEnumerable<Tuple<int, IntPtr>>> GetPointerToDataAsync(IReadOnlyCollection<int> types, IEnumerable<IProjectTree> selectedNodes, IProjectTreeProvider currentProvider)
-        {
-            var paths = new StringBuilder();
-            var data = new List<Tuple<int, IntPtr>>();
-
-            foreach (IProjectTree node in selectedNodes)
+            if (paths.Length > 0)
             {
-                string? path = await DependencyServices.GetBrowsePathAsync(_project, node);
-                if (path is null)
-                    continue;
-
-                // Note we leave trailing slashes to mimic what happens with normal folders
-                if (node.Flags.Contains(DependencyTreeFlags.SupportsFolderBrowse))
-                    path = PathHelper.EnsureTrailingSlash(path);
-
-                if (paths.Length > 0)
-                {
-                    paths.AppendLine();
-                }
-
-                paths.Append(path);
+                paths.AppendLine();
             }
 
-            if (types.Contains(ClipboardFormat.CF_TEXT))
-            {
-                data.Add(new Tuple<int, IntPtr>(ClipboardFormat.CF_TEXT, Marshal.StringToHGlobalAnsi(paths.ToString())));
-            }
-
-            if (types.Contains(ClipboardFormat.CF_UNICODETEXT))
-            {
-                data.Add(new Tuple<int, IntPtr>(ClipboardFormat.CF_UNICODETEXT, Marshal.StringToHGlobalUni(paths.ToString())));
-            }
-
-            return data;
+            paths.Append(path);
         }
 
-        private static bool IsValidSetOfNodes(IEnumerable<IProjectTree> treeNodes)
+        if (types.Contains(ClipboardFormat.CF_TEXT))
         {
-            Requires.NotNull(treeNodes);
-
-            return treeNodes.All(node => node.Flags.Contains(DependencyTreeFlags.Dependency | DependencyTreeFlags.SupportsBrowse));
+            data.Add(new Tuple<int, IntPtr>(ClipboardFormat.CF_TEXT, Marshal.StringToHGlobalAnsi(paths.ToString())));
         }
+
+        if (types.Contains(ClipboardFormat.CF_UNICODETEXT))
+        {
+            data.Add(new Tuple<int, IntPtr>(ClipboardFormat.CF_UNICODETEXT, Marshal.StringToHGlobalUni(paths.ToString())));
+        }
+
+        return data;
+    }
+
+    private static bool IsValidSetOfNodes(IEnumerable<IProjectTree> treeNodes)
+    {
+        Requires.NotNull(treeNodes);
+
+        return treeNodes.All(node => node.Flags.Contains(DependencyTreeFlags.Dependency | DependencyTreeFlags.SupportsBrowse));
     }
 }

@@ -2,58 +2,57 @@
 
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Input
+namespace Microsoft.VisualStudio.ProjectSystem.Input;
+
+/// <summary>
+///     Provides the base <see langword="abstract"/> class for all commands that operate on <see cref="IProjectTree"/> nodes.
+/// </summary>
+internal abstract class AbstractProjectCommand : IAsyncCommandGroupHandler
 {
-    /// <summary>
-    ///     Provides the base <see langword="abstract"/> class for all commands that operate on <see cref="IProjectTree"/> nodes.
-    /// </summary>
-    internal abstract class AbstractProjectCommand : IAsyncCommandGroupHandler
+    private readonly Lazy<long[]> _commandIds;
+
+    protected AbstractProjectCommand()
     {
-        private readonly Lazy<long[]> _commandIds;
+        _commandIds = new Lazy<long[]>(() => GetCommandIds(this));
+    }
 
-        protected AbstractProjectCommand()
+    public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
+    {
+        Requires.NotNull(nodes);
+
+        foreach (long otherCommandId in _commandIds.Value)
         {
-            _commandIds = new Lazy<long[]>(() => GetCommandIds(this));
+            if (otherCommandId == commandId)
+                return GetCommandStatusAsync(nodes, focused, commandText, progressiveStatus);
         }
 
-        public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
+        return GetCommandStatusResult.Unhandled;
+    }
+
+    public Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+    {
+        Requires.NotNull(nodes);
+
+        foreach (long otherCommandId in _commandIds.Value)
         {
-            Requires.NotNull(nodes);
-
-            foreach (long otherCommandId in _commandIds.Value)
-            {
-                if (otherCommandId == commandId)
-                    return GetCommandStatusAsync(nodes, focused, commandText, progressiveStatus);
-            }
-
-            return GetCommandStatusResult.Unhandled;
+            if (otherCommandId == commandId)
+                return TryHandleCommandAsync(nodes, focused, commandExecuteOptions, variantArgIn, variantArgOut);
         }
 
-        public Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
-        {
-            Requires.NotNull(nodes);
+        return TaskResult.False;
+    }
 
-            foreach (long otherCommandId in _commandIds.Value)
-            {
-                if (otherCommandId == commandId)
-                    return TryHandleCommandAsync(nodes, focused, commandExecuteOptions, variantArgIn, variantArgOut);
-            }
+    protected abstract Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, bool focused, string? commandText, CommandStatus progressiveStatus);
 
-            return TaskResult.False;
-        }
+    protected abstract Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> nodes, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut);
 
-        protected abstract Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, bool focused, string? commandText, CommandStatus progressiveStatus);
+    private static long[] GetCommandIds(AbstractProjectCommand command)
+    {
+        var attribute = (ProjectCommandAttribute?)Attribute.GetCustomAttribute(command.GetType(), typeof(ProjectCommandAttribute));
 
-        protected abstract Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> nodes, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut);
+        // All ProjectCommand's should be marked with [ProjectCommandAttribute]
+        Assumes.NotNull(attribute);
 
-        private static long[] GetCommandIds(AbstractProjectCommand command)
-        {
-            var attribute = (ProjectCommandAttribute?)Attribute.GetCustomAttribute(command.GetType(), typeof(ProjectCommandAttribute));
-
-            // All ProjectCommand's should be marked with [ProjectCommandAttribute]
-            Assumes.NotNull(attribute);
-
-            return attribute.CommandIds;
-        }
+        return attribute.CommandIds;
     }
 }

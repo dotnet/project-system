@@ -2,35 +2,34 @@
 
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Input
+namespace Microsoft.VisualStudio.ProjectSystem.Input;
+
+/// <summary>
+///     Provides the base <see langword="abstract"/> class for all commands that handle a single <see cref="IProjectTree"/> node.
+/// </summary>
+internal abstract class AbstractSingleNodeProjectCommand : AbstractProjectCommand
 {
-    /// <summary>
-    ///     Provides the base <see langword="abstract"/> class for all commands that handle a single <see cref="IProjectTree"/> node.
-    /// </summary>
-    internal abstract class AbstractSingleNodeProjectCommand : AbstractProjectCommand
+    protected sealed override Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, bool focused, string? commandText, CommandStatus progressiveStatus)
     {
-        protected sealed override Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, bool focused, string? commandText, CommandStatus progressiveStatus)
+        if (nodes.Count == 1)
         {
-            if (nodes.Count == 1)
-            {
-                return GetCommandStatusAsync(nodes.First(), focused, commandText, progressiveStatus);
-            }
-
-            return GetCommandStatusResult.Unhandled;
+            return GetCommandStatusAsync(nodes.First(), focused, commandText, progressiveStatus);
         }
 
-        protected sealed override Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> nodes, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
-        {
-            if (nodes.Count == 1)
-            {
-                return TryHandleCommandAsync(nodes.First(), focused, commandExecuteOptions, variantArgIn, variantArgOut);
-            }
-
-            return TaskResult.False;
-        }
-
-        protected abstract Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus);
-
-        protected abstract Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut);
+        return GetCommandStatusResult.Unhandled;
     }
+
+    protected sealed override Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> nodes, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+    {
+        if (nodes.Count == 1)
+        {
+            return TryHandleCommandAsync(nodes.First(), focused, commandExecuteOptions, variantArgIn, variantArgOut);
+        }
+
+        return TaskResult.False;
+    }
+
+    protected abstract Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus);
+
+    protected abstract Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut);
 }

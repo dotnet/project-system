@@ -3,18 +3,17 @@
 using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.References
-{
-    internal class NullCommand : IProjectSystemUpdateReferenceOperation
-    {
-        public Task<bool> ApplyAsync(CancellationToken cancellationToken)
-        {
-            return TaskResult.False;
-        }
+namespace Microsoft.VisualStudio.ProjectSystem.VS.References;
 
-        public Task<bool> RevertAsync(CancellationToken cancellationToken)
-        {
-            return TaskResult.False;
-        }
+internal class NullCommand : IProjectSystemUpdateReferenceOperation
+{
+    public Task<bool> ApplyAsync(CancellationToken cancellationToken)
+    {
+        return TaskResult.False;
+    }
+
+    public Task<bool> RevertAsync(CancellationToken cancellationToken)
+    {
+        return TaskResult.False;
     }
 }

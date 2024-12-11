@@ -3,26 +3,25 @@
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// Handles retrieving a set of <see cref="IPropertyPageSnapshot"/>s from an <see cref="ProjectSystem.Query.IProjectSnapshot"/>.
+/// </summary>
+internal class PropertyPageFromProjectDataProducer : QueryDataFromProviderStateProducerBase<UnconfiguredProject>
 {
-    /// <summary>
-    /// Handles retrieving a set of <see cref="IPropertyPageSnapshot"/>s from an <see cref="ProjectSystem.Query.IProjectSnapshot"/>.
-    /// </summary>
-    internal class PropertyPageFromProjectDataProducer : QueryDataFromProviderStateProducerBase<UnconfiguredProject>
+    private readonly IPropertyPagePropertiesAvailableStatus _properties;
+
+    public PropertyPageFromProjectDataProducer(IPropertyPagePropertiesAvailableStatus properties)
     {
-        private readonly IPropertyPagePropertiesAvailableStatus _properties;
+        _properties = properties;
+    }
 
-        public PropertyPageFromProjectDataProducer(IPropertyPagePropertiesAvailableStatus properties)
-        {
-            _properties = properties;
-        }
+    protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, UnconfiguredProject providerState)
+    {
+        providerState.GetQueryDataVersion(out string versionKey, out long versionNumber);
+        queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, UnconfiguredProject providerState)
-        {
-            providerState.GetQueryDataVersion(out string versionKey, out long versionNumber);
-            queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
-
-            return PropertyPageDataProducer.CreatePropertyPageValuesAsync(queryExecutionContext, parent, providerState, _properties);
-        }
+        return PropertyPageDataProducer.CreatePropertyPageValuesAsync(queryExecutionContext, parent, providerState, _properties);
     }
 }

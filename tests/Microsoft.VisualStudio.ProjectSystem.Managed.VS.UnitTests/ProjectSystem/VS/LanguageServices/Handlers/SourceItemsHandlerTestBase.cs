@@ -2,15 +2,14 @@
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
-{
-    public abstract class SourceItemsHandlerTestBase
-    {
-        internal static void Handle(IWorkspaceProjectContext context, ISourceItemsHandler handler, IImmutableDictionary<string, IProjectChangeDescription> projectChanges)
-        {
-            handler.Handle(context, projectChanges, new ContextState(), IManagedProjectDiagnosticOutputServiceFactory.Create());
-        }
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
 
-        internal abstract ISourceItemsHandler CreateInstance();
+public abstract class SourceItemsHandlerTestBase
+{
+    internal static void Handle(IWorkspaceProjectContext context, ISourceItemsHandler handler, IImmutableDictionary<string, IProjectChangeDescription> projectChanges)
+    {
+        handler.Handle(context, projectChanges, new ContextState(), IManagedProjectDiagnosticOutputServiceFactory.Create());
     }
+
+    internal abstract ISourceItemsHandler CreateInstance();
 }

@@ -5,96 +5,95 @@ using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties;
+
+/// <summary>
+///     Implementation of <see cref="IProjectGuidStorageProvider"/> that avoids persisting the
+///     project GUID property to the project file if isn't already present in the file.
+/// </summary>
+[Export(typeof(IProjectGuidStorageProvider))]
+[AppliesTo(ProjectCapability.DotNet)]
+[Order(Order.Default)]
+internal class AvoidPersistingProjectGuidStorageProvider : IProjectGuidStorageProvider
 {
-    /// <summary>
-    ///     Implementation of <see cref="IProjectGuidStorageProvider"/> that avoids persisting the
-    ///     project GUID property to the project file if isn't already present in the file.
-    /// </summary>
-    [Export(typeof(IProjectGuidStorageProvider))]
-    [AppliesTo(ProjectCapability.DotNet)]
-    [Order(Order.Default)]
-    internal class AvoidPersistingProjectGuidStorageProvider : IProjectGuidStorageProvider
+    private readonly IProjectAccessor _projectAccessor;
+    private readonly UnconfiguredProject _project;
+    private bool? _isPersistedInProject;
+
+    [ImportingConstructor]
+    internal AvoidPersistingProjectGuidStorageProvider(IProjectAccessor projectAccessor, UnconfiguredProject project)
     {
-        private readonly IProjectAccessor _projectAccessor;
-        private readonly UnconfiguredProject _project;
-        private bool? _isPersistedInProject;
+        _projectAccessor = projectAccessor;
+        _project = project;
+    }
 
-        [ImportingConstructor]
-        internal AvoidPersistingProjectGuidStorageProvider(IProjectAccessor projectAccessor, UnconfiguredProject project)
+    public Task<Guid> GetProjectGuidAsync()
+    {
+        // We use the construction model to avoid evaluating during asynchronous project load
+        return _projectAccessor.OpenProjectXmlForReadAsync(_project, projectXml =>
         {
-            _projectAccessor = projectAccessor;
-            _project = project;
-        }
-
-        public Task<Guid> GetProjectGuidAsync()
-        {
-            // We use the construction model to avoid evaluating during asynchronous project load
-            return _projectAccessor.OpenProjectXmlForReadAsync(_project, projectXml =>
+            ProjectPropertyElement? property = FindProjectGuidProperty(projectXml);
+            if (property is not null)
             {
-                ProjectPropertyElement? property = FindProjectGuidProperty(projectXml);
-                if (property is not null)
-                {
-                    _isPersistedInProject = true;
+                _isPersistedInProject = true;
 
-                    TryParseGuid(property, out Guid result);
-                    return result;
-                }
-                else
-                {
-                    _isPersistedInProject = false;
-                }
-
-                return Guid.Empty;
-            });
-        }
-
-        public Task SetProjectGuidAsync(Guid value)
-        {
-            // Avoid searching for the <ProjectGuid/> if we've already checked previously in GetProjectGuidAsync.
-            // This handles project open, avoids us needed to take another read-lock during setting of it.
-            //
-            // Technically a project could add a <ProjectGuid/> latter down the track by editing the project or 
-            // reloading from disk, however, both the solution, CPS and other components within Visual Studio
-            // do not handle the GUID changing underneath them.
-            if (_isPersistedInProject == false)
-                return Task.CompletedTask;
-
-            return _projectAccessor.OpenProjectXmlForUpgradeableReadAsync(_project, async (projectXml, cancellationToken) =>
+                TryParseGuid(property, out Guid result);
+                return result;
+            }
+            else
             {
-                ProjectPropertyElement property = FindProjectGuidProperty(projectXml);
-                if (property is not null)
-                {
-                    _isPersistedInProject = true;
+                _isPersistedInProject = false;
+            }
 
-                    // Avoid touching the project file unless the actual GUID has changed, regardless of format
-                    if (!TryParseGuid(property, out Guid result) || value != result)
+            return Guid.Empty;
+        });
+    }
+
+    public Task SetProjectGuidAsync(Guid value)
+    {
+        // Avoid searching for the <ProjectGuid/> if we've already checked previously in GetProjectGuidAsync.
+        // This handles project open, avoids us needed to take another read-lock during setting of it.
+        //
+        // Technically a project could add a <ProjectGuid/> latter down the track by editing the project or 
+        // reloading from disk, however, both the solution, CPS and other components within Visual Studio
+        // do not handle the GUID changing underneath them.
+        if (_isPersistedInProject == false)
+            return Task.CompletedTask;
+
+        return _projectAccessor.OpenProjectXmlForUpgradeableReadAsync(_project, async (projectXml, cancellationToken) =>
+        {
+            ProjectPropertyElement property = FindProjectGuidProperty(projectXml);
+            if (property is not null)
+            {
+                _isPersistedInProject = true;
+
+                // Avoid touching the project file unless the actual GUID has changed, regardless of format
+                if (!TryParseGuid(property, out Guid result) || value != result)
+                {
+                    await _projectAccessor.OpenProjectXmlForWriteAsync(_project, (root) =>
                     {
-                        await _projectAccessor.OpenProjectXmlForWriteAsync(_project, (root) =>
-                        {
-                            property.Value = ProjectCollection.Escape(value.ToString("B").ToUpperInvariant());
-                        }, cancellationToken);
-                    }
+                        property.Value = ProjectCollection.Escape(value.ToString("B").ToUpperInvariant());
+                    }, cancellationToken);
                 }
-                else
-                {
-                    _isPersistedInProject = false;
-                }
-            });
-        }
+            }
+            else
+            {
+                _isPersistedInProject = false;
+            }
+        });
+    }
 
-        private static ProjectPropertyElement FindProjectGuidProperty(ProjectRootElement projectXml)
-        {
-            // NOTE: Unlike evaluation, we return the first <ProjectGuid /> to mimic legacy project system behavior
-            return projectXml.PropertyGroups.SelectMany(group => group.Properties)
-                                            .FirstOrDefault(p => StringComparers.PropertyNames.Equals(BuildProperty.ProjectGuid, p.Name));
-        }
+    private static ProjectPropertyElement FindProjectGuidProperty(ProjectRootElement projectXml)
+    {
+        // NOTE: Unlike evaluation, we return the first <ProjectGuid /> to mimic legacy project system behavior
+        return projectXml.PropertyGroups.SelectMany(group => group.Properties)
+                                        .FirstOrDefault(p => StringComparers.PropertyNames.Equals(BuildProperty.ProjectGuid, p.Name));
+    }
 
-        private static bool TryParseGuid(ProjectPropertyElement property, out Guid result)
-        {
-            string unescapedValue = property.GetUnescapedValue();
+    private static bool TryParseGuid(ProjectPropertyElement property, out Guid result)
+    {
+        string unescapedValue = property.GetUnescapedValue();
 
-            return Guid.TryParse(unescapedValue, out result);
-        }
+        return Guid.TryParse(unescapedValue, out result);
     }
 }

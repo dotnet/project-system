@@ -2,26 +2,25 @@
 
 using EnvDTE;
 
-namespace EnvDTE80
+namespace EnvDTE80;
+
+internal static class DTEFactory
 {
-    internal static class DTEFactory
+    public static DTE2 Create()
     {
-        public static DTE2 Create()
-        {
-            var mock = new Mock<DTE>();
+        var mock = new Mock<DTE>();
 
-            return mock.As<DTE2>().Object;
-        }
+        return mock.As<DTE2>().Object;
+    }
 
-        public static DTE2 ImplementSolution(Func<Solution> action)
-        {
-            var mock = new Mock<DTE2>();
-            mock.As<DTE>();
+    public static DTE2 ImplementSolution(Func<Solution> action)
+    {
+        var mock = new Mock<DTE2>();
+        mock.As<DTE>();
 
-            mock.SetupGet(m => m.Solution)
-                .Returns(action);
+        mock.SetupGet(m => m.Solution)
+            .Returns(action);
 
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }

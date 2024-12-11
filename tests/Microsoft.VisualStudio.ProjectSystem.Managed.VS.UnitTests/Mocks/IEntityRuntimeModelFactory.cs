@@ -2,14 +2,13 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Query;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal static class IEntityRuntimeModelFactory
 {
-    internal static class IEntityRuntimeModelFactory
+    public static IEntityRuntimeModel Create()
     {
-        public static IEntityRuntimeModel Create()
-        {
-            var mock = new Mock<IEntityRuntimeModel>();
-            return mock.Object;
-        }
+        var mock = new Mock<IEntityRuntimeModel>();
+        return mock.Object;
     }
 }

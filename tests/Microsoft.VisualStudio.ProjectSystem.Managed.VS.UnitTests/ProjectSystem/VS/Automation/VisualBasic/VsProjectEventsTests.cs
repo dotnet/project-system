@@ -2,61 +2,60 @@
 
 using VSLangProj;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic;
+
+public class VsProjectEventsTests
 {
-    public class VsProjectEventsTests
+    [Fact]
+    public void VSProjectEvents_Properties()
     {
-        [Fact]
-        public void VSProjectEvents_Properties()
+        var referenceEvents = Mock.Of<ReferencesEvents>();
+        var buildManagerEvents = Mock.Of<BuildManagerEvents>();
+
+        var projectEventsMock = new Mock<VSProjectEvents>();
+        projectEventsMock.Setup(e => e.ReferencesEvents)
+                         .Returns(referenceEvents);
+        projectEventsMock.Setup(e => e.BuildManagerEvents)
+                         .Returns(buildManagerEvents);
+
+        var innerVSProjectMock = new Mock<VSLangProj.VSProject>();
+        innerVSProjectMock.Setup(p => p.Events)
+                          .Returns(projectEventsMock.Object);
+
+        var unconfiguredProjectMock = new Mock<UnconfiguredProject>();
+        unconfiguredProjectMock.SetupGet<IProjectCapabilitiesScope?>(p => p.Capabilities)
+                          .Returns((IProjectCapabilitiesScope?)null);
+
+        var importEvents = Mock.Of<ImportsEvents>();
+        var importsEventsImpl = new OrderPrecedenceImportCollection<ImportsEvents>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject?)null)
         {
-            var referenceEvents = Mock.Of<ReferencesEvents>();
-            var buildManagerEvents = Mock.Of<BuildManagerEvents>();
+            new Lazy<ImportsEvents, IOrderPrecedenceMetadataView>(() => importEvents, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
+        };
+        var vsProjectEvents = GetVSProjectEvents(innerVSProjectMock.Object, unconfiguredProjectMock.Object);
 
-            var projectEventsMock = new Mock<VSProjectEvents>();
-            projectEventsMock.Setup(e => e.ReferencesEvents)
-                             .Returns(referenceEvents);
-            projectEventsMock.Setup(e => e.BuildManagerEvents)
-                             .Returns(buildManagerEvents);
+        vsProjectEvents.SetImportsEventsImpl(importsEventsImpl);
 
-            var innerVSProjectMock = new Mock<VSLangProj.VSProject>();
-            innerVSProjectMock.Setup(p => p.Events)
-                              .Returns(projectEventsMock.Object);
+        Assert.NotNull(vsProjectEvents);
+        Assert.Equal(referenceEvents, vsProjectEvents.ReferencesEvents);
+        Assert.Equal(buildManagerEvents, vsProjectEvents.BuildManagerEvents);
+        Assert.Equal(importEvents, vsProjectEvents.ImportsEvents);
+    }
 
-            var unconfiguredProjectMock = new Mock<UnconfiguredProject>();
-            unconfiguredProjectMock.SetupGet<IProjectCapabilitiesScope?>(p => p.Capabilities)
-                              .Returns((IProjectCapabilitiesScope?)null);
+    private static VSProjectEventsTestImpl GetVSProjectEvents(VSLangProj.VSProject vsproject, UnconfiguredProject project)
+    {
+        return new VSProjectEventsTestImpl(vsproject, project);
+    }
 
-            var importEvents = Mock.Of<ImportsEvents>();
-            var importsEventsImpl = new OrderPrecedenceImportCollection<ImportsEvents>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject?)null)
-            {
-                new Lazy<ImportsEvents, IOrderPrecedenceMetadataView>(() => importEvents, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
-            };
-            var vsProjectEvents = GetVSProjectEvents(innerVSProjectMock.Object, unconfiguredProjectMock.Object);
-
-            vsProjectEvents.SetImportsEventsImpl(importsEventsImpl);
-
-            Assert.NotNull(vsProjectEvents);
-            Assert.Equal(referenceEvents, vsProjectEvents.ReferencesEvents);
-            Assert.Equal(buildManagerEvents, vsProjectEvents.BuildManagerEvents);
-            Assert.Equal(importEvents, vsProjectEvents.ImportsEvents);
+    internal class VSProjectEventsTestImpl : VisualBasicVSProjectEvents
+    {
+        public VSProjectEventsTestImpl(VSLangProj.VSProject vsProject, UnconfiguredProject project)
+            : base(vsProject, project)
+        {
         }
 
-        private static VSProjectEventsTestImpl GetVSProjectEvents(VSLangProj.VSProject vsproject, UnconfiguredProject project)
+        internal void SetImportsEventsImpl(OrderPrecedenceImportCollection<ImportsEvents> importsEventsImpl)
         {
-            return new VSProjectEventsTestImpl(vsproject, project);
-        }
-
-        internal class VSProjectEventsTestImpl : VisualBasicVSProjectEvents
-        {
-            public VSProjectEventsTestImpl(VSLangProj.VSProject vsProject, UnconfiguredProject project)
-                : base(vsProject, project)
-            {
-            }
-
-            internal void SetImportsEventsImpl(OrderPrecedenceImportCollection<ImportsEvents> importsEventsImpl)
-            {
-                ImportsEventsImpl = importsEventsImpl;
-            }
+            ImportsEventsImpl = importsEventsImpl;
         }
     }
 }

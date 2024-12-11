@@ -2,27 +2,26 @@
 
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+
+internal static class ICommandLineParserServiceFactory
 {
-    internal static class ICommandLineParserServiceFactory
+    public static ICommandLineParserService ImplementParse(Func<IEnumerable<string>, string, BuildOptions> action)
     {
-        public static ICommandLineParserService ImplementParse(Func<IEnumerable<string>, string, BuildOptions> action)
+        var mock = new Mock<ICommandLineParserService>();
+
+        mock.Setup(s => s.Parse(It.IsAny<IEnumerable<string>>(), It.IsAny<string>()))
+            .Returns(action);
+
+        return mock.Object;
+    }
+
+    public static ICommandLineParserService CreateCSharp()
+    {
+        return ImplementParse((arguments, baseDirectory) =>
         {
-            var mock = new Mock<ICommandLineParserService>();
-
-            mock.Setup(s => s.Parse(It.IsAny<IEnumerable<string>>(), It.IsAny<string>()))
-                .Returns(action);
-
-            return mock.Object;
-        }
-
-        public static ICommandLineParserService CreateCSharp()
-        {
-            return ImplementParse((arguments, baseDirectory) =>
-            {
-                return BuildOptions.FromCommandLineArguments(
-                    CSharpCommandLineParser.Default.Parse(arguments, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));
-            });
-        }
+            return BuildOptions.FromCommandLineArguments(
+                CSharpCommandLineParser.Default.Parse(arguments, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));
+        });
     }
 }

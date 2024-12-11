@@ -2,20 +2,19 @@
 
 using VSLangProj110;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic;
+
+[Export(ExportContractNames.VsTypes.ConfiguredProjectPropertiesAutomationObject)]
+[Order(Order.Default)]
+[AppliesTo(ProjectCapability.VisualBasic)]
+public class VisualBasicProjectConfigurationProperties : AbstractProjectConfigurationProperties,
+    VBProjectConfigurationProperties6
 {
-    [Export(ExportContractNames.VsTypes.ConfiguredProjectPropertiesAutomationObject)]
-    [Order(Order.Default)]
-    [AppliesTo(ProjectCapability.VisualBasic)]
-    public class VisualBasicProjectConfigurationProperties : AbstractProjectConfigurationProperties,
-        VBProjectConfigurationProperties6
+    [ImportingConstructor]
+    internal VisualBasicProjectConfigurationProperties(
+        ProjectProperties projectProperties,
+        IProjectThreadingService threadingService)
+        : base(projectProperties, threadingService)
     {
-        [ImportingConstructor]
-        internal VisualBasicProjectConfigurationProperties(
-            ProjectProperties projectProperties,
-            IProjectThreadingService threadingService)
-            : base(projectProperties, threadingService)
-        {
-        }
     }
 }

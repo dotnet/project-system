@@ -4,33 +4,32 @@ using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering;
+
+[ProjectCommand(CommandGroup.ManagedProjectSystemOrder, ManagedProjectSystemOrderCommandId.AddExistingItemAbove)]
+[AppliesTo(ProjectCapability.SortByDisplayOrder + " & " + ProjectCapability.EditableDisplayOrder)]
+internal class AddExistingItemAboveCommand : AbstractAddItemCommand
 {
-    [ProjectCommand(CommandGroup.ManagedProjectSystemOrder, ManagedProjectSystemOrderCommandId.AddExistingItemAbove)]
-    [AppliesTo(ProjectCapability.SortByDisplayOrder + " & " + ProjectCapability.EditableDisplayOrder)]
-    internal class AddExistingItemAboveCommand : AbstractAddItemCommand
+    private readonly IAddItemDialogService _addItemDialogService;
+
+    [ImportingConstructor]
+    public AddExistingItemAboveCommand(
+        IAddItemDialogService addItemDialogService,
+        OrderAddItemHintReceiver orderAddItemHintReceiver)
+        : base(addItemDialogService, orderAddItemHintReceiver)
     {
-        private readonly IAddItemDialogService _addItemDialogService;
-
-        [ImportingConstructor]
-        public AddExistingItemAboveCommand(
-            IAddItemDialogService addItemDialogService,
-            OrderAddItemHintReceiver orderAddItemHintReceiver)
-            : base(addItemDialogService, orderAddItemHintReceiver)
-        {
-            _addItemDialogService = addItemDialogService;
-        }
-
-        protected override Task OnAddingNodesAsync(IProjectTree nodeToAddTo)
-        {
-            return _addItemDialogService.ShowAddExistingItemsDialogAsync(nodeToAddTo);
-        }
-
-        protected override bool CanAdd(IProjectTree target)
-        {
-            return OrderingHelper.HasValidDisplayOrder(target);
-        }
-
-        protected override OrderingMoveAction Action => OrderingMoveAction.MoveAbove;
+        _addItemDialogService = addItemDialogService;
     }
+
+    protected override Task OnAddingNodesAsync(IProjectTree nodeToAddTo)
+    {
+        return _addItemDialogService.ShowAddExistingItemsDialogAsync(nodeToAddTo);
+    }
+
+    protected override bool CanAdd(IProjectTree target)
+    {
+        return OrderingHelper.HasValidDisplayOrder(target);
+    }
+
+    protected override OrderingMoveAction Action => OrderingMoveAction.MoveAbove;
 }

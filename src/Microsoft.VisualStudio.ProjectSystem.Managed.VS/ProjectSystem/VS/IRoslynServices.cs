@@ -2,13 +2,12 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
-{
-    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IRoslynServices
-    {
-        bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution);
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
 
-        bool IsValidIdentifier(string identifierName);
-    }
+[ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+internal interface IRoslynServices
+{
+    bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution);
+
+    bool IsValidIdentifier(string identifierName);
 }

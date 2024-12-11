@@ -5,57 +5,56 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 #endif
 
-namespace Microsoft.VisualStudio.Diagnostics
+namespace Microsoft.VisualStudio.Diagnostics;
+
+// To enable this for a process, add the following to the app.config for the project:
+//
+// <configuration>
+//  <system.diagnostics>
+//    <trace>
+//      <listeners>
+//        <remove name="Default" />
+//        <add name="ThrowingTraceListener" type="Microsoft.VisualStudio.Diagnostics.ThrowingTraceListener, Microsoft.VisualStudio.ProjectSystem.Managed.TestServices" />
+//      </listeners>
+//    </trace>
+//  </system.diagnostics>
+//</configuration>
+public sealed class ThrowingTraceListener : TraceListener
 {
-    // To enable this for a process, add the following to the app.config for the project:
-    //
-    // <configuration>
-    //  <system.diagnostics>
-    //    <trace>
-    //      <listeners>
-    //        <remove name="Default" />
-    //        <add name="ThrowingTraceListener" type="Microsoft.VisualStudio.Diagnostics.ThrowingTraceListener, Microsoft.VisualStudio.ProjectSystem.Managed.TestServices" />
-    //      </listeners>
-    //    </trace>
-    //  </system.diagnostics>
-    //</configuration>
-    public sealed class ThrowingTraceListener : TraceListener
+    public override void Fail(string message, string detailMessage)
     {
-        public override void Fail(string message, string detailMessage)
+        throw new DebugAssertFailureException(message + Environment.NewLine + detailMessage);
+    }
+
+    public override void Write(string message)
+    {
+    }
+
+    public override void WriteLine(string message)
+    {
+    }
+
+#if !NET8_0_OR_GREATER
+    [Serializable]
+#endif
+    public class DebugAssertFailureException : Exception
+    {
+        public DebugAssertFailureException()
         {
-            throw new DebugAssertFailureException(message + Environment.NewLine + detailMessage);
         }
 
-        public override void Write(string message)
+        public DebugAssertFailureException(string message) : base(message)
         {
         }
 
-        public override void WriteLine(string message)
+        public DebugAssertFailureException(string message, Exception inner) : base(message, inner)
         {
         }
 
 #if !NET8_0_OR_GREATER
-        [Serializable]
-#endif
-        public class DebugAssertFailureException : Exception
+        protected DebugAssertFailureException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
-            public DebugAssertFailureException()
-            {
-            }
-
-            public DebugAssertFailureException(string message) : base(message)
-            {
-            }
-
-            public DebugAssertFailureException(string message, Exception inner) : base(message, inner)
-            {
-            }
-
-#if !NET8_0_OR_GREATER
-            protected DebugAssertFailureException(SerializationInfo info, StreamingContext context) : base(info, context)
-            {
-            }
-#endif
         }
+#endif
     }
 }

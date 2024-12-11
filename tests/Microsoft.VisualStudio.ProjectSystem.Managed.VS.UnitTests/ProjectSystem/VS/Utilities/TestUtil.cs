@@ -1,34 +1,33 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+
+internal static class TestUtil
 {
-    internal static class TestUtil
+    /// <summary>
+    /// Asynchronously runs the specified <paramref name="action"/> on an STA thread.
+    /// </summary>
+    public static Task RunStaTestAsync(Action action)
     {
-        /// <summary>
-        /// Asynchronously runs the specified <paramref name="action"/> on an STA thread.
-        /// </summary>
-        public static Task RunStaTestAsync(Action action)
+        var tcs = new TaskCompletionSource();
+
+        var thread = new Thread(ThreadMethod);
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+
+        return tcs.Task;
+
+        void ThreadMethod()
         {
-            var tcs = new TaskCompletionSource();
-
-            var thread = new Thread(ThreadMethod);
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-
-            return tcs.Task;
-
-            void ThreadMethod()
+            try
             {
-                try
-                {
-                    action();
+                action();
 
-                    tcs.SetResult();
-                }
-                catch (Exception e)
-                {
-                    tcs.SetException(e);
-                }
+                tcs.SetResult();
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
             }
         }
     }

@@ -3,23 +3,22 @@
 using VSLangProj110;
 using VSLangProj80;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
-{
-    [Export(ExportContractNames.VsTypes.ConfiguredProjectPropertiesAutomationObject)]
-    [Order(Order.Default)]
-    [AppliesTo(ProjectCapability.CSharp)]
-    public class CSharpProjectConfigurationProperties : AbstractProjectConfigurationProperties,
-        CSharpProjectConfigurationProperties3,
-        CSharpProjectConfigurationProperties6
-    {
-        [ImportingConstructor]
-        internal CSharpProjectConfigurationProperties(
-            ProjectProperties projectProperties,
-            IProjectThreadingService threadingService)
-            : base(projectProperties, threadingService)
-        {
-        }
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp;
 
-        public string ErrorReport { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+[Export(ExportContractNames.VsTypes.ConfiguredProjectPropertiesAutomationObject)]
+[Order(Order.Default)]
+[AppliesTo(ProjectCapability.CSharp)]
+public class CSharpProjectConfigurationProperties : AbstractProjectConfigurationProperties,
+    CSharpProjectConfigurationProperties3,
+    CSharpProjectConfigurationProperties6
+{
+    [ImportingConstructor]
+    internal CSharpProjectConfigurationProperties(
+        ProjectProperties projectProperties,
+        IProjectThreadingService threadingService)
+        : base(projectProperties, threadingService)
+    {
     }
+
+    public string ErrorReport { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 }

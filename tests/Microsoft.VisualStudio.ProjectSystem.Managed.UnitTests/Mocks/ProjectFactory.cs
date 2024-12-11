@@ -2,13 +2,12 @@
 
 using Microsoft.Build.Construction;
 
-namespace Microsoft.Build.Evaluation
+namespace Microsoft.Build.Evaluation;
+
+internal static class ProjectFactory
 {
-    internal static class ProjectFactory
+    public static Project Create(ProjectRootElement rootElement)
     {
-        public static Project Create(ProjectRootElement rootElement)
-        {
-            return new Project(rootElement);
-        }
+        return new Project(rootElement);
     }
 }

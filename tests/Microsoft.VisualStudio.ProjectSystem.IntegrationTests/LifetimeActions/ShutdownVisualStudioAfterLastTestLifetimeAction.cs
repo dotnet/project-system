@@ -4,31 +4,30 @@ using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.Services;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
-namespace Microsoft.VisualStudio.LifetimeActions
+namespace Microsoft.VisualStudio.LifetimeActions;
+
+/// <summary>
+///     Responsible for shutting down Visual Studio after last test is done with it.
+/// </summary>
+[ProvidesOperationsExtension]
+[Export(typeof(ITestLifetimeAction))]
+internal sealed class ShutdownVisualStudioAfterLastTestLifetimeAction : ITestLifetimeAction
 {
-    /// <summary>
-    ///     Responsible for shutting down Visual Studio after last test is done with it.
-    /// </summary>
-    [ProvidesOperationsExtension]
-    [Export(typeof(ITestLifetimeAction))]
-    internal sealed class ShutdownVisualStudioAfterLastTestLifetimeAction : ITestLifetimeAction
+    private static IntegrationTestBase? _lastTest;
+
+    public void OnTestLifeTimeAction(ApexTest testClass, Type classType, TestLifeTimeAction action)
     {
-        private static IntegrationTestBase? _lastTest;
-
-        public void OnTestLifeTimeAction(ApexTest testClass, Type classType, TestLifeTimeAction action)
+        if (action == TestLifeTimeAction.PostTestCleanup)
         {
-            if (action == TestLifeTimeAction.PostTestCleanup)
-            {
-                _lastTest = testClass as IntegrationTestBase;
-            }
+            _lastTest = testClass as IntegrationTestBase;
         }
+    }
 
-        public static void OnAssemblyCleanup()
-        {
-            // To reduce integration test time, we want to reuse Visual Studio instances where possible.
-            // Apex will automatically close VS only if the previous test failed, this shuts down Visual Studio
-            // after all the tests have finished.            
-            _lastTest?.TryShutdownVisualStudioInstance();
-        }
+    public static void OnAssemblyCleanup()
+    {
+        // To reduce integration test time, we want to reuse Visual Studio instances where possible.
+        // Apex will automatically close VS only if the previous test failed, this shuts down Visual Studio
+        // after all the tests have finished.            
+        _lastTest?.TryShutdownVisualStudioInstance();
     }
 }

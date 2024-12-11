@@ -4,64 +4,63 @@ using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting;
+
+[Export(typeof(IWaitIndicator))]
+internal partial class VisualStudioWaitIndicator : IWaitIndicator
 {
-    [Export(typeof(IWaitIndicator))]
-    internal partial class VisualStudioWaitIndicator : IWaitIndicator
+    private readonly JoinableTaskContext _joinableTaskContext;
+    private readonly IVsUIService<IVsThreadedWaitDialogFactory> _waitDialogFactoryService;
+
+    [ImportingConstructor]
+    public VisualStudioWaitIndicator(JoinableTaskContext joinableTaskContext,
+                                     IVsUIService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory> waitDialogFactoryService)
     {
-        private readonly JoinableTaskContext _joinableTaskContext;
-        private readonly IVsUIService<IVsThreadedWaitDialogFactory> _waitDialogFactoryService;
+        _joinableTaskContext = joinableTaskContext;
+        _waitDialogFactoryService = waitDialogFactoryService;
+    }
 
-        [ImportingConstructor]
-        public VisualStudioWaitIndicator(JoinableTaskContext joinableTaskContext,
-                                         IVsUIService<SVsThreadedWaitDialogFactory, IVsThreadedWaitDialogFactory> waitDialogFactoryService)
+    public async Task<WaitIndicatorResult> RunAsync(string title, string message, bool allowCancel, Func<IWaitContext, Task> asyncMethod, int totalSteps = 0)
+    {
+        await _joinableTaskContext.Factory.SwitchToMainThreadAsync();
+
+        using IWaitContext waitContext = new VisualStudioWaitContext(_waitDialogFactoryService.Value, title, message, allowCancel, totalSteps);
+
+        try
         {
-            _joinableTaskContext = joinableTaskContext;
-            _waitDialogFactoryService = waitDialogFactoryService;
+            await asyncMethod(waitContext);
+
+            return WaitIndicatorResult.Completed;
         }
-
-        public async Task<WaitIndicatorResult> RunAsync(string title, string message, bool allowCancel, Func<IWaitContext, Task> asyncMethod, int totalSteps = 0)
+        catch (OperationCanceledException)
         {
-            await _joinableTaskContext.Factory.SwitchToMainThreadAsync();
-
-            using IWaitContext waitContext = new VisualStudioWaitContext(_waitDialogFactoryService.Value, title, message, allowCancel, totalSteps);
-
-            try
-            {
-                await asyncMethod(waitContext);
-
-                return WaitIndicatorResult.Completed;
-            }
-            catch (OperationCanceledException)
-            {
-                return WaitIndicatorResult.Cancelled;
-            }
-            catch (AggregateException aggregate) when (aggregate.InnerExceptions.All(e => e is OperationCanceledException))
-            {
-                return WaitIndicatorResult.Cancelled;
-            }
+            return WaitIndicatorResult.Cancelled;
         }
-
-        public async Task<WaitIndicatorResult<T>> RunAsync<T>(string title, string message, bool allowCancel, Func<IWaitContext, Task<T>> asyncMethod, int totalSteps = 0)
+        catch (AggregateException aggregate) when (aggregate.InnerExceptions.All(e => e is OperationCanceledException))
         {
-            await _joinableTaskContext.Factory.SwitchToMainThreadAsync();
+            return WaitIndicatorResult.Cancelled;
+        }
+    }
 
-            using IWaitContext waitContext = new VisualStudioWaitContext(_waitDialogFactoryService.Value, title, message, allowCancel, totalSteps);
+    public async Task<WaitIndicatorResult<T>> RunAsync<T>(string title, string message, bool allowCancel, Func<IWaitContext, Task<T>> asyncMethod, int totalSteps = 0)
+    {
+        await _joinableTaskContext.Factory.SwitchToMainThreadAsync();
 
-            try
-            {
-                T result = await asyncMethod(waitContext);
+        using IWaitContext waitContext = new VisualStudioWaitContext(_waitDialogFactoryService.Value, title, message, allowCancel, totalSteps);
 
-                return WaitIndicatorResult<T>.FromResult(result);
-            }
-            catch (OperationCanceledException)
-            {
-                return WaitIndicatorResult<T>.Cancelled;
-            }
-            catch (AggregateException aggregate) when (aggregate.InnerExceptions.All(e => e is OperationCanceledException))
-            {
-                return WaitIndicatorResult<T>.Cancelled;
-            }
+        try
+        {
+            T result = await asyncMethod(waitContext);
+
+            return WaitIndicatorResult<T>.FromResult(result);
+        }
+        catch (OperationCanceledException)
+        {
+            return WaitIndicatorResult<T>.Cancelled;
+        }
+        catch (AggregateException aggregate) when (aggregate.InnerExceptions.All(e => e is OperationCanceledException))
+        {
+            return WaitIndicatorResult<T>.Cancelled;
         }
     }
 }
