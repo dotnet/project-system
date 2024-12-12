@@ -3,39 +3,38 @@
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
+
+internal abstract class AbstractOpenProjectDesignerCommand : AbstractSingleNodeProjectCommand
 {
-    internal abstract class AbstractOpenProjectDesignerCommand : AbstractSingleNodeProjectCommand
+    private readonly IProjectDesignerService _designerService;
+
+    protected AbstractOpenProjectDesignerCommand(IProjectDesignerService designerService)
     {
-        private readonly IProjectDesignerService _designerService;
+        Requires.NotNull(designerService);
 
-        protected AbstractOpenProjectDesignerCommand(IProjectDesignerService designerService)
+        _designerService = designerService;
+    }
+
+    protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
+    {
+        // We assume that if the AppDesignerTreeModifier marked an AppDesignerFolder, that we must support the Project Designer
+        if (node.Flags.Contains(ProjectTreeFlags.Common.AppDesignerFolder))
         {
-            Requires.NotNull(designerService);
-
-            _designerService = designerService;
+            return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
         }
 
-        protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
-        {
-            // We assume that if the AppDesignerTreeModifier marked an AppDesignerFolder, that we must support the Project Designer
-            if (node.Flags.Contains(ProjectTreeFlags.Common.AppDesignerFolder))
-            {
-                return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
-            }
+        return GetCommandStatusResult.Unhandled;
+    }
 
-            return GetCommandStatusResult.Unhandled;
+    protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+    {
+        if (node.Flags.Contains(ProjectTreeFlags.Common.AppDesignerFolder))
+        {
+            await _designerService.ShowProjectDesignerAsync();
+            return true;
         }
 
-        protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
-        {
-            if (node.Flags.Contains(ProjectTreeFlags.Common.AppDesignerFolder))
-            {
-                await _designerService.ShowProjectDesignerAsync();
-                return true;
-            }
-
-            return false;
-        }
+        return false;
     }
 }

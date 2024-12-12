@@ -2,19 +2,18 @@
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.Debug;
+
+public static class IDebugLaunchProviderFactory
 {
-    public static class IDebugLaunchProviderFactory
+    public static IDebugLaunchProvider ImplementIsProjectDebuggableAsync(Func<bool> action)
     {
-        public static IDebugLaunchProvider ImplementIsProjectDebuggableAsync(Func<bool> action)
-        {
-            var mock = new Mock<IDebugLaunchProvider>();
+        var mock = new Mock<IDebugLaunchProvider>();
 
-            mock.As<IStartupProjectProvider>()
-                .Setup(d => d.CanBeStartupProjectAsync(It.IsAny<DebugLaunchOptions>()))
-                .ReturnsAsync(action);
+        mock.As<IStartupProjectProvider>()
+            .Setup(d => d.CanBeStartupProjectAsync(It.IsAny<DebugLaunchOptions>()))
+            .ReturnsAsync(action);
 
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }

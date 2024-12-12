@@ -5,53 +5,52 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 using EnumCollection = System.Collections.Generic.ICollection<Microsoft.VisualStudio.ProjectSystem.Properties.IEnumValue>;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.Properties;
+
+/// <summary>
+///     Responsible for producing valid values for the TargetPlatform property from a design-time build.
+/// </summary>
+[ExportDynamicEnumValuesProvider("PlatformTargetEnumProvider")]
+[AppliesTo(ProjectCapability.DotNet)]
+internal class PlatformTargetBuildPropertyPageEnumProvider : IDynamicEnumValuesProvider, IDynamicEnumValuesGenerator
 {
-    /// <summary>
-    ///     Responsible for producing valid values for the TargetPlatform property from a design-time build.
-    /// </summary>
-    [ExportDynamicEnumValuesProvider("PlatformTargetEnumProvider")]
-    [AppliesTo(ProjectCapability.DotNet)]
-    internal class PlatformTargetBuildPropertyPageEnumProvider : IDynamicEnumValuesProvider, IDynamicEnumValuesGenerator
+    private const string AnyCpuPlatformName = "AnyCPU";
+    private const string AnyCpuDisplayName = "Any CPU";
+
+    private readonly ProjectProperties _properties;
+
+    [ImportingConstructor]
+    public PlatformTargetBuildPropertyPageEnumProvider(ProjectProperties properties)
     {
-        private const string AnyCpuPlatformName = "AnyCPU";
-        private const string AnyCpuDisplayName = "Any CPU";
+        _properties = properties;
+    }
 
-        private readonly ProjectProperties _properties;
+    public bool AllowCustomValues => false;
 
-        [ImportingConstructor]
-        public PlatformTargetBuildPropertyPageEnumProvider(ProjectProperties properties)
+    public async Task<EnumCollection> GetListedValuesAsync()
+    {
+        var result = new List<IEnumValue>();
+
+        ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+
+        string availablePlatformsTargets = await configuration.AvailablePlatforms.GetDisplayValueAsync();
+
+        foreach (string platformTarget in new LazyStringSplit(availablePlatformsTargets, ','))
         {
-            _properties = properties;
+            result.Add(new PageEnumValue(new EnumValue() { Name = platformTarget, DisplayName = platformTarget.Equals(AnyCpuPlatformName, StringComparisons.ConfigurationDimensionValues) ? AnyCpuDisplayName : platformTarget }));
         }
 
-        public bool AllowCustomValues => false;
+        return result;
+    }
 
-        public async Task<EnumCollection> GetListedValuesAsync()
-        {
-            var result = new List<IEnumValue>();
+    public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
+    {
+        return Task.FromResult<IDynamicEnumValuesGenerator>(this);
+    }
 
-            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
-
-            string availablePlatformsTargets = await configuration.AvailablePlatforms.GetDisplayValueAsync();
-
-            foreach (string platformTarget in new LazyStringSplit(availablePlatformsTargets, ','))
-            {
-                result.Add(new PageEnumValue(new EnumValue() { Name = platformTarget, DisplayName = platformTarget.Equals(AnyCpuPlatformName, StringComparisons.ConfigurationDimensionValues) ? AnyCpuDisplayName : platformTarget }));
-            }
-
-            return result;
-        }
-
-        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
-        {
-            return Task.FromResult<IDynamicEnumValuesGenerator>(this);
-        }
-
-        public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
-        {
-            return TaskResult.Null<IEnumValue>();
-        }
+    public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
+    {
+        return TaskResult.Null<IEnumValue>();
     }
 }
 

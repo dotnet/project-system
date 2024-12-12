@@ -4,28 +4,27 @@ using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 using Microsoft.VisualStudio.ProjectSystem.Query.Framework.Actions;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// <see cref="IQueryActionExecutor"/> handling <see cref="RemoveLaunchProfile"/> actions.
+/// </summary>
+internal sealed class RemoveLaunchProfileAction : LaunchProfileActionBase
 {
-    /// <summary>
-    /// <see cref="IQueryActionExecutor"/> handling <see cref="RemoveLaunchProfile"/> actions.
-    /// </summary>
-    internal sealed class RemoveLaunchProfileAction : LaunchProfileActionBase
+    private readonly RemoveLaunchProfile _executableStep;
+
+    public RemoveLaunchProfileAction(RemoveLaunchProfile executableStep)
     {
-        private readonly RemoveLaunchProfile _executableStep;
+        _executableStep = executableStep;
+    }
 
-        public RemoveLaunchProfileAction(RemoveLaunchProfile executableStep)
+    protected override async Task ExecuteAsync(IQueryExecutionContext queryExecutionContext, IEntityValue projectEntity, IProjectLaunchProfileHandler launchProfileHandler, CancellationToken cancellationToken)
+    {
+        EntityIdentity? removedProfileId = await launchProfileHandler.RemoveLaunchProfileAsync(queryExecutionContext, projectEntity, _executableStep.ProfileName, cancellationToken);
+
+        if (removedProfileId is not null)
         {
-            _executableStep = executableStep;
-        }
-
-        protected override async Task ExecuteAsync(IQueryExecutionContext queryExecutionContext, IEntityValue projectEntity, IProjectLaunchProfileHandler launchProfileHandler, CancellationToken cancellationToken)
-        {
-            EntityIdentity? removedProfileId = await launchProfileHandler.RemoveLaunchProfileAsync(queryExecutionContext, projectEntity, _executableStep.ProfileName, cancellationToken);
-
-            if (removedProfileId is not null)
-            {
-                RemovedLaunchProfiles.Add((projectEntity, removedProfileId));
-            }
+            RemovedLaunchProfiles.Add((projectEntity, removedProfileId));
         }
     }
 }

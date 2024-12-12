@@ -9,78 +9,94 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
+namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+
+[Export(typeof(IProjectHotReloadSessionManager))]
+[Export(typeof(IProjectHotReloadUpdateApplier))]
+internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager, IProjectHotReloadUpdateApplier
 {
-    [Export(typeof(IProjectHotReloadSessionManager))]
-    [Export(typeof(IProjectHotReloadUpdateApplier))]
-    internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager, IProjectHotReloadUpdateApplier
+    private readonly UnconfiguredProject _project;
+    private readonly IProjectFaultHandlerService _projectFaultHandlerService;
+    private readonly IActiveDebugFrameworkServices _activeDebugFrameworkServices;
+    private readonly Lazy<IProjectHotReloadAgent> _projectHotReloadAgent;
+    private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
+    private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
+    private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
+    private IVsSolutionBuildManager2? _vsSolutionBuildManager2;
+    private readonly IProjectThreadingService _projectThreadingService;
+
+    // Protect the state from concurrent access. For example, our Process.Exited event
+    // handler may run on one thread while we're still setting up the session on
+    // another. To ensure consistent and proper behavior we need to serialize access.
+    private readonly ReentrantSemaphore _semaphore;
+
+    private readonly Dictionary<int, HotReloadState> _activeSessions = [];
+    private HotReloadState? _pendingSessionState = null;
+    private int _nextUniqueId = 1;
+
+    public bool HasActiveHotReloadSessions => _activeSessions.Count != 0;
+
+    [ImportingConstructor]
+    public ProjectHotReloadSessionManager(
+        UnconfiguredProject project,
+        IProjectThreadingService threadingService,
+        IProjectFaultHandlerService projectFaultHandlerService,
+        IActiveDebugFrameworkServices activeDebugFrameworkServices,
+        Lazy<IProjectHotReloadAgent> projectHotReloadAgent,
+        Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
+        Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
+        IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService)
+        : base(threadingService.JoinableTaskContext)
     {
-        private readonly UnconfiguredProject _project;
-        private readonly IProjectFaultHandlerService _projectFaultHandlerService;
-        private readonly IActiveDebugFrameworkServices _activeDebugFrameworkServices;
-        private readonly Lazy<IProjectHotReloadAgent> _projectHotReloadAgent;
-        private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
-        private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
-        private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
-        private IVsSolutionBuildManager2? _vsSolutionBuildManager2;
-        private readonly IProjectThreadingService _projectThreadingService;
+        _project = project;
+        _projectThreadingService = threadingService;
+        _projectFaultHandlerService = projectFaultHandlerService;
+        _activeDebugFrameworkServices = activeDebugFrameworkServices;
+        _projectHotReloadAgent = projectHotReloadAgent;
+        _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
+        _projectHotReloadNotificationService = projectHotReloadNotificationService;
+        _vsSolutionBuildManagerService = solutionBuildManagerService;
 
-        // Protect the state from concurrent access. For example, our Process.Exited event
-        // handler may run on one thread while we're still setting up the session on
-        // another. To ensure consistent and proper behavior we need to serialize access.
-        private readonly ReentrantSemaphore _semaphore;
+        _semaphore = ReentrantSemaphore.Create(
+            initialCount: 1,
+            joinableTaskContext: project.Services.ThreadingPolicy.JoinableTaskContext.Context,
+            mode: ReentrantSemaphore.ReentrancyMode.Freeform);
+    }
 
-        private readonly Dictionary<int, HotReloadState> _activeSessions = [];
-        private HotReloadState? _pendingSessionState = null;
-        private int _nextUniqueId = 1;
+    public async Task ActivateSessionAsync(int processId, bool runningUnderDebugger, string projectName)
+    {
+        await _semaphore.ExecuteAsync(ActivateSessionInternalAsync);
 
-        public bool HasActiveHotReloadSessions => _activeSessions.Count != 0;
-
-        [ImportingConstructor]
-        public ProjectHotReloadSessionManager(
-            UnconfiguredProject project,
-            IProjectThreadingService threadingService,
-            IProjectFaultHandlerService projectFaultHandlerService,
-            IActiveDebugFrameworkServices activeDebugFrameworkServices,
-            Lazy<IProjectHotReloadAgent> projectHotReloadAgent,
-            Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
-            Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
-            IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService)
-            : base(threadingService.JoinableTaskContext)
+        async Task ActivateSessionInternalAsync()
         {
-            _project = project;
-            _projectThreadingService = threadingService;
-            _projectFaultHandlerService = projectFaultHandlerService;
-            _activeDebugFrameworkServices = activeDebugFrameworkServices;
-            _projectHotReloadAgent = projectHotReloadAgent;
-            _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
-            _projectHotReloadNotificationService = projectHotReloadNotificationService;
-            _vsSolutionBuildManagerService = solutionBuildManagerService;
-
-            _semaphore = ReentrantSemaphore.Create(
-                initialCount: 1,
-                joinableTaskContext: project.Services.ThreadingPolicy.JoinableTaskContext.Context,
-                mode: ReentrantSemaphore.ReentrancyMode.Freeform);
-        }
-
-        public async Task ActivateSessionAsync(int processId, bool runningUnderDebugger, string projectName)
-        {
-            await _semaphore.ExecuteAsync(ActivateSessionInternalAsync);
-
-            async Task ActivateSessionInternalAsync()
+            if (_pendingSessionState is not null)
             {
-                if (_pendingSessionState is not null)
+                Assumes.NotNull(_pendingSessionState.Session);
+
+                try
                 {
-                    Assumes.NotNull(_pendingSessionState.Session);
+                    Process? process = Process.GetProcessById(processId);
 
-                    try
+                    WriteOutputMessage(
+                        new HotReloadLogMessage(
+                            HotReloadVerbosity.Detailed,
+                            VSResources.ProjectHotReloadSessionManager_AttachingToProcess,
+                            projectName,
+                            _pendingSessionState.Session.Name,
+                            (uint)processId,
+                            HotReloadDiagnosticErrorLevel.Info
+                        ),
+                        default);
+
+                    process.Exited += _pendingSessionState.OnProcessExited;
+                    process.EnableRaisingEvents = true;
+
+                    if (process.HasExited)
                     {
-                        Process? process = Process.GetProcessById(processId);
-
                         WriteOutputMessage(
                             new HotReloadLogMessage(
                                 HotReloadVerbosity.Detailed,
-                                VSResources.ProjectHotReloadSessionManager_AttachingToProcess,
+                                VSResources.ProjectHotReloadSessionManager_ProcessAlreadyExited,
                                 projectName,
                                 _pendingSessionState.Session.Name,
                                 (uint)processId,
@@ -88,446 +104,429 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                             ),
                             default);
 
-                        process.Exited += _pendingSessionState.OnProcessExited;
-                        process.EnableRaisingEvents = true;
-
-                        if (process.HasExited)
-                        {
-                            WriteOutputMessage(
-                                new HotReloadLogMessage(
-                                    HotReloadVerbosity.Detailed,
-                                    VSResources.ProjectHotReloadSessionManager_ProcessAlreadyExited,
-                                    projectName,
-                                    _pendingSessionState.Session.Name,
-                                    (uint)processId,
-                                    HotReloadDiagnosticErrorLevel.Info
-                                ),
-                                default);
-
-                            process.Exited -= _pendingSessionState.OnProcessExited;
-                            process = null;
-                        }
-
-                        _pendingSessionState.Process = process;
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteOutputMessage(
-                            new HotReloadLogMessage(
-                                HotReloadVerbosity.Minimal,
-                                $"${ex.GetType()}: ${ex.Message}",
-                                projectName,
-                                _pendingSessionState.Session.Name,
-                                (uint)processId,
-                                HotReloadDiagnosticErrorLevel.Error
-                            ),
-                            default);
+                        process.Exited -= _pendingSessionState.OnProcessExited;
+                        process = null;
                     }
 
-                    if (_pendingSessionState.Process is null)
-                    {
-                        WriteOutputMessage(
-                            new HotReloadLogMessage(
-                                HotReloadVerbosity.Minimal,
-                                VSResources.ProjectHotReloadSessionManager_NoActiveProcess,
-                                projectName,
-                                _pendingSessionState.Session.Name,
-                                (uint)processId,
-                                HotReloadDiagnosticErrorLevel.Warning
-                            ),
-                            default);
-                    }
-                    else
-                    {
-                        await _pendingSessionState.Session.StartSessionAsync(runningUnderDebugger, cancellationToken: default);
-                        _activeSessions.Add(processId, _pendingSessionState);
-
-                        // Addition of the first session, puts the project in hot reload mode
-                        if (_activeSessions.Count == 1)
-                        {
-                            await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: true);
-                        }
-                    }
-
-                    _pendingSessionState = null;
-                }
-            }
-        }
-
-        public Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables)
-        {
-            return _semaphore.ExecuteAsync(TryCreatePendingSessionInternalAsync).AsTask();
-
-            async ValueTask<bool> TryCreatePendingSessionInternalAsync()
-            {
-                if (await DebugFrameworkSupportsHotReloadAsync()
-                    && await GetDebugFrameworkVersionAsync() is string frameworkVersion
-                    && !string.IsNullOrWhiteSpace(frameworkVersion))
-                {
-                    if (await DebugFrameworkSupportsStartupHooksAsync())
-                    {
-                        string name = Path.GetFileNameWithoutExtension(_project.FullPath);
-                        HotReloadState state = new(this);
-                        IProjectHotReloadSession? projectHotReloadSession = _projectHotReloadAgent.Value.CreateHotReloadSession(name, _nextUniqueId++, frameworkVersion, state);
-
-                        if (projectHotReloadSession is not null)
-                        {
-                            state.Session = projectHotReloadSession;
-                            await projectHotReloadSession.ApplyLaunchVariablesAsync(environmentVariables, default);
-                            _pendingSessionState = state;
-
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        // If startup hooks are not supported then tell the user why Hot Reload isn't available.
-                        string projectName = Path.GetFileNameWithoutExtension(_project.FullPath);
-
-                        WriteOutputMessage(
-                            new HotReloadLogMessage(
-                                HotReloadVerbosity.Minimal,
-                                VSResources.ProjectHotReloadSessionManager_StartupHooksDisabled,
-                                projectName,
-                                null,
-                                HotReloadDiagnosticOutputService.GetProcessId(),
-                                HotReloadDiagnosticErrorLevel.Warning
-                            ),
-                            default);
-                    }
-                }
-
-                _pendingSessionState = null;
-                return false;
-            }
-        }
-
-        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
-
-        protected override Task DisposeCoreAsync(bool initialized)
-        {
-            return _semaphore.ExecuteAsync(DisposeCoreInternalAsync);
-
-            Task DisposeCoreInternalAsync()
-            {
-                foreach (HotReloadState sessionState in _activeSessions.Values)
-                {
-                    Assumes.NotNull(sessionState.Process);
-                    Assumes.NotNull(sessionState.Session);
-
-                    sessionState.Process.Exited -= sessionState.OnProcessExited;
-                    _projectFaultHandlerService.Forget(sessionState.Session.StopSessionAsync(default), _project);
-                }
-
-                _activeSessions.Clear();
-
-                return Task.CompletedTask;
-            }
-        }
-
-        private void WriteOutputMessage(HotReloadLogMessage hotReloadLogMessage, CancellationToken cancellationToken) => _hotReloadDiagnosticOutputService.Value.WriteLine(hotReloadLogMessage, cancellationToken);
-
-        /// <summary>
-        /// Checks if the project configuration targeted for debugging/launch meets the
-        /// basic requirements to support Hot Reload. Note that there may be other, specific
-        /// settings that prevent the use of Hot Reload even if the basic requirements are met.
-        /// </summary>
-        private async Task<bool> DebugFrameworkSupportsHotReloadAsync()
-        {
-            return await ConfiguredProjectForDebugHasHotReloadCapabilityAsync()
-                && await DebugSymbolsEnabledInConfiguredProjectForDebugAsync()
-                && !await OptimizeEnabledInConfiguredProjectForDebugAsync();
-        }
-
-        private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync()
-            => _activeDebugFrameworkServices.GetConfiguredProjectForActiveFrameworkAsync();
-
-        private async Task<string?> GetDebugFrameworkVersionAsync()
-        {
-            if (await GetPropertyFromDebugFrameworkAsync(ConfigurationGeneral.TargetFrameworkVersionProperty) is string targetFrameworkVersion)
-            {
-                if (targetFrameworkVersion.StartsWith("v", StringComparison.OrdinalIgnoreCase))
-                {
-                    targetFrameworkVersion = targetFrameworkVersion.Substring(startIndex: 1);
-                }
-
-                return targetFrameworkVersion;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Returns whether or not the project configuration targeted for debugging/launch
-        /// supports startup hooks. These are used to start Hot Reload in the launched
-        /// process.
-        /// </summary>
-        private async Task<bool> DebugFrameworkSupportsStartupHooksAsync()
-        {
-            if (await GetPropertyFromDebugFrameworkAsync(ConfigurationGeneral.StartupHookSupportProperty) is string startupHookSupport)
-            {
-                return !StringComparers.PropertyLiteralValues.Equals(startupHookSupport, "false");
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Returns whether or not the project configuration targeted for debugging/launch
-        /// optimizes binaries. Defaults to false if the property is not defined.
-        /// </summary>
-        private async Task<bool> OptimizeEnabledInConfiguredProjectForDebugAsync()
-        {
-            if (await GetPropertyFromDebugFrameworkAsync("Optimize") is string optimize)
-            {
-                return StringComparers.PropertyLiteralValues.Equals(optimize, "true");
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Returns whether or not the project configuration targeted for debugging/launch
-        /// emits debug symbols. Defaults to false if the property is not defined.
-        /// </summary>
-        private async Task<bool> DebugSymbolsEnabledInConfiguredProjectForDebugAsync()
-        {
-            if (await GetPropertyFromDebugFrameworkAsync("DebugSymbols") is string debugSymbols)
-            {
-                return StringComparers.PropertyLiteralValues.Equals(debugSymbols, "true");
-            }
-
-            return false;
-        }
-
-        private async Task<bool> ConfiguredProjectForDebugHasHotReloadCapabilityAsync()
-        {
-            ConfiguredProject? configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
-            if (configuredProjectForDebug is null)
-            {
-                return false;
-            }
-
-            return configuredProjectForDebug.Capabilities.AppliesTo("SupportsHotReload");
-        }
-
-        private async Task<string?> GetPropertyFromDebugFrameworkAsync(string propertyName)
-        {
-            ConfiguredProject? configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
-            if (configuredProjectForDebug is null)
-            {
-                return null;
-            }
-
-            Assumes.Present(configuredProjectForDebug.Services.ProjectPropertiesProvider);
-            IProjectProperties commonProperties = configuredProjectForDebug.Services.ProjectPropertiesProvider.GetCommonProperties();
-            string propertyValue = await commonProperties.GetEvaluatedPropertyValueAsync(propertyName);
-
-            return propertyValue;
-        }
-
-        private void OnProcessExited(HotReloadState hotReloadState)
-        {
-            _projectFaultHandlerService.Forget(OnProcessExitedAsync(hotReloadState), _project);
-        }
-
-        private async Task OnProcessExitedAsync(HotReloadState hotReloadState)
-        {
-            Assumes.NotNull(hotReloadState.Session);
-            Assumes.NotNull(hotReloadState.Process);
-
-            WriteOutputMessage(
-                new HotReloadLogMessage(
-                    HotReloadVerbosity.Minimal,
-                    VSResources.ProjectHotReloadSessionManager_ProcessExited,
-                    hotReloadState.Session?.Name,
-                    (_nextUniqueId - 1).ToString(),
-                    HotReloadDiagnosticOutputService.GetProcessId(hotReloadState.Process),
-                    HotReloadDiagnosticErrorLevel.Info
-                ),
-                default);
-            
-            await StopProjectAsync(hotReloadState, default);
-
-            hotReloadState.Process.Exited -= hotReloadState.OnProcessExited;
-        }
-
-        private static IDeltaApplier? GetDeltaApplier(HotReloadState hotReloadState)
-        {
-            return null;
-        }
-
-        private async Task<bool> RestartProjectAsync(
-            HotReloadState hotReloadState,
-            bool isRunningUnderDebug,
-            CancellationToken cancellationToken)
-        {
-            Assumes.NotNull(_project.Services.HostObject);
-            await _projectThreadingService.SwitchToUIThread();
-
-            if (_vsSolutionBuildManager2 is null)
-            {
-                _vsSolutionBuildManager2 = await _vsSolutionBuildManagerService.GetValueAsync(cancellationToken);
-            }
-
-            // Step 1: Debug or NonDebug?
-            uint dbgLaunchFlag = isRunningUnderDebug ? (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCHDEBUG : (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCH;
-
-            // Step 2: Build and Launch Debug
-            var projectVsHierarchy = (IVsHierarchy)_project.Services.HostObject;
-
-            var result = _vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(
-                pIVsHierarchyToBuild: projectVsHierarchy,
-                pIVsHierarchyDependent: null,
-                pszDependentConfigurationCanonicalName: null,
-                dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD | dbgLaunchFlag,
-                dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
-                fSuppressUI: 0);
-
-            ErrorHandler.ThrowOnFailure(result);
-
-            return result == HResult.OK;
-        }
-
-        private static Task OnAfterChangesAppliedAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
-
-        private ValueTask<bool> StopProjectAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
-        {
-            return _semaphore.ExecuteAsync(StopProjectInternalAsync, cancellationToken);
-
-            async ValueTask<bool> StopProjectInternalAsync()
-            {
-                Assumes.NotNull(hotReloadState.Session);
-                Assumes.NotNull(hotReloadState.Process);
-
-                int sessionCountOnEntry = _activeSessions.Count;
-
-                try
-                {
-                    if (_activeSessions.Remove(hotReloadState.Process.Id))
-                    {
-                        await hotReloadState.Session.StopSessionAsync(cancellationToken);
-
-                        if (!hotReloadState.Process.HasExited)
-                        {
-                            // First try to close the process nicely and if that doesn't work kill it.
-                            if (!hotReloadState.Process.CloseMainWindow())
-                            {
-                                hotReloadState.Process.Kill();
-                            }
-                        }
-                    }
+                    _pendingSessionState.Process = process;
                 }
                 catch (Exception ex)
                 {
                     WriteOutputMessage(
                         new HotReloadLogMessage(
                             HotReloadVerbosity.Minimal,
-                            string.Format(VSResources.ProjectHotReloadSessionManager_ErrorStoppingTheSession, ex.GetType(), ex.Message),
-                            hotReloadState.Session?.Name,
-                            null,
-                            HotReloadDiagnosticOutputService.GetProcessId(hotReloadState.Process),
+                            $"${ex.GetType()}: ${ex.Message}",
+                            projectName,
+                            _pendingSessionState.Session.Name,
+                            (uint)processId,
                             HotReloadDiagnosticErrorLevel.Error
                         ),
-                        cancellationToken);
+                        default);
                 }
-                finally
+
+                if (_pendingSessionState.Process is null)
                 {
-                    // No more sessions removes the project from hot reload mode
-                    if (sessionCountOnEntry == 1 && _activeSessions.Count == 0)
+                    WriteOutputMessage(
+                        new HotReloadLogMessage(
+                            HotReloadVerbosity.Minimal,
+                            VSResources.ProjectHotReloadSessionManager_NoActiveProcess,
+                            projectName,
+                            _pendingSessionState.Session.Name,
+                            (uint)processId,
+                            HotReloadDiagnosticErrorLevel.Warning
+                        ),
+                        default);
+                }
+                else
+                {
+                    await _pendingSessionState.Session.StartSessionAsync(runningUnderDebugger, cancellationToken: default);
+                    _activeSessions.Add(processId, _pendingSessionState);
+
+                    // Addition of the first session, puts the project in hot reload mode
+                    if (_activeSessions.Count == 1)
                     {
-                        await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: false);
+                        await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: true);
                     }
                 }
 
-                return true;
+                _pendingSessionState = null;
             }
         }
+    }
 
-        /// <inheritdoc />
-        public Task ApplyHotReloadUpdateAsync(Func<IDeltaApplier, CancellationToken, Task> applyFunction, CancellationToken cancellationToken)
+    public Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables)
+    {
+        return _semaphore.ExecuteAsync(TryCreatePendingSessionInternalAsync).AsTask();
+
+        async ValueTask<bool> TryCreatePendingSessionInternalAsync()
         {
-            return _semaphore.ExecuteAsync(ApplyHotReloadUpdateInternalAsync, cancellationToken);
-
-            async Task ApplyHotReloadUpdateInternalAsync()
+            if (await DebugFrameworkSupportsHotReloadAsync()
+                && await GetDebugFrameworkVersionAsync() is string frameworkVersion
+                && !string.IsNullOrWhiteSpace(frameworkVersion))
             {
-                // Run the updates in parallel
-                List<Task>? updateTasks = null;
-
-                foreach (HotReloadState sessionState in _activeSessions.Values)
+                if (await DebugFrameworkSupportsStartupHooksAsync())
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
+                    string name = Path.GetFileNameWithoutExtension(_project.FullPath);
+                    HotReloadState state = new(this);
+                    IProjectHotReloadSession? projectHotReloadSession = _projectHotReloadAgent.Value.CreateHotReloadSession(name, _nextUniqueId++, frameworkVersion, state);
 
-                    if (sessionState.Session is IProjectHotReloadSessionInternal sessionInternal)
+                    if (projectHotReloadSession is not null)
                     {
-                        IDeltaApplier? deltaApplier = sessionInternal.DeltaApplier;
-                        if (deltaApplier is not null)
+                        state.Session = projectHotReloadSession;
+                        await projectHotReloadSession.ApplyLaunchVariablesAsync(environmentVariables, default);
+                        _pendingSessionState = state;
+
+                        return true;
+                    }
+                }
+                else
+                {
+                    // If startup hooks are not supported then tell the user why Hot Reload isn't available.
+                    string projectName = Path.GetFileNameWithoutExtension(_project.FullPath);
+
+                    WriteOutputMessage(
+                        new HotReloadLogMessage(
+                            HotReloadVerbosity.Minimal,
+                            VSResources.ProjectHotReloadSessionManager_StartupHooksDisabled,
+                            projectName,
+                            null,
+                            HotReloadDiagnosticOutputService.GetProcessId(),
+                            HotReloadDiagnosticErrorLevel.Warning
+                        ),
+                        default);
+                }
+            }
+
+            _pendingSessionState = null;
+            return false;
+        }
+    }
+
+    protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
+
+    protected override Task DisposeCoreAsync(bool initialized)
+    {
+        return _semaphore.ExecuteAsync(DisposeCoreInternalAsync);
+
+        Task DisposeCoreInternalAsync()
+        {
+            foreach (HotReloadState sessionState in _activeSessions.Values)
+            {
+                Assumes.NotNull(sessionState.Process);
+                Assumes.NotNull(sessionState.Session);
+
+                sessionState.Process.Exited -= sessionState.OnProcessExited;
+                _projectFaultHandlerService.Forget(sessionState.Session.StopSessionAsync(default), _project);
+            }
+
+            _activeSessions.Clear();
+
+            return Task.CompletedTask;
+        }
+    }
+
+    private void WriteOutputMessage(HotReloadLogMessage hotReloadLogMessage, CancellationToken cancellationToken) => _hotReloadDiagnosticOutputService.Value.WriteLine(hotReloadLogMessage, cancellationToken);
+
+    /// <summary>
+    /// Checks if the project configuration targeted for debugging/launch meets the
+    /// basic requirements to support Hot Reload. Note that there may be other, specific
+    /// settings that prevent the use of Hot Reload even if the basic requirements are met.
+    /// </summary>
+    private async Task<bool> DebugFrameworkSupportsHotReloadAsync()
+    {
+        return await ConfiguredProjectForDebugHasHotReloadCapabilityAsync()
+            && await DebugSymbolsEnabledInConfiguredProjectForDebugAsync()
+            && !await OptimizeEnabledInConfiguredProjectForDebugAsync();
+    }
+
+    private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync()
+        => _activeDebugFrameworkServices.GetConfiguredProjectForActiveFrameworkAsync();
+
+    private async Task<string?> GetDebugFrameworkVersionAsync()
+    {
+        if (await GetPropertyFromDebugFrameworkAsync(ConfigurationGeneral.TargetFrameworkVersionProperty) is string targetFrameworkVersion)
+        {
+            if (targetFrameworkVersion.StartsWith("v", StringComparison.OrdinalIgnoreCase))
+            {
+                targetFrameworkVersion = targetFrameworkVersion.Substring(startIndex: 1);
+            }
+
+            return targetFrameworkVersion;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Returns whether or not the project configuration targeted for debugging/launch
+    /// supports startup hooks. These are used to start Hot Reload in the launched
+    /// process.
+    /// </summary>
+    private async Task<bool> DebugFrameworkSupportsStartupHooksAsync()
+    {
+        if (await GetPropertyFromDebugFrameworkAsync(ConfigurationGeneral.StartupHookSupportProperty) is string startupHookSupport)
+        {
+            return !StringComparers.PropertyLiteralValues.Equals(startupHookSupport, "false");
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Returns whether or not the project configuration targeted for debugging/launch
+    /// optimizes binaries. Defaults to false if the property is not defined.
+    /// </summary>
+    private async Task<bool> OptimizeEnabledInConfiguredProjectForDebugAsync()
+    {
+        if (await GetPropertyFromDebugFrameworkAsync("Optimize") is string optimize)
+        {
+            return StringComparers.PropertyLiteralValues.Equals(optimize, "true");
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Returns whether or not the project configuration targeted for debugging/launch
+    /// emits debug symbols. Defaults to false if the property is not defined.
+    /// </summary>
+    private async Task<bool> DebugSymbolsEnabledInConfiguredProjectForDebugAsync()
+    {
+        if (await GetPropertyFromDebugFrameworkAsync("DebugSymbols") is string debugSymbols)
+        {
+            return StringComparers.PropertyLiteralValues.Equals(debugSymbols, "true");
+        }
+
+        return false;
+    }
+
+    private async Task<bool> ConfiguredProjectForDebugHasHotReloadCapabilityAsync()
+    {
+        ConfiguredProject? configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
+        if (configuredProjectForDebug is null)
+        {
+            return false;
+        }
+
+        return configuredProjectForDebug.Capabilities.AppliesTo("SupportsHotReload");
+    }
+
+    private async Task<string?> GetPropertyFromDebugFrameworkAsync(string propertyName)
+    {
+        ConfiguredProject? configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
+        if (configuredProjectForDebug is null)
+        {
+            return null;
+        }
+
+        Assumes.Present(configuredProjectForDebug.Services.ProjectPropertiesProvider);
+        IProjectProperties commonProperties = configuredProjectForDebug.Services.ProjectPropertiesProvider.GetCommonProperties();
+        string propertyValue = await commonProperties.GetEvaluatedPropertyValueAsync(propertyName);
+
+        return propertyValue;
+    }
+
+    private void OnProcessExited(HotReloadState hotReloadState)
+    {
+        _projectFaultHandlerService.Forget(OnProcessExitedAsync(hotReloadState), _project);
+    }
+
+    private async Task OnProcessExitedAsync(HotReloadState hotReloadState)
+    {
+        Assumes.NotNull(hotReloadState.Session);
+        Assumes.NotNull(hotReloadState.Process);
+
+        WriteOutputMessage(
+            new HotReloadLogMessage(
+                HotReloadVerbosity.Minimal,
+                VSResources.ProjectHotReloadSessionManager_ProcessExited,
+                hotReloadState.Session?.Name,
+                (_nextUniqueId - 1).ToString(),
+                HotReloadDiagnosticOutputService.GetProcessId(hotReloadState.Process),
+                HotReloadDiagnosticErrorLevel.Info
+            ),
+            default);
+
+        await StopProjectAsync(hotReloadState, default);
+
+        hotReloadState.Process.Exited -= hotReloadState.OnProcessExited;
+    }
+
+    private static IDeltaApplier? GetDeltaApplier(HotReloadState hotReloadState)
+    {
+        return null;
+    }
+
+    private async Task<bool> RestartProjectAsync(
+        HotReloadState hotReloadState,
+        bool isRunningUnderDebug,
+        CancellationToken cancellationToken)
+    {
+        Assumes.NotNull(_project.Services.HostObject);
+        await _projectThreadingService.SwitchToUIThread();
+
+        if (_vsSolutionBuildManager2 is null)
+        {
+            _vsSolutionBuildManager2 = await _vsSolutionBuildManagerService.GetValueAsync(cancellationToken);
+        }
+
+        // Step 1: Debug or NonDebug?
+        uint dbgLaunchFlag = isRunningUnderDebug ? (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCHDEBUG : (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCH;
+
+        // Step 2: Build and Launch Debug
+        var projectVsHierarchy = (IVsHierarchy)_project.Services.HostObject;
+
+        var result = _vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(
+            pIVsHierarchyToBuild: projectVsHierarchy,
+            pIVsHierarchyDependent: null,
+            pszDependentConfigurationCanonicalName: null,
+            dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD | dbgLaunchFlag,
+            dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
+            fSuppressUI: 0);
+
+        ErrorHandler.ThrowOnFailure(result);
+
+        return result == HResult.OK;
+    }
+
+    private static Task OnAfterChangesAppliedAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
+
+    private ValueTask<bool> StopProjectAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
+    {
+        return _semaphore.ExecuteAsync(StopProjectInternalAsync, cancellationToken);
+
+        async ValueTask<bool> StopProjectInternalAsync()
+        {
+            Assumes.NotNull(hotReloadState.Session);
+            Assumes.NotNull(hotReloadState.Process);
+
+            int sessionCountOnEntry = _activeSessions.Count;
+
+            try
+            {
+                if (_activeSessions.Remove(hotReloadState.Process.Id))
+                {
+                    await hotReloadState.Session.StopSessionAsync(cancellationToken);
+
+                    if (!hotReloadState.Process.HasExited)
+                    {
+                        // First try to close the process nicely and if that doesn't work kill it.
+                        if (!hotReloadState.Process.CloseMainWindow())
                         {
-                            updateTasks ??= [];
-                            updateTasks.Add(applyFunction(deltaApplier, cancellationToken));
+                            hotReloadState.Process.Kill();
                         }
                     }
                 }
-
-                // Wait for their completion
-                if (updateTasks is not null)
+            }
+            catch (Exception ex)
+            {
+                WriteOutputMessage(
+                    new HotReloadLogMessage(
+                        HotReloadVerbosity.Minimal,
+                        string.Format(VSResources.ProjectHotReloadSessionManager_ErrorStoppingTheSession, ex.GetType(), ex.Message),
+                        hotReloadState.Session?.Name,
+                        null,
+                        HotReloadDiagnosticOutputService.GetProcessId(hotReloadState.Process),
+                        HotReloadDiagnosticErrorLevel.Error
+                    ),
+                    cancellationToken);
+            }
+            finally
+            {
+                // No more sessions removes the project from hot reload mode
+                if (sessionCountOnEntry == 1 && _activeSessions.Count == 0)
                 {
-                    await Task.WhenAll(updateTasks);
+                    await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: false);
                 }
             }
+
+            return true;
+        }
+    }
+
+    /// <inheritdoc />
+    public Task ApplyHotReloadUpdateAsync(Func<IDeltaApplier, CancellationToken, Task> applyFunction, CancellationToken cancellationToken)
+    {
+        return _semaphore.ExecuteAsync(ApplyHotReloadUpdateInternalAsync, cancellationToken);
+
+        async Task ApplyHotReloadUpdateInternalAsync()
+        {
+            // Run the updates in parallel
+            List<Task>? updateTasks = null;
+
+            foreach (HotReloadState sessionState in _activeSessions.Values)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (sessionState.Session is IProjectHotReloadSessionInternal sessionInternal)
+                {
+                    IDeltaApplier? deltaApplier = sessionInternal.DeltaApplier;
+                    if (deltaApplier is not null)
+                    {
+                        updateTasks ??= [];
+                        updateTasks.Add(applyFunction(deltaApplier, cancellationToken));
+                    }
+                }
+            }
+
+            // Wait for their completion
+            if (updateTasks is not null)
+            {
+                await Task.WhenAll(updateTasks);
+            }
+        }
+    }
+
+    private class HotReloadState : IProjectHotReloadSessionCallback2
+    {
+        private readonly ProjectHotReloadSessionManager _sessionManager;
+
+        public Process? Process { get; set; }
+        public IProjectHotReloadSession? Session { get; set; }
+
+        public bool SupportsRestart => true;
+
+        public UnconfiguredProject? Project => _sessionManager._project;
+
+        public HotReloadState(ProjectHotReloadSessionManager sessionManager)
+        {
+            _sessionManager = sessionManager;
         }
 
-        private class HotReloadState : IProjectHotReloadSessionCallback2
+        internal void OnProcessExited(object sender, EventArgs e)
         {
-            private readonly ProjectHotReloadSessionManager _sessionManager;
+            _sessionManager.OnProcessExited(this);
+        }
 
-            public Process? Process { get; set; }
-            public IProjectHotReloadSession? Session { get; set; }
+        public Task OnAfterChangesAppliedAsync(CancellationToken cancellationToken)
+        {
+            return ProjectHotReloadSessionManager.OnAfterChangesAppliedAsync(this, cancellationToken);
+        }
 
-            public bool SupportsRestart => true;
+        public Task<bool> StopProjectAsync(CancellationToken cancellationToken)
+        {
+            return _sessionManager.StopProjectAsync(this, cancellationToken).AsTask();
+        }
 
-            public UnconfiguredProject? Project => _sessionManager._project;
+        public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
+        {
+            return TaskResult.False;
+        }
 
-            public HotReloadState(ProjectHotReloadSessionManager sessionManager)
-            {
-                _sessionManager = sessionManager;
-            }
+        public Task<bool> RestartProjectAsync(bool isRunningUnderDebug, CancellationToken cancellationToken)
+        {
+            return _sessionManager.RestartProjectAsync(this, isRunningUnderDebug, cancellationToken);
+        }
 
-            internal void OnProcessExited(object sender, EventArgs e)
-            {
-                _sessionManager.OnProcessExited(this);
-            }
-
-            public Task OnAfterChangesAppliedAsync(CancellationToken cancellationToken)
-            {
-                return ProjectHotReloadSessionManager.OnAfterChangesAppliedAsync(this, cancellationToken);
-            }
-
-            public Task<bool> StopProjectAsync(CancellationToken cancellationToken)
-            {
-                return _sessionManager.StopProjectAsync(this, cancellationToken).AsTask();
-            }
-
-            public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
-            {
-                return TaskResult.False;
-            }
-
-            public Task<bool> RestartProjectAsync(bool isRunningUnderDebug, CancellationToken cancellationToken)
-            {
-                return _sessionManager.RestartProjectAsync(this, isRunningUnderDebug, cancellationToken);
-            }
-
-            public IDeltaApplier? GetDeltaApplier()
-            {
-                return ProjectHotReloadSessionManager.GetDeltaApplier(this);
-            }
+        public IDeltaApplier? GetDeltaApplier()
+        {
+            return ProjectHotReloadSessionManager.GetDeltaApplier(this);
         }
     }
 }

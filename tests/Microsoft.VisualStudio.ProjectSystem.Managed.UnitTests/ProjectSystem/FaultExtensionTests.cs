@@ -2,37 +2,36 @@
 
 using System.Threading.Tasks.Dataflow;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+public class FaultExtensionTests
 {
-    public class FaultExtensionTests
+    [Fact]
+    public async Task RegisterFaultHandler_WhenBlockThrows_ReportsFault()
     {
-        [Fact]
-        public async Task RegisterFaultHandler_WhenBlockThrows_ReportsFault()
+        Exception? result = null;
+        var faultHandlerService = IProjectFaultHandlerServiceFactory.ImplementHandleFaultAsync((ex, reportSettings, severity, project) => { result = ex; });
+        var thrownException = new Exception(message: "Test");
+
+        var block = DataflowBlockSlim.CreateActionBlock<string>(value =>
         {
-            Exception? result = null;
-            var faultHandlerService = IProjectFaultHandlerServiceFactory.ImplementHandleFaultAsync((ex, reportSettings, severity, project) => { result = ex; });
-            var thrownException = new Exception(message: "Test");
+            throw thrownException;
+        });
 
-            var block = DataflowBlockSlim.CreateActionBlock<string>(value =>
-            {
-                throw thrownException;
-            });
+        var faultTask = faultHandlerService.RegisterFaultHandlerAsync(block, project: null);
 
-            var faultTask = faultHandlerService.RegisterFaultHandlerAsync(block, project: null);
+        await block.SendAsync("Hello");
 
-            await block.SendAsync("Hello");
+        await faultTask;
 
-            await faultTask;
+        Assert.NotNull(result);
 
-            Assert.NotNull(result);
+        // We don't want to assert the exact exception message as an AggregateException may append further text
+        // to the end.
+        Assert.StartsWith(
+            $"Project system data flow 'DataflowBlockSlim (ActionBlockSlimAsync`1 : {block.GetHashCode()})' closed because of an exception: Test.",
+            result.Message);
 
-            // We don't want to assert the exact exception message as an AggregateException may append further text
-            // to the end.
-            Assert.StartsWith(
-                $"Project system data flow 'DataflowBlockSlim (ActionBlockSlimAsync`1 : {block.GetHashCode()})' closed because of an exception: Test.",
-                result.Message);
-
-            Assert.Same(thrownException, result.GetBaseException());
-        }
+        Assert.Same(thrownException, result.GetBaseException());
     }
 }

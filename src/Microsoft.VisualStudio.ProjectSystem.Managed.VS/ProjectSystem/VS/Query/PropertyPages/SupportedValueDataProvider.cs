@@ -6,24 +6,23 @@ using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Query.Metadata;
 using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// Creates <see cref="IQueryDataProducer{TRequest, TResult}"/> instances that retrieve a property's supported
+/// values (<see cref="ISupportedValueSnapshot"/>).
+/// </summary>'
+/// <remarks>
+/// Responsible for populating <see cref="IUIPropertyValueSnapshot.SupportedValues"/>.
+/// </remarks>
+[QueryDataProvider(SupportedValueType.TypeName, ProjectModel.ModelName)]
+[RelationshipQueryDataProvider(UIPropertyValueType.TypeName, UIPropertyValueType.SupportedValuesPropertyName)]
+[QueryDataProviderZone(ProjectModelZones.Cps)]
+[Export(typeof(IQueryByRelationshipDataProvider))]
+internal class SupportedValueDataProvider : IQueryByRelationshipDataProvider
 {
-    /// <summary>
-    /// Creates <see cref="IQueryDataProducer{TRequest, TResult}"/> instances that retrieve a property's supported
-    /// values (<see cref="ISupportedValueSnapshot"/>).
-    /// </summary>'
-    /// <remarks>
-    /// Responsible for populating <see cref="IUIPropertyValueSnapshot.SupportedValues"/>.
-    /// </remarks>
-    [QueryDataProvider(SupportedValueType.TypeName, ProjectModel.ModelName)]
-    [RelationshipQueryDataProvider(UIPropertyValueType.TypeName, UIPropertyValueType.SupportedValuesPropertyName)]
-    [QueryDataProviderZone(ProjectModelZones.Cps)]
-    [Export(typeof(IQueryByRelationshipDataProvider))]
-    internal class SupportedValueDataProvider : IQueryByRelationshipDataProvider
+    IQueryDataProducer<IEntityValue, IEntityValue> IQueryByRelationshipDataProvider.CreateQueryDataSource(IPropertiesAvailableStatus properties)
     {
-        IQueryDataProducer<IEntityValue, IEntityValue> IQueryByRelationshipDataProvider.CreateQueryDataSource(IPropertiesAvailableStatus properties)
-        {
-            return new SupportedValueFromPropertyDataProducer((ISupportedValuePropertiesAvailableStatus)properties);
-        }
+        return new SupportedValueFromPropertyDataProducer((ISupportedValuePropertiesAvailableStatus)properties);
     }
 }

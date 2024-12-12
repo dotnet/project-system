@@ -3,35 +3,34 @@
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Query;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+public static class IProjectStateFactory
 {
-    public static class IProjectStateFactory
+    internal static IProjectState Create(
+        IImmutableSet<ProjectConfiguration>? projectConfigurations = null,
+        ProjectConfiguration? defaultConfiguration = null,
+        Func<ProjectConfiguration, string, QueryProjectPropertiesContext, IRule>? bindToRule = null)
     {
-        internal static IProjectState Create(
-            IImmutableSet<ProjectConfiguration>? projectConfigurations = null,
-            ProjectConfiguration? defaultConfiguration = null,
-            Func<ProjectConfiguration, string, QueryProjectPropertiesContext, IRule>? bindToRule = null)
+        var mock = new Mock<IProjectState>();
+
+        if (projectConfigurations is not null)
         {
-            var mock = new Mock<IProjectState>();
-
-            if (projectConfigurations is not null)
-            {
-                mock.Setup(cache => cache.GetKnownConfigurationsAsync()).ReturnsAsync(projectConfigurations);
-            }
-
-            if (defaultConfiguration is not null)
-            {
-                mock.Setup(cache => cache.GetSuggestedConfigurationAsync()).ReturnsAsync(defaultConfiguration);
-            }
-
-            if (bindToRule is not null)
-            {
-                mock.Setup(cache => cache
-                    .BindToRuleAsync(It.IsAny<ProjectConfiguration>(), It.IsAny<string>(), It.IsAny<QueryProjectPropertiesContext>()))
-                    .Returns((ProjectConfiguration config, string schema, QueryProjectPropertiesContext context) => Task.FromResult<IRule?>(bindToRule(config, schema, context)));
-            }
-
-            return mock.Object;
+            mock.Setup(cache => cache.GetKnownConfigurationsAsync()).ReturnsAsync(projectConfigurations);
         }
+
+        if (defaultConfiguration is not null)
+        {
+            mock.Setup(cache => cache.GetSuggestedConfigurationAsync()).ReturnsAsync(defaultConfiguration);
+        }
+
+        if (bindToRule is not null)
+        {
+            mock.Setup(cache => cache
+                .BindToRuleAsync(It.IsAny<ProjectConfiguration>(), It.IsAny<string>(), It.IsAny<QueryProjectPropertiesContext>()))
+                .Returns((ProjectConfiguration config, string schema, QueryProjectPropertiesContext context) => Task.FromResult<IRule?>(bindToRule(config, schema, context)));
+        }
+
+        return mock.Object;
     }
 }

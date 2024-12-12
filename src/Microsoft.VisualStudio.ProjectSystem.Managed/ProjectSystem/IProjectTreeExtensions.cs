@@ -4,80 +4,79 @@ using System.Diagnostics.Contracts;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal static class IProjectTreeExtensions
 {
-    internal static class IProjectTreeExtensions
+    /// <summary>
+    /// Gets the direct child of <paramref name="tree"/> with <paramref name="caption"/>
+    /// if found, otherwise <see langword="null"/>.
+    /// </summary>
+    [Pure]
+    public static IProjectTree? FindChildWithCaption(this IProjectTree tree, string caption)
     {
-        /// <summary>
-        /// Gets the direct child of <paramref name="tree"/> with <paramref name="caption"/>
-        /// if found, otherwise <see langword="null"/>.
-        /// </summary>
-        [Pure]
-        public static IProjectTree? FindChildWithCaption(this IProjectTree tree, string caption)
-        {
-            return tree.Children.FirstOrDefault(
-                static (child, cap) => string.Equals(cap, child.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase),
-                caption);
-        }
+        return tree.Children.FirstOrDefault(
+            static (child, cap) => string.Equals(cap, child.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase),
+            caption);
+    }
 
-        /// <summary>
-        /// Gets the direct child of <paramref name="tree"/> that represents <paramref name="dependency"/> if
-        /// one exists, otherwise <see langword="null"/>.
-        /// </summary>
-        [Pure]
-        public static IProjectTree? FindChildForDependency(this IProjectTree tree, IDependency dependency)
-        {
-            return tree.Children.FirstOrDefault(
-                static (child, dependency) =>
-                    StringComparers.ItemNames.Equals(dependency.Id, child.BrowseObjectProperties?.ItemName) ||
-                    StringComparers.ProjectTreeCaptionIgnoreCase.Equals(dependency.Caption, child.Caption),
-                dependency);
-        }
+    /// <summary>
+    /// Gets the direct child of <paramref name="tree"/> that represents <paramref name="dependency"/> if
+    /// one exists, otherwise <see langword="null"/>.
+    /// </summary>
+    [Pure]
+    public static IProjectTree? FindChildForDependency(this IProjectTree tree, IDependency dependency)
+    {
+        return tree.Children.FirstOrDefault(
+            static (child, dependency) =>
+                StringComparers.ItemNames.Equals(dependency.Id, child.BrowseObjectProperties?.ItemName) ||
+                StringComparers.ProjectTreeCaptionIgnoreCase.Equals(dependency.Caption, child.Caption),
+            dependency);
+    }
 
-        /// <summary>
-        /// Finds the first child node having <paramref name="flags"/>, or <see langword="null"/> if no child matches.
-        /// </summary>
-        [Pure]
-        internal static IProjectTree? FindChildWithFlags(this IProjectTree self, ProjectTreeFlags flags)
+    /// <summary>
+    /// Finds the first child node having <paramref name="flags"/>, or <see langword="null"/> if no child matches.
+    /// </summary>
+    [Pure]
+    internal static IProjectTree? FindChildWithFlags(this IProjectTree self, ProjectTreeFlags flags)
+    {
+        foreach (IProjectTree child in self.Children)
         {
-            foreach (IProjectTree child in self.Children)
+            if (child.Flags.Contains(flags))
             {
-                if (child.Flags.Contains(flags))
-                {
-                    return child;
-                }
+                return child;
             }
-
-            return null;
         }
 
-        /// <summary>
-        ///     Returns the properties of a <see cref="IProjectTree"/>, returning the result from a 
-        ///     project snapshot if it is available, otherwise, returns the live results.
-        /// </summary>
-        /// <remarks>
-        ///     Prefer this method over <see cref="IProjectTree.BrowseObjectProperties"/> to avoid 
-        ///     needing to take a project lock to read properties, which can avoid UI delays but
-        ///     with possibility of out-of-date data.
-        /// </remarks>
-        internal static IRule? GetBrowseObjectPropertiesViaSnapshotIfAvailable(this IProjectTree node, ConfiguredProject project)
-        {
-            Assumes.Present(project.Services.PropertyPagesCatalog);
+        return null;
+    }
 
-            IRule? properties = node.BrowseObjectProperties;
+    /// <summary>
+    ///     Returns the properties of a <see cref="IProjectTree"/>, returning the result from a 
+    ///     project snapshot if it is available, otherwise, returns the live results.
+    /// </summary>
+    /// <remarks>
+    ///     Prefer this method over <see cref="IProjectTree.BrowseObjectProperties"/> to avoid 
+    ///     needing to take a project lock to read properties, which can avoid UI delays but
+    ///     with possibility of out-of-date data.
+    /// </remarks>
+    internal static IRule? GetBrowseObjectPropertiesViaSnapshotIfAvailable(this IProjectTree node, ConfiguredProject project)
+    {
+        Assumes.Present(project.Services.PropertyPagesCatalog);
 
-            if (properties?.Schema is null || !project.Services.PropertyPagesCatalog.SourceBlock.TryReceive(null, out IProjectVersionedValue<IProjectCatalogSnapshot>? catalogSnapshot))
-                return properties;
+        IRule? properties = node.BrowseObjectProperties;
 
-            // We let the snapshot be out of date with the "live" project
-            if (!catalogSnapshot.Value.NamedCatalogs.TryGetValue(PropertyPageContexts.BrowseObject, out IPropertyPagesCatalog? pagesCatalog))
-                return properties;
+        if (properties?.Schema is null || !project.Services.PropertyPagesCatalog.SourceBlock.TryReceive(null, out IProjectVersionedValue<IProjectCatalogSnapshot>? catalogSnapshot))
+            return properties;
 
-            Assumes.NotNull(catalogSnapshot.Value.Project);
+        // We let the snapshot be out of date with the "live" project
+        if (!catalogSnapshot.Value.NamedCatalogs.TryGetValue(PropertyPageContexts.BrowseObject, out IPropertyPagesCatalog? pagesCatalog))
+            return properties;
 
-            IRule? snapshot = pagesCatalog.BindToContext(properties.Schema.Name, catalogSnapshot.Value.Project.ProjectInstance, properties.ItemType, properties.ItemName);
+        Assumes.NotNull(catalogSnapshot.Value.Project);
 
-            return snapshot ?? properties;
-        }
+        IRule? snapshot = pagesCatalog.BindToContext(properties.Schema.Name, catalogSnapshot.Value.Project.ProjectInstance, properties.ItemType, properties.ItemName);
+
+        return snapshot ?? properties;
     }
 }

@@ -2,44 +2,43 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+
+internal class BuildOptions
 {
-    internal class BuildOptions
+    public BuildOptions(
+        ImmutableArray<CommandLineSourceFile> sourceFiles,
+        ImmutableArray<CommandLineSourceFile> additionalFiles,
+        ImmutableArray<CommandLineReference> metadataReferences,
+        ImmutableArray<CommandLineAnalyzerReference> analyzerReferences,
+        ImmutableArray<string> analyzerConfigFiles)
     {
-        public BuildOptions(
-            ImmutableArray<CommandLineSourceFile> sourceFiles,
-            ImmutableArray<CommandLineSourceFile> additionalFiles,
-            ImmutableArray<CommandLineReference> metadataReferences,
-            ImmutableArray<CommandLineAnalyzerReference> analyzerReferences,
-            ImmutableArray<string> analyzerConfigFiles)
-        {
-            SourceFiles = sourceFiles;
-            AdditionalFiles = additionalFiles;
-            MetadataReferences = metadataReferences;
-            AnalyzerReferences = analyzerReferences;
-            AnalyzerConfigFiles = analyzerConfigFiles;
-        }
+        SourceFiles = sourceFiles;
+        AdditionalFiles = additionalFiles;
+        MetadataReferences = metadataReferences;
+        AnalyzerReferences = analyzerReferences;
+        AnalyzerConfigFiles = analyzerConfigFiles;
+    }
 
-        public ImmutableArray<CommandLineSourceFile> SourceFiles { get; }
+    public ImmutableArray<CommandLineSourceFile> SourceFiles { get; }
 
-        public ImmutableArray<CommandLineSourceFile> AdditionalFiles { get; }
+    public ImmutableArray<CommandLineSourceFile> AdditionalFiles { get; }
 
-        public ImmutableArray<CommandLineReference> MetadataReferences { get; }
+    public ImmutableArray<CommandLineReference> MetadataReferences { get; }
 
-        public ImmutableArray<CommandLineAnalyzerReference> AnalyzerReferences { get; }
+    public ImmutableArray<CommandLineAnalyzerReference> AnalyzerReferences { get; }
 
-        public ImmutableArray<string> AnalyzerConfigFiles { get; }
+    public ImmutableArray<string> AnalyzerConfigFiles { get; }
 
-        public static BuildOptions FromCommandLineArguments(CommandLineArguments commandLineArguments)
-        {
-            Requires.NotNull(commandLineArguments);
+    public static BuildOptions FromCommandLineArguments(CommandLineArguments commandLineArguments)
+    {
+        Requires.NotNull(commandLineArguments);
 
-            return new BuildOptions(
-                commandLineArguments.SourceFiles,
-                commandLineArguments.AdditionalFiles,
-                commandLineArguments.MetadataReferences,
-                commandLineArguments.AnalyzerReferences,
-                commandLineArguments.AnalyzerConfigPaths);
-        }
+        return new BuildOptions(
+            commandLineArguments.SourceFiles,
+            commandLineArguments.AdditionalFiles,
+            commandLineArguments.MetadataReferences,
+            commandLineArguments.AnalyzerReferences,
+            commandLineArguments.AnalyzerConfigPaths);
     }
 }

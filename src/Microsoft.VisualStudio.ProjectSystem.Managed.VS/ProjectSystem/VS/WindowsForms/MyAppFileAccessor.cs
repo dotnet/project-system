@@ -84,7 +84,7 @@ internal class MyAppFileAccessor : IMyAppFileAccessor, IDisposable
                 await writer.FlushAsync();
             }
         }
-        
+
         await _threadingService.SwitchToUIThread();
         try
         {

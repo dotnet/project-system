@@ -1,12 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Legacy;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Legacy;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using DependenciesSnapshotInput = (
     System.Collections.Immutable.ImmutableDictionary<Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyGroupType, System.Collections.Immutable.ImmutableArray<Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.IDependency>> UnconfiguredDependencies,
     System.Collections.Immutable.ImmutableDictionary<Microsoft.VisualStudio.ProjectSystem.ProjectConfigurationSlice, Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.DependenciesSnapshotSlice> ConfiguredDependencies,

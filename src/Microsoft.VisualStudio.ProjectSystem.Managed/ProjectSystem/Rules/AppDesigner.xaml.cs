@@ -2,12 +2,11 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+[ExcludeFromCodeCoverage]
+[SuppressMessage("Style", "IDE0016:Use 'throw' expression")]
+internal partial class AppDesigner
 {
-    [ExcludeFromCodeCoverage]
-    [SuppressMessage("Style", "IDE0016:Use 'throw' expression")]
-    internal partial class AppDesigner
-    {
-        internal static string[] SchemaNameArray = new string[] { SchemaName };
-    }
+    internal static string[] SchemaNameArray = new string[] { SchemaName };
 }

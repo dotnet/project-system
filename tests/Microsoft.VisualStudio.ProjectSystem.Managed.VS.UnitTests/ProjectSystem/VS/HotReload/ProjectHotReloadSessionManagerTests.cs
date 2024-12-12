@@ -3,196 +3,195 @@
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
+namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+
+public class ProjectHotReloadSessionManagerTests
 {
-    public class ProjectHotReloadSessionManagerTests
+    [Fact]
+    public async Task WhenActiveFrameworkMeetsRequirements_APendingSessionIsCreated()
     {
-        [Fact]
-        public async Task WhenActiveFrameworkMeetsRequirements_APendingSessionIsCreated()
+        var capabilities = new[] { "SupportsHotReload" };
+        var propertyNamesAndValues = new Dictionary<string, string?>()
         {
-            var capabilities = new[] { "SupportsHotReload" };
-            var propertyNamesAndValues = new Dictionary<string, string?>()
-            {
-                { "TargetFrameworkVersion", "v6.0" },
-                { "DebugSymbols", "true" },
-                // Note: "Optimize" is not included here. The compilers do not optimize by default;
-                // so if the property isn't set that's OK.
-            };
+            { "TargetFrameworkVersion", "v6.0" },
+            { "DebugSymbols", "true" },
+            // Note: "Optimize" is not included here. The compilers do not optimize by default;
+            // so if the property isn't set that's OK.
+        };
 
-            var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
-            var manager = CreateHotReloadSessionManager(activeConfiguredProject);
+        var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
+        var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
-            var environmentVariables = new Dictionary<string, string>();
-            var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var environmentVariables = new Dictionary<string, string>();
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
 
-            Assert.True(sessionCreated);
-        }
+        Assert.True(sessionCreated);
+    }
 
-        [Fact]
-        public async Task WhenTheSupportsHotReloadCapabilityIsMissing_APendingSessionIsNotCreated()
+    [Fact]
+    public async Task WhenTheSupportsHotReloadCapabilityIsMissing_APendingSessionIsNotCreated()
+    {
+        var capabilities = new[] { "ARandomCapabilityUnrelatedToHotReload" };
+        var propertyNamesAndValues = new Dictionary<string, string?>()
         {
-            var capabilities = new[] { "ARandomCapabilityUnrelatedToHotReload" };
-            var propertyNamesAndValues = new Dictionary<string, string?>()
-            {
-                { "TargetFrameworkVersion", "v6.0" },
-                { "DebugSymbols", "true" }
-            };
+            { "TargetFrameworkVersion", "v6.0" },
+            { "DebugSymbols", "true" }
+        };
 
-            var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
-            var manager = CreateHotReloadSessionManager(activeConfiguredProject);
+        var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
+        var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
-            var environmentVariables = new Dictionary<string, string>();
-            var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var environmentVariables = new Dictionary<string, string>();
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
 
-            Assert.False(sessionCreated);
-        }
+        Assert.False(sessionCreated);
+    }
 
-        [Fact]
-        public async Task WhenTheTargetFrameworkVersionIsNotDefined_APendingSessionIsNotCreated()
+    [Fact]
+    public async Task WhenTheTargetFrameworkVersionIsNotDefined_APendingSessionIsNotCreated()
+    {
+        var capabilities = new[] { "SupportsHotReload" };
+        var propertyNamesAndValues = new Dictionary<string, string?>()
         {
-            var capabilities = new[] { "SupportsHotReload" };
-            var propertyNamesAndValues = new Dictionary<string, string?>()
-            {
-                { "ARandomProperty", "WithARandomValue" },
-                { "DebugSymbols", "true" }
-            };
+            { "ARandomProperty", "WithARandomValue" },
+            { "DebugSymbols", "true" }
+        };
 
-            var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
-            var manager = CreateHotReloadSessionManager(activeConfiguredProject);
+        var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
+        var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
-            var environmentVariables = new Dictionary<string, string>();
-            var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var environmentVariables = new Dictionary<string, string>();
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
 
-            Assert.False(sessionCreated);
-        }
+        Assert.False(sessionCreated);
+    }
 
-        [Fact]
-        public async Task WhenStartupHooksAreDisabled_APendingSessionIsNotCreated()
+    [Fact]
+    public async Task WhenStartupHooksAreDisabled_APendingSessionIsNotCreated()
+    {
+        var capabilities = new[] { "SupportsHotReload" };
+        var propertyNamesAndValues = new Dictionary<string, string?>()
         {
-            var capabilities = new[] { "SupportsHotReload" };
-            var propertyNamesAndValues = new Dictionary<string, string?>()
-            {
-                { "TargetFrameworkVersion", "v6.0" },
-                { "StartupHookSupport", "false" },
-                { "DebugSymbols", "true" }
-            };
+            { "TargetFrameworkVersion", "v6.0" },
+            { "StartupHookSupport", "false" },
+            { "DebugSymbols", "true" }
+        };
 
-            var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
-            bool outputServiceCalled = false;
-            void OutputServiceCallback() => outputServiceCalled = true;
-            var manager = CreateHotReloadSessionManager(activeConfiguredProject, OutputServiceCallback);
+        var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
+        bool outputServiceCalled = false;
+        void OutputServiceCallback() => outputServiceCalled = true;
+        var manager = CreateHotReloadSessionManager(activeConfiguredProject, OutputServiceCallback);
 
-            var environmentVariables = new Dictionary<string, string>();
-            var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var environmentVariables = new Dictionary<string, string>();
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
 
-            Assert.False(sessionCreated);
-            Assert.True(outputServiceCalled);
-        }
+        Assert.False(sessionCreated);
+        Assert.True(outputServiceCalled);
+    }
 
-        [Fact]
-        public async Task WhenOptimizationIsEnabled_APendingSessionIsNotCreated()
+    [Fact]
+    public async Task WhenOptimizationIsEnabled_APendingSessionIsNotCreated()
+    {
+        var capabilities = new[] { "SupportsHotReload" };
+        var propertyNamesAndValues = new Dictionary<string, string?>()
         {
-            var capabilities = new[] { "SupportsHotReload" };
-            var propertyNamesAndValues = new Dictionary<string, string?>()
-            {
-                { "TargetFrameworkVersion", "v6.0" },
-                { "DebugSymbols", "true" },
-                { "Optimize", "true" }
-            };
+            { "TargetFrameworkVersion", "v6.0" },
+            { "DebugSymbols", "true" },
+            { "Optimize", "true" }
+        };
 
-            var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
-            var manager = CreateHotReloadSessionManager(activeConfiguredProject);
+        var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
+        var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
-            var environmentVariables = new Dictionary<string, string>();
-            var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var environmentVariables = new Dictionary<string, string>();
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
 
-            Assert.False(sessionCreated);
-        }
+        Assert.False(sessionCreated);
+    }
 
-        [Fact]
-        public async Task WhenDebugSymbolsIsNotSpecified_APendingSessionIsNotCreated()
+    [Fact]
+    public async Task WhenDebugSymbolsIsNotSpecified_APendingSessionIsNotCreated()
+    {
+        var capabilities = new[] { "SupportsHotReload" };
+        var propertyNamesAndValues = new Dictionary<string, string?>()
         {
-            var capabilities = new[] { "SupportsHotReload" };
-            var propertyNamesAndValues = new Dictionary<string, string?>()
-            {
-                { "TargetFrameworkVersion", "v6.0" }
-            };
+            { "TargetFrameworkVersion", "v6.0" }
+        };
 
-            var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
-            var manager = CreateHotReloadSessionManager(activeConfiguredProject);
+        var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
+        var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
-            var environmentVariables = new Dictionary<string, string>();
-            var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var environmentVariables = new Dictionary<string, string>();
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
 
-            Assert.False(sessionCreated);
-        }
+        Assert.False(sessionCreated);
+    }
 
-        [Fact]
-        public async Task WhenDebugSymbolsIsFalse_APendingSessionIsNotCreated()
+    [Fact]
+    public async Task WhenDebugSymbolsIsFalse_APendingSessionIsNotCreated()
+    {
+        var capabilities = new[] { "SupportsHotReload" };
+        var propertyNamesAndValues = new Dictionary<string, string?>()
         {
-            var capabilities = new[] { "SupportsHotReload" };
-            var propertyNamesAndValues = new Dictionary<string, string?>()
-            {
-                { "TargetFrameworkVersion", "v6.0" },
-                { "DebugSymbols", "false" }
-            };
+            { "TargetFrameworkVersion", "v6.0" },
+            { "DebugSymbols", "false" }
+        };
 
-            var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
-            var manager = CreateHotReloadSessionManager(activeConfiguredProject);
+        var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
+        var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
-            var environmentVariables = new Dictionary<string, string>();
-            var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var environmentVariables = new Dictionary<string, string>();
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
 
-            Assert.False(sessionCreated);
-        }
+        Assert.False(sessionCreated);
+    }
 
-        [Fact]
-        public void WhenNoActiveSession_HasSessionsReturnsFalse()
+    [Fact]
+    public void WhenNoActiveSession_HasSessionsReturnsFalse()
+    {
+        var capabilities = new[] { "SupportsHotReload" };
+        var propertyNamesAndValues = new Dictionary<string, string?>()
         {
-            var capabilities = new[] { "SupportsHotReload" };
-            var propertyNamesAndValues = new Dictionary<string, string?>()
-            {
-                { "TargetFrameworkVersion", "v6.0" },
-                { "DebugSymbols", "true" },
-                // Note: "Optimize" is not included here. The compilers do not optimize by default;
-                // so if the property isn't set that's OK.
-            };
+            { "TargetFrameworkVersion", "v6.0" },
+            { "DebugSymbols", "true" },
+            // Note: "Optimize" is not included here. The compilers do not optimize by default;
+            // so if the property isn't set that's OK.
+        };
 
-            var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
-            var manager = CreateHotReloadSessionManager(activeConfiguredProject);
+        var activeConfiguredProject = CreateConfiguredProject(capabilities, propertyNamesAndValues);
+        var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
-            Assert.False(manager.HasActiveHotReloadSessions);
-        }
+        Assert.False(manager.HasActiveHotReloadSessions);
+    }
 
-        private static ProjectHotReloadSessionManager CreateHotReloadSessionManager(ConfiguredProject activeConfiguredProject, Action? outputServiceCallback = null)
-        {
-            var activeDebugFrameworkServices = new IActiveDebugFrameworkServicesMock()
-                .ImplementGetConfiguredProjectForActiveFrameworkAsync(activeConfiguredProject)
-                .Object;
+    private static ProjectHotReloadSessionManager CreateHotReloadSessionManager(ConfiguredProject activeConfiguredProject, Action? outputServiceCallback = null)
+    {
+        var activeDebugFrameworkServices = new IActiveDebugFrameworkServicesMock()
+            .ImplementGetConfiguredProjectForActiveFrameworkAsync(activeConfiguredProject)
+            .Object;
 
-            var iVSSolutionBuildManagerServiceMock = new Mock<IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2>>();
+        var iVSSolutionBuildManagerServiceMock = new Mock<IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2>>();
 
-            var manager = new ProjectHotReloadSessionManager(
-                UnconfiguredProjectFactory.Create(),
-                IProjectThreadingServiceFactory.Create(),
-                IProjectFaultHandlerServiceFactory.Create(),
-                activeDebugFrameworkServices,
-                new Lazy<IProjectHotReloadAgent>(() => IProjectHotReloadAgentFactory.Create()),
-                new Lazy<IHotReloadDiagnosticOutputService>(() => IHotReloadDiagnosticOutputServiceFactory.Create(outputServiceCallback)),
-                new Lazy<IProjectHotReloadNotificationService>(() => IProjectHotReloadNotificationServiceFactory.Create()),
-                iVSSolutionBuildManagerServiceMock.Object);
+        var manager = new ProjectHotReloadSessionManager(
+            UnconfiguredProjectFactory.Create(),
+            IProjectThreadingServiceFactory.Create(),
+            IProjectFaultHandlerServiceFactory.Create(),
+            activeDebugFrameworkServices,
+            new Lazy<IProjectHotReloadAgent>(() => IProjectHotReloadAgentFactory.Create()),
+            new Lazy<IHotReloadDiagnosticOutputService>(() => IHotReloadDiagnosticOutputServiceFactory.Create(outputServiceCallback)),
+            new Lazy<IProjectHotReloadNotificationService>(() => IProjectHotReloadNotificationServiceFactory.Create()),
+            iVSSolutionBuildManagerServiceMock.Object);
 
-            return manager;
-        }
+        return manager;
+    }
 
-        private static ConfiguredProject CreateConfiguredProject(string[] capabilities, Dictionary<string, string?> propertyNamesAndValues)
-        {
-            return ConfiguredProjectFactory.Create(
-                IProjectCapabilitiesScopeFactory.Create(capabilities),
-                services: ConfiguredProjectServicesFactory.Create(
-                    projectPropertiesProvider: IProjectPropertiesProviderFactory.Create(
-                        commonProps: IProjectPropertiesFactory.CreateWithPropertiesAndValues(
-                            propertyNamesAndValues))));
-        }
+    private static ConfiguredProject CreateConfiguredProject(string[] capabilities, Dictionary<string, string?> propertyNamesAndValues)
+    {
+        return ConfiguredProjectFactory.Create(
+            IProjectCapabilitiesScopeFactory.Create(capabilities),
+            services: ConfiguredProjectServicesFactory.Create(
+                projectPropertiesProvider: IProjectPropertiesProviderFactory.Create(
+                    commonProps: IProjectPropertiesFactory.CreateWithPropertiesAndValues(
+                        propertyNamesAndValues))));
     }
 }

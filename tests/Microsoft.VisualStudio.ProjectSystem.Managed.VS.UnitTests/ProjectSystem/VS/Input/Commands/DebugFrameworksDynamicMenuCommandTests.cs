@@ -5,350 +5,349 @@ using Microsoft.VisualStudio.Threading;
 
 #pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
+
+public class DebugFrameworksDynamicMenuCommandTests
 {
-    public class DebugFrameworksDynamicMenuCommandTests
+    [Fact]
+    public void ExecCommand_HandleNoStartupProjects()
     {
-        [Fact]
-        public void ExecCommand_HandleNoStartupProjects()
-        {
-            var startupHelper = new Mock<IStartupProjectHelper>();
-            startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(ImmutableArray<IActiveDebugFrameworkServices>.Empty);
+        var startupHelper = new Mock<IStartupProjectHelper>();
+        startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                     .Returns(ImmutableArray<IActiveDebugFrameworkServices>.Empty);
 
-            var command = CreateInstance(startupHelper.Object);
-            Assert.False(command.ExecCommand(0, EventArgs.Empty));
-            startupHelper.Verify();
+        var command = CreateInstance(startupHelper.Object);
+        Assert.False(command.ExecCommand(0, EventArgs.Empty));
+        startupHelper.Verify();
+    }
+
+    [Theory]
+    [InlineData(-1, false)]
+    [InlineData(2, false)]
+    [InlineData(0, true)]
+    [InlineData(1, true)]
+    public void ExecCommand_SingleStartupProject_VerifyCorrectFrameworkSet(int cmdIndex, bool expected)
+    {
+        var frameworks = new List<string>() { "net461", "netcoreapp1.0" };
+        var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesMock()
+                                           .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
+                                           .ImplementGetProjectFrameworksAsync(frameworks);
+        if (expected)
+        {
+            activeDebugFrameworkSvcs.ImplementSetActiveDebuggingFrameworkPropertyAsync(frameworks[cmdIndex]);
         }
+        var startupHelper = new Mock<IStartupProjectHelper>();
+        startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                     .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
 
-        [Theory]
-        [InlineData(-1, false)]
-        [InlineData(2, false)]
-        [InlineData(0, true)]
-        [InlineData(1, true)]
-        public void ExecCommand_SingleStartupProject_VerifyCorrectFrameworkSet(int cmdIndex, bool expected)
+        var command = CreateInstance(startupHelper.Object);
+        Assert.Equal(expected, command.ExecCommand(cmdIndex, EventArgs.Empty));
+
+        startupHelper.Verify();
+        activeDebugFrameworkSvcs.Verify();
+    }
+
+    [Theory]
+    [InlineData(-1, false)]
+    [InlineData(2, false)]
+    [InlineData(0, true)]
+    [InlineData(1, true)]
+    public void ExecCommand_MultipleStartupProjects_VerifyCorrectFrameworkSet(int cmdIndex, bool expected)
+    {
+        var frameworks1 = new List<string>() { "net461", "netcoreapp1.0" };
+        var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
+                                           .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
+                                           .ImplementGetProjectFrameworksAsync(frameworks1);
+
+        var frameworks2 = new List<string>() { "net461", "netcoreapp1.0" };
+        var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
+                                           .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
+                                           .ImplementGetProjectFrameworksAsync(frameworks2);
+        if (expected)
         {
-            var frameworks = new List<string>() { "net461", "netcoreapp1.0" };
-            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesMock()
-                                               .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
-                                               .ImplementGetProjectFrameworksAsync(frameworks);
-            if (expected)
-            {
-                activeDebugFrameworkSvcs.ImplementSetActiveDebuggingFrameworkPropertyAsync(frameworks[cmdIndex]);
-            }
-            var startupHelper = new Mock<IStartupProjectHelper>();
-            startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
-
-            var command = CreateInstance(startupHelper.Object);
-            Assert.Equal(expected, command.ExecCommand(cmdIndex, EventArgs.Empty));
-
-            startupHelper.Verify();
-            activeDebugFrameworkSvcs.Verify();
+            activeDebugFrameworkSvcs1.ImplementSetActiveDebuggingFrameworkPropertyAsync(frameworks1[cmdIndex]);
+            activeDebugFrameworkSvcs2.ImplementSetActiveDebuggingFrameworkPropertyAsync(frameworks2[cmdIndex]);
         }
+        var startupHelper = new Mock<IStartupProjectHelper>();
+        startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                     .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
-        [Theory]
-        [InlineData(-1, false)]
-        [InlineData(2, false)]
-        [InlineData(0, true)]
-        [InlineData(1, true)]
-        public void ExecCommand_MultipleStartupProjects_VerifyCorrectFrameworkSet(int cmdIndex, bool expected)
-        {
-            var frameworks1 = new List<string>() { "net461", "netcoreapp1.0" };
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
-                                               .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
-                                               .ImplementGetProjectFrameworksAsync(frameworks1);
+        var command = CreateInstance(startupHelper.Object);
+        Assert.Equal(expected, command.ExecCommand(cmdIndex, EventArgs.Empty));
 
-            var frameworks2 = new List<string>() { "net461", "netcoreapp1.0" };
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
-                                               .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
-                                               .ImplementGetProjectFrameworksAsync(frameworks2);
-            if (expected)
-            {
-                activeDebugFrameworkSvcs1.ImplementSetActiveDebuggingFrameworkPropertyAsync(frameworks1[cmdIndex]);
-                activeDebugFrameworkSvcs2.ImplementSetActiveDebuggingFrameworkPropertyAsync(frameworks2[cmdIndex]);
-            }
-            var startupHelper = new Mock<IStartupProjectHelper>();
-            startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
+        startupHelper.Verify();
+        activeDebugFrameworkSvcs1.Verify();
+        activeDebugFrameworkSvcs2.Verify();
+    }
 
-            var command = CreateInstance(startupHelper.Object);
-            Assert.Equal(expected, command.ExecCommand(cmdIndex, EventArgs.Empty));
+    [Fact]
+    public void QueryStatus_HandleNoStartupProjects()
+    {
+        var startupHelper = new Mock<IStartupProjectHelper>();
+        startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                     .Returns(ImmutableArray<IActiveDebugFrameworkServices>.Empty);
 
-            startupHelper.Verify();
-            activeDebugFrameworkSvcs1.Verify();
-            activeDebugFrameworkSvcs2.Verify();
-        }
+        var command = CreateInstance(startupHelper.Object);
+        Assert.False(command.QueryStatusCommand(0, EventArgs.Empty));
+        startupHelper.Verify();
+    }
 
-        [Fact]
-        public void QueryStatus_HandleNoStartupProjects()
-        {
-            var startupHelper = new Mock<IStartupProjectHelper>();
-            startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(ImmutableArray<IActiveDebugFrameworkServices>.Empty);
+    [Fact]
+    public void QueryStatus_SingleStartupProject_NullFrameworks()
+    {
+        var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesMock()
+                                           .ImplementGetProjectFrameworksAsync(null);
+        var startupHelper = new Mock<IStartupProjectHelper>();
+        startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                     .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
 
-            var command = CreateInstance(startupHelper.Object);
-            Assert.False(command.QueryStatusCommand(0, EventArgs.Empty));
-            startupHelper.Verify();
-        }
+        var command = CreateInstance(startupHelper.Object);
+        Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
+        Assert.False(command.Visible);
+        Assert.Equal("", command.Text);
+        Assert.False(command.Checked);
+        Assert.False(command.Enabled);
 
-        [Fact]
-        public void QueryStatus_SingleStartupProject_NullFrameworks()
-        {
-            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesMock()
-                                               .ImplementGetProjectFrameworksAsync(null);
-            var startupHelper = new Mock<IStartupProjectHelper>();
-            startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
+        startupHelper.Verify();
+        activeDebugFrameworkSvcs.Verify();
+    }
 
-            var command = CreateInstance(startupHelper.Object);
-            Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
-            Assert.False(command.Visible);
-            Assert.Equal("", command.Text);
-            Assert.False(command.Checked);
-            Assert.False(command.Enabled);
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void QueryStatus_SingleStartupProject_LessThan2Frameworks(bool createList)
+    {
+        var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesMock()
+                                           .ImplementGetProjectFrameworksAsync(createList ? new List<string>() { "netcoreapp1.0" } : null);
+        var startupHelper = new Mock<IStartupProjectHelper>();
+        startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                     .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
 
-            startupHelper.Verify();
-            activeDebugFrameworkSvcs.Verify();
-        }
+        var command = CreateInstance(startupHelper.Object);
+        Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
+        Assert.False(command.Visible);
+        Assert.Equal("", command.Text);
+        Assert.False(command.Checked);
+        Assert.False(command.Enabled);
 
-        [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        public void QueryStatus_SingleStartupProject_LessThan2Frameworks(bool createList)
-        {
-            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesMock()
-                                               .ImplementGetProjectFrameworksAsync(createList ? new List<string>() { "netcoreapp1.0" } : null);
-            var startupHelper = new Mock<IStartupProjectHelper>();
-            startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
+        startupHelper.Verify();
+        activeDebugFrameworkSvcs.Verify();
+    }
 
-            var command = CreateInstance(startupHelper.Object);
-            Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
-            Assert.False(command.Visible);
-            Assert.Equal("", command.Text);
-            Assert.False(command.Checked);
-            Assert.False(command.Enabled);
+    [Theory]
+    [InlineData(0, "netcoreapp1.0")]
+    [InlineData(1, "net461")]
+    [InlineData(2, "net461")]
+    [InlineData(2, "net462")]
+    public void QueryStatus_SingleStartupProject_TestValidFrameworkIndexes(int cmdIndex, string activeFramework)
+    {
+        var frameworks = new List<string>() { "netcoreapp1.0", "net461", "net462" };
 
-            startupHelper.Verify();
-            activeDebugFrameworkSvcs.Verify();
-        }
+        var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesMock()
+                                           .ImplementGetProjectFrameworksAsync(frameworks)
+                                           .ImplementGetActiveDebuggingFrameworkPropertyAsync(activeFramework);
 
-        [Theory]
-        [InlineData(0, "netcoreapp1.0")]
-        [InlineData(1, "net461")]
-        [InlineData(2, "net461")]
-        [InlineData(2, "net462")]
-        public void QueryStatus_SingleStartupProject_TestValidFrameworkIndexes(int cmdIndex, string activeFramework)
-        {
-            var frameworks = new List<string>() { "netcoreapp1.0", "net461", "net462" };
+        var startupHelper = new Mock<IStartupProjectHelper>();
+        startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                     .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
 
-            var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesMock()
-                                               .ImplementGetProjectFrameworksAsync(frameworks)
-                                               .ImplementGetActiveDebuggingFrameworkPropertyAsync(activeFramework);
+        var command = CreateInstance(startupHelper.Object);
+        Assert.True(command.QueryStatusCommand(cmdIndex, EventArgs.Empty));
+        Assert.True(command.Visible);
+        Assert.Equal(frameworks[cmdIndex], command.Text);
+        Assert.Equal(frameworks[cmdIndex] == activeFramework, command.Checked);
+        Assert.True(command.Enabled);
 
-            var startupHelper = new Mock<IStartupProjectHelper>();
-            startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs.Object));
+        startupHelper.Verify();
+        activeDebugFrameworkSvcs.Verify();
+    }
 
-            var command = CreateInstance(startupHelper.Object);
-            Assert.True(command.QueryStatusCommand(cmdIndex, EventArgs.Empty));
-            Assert.True(command.Visible);
-            Assert.Equal(frameworks[cmdIndex], command.Text);
-            Assert.Equal(frameworks[cmdIndex] == activeFramework, command.Checked);
-            Assert.True(command.Enabled);
+    [Fact]
+    public void QueryStatus_MultipleStartupProjects_NullFrameworks()
+    {
+        var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
+                                           .ImplementGetProjectFrameworksAsync(null);
 
-            startupHelper.Verify();
-            activeDebugFrameworkSvcs.Verify();
-        }
+        var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
+                                          .ImplementGetProjectFrameworksAsync(null);
 
-        [Fact]
-        public void QueryStatus_MultipleStartupProjects_NullFrameworks()
-        {
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
-                                               .ImplementGetProjectFrameworksAsync(null);
+        var startupHelper = new Mock<IStartupProjectHelper>();
+        startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                     .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
-                                              .ImplementGetProjectFrameworksAsync(null);
+        var command = CreateInstance(startupHelper.Object);
+        Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
+        Assert.False(command.Visible);
+        Assert.Equal("", command.Text);
+        Assert.False(command.Checked);
+        Assert.False(command.Enabled);
 
-            var startupHelper = new Mock<IStartupProjectHelper>();
-            startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
+        startupHelper.Verify();
+        activeDebugFrameworkSvcs1.Verify();
+        activeDebugFrameworkSvcs2.Verify();
+    }
 
-            var command = CreateInstance(startupHelper.Object);
-            Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
-            Assert.False(command.Visible);
-            Assert.Equal("", command.Text);
-            Assert.False(command.Checked);
-            Assert.False(command.Enabled);
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void QueryStatus_MultipleStartupProjects_LessThan2Frameworks(bool createList)
+    {
+        var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
+                                           .ImplementGetProjectFrameworksAsync(createList ? new List<string>() { "netcoreapp1.0" } : null);
 
-            startupHelper.Verify();
-            activeDebugFrameworkSvcs1.Verify();
-            activeDebugFrameworkSvcs2.Verify();
-        }
+        var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
+                                          .ImplementGetProjectFrameworksAsync(createList ? new List<string>() { "netcoreapp1.0" } : null);
 
-        [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        public void QueryStatus_MultipleStartupProjects_LessThan2Frameworks(bool createList)
-        {
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
-                                               .ImplementGetProjectFrameworksAsync(createList ? new List<string>() { "netcoreapp1.0" } : null);
+        var startupHelper = new Mock<IStartupProjectHelper>();
+        startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                     .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
-                                              .ImplementGetProjectFrameworksAsync(createList ? new List<string>() { "netcoreapp1.0" } : null);
+        var command = CreateInstance(startupHelper.Object);
+        Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
+        Assert.False(command.Visible);
+        Assert.Equal("", command.Text);
+        Assert.False(command.Checked);
+        Assert.False(command.Enabled);
 
-            var startupHelper = new Mock<IStartupProjectHelper>();
-            startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
+        startupHelper.Verify();
+        activeDebugFrameworkSvcs1.Verify();
+        activeDebugFrameworkSvcs2.Verify();
+    }
 
-            var command = CreateInstance(startupHelper.Object);
-            Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
-            Assert.False(command.Visible);
-            Assert.Equal("", command.Text);
-            Assert.False(command.Checked);
-            Assert.False(command.Enabled);
+    [Fact]
+    public void QueryStatus_MultipleStartupProjects_OrderDifferent()
+    {
+        var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
+                                           .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
+                                           .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
 
-            startupHelper.Verify();
-            activeDebugFrameworkSvcs1.Verify();
-            activeDebugFrameworkSvcs2.Verify();
-        }
+        var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
+                                         .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
+                                         .ImplementGetProjectFrameworksAsync(new List<string>() { "netcoreapp1.0", "net461" });
 
-        [Fact]
-        public void QueryStatus_MultipleStartupProjects_OrderDifferent()
-        {
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
-                                               .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
-                                               .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
+        var startupHelper = new Mock<IStartupProjectHelper>();
+        startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                     .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
-                                             .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
-                                             .ImplementGetProjectFrameworksAsync(new List<string>() { "netcoreapp1.0", "net461" });
+        var command = CreateInstance(startupHelper.Object);
+        Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
+        Assert.False(command.Visible);
+        Assert.Equal("", command.Text);
+        Assert.False(command.Checked);
+        Assert.False(command.Enabled);
 
-            var startupHelper = new Mock<IStartupProjectHelper>();
-            startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
+        startupHelper.Verify();
+        activeDebugFrameworkSvcs1.Verify();
+        activeDebugFrameworkSvcs2.Verify();
+    }
 
-            var command = CreateInstance(startupHelper.Object);
-            Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
-            Assert.False(command.Visible);
-            Assert.Equal("", command.Text);
-            Assert.False(command.Checked);
-            Assert.False(command.Enabled);
+    [Fact]
+    public void QueryStatus_MultipleStartupProjects_DifferentFrameworks()
+    {
+        var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
+                                          .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
+                                          .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
 
-            startupHelper.Verify();
-            activeDebugFrameworkSvcs1.Verify();
-            activeDebugFrameworkSvcs2.Verify();
-        }
+        var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
+                                         .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
+                                         .ImplementGetProjectFrameworksAsync(new List<string>() { "net45", "netcoreapp1.0" });
 
-        [Fact]
-        public void QueryStatus_MultipleStartupProjects_DifferentFrameworks()
-        {
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
-                                              .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
-                                              .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
+        var startupHelper = new Mock<IStartupProjectHelper>();
+        startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                     .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
-                                             .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
-                                             .ImplementGetProjectFrameworksAsync(new List<string>() { "net45", "netcoreapp1.0" });
+        var command = CreateInstance(startupHelper.Object);
+        Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
+        Assert.False(command.Visible);
+        Assert.Equal("", command.Text);
+        Assert.False(command.Checked);
+        Assert.False(command.Enabled);
 
-            var startupHelper = new Mock<IStartupProjectHelper>();
-            startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
+        startupHelper.Verify();
+        activeDebugFrameworkSvcs1.Verify();
+        activeDebugFrameworkSvcs2.Verify();
+    }
 
-            var command = CreateInstance(startupHelper.Object);
-            Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
-            Assert.False(command.Visible);
-            Assert.Equal("", command.Text);
-            Assert.False(command.Checked);
-            Assert.False(command.Enabled);
+    [Fact]
+    public void QueryStatus_MultipleStartupProjects_OneSingleFramework()
+    {
+        var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
+                                 .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
+                                 .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
 
-            startupHelper.Verify();
-            activeDebugFrameworkSvcs1.Verify();
-            activeDebugFrameworkSvcs2.Verify();
-        }
+        var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
+                                         .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
+                                         .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
 
-        [Fact]
-        public void QueryStatus_MultipleStartupProjects_OneSingleFramework()
-        {
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
-                                     .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
-                                     .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
+        var activeDebugFrameworkSvcs3 = new IActiveDebugFrameworkServicesMock()
+                                  .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
+                                  .ImplementGetProjectFrameworksAsync(new List<string>() { "netcoreapp1.0" });
 
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
-                                             .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
-                                             .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
+        var startupHelper = new Mock<IStartupProjectHelper>();
+        startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                     .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object, activeDebugFrameworkSvcs3.Object));
 
-            var activeDebugFrameworkSvcs3 = new IActiveDebugFrameworkServicesMock()
-                                      .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
-                                      .ImplementGetProjectFrameworksAsync(new List<string>() { "netcoreapp1.0" });
+        var command = CreateInstance(startupHelper.Object);
+        Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
+        Assert.False(command.Visible);
+        Assert.Equal("", command.Text);
+        Assert.False(command.Checked);
+        Assert.False(command.Enabled);
 
-            var startupHelper = new Mock<IStartupProjectHelper>();
-            startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object, activeDebugFrameworkSvcs3.Object));
+        startupHelper.Verify();
+        activeDebugFrameworkSvcs1.Verify();
+        activeDebugFrameworkSvcs2.Verify();
+        activeDebugFrameworkSvcs3.Verify();
+    }
 
-            var command = CreateInstance(startupHelper.Object);
-            Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
-            Assert.False(command.Visible);
-            Assert.Equal("", command.Text);
-            Assert.False(command.Checked);
-            Assert.False(command.Enabled);
+    [Theory]
+    [InlineData(0, "netcoreapp1.0")]
+    [InlineData(1, "net461")]
+    [InlineData(2, "net461")]
+    [InlineData(2, "net462")]
+    public void QueryStatus_MultipleStartupProjects_TestValidFrameworkIndexes(int cmdIndex, string activeFramework)
+    {
+        var frameworks1 = new List<string>() { "netcoreapp1.0", "net461", "net462" };
 
-            startupHelper.Verify();
-            activeDebugFrameworkSvcs1.Verify();
-            activeDebugFrameworkSvcs2.Verify();
-            activeDebugFrameworkSvcs3.Verify();
-        }
+        var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
+                                           .ImplementGetProjectFrameworksAsync(frameworks1)
+                                           .ImplementGetActiveDebuggingFrameworkPropertyAsync(activeFramework);
 
-        [Theory]
-        [InlineData(0, "netcoreapp1.0")]
-        [InlineData(1, "net461")]
-        [InlineData(2, "net461")]
-        [InlineData(2, "net462")]
-        public void QueryStatus_MultipleStartupProjects_TestValidFrameworkIndexes(int cmdIndex, string activeFramework)
-        {
-            var frameworks1 = new List<string>() { "netcoreapp1.0", "net461", "net462" };
+        var frameworks2 = new List<string>() { "netcoreapp1.0", "net461", "net462" };
 
-            var activeDebugFrameworkSvcs1 = new IActiveDebugFrameworkServicesMock()
-                                               .ImplementGetProjectFrameworksAsync(frameworks1)
-                                               .ImplementGetActiveDebuggingFrameworkPropertyAsync(activeFramework);
+        var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
+                                           .ImplementGetProjectFrameworksAsync(frameworks2)
+                                           .ImplementGetActiveDebuggingFrameworkPropertyAsync(activeFramework);
 
-            var frameworks2 = new List<string>() { "netcoreapp1.0", "net461", "net462" };
+        var startupHelper = new Mock<IStartupProjectHelper>();
+        startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                     .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
 
-            var activeDebugFrameworkSvcs2 = new IActiveDebugFrameworkServicesMock()
-                                               .ImplementGetProjectFrameworksAsync(frameworks2)
-                                               .ImplementGetActiveDebuggingFrameworkPropertyAsync(activeFramework);
+        var command = CreateInstance(startupHelper.Object);
+        Assert.True(command.QueryStatusCommand(cmdIndex, EventArgs.Empty));
+        Assert.True(command.Visible);
+        Assert.Equal(frameworks1[cmdIndex], command.Text);
+        Assert.Equal(frameworks1[cmdIndex] == activeFramework, command.Checked);
+        Assert.Equal(frameworks2[cmdIndex], command.Text);
+        Assert.Equal(frameworks2[cmdIndex] == activeFramework, command.Checked);
+        Assert.True(command.Enabled);
 
-            var startupHelper = new Mock<IStartupProjectHelper>();
-            startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                         .Returns(ImmutableArray.Create(activeDebugFrameworkSvcs1.Object, activeDebugFrameworkSvcs2.Object));
+        startupHelper.Verify();
+        activeDebugFrameworkSvcs1.Verify();
+        activeDebugFrameworkSvcs2.Verify();
+    }
 
-            var command = CreateInstance(startupHelper.Object);
-            Assert.True(command.QueryStatusCommand(cmdIndex, EventArgs.Empty));
-            Assert.True(command.Visible);
-            Assert.Equal(frameworks1[cmdIndex], command.Text);
-            Assert.Equal(frameworks1[cmdIndex] == activeFramework, command.Checked);
-            Assert.Equal(frameworks2[cmdIndex], command.Text);
-            Assert.Equal(frameworks2[cmdIndex] == activeFramework, command.Checked);
-            Assert.True(command.Enabled);
-
-            startupHelper.Verify();
-            activeDebugFrameworkSvcs1.Verify();
-            activeDebugFrameworkSvcs2.Verify();
-        }
-
-        private static DebugFrameworksDynamicMenuCommand CreateInstance(IStartupProjectHelper startupProjectHelper)
-        {
-            return new DebugFrameworksDynamicMenuCommand(startupProjectHelper, new JoinableTaskContext());
+    private static DebugFrameworksDynamicMenuCommand CreateInstance(IStartupProjectHelper startupProjectHelper)
+    {
+        return new DebugFrameworksDynamicMenuCommand(startupProjectHelper, new JoinableTaskContext());
 #pragma warning restore VSSDK005 // Avoid instantiating JoinableTaskContext
-        }
+    }
 
-        private class TestDebugFrameworksDynamicMenuCommand : DebugFrameworksDynamicMenuCommand
+    private class TestDebugFrameworksDynamicMenuCommand : DebugFrameworksDynamicMenuCommand
+    {
+        public TestDebugFrameworksDynamicMenuCommand(IStartupProjectHelper startupHelper, JoinableTaskContext joinableTaskContext)
+            : base(startupHelper, joinableTaskContext)
         {
-            public TestDebugFrameworksDynamicMenuCommand(IStartupProjectHelper startupHelper, JoinableTaskContext joinableTaskContext)
-                : base(startupHelper, joinableTaskContext)
-            {
-            }
         }
     }
 }

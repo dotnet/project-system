@@ -195,6 +195,7 @@ CollectFrameworkReferences                     | NuGet      | Returns non-transi
 CollectNuGetAuditSuppressions                  | NuGet      | Returns `NuGetAuditSuppress` items. Supports package restore.
 CollectPackageDownloads                        | NuGet      | Returns `PackageDownload` items. Supports package restore.
 CollectPackageReferences                       | NuGet      | Returns `PackageReference` items. Supports package restore.
+CollectPrunePackageReferences                  | NuGet      | Returns `PrunePackageReference` items. Supports package restore.
 CollectResolvedCompilationReferencesDesignTime | DNPS       |
 CollectResolvedSDKReferencesDesignTime         | SDK        |
 CollectSuggestedVisualStudioComponentIds       | DNPS       | Supports in-product acquisition (IPA).

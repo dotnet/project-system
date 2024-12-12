@@ -2,97 +2,96 @@
 
 using System.Collections;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal sealed class SetDiff<T> where T : notnull
 {
-    internal sealed class SetDiff<T> where T : notnull
+    private const byte FlagBefore = 0;
+    private const byte FlagAfter = 1;
+
+    private readonly Dictionary<T, byte> _dic;
+
+    public Part Removed => new(_dic, FlagBefore);
+
+    public Part Added => new(_dic, FlagAfter);
+
+    public SetDiff(IEnumerable<T> before, IEnumerable<T> after, IEqualityComparer<T>? equalityComparer = null)
     {
-        private const byte FlagBefore = 0;
-        private const byte FlagAfter = 1;
+        Requires.NotNull(before);
+        Requires.NotNull(after);
 
-        private readonly Dictionary<T, byte> _dic;
+        equalityComparer ??= EqualityComparer<T>.Default;
 
-        public Part Removed => new(_dic, FlagBefore);
+        var dic = new Dictionary<T, byte>(equalityComparer);
 
-        public Part Added => new(_dic, FlagAfter);
-
-        public SetDiff(IEnumerable<T> before, IEnumerable<T> after, IEqualityComparer<T>? equalityComparer = null)
+        foreach (T item in before)
         {
-            Requires.NotNull(before);
-            Requires.NotNull(after);
-
-            equalityComparer ??= EqualityComparer<T>.Default;
-
-            var dic = new Dictionary<T, byte>(equalityComparer);
-
-            foreach (T item in before)
-            {
-                dic[item] = FlagBefore;
-            }
-
-            foreach (T item in after)
-            {
-                if (!dic.Remove(item))
-                {
-                    dic[item] = FlagAfter;
-                }
-            }
-
-            _dic = dic;
+            dic[item] = FlagBefore;
         }
 
-        public readonly struct Part : IEnumerable<T>
+        foreach (T item in after)
         {
-            private readonly Dictionary<T, byte> _dic;
+            if (!dic.Remove(item))
+            {
+                dic[item] = FlagAfter;
+            }
+        }
+
+        _dic = dic;
+    }
+
+    public readonly struct Part : IEnumerable<T>
+    {
+        private readonly Dictionary<T, byte> _dic;
+        private readonly byte _flag;
+
+        public Part(Dictionary<T, byte> dic, byte flag)
+        {
+            _dic = dic;
+            _flag = flag;
+        }
+
+        public PartEnumerator GetEnumerator() => new(_dic, _flag);
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
+
+        public struct PartEnumerator : IEnumerator<T>
+        {
             private readonly byte _flag;
 
-            public Part(Dictionary<T, byte> dic, byte flag)
+            // IMPORTANT cannot be readonly
+            private Dictionary<T, byte>.Enumerator _enumerator;
+
+            public PartEnumerator(Dictionary<T, byte> dic, byte flag)
             {
-                _dic = dic;
                 _flag = flag;
+                _enumerator = dic.GetEnumerator();
+                Current = default!;
             }
 
-            public PartEnumerator GetEnumerator() => new(_dic, _flag);
-
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-            IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
-
-            public struct PartEnumerator : IEnumerator<T>
+            public bool MoveNext()
             {
-                private readonly byte _flag;
-
-                // IMPORTANT cannot be readonly
-                private Dictionary<T, byte>.Enumerator _enumerator;
-
-                public PartEnumerator(Dictionary<T, byte> dic, byte flag)
+                while (_enumerator.MoveNext())
                 {
-                    _flag = flag;
-                    _enumerator = dic.GetEnumerator();
-                    Current = default!;
-                }
-
-                public bool MoveNext()
-                {
-                    while (_enumerator.MoveNext())
+                    if (_enumerator.Current.Value == _flag)
                     {
-                        if (_enumerator.Current.Value == _flag)
-                        {
-                            Current = _enumerator.Current.Key;
-                            return true;
-                        }
+                        Current = _enumerator.Current.Key;
+                        return true;
                     }
-
-                    return false;
                 }
 
-                public T Current { get; private set; }
-
-                object IEnumerator.Current => Current!;
-
-                void IEnumerator.Reset() => throw new NotSupportedException();
-
-                void IDisposable.Dispose() { }
+                return false;
             }
+
+            public T Current { get; private set; }
+
+            object IEnumerator.Current => Current!;
+
+            void IEnumerator.Reset() => throw new NotSupportedException();
+
+            void IDisposable.Dispose() { }
         }
     }
 }

@@ -49,9 +49,9 @@ internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreS
         try
         {
             _restoring = true;
-            
+
             Task<bool> restoreOperation = _solutionRestoreService.NominateProjectAsync(_project.FullPath, new VsProjectRestoreInfo(restoreData), cancellationToken);
-            
+
             SaveNominatedConfiguredVersions(inputVersions);
 
             return await restoreOperation;
@@ -199,7 +199,7 @@ internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreS
         {
             return true;
         }
-        
+
         if (_savedNominatedConfiguredVersion.Count == 1)
         {
             return false;

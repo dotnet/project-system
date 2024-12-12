@@ -3,29 +3,28 @@
 using System.Diagnostics;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
+namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+
+public interface IProjectHotReloadSessionCallback
 {
-    public interface IProjectHotReloadSessionCallback
-    {
-        bool SupportsRestart { get; }
+    bool SupportsRestart { get; }
 
-        Task OnAfterChangesAppliedAsync(CancellationToken cancellationToken);
+    Task OnAfterChangesAppliedAsync(CancellationToken cancellationToken);
 
-        Task<bool> StopProjectAsync(CancellationToken cancellationToken);
+    Task<bool> StopProjectAsync(CancellationToken cancellationToken);
 
-        Task<bool> RestartProjectAsync(CancellationToken cancellationToken);
+    Task<bool> RestartProjectAsync(CancellationToken cancellationToken);
 
-        IDeltaApplier? GetDeltaApplier();
-    }
+    IDeltaApplier? GetDeltaApplier();
+}
 
-    internal interface IProjectHotReloadSessionCallback2 : IProjectHotReloadSessionCallback
-    {
-        UnconfiguredProject? Project { get; }
+internal interface IProjectHotReloadSessionCallback2 : IProjectHotReloadSessionCallback
+{
+    UnconfiguredProject? Project { get; }
 
-        Process? Process { get; }
+    Process? Process { get; }
 
-        IProjectHotReloadSession? Session { get; }
+    IProjectHotReloadSession? Session { get; }
 
-        Task<bool> RestartProjectAsync(bool isRunningUnderDebug, CancellationToken cancellationToken);
-    }
+    Task<bool> RestartProjectAsync(bool isRunningUnderDebug, CancellationToken cancellationToken);
 }

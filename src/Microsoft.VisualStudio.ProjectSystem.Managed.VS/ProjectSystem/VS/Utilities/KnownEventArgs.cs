@@ -4,14 +4,13 @@ using System.ComponentModel;
 using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+
+internal static class KnownEventArgs
 {
-    internal static class KnownEventArgs
-    {
-        public static PropertyChangedEventArgs TextPropertyChanged { get; } = new PropertyChangedEventArgs(nameof(ITreeDisplayItem.Text));
+    public static PropertyChangedEventArgs TextPropertyChanged { get; } = new PropertyChangedEventArgs(nameof(ITreeDisplayItem.Text));
 
-        public static PropertyChangedEventArgs IsUpdatingItemsPropertyChanged { get; } = new PropertyChangedEventArgs(nameof(IAsyncAttachedCollectionSource.IsUpdatingHasItems));
+    public static PropertyChangedEventArgs IsUpdatingItemsPropertyChanged { get; } = new PropertyChangedEventArgs(nameof(IAsyncAttachedCollectionSource.IsUpdatingHasItems));
 
-        public static PropertyChangedEventArgs HasItemsPropertyChanged { get; } = new PropertyChangedEventArgs(nameof(IAttachedCollectionSource.HasItems));
-    }
+    public static PropertyChangedEventArgs HasItemsPropertyChanged { get; } = new PropertyChangedEventArgs(nameof(IAttachedCollectionSource.HasItems));
 }

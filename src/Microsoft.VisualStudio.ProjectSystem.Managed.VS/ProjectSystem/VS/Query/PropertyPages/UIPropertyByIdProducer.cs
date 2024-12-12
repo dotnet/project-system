@@ -4,41 +4,40 @@ using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// Handles retrieving an <see cref="IUIPropertySnapshot"/> based on an ID.
+/// </summary>
+internal class UIPropertyByIdProducer : QueryDataByIdProducerBase
 {
-    /// <summary>
-    /// Handles retrieving an <see cref="IUIPropertySnapshot"/> based on an ID.
-    /// </summary>
-    internal class UIPropertyByIdProducer : QueryDataByIdProducerBase
+    private readonly IUIPropertyPropertiesAvailableStatus _properties;
+    private readonly IProjectService2 _projectService;
+
+    public UIPropertyByIdProducer(IUIPropertyPropertiesAvailableStatus properties, IProjectService2 projectService)
     {
-        private readonly IUIPropertyPropertiesAvailableStatus _properties;
-        private readonly IProjectService2 _projectService;
+        Requires.NotNull(properties);
+        Requires.NotNull(projectService);
+        _properties = properties;
+        _projectService = projectService;
+    }
 
-        public UIPropertyByIdProducer(IUIPropertyPropertiesAvailableStatus properties, IProjectService2 projectService)
+    protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
+    {
+        if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? propertiesContext)
+            && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string? propertyPageName)
+            && id.TryGetValue(ProjectModelIdentityKeys.UIPropertyName, out string? propertyName))
         {
-            Requires.NotNull(properties);
-            Requires.NotNull(projectService);
-            _properties = properties;
-            _projectService = projectService;
+            return UIPropertyDataProducer.CreateUIPropertyValueAsync(
+                queryExecutionContext,
+                id,
+                _projectService,
+                propertiesContext,
+                propertyPageName,
+                propertyName,
+                _properties);
         }
 
-        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
-        {
-            if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? propertiesContext)
-                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string? propertyPageName)
-                && id.TryGetValue(ProjectModelIdentityKeys.UIPropertyName, out string? propertyName))
-            {
-                return UIPropertyDataProducer.CreateUIPropertyValueAsync(
-                    queryExecutionContext,
-                    id,
-                    _projectService,
-                    propertiesContext,
-                    propertyPageName,
-                    propertyName,
-                    _properties);
-            }
-
-            return NullEntityValue;
-        }
+        return NullEntityValue;
     }
 }

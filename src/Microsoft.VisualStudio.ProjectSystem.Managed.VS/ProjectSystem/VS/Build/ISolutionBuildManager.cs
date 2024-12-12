@@ -2,32 +2,31 @@
 
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Build;
+
+/// <summary>
+/// Allows subscribing to solution build manager events via the <see cref="IVsUpdateSolutionEvents"/>
+/// family of event handler interfaces.
+/// </summary>
+[ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.System)]
+internal interface ISolutionBuildManager
 {
     /// <summary>
-    /// Allows subscribing to solution build manager events via the <see cref="IVsUpdateSolutionEvents"/>
-    /// family of event handler interfaces.
+    /// Creates a new subscription for build events that will call back via <paramref name="eventListener" />.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.System)]
-    internal interface ISolutionBuildManager
-    {
-        /// <summary>
-        /// Creates a new subscription for build events that will call back via <paramref name="eventListener" />.
-        /// </summary>
-        /// <param name="eventListener">The callback for events. Note that it may also implement additional version(s) of this interface.</param>
-        /// <returns>An object that unsubscribes when disposed.</returns>
-        Task<IAsyncDisposable> SubscribeSolutionEventsAsync(IVsUpdateSolutionEvents eventListener);
+    /// <param name="eventListener">The callback for events. Note that it may also implement additional version(s) of this interface.</param>
+    /// <returns>An object that unsubscribes when disposed.</returns>
+    Task<IAsyncDisposable> SubscribeSolutionEventsAsync(IVsUpdateSolutionEvents eventListener);
 
-        int QueryBuildManagerBusy();
+    int QueryBuildManagerBusy();
 
-        uint QueryBuildManagerBusyEx();
+    uint QueryBuildManagerBusyEx();
 
-        void SaveDocumentsBeforeBuild(IVsHierarchy hierarchy, uint itemId = unchecked((uint)VSConstants.VSITEMID.Root), uint docCookie = 0);
+    void SaveDocumentsBeforeBuild(IVsHierarchy hierarchy, uint itemId = unchecked((uint)VSConstants.VSITEMID.Root), uint docCookie = 0);
 
-        void CalculateProjectDependencies();
+    void CalculateProjectDependencies();
 
-        IVsHierarchy[] GetProjectDependencies(IVsHierarchy hierarchy);
+    IVsHierarchy[] GetProjectDependencies(IVsHierarchy hierarchy);
 
-        void StartUpdateSpecificProjectConfigurations(IVsHierarchy[] hierarchy, uint[] buildFlags, uint dwFlags);
-    }
+    void StartUpdateSpecificProjectConfigurations(IVsHierarchy[] hierarchy, uint[] buildFlags, uint dwFlags);
 }

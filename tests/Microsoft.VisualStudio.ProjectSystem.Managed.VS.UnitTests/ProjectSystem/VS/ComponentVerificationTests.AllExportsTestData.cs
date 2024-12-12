@@ -2,22 +2,21 @@
 
 using System.Reflection;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+public partial class ComponentVerificationTests
 {
-    public partial class ComponentVerificationTests
+    internal class AllExportsTestData : TheoryData<Type>
     {
-        internal class AllExportsTestData : TheoryData<Type>
+        public AllExportsTestData()
         {
-            public AllExportsTestData()
+            var types = from assembly in ComponentComposition.BuiltInAssemblies
+                        from type in assembly.GetTypes()
+                        where type.GetCustomAttributes<ExportAttribute>().Any()
+                        select type;
+            foreach (Type type in types)
             {
-                var types = from assembly in ComponentComposition.BuiltInAssemblies
-                            from type in assembly.GetTypes()
-                            where type.GetCustomAttributes<ExportAttribute>().Any()
-                            select type;
-                foreach (Type type in types)
-                {
-                    Add(type);
-                }
+                Add(type);
             }
         }
     }

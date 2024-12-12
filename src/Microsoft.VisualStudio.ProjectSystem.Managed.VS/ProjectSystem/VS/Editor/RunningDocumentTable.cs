@@ -4,54 +4,53 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor;
+
+[Export(typeof(IRunningDocumentTable))]
+internal sealed class RunningDocumentTable : OnceInitializedOnceDisposedAsync, IRunningDocumentTable
 {
-    [Export(typeof(IRunningDocumentTable))]
-    internal sealed class RunningDocumentTable : OnceInitializedOnceDisposedAsync, IRunningDocumentTable
+    private readonly IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> _rdtService;
+
+    private IVsRunningDocumentTable? _rdt;
+
+    [ImportingConstructor]
+    public RunningDocumentTable(
+        IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> rdtService,
+        JoinableTaskContext joinableTaskContext)
+        : base(new(joinableTaskContext))
     {
-        private readonly IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> _rdtService;
+        _rdtService = rdtService;
+    }
 
-        private IVsRunningDocumentTable? _rdt;
+    protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
+    {
+        await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
 
-        [ImportingConstructor]
-        public RunningDocumentTable(
-            IVsService<SVsRunningDocumentTable, IVsRunningDocumentTable> rdtService,
-            JoinableTaskContext joinableTaskContext)
-            : base(new(joinableTaskContext))
+        _rdt = await _rdtService.GetValueAsync(cancellationToken);
+    }
+
+    protected override Task DisposeCoreAsync(bool initialized)
+    {
+        return Task.CompletedTask;
+    }
+
+    public async Task<IAsyncDisposable> SubscribeEventsAsync(IVsRunningDocTableEvents eventListener)
+    {
+        await InitializeAsync();
+
+        Assumes.NotNull(_rdt);
+
+        HResult.Verify(
+            _rdt.AdviseRunningDocTableEvents(eventListener, out uint cookie),
+            $"Error advising RDT events in {typeof(RunningDocumentTable)}.");
+
+        return new AsyncDisposable(async () =>
         {
-            _rdtService = rdtService;
-        }
-
-        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
-
-            _rdt = await _rdtService.GetValueAsync(cancellationToken);
-        }
-
-        protected override Task DisposeCoreAsync(bool initialized)
-        {
-            return Task.CompletedTask;
-        }
-
-        public async Task<IAsyncDisposable> SubscribeEventsAsync(IVsRunningDocTableEvents eventListener)
-        {
-            await InitializeAsync();
-
-            Assumes.NotNull(_rdt);
+            await JoinableFactory.SwitchToMainThreadAsync();
 
             HResult.Verify(
-                _rdt.AdviseRunningDocTableEvents(eventListener, out uint cookie),
-                $"Error advising RDT events in {typeof(RunningDocumentTable)}.");
-
-            return new AsyncDisposable(async () =>
-            {
-                await JoinableFactory.SwitchToMainThreadAsync();
-
-                HResult.Verify(
-                    _rdt.UnadviseRunningDocTableEvents(cookie),
-                    $"Error unadvising RDT events in {typeof(RunningDocumentTable)}.");
-            });
-        }
+                _rdt.UnadviseRunningDocTableEvents(cookie),
+                $"Error unadvising RDT events in {typeof(RunningDocumentTable)}.");
+        });
     }
 }

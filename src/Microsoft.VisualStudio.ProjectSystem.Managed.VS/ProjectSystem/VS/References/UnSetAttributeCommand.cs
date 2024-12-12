@@ -2,15 +2,15 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.References
-{
-    internal class UnsetAttributeCommand : SetTreatAsUsedAttributeCommand
-    {
-        public UnsetAttributeCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, string itemSpecification)
-        : base(abstractReferenceHandler, selectedConfiguredProject, itemSpecification) {
+namespace Microsoft.VisualStudio.ProjectSystem.VS.References;
 
-            UnsetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(false);
-            SetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(true);
-        }
+internal class UnsetAttributeCommand : SetTreatAsUsedAttributeCommand
+{
+    public UnsetAttributeCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, string itemSpecification)
+    : base(abstractReferenceHandler, selectedConfiguredProject, itemSpecification)
+    {
+
+        UnsetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(false);
+        SetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(true);
     }
 }

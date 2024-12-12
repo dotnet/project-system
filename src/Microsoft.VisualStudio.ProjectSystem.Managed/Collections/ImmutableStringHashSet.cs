@@ -2,18 +2,17 @@
 
 using Microsoft.VisualStudio;
 
-namespace System.Collections.Immutable
+namespace System.Collections.Immutable;
+
+internal static class ImmutableStringHashSet
 {
-    internal static class ImmutableStringHashSet
-    {
-        public static readonly ImmutableHashSet<string> EmptyOrdinal = ImmutableHashSet<string>.Empty;
+    public static readonly ImmutableHashSet<string> EmptyOrdinal = ImmutableHashSet<string>.Empty;
 
-        public static readonly ImmutableHashSet<string> EmptyOrdinalIgnoreCase = ImmutableHashSet<string>.Empty.WithComparer(StringComparer.OrdinalIgnoreCase);
+    public static readonly ImmutableHashSet<string> EmptyOrdinalIgnoreCase = ImmutableHashSet<string>.Empty.WithComparer(StringComparer.OrdinalIgnoreCase);
 
-        // For semantic string comparers.
+    // For semantic string comparers.
 
-        public static readonly ImmutableHashSet<string> EmptyRuleNames = ImmutableHashSet.Create<string>(StringComparers.RuleNames);
+    public static readonly ImmutableHashSet<string> EmptyRuleNames = ImmutableHashSet.Create<string>(StringComparers.RuleNames);
 
-        public static readonly ImmutableHashSet<string> EmptyVisualStudioSetupComponentIds = ImmutableHashSet.Create<string>(StringComparers.VisualStudioSetupComponentIds);
-    }
+    public static readonly ImmutableHashSet<string> EmptyVisualStudioSetupComponentIds = ImmutableHashSet.Create<string>(StringComparers.VisualStudioSetupComponentIds);
 }

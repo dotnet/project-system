@@ -5,40 +5,39 @@ using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// Handles retrieving an <see cref="ICategory"/> based on an ID.
+/// </summary>
+internal class CategoryByIdDataProducer : QueryDataByIdProducerBase
 {
-    /// <summary>
-    /// Handles retrieving an <see cref="ICategory"/> based on an ID.
-    /// </summary>
-    internal class CategoryByIdDataProducer : QueryDataByIdProducerBase
+    private readonly ICategoryPropertiesAvailableStatus _properties;
+    private readonly IProjectService2 _projectService;
+
+    public CategoryByIdDataProducer(ICategoryPropertiesAvailableStatus properties, IProjectService2 projectService)
     {
-        private readonly ICategoryPropertiesAvailableStatus _properties;
-        private readonly IProjectService2 _projectService;
+        _properties = properties;
+        _projectService = projectService;
+    }
 
-        public CategoryByIdDataProducer(ICategoryPropertiesAvailableStatus properties, IProjectService2 projectService)
+    protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
+    {
+        if (id.KeysCount == 3
+            && id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string? projectPath)
+            && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string? propertyPageName)
+            && id.TryGetValue(ProjectModelIdentityKeys.CategoryName, out string? categoryName))
         {
-            _properties = properties;
-            _projectService = projectService;
+            return CategoryDataProducer.CreateCategoryValueAsync(
+                queryExecutionContext,
+                id,
+                _projectService,
+                projectPath,
+                propertyPageName,
+                categoryName,
+                _properties);
         }
 
-        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
-        {
-            if (id.KeysCount == 3
-                && id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string? projectPath)
-                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string? propertyPageName)
-                && id.TryGetValue(ProjectModelIdentityKeys.CategoryName, out string? categoryName))
-            {
-                return CategoryDataProducer.CreateCategoryValueAsync(
-                    queryExecutionContext,
-                    id,
-                    _projectService,
-                    projectPath,
-                    propertyPageName,
-                    categoryName,
-                    _properties);
-            }
-
-            return NullEntityValue;
-        }
+        return NullEntityValue;
     }
 }

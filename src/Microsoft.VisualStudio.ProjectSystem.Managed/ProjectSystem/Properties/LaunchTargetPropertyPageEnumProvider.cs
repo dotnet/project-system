@@ -3,68 +3,67 @@
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.Properties;
+
+/// <summary>
+/// Provides the names and display names of "debugger" property pages that specify a
+/// launch target.
+/// </summary>
+/// <remarks>
+/// Specifically, we look for pages with a "commandNameBasedDebugger" <see cref="Rule.PageTemplate"/>
+/// and a CommandName property in their metadata.
+/// </remarks>
+[ExportDynamicEnumValuesProvider(nameof(LaunchTargetPropertyPageEnumProvider))]
+[AppliesTo(ProjectCapability.LaunchProfiles)]
+internal class LaunchTargetPropertyPageEnumProvider : IDynamicEnumValuesProvider
 {
-    /// <summary>
-    /// Provides the names and display names of "debugger" property pages that specify a
-    /// launch target.
-    /// </summary>
-    /// <remarks>
-    /// Specifically, we look for pages with a "commandNameBasedDebugger" <see cref="Rule.PageTemplate"/>
-    /// and a CommandName property in their metadata.
-    /// </remarks>
-    [ExportDynamicEnumValuesProvider(nameof(LaunchTargetPropertyPageEnumProvider))]
-    [AppliesTo(ProjectCapability.LaunchProfiles)]
-    internal class LaunchTargetPropertyPageEnumProvider : IDynamicEnumValuesProvider
+    private readonly ConfiguredProject _configuredProject;
+
+    [ImportingConstructor]
+    public LaunchTargetPropertyPageEnumProvider(ConfiguredProject configuredProject)
+    {
+        _configuredProject = configuredProject;
+    }
+
+    public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
+    {
+        return Task.FromResult<IDynamicEnumValuesGenerator>(new LaunchTargetPropertyPageEnumValuesGenerator(_configuredProject));
+    }
+
+    internal class LaunchTargetPropertyPageEnumValuesGenerator : IDynamicEnumValuesGenerator
     {
         private readonly ConfiguredProject _configuredProject;
 
-        [ImportingConstructor]
-        public LaunchTargetPropertyPageEnumProvider(ConfiguredProject configuredProject)
+        public LaunchTargetPropertyPageEnumValuesGenerator(ConfiguredProject configuredProject)
         {
             _configuredProject = configuredProject;
         }
 
-        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
-        {
-            return Task.FromResult<IDynamicEnumValuesGenerator>(new LaunchTargetPropertyPageEnumValuesGenerator(_configuredProject));
-        }
+        public bool AllowCustomValues => false;
 
-        internal class LaunchTargetPropertyPageEnumValuesGenerator : IDynamicEnumValuesGenerator
+        public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
-            private readonly ConfiguredProject _configuredProject;
+            var catalogProvider = _configuredProject.Services.PropertyPagesCatalog;
 
-            public LaunchTargetPropertyPageEnumValuesGenerator(ConfiguredProject configuredProject)
+            if (catalogProvider is null)
             {
-                _configuredProject = configuredProject;
+                return Array.Empty<IEnumValue>();
             }
 
-            public bool AllowCustomValues => false;
-
-            public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
-            {
-                var catalogProvider = _configuredProject.Services.PropertyPagesCatalog;
-
-                if (catalogProvider is null)
+            IPropertyPagesCatalog catalog = await catalogProvider.GetCatalogAsync(PropertyPageContexts.Project);
+            return catalog.GetPropertyPagesSchemas()
+                .Select(catalog.GetSchema)
+                .WhereNotNull()
+                .Where(rule => string.Equals(rule.PageTemplate, "CommandNameBasedDebugger", StringComparison.OrdinalIgnoreCase)
+                        && rule.Metadata.TryGetValue("CommandName", out object? pageCommandNameObj))
+                .Select(rule => new PageEnumValue(new EnumValue
                 {
-                    return Array.Empty<IEnumValue>();
-                }
-
-                IPropertyPagesCatalog catalog = await catalogProvider.GetCatalogAsync(PropertyPageContexts.Project);
-                return catalog.GetPropertyPagesSchemas()
-                    .Select(catalog.GetSchema)
-                    .WhereNotNull()
-                    .Where(rule => string.Equals(rule.PageTemplate, "CommandNameBasedDebugger", StringComparison.OrdinalIgnoreCase)
-                            && rule.Metadata.TryGetValue("CommandName", out object? pageCommandNameObj))
-                    .Select(rule => new PageEnumValue(new EnumValue
-                    {
-                        Name = rule.Name,
-                        DisplayName = rule.DisplayName
-                    }))
-                    .ToArray<IEnumValue>();
-            }
-
-            public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue) => TaskResult.Null<IEnumValue>();
+                    Name = rule.Name,
+                    DisplayName = rule.DisplayName
+                }))
+                .ToArray<IEnumValue>();
         }
+
+        public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue) => TaskResult.Null<IEnumValue>();
     }
 }

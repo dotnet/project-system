@@ -3,21 +3,20 @@
 using Microsoft.VisualStudio.LifetimeActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.VisualStudio
-{
-    [TestClass] // Just to make sure AssemblyInitialize/Cleanup get called
-    public static class AssemblyLifetime
-    {
-        [AssemblyInitialize]
-        public static void OnAssemblyInitialize(TestContext context)
-        {
-            TestEnvironment.OnAssemblyInitialize(context);
-        }
+namespace Microsoft.VisualStudio;
 
-        [AssemblyCleanup]
-        public static void OnAssemblyCleanup()
-        {
-            ShutdownVisualStudioAfterLastTestLifetimeAction.OnAssemblyCleanup();
-        }
+[TestClass] // Just to make sure AssemblyInitialize/Cleanup get called
+public static class AssemblyLifetime
+{
+    [AssemblyInitialize]
+    public static void OnAssemblyInitialize(TestContext context)
+    {
+        TestEnvironment.OnAssemblyInitialize(context);
+    }
+
+    [AssemblyCleanup]
+    public static void OnAssemblyCleanup()
+    {
+        ShutdownVisualStudioAfterLastTestLifetimeAction.OnAssemblyCleanup();
     }
 }

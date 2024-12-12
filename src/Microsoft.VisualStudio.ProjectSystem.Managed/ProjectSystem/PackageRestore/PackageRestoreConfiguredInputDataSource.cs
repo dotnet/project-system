@@ -4,68 +4,69 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using RestoreUpdate = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.PackageRestore.PackageRestoreConfiguredInput>;
 
-namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
+
+/// <summary>
+///     Provides an implementation of <see cref="IPackageRestoreConfiguredInputDataSource"/> that combines
+///     evaluation and build data into <see cref="PackageRestoreConfiguredInput"/>.
+/// </summary>
+[Export(typeof(IPackageRestoreConfiguredInputDataSource))]
+[AppliesTo(ProjectCapability.PackageReferences)]
+[ExportInitialBuildRulesSubscriptions([
+    CollectedFrameworkReference.SchemaName,
+    CollectedPackageDownload.SchemaName,
+    CollectedPackageVersion.SchemaName,
+    CollectedNuGetAuditSuppressions.SchemaName,
+    CollectedPrunePackageReference.SchemaName,
+    CollectedPackageReference.SchemaName])]
+internal class PackageRestoreConfiguredInputDataSource : ChainedProjectValueDataSourceBase<PackageRestoreConfiguredInput>, IPackageRestoreConfiguredInputDataSource
 {
-    /// <summary>
-    ///     Provides an implementation of <see cref="IPackageRestoreConfiguredInputDataSource"/> that combines
-    ///     evaluation and build data into <see cref="PackageRestoreConfiguredInput"/>.
-    /// </summary>
-    [Export(typeof(IPackageRestoreConfiguredInputDataSource))]
-    [AppliesTo(ProjectCapability.PackageReferences)]
-    [ExportInitialBuildRulesSubscriptions([
-        CollectedFrameworkReference.SchemaName,
-        CollectedPackageDownload.SchemaName,
-        CollectedPackageVersion.SchemaName,
-        CollectedNuGetAuditSuppressions.SchemaName,
-        CollectedPackageReference.SchemaName])]
-    internal class PackageRestoreConfiguredInputDataSource : ChainedProjectValueDataSourceBase<PackageRestoreConfiguredInput>, IPackageRestoreConfiguredInputDataSource
+    private static readonly ImmutableHashSet<string> s_rules = Empty.OrdinalIgnoreCaseStringSet
+        .Add(NuGetRestore.SchemaName)                       // Evaluation
+        .Add(EvaluatedProjectReference.SchemaName)          // Evaluation
+        .Add(DotNetCliToolReference.SchemaName)             // Evaluation
+        .Add(CollectedFrameworkReference.SchemaName)        // Build
+        .Add(CollectedPackageDownload.SchemaName)           // Build
+        .Add(CollectedPackageVersion.SchemaName)            // Build
+        .Add(CollectedNuGetAuditSuppressions.SchemaName)    // Build
+        .Add(CollectedPrunePackageReference.SchemaName)     // Build
+        .Add(CollectedPackageReference.SchemaName);         // Build
+
+    private readonly IProjectSubscriptionService _projectSubscriptionService;
+
+    [ImportingConstructor]
+    public PackageRestoreConfiguredInputDataSource(ConfiguredProject project, IProjectSubscriptionService projectSubscriptionService)
+        : base(project, synchronousDisposal: false, registerDataSource: false)
     {
-        private static readonly ImmutableHashSet<string> s_rules = Empty.OrdinalIgnoreCaseStringSet
-            .Add(NuGetRestore.SchemaName)                       // Evaluation
-            .Add(EvaluatedProjectReference.SchemaName)          // Evaluation
-            .Add(DotNetCliToolReference.SchemaName)             // Evaluation
-            .Add(CollectedFrameworkReference.SchemaName)        // Build
-            .Add(CollectedPackageDownload.SchemaName)           // Build
-            .Add(CollectedPackageVersion.SchemaName)            // Build
-            .Add(CollectedNuGetAuditSuppressions.SchemaName)    // Build
-            .Add(CollectedPackageReference.SchemaName);         // Build
+        _projectSubscriptionService = projectSubscriptionService;
+    }
 
-        private readonly IProjectSubscriptionService _projectSubscriptionService;
+    protected override IDisposable LinkExternalInput(ITargetBlock<RestoreUpdate> targetBlock)
+    {
+        IProjectValueDataSource<IProjectSubscriptionUpdate> source = _projectSubscriptionService.JointRuleSource;
 
-        [ImportingConstructor]
-        public PackageRestoreConfiguredInputDataSource(ConfiguredProject project, IProjectSubscriptionService projectSubscriptionService)
-            : base(project, synchronousDisposal: false, registerDataSource: false)
-        {
-            _projectSubscriptionService = projectSubscriptionService;
-        }
+        // Transform the changes from evaluation/design-time build -> restore data
+        DisposableValue<ISourceBlock<RestoreUpdate>> transformBlock = source.SourceBlock.TransformWithNoDelta(
+            update => update.Derive(u => CreateRestoreInput(update, u.ProjectConfiguration, u.CurrentState)),
+            suppressVersionOnlyUpdates: false,    // We need to coordinate these at the unconfigured-level
+            ruleNames: s_rules);
 
-        protected override IDisposable LinkExternalInput(ITargetBlock<RestoreUpdate> targetBlock)
-        {
-            IProjectValueDataSource<IProjectSubscriptionUpdate> source = _projectSubscriptionService.JointRuleSource;
+        // Set the link up so that we publish changes to target block
+        transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
 
-            // Transform the changes from evaluation/design-time build -> restore data
-            DisposableValue<ISourceBlock<RestoreUpdate>> transformBlock = source.SourceBlock.TransformWithNoDelta(
-                update => update.Derive(u => CreateRestoreInput(update, u.ProjectConfiguration, u.CurrentState)),
-                suppressVersionOnlyUpdates: false,    // We need to coordinate these at the unconfigured-level
-                ruleNames: s_rules);
+        // Join the source blocks, so if they need to switch to UI thread to complete 
+        // and someone is blocked on us on the same thread, the call proceeds
+        JoinUpstreamDataSources(source);
 
-            // Set the link up so that we publish changes to target block
-            transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
+        return transformBlock;
+    }
 
-            // Join the source blocks, so if they need to switch to UI thread to complete 
-            // and someone is blocked on us on the same thread, the call proceeds
-            JoinUpstreamDataSources(source);
+    private static PackageRestoreConfiguredInput CreateRestoreInput(IProjectVersionedValue<IProjectSubscriptionUpdate> projectSubscriptionUpdate, ProjectConfiguration projectConfiguration, IImmutableDictionary<string, IProjectRuleSnapshot> update)
+    {
+        var restoreInfo = RestoreBuilder.ToProjectRestoreInfo(update);
 
-            return transformBlock;
-        }
+        IComparable configuredProjectVersion = projectSubscriptionUpdate.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
 
-        private static PackageRestoreConfiguredInput CreateRestoreInput(IProjectVersionedValue<IProjectSubscriptionUpdate> projectSubscriptionUpdate, ProjectConfiguration projectConfiguration, IImmutableDictionary<string, IProjectRuleSnapshot> update)
-        {
-            var restoreInfo = RestoreBuilder.ToProjectRestoreInfo(update);
-
-            IComparable configuredProjectVersion = projectSubscriptionUpdate.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
-
-            return new PackageRestoreConfiguredInput(projectConfiguration, restoreInfo, configuredProjectVersion);
-        }
+        return new PackageRestoreConfiguredInput(projectConfiguration, restoreInfo, configuredProjectVersion);
     }
 }

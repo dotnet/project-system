@@ -2,29 +2,28 @@
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+
+internal static class IProjectEvaluationHandlerFactory
 {
-    internal static class IProjectEvaluationHandlerFactory
+    public static IProjectEvaluationHandler ImplementHandle(
+        Action<IWorkspaceProjectContext, ProjectConfiguration, IComparable, IProjectChangeDescription, ContextState, IManagedProjectDiagnosticOutputService> action,
+        string? projectEvaluationRule = null)
     {
-        public static IProjectEvaluationHandler ImplementHandle(
-            Action<IWorkspaceProjectContext, ProjectConfiguration, IComparable, IProjectChangeDescription, ContextState, IManagedProjectDiagnosticOutputService> action,
-            string? projectEvaluationRule = null)
-        {
-            var mock = new Mock<IProjectEvaluationHandler>();
+        var mock = new Mock<IProjectEvaluationHandler>();
 
-            mock.Setup(
-                h => h.Handle(
-                    It.IsAny<IWorkspaceProjectContext>(),
-                    It.IsAny<ProjectConfiguration>(),
-                    It.IsAny<IComparable>(),
-                    It.IsAny<IProjectChangeDescription>(),
-                    It.IsAny<ContextState>(),
-                    It.IsAny<IManagedProjectDiagnosticOutputService>()))
-                .Callback(action);
+        mock.Setup(
+            h => h.Handle(
+                It.IsAny<IWorkspaceProjectContext>(),
+                It.IsAny<ProjectConfiguration>(),
+                It.IsAny<IComparable>(),
+                It.IsAny<IProjectChangeDescription>(),
+                It.IsAny<ContextState>(),
+                It.IsAny<IManagedProjectDiagnosticOutputService>()))
+            .Callback(action);
 
-            mock.SetupGet(o => o.ProjectEvaluationRule).Returns(projectEvaluationRule ?? "MyEvaluationRule");
+        mock.SetupGet(o => o.ProjectEvaluationRule).Returns(projectEvaluationRule ?? "MyEvaluationRule");
 
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }
