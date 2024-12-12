@@ -6,37 +6,36 @@ using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Query.Metadata;
 using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// Creates <see cref="IQueryDataProducer{TRequest, TResult}"/> instances that retrieve property page information
+/// (<see cref="IPropertyPageSnapshot"/>) for a project.
+/// </summary>
+/// <remarks>
+/// Responsible for populating <see cref="ProjectSystem.Query.IProjectSnapshot.PropertyPages"/>. Can also retrieve a <see cref="IPropertyPageSnapshot"/>
+/// based on its ID.
+/// </remarks>
+[QueryDataProvider(PropertyPageType.TypeName, ProjectModel.ModelName)]
+[RelationshipQueryDataProvider(ProjectSystem.Query.Metadata.ProjectType.TypeName, ProjectSystem.Query.Metadata.ProjectType.PropertyPagesPropertyName)]
+[QueryDataProviderZone(ProjectModelZones.Cps)]
+[Export(typeof(IQueryByIdDataProvider))]
+[Export(typeof(IQueryByRelationshipDataProvider))]
+internal class PropertyPageDataProvider : QueryDataProviderBase, IQueryByIdDataProvider, IQueryByRelationshipDataProvider
 {
-    /// <summary>
-    /// Creates <see cref="IQueryDataProducer{TRequest, TResult}"/> instances that retrieve property page information
-    /// (<see cref="IPropertyPageSnapshot"/>) for a project.
-    /// </summary>
-    /// <remarks>
-    /// Responsible for populating <see cref="ProjectSystem.Query.IProjectSnapshot.PropertyPages"/>. Can also retrieve a <see cref="IPropertyPageSnapshot"/>
-    /// based on its ID.
-    /// </remarks>
-    [QueryDataProvider(PropertyPageType.TypeName, ProjectModel.ModelName)]
-    [RelationshipQueryDataProvider(ProjectSystem.Query.Metadata.ProjectType.TypeName, ProjectSystem.Query.Metadata.ProjectType.PropertyPagesPropertyName)]
-    [QueryDataProviderZone(ProjectModelZones.Cps)]
-    [Export(typeof(IQueryByIdDataProvider))]
-    [Export(typeof(IQueryByRelationshipDataProvider))]
-    internal class PropertyPageDataProvider : QueryDataProviderBase, IQueryByIdDataProvider, IQueryByRelationshipDataProvider
+    [ImportingConstructor]
+    public PropertyPageDataProvider(IProjectServiceAccessor projectServiceAccessor)
+        : base(projectServiceAccessor)
     {
-        [ImportingConstructor]
-        public PropertyPageDataProvider(IProjectServiceAccessor projectServiceAccessor)
-            : base(projectServiceAccessor)
-        {
-        }
+    }
 
-        public IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue> CreateQueryDataSource(IPropertiesAvailableStatus properties)
-        {
-            return new PropertyPageByIdDataProducer((IPropertyPagePropertiesAvailableStatus)properties, ProjectService);
-        }
+    public IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue> CreateQueryDataSource(IPropertiesAvailableStatus properties)
+    {
+        return new PropertyPageByIdDataProducer((IPropertyPagePropertiesAvailableStatus)properties, ProjectService);
+    }
 
-        IQueryDataProducer<IEntityValue, IEntityValue> IQueryByRelationshipDataProvider.CreateQueryDataSource(IPropertiesAvailableStatus properties)
-        {
-            return new PropertyPageFromProjectDataProducer((IPropertyPagePropertiesAvailableStatus)properties);
-        }
+    IQueryDataProducer<IEntityValue, IEntityValue> IQueryByRelationshipDataProvider.CreateQueryDataSource(IPropertiesAvailableStatus properties)
+    {
+        return new PropertyPageFromProjectDataProducer((IPropertyPagePropertiesAvailableStatus)properties);
     }
 }

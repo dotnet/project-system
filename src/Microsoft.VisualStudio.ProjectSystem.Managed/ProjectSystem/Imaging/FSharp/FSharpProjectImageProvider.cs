@@ -2,27 +2,26 @@
 
 using Microsoft.VisualStudio.Imaging;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Imaging.FSharp
+namespace Microsoft.VisualStudio.ProjectSystem.Imaging.FSharp;
+
+/// <summary>
+///     Provides F# project images.
+/// </summary>
+[Export(typeof(IProjectImageProvider))]
+[AppliesTo(ProjectCapability.FSharp)]
+internal class FSharpProjectImageProvider : IProjectImageProvider
 {
-    /// <summary>
-    ///     Provides F# project images.
-    /// </summary>
-    [Export(typeof(IProjectImageProvider))]
-    [AppliesTo(ProjectCapability.FSharp)]
-    internal class FSharpProjectImageProvider : IProjectImageProvider
+    [ImportingConstructor]
+    public FSharpProjectImageProvider()
     {
-        [ImportingConstructor]
-        public FSharpProjectImageProvider()
-        {
-        }
+    }
 
-        public ProjectImageMoniker? GetProjectImage(string key)
-        {
-            Requires.NotNullOrEmpty(key);
+    public ProjectImageMoniker? GetProjectImage(string key)
+    {
+        Requires.NotNullOrEmpty(key);
 
-            return key == ProjectImageKey.ProjectRoot
-                ? KnownMonikers.FSProjectNode.ToProjectSystemType()
-                : null;
-        }
+        return key == ProjectImageKey.ProjectRoot
+            ? KnownMonikers.FSProjectNode.ToProjectSystemType()
+            : null;
     }
 }

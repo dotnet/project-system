@@ -115,6 +115,7 @@
     <!-- 3rd party -->
     <PackageVersion Include="Newtonsoft.Json"                                                        Version="13.0.3" />
     <PackageVersion Include="IsExternalInit"                                                         Version="1.0.3" />
+    <PackageVersion Include="PolySharp"                                                              Version="1.15.0" />
 
     <!-- Tests -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk"                                                 Version="17.5.0-preview-20221003-04" />

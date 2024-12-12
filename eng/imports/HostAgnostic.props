@@ -60,7 +60,7 @@
 
     <!-- 3rd party -->
     <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="IsExternalInit" PrivateAssets="all" />
+    <PackageReference Include="PolySharp" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers" />
 
     <!-- Host-Agnostic Visual Studio -->
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />

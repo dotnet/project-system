@@ -4,34 +4,33 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
+
+/// <summary>
+///     Opens the folder for references that are backed by folders on disk, including
+///     package references, framework references and SDK references.
+/// </summary>
+[ProjectCommand(VSConstants.CMDSETID.StandardCommandSet2K_string, (long)VSConstants.VSStd2KCmdID.ExploreFolderInWindows)]
+[AppliesTo(ProjectCapability.DependenciesTree)]
+[Order(Order.Default)]
+internal class ExploreDependencyFolderInWindowsCommand : AbstractDependencyExplorerCommand
 {
-    /// <summary>
-    ///     Opens the folder for references that are backed by folders on disk, including
-    ///     package references, framework references and SDK references.
-    /// </summary>
-    [ProjectCommand(VSConstants.CMDSETID.StandardCommandSet2K_string, (long)VSConstants.VSStd2KCmdID.ExploreFolderInWindows)]
-    [AppliesTo(ProjectCapability.DependenciesTree)]
-    [Order(Order.Default)]
-    internal class ExploreDependencyFolderInWindowsCommand : AbstractDependencyExplorerCommand
+    private readonly IFileExplorer _fileExplorer;
+
+    [ImportingConstructor]
+    public ExploreDependencyFolderInWindowsCommand(UnconfiguredProject project, IFileExplorer fileExplorer)
+        : base(project)
     {
-        private readonly IFileExplorer _fileExplorer;
+        _fileExplorer = fileExplorer;
+    }
 
-        [ImportingConstructor]
-        public ExploreDependencyFolderInWindowsCommand(UnconfiguredProject project, IFileExplorer fileExplorer)
-            : base(project)
-        {
-            _fileExplorer = fileExplorer;
-        }
+    protected override bool CanOpen(IProjectTree node)
+    {
+        return node.Flags.Contains(DependencyTreeFlags.Dependency | DependencyTreeFlags.SupportsFolderBrowse);
+    }
 
-        protected override bool CanOpen(IProjectTree node)
-        {
-            return node.Flags.Contains(DependencyTreeFlags.Dependency | DependencyTreeFlags.SupportsFolderBrowse);
-        }
-
-        protected override void Open(string path)
-        {
-            _fileExplorer.OpenFolder(path);
-        }
+    protected override void Open(string path)
+    {
+        _fileExplorer.OpenFolder(path);
     }
 }

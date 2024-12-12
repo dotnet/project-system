@@ -12,8 +12,8 @@ internal sealed class AssemblyDependencyFactory : MSBuildDependencyFactoryBase
     public const string AppliesTo = ProjectCapability.DependenciesTree + " & (" + ProjectCapabilities.AssemblyReferences + " | " + ProjectCapabilities.WinRTReferences + ")";
 
     private static readonly DependencyFlagCache s_flagCache = new(
-        resolved: DependencyTreeFlags.AssemblyDependency + DependencyTreeFlags.SupportsBrowse,
-        unresolved: DependencyTreeFlags.AssemblyDependency);
+        resolved: DependencyTreeFlags.AssemblyDependency + DependencyTreeFlags.SupportsObjectBrowser + DependencyTreeFlags.SupportsBrowse,
+        unresolved: DependencyTreeFlags.AssemblyDependency + DependencyTreeFlags.SupportsObjectBrowser);
 
     public override DependencyGroupType DependencyGroupType => DependencyGroupTypes.Assemblies;
 

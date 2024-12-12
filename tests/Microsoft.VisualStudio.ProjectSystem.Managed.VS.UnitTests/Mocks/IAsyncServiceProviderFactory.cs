@@ -2,23 +2,22 @@
 
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+internal static class IAsyncServiceProviderFactory
 {
-    internal static class IAsyncServiceProviderFactory
+    public static IAsyncServiceProvider Create()
     {
-        public static IAsyncServiceProvider Create()
-        {
-            return Mock.Of<IAsyncServiceProvider>();
-        }
+        return Mock.Of<IAsyncServiceProvider>();
+    }
 
-        public static IAsyncServiceProvider ImplementGetServiceAsync(Func<Type, object?> action)
-        {
-            var mock = new Mock<IAsyncServiceProvider>();
+    public static IAsyncServiceProvider ImplementGetServiceAsync(Func<Type, object?> action)
+    {
+        var mock = new Mock<IAsyncServiceProvider>();
 
-            mock.Setup(s => s.GetServiceAsync(It.IsAny<Type>()))
-                             .ReturnsAsync(action);
+        mock.Setup(s => s.GetServiceAsync(It.IsAny<Type>()))
+                         .ReturnsAsync(action);
 
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }

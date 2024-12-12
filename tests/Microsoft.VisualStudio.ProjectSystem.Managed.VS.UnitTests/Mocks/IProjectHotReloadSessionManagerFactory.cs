@@ -2,21 +2,20 @@
 
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+internal static class IProjectHotReloadSessionManagerFactory
 {
-    internal static class IProjectHotReloadSessionManagerFactory
+    public static IProjectHotReloadSessionManager Create()
     {
-        public static IProjectHotReloadSessionManager Create()
-        {
-            var mock = new Mock<IProjectHotReloadSessionManager>();
+        var mock = new Mock<IProjectHotReloadSessionManager>();
 
-            mock.Setup(manager => manager.TryCreatePendingSessionAsync(It.IsAny<IDictionary<string, string>>()))
-                .ReturnsAsync(true);
+        mock.Setup(manager => manager.TryCreatePendingSessionAsync(It.IsAny<IDictionary<string, string>>()))
+            .ReturnsAsync(true);
 
-            mock.Setup(manager => manager.ActivateSessionAsync(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<string>()))
-                .Returns(Task.CompletedTask);
+        mock.Setup(manager => manager.ActivateSessionAsync(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<string>()))
+            .Returns(Task.CompletedTask);
 
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }

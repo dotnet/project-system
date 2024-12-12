@@ -2,15 +2,14 @@
 
 using Microsoft.VisualStudio.Shell;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+internal static class SVsServiceProviderFactory
 {
-    internal static class SVsServiceProviderFactory
+    public static SVsServiceProvider Create(object? service = null)
     {
-        public static SVsServiceProvider Create(object? service = null)
-        {
-            var mock = new Mock<SVsServiceProvider>();
-            mock.Setup<object?>(s => s.GetService(It.IsAny<Type>())).Returns(service);
-            return mock.Object;
-        }
+        var mock = new Mock<SVsServiceProvider>();
+        mock.Setup<object?>(s => s.GetService(It.IsAny<Type>())).Returns(service);
+        return mock.Object;
     }
 }

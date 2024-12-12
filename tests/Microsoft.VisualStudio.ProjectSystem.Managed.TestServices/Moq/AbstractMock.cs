@@ -1,14 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-namespace Moq
+namespace Moq;
+
+internal abstract class AbstractMock<T> : Mock<T>
+    where T : class
 {
-    internal abstract class AbstractMock<T> : Mock<T>
-        where T : class
+    protected AbstractMock(MockBehavior behavior = MockBehavior.Loose)
+        : base(behavior)
     {
-        protected AbstractMock(MockBehavior behavior = MockBehavior.Loose)
-            : base(behavior)
-        {
-            Switches = Switches.CollectDiagnosticFileInfoForSetups;
-        }
+        Switches = Switches.CollectDiagnosticFileInfoForSetups;
     }
 }

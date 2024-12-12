@@ -2,32 +2,31 @@
 
 using System.Diagnostics;
 
-namespace Microsoft.VisualStudio.Buffers.PooledObjects
+namespace Microsoft.VisualStudio.Buffers.PooledObjects;
+
+internal sealed partial class PooledArray<T>
 {
-    internal sealed partial class PooledArray<T>
+    private sealed class DebuggerProxy
     {
-        private sealed class DebuggerProxy
+        private readonly PooledArray<T> _builder;
+
+        public DebuggerProxy(PooledArray<T> builder)
         {
-            private readonly PooledArray<T> _builder;
+            _builder = builder;
+        }
 
-            public DebuggerProxy(PooledArray<T> builder)
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+        public T[] A
+        {
+            get
             {
-                _builder = builder;
-            }
-
-            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public T[] A
-            {
-                get
+                var result = new T[_builder.Count];
+                for (int i = 0; i < result.Length; i++)
                 {
-                    var result = new T[_builder.Count];
-                    for (int i = 0; i < result.Length; i++)
-                    {
-                        result[i] = _builder[i];
-                    }
-
-                    return result;
+                    result[i] = _builder[i];
                 }
+
+                return result;
             }
         }
     }

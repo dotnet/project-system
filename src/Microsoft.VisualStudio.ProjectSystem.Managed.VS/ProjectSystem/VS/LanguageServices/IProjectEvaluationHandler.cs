@@ -2,49 +2,48 @@
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+
+/// <summary>
+///     Handles changes to project evaluation rule and applies them to a
+///     <see cref="IWorkspaceProjectContext"/> instance.
+/// </summary>
+internal interface IProjectEvaluationHandler : IWorkspaceUpdateHandler
 {
     /// <summary>
-    ///     Handles changes to project evaluation rule and applies them to a
-    ///     <see cref="IWorkspaceProjectContext"/> instance.
+    ///     Gets the project evaluation rule that the <see cref="IProjectEvaluationHandler"/> handles.
     /// </summary>
-    internal interface IProjectEvaluationHandler : IWorkspaceUpdateHandler
-    {
-        /// <summary>
-        ///     Gets the project evaluation rule that the <see cref="IProjectEvaluationHandler"/> handles.
-        /// </summary>
-        string ProjectEvaluationRule { get; }
+    string ProjectEvaluationRule { get; }
 
-        /// <summary>
-        ///     Handles the specified set of changes to the project evaluation rule, and applies them
-        ///     to the underlying <see cref="IWorkspaceProjectContext"/>.
-        /// </summary>
-        /// <param name="context">
-        ///     The <see cref="IWorkspaceProjectContext"/> to update.
-        /// </param>
-        /// <param name="projectConfiguration">
-        ///     The configuration of the project being updated. Needed as we are in unconfigured scope here.
-        /// </param>
-        /// <param name="version">
-        ///     An <see cref="IComparable"/> representing the <see cref="ConfiguredProject.ProjectVersion"/> at
-        ///     the time the <see cref="IProjectChangeDescription"/> was produced.
-        /// </param>
-        /// <param name="projectChange">
-        ///     A <see cref="IProjectChangeDescription"/> representing the set of
-        ///     changes made to the project.
-        /// </param>
-        /// <param name="state">
-        ///     A <see cref="ContextState"/> describing the state of the <see cref="IWorkspaceProjectContext"/>.
-        /// </param>
-        /// <param name="logger">
-        ///     The <see cref="IManagedProjectDiagnosticOutputService"/> for logging to the log.
-        /// </param>
-        void Handle(
-            IWorkspaceProjectContext context,
-            ProjectConfiguration projectConfiguration,
-            IComparable version,
-            IProjectChangeDescription projectChange,
-            ContextState state,
-            IManagedProjectDiagnosticOutputService logger);
-    }
+    /// <summary>
+    ///     Handles the specified set of changes to the project evaluation rule, and applies them
+    ///     to the underlying <see cref="IWorkspaceProjectContext"/>.
+    /// </summary>
+    /// <param name="context">
+    ///     The <see cref="IWorkspaceProjectContext"/> to update.
+    /// </param>
+    /// <param name="projectConfiguration">
+    ///     The configuration of the project being updated. Needed as we are in unconfigured scope here.
+    /// </param>
+    /// <param name="version">
+    ///     An <see cref="IComparable"/> representing the <see cref="ConfiguredProject.ProjectVersion"/> at
+    ///     the time the <see cref="IProjectChangeDescription"/> was produced.
+    /// </param>
+    /// <param name="projectChange">
+    ///     A <see cref="IProjectChangeDescription"/> representing the set of
+    ///     changes made to the project.
+    /// </param>
+    /// <param name="state">
+    ///     A <see cref="ContextState"/> describing the state of the <see cref="IWorkspaceProjectContext"/>.
+    /// </param>
+    /// <param name="logger">
+    ///     The <see cref="IManagedProjectDiagnosticOutputService"/> for logging to the log.
+    /// </param>
+    void Handle(
+        IWorkspaceProjectContext context,
+        ProjectConfiguration projectConfiguration,
+        IComparable version,
+        IProjectChangeDescription projectChange,
+        ContextState state,
+        IManagedProjectDiagnosticOutputService logger);
 }

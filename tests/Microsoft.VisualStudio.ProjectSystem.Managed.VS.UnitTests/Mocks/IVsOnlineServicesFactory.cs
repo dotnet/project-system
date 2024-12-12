@@ -2,18 +2,17 @@
 
 using Microsoft.VisualStudio.ProjectSystem.VS;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace Microsoft.VisualStudio.Mocks;
+
+internal static class IVsOnlineServicesFactory
 {
-    internal static class IVsOnlineServicesFactory
+    public static IVsOnlineServices Create(bool online)
     {
-        public static IVsOnlineServices Create(bool online)
-        {
-            var mock = new Mock<IVsOnlineServices>();
+        var mock = new Mock<IVsOnlineServices>();
 
-            mock.SetupGet(s => s.ConnectedToVSOnline)
-                .Returns(online);
+        mock.SetupGet(s => s.ConnectedToVSOnline)
+            .Returns(online);
 
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }

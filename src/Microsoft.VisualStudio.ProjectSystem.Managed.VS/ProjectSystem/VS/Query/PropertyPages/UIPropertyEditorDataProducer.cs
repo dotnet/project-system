@@ -6,97 +6,96 @@ using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// Handles the creation of <see cref="IUIPropertyEditorSnapshot"/> instances and populating the requested members.
+/// </summary>
+internal static class UIPropertyEditorDataProducer
 {
-    /// <summary>
-    /// Handles the creation of <see cref="IUIPropertyEditorSnapshot"/> instances and populating the requested members.
-    /// </summary>
-    internal static class UIPropertyEditorDataProducer
+    public static IEntityValue CreateEditorValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ValueEditor editor, IUIPropertyEditorPropertiesAvailableStatus requestedProperties)
     {
-        public static IEntityValue CreateEditorValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ValueEditor editor, IUIPropertyEditorPropertiesAvailableStatus requestedProperties)
+        Requires.NotNull(parent);
+        Requires.NotNull(editor);
+
+        var identity = new EntityIdentity(
+            ((IEntityWithId)parent).Id,
+            new KeyValuePair<string, string>[]
+            {
+                new(ProjectModelIdentityKeys.EditorName, editor.EditorType)
+            });
+
+        return CreateEditorValue(queryExecutionContext, identity, editor, requestedProperties);
+    }
+
+    public static IEntityValue CreateEditorValue(IQueryExecutionContext queryExecutionContext, EntityIdentity identity, ValueEditor editor, IUIPropertyEditorPropertiesAvailableStatus requestedProperties)
+    {
+        Requires.NotNull(editor);
+        var newEditorValue = new UIPropertyEditorSnapshot(queryExecutionContext.EntityRuntime, identity, new UIPropertyEditorPropertiesAvailableStatus());
+
+        if (requestedProperties.Name)
         {
-            Requires.NotNull(parent);
-            Requires.NotNull(editor);
-
-            var identity = new EntityIdentity(
-                ((IEntityWithId)parent).Id,
-                new KeyValuePair<string, string>[]
-                {
-                    new(ProjectModelIdentityKeys.EditorName, editor.EditorType)
-                });
-
-            return CreateEditorValue(queryExecutionContext, identity, editor, requestedProperties);
+            newEditorValue.Name = editor.EditorType;
         }
 
-        public static IEntityValue CreateEditorValue(IQueryExecutionContext queryExecutionContext, EntityIdentity identity, ValueEditor editor, IUIPropertyEditorPropertiesAvailableStatus requestedProperties)
+        ((IEntityValueFromProvider)newEditorValue).ProviderState = editor;
+
+        return newEditorValue;
+    }
+
+    public static IEnumerable<IEntityValue> CreateEditorValues(IQueryExecutionContext queryExecutionContext, IEntityValue parent, Rule schema, string propertyName, IUIPropertyEditorPropertiesAvailableStatus properties)
+    {
+        BaseProperty? property = schema.GetProperty(propertyName);
+        if (property is not null)
         {
-            Requires.NotNull(editor);
-            var newEditorValue = new UIPropertyEditorSnapshot(queryExecutionContext.EntityRuntime, identity, new UIPropertyEditorPropertiesAvailableStatus());
-
-            if (requestedProperties.Name)
-            {
-                newEditorValue.Name = editor.EditorType;
-            }
-
-            ((IEntityValueFromProvider)newEditorValue).ProviderState = editor;
-
-            return newEditorValue;
+            return createEditorValues();
         }
 
-        public static IEnumerable<IEntityValue> CreateEditorValues(IQueryExecutionContext queryExecutionContext, IEntityValue parent, Rule schema, string propertyName, IUIPropertyEditorPropertiesAvailableStatus properties)
+        return Enumerable.Empty<IEntityValue>();
+
+        IEnumerable<IEntityValue> createEditorValues()
         {
-            BaseProperty? property = schema.GetProperty(propertyName);
-            if (property is not null)
+            foreach (ValueEditor editor in property.ValueEditors)
             {
-                return createEditorValues();
+                IEntityValue editorValue = CreateEditorValue(queryExecutionContext, parent, editor, properties);
+                yield return editorValue;
             }
 
-            return Enumerable.Empty<IEntityValue>();
-
-            IEnumerable<IEntityValue> createEditorValues()
+            if (property is StringProperty stringProperty)
             {
-                foreach (ValueEditor editor in property.ValueEditors)
+                if (string.Equals(stringProperty.Subtype, "file", StringComparison.OrdinalIgnoreCase))
                 {
-                    IEntityValue editorValue = CreateEditorValue(queryExecutionContext, parent, editor, properties);
-                    yield return editorValue;
+                    yield return CreateEditorValue(queryExecutionContext, parent, new ValueEditor { EditorType = "FilePath" }, properties);
                 }
-
-                if (property is StringProperty stringProperty)
+                else if (
+                    string.Equals(stringProperty.Subtype, "folder", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(stringProperty.Subtype, "directory", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (string.Equals(stringProperty.Subtype, "file", StringComparison.OrdinalIgnoreCase))
-                    {
-                        yield return CreateEditorValue(queryExecutionContext, parent, new ValueEditor { EditorType = "FilePath" }, properties);
-                    }
-                    else if (
-                        string.Equals(stringProperty.Subtype, "folder", StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(stringProperty.Subtype, "directory", StringComparison.OrdinalIgnoreCase))
-                    {
-                        yield return CreateEditorValue(queryExecutionContext, parent, new ValueEditor { EditorType = "DirectoryPath" }, properties);
-                    }
+                    yield return CreateEditorValue(queryExecutionContext, parent, new ValueEditor { EditorType = "DirectoryPath" }, properties);
                 }
             }
         }
+    }
 
-        public static async Task<IEntityValue?> CreateEditorValueAsync(
-            IQueryExecutionContext queryExecutionContext,
-            EntityIdentity requestId,
-            IProjectService2 projectService,
-            string projectPath,
-            string propertyPageName,
-            string propertyName,
-            string editorName,
-            IUIPropertyEditorPropertiesAvailableStatus properties)
+    public static async Task<IEntityValue?> CreateEditorValueAsync(
+        IQueryExecutionContext queryExecutionContext,
+        EntityIdentity requestId,
+        IProjectService2 projectService,
+        string projectPath,
+        string propertyPageName,
+        string propertyName,
+        string editorName,
+        IUIPropertyEditorPropertiesAvailableStatus properties)
+    {
+        if (projectService.GetLoadedProject(projectPath) is UnconfiguredProject project
+            && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
+            && projectCatalog.GetSchema(propertyPageName) is Rule rule
+            && rule.GetProperty(propertyName) is BaseProperty property
+            && property.ValueEditors.FirstOrDefault(ed => string.Equals(ed.EditorType, editorName, StringComparison.Ordinal)) is ValueEditor editor)
         {
-            if (projectService.GetLoadedProject(projectPath) is UnconfiguredProject project
-                && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                && projectCatalog.GetSchema(propertyPageName) is Rule rule
-                && rule.GetProperty(propertyName) is BaseProperty property
-                && property.ValueEditors.FirstOrDefault(ed => string.Equals(ed.EditorType, editorName, StringComparison.Ordinal)) is ValueEditor editor)
-            {
-                IEntityValue editorValue = CreateEditorValue(queryExecutionContext, requestId, editor, properties);
-            }
-
-            return null;
+            IEntityValue editorValue = CreateEditorValue(queryExecutionContext, requestId, editor, properties);
         }
+
+        return null;
     }
 }

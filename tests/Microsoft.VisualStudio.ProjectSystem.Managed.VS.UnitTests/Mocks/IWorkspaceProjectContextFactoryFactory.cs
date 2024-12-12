@@ -2,31 +2,30 @@
 
 using Moq.Language.Flow;
 
-namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
+namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+
+internal static class IWorkspaceProjectContextFactoryFactory
 {
-    internal static class IWorkspaceProjectContextFactoryFactory
+    public static IWorkspaceProjectContextFactory ImplementCreateProjectContext(Func<Guid, string, string, EvaluationData, object?, CancellationToken, IWorkspaceProjectContext> action)
     {
-        public static IWorkspaceProjectContextFactory ImplementCreateProjectContext(Func<Guid, string, string, EvaluationData, object?, CancellationToken, IWorkspaceProjectContext> action)
-        {
-            var mock = new Mock<IWorkspaceProjectContextFactory>(MockBehavior.Strict);
+        var mock = new Mock<IWorkspaceProjectContextFactory>(MockBehavior.Strict);
 
-            mock.SetupCreateProjectContext().ReturnsAsync(action);
+        mock.SetupCreateProjectContext().ReturnsAsync(action);
 
-            return mock.Object;
-        }
+        return mock.Object;
+    }
 
-        public static IWorkspaceProjectContextFactory ImplementCreateProjectContextThrows(Exception exception)
-        {
-            var mock = new Mock<IWorkspaceProjectContextFactory>(MockBehavior.Strict);
+    public static IWorkspaceProjectContextFactory ImplementCreateProjectContextThrows(Exception exception)
+    {
+        var mock = new Mock<IWorkspaceProjectContextFactory>(MockBehavior.Strict);
 
-            mock.SetupCreateProjectContext().Throws(exception);
+        mock.SetupCreateProjectContext().Throws(exception);
 
-            return mock.Object;
-        }
+        return mock.Object;
+    }
 
-        public static ISetup<IWorkspaceProjectContextFactory, Task<IWorkspaceProjectContext>> SetupCreateProjectContext(this Mock<IWorkspaceProjectContextFactory> mock)
-        {
-            return mock.Setup(c => c.CreateProjectContextAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EvaluationData>(), It.IsAny<object?>(), It.IsAny<CancellationToken>()));
-        }
+    public static ISetup<IWorkspaceProjectContextFactory, Task<IWorkspaceProjectContext>> SetupCreateProjectContext(this Mock<IWorkspaceProjectContextFactory> mock)
+    {
+        return mock.Setup(c => c.CreateProjectContextAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EvaluationData>(), It.IsAny<object?>(), It.IsAny<CancellationToken>()));
     }
 }

@@ -3,31 +3,30 @@
 using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal static class IProjectInstancePropertiesProviderFactory
 {
-    internal static class IProjectInstancePropertiesProviderFactory
+    public static IProjectInstancePropertiesProvider Create()
+        => Mock.Of<IProjectInstancePropertiesProvider>();
+
+    public static IProjectInstancePropertiesProvider ImplementsGetItemTypeProperties(IProjectProperties? projectProperties = null)
     {
-        public static IProjectInstancePropertiesProvider Create()
-            => Mock.Of<IProjectInstancePropertiesProvider>();
+        var mock = new Mock<IProjectInstancePropertiesProvider>();
 
-        public static IProjectInstancePropertiesProvider ImplementsGetItemTypeProperties(IProjectProperties? projectProperties = null)
-        {
-            var mock = new Mock<IProjectInstancePropertiesProvider>();
+        mock.Setup(d => d.GetItemTypeProperties(It.IsAny<ProjectInstance>(), It.IsAny<string>()))
+            .Returns(() => projectProperties ?? Mock.Of<IProjectProperties>());
 
-            mock.Setup(d => d.GetItemTypeProperties(It.IsAny<ProjectInstance>(), It.IsAny<string>()))
-                .Returns(() => projectProperties ?? Mock.Of<IProjectProperties>());
+        return mock.Object;
+    }
 
-            return mock.Object;
-        }
+    public static IProjectInstancePropertiesProvider ImplementsGetCommonProperties(IProjectProperties? projectProperties = null)
+    {
+        var mock = new Mock<IProjectInstancePropertiesProvider>();
 
-        public static IProjectInstancePropertiesProvider ImplementsGetCommonProperties(IProjectProperties? projectProperties = null)
-        {
-            var mock = new Mock<IProjectInstancePropertiesProvider>();
+        mock.Setup(d => d.GetCommonProperties(It.IsAny<ProjectInstance>()))
+            .Returns(() => projectProperties ?? Mock.Of<IProjectProperties>());
 
-            mock.Setup(d => d.GetCommonProperties(It.IsAny<ProjectInstance>()))
-                .Returns(() => projectProperties ?? Mock.Of<IProjectProperties>());
-
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }

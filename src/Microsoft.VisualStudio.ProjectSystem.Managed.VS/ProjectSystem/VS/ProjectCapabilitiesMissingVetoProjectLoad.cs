@@ -5,72 +5,71 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+/// <summary>
+///     Verifies that the project was loaded with the expected capabilities to catch
+///     when the project type in the solution does not match the project itself, for
+///     example when the user has renamed csproj -> vbproj without updating the project
+///     type in the solution.
+/// </summary>
+[Export(typeof(IVetoProjectPreLoad))]
+[AppliesTo(ProjectCapability.DotNet)]
+internal partial class ProjectCapabilitiesMissingVetoProjectLoad : IVetoProjectPreLoad
 {
-    /// <summary>
-    ///     Verifies that the project was loaded with the expected capabilities to catch
-    ///     when the project type in the solution does not match the project itself, for
-    ///     example when the user has renamed csproj -> vbproj without updating the project
-    ///     type in the solution.
-    /// </summary>
-    [Export(typeof(IVetoProjectPreLoad))]
-    [AppliesTo(ProjectCapability.DotNet)]
-    internal partial class ProjectCapabilitiesMissingVetoProjectLoad : IVetoProjectPreLoad
+    private static readonly ImmutableArray<ProjectType> s_projectTypes = GetProjectTypes();
+    private readonly UnconfiguredProject _project;
+    private readonly IProjectCapabilitiesService _projectCapabilitiesService;
+
+    [ImportingConstructor]
+    public ProjectCapabilitiesMissingVetoProjectLoad(UnconfiguredProject project, IProjectCapabilitiesService projectCapabilitiesService)
     {
-        private static readonly ImmutableArray<ProjectType> s_projectTypes = GetProjectTypes();
-        private readonly UnconfiguredProject _project;
-        private readonly IProjectCapabilitiesService _projectCapabilitiesService;
+        _project = project;
+        _projectCapabilitiesService = projectCapabilitiesService;
+    }
 
-        [ImportingConstructor]
-        public ProjectCapabilitiesMissingVetoProjectLoad(UnconfiguredProject project, IProjectCapabilitiesService projectCapabilitiesService)
-        {
-            _project = project;
-            _projectCapabilitiesService = projectCapabilitiesService;
-        }
-
-        public Task<bool> AllowProjectLoadAsync(bool isNewProject, ProjectConfiguration activeConfiguration, CancellationToken cancellationToken = default)
-        {
-            ProjectType? projectType = GetCurrentProjectType();
-            if (projectType is null)    // Unrecognized, probably a Shared Project
-                return TaskResult.True;
-
-            foreach (string capability in projectType.Capabilities)
-            {
-                if (!_projectCapabilitiesService.Contains(capability))
-                {
-                    // Throw instead of returning false so that we can control message and the HRESULT
-                    throw new COMException(string.Format(CultureInfo.CurrentCulture, Resources.ProjectLoadedWithWrongProjectType, _project.FullPath),
-                                           HResult.Fail);
-                }
-            }
-
+    public Task<bool> AllowProjectLoadAsync(bool isNewProject, ProjectConfiguration activeConfiguration, CancellationToken cancellationToken = default)
+    {
+        ProjectType? projectType = GetCurrentProjectType();
+        if (projectType is null)    // Unrecognized, probably a Shared Project
             return TaskResult.True;
-        }
 
-        private ProjectType? GetCurrentProjectType()
+        foreach (string capability in projectType.Capabilities)
         {
-            Assumes.True(!s_projectTypes.IsEmpty);
-
-            string extension = Path.GetExtension(_project.FullPath);
-
-            foreach (ProjectType projectType in s_projectTypes)
+            if (!_projectCapabilitiesService.Contains(capability))
             {
-                if (StringComparers.Paths.Equals(projectType.Extension, extension))
-                {
-                    return projectType;
-                }
+                // Throw instead of returning false so that we can control message and the HRESULT
+                throw new COMException(string.Format(CultureInfo.CurrentCulture, Resources.ProjectLoadedWithWrongProjectType, _project.FullPath),
+                                       HResult.Fail);
             }
-
-            return null;
         }
 
-        private static ImmutableArray<ProjectType> GetProjectTypes()
+        return TaskResult.True;
+    }
+
+    private ProjectType? GetCurrentProjectType()
+    {
+        Assumes.True(!s_projectTypes.IsEmpty);
+
+        string extension = Path.GetExtension(_project.FullPath);
+
+        foreach (ProjectType projectType in s_projectTypes)
         {
-            Assembly assembly = typeof(ProjectCapabilitiesMissingVetoProjectLoad).Assembly;
-
-            return assembly.GetCustomAttributes<ProjectTypeRegistrationAttribute>()
-                           .Select(a => new ProjectType('.' + a.DefaultProjectExtension, a.Capabilities!.Split(new[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)))
-                           .ToImmutableArray();
+            if (StringComparers.Paths.Equals(projectType.Extension, extension))
+            {
+                return projectType;
+            }
         }
+
+        return null;
+    }
+
+    private static ImmutableArray<ProjectType> GetProjectTypes()
+    {
+        Assembly assembly = typeof(ProjectCapabilitiesMissingVetoProjectLoad).Assembly;
+
+        return assembly.GetCustomAttributes<ProjectTypeRegistrationAttribute>()
+                       .Select(a => new ProjectType('.' + a.DefaultProjectExtension, a.Capabilities!.Split(new[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)))
+                       .ToImmutableArray();
     }
 }

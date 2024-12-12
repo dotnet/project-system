@@ -4,15 +4,13 @@
       PageTemplate="generic"
       PropertyPagesHidden="true"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
+
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="false"
                 ItemType="Compile"
                 Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
-
-  <BoolProperty Name="ExcludeFromCurrentConfiguration"
-                Visible="False" />
 
   <DynamicEnumProperty Name="{}{ItemType}"
                        EnumProvider="ItemTypes" />
@@ -52,6 +50,9 @@
 
   <BoolProperty Name="DesignTimeSharedInput"
                 Visible="false" />
+
+  <BoolProperty Name="ExcludeFromCurrentConfiguration"
+                Visible="False" />
 
   <StringProperty Name="Generator" />
 

@@ -2,17 +2,16 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace Microsoft.VisualStudio.Mocks;
+
+public static class IRemoteDebuggerAuthenticationServiceFactory
 {
-    public static class IRemoteDebuggerAuthenticationServiceFactory
+    internal static IRemoteDebuggerAuthenticationService Create(params IRemoteAuthenticationProvider[] providers)
     {
-        internal static IRemoteDebuggerAuthenticationService Create(params IRemoteAuthenticationProvider[] providers)
-        {
-            var service = new Mock<IRemoteDebuggerAuthenticationService>();
+        var service = new Mock<IRemoteDebuggerAuthenticationService>();
 
-            service.Setup(s => s.GetRemoteAuthenticationModes()).Returns(providers);
+        service.Setup(s => s.GetRemoteAuthenticationModes()).Returns(providers);
 
-            return service.Object;
-        }
+        return service.Object;
     }
 }

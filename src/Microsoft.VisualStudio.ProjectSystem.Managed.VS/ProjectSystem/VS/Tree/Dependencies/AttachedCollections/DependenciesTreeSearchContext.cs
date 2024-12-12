@@ -2,57 +2,56 @@
 
 using Microsoft.Internal.VisualStudio.PlatformUI;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections;
+
+/// <summary>
+/// A top-level search context, common to all projects and all <see cref="IDependenciesTreeSearchProvider"/>
+/// instances.
+/// </summary>
+internal sealed class DependenciesTreeSearchContext : IDisposable
 {
-    /// <summary>
-    /// A top-level search context, common to all projects and all <see cref="IDependenciesTreeSearchProvider"/>
-    /// instances.
-    /// </summary>
-    internal sealed class DependenciesTreeSearchContext : IDisposable
+    private readonly string _searchString;
+    private readonly uint _maximumResults;
+    private readonly Action<ISearchResult> _resultAccumulator;
+    private readonly CancellationTokenSource _cts;
+    private long _submittedResultCount; // long as there's no interlocked increment for uint32
+
+    public DependenciesTreeSearchContext(IRelationshipSearchParameters parameters, Action<ISearchResult> resultAccumulator)
     {
-        private readonly string _searchString;
-        private readonly uint _maximumResults;
-        private readonly Action<ISearchResult> _resultAccumulator;
-        private readonly CancellationTokenSource _cts;
-        private long _submittedResultCount; // long as there's no interlocked increment for uint32
+        _searchString = parameters.SearchQuery.SearchString;
+        _maximumResults = parameters.MaximumResults;
+        _resultAccumulator = resultAccumulator;
+        _cts = CancellationTokenSource.CreateLinkedTokenSource(parameters.CancellationToken);
+    }
 
-        public DependenciesTreeSearchContext(IRelationshipSearchParameters parameters, Action<ISearchResult> resultAccumulator)
+    public CancellationToken CancellationToken => _cts.Token;
+
+    public bool IsMatch(string candidateText) => candidateText.IndexOf(_searchString, StringComparisons.UserEnteredSearchTermIgnoreCase) != -1;
+
+    public void SubmitResult(IRelatableItem? item)
+    {
+        if (item is null || CancellationToken.IsCancellationRequested)
         {
-            _searchString = parameters.SearchQuery.SearchString;
-            _maximumResults = parameters.MaximumResults;
-            _resultAccumulator = resultAccumulator;
-            _cts = CancellationTokenSource.CreateLinkedTokenSource(parameters.CancellationToken);
+            return;
         }
 
-        public CancellationToken CancellationToken => _cts.Token;
-
-        public bool IsMatch(string candidateText) => candidateText.IndexOf(_searchString, StringComparisons.UserEnteredSearchTermIgnoreCase) != -1;
-
-        public void SubmitResult(IRelatableItem? item)
+        if (Interlocked.Increment(ref _submittedResultCount) >= _maximumResults)
         {
-            if (item is null || CancellationToken.IsCancellationRequested)
-            {
-                return;
-            }
-
-            if (Interlocked.Increment(ref _submittedResultCount) >= _maximumResults)
-            {
-                _cts.Cancel();
-                return;
-            }
-
-            _resultAccumulator(new DependenciesSearchResult(item));
+            _cts.Cancel();
+            return;
         }
 
-        public void Dispose() => _cts.Dispose();
+        _resultAccumulator(new DependenciesSearchResult(item));
+    }
 
-        private sealed class DependenciesSearchResult : ISearchResult
-        {
-            private readonly object _item;
+    public void Dispose() => _cts.Dispose();
 
-            public DependenciesSearchResult(object item) => _item = item;
+    private sealed class DependenciesSearchResult : ISearchResult
+    {
+        private readonly object _item;
 
-            public object GetDisplayItem() => _item;
-        }
+        public DependenciesSearchResult(object item) => _item = item;
+
+        public object GetDisplayItem() => _item;
     }
 }

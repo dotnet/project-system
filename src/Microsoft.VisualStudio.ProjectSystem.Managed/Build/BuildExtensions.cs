@@ -3,21 +3,20 @@
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
-namespace Microsoft.VisualStudio.Build
-{
-    internal static class BuildExtensions
-    {
-        /// <summary>
-        ///     Gets the unescaped, unevaluated value.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="element"/> is <see langword="null" />.
-        /// </exception>
-        public static string GetUnescapedValue(this ProjectPropertyElement element)
-        {
-            Requires.NotNull(element);
+namespace Microsoft.VisualStudio.Build;
 
-            return ProjectCollection.Unescape(element.Value);
-        }
+internal static class BuildExtensions
+{
+    /// <summary>
+    ///     Gets the unescaped, unevaluated value.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref name="element"/> is <see langword="null" />.
+    /// </exception>
+    public static string GetUnescapedValue(this ProjectPropertyElement element)
+    {
+        Requires.NotNull(element);
+
+        return ProjectCollection.Unescape(element.Value);
     }
 }

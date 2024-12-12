@@ -2,31 +2,30 @@
 
 using VSLangProj;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic;
+
+[Export(typeof(VSProjectEvents))]
+[AppliesTo(ProjectCapability.VisualBasic)]
+[Order(Order.Default)]
+internal class VisualBasicVSProjectEvents : VSProjectEvents
 {
-    [Export(typeof(VSProjectEvents))]
-    [AppliesTo(ProjectCapability.VisualBasic)]
-    [Order(Order.Default)]
-    internal class VisualBasicVSProjectEvents : VSProjectEvents
+    private readonly VSLangProj.VSProject _vsProject;
+
+    [ImportingConstructor]
+    public VisualBasicVSProjectEvents(
+        [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
+        UnconfiguredProject project)
     {
-        private readonly VSLangProj.VSProject _vsProject;
-
-        [ImportingConstructor]
-        public VisualBasicVSProjectEvents(
-            [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
-            UnconfiguredProject project)
-        {
-            _vsProject = vsProject;
-            ImportsEventsImpl = new OrderPrecedenceImportCollection<ImportsEvents>(projectCapabilityCheckProvider: project);
-        }
-
-        [ImportMany]
-        protected OrderPrecedenceImportCollection<ImportsEvents> ImportsEventsImpl { get; set; }
-
-        public ReferencesEvents ReferencesEvents => _vsProject.Events.ReferencesEvents;
-
-        public BuildManagerEvents BuildManagerEvents => _vsProject.Events.BuildManagerEvents;
-
-        public ImportsEvents ImportsEvents => ImportsEventsImpl.First().Value;
+        _vsProject = vsProject;
+        ImportsEventsImpl = new OrderPrecedenceImportCollection<ImportsEvents>(projectCapabilityCheckProvider: project);
     }
+
+    [ImportMany]
+    protected OrderPrecedenceImportCollection<ImportsEvents> ImportsEventsImpl { get; set; }
+
+    public ReferencesEvents ReferencesEvents => _vsProject.Events.ReferencesEvents;
+
+    public BuildManagerEvents BuildManagerEvents => _vsProject.Events.BuildManagerEvents;
+
+    public ImportsEvents ImportsEvents => ImportsEventsImpl.First().Value;
 }

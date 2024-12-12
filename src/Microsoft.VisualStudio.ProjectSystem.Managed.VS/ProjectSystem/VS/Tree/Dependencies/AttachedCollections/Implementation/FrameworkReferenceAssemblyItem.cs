@@ -5,66 +5,65 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.Shell;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Implementation
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Implementation;
+
+internal sealed class FrameworkReferenceAssemblyItem : RelatableItemBase, IObjectBrowserItem
 {
-    internal sealed class FrameworkReferenceAssemblyItem : RelatableItemBase
+    private const int IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE = 0x04B1;
+
+    private static readonly IContextMenuController s_defaultMenuController = CreateContextMenuController(VsMenus.guidSHLMainMenu, IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE);
+
+    public string AssemblyName { get; }
+    public string? Path { get; }
+    public string? AssemblyVersion { get; }
+    public string? FileVersion { get; }
+    public FrameworkReferenceIdentity Framework { get; }
+
+    public FrameworkReferenceAssemblyItem(string assemblyName, string? path, string? assemblyVersion, string? fileVersion, FrameworkReferenceIdentity framework)
+        : base(assemblyName)
     {
-        private const int IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE = 0x04B1;
+        Requires.NotNull(framework);
+        AssemblyName = assemblyName;
+        Path = path;
+        AssemblyVersion = assemblyVersion;
+        FileVersion = fileVersion;
+        Framework = framework;
+    }
 
-        private static readonly IContextMenuController s_defaultMenuController = new MenuController(VsMenus.guidSHLMainMenu, IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE);
+    public override object Identity => Text;
+    public override int Priority => 0;
+    public override ImageMoniker IconMoniker => KnownMonikers.ReferencePrivate;
 
-        public string AssemblyName { get; }
-        public string? Path { get; }
-        public string? AssemblyVersion { get; }
-        public string? FileVersion { get; }
-        public FrameworkReferenceIdentity Framework { get; }
+    protected override IContextMenuController? ContextMenuController => s_defaultMenuController;
 
-        public FrameworkReferenceAssemblyItem(string assemblyName, string? path, string? assemblyVersion, string? fileVersion, FrameworkReferenceIdentity framework)
-            : base(assemblyName)
-        {
-            Requires.NotNull(framework);
-            AssemblyName = assemblyName;
-            Path = path;
-            AssemblyVersion = assemblyVersion;
-            FileVersion = fileVersion;
-            Framework = framework;
-        }
+    public override object? GetBrowseObject() => new BrowseObject(this);
 
-        public override object Identity => Text;
-        public override int Priority => 0;
-        public override ImageMoniker IconMoniker => KnownMonikers.ReferencePrivate;
+    string? IObjectBrowserItem.AssemblyPath => GetAssemblyPath();
 
-        protected override IContextMenuController? ContextMenuController => s_defaultMenuController;
+    private string? GetAssemblyPath() => Path is not null
+        ? System.IO.Path.GetFullPath(System.IO.Path.Combine(Framework.Path, Path))
+        : null;
 
-        public override object? GetBrowseObject() => new BrowseObject(this);
+    private sealed class BrowseObject(FrameworkReferenceAssemblyItem item) : LocalizableProperties
+    {
+        public override string GetComponentName() => item.AssemblyName;
 
-        private sealed class BrowseObject : LocalizableProperties
-        {
-            private readonly FrameworkReferenceAssemblyItem _item;
+        public override string GetClassName() => VSResources.FrameworkAssemblyBrowseObjectClassName;
 
-            public BrowseObject(FrameworkReferenceAssemblyItem log) => _item = log;
+        [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyAssemblyNameDisplayName))]
+        [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyAssemblyNameDescription))]
+        public string AssemblyName => item.Text;
 
-            public override string GetComponentName() => _item.AssemblyName;
+        [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyPathDisplayName))]
+        [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyPathDescription))]
+        public string Path => item.GetAssemblyPath() ?? "";
 
-            public override string GetClassName() => VSResources.FrameworkAssemblyBrowseObjectClassName;
+        [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyAssemblyVersionDisplayName))]
+        [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyAssemblyVersionDescription))]
+        public string AssemblyVersion => item.AssemblyVersion ?? "";
 
-            [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyAssemblyNameDisplayName))]
-            [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyAssemblyNameDescription))]
-            public string AssemblyName => _item.Text;
-
-            [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyPathDisplayName))]
-            [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyPathDescription))]
-            public string Path => _item.Path is not null
-                ? System.IO.Path.GetFullPath(System.IO.Path.Combine(_item.Framework.Path, _item.Path))
-                : "";
-
-            [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyAssemblyVersionDisplayName))]
-            [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyAssemblyVersionDescription))]
-            public string AssemblyVersion => _item.AssemblyVersion ?? "";
-
-            [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyFileVersionDisplayName))]
-            [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyFileVersionDescription))]
-            public string FileVersion => _item.FileVersion ?? "";
-        }
+        [BrowseObjectDisplayName(nameof(VSResources.FrameworkAssemblyFileVersionDisplayName))]
+        [BrowseObjectDescription(nameof(VSResources.FrameworkAssemblyFileVersionDescription))]
+        public string FileVersion => item.FileVersion ?? "";
     }
 }

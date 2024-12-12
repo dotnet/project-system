@@ -4,56 +4,55 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections;
+
+/// <summary>
+/// Base class for <see cref="IRelatableItem"/> implementations. Derives from <see cref="AttachedCollectionItemBase"/>
+/// to include common patterns for attached items.
+/// </summary>
+public abstract partial class RelatableItemBase : AttachedCollectionItemBase, IRelatableItem
 {
-    /// <summary>
-    /// Base class for <see cref="IRelatableItem"/> implementations. Derives from <see cref="AttachedCollectionItemBase"/>
-    /// to include common patterns for attached items.
-    /// </summary>
-    public abstract partial class RelatableItemBase : AttachedCollectionItemBase, IRelatableItem
+    private const int IDM_VS_CTXT_DEPENDENCY_TRANSITIVE_ITEM = 0x04B0;
+
+    private static readonly IContextMenuController s_defaultMenuController = CreateContextMenuController(VsMenus.guidSHLMainMenu, IDM_VS_CTXT_DEPENDENCY_TRANSITIVE_ITEM);
+
+    private AggregateContainsRelationCollection? _containsCollection;
+
+    protected RelatableItemBase(string name)
+        : base(name)
     {
-        private const int IDM_VS_CTXT_DEPENDENCY_TRANSITIVE_ITEM = 0x04B0;
+    }
 
-        private static readonly IContextMenuController s_defaultMenuController = new MenuController(VsMenus.guidSHLMainMenu, IDM_VS_CTXT_DEPENDENCY_TRANSITIVE_ITEM);
+    public abstract object Identity { get; }
 
-        private AggregateContainsRelationCollection? _containsCollection;
+    protected override IContextMenuController? ContextMenuController => s_defaultMenuController;
 
-        protected RelatableItemBase(string name)
-            : base(name)
+    AggregateContainsRelationCollection? IRelatableItem.ContainsCollection => _containsCollection;
+
+    AggregateContainedByRelationCollection? IRelatableItem.ContainedByCollection { get; set; }
+
+    bool IRelatableItem.TryGetOrCreateContainsCollection(
+        IRelationProvider relationProvider,
+        [NotNullWhen(returnValue: true)] out AggregateContainsRelationCollection? relationCollection)
+    {
+        if (_containsCollection is null && AggregateContainsRelationCollection.TryCreate(this, relationProvider, out AggregateContainsRelationCollection? collection))
         {
+            _containsCollection = collection;
         }
 
-        public abstract object Identity { get; }
+        relationCollection = _containsCollection;
+        return relationCollection is not null;
+    }
 
-        protected override IContextMenuController? ContextMenuController => s_defaultMenuController;
+    bool IRelatableItem.TryGetProjectNode(IProjectTree targetRootNode, IRelatableItem item, [NotNullWhen(returnValue: true)] out IProjectTree? projectTree)
+    {
+        return TryGetProjectNode(targetRootNode, item, out projectTree);
+    }
 
-        AggregateContainsRelationCollection? IRelatableItem.ContainsCollection => _containsCollection;
-
-        AggregateContainedByRelationCollection? IRelatableItem.ContainedByCollection { get; set; }
-
-        bool IRelatableItem.TryGetOrCreateContainsCollection(
-            IRelationProvider relationProvider,
-            [NotNullWhen(returnValue: true)] out AggregateContainsRelationCollection? relationCollection)
-        {
-            if (_containsCollection is null && AggregateContainsRelationCollection.TryCreate(this, relationProvider, out AggregateContainsRelationCollection? collection))
-            {
-                _containsCollection = collection;
-            }
-
-            relationCollection = _containsCollection;
-            return relationCollection is not null;
-        }
-
-        bool IRelatableItem.TryGetProjectNode(IProjectTree targetRootNode, IRelatableItem item, [NotNullWhen(returnValue: true)] out IProjectTree? projectTree)
-        {
-            return TryGetProjectNode(targetRootNode, item, out projectTree);
-        }
-
-        /// <inheritdoc cref="IRelatableItem.TryGetProjectNode" />
-        protected virtual bool TryGetProjectNode(IProjectTree targetRootNode, IRelatableItem item, [NotNullWhen(returnValue: true)] out IProjectTree? projectTree)
-        {
-            projectTree = null;
-            return false;
-        }
+    /// <inheritdoc cref="IRelatableItem.TryGetProjectNode" />
+    protected virtual bool TryGetProjectNode(IProjectTree targetRootNode, IRelatableItem item, [NotNullWhen(returnValue: true)] out IProjectTree? projectTree)
+    {
+        projectTree = null;
+        return false;
     }
 }

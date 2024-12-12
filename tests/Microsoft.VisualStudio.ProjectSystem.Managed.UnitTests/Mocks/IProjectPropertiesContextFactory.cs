@@ -2,18 +2,17 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal static class IProjectPropertiesContextFactory
 {
-    internal static class IProjectPropertiesContextFactory
+    public static IProjectPropertiesContext Create(bool isProjectFile)
     {
-        public static IProjectPropertiesContext Create(bool isProjectFile)
-        {
-            var projectItem = new Mock<IProjectPropertiesContext>();
+        var projectItem = new Mock<IProjectPropertiesContext>();
 
-            projectItem.SetupGet(o => o.IsProjectFile)
-                .Returns(isProjectFile);
+        projectItem.SetupGet(o => o.IsProjectFile)
+            .Returns(isProjectFile);
 
-            return projectItem.Object;
-        }
+        return projectItem.Object;
     }
 }

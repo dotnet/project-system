@@ -3,203 +3,202 @@
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices;
+
+public class ActiveEditorContextTrackerTests
 {
-    public class ActiveEditorContextTrackerTests
+    [Fact]
+    public void IsActiveEditorContext_NullAsContextId_ThrowsArgumentNull()
     {
-        [Fact]
-        public void IsActiveEditorContext_NullAsContextId_ThrowsArgumentNull()
+        var instance = CreateInstance();
+
+        Assert.Throws<ArgumentNullException>("contextId", () =>
         {
-            var instance = CreateInstance();
+            instance.IsActiveEditorContext(null!);
+        });
+    }
 
-            Assert.Throws<ArgumentNullException>("contextId", () =>
-            {
-                instance.IsActiveEditorContext(null!);
-            });
-        }
+    [Fact]
+    public void RegisterContext_EmptyAsContextId_ThrowsArgument()
+    {
+        var instance = CreateInstance();
 
-        [Fact]
-        public void RegisterContext_EmptyAsContextId_ThrowsArgument()
+        Assert.Throws<ArgumentException>("contextId", () =>
         {
-            var instance = CreateInstance();
+            instance.RegisterContext(string.Empty);
+        });
+    }
 
-            Assert.Throws<ArgumentException>("contextId", () =>
-            {
-                instance.RegisterContext(string.Empty);
-            });
-        }
+    [Theory]
+    [InlineData(VSConstants.VSITEMID_NIL)]
+    [InlineData(VSConstants.VSITEMID_SELECTION)]
+    [InlineData(0)]
+    public void GetProjectName_InvalidIdAsItemId_ReturnsInvalidArg(uint itemid)
+    {
+        var instance = CreateInstance();
 
-        [Theory]
-        [InlineData(VSConstants.VSITEMID_NIL)]
-        [InlineData(VSConstants.VSITEMID_SELECTION)]
-        [InlineData(0)]
-        public void GetProjectName_InvalidIdAsItemId_ReturnsInvalidArg(uint itemid)
+        int result = instance.GetProjectName(itemid, out string? projectNameResult);
+
+        Assert.Equal(VSConstants.E_INVALIDARG, result);
+        Assert.Null(projectNameResult);
+    }
+
+    [Fact]
+    public void IsActiveEditorContext_NotRegisteredContextAsContextId_ThrowsInvalidOperation()
+    {
+        var instance = CreateInstance();
+
+        Assert.Throws<InvalidOperationException>(() =>
         {
-            var instance = CreateInstance();
+            instance.IsActiveEditorContext("NotRegistered");
+        });
+    }
 
-            int result = instance.GetProjectName(itemid, out string? projectNameResult);
+    [Fact]
+    public void RegisteredContext_AlreadyRegisteredContextAsContextId_ThrowsInvalidOperation()
+    {
+        var instance = CreateInstance();
 
-            Assert.Equal(VSConstants.E_INVALIDARG, result);
-            Assert.Null(projectNameResult);
-        }
+        instance.RegisterContext("ContextId");
 
-        [Fact]
-        public void IsActiveEditorContext_NotRegisteredContextAsContextId_ThrowsInvalidOperation()
+        Assert.Throws<InvalidOperationException>(() =>
         {
-            var instance = CreateInstance();
-
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                instance.IsActiveEditorContext("NotRegistered");
-            });
-        }
-
-        [Fact]
-        public void RegisteredContext_AlreadyRegisteredContextAsContextId_ThrowsInvalidOperation()
-        {
-            var instance = CreateInstance();
-
             instance.RegisterContext("ContextId");
+        });
+    }
 
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                instance.RegisterContext("ContextId");
-            });
-        }
+    [Fact]
+    public void UnregisterContext_RegisteredContextAsContextId_CanUnregister()
+    {
+        var instance = CreateInstance();
 
-        [Fact]
-        public void UnregisterContext_RegisteredContextAsContextId_CanUnregister()
-        {
-            var instance = CreateInstance();
+        var registration = instance.RegisterContext("ContextId");
 
-            var registration = instance.RegisterContext("ContextId");
+        registration.Dispose();
 
-            registration.Dispose();
+        // Should be unregistered
+        Assert.Throws<InvalidOperationException>(() => instance.IsActiveEditorContext("ContextId"));
+    }
 
-            // Should be unregistered
-            Assert.Throws<InvalidOperationException>(() => instance.IsActiveEditorContext("ContextId"));
-        }
+    [Theory]
+    [InlineData("AnotherContextId")]
+    [InlineData("contextId")]           // Case-sensitive
+    public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextIdNotSet_UsesFirstRegisteredContext(string contextId)
+    {
+        var instance = CreateInstance();
 
-        [Theory]
-        [InlineData("AnotherContextId")]
-        [InlineData("contextId")]           // Case-sensitive
-        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextIdNotSet_UsesFirstRegisteredContext(string contextId)
-        {
-            var instance = CreateInstance();
+        instance.RegisterContext("ContextId");
+        instance.RegisterContext(contextId);
 
-            instance.RegisterContext("ContextId");
-            instance.RegisterContext(contextId);
+        var result = instance.IsActiveEditorContext("ContextId");
 
-            var result = instance.IsActiveEditorContext("ContextId");
+        Assert.True(result);
+    }
 
-            Assert.True(result);
-        }
+    [Theory]
+    [InlineData("AnotherContextId")]
+    [InlineData("contextId")]           // Case-sensitive
+    public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextIdSetToNull_UsesFirstRegisteredContext(string contextId)
+    {
+        var instance = CreateInstance();
 
-        [Theory]
-        [InlineData("AnotherContextId")]
-        [InlineData("contextId")]           // Case-sensitive
-        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextIdSetToNull_UsesFirstRegisteredContext(string contextId)
-        {
-            var instance = CreateInstance();
+        instance.RegisterContext("FirstContextId");
+        instance.RegisterContext(contextId);
 
-            instance.RegisterContext("FirstContextId");
-            instance.RegisterContext(contextId);
+        // Set it the value first
+        instance.ActiveIntellisenseProjectContext = contextId;
 
-            // Set it the value first
-            instance.ActiveIntellisenseProjectContext = contextId;
+        // Now explicitly set to null
+        instance.ActiveIntellisenseProjectContext = null;
 
-            // Now explicitly set to null
-            instance.ActiveIntellisenseProjectContext = null;
+        var result = instance.IsActiveEditorContext("FirstContextId");
 
-            var result = instance.IsActiveEditorContext("FirstContextId");
+        Assert.True(result);
+    }
 
-            Assert.True(result);
-        }
+    [Theory]
+    [InlineData("")]
+    [InlineData("AnotherContextId")]
+    [InlineData("contextId")]           // Case-sensitive
+    public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextIdDoesNotMatch_ReturnsFalse(string activeIntellisenseProjectContextId)
+    {
+        var instance = CreateInstance();
 
-        [Theory]
-        [InlineData("")]
-        [InlineData("AnotherContextId")]
-        [InlineData("contextId")]           // Case-sensitive
-        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextIdDoesNotMatch_ReturnsFalse(string activeIntellisenseProjectContextId)
-        {
-            var instance = CreateInstance();
+        instance.RegisterContext("ContextId");
 
-            instance.RegisterContext("ContextId");
+        instance.ActiveIntellisenseProjectContext = activeIntellisenseProjectContextId;
 
-            instance.ActiveIntellisenseProjectContext = activeIntellisenseProjectContextId;
+        var result = instance.IsActiveEditorContext("ContextId");
 
-            var result = instance.IsActiveEditorContext("ContextId");
+        Assert.False(result);
+    }
 
-            Assert.False(result);
-        }
+    [Fact]
+    public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextIdMatches_ReturnsTrue()
+    {
+        var instance = CreateInstance();
 
-        [Fact]
-        public void IsActiveEditorContext_WhenActiveIntellisenseProjectContextIdMatches_ReturnsTrue()
-        {
-            var instance = CreateInstance();
+        instance.RegisterContext("ContextId");
 
-            instance.RegisterContext("ContextId");
+        instance.ActiveIntellisenseProjectContext = "ContextId";
 
-            instance.ActiveIntellisenseProjectContext = "ContextId";
+        var result = instance.IsActiveEditorContext("ContextId");
 
-            var result = instance.IsActiveEditorContext("ContextId");
+        Assert.True(result);
+    }
 
-            Assert.True(result);
-        }
+    [Theory]
+    [InlineData("")]
+    [InlineData("ContextId")]
+    public void GetProjectName_ReturnsActiveIntellisenseProjectContextId(string activeIntellisenseProjectContextId)
+    {
+        var instance = CreateInstance();
 
-        [Theory]
-        [InlineData("")]
-        [InlineData("ContextId")]
-        public void GetProjectName_ReturnsActiveIntellisenseProjectContextId(string activeIntellisenseProjectContextId)
-        {
-            var instance = CreateInstance();
+        instance.ActiveIntellisenseProjectContext = activeIntellisenseProjectContextId;
 
-            instance.ActiveIntellisenseProjectContext = activeIntellisenseProjectContextId;
+        instance.GetProjectName(HierarchyId.Root, out string? result);
 
-            instance.GetProjectName(HierarchyId.Root, out string? result);
+        Assert.Equal(activeIntellisenseProjectContextId, result);
+    }
 
-            Assert.Equal(activeIntellisenseProjectContextId, result);
-        }
+    [Theory]
+    [InlineData("AnotherContextId")]
+    [InlineData("contextId")]
+    public void GetProjectName_WhenActiveIntellisenseProjectContextIdNotSet_ReturnsFirstRegisteredContext(string contextId)
+    {
+        var instance = CreateInstance();
 
-        [Theory]
-        [InlineData("AnotherContextId")]
-        [InlineData("contextId")]
-        public void GetProjectName_WhenActiveIntellisenseProjectContextIdNotSet_ReturnsFirstRegisteredContext(string contextId)
-        {
-            var instance = CreateInstance();
+        instance.RegisterContext("FirstContextId");
+        instance.RegisterContext(contextId);
 
-            instance.RegisterContext("FirstContextId");
-            instance.RegisterContext(contextId);
+        instance.GetProjectName(HierarchyId.Root, out string? result);
 
-            instance.GetProjectName(HierarchyId.Root, out string? result);
+        Assert.Equal("FirstContextId", result);
+    }
 
-            Assert.Equal("FirstContextId", result);
-        }
+    [Theory]
+    [InlineData("AnotherContextId")]
+    [InlineData("contextId")]
+    public void GetProjectName_WhenActiveIntellisenseProjectContextIdSetToNull_ReturnsFirstRegisteredContext(string contextId)
+    {
+        var instance = CreateInstance();
 
-        [Theory]
-        [InlineData("AnotherContextId")]
-        [InlineData("contextId")]
-        public void GetProjectName_WhenActiveIntellisenseProjectContextIdSetToNull_ReturnsFirstRegisteredContext(string contextId)
-        {
-            var instance = CreateInstance();
+        instance.RegisterContext("FirstContextId");
+        instance.RegisterContext(contextId);
 
-            instance.RegisterContext("FirstContextId");
-            instance.RegisterContext(contextId);
+        // Set it the value first
+        instance.ActiveIntellisenseProjectContext = contextId;
 
-            // Set it the value first
-            instance.ActiveIntellisenseProjectContext = contextId;
+        // Now explicitly set to null
+        instance.ActiveIntellisenseProjectContext = null;
 
-            // Now explicitly set to null
-            instance.ActiveIntellisenseProjectContext = null;
+        instance.GetProjectName(HierarchyId.Root, out string? result);
 
-            instance.GetProjectName(HierarchyId.Root, out string? result);
+        Assert.Equal("FirstContextId", result);
+    }
 
-            Assert.Equal("FirstContextId", result);
-        }
-
-        private static VsActiveEditorContextTracker CreateInstance()
-        {
-            return new VsActiveEditorContextTracker(null, new ActiveEditorContextTracker(null));
-        }
+    private static VsActiveEditorContextTracker CreateInstance()
+    {
+        return new VsActiveEditorContextTracker(null, new ActiveEditorContextTracker(null));
     }
 }

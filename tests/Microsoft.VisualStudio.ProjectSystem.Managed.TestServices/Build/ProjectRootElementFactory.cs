@@ -2,17 +2,16 @@
 
 using System.Xml;
 
-namespace Microsoft.Build.Construction
-{
-    internal static class ProjectRootElementFactory
-    {
-        public static ProjectRootElement Create(string? xml = null)
-        {
-            if (string.IsNullOrEmpty(xml))
-                xml = "<Project/>";
+namespace Microsoft.Build.Construction;
 
-            using var reader = XmlReader.Create(new StringReader(xml));
-            return ProjectRootElement.Create(reader);
-        }
+internal static class ProjectRootElementFactory
+{
+    public static ProjectRootElement Create(string? xml = null)
+    {
+        if (string.IsNullOrEmpty(xml))
+            xml = "<Project/>";
+
+        using var reader = XmlReader.Create(new StringReader(xml));
+        return ProjectRootElement.Create(reader);
     }
 }

@@ -1,22 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.CSharp
+namespace Microsoft.VisualStudio.ProjectSystem.VS.CSharp;
+
+public class CSharpProjectTypeGuidProviderTests
 {
-    public class CSharpProjectTypeGuidProviderTests
+    [Fact]
+    public void ProjectTypeGuid_ReturnsNonEmptyGuid()
     {
-        [Fact]
-        public void ProjectTypeGuid_ReturnsNonEmptyGuid()
-        {
-            var provider = CreateInstance();
+        var provider = CreateInstance();
 
-            // Handshake between the project system and factory around the actual guid value so we do not test 
-            // for a specified guid, other than to confirm it's not empty
-            Assert.NotEqual(Guid.Empty, provider.ProjectTypeGuid);
-        }
+        // Handshake between the project system and factory around the actual guid value so we do not test 
+        // for a specified guid, other than to confirm it's not empty
+        Assert.NotEqual(Guid.Empty, provider.ProjectTypeGuid);
+    }
 
-        private static CSharpProjectTypeGuidProvider CreateInstance()
-        {
-            return new CSharpProjectTypeGuidProvider();
-        }
+    private static CSharpProjectTypeGuidProvider CreateInstance()
+    {
+        return new CSharpProjectTypeGuidProvider();
     }
 }

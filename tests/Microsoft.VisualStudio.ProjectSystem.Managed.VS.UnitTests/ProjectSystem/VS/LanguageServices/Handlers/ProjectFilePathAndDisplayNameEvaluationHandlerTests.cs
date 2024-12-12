@@ -3,135 +3,134 @@
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
+
+public class ProjectFilePathAndDisplayNameEvaluationHandlerTests : EvaluationHandlerTestBase
 {
-    public class ProjectFilePathAndDisplayNameEvaluationHandlerTests : EvaluationHandlerTestBase
+    [Fact]
+    public void Handle_WhenMSBuildProjectFullPathPropertyNotChanged_DoesNothing()
     {
-        [Fact]
-        public void Handle_WhenMSBuildProjectFullPathPropertyNotChanged_DoesNothing()
-        {
-            var context = IWorkspaceProjectContextMockFactory.Create();
-            context.ProjectFilePath = @"ProjectFilePath";
-            context.DisplayName = "DisplayName";
+        var context = IWorkspaceProjectContextMockFactory.Create();
+        context.ProjectFilePath = @"ProjectFilePath";
+        context.DisplayName = "DisplayName";
 
-            var handler = CreateInstance(context: context);
+        var handler = CreateInstance(context: context);
 
-            var projectChange = IProjectChangeDescriptionFactory.FromJson(
-                """
-                {
-                    "Difference": { 
-                        "AnyChanges": true
+        var projectChange = IProjectChangeDescriptionFactory.FromJson(
+            """
+            {
+                "Difference": { 
+                    "AnyChanges": true
+                }
+            }
+            """);
+
+        Handle(context, handler, projectChange);
+
+        Assert.Equal(@"ProjectFilePath", context.ProjectFilePath);
+        Assert.Equal(@"DisplayName", context.DisplayName);
+    }
+
+    [Fact]
+    public void Handle_WhenMSBuildProjectFullPathPropertyChanged_SetsProjectFilePath()
+    {
+        var context = IWorkspaceProjectContextMockFactory.Create();
+        context.ProjectFilePath = @"ProjectFilePath";
+
+        var handler = CreateInstance(context: context);
+
+        var projectChange = IProjectChangeDescriptionFactory.FromJson(
+            """
+            {
+                "Difference": { 
+                    "AnyChanges": true,
+                    "ChangedProperties": [ "MSBuildProjectFullPath" ]
+                },
+                "After": { 
+                    "Properties": {
+                        "MSBuildProjectFullPath": "NewProjectFilePath"
                     }
                 }
-                """);
+            }
+            """);
+        Handle(context, handler, projectChange);
 
-            Handle(context, handler, projectChange);
+        Assert.Equal(@"NewProjectFilePath", context.ProjectFilePath);
+    }
 
-            Assert.Equal(@"ProjectFilePath", context.ProjectFilePath);
-            Assert.Equal(@"DisplayName", context.DisplayName);
-        }
+    [Fact]
+    public void Handle_WhenMSBuildProjectFullPathPropertyChanged_SetsDisplayNameToFileNameWithoutExtension()
+    {
+        var context = IWorkspaceProjectContextMockFactory.Create();
 
-        [Fact]
-        public void Handle_WhenMSBuildProjectFullPathPropertyChanged_SetsProjectFilePath()
-        {
-            var context = IWorkspaceProjectContextMockFactory.Create();
-            context.ProjectFilePath = @"ProjectFilePath";
+        var handler = CreateInstance(context: context);
 
-            var handler = CreateInstance(context: context);
-
-            var projectChange = IProjectChangeDescriptionFactory.FromJson(
-                """
-                {
-                    "Difference": { 
-                        "AnyChanges": true,
-                        "ChangedProperties": [ "MSBuildProjectFullPath" ]
-                    },
-                    "After": { 
-                        "Properties": {
-                            "MSBuildProjectFullPath": "NewProjectFilePath"
-                        }
+        var projectChange = IProjectChangeDescriptionFactory.FromJson(
+            """
+            {
+                "Difference": { 
+                    "AnyChanges": true,
+                    "ChangedProperties": [ "MSBuildProjectFullPath" ]
+                },
+                "After": { 
+                    "Properties": {
+                        "MSBuildProjectFullPath": "C:\\Project\\Project.csproj"
                     }
                 }
-                """);
-            Handle(context, handler, projectChange);
+            }
+            """);
+        Handle(context, handler, projectChange);
 
-            Assert.Equal(@"NewProjectFilePath", context.ProjectFilePath);
-        }
+        Assert.Equal(@"Project", context.DisplayName);
+    }
 
-        [Fact]
-        public void Handle_WhenMSBuildProjectFullPathPropertyChanged_SetsDisplayNameToFileNameWithoutExtension()
-        {
-            var context = IWorkspaceProjectContextMockFactory.Create();
+    [Theory] // Dimension Names                             Dimension Values       Implicit Dimension Names,                 Expected
+    [InlineData("Configuration",                            "Debug",               "",                                       "Project")]
+    [InlineData("Configuration",                            "Debug",               "Configuration",                          "Project (Debug)")]
+    [InlineData("Configuration|Platform",                   "Debug|AnyCPU",        "",                                       "Project")]
+    [InlineData("Configuration|Platform",                   "Debug|AnyCPU",        "Configuration",                          "Project (Debug)")]
+    [InlineData("Configuration|Platform",                   "Debug|AnyCPU",        "Configuration|Platform",                 "Project (Debug, AnyCPU)")]
+    [InlineData("Configuration|Platform|TargetFramework",   "Debug|AnyCPU|net45",  "",                                       "Project")]
+    [InlineData("Configuration|Platform|TargetFramework",   "Debug|AnyCPU|net45",  "Configuration",                          "Project (Debug)")]
+    [InlineData("Configuration|Platform|TargetFramework",   "Debug|AnyCPU|net45",  "Configuration|Platform",                 "Project (Debug, AnyCPU)")]
+    [InlineData("Configuration|Platform|TargetFramework",   "Debug|AnyCPU|net45",  "Configuration|Platform|TargetFramework", "Project (Debug, AnyCPU, net45)")]
+    [InlineData("Configuration|Platform|TargetFramework",   "Debug|AnyCPU|net45",  "TargetFramework",                        "Project (net45)")]
+    public void Handle_WhenMSBuildProjectFullPathPropertyChangedAndMultitargeting_IncludeDimensionValuesInDisplayName(string dimensionNames, string dimensionValues, string implicitDimensionNames, string expected)
+    {
+        var context = IWorkspaceProjectContextMockFactory.Create();
+        var implicitlyActiveDimensionProvider = IImplicitlyActiveDimensionProviderFactory.ImplementGetImplicitlyActiveDimensions(n => implicitDimensionNames.SplitReturningEmptyIfEmpty('|'));
+        var configuration = ProjectConfigurationFactory.Create(dimensionNames, dimensionValues);
+        var handler = CreateInstance(implicitlyActiveDimensionProvider, context);
 
-            var handler = CreateInstance(context: context);
-
-            var projectChange = IProjectChangeDescriptionFactory.FromJson(
-                """
-                {
-                    "Difference": { 
-                        "AnyChanges": true,
-                        "ChangedProperties": [ "MSBuildProjectFullPath" ]
-                    },
-                    "After": { 
-                        "Properties": {
-                            "MSBuildProjectFullPath": "C:\\Project\\Project.csproj"
-                        }
+        var projectChange = IProjectChangeDescriptionFactory.FromJson(
+            """
+            {
+                "Difference": { 
+                    "AnyChanges": true,
+                    "ChangedProperties": [ "MSBuildProjectFullPath" ]
+                },
+                "After": { 
+                    "Properties": {
+                        "MSBuildProjectFullPath": "C:\\Project\\Project.csproj"
                     }
                 }
-                """);
-            Handle(context, handler, projectChange);
+            }
+            """);
 
-            Assert.Equal(@"Project", context.DisplayName);
-        }
+        Handle(context, handler, projectChange, configuration);
 
-        [Theory] // Dimension Names                             Dimension Values       Implicit Dimension Names,                 Expected
-        [InlineData("Configuration",                            "Debug",               "",                                       "Project")]
-        [InlineData("Configuration",                            "Debug",               "Configuration",                          "Project (Debug)")]
-        [InlineData("Configuration|Platform",                   "Debug|AnyCPU",        "",                                       "Project")]
-        [InlineData("Configuration|Platform",                   "Debug|AnyCPU",        "Configuration",                          "Project (Debug)")]
-        [InlineData("Configuration|Platform",                   "Debug|AnyCPU",        "Configuration|Platform",                 "Project (Debug, AnyCPU)")]
-        [InlineData("Configuration|Platform|TargetFramework",   "Debug|AnyCPU|net45",  "",                                       "Project")]
-        [InlineData("Configuration|Platform|TargetFramework",   "Debug|AnyCPU|net45",  "Configuration",                          "Project (Debug)")]
-        [InlineData("Configuration|Platform|TargetFramework",   "Debug|AnyCPU|net45",  "Configuration|Platform",                 "Project (Debug, AnyCPU)")]
-        [InlineData("Configuration|Platform|TargetFramework",   "Debug|AnyCPU|net45",  "Configuration|Platform|TargetFramework", "Project (Debug, AnyCPU, net45)")]
-        [InlineData("Configuration|Platform|TargetFramework",   "Debug|AnyCPU|net45",  "TargetFramework",                        "Project (net45)")]
-        public void Handle_WhenMSBuildProjectFullPathPropertyChangedAndMultitargeting_IncludeDimensionValuesInDisplayName(string dimensionNames, string dimensionValues, string implicitDimensionNames, string expected)
-        {
-            var context = IWorkspaceProjectContextMockFactory.Create();
-            var implicitlyActiveDimensionProvider = IImplicitlyActiveDimensionProviderFactory.ImplementGetImplicitlyActiveDimensions(n => implicitDimensionNames.SplitReturningEmptyIfEmpty('|'));
-            var configuration = ProjectConfigurationFactory.Create(dimensionNames, dimensionValues);
-            var handler = CreateInstance(implicitlyActiveDimensionProvider, context);
+        Assert.Equal(expected, context.DisplayName);
+    }
 
-            var projectChange = IProjectChangeDescriptionFactory.FromJson(
-                """
-                {
-                    "Difference": { 
-                        "AnyChanges": true,
-                        "ChangedProperties": [ "MSBuildProjectFullPath" ]
-                    },
-                    "After": { 
-                        "Properties": {
-                            "MSBuildProjectFullPath": "C:\\Project\\Project.csproj"
-                        }
-                    }
-                }
-                """);
+    internal override IProjectEvaluationHandler CreateInstance()
+    {
+        return CreateInstance(null, null);
+    }
 
-            Handle(context, handler, projectChange, configuration);
+    private static ProjectFilePathAndDisplayNameEvaluationHandler CreateInstance(IImplicitlyActiveDimensionProvider? implicitlyActiveDimensionProvider = null, IWorkspaceProjectContext? context = null)
+    {
+        implicitlyActiveDimensionProvider ??= IImplicitlyActiveDimensionProviderFactory.Create();
 
-            Assert.Equal(expected, context.DisplayName);
-        }
-
-        internal override IProjectEvaluationHandler CreateInstance()
-        {
-            return CreateInstance(null, null);
-        }
-
-        private static ProjectFilePathAndDisplayNameEvaluationHandler CreateInstance(IImplicitlyActiveDimensionProvider? implicitlyActiveDimensionProvider = null, IWorkspaceProjectContext? context = null)
-        {
-            implicitlyActiveDimensionProvider ??= IImplicitlyActiveDimensionProviderFactory.Create();
-
-            return new ProjectFilePathAndDisplayNameEvaluationHandler(implicitlyActiveDimensionProvider);
-        }
+        return new ProjectFilePathAndDisplayNameEvaluationHandler(implicitlyActiveDimensionProvider);
     }
 }

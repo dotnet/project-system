@@ -76,7 +76,19 @@
       <Group guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkGroup" priority="0x0100">
         <Parent guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkMenu"/>
       </Group>
-     <!-- This is the ordering group. Handles ordering files. -->
+      <!-- Group added to transitive assembly references -->
+      <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_ITEM_OBJECTBROWSER" priority="0x0100">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE"/>
+      </Group>
+      <!-- Group added to transitive COM references -->
+      <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_ITEM_OBJECTBROWSER" priority="0x0100">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_COMREFERENCE"/>
+      </Group>
+      <!-- Group added to transitive project references -->
+      <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_ITEM_OBJECTBROWSER" priority="0x0100">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJECTREFERENCE"/>
+      </Group>
+      <!-- This is the ordering group. Handles ordering files. -->
       <Group guid="guidManagedProjectSystemOrderCommandSet" id="OrderingGroup" priority="0x100">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
       </Group>
@@ -202,7 +214,13 @@
       </Button>
     </Buttons>
   </Commands>
-  
+
+  <CommandPlacements>
+    <CommandPlacement guid="guidVSStd2K" id="ECMD_VIEWREFINOBJECTBROWSER" priority="0x0200">
+      <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_ITEM_OBJECTBROWSER"/>
+    </CommandPlacement>
+  </CommandPlacements>
+
   <KeyBindings>
     <KeyBinding guid="guidManagedProjectSystemCommandSet" id="cmdidNavigateToProject" editor="guidSolutionExplorerToolWindow" key1="VK_F12"/>
   </KeyBindings>
@@ -210,25 +228,24 @@
   <Symbols>
     <GuidSymbol name="guidSolutionExplorerToolWindow" value="{3AE79031-E1BC-11D0-8F78-00A0C9110057}" />
     
-    <!-- This is out managed package guid. -->
+    <!-- The .NET Project System package GUID. -->
     <GuidSymbol name="PackageGuidString" value="{860A27C0-B665-47F3-BC12-637E16A1050A}" />
+
+    <!-- IDSymbol values should be spaced out, leaving space to add new values in future. -->
 
     <GuidSymbol name="guidDebugTargetHandlerPackage" value="{6e87cfad-6c05-4adf-9cd7-3b7943875b7c}">
       <IDSymbol name="DebugTargetMenuControllerGroup" value="0x1000" />
       <IDSymbol name="DebugTargetMenuControllerFooterGroup" value="0x2000" />
-
     </GuidSymbol>
 
     <GuidSymbol name="guidManagedProjectSystemCommandSet" value="{568ABDF7-D522-474D-9EED-34B5E5095BA5}">
-      <!-- Note that these need room to grow hence they need to be spaced out-->
       <IDSymbol name="cmdidProjectDebugger" value="0x0100" />
       <IDSymbol name="cmdidGenerateNuGetPackageProjectContextMenu" value="0x2000" />
       <IDSymbol name="cmdidGenerateNuGetPackageTopLevelBuild" value="0x2001" />
       <IDSymbol name="cmdidNavigateToProject" value="0x2002" />
       <IDSymbol name="DebugTargetMenuDebugFrameworkMenu" value="0x3000" />
       <IDSymbol name="DebugTargetMenuDebugFrameworkGroup" value="0x3001" />
-      <IDSymbol name="cmdidDebugFrameworks" value="0x3050" />        <!--needs space to grow-->
-      
+      <IDSymbol name="cmdidDebugFrameworks" value="0x3050" />
       <IDSymbol name="NavigateGroup" value="0x4000" />
     </GuidSymbol>
 
@@ -247,8 +264,11 @@
     </GuidSymbol>
 
     <GuidSymbol name="guidSHLMainMenu" value="{ 0xd309f791, 0x903f, 0x11d0, { 0x9e, 0xfc, 0x00, 0xa0, 0xc9, 0x11, 0x00, 0x4f } }">
+      <IDSymbol name="IDM_VS_CTXT_COMREFERENCE" value="0x04A5" />
+      <IDSymbol name="IDG_VS_CTXT_ITEM_OBJECTBROWSER" value="0x02F6" />
       <IDSymbol name="IDM_VS_CTXT_PROJECTREFERENCE" value="0x04A7"/>
       <IDSymbol name="IDM_VS_CTXT_SHAREDPROJECTREFERENCE" value="0x04A8" />
+      <IDSymbol name="IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE" value="0x04B1" />
     </GuidSymbol>
   
     <GuidSymbol name="SlnExplorerGuid" value="{3AE79031-E1BC-11D0-8F78-00A0C9110057}" />

@@ -2,14 +2,13 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
+
+/// <summary>
+/// Optional interface that is used to tell whether a project should appear in
+/// the Startup drop down list.
+/// </summary>
+public interface IDebugProfileLaunchTargetsProvider3
 {
-    /// <summary>
-    /// Optional interface that is used to tell whether a project should appear in
-    /// the Startup drop down list.
-    /// </summary>
-    public interface IDebugProfileLaunchTargetsProvider3
-    {
-        Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);
-    }
+    Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);
 }

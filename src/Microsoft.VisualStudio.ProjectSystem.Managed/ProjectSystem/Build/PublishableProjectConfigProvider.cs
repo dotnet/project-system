@@ -2,29 +2,28 @@
 
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Build
+namespace Microsoft.VisualStudio.ProjectSystem.Build;
+
+/// <summary>
+///     Provides publishable project config for projects that support click once publishing.
+/// </summary>
+[Export(typeof(IPublishProvider))]
+[AppliesTo(ProjectCapability.DotNet)]
+internal class PublishableProjectConfigProvider : IPublishProvider
 {
-    /// <summary>
-    ///     Provides publishable project config for projects that support click once publishing.
-    /// </summary>
-    [Export(typeof(IPublishProvider))]
-    [AppliesTo(ProjectCapability.DotNet)]
-    internal class PublishableProjectConfigProvider : IPublishProvider
+    public Task<bool> IsPublishSupportedAsync()
     {
-        public Task<bool> IsPublishSupportedAsync()
-        {
-            // No support for ClickOnce publishing for now.
-            return TaskResult.False;
-        }
+        // No support for ClickOnce publishing for now.
+        return TaskResult.False;
+    }
 
-        public Task PublishAsync(CancellationToken cancellationToken, TextWriter outputPaneWriter)
-        {
-            throw new InvalidOperationException();
-        }
+    public Task PublishAsync(CancellationToken cancellationToken, TextWriter outputPaneWriter)
+    {
+        throw new InvalidOperationException();
+    }
 
-        public Task<bool> ShowPublishPromptAsync()
-        {
-            throw new InvalidOperationException();
-        }
+    public Task<bool> ShowPublishPromptAsync()
+    {
+        throw new InvalidOperationException();
     }
 }

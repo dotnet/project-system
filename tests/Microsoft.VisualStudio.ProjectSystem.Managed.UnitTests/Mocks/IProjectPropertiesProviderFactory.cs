@@ -2,26 +2,25 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal static class IProjectPropertiesProviderFactory
 {
-    internal static class IProjectPropertiesProviderFactory
+    public static IProjectPropertiesProvider Create(IProjectProperties? props = null, IProjectProperties? commonProps = null)
     {
-        public static IProjectPropertiesProvider Create(IProjectProperties? props = null, IProjectProperties? commonProps = null)
+        var mock = new Mock<IProjectPropertiesProvider>();
+
+        if (props is not null)
         {
-            var mock = new Mock<IProjectPropertiesProvider>();
-
-            if (props is not null)
-            {
-                mock.Setup(t => t.GetProperties(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                                .Returns(props);
-            }
-
-            if (commonProps is not null)
-            {
-                mock.Setup(t => t.GetCommonProperties()).Returns(commonProps);
-            }
-
-            return mock.Object;
+            mock.Setup(t => t.GetProperties(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                            .Returns(props);
         }
+
+        if (commonProps is not null)
+        {
+            mock.Setup(t => t.GetCommonProperties()).Returns(commonProps);
+        }
+
+        return mock.Object;
     }
 }

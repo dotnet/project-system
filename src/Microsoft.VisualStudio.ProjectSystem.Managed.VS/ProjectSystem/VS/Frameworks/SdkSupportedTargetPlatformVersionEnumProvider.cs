@@ -3,35 +3,34 @@
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks;
+
+/// <summary>
+///     Responsible for producing valid values for the SdkSupportedTargetPlatformVersion property from evaluation.
+/// </summary>
+[ExportDynamicEnumValuesProvider("SdkSupportedTargetPlatformVersionEnumProvider")]
+[AppliesTo(ProjectCapability.DotNet)]
+internal class SdkSupportedTargetPlatformVersionEnumProvider : SingleRuleSupportedValuesProvider
 {
-    /// <summary>
-    ///     Responsible for producing valid values for the SdkSupportedTargetPlatformVersion property from evaluation.
-    /// </summary>
-    [ExportDynamicEnumValuesProvider("SdkSupportedTargetPlatformVersionEnumProvider")]
-    [AppliesTo(ProjectCapability.DotNet)]
-    internal class SdkSupportedTargetPlatformVersionEnumProvider : SingleRuleSupportedValuesProvider
+    [ImportingConstructor]
+    public SdkSupportedTargetPlatformVersionEnumProvider(
+        ConfiguredProject project,
+        IProjectSubscriptionService subscriptionService)
+        : base(project, subscriptionService, ruleName: SdkSupportedTargetPlatformVersion.SchemaName) { }
+
+    protected override IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)
     {
-        [ImportingConstructor]
-        public SdkSupportedTargetPlatformVersionEnumProvider(
-            ConfiguredProject project, 
-            IProjectSubscriptionService subscriptionService) 
-            : base(project, subscriptionService, ruleName: SdkSupportedTargetPlatformVersion.SchemaName) {}
-
-        protected override IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)
+        return new PageEnumValue(new EnumValue()
         {
-            return new PageEnumValue(new EnumValue()
-            {
-                // Example: <SdkSupportedTargetPlatformVersion Include="7.0"/>
-                //          <SdkSupportedTargetPlatformVersion Include="8.0"/>
+            // Example: <SdkSupportedTargetPlatformVersion Include="7.0"/>
+            //          <SdkSupportedTargetPlatformVersion Include="8.0"/>
 
-                Name = item.Key
-            });
-        }
+            Name = item.Key
+        });
+    }
 
-        protected override int SortValues(IEnumValue a, IEnumValue b)
-        {
-            return NaturalStringComparer.Instance.Compare(a.Name, b.Name);
-        }
+    protected override int SortValues(IEnumValue a, IEnumValue b)
+    {
+        return NaturalStringComparer.Instance.Compare(a.Name, b.Name);
     }
 }

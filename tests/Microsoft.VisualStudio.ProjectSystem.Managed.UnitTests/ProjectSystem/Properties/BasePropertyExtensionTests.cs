@@ -2,87 +2,86 @@
 
 using Microsoft.Build.Framework.XamlTypes;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.Properties;
+
+public class BasePropertyExtensionTests
 {
-    public class BasePropertyExtensionTests
+    [Fact]
+    public void WhenThePropertyIsNull_GetMetadataValueThrows()
     {
-        [Fact]
-        public void WhenThePropertyIsNull_GetMetadataValueThrows()
+        TestProperty testProperty = null!;
+
+        Assert.Throws<ArgumentNullException>(() => testProperty.GetMetadataValueOrNull(metadataName: "DoesntMatter"));
+    }
+
+    [Fact]
+    public void WhenTheMetadataNameIsNull_GetMetadataValueThrows()
+    {
+
+        TestProperty testProperty = new TestProperty() { Metadata = new() };
+        string metadataName = null!;
+
+        Assert.Throws<ArgumentNullException>(() => testProperty.GetMetadataValueOrNull(metadataName));
+    }
+
+    [Fact]
+    public void WhenTheMetadataNameIsTheEmptyString_GetMetadataValueThrows()
+    {
+        TestProperty testProperty = new TestProperty() { Metadata = new() };
+        string metadataName = string.Empty;
+
+        Assert.Throws<ArgumentException>(() => testProperty.GetMetadataValueOrNull(metadataName));
+    }
+
+    [Fact]
+    public void WhenTheRequestedMetadataIsNotFound_GetMetadataValueReturnsNull()
+    {
+        TestProperty testProperty = new TestProperty() { Metadata = new() };
+        string metadataName = "MyMetadata";
+
+        Assert.Null(testProperty.GetMetadataValueOrNull(metadataName));
+    }
+
+    [Fact]
+    public void WhenTheRequestedMetadataIsFound_GetMetadataValueReturnsTheValue()
+    {
+        TestProperty testProperty = new TestProperty()
         {
-            TestProperty testProperty = null!;
-
-            Assert.Throws<ArgumentNullException>(() => testProperty.GetMetadataValueOrNull(metadataName: "DoesntMatter"));
-        }
-
-        [Fact]
-        public void WhenTheMetadataNameIsNull_GetMetadataValueThrows()
-        {
-
-            TestProperty testProperty = new TestProperty() { Metadata = new() };
-            string metadataName = null!;
-
-            Assert.Throws<ArgumentNullException>(() => testProperty.GetMetadataValueOrNull(metadataName));
-        }
-
-        [Fact]
-        public void WhenTheMetadataNameIsTheEmptyString_GetMetadataValueThrows()
-        {
-            TestProperty testProperty = new TestProperty() { Metadata = new() };
-            string metadataName = string.Empty;
-
-            Assert.Throws<ArgumentException>(() => testProperty.GetMetadataValueOrNull(metadataName));
-        }
-
-        [Fact]
-        public void WhenTheRequestedMetadataIsNotFound_GetMetadataValueReturnsNull()
-        {
-            TestProperty testProperty = new TestProperty() { Metadata = new() };
-            string metadataName = "MyMetadata";
-
-            Assert.Null(testProperty.GetMetadataValueOrNull(metadataName));
-        }
-
-        [Fact]
-        public void WhenTheRequestedMetadataIsFound_GetMetadataValueReturnsTheValue()
-        {
-            TestProperty testProperty = new TestProperty()
+            Metadata = new()
             {
-                Metadata = new()
-                {
-                    new() { Name = "Alpha", Value = "Kangaroo" },
-                    new() { Name = "Beta", Value = "Wallaby" }
-                }
-            };
+                new() { Name = "Alpha", Value = "Kangaroo" },
+                new() { Name = "Beta", Value = "Wallaby" }
+            }
+        };
 
-            string metadataName = "Beta";
+        string metadataName = "Beta";
 
-            Assert.Equal(expected: "Wallaby", actual: testProperty.GetMetadataValueOrNull(metadataName));
-        }
+        Assert.Equal(expected: "Wallaby", actual: testProperty.GetMetadataValueOrNull(metadataName));
+    }
 
-        [Fact]
-        public void WhenTheRequestedMetadataIsSpecifiedMoreThanOnce_GetMetadataValueReturnsTheFirstValue()
+    [Fact]
+    public void WhenTheRequestedMetadataIsSpecifiedMoreThanOnce_GetMetadataValueReturnsTheFirstValue()
+    {
+        TestProperty testProperty = new TestProperty()
         {
-            TestProperty testProperty = new TestProperty()
+            Metadata = new()
             {
-                Metadata = new()
-                {
-                    new() { Name = "Beta", Value = "Wallaby" },
-                    new() { Name = "Alpha", Value = "Dingo" },
-                    new() { Name = "Alpha", Value = "Kangaroo" }
-                }
-            };
+                new() { Name = "Beta", Value = "Wallaby" },
+                new() { Name = "Alpha", Value = "Dingo" },
+                new() { Name = "Alpha", Value = "Kangaroo" }
+            }
+        };
 
-            string metadataName = "Alpha";
+        string metadataName = "Alpha";
 
-            Assert.Equal(expected: "Dingo", actual: testProperty.GetMetadataValueOrNull(metadataName));
-        }
+        Assert.Equal(expected: "Dingo", actual: testProperty.GetMetadataValueOrNull(metadataName));
+    }
 
-        /// <summary>
-        /// <see cref="BaseProperty" /> is abstract, so we need a concrete implementation
-        /// even though there is nothing interesting to implement.
-        /// </summary>
-        private class TestProperty : BaseProperty
-        {
-        }
+    /// <summary>
+    /// <see cref="BaseProperty" /> is abstract, so we need a concrete implementation
+    /// even though there is nothing interesting to implement.
+    /// </summary>
+    private class TestProperty : BaseProperty
+    {
     }
 }

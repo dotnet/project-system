@@ -4,29 +4,28 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// Handles retrieving a set of <see cref="IUIPropertySnapshot"/>s from an <see cref="IPropertyPageSnapshot"/>
+/// or <see cref="ILaunchProfile"/>.
+/// </summary>
+internal class UIPropertyFromRuleDataProducer : QueryDataFromProviderStateProducerBase<ContextAndRuleProviderState>
 {
-    /// <summary>
-    /// Handles retrieving a set of <see cref="IUIPropertySnapshot"/>s from an <see cref="IPropertyPageSnapshot"/>
-    /// or <see cref="ILaunchProfile"/>.
-    /// </summary>
-    internal class UIPropertyFromRuleDataProducer : QueryDataFromProviderStateProducerBase<ContextAndRuleProviderState>
+    private readonly IUIPropertyPropertiesAvailableStatus _properties;
+
+    public UIPropertyFromRuleDataProducer(IUIPropertyPropertiesAvailableStatus properties)
     {
-        private readonly IUIPropertyPropertiesAvailableStatus _properties;
+        _properties = properties;
+    }
 
-        public UIPropertyFromRuleDataProducer(IUIPropertyPropertiesAvailableStatus properties)
+    protected override async Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ContextAndRuleProviderState providerState)
+    {
+        if (await providerState.ProjectState.GetMetadataVersionAsync() is (string versionKey, long versionNumber))
         {
-            _properties = properties;
+            queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
         }
 
-        protected override async Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ContextAndRuleProviderState providerState)
-        {
-            if (await providerState.ProjectState.GetMetadataVersionAsync() is (string versionKey, long versionNumber))
-            {
-                queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
-            }
-
-            return UIPropertyDataProducer.CreateUIPropertyValues(queryExecutionContext, parent, providerState.ProjectState, providerState.PropertiesContext, providerState.Rule, _properties);
-        }
+        return UIPropertyDataProducer.CreateUIPropertyValues(queryExecutionContext, parent, providerState.ProjectState, providerState.PropertiesContext, providerState.Rule, _properties);
     }
 }

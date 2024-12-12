@@ -5,30 +5,29 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// Handles retrieving a set of <see cref="ICategory"/>s from an <see cref="IPropertyPageSnapshot"/>
+/// or <see cref="ILaunchProfile"/>.
+/// </summary>
+internal class CategoryFromRuleDataProducer : QueryDataFromProviderStateProducerBase<ContextAndRuleProviderState>
 {
-    /// <summary>
-    /// Handles retrieving a set of <see cref="ICategory"/>s from an <see cref="IPropertyPageSnapshot"/>
-    /// or <see cref="ILaunchProfile"/>.
-    /// </summary>
-    internal class CategoryFromRuleDataProducer : QueryDataFromProviderStateProducerBase<ContextAndRuleProviderState>
+    private readonly ICategoryPropertiesAvailableStatus _properties;
+
+    public CategoryFromRuleDataProducer(ICategoryPropertiesAvailableStatus properties)
     {
-        private readonly ICategoryPropertiesAvailableStatus _properties;
+        Requires.NotNull(properties);
+        _properties = properties;
+    }
 
-        public CategoryFromRuleDataProducer(ICategoryPropertiesAvailableStatus properties)
+    protected override async Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ContextAndRuleProviderState providerState)
+    {
+        if (await providerState.ProjectState.GetMetadataVersionAsync() is (string versionKey, long versionNumber))
         {
-            Requires.NotNull(properties);
-            _properties = properties;
+            queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
         }
 
-        protected override async Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ContextAndRuleProviderState providerState)
-        {
-            if (await providerState.ProjectState.GetMetadataVersionAsync() is (string versionKey, long versionNumber))
-            {
-                queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
-            }
-
-            return CategoryDataProducer.CreateCategoryValues(queryExecutionContext, parent, providerState.Rule, _properties);
-        }
+        return CategoryDataProducer.CreateCategoryValues(queryExecutionContext, parent, providerState.Rule, _properties);
     }
 }

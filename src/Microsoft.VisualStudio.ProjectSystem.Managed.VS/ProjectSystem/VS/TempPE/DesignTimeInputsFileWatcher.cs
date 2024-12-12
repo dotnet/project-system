@@ -4,186 +4,185 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
+namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
+
+/// <summary>
+/// Produces output whenever a design time input changes
+/// </summary>
+[Export(typeof(IDesignTimeInputsFileWatcher))]
+[AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
+internal class DesignTimeInputsFileWatcher : ProjectValueDataSourceBase<string[]>, IVsFreeThreadedFileChangeEvents2, IDesignTimeInputsFileWatcher
 {
+    private readonly UnconfiguredProject _project;
+    private readonly IProjectThreadingService _threadingService;
+    private readonly IDesignTimeInputsDataSource _designTimeInputsDataSource;
+    private readonly IVsService<IVsAsyncFileChangeEx> _fileChangeService;
+    private readonly Dictionary<string, uint> _fileWatcherCookies = new(StringComparers.Paths);
+
+    private int _version;
+    private IDisposable? _dataSourceLink;
+
     /// <summary>
-    /// Produces output whenever a design time input changes
+    /// The block that receives updates from the active tree provider.
     /// </summary>
-    [Export(typeof(IDesignTimeInputsFileWatcher))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
-    internal class DesignTimeInputsFileWatcher : ProjectValueDataSourceBase<string[]>, IVsFreeThreadedFileChangeEvents2, IDesignTimeInputsFileWatcher
+    private IBroadcastBlock<IProjectVersionedValue<string[]>>? _broadcastBlock;
+
+    /// <summary>
+    /// The public facade for the broadcast block.
+    /// </summary>
+    private IReceivableSourceBlock<IProjectVersionedValue<string[]>>? _publicBlock;
+
+    /// <summary>
+    /// The block that actually does our processing
+    /// </summary>
+    private ITargetBlock<IProjectVersionedValue<DesignTimeInputs>>? _actionBlock;
+
+    [ImportingConstructor]
+    public DesignTimeInputsFileWatcher(UnconfiguredProject project,
+                                       IUnconfiguredProjectServices unconfiguredProjectServices,
+                                       IProjectThreadingService threadingService,
+                                       IDesignTimeInputsDataSource designTimeInputsDataSource,
+                                       IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> fileChangeService)
+         : base(unconfiguredProjectServices, synchronousDisposal: false, registerDataSource: false)
     {
-        private readonly UnconfiguredProject _project;
-        private readonly IProjectThreadingService _threadingService;
-        private readonly IDesignTimeInputsDataSource _designTimeInputsDataSource;
-        private readonly IVsService<IVsAsyncFileChangeEx> _fileChangeService;
-        private readonly Dictionary<string, uint> _fileWatcherCookies = new(StringComparers.Paths);
+        _project = project;
+        _threadingService = threadingService;
+        _designTimeInputsDataSource = designTimeInputsDataSource;
+        _fileChangeService = fileChangeService;
+    }
 
-        private int _version;
-        private IDisposable? _dataSourceLink;
+    /// <summary>
+    /// This is to allow unit tests to force completion of our source block rather than waiting for async work to complete
+    /// </summary>
+    internal bool AllowSourceBlockCompletion { get; set; }
 
-        /// <summary>
-        /// The block that receives updates from the active tree provider.
-        /// </summary>
-        private IBroadcastBlock<IProjectVersionedValue<string[]>>? _broadcastBlock;
+    public override NamedIdentity DataSourceKey { get; } = new NamedIdentity(nameof(DesignTimeInputsFileWatcher));
 
-        /// <summary>
-        /// The public facade for the broadcast block.
-        /// </summary>
-        private IReceivableSourceBlock<IProjectVersionedValue<string[]>>? _publicBlock;
+    public override IComparable DataSourceVersion => _version;
 
-        /// <summary>
-        /// The block that actually does our processing
-        /// </summary>
-        private ITargetBlock<IProjectVersionedValue<DesignTimeInputs>>? _actionBlock;
-
-        [ImportingConstructor]
-        public DesignTimeInputsFileWatcher(UnconfiguredProject project,
-                                           IUnconfiguredProjectServices unconfiguredProjectServices,
-                                           IProjectThreadingService threadingService,
-                                           IDesignTimeInputsDataSource designTimeInputsDataSource,
-                                           IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> fileChangeService)
-             : base(unconfiguredProjectServices, synchronousDisposal: false, registerDataSource: false)
+    public override IReceivableSourceBlock<IProjectVersionedValue<string[]>> SourceBlock
+    {
+        get
         {
-            _project = project;
-            _threadingService = threadingService;
-            _designTimeInputsDataSource = designTimeInputsDataSource;
-            _fileChangeService = fileChangeService;
+            EnsureInitialized();
+
+            return _publicBlock!;
         }
+    }
 
-        /// <summary>
-        /// This is to allow unit tests to force completion of our source block rather than waiting for async work to complete
-        /// </summary>
-        internal bool AllowSourceBlockCompletion { get; set; }
+    protected override void Initialize()
+    {
+        base.Initialize();
 
-        public override NamedIdentity DataSourceKey { get; } = new NamedIdentity(nameof(DesignTimeInputsFileWatcher));
+        _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<string[]>>(nameFormat: nameof(DesignTimeInputsFileWatcher) + " Broadcast: {1}");
+        _publicBlock = AllowSourceBlockCompletion ? _broadcastBlock : _broadcastBlock.SafePublicize();
 
-        public override IComparable DataSourceVersion => _version;
+        _actionBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<DesignTimeInputs>>(ProcessDesignTimeInputsAsync, _project);
 
-        public override IReceivableSourceBlock<IProjectVersionedValue<string[]>> SourceBlock
+        _dataSourceLink = _designTimeInputsDataSource.SourceBlock.LinkTo(_actionBlock, DataflowOption.PropagateCompletion);
+
+        JoinUpstreamDataSources(_designTimeInputsDataSource);
+    }
+
+    private async Task ProcessDesignTimeInputsAsync(IProjectVersionedValue<DesignTimeInputs> input)
+    {
+        DesignTimeInputs designTimeInputs = input.Value;
+
+        IVsAsyncFileChangeEx vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
+
+        // we don't care about the difference between types of inputs, so we just construct one hashset for fast comparisons later
+        var allFiles = new HashSet<string>(StringComparers.Paths);
+        allFiles.AddRange(designTimeInputs.Inputs);
+        allFiles.AddRange(designTimeInputs.SharedInputs);
+
+        // Remove any files we're watching that we don't care about any more
+        var removedFiles = new List<string>();
+        foreach ((string file, uint cookie) in _fileWatcherCookies)
         {
-            get
+            if (!allFiles.Contains(file))
             {
-                EnsureInitialized();
-
-                return _publicBlock!;
+                await vsAsyncFileChangeEx.UnadviseFileChangeAsync(cookie);
+                removedFiles.Add(file);
             }
         }
 
-        protected override void Initialize()
+        foreach (string file in removedFiles)
         {
-            base.Initialize();
-
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<string[]>>(nameFormat: nameof(DesignTimeInputsFileWatcher) + " Broadcast: {1}");
-            _publicBlock = AllowSourceBlockCompletion ? _broadcastBlock : _broadcastBlock.SafePublicize();
-
-            _actionBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<DesignTimeInputs>>(ProcessDesignTimeInputsAsync, _project);
-
-            _dataSourceLink = _designTimeInputsDataSource.SourceBlock.LinkTo(_actionBlock, DataflowOption.PropagateCompletion);
-
-            JoinUpstreamDataSources(_designTimeInputsDataSource);
+            _fileWatcherCookies.Remove(file);
         }
 
-        private async Task ProcessDesignTimeInputsAsync(IProjectVersionedValue<DesignTimeInputs> input)
+        // Now watch and output files that are new
+        foreach (string file in allFiles)
         {
-            DesignTimeInputs designTimeInputs = input.Value;
-
-            IVsAsyncFileChangeEx vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
-
-            // we don't care about the difference between types of inputs, so we just construct one hashset for fast comparisons later
-            var allFiles = new HashSet<string>(StringComparers.Paths);
-            allFiles.AddRange(designTimeInputs.Inputs);
-            allFiles.AddRange(designTimeInputs.SharedInputs);
-
-            // Remove any files we're watching that we don't care about any more
-            var removedFiles = new List<string>();
-            foreach ((string file, uint cookie) in _fileWatcherCookies)
+            if (!_fileWatcherCookies.ContainsKey(file))
             {
-                if (!allFiles.Contains(file))
+                // We don't care about delete and add here, as they come through data flow, plus they are really bouncy - every file change is a Time, Del and Add event)
+                uint cookie = await vsAsyncFileChangeEx.AdviseFileChangeAsync(file, _VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size, sink: this);
+
+                _fileWatcherCookies.Add(file, cookie);
+            }
+        }
+    }
+
+    private void PublishFiles(string[] files)
+    {
+        _version++;
+        _broadcastBlock?.Post(new ProjectVersionedValue<string[]>(
+            files,
+            Empty.ProjectValueVersions.Add(DataSourceKey, _version)));
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            // Completing the output block before the action block means any final messages that are currently being produced
+            // will not be sent out, which is what we want in this case.
+            _broadcastBlock?.Complete();
+            _dataSourceLink?.Dispose();
+
+            if (_actionBlock is not null)
+            {
+                _actionBlock.Complete();
+
+                _threadingService.ExecuteSynchronously(async () =>
                 {
-                    await vsAsyncFileChangeEx.UnadviseFileChangeAsync(cookie);
-                    removedFiles.Add(file);
-                }
-            }
+                    // Wait for any processing to finish so we don't fight over the cookies 🍪
+                    await _actionBlock.Completion;
 
-            foreach (string file in removedFiles)
-            {
-                _fileWatcherCookies.Remove(file);
-            }
+                    IVsAsyncFileChangeEx vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
 
-            // Now watch and output files that are new
-            foreach (string file in allFiles)
-            {
-                if (!_fileWatcherCookies.ContainsKey(file))
-                {
-                    // We don't care about delete and add here, as they come through data flow, plus they are really bouncy - every file change is a Time, Del and Add event)
-                    uint cookie = await vsAsyncFileChangeEx.AdviseFileChangeAsync(file, _VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size, sink: this);
-
-                    _fileWatcherCookies.Add(file, cookie);
-                }
-            }
-        }
-
-        private void PublishFiles(string[] files)
-        {
-            _version++;
-            _broadcastBlock?.Post(new ProjectVersionedValue<string[]>(
-                files,
-                Empty.ProjectValueVersions.Add(DataSourceKey, _version)));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // Completing the output block before the action block means any final messages that are currently being produced
-                // will not be sent out, which is what we want in this case.
-                _broadcastBlock?.Complete();
-                _dataSourceLink?.Dispose();
-
-                if (_actionBlock is not null)
-                {
-                    _actionBlock.Complete();
-
-                    _threadingService.ExecuteSynchronously(async () =>
+                    // Unsubscribe from all files
+                    foreach (uint cookie in _fileWatcherCookies.Values)
                     {
-                        // Wait for any processing to finish so we don't fight over the cookies 🍪
-                        await _actionBlock.Completion;
-
-                        IVsAsyncFileChangeEx vsAsyncFileChangeEx = await _fileChangeService.GetValueAsync();
-
-                        // Unsubscribe from all files
-                        foreach (uint cookie in _fileWatcherCookies.Values)
-                        {
-                            await vsAsyncFileChangeEx.UnadviseFileChangeAsync(cookie);
-                        }
-                    });
-                }
+                        await vsAsyncFileChangeEx.UnadviseFileChangeAsync(cookie);
+                    }
+                });
             }
-
-            base.Dispose(disposing);
         }
 
-        public int FilesChanged(uint cChanges, string[] rgpszFile, uint[] rggrfChange)
-        {
-            PublishFiles(rgpszFile);
+        base.Dispose(disposing);
+    }
 
-            return HResult.OK;
-        }
+    public int FilesChanged(uint cChanges, string[] rgpszFile, uint[] rggrfChange)
+    {
+        PublishFiles(rgpszFile);
 
-        public int DirectoryChanged(string pszDirectory)
-        {
-            return HResult.NotImplemented;
-        }
+        return HResult.OK;
+    }
 
-        public int DirectoryChangedEx(string pszDirectory, string pszFile)
-        {
-            return HResult.NotImplemented;
-        }
+    public int DirectoryChanged(string pszDirectory)
+    {
+        return HResult.NotImplemented;
+    }
 
-        public int DirectoryChangedEx2(string pszDirectory, uint cChanges, string[] rgpszFile, uint[] rggrfChange)
-        {
-            return HResult.NotImplemented;
-        }
+    public int DirectoryChangedEx(string pszDirectory, string pszFile)
+    {
+        return HResult.NotImplemented;
+    }
+
+    public int DirectoryChangedEx2(string pszDirectory, uint cChanges, string[] rgpszFile, uint[] rggrfChange)
+    {
+        return HResult.NotImplemented;
     }
 }

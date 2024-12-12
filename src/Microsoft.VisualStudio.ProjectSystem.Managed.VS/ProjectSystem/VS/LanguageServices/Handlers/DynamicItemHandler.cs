@@ -25,7 +25,7 @@ internal class DynamicItemHandler(UnconfiguredProject project) : IWorkspaceUpdat
             if (!projectChange.Difference.AnyChanges)
                 continue;
 
-            IProjectChangeDiff difference = HandlerServices.NormalizeRenames(projectChange.Difference);
+            IProjectChangeDiff difference = projectChange.Difference.NormalizeRenames();
 
             foreach (string includePath in difference.RemovedItems)
             {

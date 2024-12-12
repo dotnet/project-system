@@ -2,15 +2,14 @@
 
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
-{
-    internal static class IProjectHotReloadNotificationServiceFactory
-    {
-        public static IProjectHotReloadNotificationService Create()
-        {
-            var mock = new Mock<IProjectHotReloadNotificationService>();
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
 
-            return mock.Object;
-        }
+internal static class IProjectHotReloadNotificationServiceFactory
+{
+    public static IProjectHotReloadNotificationService Create()
+    {
+        var mock = new Mock<IProjectHotReloadNotificationService>();
+
+        return mock.Object;
     }
 }

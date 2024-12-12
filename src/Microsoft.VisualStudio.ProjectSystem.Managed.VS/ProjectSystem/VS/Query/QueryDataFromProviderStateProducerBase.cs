@@ -4,38 +4,37 @@ using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// Handles the boilerplate of retrieving a set of <see cref="IEntityValue"/>s based on the
+/// state associated with the parent <see cref="IEntityValue"/>.
+/// </summary>
+internal abstract class QueryDataFromProviderStateProducerBase<T> : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IEntityValue, IEntityValue>
 {
-    /// <summary>
-    /// Handles the boilerplate of retrieving a set of <see cref="IEntityValue"/>s based on the
-    /// state associated with the parent <see cref="IEntityValue"/>.
-    /// </summary>
-    internal abstract class QueryDataFromProviderStateProducerBase<T> : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IEntityValue, IEntityValue>
+    public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
     {
-        public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
+        if (request.RequestData is IEntityValueFromProvider { ProviderState: T providerState })
         {
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is T providerState)
+            try
             {
-                try
+                foreach (IEntityValue categoryValue in await CreateValuesAsync(request.QueryExecutionContext, request.RequestData, providerState))
                 {
-                    foreach (IEntityValue categoryValue in await CreateValuesAsync(request.QueryExecutionContext, request.RequestData, providerState))
-                    {
-                        await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(categoryValue, request, ProjectModelZones.Cps));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    request.QueryExecutionContext.ReportError(ex);
+                    await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(categoryValue, request, ProjectModelZones.Cps));
                 }
             }
-
-            await ResultReceiver.OnRequestProcessFinishedAsync(request);
+            catch (Exception ex)
+            {
+                request.QueryExecutionContext.ReportError(ex);
+            }
         }
 
-        /// <summary>
-        /// Given the <paramref name="parent"/> entity and the associated <paramref name="providerState"/>,
-        /// returns a set of child entities.
-        /// </summary>
-        protected abstract Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, T providerState);
+        await ResultReceiver.OnRequestProcessFinishedAsync(request);
     }
+
+    /// <summary>
+    /// Given the <paramref name="parent"/> entity and the associated <paramref name="providerState"/>,
+    /// returns a set of child entities.
+    /// </summary>
+    protected abstract Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, T providerState);
 }
