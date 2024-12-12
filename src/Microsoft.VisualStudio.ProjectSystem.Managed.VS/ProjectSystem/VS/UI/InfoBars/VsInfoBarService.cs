@@ -47,7 +47,10 @@ internal sealed class VsInfoBarService : IInfoBarService
         {
             lock (s_entries)
             {
-                foreach (InfoBar entry in s_entries)
+                // Copy the list to avoid "collection modified during enumeration" exceptions,
+                // as when the last project associated with an info bar is closed, we will
+                // remove that entry from the list.
+                foreach (InfoBar entry in s_entries.ToList())
                 {
                     entry.OnProjectClosed(_project);
                 }
