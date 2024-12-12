@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Windows;
 using System.Windows.Controls;
@@ -11,8 +11,8 @@ internal static class KeyboardFocusBehaviour
     public static readonly DependencyProperty IsKeyboardFocusedProperty =
         DependencyProperty.RegisterAttached(
             "IsKeyboardFocused",
-            typeof (bool),
-            typeof (KeyboardFocusBehaviour),
+            typeof(bool),
+            typeof(KeyboardFocusBehaviour),
             new UIPropertyMetadata(false, OnIsKeyboardFocusedPropertyChanged));
 
     public static bool GetIsKeyboardFocused(DependencyObject obj)

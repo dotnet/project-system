@@ -2,21 +2,20 @@
 
 using Microsoft.VisualStudio.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
-{
-    public partial class ComponentVerificationTests
-    {
-        // Produces inputs for theory based on the composed part
-        internal class ComposedPartTestData : TheoryData<Type>
-        {
-            public ComposedPartTestData()
-            {
-                var configuration = ComponentComposition.Instance.Configuration;
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
 
-                foreach (ComposedPart part in configuration.Parts)
-                {
-                    Add(part.Definition.Type);
-                }
+public partial class ComponentVerificationTests
+{
+    // Produces inputs for theory based on the composed part
+    internal class ComposedPartTestData : TheoryData<Type>
+    {
+        public ComposedPartTestData()
+        {
+            var configuration = ComponentComposition.Instance.Configuration;
+
+            foreach (ComposedPart part in configuration.Parts)
+            {
+                Add(part.Definition.Type);
             }
         }
     }

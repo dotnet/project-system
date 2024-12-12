@@ -3,47 +3,46 @@
 using System.Collections;
 using Xunit.Sdk;
 
-namespace Xunit
+namespace Xunit;
+
+internal static class AssertEx
 {
-    internal static class AssertEx
+    public static void CollectionLength<T>(IEnumerable<T> collection, int expectedCount)
     {
-        public static void CollectionLength<T>(IEnumerable<T> collection, int expectedCount)
-        {
-            int actualCount = collection.Count();
+        int actualCount = collection.Count();
 
-            if (actualCount != expectedCount)
+        if (actualCount != expectedCount)
+        {
+            throw new CollectionException(collection, expectedCount, actualCount);
+        }
+    }
+
+    public static void CollectionLength(IEnumerable collection, int expectedCount)
+    {
+        CollectionLength(collection.Cast<object>(), expectedCount);
+    }
+
+    public static void SequenceSame<T>(IEnumerable<T> expected, IEnumerable<T> actual) where T : class
+    {
+        using IEnumerator<T> expectedEnumerator = expected.GetEnumerator();
+        using IEnumerator<T> actualEnumerator = actual.GetEnumerator();
+
+        while (true)
+        {
+            bool nextExpected = expectedEnumerator.MoveNext();
+            bool nextActual = actualEnumerator.MoveNext();
+
+            if (nextExpected && nextActual)
             {
-                throw new CollectionException(collection, expectedCount, actualCount);
+                Assert.Same(expectedEnumerator.Current, actualEnumerator.Current);
             }
-        }
-
-        public static void CollectionLength(IEnumerable collection, int expectedCount)
-        {
-            CollectionLength(collection.Cast<object>(), expectedCount);
-        }
-
-        public static void SequenceSame<T>(IEnumerable<T> expected, IEnumerable<T> actual) where T : class
-        {
-            using IEnumerator<T> expectedEnumerator = expected.GetEnumerator();
-            using IEnumerator<T> actualEnumerator = actual.GetEnumerator();
-
-            while (true)
+            else if (!nextExpected && !nextActual)
             {
-                bool nextExpected = expectedEnumerator.MoveNext();
-                bool nextActual = actualEnumerator.MoveNext();
-
-                if (nextExpected && nextActual)
-                {
-                    Assert.Same(expectedEnumerator.Current, actualEnumerator.Current);
-                }
-                else if (!nextExpected && !nextActual)
-                {
-                    return;
-                }
-                else
-                {
-                    throw new XunitException("Sequences have different lengths");
-                }
+                return;
+            }
+            else
+            {
+                throw new XunitException("Sequences have different lengths");
             }
         }
     }

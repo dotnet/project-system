@@ -10,377 +10,376 @@ using LaunchProfileValueProviderAndMetadata = System.Lazy<
     Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProvider,
     Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProviderMetadata>;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.Properties;
+
+internal class LaunchProfileProjectProperties : IProjectProperties, IRuleAwareProjectProperties
 {
-    internal class LaunchProfileProjectProperties : IProjectProperties, IRuleAwareProjectProperties
+    private const string CommandNamePropertyName = "CommandName";
+    private const string ExecutablePathPropertyName = "ExecutablePath";
+    private const string CommandLineArgumentsPropertyName = "CommandLineArguments";
+    private const string WorkingDirectoryPropertyName = "WorkingDirectory";
+    private const string LaunchBrowserPropertyName = "LaunchBrowser";
+    private const string LaunchUrlPropertyName = "LaunchUrl";
+    private const string EnvironmentVariablesPropertyName = "EnvironmentVariables";
+
+    private Rule? _rule;
+
+    /// <remarks>
+    /// These correspond to the properties explicitly declared on <see cref="ILaunchProfile"/>
+    /// and as such they are always considered to exist on the profile, though they may
+    /// not have a value.
+    /// </remarks>
+    private static readonly string[] s_standardPropertyNames = new[]
     {
-        private const string CommandNamePropertyName = "CommandName";
-        private const string ExecutablePathPropertyName = "ExecutablePath";
-        private const string CommandLineArgumentsPropertyName = "CommandLineArguments";
-        private const string WorkingDirectoryPropertyName = "WorkingDirectory";
-        private const string LaunchBrowserPropertyName = "LaunchBrowser";
-        private const string LaunchUrlPropertyName = "LaunchUrl";
-        private const string EnvironmentVariablesPropertyName = "EnvironmentVariables";
+        CommandNamePropertyName,
+        ExecutablePathPropertyName,
+        CommandLineArgumentsPropertyName,
+        WorkingDirectoryPropertyName,
+        LaunchBrowserPropertyName,
+        LaunchUrlPropertyName,
+        EnvironmentVariablesPropertyName
+    };
 
-        private Rule? _rule;
+    private readonly LaunchProfilePropertiesContext _context;
+    private readonly ILaunchSettingsProvider3 _launchSettingsProvider;
+    private readonly ImmutableDictionary<string, LaunchProfileValueProviderAndMetadata> _launchProfileValueProviders;
+    private readonly ImmutableDictionary<string, GlobalSettingValueProviderAndMetadata> _globalSettingValueProviders;
 
-        /// <remarks>
-        /// These correspond to the properties explicitly declared on <see cref="ILaunchProfile"/>
-        /// and as such they are always considered to exist on the profile, though they may
-        /// not have a value.
-        /// </remarks>
-        private static readonly string[] s_standardPropertyNames = new[]
+    public LaunchProfileProjectProperties(
+        string filePath,
+        string profileName,
+        ILaunchSettingsProvider3 launchSettingsProvider,
+        ImmutableArray<LaunchProfileValueProviderAndMetadata> launchProfileExtensionValueProviders,
+        ImmutableArray<GlobalSettingValueProviderAndMetadata> globalSettingExtensionValueProviders)
+    {
+        _context = new LaunchProfilePropertiesContext(filePath, profileName);
+        _launchSettingsProvider = launchSettingsProvider;
+
+        ImmutableDictionary<string, LaunchProfileValueProviderAndMetadata>.Builder launchProfileValueBuilder =
+            ImmutableDictionary.CreateBuilder<string, LaunchProfileValueProviderAndMetadata>(StringComparers.PropertyNames);
+        foreach (LaunchProfileValueProviderAndMetadata valueProvider in launchProfileExtensionValueProviders)
         {
-            CommandNamePropertyName,
-            ExecutablePathPropertyName,
-            CommandLineArgumentsPropertyName,
-            WorkingDirectoryPropertyName,
-            LaunchBrowserPropertyName,
-            LaunchUrlPropertyName,
-            EnvironmentVariablesPropertyName
-        };
+            string[] propertyNames = valueProvider.Metadata.PropertyNames;
 
-        private readonly LaunchProfilePropertiesContext _context;
-        private readonly ILaunchSettingsProvider3 _launchSettingsProvider;
-        private readonly ImmutableDictionary<string, LaunchProfileValueProviderAndMetadata> _launchProfileValueProviders;
-        private readonly ImmutableDictionary<string, GlobalSettingValueProviderAndMetadata> _globalSettingValueProviders;
-
-        public LaunchProfileProjectProperties(
-            string filePath,
-            string profileName,
-            ILaunchSettingsProvider3 launchSettingsProvider,
-            ImmutableArray<LaunchProfileValueProviderAndMetadata> launchProfileExtensionValueProviders,
-            ImmutableArray<GlobalSettingValueProviderAndMetadata> globalSettingExtensionValueProviders)
-        {
-            _context = new LaunchProfilePropertiesContext(filePath, profileName);
-            _launchSettingsProvider = launchSettingsProvider;
-
-            ImmutableDictionary<string, LaunchProfileValueProviderAndMetadata>.Builder launchProfileValueBuilder =
-                ImmutableDictionary.CreateBuilder<string, LaunchProfileValueProviderAndMetadata>(StringComparers.PropertyNames);
-            foreach (LaunchProfileValueProviderAndMetadata valueProvider in launchProfileExtensionValueProviders)
+            foreach (string propertyName in propertyNames)
             {
-                string[] propertyNames = valueProvider.Metadata.PropertyNames;
+                Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
 
-                foreach (string propertyName in propertyNames)
-                {
-                    Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
+                // CONSIDER: Allow duplicate intercepting property value providers for same property name.
+                Requires.Argument(!launchProfileValueBuilder.ContainsKey(propertyName), nameof(launchProfileValueBuilder), "Duplicate property value providers for same property name");
 
-                    // CONSIDER: Allow duplicate intercepting property value providers for same property name.
-                    Requires.Argument(!launchProfileValueBuilder.ContainsKey(propertyName), nameof(launchProfileValueBuilder), "Duplicate property value providers for same property name");
-
-                    launchProfileValueBuilder.Add(propertyName, valueProvider);
-                }
+                launchProfileValueBuilder.Add(propertyName, valueProvider);
             }
-            _launchProfileValueProviders = launchProfileValueBuilder.ToImmutable();
+        }
+        _launchProfileValueProviders = launchProfileValueBuilder.ToImmutable();
 
-            ImmutableDictionary<string, GlobalSettingValueProviderAndMetadata>.Builder globalSettingValueBuilder =
-                ImmutableDictionary.CreateBuilder<string, GlobalSettingValueProviderAndMetadata>(StringComparers.PropertyNames);
-            foreach (GlobalSettingValueProviderAndMetadata valueProvider in globalSettingExtensionValueProviders)
+        ImmutableDictionary<string, GlobalSettingValueProviderAndMetadata>.Builder globalSettingValueBuilder =
+            ImmutableDictionary.CreateBuilder<string, GlobalSettingValueProviderAndMetadata>(StringComparers.PropertyNames);
+        foreach (GlobalSettingValueProviderAndMetadata valueProvider in globalSettingExtensionValueProviders)
+        {
+            string[] propertyNames = valueProvider.Metadata.PropertyNames;
+
+            foreach (string propertyName in propertyNames)
             {
-                string[] propertyNames = valueProvider.Metadata.PropertyNames;
+                Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
 
-                foreach (string propertyName in propertyNames)
-                {
-                    Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
+                // CONSIDER: Allow duplicate intercepting property value providers for same property name.
+                Requires.Argument(!globalSettingValueBuilder.ContainsKey(propertyName), nameof(globalSettingValueBuilder), "Duplicate property value providers for same property name");
 
-                    // CONSIDER: Allow duplicate intercepting property value providers for same property name.
-                    Requires.Argument(!globalSettingValueBuilder.ContainsKey(propertyName), nameof(globalSettingValueBuilder), "Duplicate property value providers for same property name");
-
-                    globalSettingValueBuilder.Add(propertyName, valueProvider);
-                }
+                globalSettingValueBuilder.Add(propertyName, valueProvider);
             }
-            _globalSettingValueProviders = globalSettingValueBuilder.ToImmutable();
         }
+        _globalSettingValueProviders = globalSettingValueBuilder.ToImmutable();
+    }
 
-        public IProjectPropertiesContext Context => _context;
+    public IProjectPropertiesContext Context => _context;
 
-        public string FileFullPath => _context.File;
+    public string FileFullPath => _context.File;
 
-        public PropertyKind PropertyKind => PropertyKind.ItemGroup;
+    public PropertyKind PropertyKind => PropertyKind.ItemGroup;
 
-        public Task DeleteDirectPropertiesAsync()
+    public Task DeleteDirectPropertiesAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeletePropertyAsync(string propertyName, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<string>> GetDirectPropertyNamesAsync()
+    {
+        return GetPropertyNamesAsync();
+    }
+
+    public async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
+    {
+        return await GetUnevaluatedPropertyValueAsync(propertyName) ?? string.Empty;
+    }
+
+    /// <remarks>
+    /// If the profile exists we return all the standard property names (as they are
+    /// always considered defined) plus all of the defined properties supported by
+    /// extenders.
+    /// </remarks>
+    public async Task<IEnumerable<string>> GetPropertyNamesAsync()
+    {
+        ILaunchSettings snapshot = await _launchSettingsProvider.WaitForFirstSnapshot();
+
+        ILaunchProfile? profile = snapshot.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, _context.ItemName));
+        if (profile is null)
         {
-            throw new NotImplementedException();
+            return Enumerable.Empty<string>();
         }
+        ImmutableDictionary<string, object> globalSettings = snapshot.GlobalSettings;
 
-        public Task DeletePropertyAsync(string propertyName, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        ImmutableSortedSet<string>.Builder builder = ImmutableSortedSet.CreateBuilder(StringComparers.PropertyNames);
+        builder.UnionWith(s_standardPropertyNames);
+
+        foreach ((string propertyName, LaunchProfileValueProviderAndMetadata provider) in _launchProfileValueProviders)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<string>> GetDirectPropertyNamesAsync()
-        {
-            return GetPropertyNamesAsync();
-        }
-
-        public async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
-        {
-            return await GetUnevaluatedPropertyValueAsync(propertyName) ?? string.Empty;
-        }
-
-        /// <remarks>
-        /// If the profile exists we return all the standard property names (as they are
-        /// always considered defined) plus all of the defined properties supported by
-        /// extenders.
-        /// </remarks>
-        public async Task<IEnumerable<string>> GetPropertyNamesAsync()
-        {
-            ILaunchSettings snapshot = await _launchSettingsProvider.WaitForFirstSnapshot();
-
-            ILaunchProfile? profile = snapshot.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, _context.ItemName));
-            if (profile is null)
-            {
-                return Enumerable.Empty<string>();
-            }
-            ImmutableDictionary<string, object> globalSettings = snapshot.GlobalSettings;
-
-            ImmutableSortedSet<string>.Builder builder = ImmutableSortedSet.CreateBuilder(StringComparers.PropertyNames);
-            builder.UnionWith(s_standardPropertyNames);
-
-            foreach ((string propertyName, LaunchProfileValueProviderAndMetadata provider) in _launchProfileValueProviders)
-            {
-                string propertyValue = provider.Value.OnGetPropertyValue(propertyName, profile, globalSettings, _rule);
-                if (!Strings.IsNullOrEmpty(propertyValue))
-                {
-                    builder.Add(propertyName);
-                }
-            }
-
-            foreach ((string propertyName, GlobalSettingValueProviderAndMetadata provider) in _globalSettingValueProviders)
-            {
-                string propertyValue = provider.Value.OnGetPropertyValue(propertyName, globalSettings, _rule);
-                if (!Strings.IsNullOrEmpty(propertyValue))
-                {
-                    builder.Add(propertyName);
-                }
-            }
-
-            foreach ((string propertyName, _) in profile.EnumerateOtherSettings())
+            string propertyValue = provider.Value.OnGetPropertyValue(propertyName, profile, globalSettings, _rule);
+            if (!Strings.IsNullOrEmpty(propertyValue))
             {
                 builder.Add(propertyName);
             }
-
-            return builder.ToImmutable();
         }
 
-        /// <returns>
-        /// If the profile does not exist, returns <see langword="null"/>. Otherwise, returns the value
-        /// of the property if the property is not defined, or <see langword="null"/> otherwise. The
-        /// standard properties are always considered to be defined.
-        /// </returns>
-        public async Task<string?> GetUnevaluatedPropertyValueAsync(string propertyName)
+        foreach ((string propertyName, GlobalSettingValueProviderAndMetadata provider) in _globalSettingValueProviders)
         {
-            ILaunchSettings snapshot = await _launchSettingsProvider.WaitForFirstSnapshot();
-
-            ILaunchProfile? profile = snapshot.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, _context.ItemName));
-            if (profile is null)
+            string propertyValue = provider.Value.OnGetPropertyValue(propertyName, globalSettings, _rule);
+            if (!Strings.IsNullOrEmpty(propertyValue))
             {
-                return null;
+                builder.Add(propertyName);
             }
+        }
 
-            return propertyName switch
+        foreach ((string propertyName, _) in profile.EnumerateOtherSettings())
+        {
+            builder.Add(propertyName);
+        }
+
+        return builder.ToImmutable();
+    }
+
+    /// <returns>
+    /// If the profile does not exist, returns <see langword="null"/>. Otherwise, returns the value
+    /// of the property if the property is not defined, or <see langword="null"/> otherwise. The
+    /// standard properties are always considered to be defined.
+    /// </returns>
+    public async Task<string?> GetUnevaluatedPropertyValueAsync(string propertyName)
+    {
+        ILaunchSettings snapshot = await _launchSettingsProvider.WaitForFirstSnapshot();
+
+        ILaunchProfile? profile = snapshot.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, _context.ItemName));
+        if (profile is null)
+        {
+            return null;
+        }
+
+        return propertyName switch
+        {
+            CommandNamePropertyName => profile.CommandName ?? string.Empty,
+            ExecutablePathPropertyName => profile.ExecutablePath ?? string.Empty,
+            CommandLineArgumentsPropertyName => profile.CommandLineArgs ?? string.Empty,
+            WorkingDirectoryPropertyName => profile.WorkingDirectory ?? string.Empty,
+            LaunchBrowserPropertyName => profile.LaunchBrowser ? "true" : "false",
+            LaunchUrlPropertyName => profile.LaunchUrl ?? string.Empty,
+            EnvironmentVariablesPropertyName => LaunchProfileEnvironmentVariableEncoding.Format(profile),
+            _ => GetExtensionPropertyValue(propertyName, profile, snapshot.GlobalSettings)
+        };
+    }
+
+    public Task<bool> IsValueInheritedAsync(string propertyName)
+    {
+        return TaskResult.False;
+    }
+
+    public async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+    {
+        Action<IWritableLaunchProfile>? profileUpdateAction = null;
+
+        // If this is a standard property, handle it ourselves.
+
+        profileUpdateAction = propertyName switch
+        {
+            CommandNamePropertyName => profile => profile.CommandName = unevaluatedPropertyValue,
+            ExecutablePathPropertyName => profile => profile.ExecutablePath = unevaluatedPropertyValue,
+            CommandLineArgumentsPropertyName => profile => profile.CommandLineArgs = unevaluatedPropertyValue,
+            WorkingDirectoryPropertyName => profile => profile.WorkingDirectory = unevaluatedPropertyValue,
+            LaunchBrowserPropertyName => setLaunchBrowserProperty,
+            LaunchUrlPropertyName => profile => profile.LaunchUrl = unevaluatedPropertyValue,
+            EnvironmentVariablesPropertyName => profile => LaunchProfileEnvironmentVariableEncoding.ParseIntoDictionary(unevaluatedPropertyValue, profile.EnvironmentVariables),
+            _ => null
+        };
+
+        if (profileUpdateAction is not null)
+        {
+            await _launchSettingsProvider.TryUpdateProfileAsync(_context.ItemName, profileUpdateAction);
+            return;
+        }
+
+        // Next, check if a launch profile extender can handle it.
+
+        profileUpdateAction = await GetPropertyValueSetterFromLaunchProfileExtendersAsync(propertyName, unevaluatedPropertyValue);
+        if (profileUpdateAction is not null)
+        {
+            await _launchSettingsProvider.TryUpdateProfileAsync(_context.ItemName, profileUpdateAction);
+            return;
+        }
+
+        // Then, check if a global setting extender can handle it.
+
+        Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>>? globalSettingsUpdateFunction = GetPropertyValueSetterFromGlobalExtenders(propertyName, unevaluatedPropertyValue);
+        if (globalSettingsUpdateFunction is not null)
+        {
+            await _launchSettingsProvider.UpdateGlobalSettingsAsync(globalSettingsUpdateFunction);
+            return;
+        }
+
+        // Finally, store it in ILaunchProfile.OtherSettings.
+
+        object? valueObject = null;
+        if (_rule?.GetProperty(propertyName) is BaseProperty property)
+        {
+            valueObject = property switch
             {
-                CommandNamePropertyName => profile.CommandName ?? string.Empty,
-                ExecutablePathPropertyName => profile.ExecutablePath ?? string.Empty,
-                CommandLineArgumentsPropertyName => profile.CommandLineArgs ?? string.Empty,
-                WorkingDirectoryPropertyName => profile.WorkingDirectory ?? string.Empty,
-                LaunchBrowserPropertyName => profile.LaunchBrowser ? "true" : "false",
-                LaunchUrlPropertyName => profile.LaunchUrl ?? string.Empty,
-                EnvironmentVariablesPropertyName => LaunchProfileEnvironmentVariableEncoding.Format(profile),
-                _ => GetExtensionPropertyValue(propertyName, profile, snapshot.GlobalSettings)
+                BoolProperty => bool.TryParse(unevaluatedPropertyValue, out bool result) ? result : null,
+                IntProperty => int.TryParse(unevaluatedPropertyValue, out int result) ? result : null,
+                StringProperty => unevaluatedPropertyValue,
+                EnumProperty => unevaluatedPropertyValue,
+                DynamicEnumProperty => unevaluatedPropertyValue,
+                _ => throw new InvalidOperationException($"{nameof(LaunchProfileProjectProperties)} does not know how to convert strings to `{property.GetType()}`.")
             };
         }
-
-        public Task<bool> IsValueInheritedAsync(string propertyName)
+        else
         {
-            return TaskResult.False;
+            valueObject = unevaluatedPropertyValue;
         }
 
-        public async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        if (valueObject is not null)
         {
-            Action<IWritableLaunchProfile>? profileUpdateAction = null;
+            profileUpdateAction = p => p.OtherSettings[propertyName] = valueObject;
+            await _launchSettingsProvider.TryUpdateProfileAsync(_context.ItemName, profileUpdateAction);
+        }
 
-            // If this is a standard property, handle it ourselves.
-
-            profileUpdateAction = propertyName switch
+        void setLaunchBrowserProperty(IWritableLaunchProfile profile)
+        {
+            if (bool.TryParse(unevaluatedPropertyValue, out bool result))
             {
-                CommandNamePropertyName => profile => profile.CommandName = unevaluatedPropertyValue,
-                ExecutablePathPropertyName => profile => profile.ExecutablePath = unevaluatedPropertyValue,
-                CommandLineArgumentsPropertyName => profile => profile.CommandLineArgs = unevaluatedPropertyValue,
-                WorkingDirectoryPropertyName => profile => profile.WorkingDirectory = unevaluatedPropertyValue,
-                LaunchBrowserPropertyName => setLaunchBrowserProperty,
-                LaunchUrlPropertyName => profile => profile.LaunchUrl = unevaluatedPropertyValue,
-                EnvironmentVariablesPropertyName => profile => LaunchProfileEnvironmentVariableEncoding.ParseIntoDictionary(unevaluatedPropertyValue, profile.EnvironmentVariables),
-                _ => null
-            };
-
-            if (profileUpdateAction is not null)
-            {
-                await _launchSettingsProvider.TryUpdateProfileAsync(_context.ItemName, profileUpdateAction);
-                return;
+                profile.LaunchBrowser = result;
             }
+        }
+    }
 
-            // Next, check if a launch profile extender can handle it.
+    public void SetRuleContext(Rule rule)
+    {
+        _rule = rule;
+    }
 
-            profileUpdateAction = await GetPropertyValueSetterFromLaunchProfileExtendersAsync(propertyName, unevaluatedPropertyValue);
-            if (profileUpdateAction is not null)
-            {
-                await _launchSettingsProvider.TryUpdateProfileAsync(_context.ItemName, profileUpdateAction);
-                return;
-            }
+    private string? GetExtensionPropertyValue(string propertyName, ILaunchProfile profile, ImmutableDictionary<string, object> globalSettings)
+    {
+        if (_launchProfileValueProviders.TryGetValue(propertyName, out LaunchProfileValueProviderAndMetadata? launchProfileValueProvider))
+        {
+            return launchProfileValueProvider.Value.OnGetPropertyValue(propertyName, profile, globalSettings, rule: _rule);
+        }
 
-            // Then, check if a global setting extender can handle it.
+        if (_globalSettingValueProviders.TryGetValue(propertyName, out GlobalSettingValueProviderAndMetadata? globalSettingValueProvider))
+        {
+            return globalSettingValueProvider.Value.OnGetPropertyValue(propertyName, globalSettings, rule: _rule);
+        }
 
-            Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>>? globalSettingsUpdateFunction = GetPropertyValueSetterFromGlobalExtenders(propertyName, unevaluatedPropertyValue);
-            if (globalSettingsUpdateFunction is not null)
-            {
-                await _launchSettingsProvider.UpdateGlobalSettingsAsync(globalSettingsUpdateFunction);
-                return;
-            }
+        return GetOtherSettingsPropertyValue(propertyName, profile);
+    }
 
-            // Finally, store it in ILaunchProfile.OtherSettings.
-
-            object? valueObject = null;
+    private string? GetOtherSettingsPropertyValue(string propertyName, ILaunchProfile profile)
+    {
+        if (profile.TryGetSetting(propertyName, out object? valueObject))
+        {
             if (_rule?.GetProperty(propertyName) is BaseProperty property)
             {
-                valueObject = property switch
+                return property switch
                 {
-                    BoolProperty => bool.TryParse(unevaluatedPropertyValue, out bool result) ? result : null,
-                    IntProperty => int.TryParse(unevaluatedPropertyValue, out int result) ? result : null,
-                    StringProperty => unevaluatedPropertyValue,
-                    EnumProperty => unevaluatedPropertyValue,
-                    DynamicEnumProperty => unevaluatedPropertyValue,
-                    _ => throw new InvalidOperationException($"{nameof(LaunchProfileProjectProperties)} does not know how to convert strings to `{property.GetType()}`.")
+                    BoolProperty => boolToString(valueObject),
+                    IntProperty => intToString(valueObject),
+                    StringProperty => valueObject as string,
+                    EnumProperty => valueObject as string,
+                    DynamicEnumProperty => valueObject as string,
+                    _ => throw new InvalidOperationException($"{nameof(LaunchProfileProjectProperties)} does not know how to convert `{property.GetType()}` to a string.")
                 };
             }
-            else
-            {
-                valueObject = unevaluatedPropertyValue;
-            }
 
-            if (valueObject is not null)
-            {
-                profileUpdateAction = p => p.OtherSettings[propertyName] = valueObject;
-                await _launchSettingsProvider.TryUpdateProfileAsync(_context.ItemName, profileUpdateAction);
-            }
-
-            void setLaunchBrowserProperty(IWritableLaunchProfile profile)
-            {
-                if (bool.TryParse(unevaluatedPropertyValue, out bool result))
-                {
-                    profile.LaunchBrowser = result;
-                }
-            }
+            return valueObject as string;
         }
 
-        public void SetRuleContext(Rule rule)
+        return null;
+
+        string? boolToString(object valueObject)
         {
-            _rule = rule;
-        }
-
-        private string? GetExtensionPropertyValue(string propertyName, ILaunchProfile profile, ImmutableDictionary<string, object> globalSettings)
-        {
-            if (_launchProfileValueProviders.TryGetValue(propertyName, out LaunchProfileValueProviderAndMetadata? launchProfileValueProvider))
+            if (valueObject is bool value)
             {
-                return launchProfileValueProvider.Value.OnGetPropertyValue(propertyName, profile, globalSettings, rule: _rule);
-            }
-
-            if (_globalSettingValueProviders.TryGetValue(propertyName, out GlobalSettingValueProviderAndMetadata? globalSettingValueProvider))
-            {
-                return globalSettingValueProvider.Value.OnGetPropertyValue(propertyName, globalSettings, rule: _rule);
-            }
-
-            return GetOtherSettingsPropertyValue(propertyName, profile);
-        }
-
-        private string? GetOtherSettingsPropertyValue(string propertyName, ILaunchProfile profile)
-        {
-            if (profile.TryGetSetting(propertyName, out object? valueObject))
-            {
-                if (_rule?.GetProperty(propertyName) is BaseProperty property)
-                {
-                    return property switch
-                    {
-                        BoolProperty => boolToString(valueObject),
-                        IntProperty => intToString(valueObject),
-                        StringProperty => valueObject as string,
-                        EnumProperty => valueObject as string,
-                        DynamicEnumProperty => valueObject as string,
-                        _ => throw new InvalidOperationException($"{nameof(LaunchProfileProjectProperties)} does not know how to convert `{property.GetType()}` to a string.")
-                    };
-                }
-
-                return valueObject as string;
-            }
-
-            return null;
-
-            string? boolToString(object valueObject)
-            {
-                if (valueObject is bool value)
-                {
-                    return value ? "true" : "false";
-                }
-
-                return null;
-            }
-
-            string? intToString(object valueObject)
-            {
-                if (valueObject is int value)
-                {
-                    return value.ToString();
-                }
-
-                return null;
-            }
-        }
-
-        private async Task<Action<IWritableLaunchProfile>?> GetPropertyValueSetterFromLaunchProfileExtendersAsync(string propertyName, string unevaluatedValue)
-        {
-            if (_launchProfileValueProviders.TryGetValue(propertyName, out LaunchProfileValueProviderAndMetadata? launchProfileValueProvider))
-            {
-                ILaunchSettings currentSettings = await _launchSettingsProvider.WaitForFirstSnapshot();
-
-                ImmutableDictionary<string, object>? globalSettings = currentSettings.GlobalSettings;
-
-                return profile =>
-                {
-                    launchProfileValueProvider.Value.OnSetPropertyValue(propertyName, unevaluatedValue, profile, globalSettings, _rule);
-                };
+                return value ? "true" : "false";
             }
 
             return null;
         }
 
-        private Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>>? GetPropertyValueSetterFromGlobalExtenders(string propertyName, string unevaluatedValue)
+        string? intToString(object valueObject)
         {
-            if (_globalSettingValueProviders.TryGetValue(propertyName, out GlobalSettingValueProviderAndMetadata? globalSettingValueProvider))
+            if (valueObject is int value)
             {
-                return globalSettings =>
-                {
-                    return globalSettingValueProvider.Value.OnSetPropertyValue(propertyName, unevaluatedValue, globalSettings, _rule);
-                };
+                return value.ToString();
             }
 
             return null;
         }
+    }
 
-        private class LaunchProfilePropertiesContext : IProjectPropertiesContext
+    private async Task<Action<IWritableLaunchProfile>?> GetPropertyValueSetterFromLaunchProfileExtendersAsync(string propertyName, string unevaluatedValue)
+    {
+        if (_launchProfileValueProviders.TryGetValue(propertyName, out LaunchProfileValueProviderAndMetadata? launchProfileValueProvider))
         {
-            public LaunchProfilePropertiesContext(string file, string itemName)
+            ILaunchSettings currentSettings = await _launchSettingsProvider.WaitForFirstSnapshot();
+
+            ImmutableDictionary<string, object>? globalSettings = currentSettings.GlobalSettings;
+
+            return profile =>
             {
-                File = file;
-                ItemName = itemName;
-            }
-
-            public bool IsProjectFile => true;
-
-            public string File { get; }
-
-            public string ItemType => LaunchProfileProjectItemProvider.ItemType;
-
-            public string ItemName { get; }
+                launchProfileValueProvider.Value.OnSetPropertyValue(propertyName, unevaluatedValue, profile, globalSettings, _rule);
+            };
         }
+
+        return null;
+    }
+
+    private Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>>? GetPropertyValueSetterFromGlobalExtenders(string propertyName, string unevaluatedValue)
+    {
+        if (_globalSettingValueProviders.TryGetValue(propertyName, out GlobalSettingValueProviderAndMetadata? globalSettingValueProvider))
+        {
+            return globalSettings =>
+            {
+                return globalSettingValueProvider.Value.OnSetPropertyValue(propertyName, unevaluatedValue, globalSettings, _rule);
+            };
+        }
+
+        return null;
+    }
+
+    private class LaunchProfilePropertiesContext : IProjectPropertiesContext
+    {
+        public LaunchProfilePropertiesContext(string file, string itemName)
+        {
+            File = file;
+            ItemName = itemName;
+        }
+
+        public bool IsProjectFile => true;
+
+        public string File { get; }
+
+        public string ItemType => LaunchProfileProjectItemProvider.ItemType;
+
+        public string ItemName { get; }
     }
 }

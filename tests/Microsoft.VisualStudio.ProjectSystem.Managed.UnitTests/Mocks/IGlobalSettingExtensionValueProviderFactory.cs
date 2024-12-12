@@ -3,29 +3,28 @@
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.Mocks
+namespace Microsoft.VisualStudio.Mocks;
+
+internal static class IGlobalSettingExtensionValueProviderFactory
 {
-    internal static class IGlobalSettingExtensionValueProviderFactory
+    public static IGlobalSettingExtensionValueProvider Create(
+        Func<string, ImmutableDictionary<string, object>, Rule?, string>? onGetPropertyValue = null,
+        Func<string, string, ImmutableDictionary<string, object>, Rule?, ImmutableDictionary<string, object?>>? onSetPropertyValue = null)
     {
-        public static IGlobalSettingExtensionValueProvider Create(
-            Func<string, ImmutableDictionary<string, object>, Rule?, string>? onGetPropertyValue = null,
-            Func<string, string, ImmutableDictionary<string, object>, Rule?, ImmutableDictionary<string, object?>>? onSetPropertyValue = null)
+        var providerMock = new Mock<IGlobalSettingExtensionValueProvider>();
+
+        if (onGetPropertyValue is not null)
         {
-            var providerMock = new Mock<IGlobalSettingExtensionValueProvider>();
-
-            if (onGetPropertyValue is not null)
-            {
-                providerMock.Setup(t => t.OnGetPropertyValue(It.IsAny<string>(), It.IsAny<ImmutableDictionary<string, object>>(), It.IsAny<Rule?>()))
-                    .Returns(onGetPropertyValue);
-            }
-
-            if (onSetPropertyValue is not null)
-            {
-                providerMock.Setup(t => t.OnSetPropertyValue(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ImmutableDictionary<string, object>>(), It.IsAny<Rule?>()))
-                    .Returns(onSetPropertyValue);
-            }
-
-            return providerMock.Object;
+            providerMock.Setup(t => t.OnGetPropertyValue(It.IsAny<string>(), It.IsAny<ImmutableDictionary<string, object>>(), It.IsAny<Rule?>()))
+                .Returns(onGetPropertyValue);
         }
+
+        if (onSetPropertyValue is not null)
+        {
+            providerMock.Setup(t => t.OnSetPropertyValue(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ImmutableDictionary<string, object>>(), It.IsAny<Rule?>()))
+                .Returns(onSetPropertyValue);
+        }
+
+        return providerMock.Object;
     }
 }

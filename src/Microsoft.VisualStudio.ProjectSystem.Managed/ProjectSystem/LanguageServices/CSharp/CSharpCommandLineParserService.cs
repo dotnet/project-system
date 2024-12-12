@@ -2,19 +2,18 @@
 
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp
-{
-    [Export(typeof(ICommandLineParserService))]
-    [AppliesTo(ProjectCapability.CSharp)]
-    internal class CSharpCommandLineParserService : ICommandLineParserService
-    {
-        public BuildOptions Parse(IEnumerable<string> arguments, string baseDirectory)
-        {
-            Requires.NotNull(arguments);
-            Requires.NotNullOrEmpty(baseDirectory);
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp;
 
-            return BuildOptions.FromCommandLineArguments(
-                CSharpCommandLineParser.Default.Parse(arguments, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));
-        }
+[Export(typeof(ICommandLineParserService))]
+[AppliesTo(ProjectCapability.CSharp)]
+internal class CSharpCommandLineParserService : ICommandLineParserService
+{
+    public BuildOptions Parse(IEnumerable<string> arguments, string baseDirectory)
+    {
+        Requires.NotNull(arguments);
+        Requires.NotNullOrEmpty(baseDirectory);
+
+        return BuildOptions.FromCommandLineArguments(
+            CSharpCommandLineParser.Default.Parse(arguments, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));
     }
 }

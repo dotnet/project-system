@@ -4,21 +4,20 @@ using Microsoft.Test.Apex;
 using Microsoft.Test.Apex.Services;
 using Omni.Logging;
 
-namespace Microsoft.VisualStudio.LifetimeActions
+namespace Microsoft.VisualStudio.LifetimeActions;
+
+/// <summary>
+///     Responsible for making the OmniLog test-specific and prevent incremental logging.
+/// </summary>
+[ProvidesOperationsExtension]
+[Export(typeof(ITestLifetimeAction))]
+public class MakeOmniLogTestSpecificLifetimeAction : ITestLifetimeAction
 {
-    /// <summary>
-    ///     Responsible for making the OmniLog test-specific and prevent incremental logging.
-    /// </summary>
-    [ProvidesOperationsExtension]
-    [Export(typeof(ITestLifetimeAction))]
-    public class MakeOmniLogTestSpecificLifetimeAction : ITestLifetimeAction
+    public void OnTestLifeTimeAction(ApexTest testClass, Type classType, TestLifeTimeAction action)
     {
-        public void OnTestLifeTimeAction(ApexTest testClass, Type classType, TestLifeTimeAction action)
+        if (action == TestLifeTimeAction.PreTestInitialize)
         {
-            if (action == TestLifeTimeAction.PreTestInitialize)
-            {
-                Log.ResetLog($"{testClass.GetType().Name}.{testClass.TestContext.TestName}");
-            }
+            Log.ResetLog($"{testClass.GetType().Name}.{testClass.TestContext.TestName}");
         }
     }
 }

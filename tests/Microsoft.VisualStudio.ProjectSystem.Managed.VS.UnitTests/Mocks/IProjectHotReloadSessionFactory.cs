@@ -2,18 +2,17 @@
 
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+internal static class IProjectHotReloadSessionFactory
 {
-    internal static class IProjectHotReloadSessionFactory
+    public static IProjectHotReloadSession Create()
     {
-        public static IProjectHotReloadSession Create()
-        {
-            var mock = new Mock<IProjectHotReloadSession>();
+        var mock = new Mock<IProjectHotReloadSession>();
 
-            mock.Setup(session => session.ApplyLaunchVariablesAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(true);
+        mock.Setup(session => session.ApplyLaunchVariablesAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
 
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }

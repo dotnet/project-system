@@ -133,6 +133,9 @@ dotnet_naming_style.pascal_case_and_prefix_with_I_style.capitalization          
 # CSharp code style settings:
 [*.cs]
 
+# Use file-scoped namespaces
+csharp_style_namespace_declarations = file_scoped:error
+
 # Prefer "var" only when the type is apparent
 csharp_style_var_for_built_in_types = false:suggestion
 csharp_style_var_when_type_is_apparent = true:suggestion

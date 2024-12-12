@@ -2,41 +2,40 @@
 
 using Microsoft.VisualStudio.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Imaging
+namespace Microsoft.VisualStudio.ProjectSystem.Imaging;
+
+/// <summary>
+///     Aggregates <see cref="IProjectImageProvider"/> instances into a single importable
+///     <see cref="IProjectImageProvider"/>.
+/// </summary>
+[Export]
+[AppliesTo(ProjectCapability.DotNet)]
+[ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+internal class ProjectImageProviderAggregator : IProjectImageProvider
 {
-    /// <summary>
-    ///     Aggregates <see cref="IProjectImageProvider"/> instances into a single importable
-    ///     <see cref="IProjectImageProvider"/>.
-    /// </summary>
-    [Export]
-    [AppliesTo(ProjectCapability.DotNet)]
-    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal class ProjectImageProviderAggregator : IProjectImageProvider
+    [ImportingConstructor]
+    public ProjectImageProviderAggregator(UnconfiguredProject project)
     {
-        [ImportingConstructor]
-        public ProjectImageProviderAggregator(UnconfiguredProject project)
+        ImageProviders = new OrderPrecedenceImportCollection<IProjectImageProvider>(projectCapabilityCheckProvider: project);
+    }
+
+    [ImportMany]
+    public OrderPrecedenceImportCollection<IProjectImageProvider> ImageProviders { get; }
+
+    public ProjectImageMoniker? GetProjectImage(string key)
+    {
+        Requires.NotNullOrEmpty(key);
+
+        foreach (Lazy<IProjectImageProvider> provider in ImageProviders)
         {
-            ImageProviders = new OrderPrecedenceImportCollection<IProjectImageProvider>(projectCapabilityCheckProvider: project);
-        }
+            ProjectImageMoniker? image = provider.Value.GetProjectImage(key);
 
-        [ImportMany]
-        public OrderPrecedenceImportCollection<IProjectImageProvider> ImageProviders { get; }
-
-        public ProjectImageMoniker? GetProjectImage(string key)
-        {
-            Requires.NotNullOrEmpty(key);
-
-            foreach (Lazy<IProjectImageProvider> provider in ImageProviders)
+            if (image is not null)
             {
-                ProjectImageMoniker? image = provider.Value.GetProjectImage(key);
-
-                if (image is not null)
-                {
-                    return image;
-                }
+                return image;
             }
-
-            return null;
         }
+
+        return null;
     }
 }

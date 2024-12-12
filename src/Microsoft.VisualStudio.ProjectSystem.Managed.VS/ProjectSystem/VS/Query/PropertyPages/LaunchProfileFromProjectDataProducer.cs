@@ -4,25 +4,24 @@ using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+internal class LaunchProfileFromProjectDataProducer : QueryDataFromProviderStateProducerBase<UnconfiguredProject>
 {
-    internal class LaunchProfileFromProjectDataProducer : QueryDataFromProviderStateProducerBase<UnconfiguredProject>
+    private readonly ILaunchProfilePropertiesAvailableStatus _properties;
+
+    public LaunchProfileFromProjectDataProducer(ILaunchProfilePropertiesAvailableStatus properties)
     {
-        private readonly ILaunchProfilePropertiesAvailableStatus _properties;
+        _properties = properties;
+    }
 
-        public LaunchProfileFromProjectDataProducer(ILaunchProfilePropertiesAvailableStatus properties)
+    protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, UnconfiguredProject providerState)
+    {
+        if (providerState.Services.ExportProvider.GetExportedValueOrDefault<IProjectLaunchProfileHandler>() is IProjectLaunchProfileHandler launchProfileHandler)
         {
-            _properties = properties;
+            return launchProfileHandler.RetrieveAllLaunchProfileEntitiesAsync(queryExecutionContext, parent, _properties);
         }
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, UnconfiguredProject providerState)
-        {
-            if (providerState.Services.ExportProvider.GetExportedValueOrDefault<IProjectLaunchProfileHandler>() is IProjectLaunchProfileHandler launchProfileHandler)
-            {
-                return launchProfileHandler.RetrieveAllLaunchProfileEntitiesAsync(queryExecutionContext, parent, _properties);
-            }
-
-            return TaskResult.EmptyEnumerable<IEntityValue>();
-        }
+        return TaskResult.EmptyEnumerable<IEntityValue>();
     }
 }

@@ -99,7 +99,7 @@ internal class SplashScreenEnumProvider : IDynamicEnumValuesProvider
             // Remove selected startup object (if any) from the list, as a user should not be able to select it again.
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
             object? startupObjectObject = await configuration.StartupObject.GetValueAsync();
-            
+
             if (startupObjectObject is string { Length: > 0 } startupObject)
             {
                 enumValues.RemoveAll(ev => StringComparers.PropertyValues.Equals(ev.Name, startupObject));

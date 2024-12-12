@@ -1,9 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
+
+internal static partial class RestoreComparer
 {
-    internal static partial class RestoreComparer
-    {
-        public static readonly IEqualityComparer<ReferenceItem?> ReferenceItems = new ReferenceItemEqualityComparer();
-    }
+    public static readonly IEqualityComparer<ReferenceItem?> ReferenceItems = new ReferenceItemEqualityComparer();
 }

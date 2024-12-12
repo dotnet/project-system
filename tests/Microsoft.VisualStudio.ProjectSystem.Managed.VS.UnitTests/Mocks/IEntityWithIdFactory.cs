@@ -2,20 +2,19 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Query;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal static class IEntityWithIdFactory
 {
-    internal static class IEntityWithIdFactory
+    public static IEntityValue Create(string key, string value)
     {
-        public static IEntityValue Create(string key, string value)
-        {
-            var mock = new Mock<IEntityWithId>();
+        var mock = new Mock<IEntityWithId>();
 
-            mock.SetupGet(m => m.Id).Returns(new EntityIdentity(key, value));
+        mock.SetupGet(m => m.Id).Returns(new EntityIdentity(key, value));
 
-            var mockWithValue = mock.As<IEntityValue>();
-            mockWithValue.SetupGet(m => m.EntityRuntime).Returns(IEntityRuntimeModelFactory.Create());
+        var mockWithValue = mock.As<IEntityValue>();
+        mockWithValue.SetupGet(m => m.EntityRuntime).Returns(IEntityRuntimeModelFactory.Create());
 
-            return mockWithValue.Object;
-        }
+        return mockWithValue.Object;
     }
 }

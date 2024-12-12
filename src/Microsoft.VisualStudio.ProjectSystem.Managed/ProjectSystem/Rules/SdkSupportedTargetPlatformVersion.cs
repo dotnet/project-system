@@ -2,10 +2,9 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+[SuppressMessage("Style", "IDE0016:Use 'throw' expression")]
+internal partial class SdkSupportedTargetPlatformVersion
 {
-    [SuppressMessage("Style", "IDE0016:Use 'throw' expression")]
-    internal partial class SdkSupportedTargetPlatformVersion
-    {
-    }
 }

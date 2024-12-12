@@ -3,95 +3,94 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Text;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp;
+
+[Export(typeof(ICommandLineParserService))]
+[AppliesTo(ProjectCapability.FSharp)]
+internal class FSharpCommandLineParserService : ICommandLineParserService
 {
-    [Export(typeof(ICommandLineParserService))]
-    [AppliesTo(ProjectCapability.FSharp)]
-    internal class FSharpCommandLineParserService : ICommandLineParserService
+    private const string HyphenReferencePrefix = "-r:";
+    private const string SlashReferencePrefix = "/r:";
+    private const string LongReferencePrefix = "--reference:";
+
+    [ImportMany]
+    private readonly IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers = null!;
+
+    [ImportingConstructor]
+    public FSharpCommandLineParserService()
     {
-        private const string HyphenReferencePrefix = "-r:";
-        private const string SlashReferencePrefix = "/r:";
-        private const string LongReferencePrefix = "--reference:";
+    }
 
-        [ImportMany]
-        private readonly IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers = null!;
+    public BuildOptions Parse(IEnumerable<string> arguments, string baseDirectory)
+    {
+        Requires.NotNull(arguments);
+        Requires.NotNullOrEmpty(baseDirectory);
 
-        [ImportingConstructor]
-        public FSharpCommandLineParserService()
+        var sourceFiles = new List<CommandLineSourceFile>();
+        var metadataReferences = new List<CommandLineReference>();
+        var commandLineOptions = new List<string>();
+
+        foreach (string commandLineArgument in arguments)
         {
-        }
-
-        public BuildOptions Parse(IEnumerable<string> arguments, string baseDirectory)
-        {
-            Requires.NotNull(arguments);
-            Requires.NotNullOrEmpty(baseDirectory);
-
-            var sourceFiles = new List<CommandLineSourceFile>();
-            var metadataReferences = new List<CommandLineReference>();
-            var commandLineOptions = new List<string>();
-
-            foreach (string commandLineArgument in arguments)
+            foreach (string arg in new LazyStringSplit(commandLineArgument, ';'))
             {
-                foreach (string arg in new LazyStringSplit(commandLineArgument, ';'))
+                if (arg.StartsWith(HyphenReferencePrefix))
                 {
-                    if (arg.StartsWith(HyphenReferencePrefix))
+                    // e.g., /r:C:\Path\To\FSharp.Core.dll
+                    metadataReferences.Add(new CommandLineReference(arg.Substring(HyphenReferencePrefix.Length), MetadataReferenceProperties.Assembly));
+                }
+                else if (arg.StartsWith(SlashReferencePrefix))
+                {
+                    // e.g., -r:C:\Path\To\FSharp.Core.dll
+                    metadataReferences.Add(new CommandLineReference(arg.Substring(SlashReferencePrefix.Length), MetadataReferenceProperties.Assembly));
+                }
+                else if (arg.StartsWith(LongReferencePrefix))
+                {
+                    // e.g., --reference:C:\Path\To\FSharp.Core.dll
+                    metadataReferences.Add(new CommandLineReference(arg.Substring(LongReferencePrefix.Length), MetadataReferenceProperties.Assembly));
+                }
+                else if (!(arg.StartsWith("-") || arg.StartsWith("/")))
+                {
+                    // not an option, should be a regular file
+                    string extension = Path.GetExtension(arg).ToLowerInvariant();
+                    if (extension is
+                        ".fs" or
+                        ".fsi" or
+                        ".fsx" or
+                        ".fsscript" or
+                        ".ml" or
+                        ".mli")
                     {
-                        // e.g., /r:C:\Path\To\FSharp.Core.dll
-                        metadataReferences.Add(new CommandLineReference(arg.Substring(HyphenReferencePrefix.Length), MetadataReferenceProperties.Assembly));
+                        sourceFiles.Add(new CommandLineSourceFile(arg, isScript: (extension == ".fsx") || (extension == ".fsscript")));
                     }
-                    else if (arg.StartsWith(SlashReferencePrefix))
-                    {
-                        // e.g., -r:C:\Path\To\FSharp.Core.dll
-                        metadataReferences.Add(new CommandLineReference(arg.Substring(SlashReferencePrefix.Length), MetadataReferenceProperties.Assembly));
-                    }
-                    else if (arg.StartsWith(LongReferencePrefix))
-                    {
-                        // e.g., --reference:C:\Path\To\FSharp.Core.dll
-                        metadataReferences.Add(new CommandLineReference(arg.Substring(LongReferencePrefix.Length), MetadataReferenceProperties.Assembly));
-                    }
-                    else if (!(arg.StartsWith("-") || arg.StartsWith("/")))
-                    {
-                        // not an option, should be a regular file
-                        string extension = Path.GetExtension(arg).ToLowerInvariant();
-                        if (extension is
-                            ".fs" or
-                            ".fsi" or
-                            ".fsx" or
-                            ".fsscript" or
-                            ".ml" or
-                            ".mli")
-                        {
-                            sourceFiles.Add(new CommandLineSourceFile(arg, isScript: (extension == ".fsx") || (extension == ".fsscript")));
-                        }
-                    }
-                    else
-                    {
-                        // Neither a reference, nor a source file
-                        commandLineOptions.Add(arg);
-                    }
+                }
+                else
+                {
+                    // Neither a reference, nor a source file
+                    commandLineOptions.Add(arg);
                 }
             }
-
-            return new FSharpBuildOptions(
-                sourceFiles: sourceFiles.ToImmutableArray(),
-                additionalFiles: [],
-                metadataReferences: metadataReferences.ToImmutableArray(),
-                analyzerReferences: [],
-                compileOptions: commandLineOptions.ToImmutableArray());
         }
 
-        [Export]
-        [AppliesTo(ProjectCapability.FSharp)]
-        public void HandleCommandLineNotifications(string binPath, BuildOptions added, BuildOptions removed)
-        {
-            // NOTE this method is imported in CommandLineNotificationHandler as an Action<string?, BuildOptions, BuildOptions>
+        return new FSharpBuildOptions(
+            sourceFiles: sourceFiles.ToImmutableArray(),
+            additionalFiles: [],
+            metadataReferences: metadataReferences.ToImmutableArray(),
+            analyzerReferences: [],
+            compileOptions: commandLineOptions.ToImmutableArray());
+    }
 
-            if (added is FSharpBuildOptions fscAdded)
+    [Export]
+    [AppliesTo(ProjectCapability.FSharp)]
+    public void HandleCommandLineNotifications(string binPath, BuildOptions added, BuildOptions removed)
+    {
+        // NOTE this method is imported in CommandLineNotificationHandler as an Action<string?, BuildOptions, BuildOptions>
+
+        if (added is FSharpBuildOptions fscAdded)
+        {
+            foreach (Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>> handler in _handlers)
             {
-                foreach (Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>> handler in _handlers)
-                {
-                    handler?.Invoke(binPath, fscAdded.SourceFiles, fscAdded.MetadataReferences, fscAdded.CompileOptions);
-                }
+                handler?.Invoke(binPath, fscAdded.SourceFiles, fscAdded.MetadataReferences, fscAdded.CompileOptions);
             }
         }
     }

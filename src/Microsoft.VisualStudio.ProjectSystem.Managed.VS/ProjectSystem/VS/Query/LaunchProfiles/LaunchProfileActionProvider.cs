@@ -7,33 +7,32 @@ using Microsoft.VisualStudio.ProjectSystem.Query.Framework.Actions;
 using Microsoft.VisualStudio.ProjectSystem.Query.Metadata;
 using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// <para>
+/// Handles Project Query API actions that target the <see cref="ILaunchProfile"/>.
+/// </para>
+/// <para>
+/// Specifically, this type is responsible for creating the appropriate <see cref="IQueryActionExecutor"/>
+/// for a given <see cref="ExecutableStep"/>, and all further processing is handled by that executor.
+/// </para>
+/// </summary>
+[QueryDataProvider(LaunchProfileType.TypeName, ProjectModel.ModelName)]
+[QueryActionProvider(ProjectModelActionNames.SetLaunchProfilePropertyValue, typeof(SetLaunchProfilePropertyValue))]
+[QueryDataProviderZone(ProjectModelZones.Cps)]
+[Export(typeof(IQueryActionProvider))]
+internal sealed class LaunchProfileActionProvider : IQueryActionProvider
 {
-    /// <summary>
-    /// <para>
-    /// Handles Project Query API actions that target the <see cref="ILaunchProfile"/>.
-    /// </para>
-    /// <para>
-    /// Specifically, this type is responsible for creating the appropriate <see cref="IQueryActionExecutor"/>
-    /// for a given <see cref="ExecutableStep"/>, and all further processing is handled by that executor.
-    /// </para>
-    /// </summary>
-    [QueryDataProvider(LaunchProfileType.TypeName, ProjectModel.ModelName)]
-    [QueryActionProvider(ProjectModelActionNames.SetLaunchProfilePropertyValue, typeof(SetLaunchProfilePropertyValue))]
-    [QueryDataProviderZone(ProjectModelZones.Cps)]
-    [Export(typeof(IQueryActionProvider))]
-    internal sealed class LaunchProfileActionProvider : IQueryActionProvider
+    public IQueryActionExecutor CreateQueryActionDataTransformer(ExecutableStep executableStep)
     {
-        public IQueryActionExecutor CreateQueryActionDataTransformer(ExecutableStep executableStep)
+        Requires.NotNull(executableStep);
+
+        return executableStep.Action switch
         {
-            Requires.NotNull(executableStep);
+            ProjectModelActionNames.SetLaunchProfilePropertyValue => new SetLaunchProfilePropertyAction((SetLaunchProfilePropertyValue)executableStep),
 
-            return executableStep.Action switch
-            {
-                ProjectModelActionNames.SetLaunchProfilePropertyValue => new SetLaunchProfilePropertyAction((SetLaunchProfilePropertyValue)executableStep),
-
-                _ => throw new InvalidOperationException($"{nameof(ProjectActionProvider)} does not handle action '{executableStep.Action}'.")
-            };
-        }
+            _ => throw new InvalidOperationException($"{nameof(ProjectActionProvider)} does not handle action '{executableStep.Action}'.")
+        };
     }
 }

@@ -2,17 +2,16 @@
 
 using System.ComponentModel;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.Properties;
+
+/// <summary>
+/// Metadata mapping interface for the <see cref="ExportInterceptingPropertyValueProviderAttribute"/>.
+/// </summary>
+internal interface IInterceptingPropertyValueProviderMetadata2 : IInterceptingPropertyValueProviderMetadata
 {
     /// <summary>
-    /// Metadata mapping interface for the <see cref="ExportInterceptingPropertyValueProviderAttribute"/>.
+    /// Gets the expression that indicates where this export should be applied.
     /// </summary>
-    internal interface IInterceptingPropertyValueProviderMetadata2 : IInterceptingPropertyValueProviderMetadata
-    {
-        /// <summary>
-        /// Gets the expression that indicates where this export should be applied.
-        /// </summary>
-        [DefaultValue(null)]
-        string? AppliesTo { get; }
-    }
+    [DefaultValue(null)]
+    string? AppliesTo { get; }
 }

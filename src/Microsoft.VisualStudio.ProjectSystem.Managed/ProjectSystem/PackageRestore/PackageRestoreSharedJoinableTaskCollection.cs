@@ -3,22 +3,21 @@
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
+
+[Export(typeof(PackageRestoreSharedJoinableTaskCollection))]
+[ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+internal class PackageRestoreSharedJoinableTaskCollection : IJoinableTaskScope
 {
-    [Export(typeof(PackageRestoreSharedJoinableTaskCollection))]
-    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal class PackageRestoreSharedJoinableTaskCollection : IJoinableTaskScope
+    [ImportingConstructor]
+    public PackageRestoreSharedJoinableTaskCollection(IProjectThreadingService threadingService)
     {
-        [ImportingConstructor]
-        public PackageRestoreSharedJoinableTaskCollection(IProjectThreadingService threadingService)
-        {
-            JoinableTaskCollection = threadingService.JoinableTaskContext.CreateCollection();
-            JoinableTaskCollection.DisplayName = nameof(PackageRestoreSharedJoinableTaskCollection);
-            JoinableTaskFactory = threadingService.JoinableTaskContext.CreateFactory(JoinableTaskCollection);
-        }
-
-        public JoinableTaskCollection JoinableTaskCollection { get; }
-
-        public JoinableTaskFactory JoinableTaskFactory { get; }
+        JoinableTaskCollection = threadingService.JoinableTaskContext.CreateCollection();
+        JoinableTaskCollection.DisplayName = nameof(PackageRestoreSharedJoinableTaskCollection);
+        JoinableTaskFactory = threadingService.JoinableTaskContext.CreateFactory(JoinableTaskCollection);
     }
+
+    public JoinableTaskCollection JoinableTaskCollection { get; }
+
+    public JoinableTaskFactory JoinableTaskFactory { get; }
 }

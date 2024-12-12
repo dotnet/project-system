@@ -2,14 +2,13 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+/// <summary>
+/// Models properties to be sent to the language service.
+/// </summary>
+[ExcludeFromCodeCoverage]
+[SuppressMessage("Style", "IDE0016:Use 'throw' expression")]
+internal partial class LanguageService
 {
-    /// <summary>
-    /// Models properties to be sent to the language service.
-    /// </summary>
-    [ExcludeFromCodeCoverage]
-    [SuppressMessage("Style", "IDE0016:Use 'throw' expression")]
-    internal partial class LanguageService
-    {
-    }
 }

@@ -2,25 +2,24 @@
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
+
+public abstract class EvaluationHandlerTestBase
 {
-    public abstract class EvaluationHandlerTestBase
+    [Fact]
+    public void EvaluationRuleName_ReturnsValue()
     {
-        [Fact]
-        public void EvaluationRuleName_ReturnsValue()
-        {
-            var handler = CreateInstance();
+        var handler = CreateInstance();
 
-            Assert.NotEmpty(handler.ProjectEvaluationRule);
-        }
-
-        internal static void Handle(IWorkspaceProjectContext context, IProjectEvaluationHandler handler, IProjectChangeDescription projectChange, ProjectConfiguration? projectConfiguration = null)
-        {
-            projectConfiguration ??= ProjectConfigurationFactory.Create("Debug|AnyCPU");
-
-            handler.Handle(context, projectConfiguration, 1, projectChange, new ContextState(), IManagedProjectDiagnosticOutputServiceFactory.Create());
-        }
-
-        internal abstract IProjectEvaluationHandler CreateInstance();
+        Assert.NotEmpty(handler.ProjectEvaluationRule);
     }
+
+    internal static void Handle(IWorkspaceProjectContext context, IProjectEvaluationHandler handler, IProjectChangeDescription projectChange, ProjectConfiguration? projectConfiguration = null)
+    {
+        projectConfiguration ??= ProjectConfigurationFactory.Create("Debug|AnyCPU");
+
+        handler.Handle(context, projectConfiguration, 1, projectChange, new ContextState(), IManagedProjectDiagnosticOutputServiceFactory.Create());
+    }
+
+    internal abstract IProjectEvaluationHandler CreateInstance();
 }

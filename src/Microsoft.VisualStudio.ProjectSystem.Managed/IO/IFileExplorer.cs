@@ -2,19 +2,18 @@
 
 using Microsoft.VisualStudio.ProjectSystem;
 
-namespace Microsoft.VisualStudio.IO
-{
-    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IFileExplorer
-    {
-        /// <summary>
-        ///     Opens the containing folder of the specified path in File Explorer, selecting the file if it exists.
-        /// </summary>
-        void OpenContainingFolder(string path);
+namespace Microsoft.VisualStudio.IO;
 
-        /// <summary>
-        ///     Opens the contents of the specified folder in File Explorer.
-        /// </summary>
-        void OpenFolder(string path);
-    }
+[ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+internal interface IFileExplorer
+{
+    /// <summary>
+    ///     Opens the containing folder of the specified path in File Explorer, selecting the file if it exists.
+    /// </summary>
+    void OpenContainingFolder(string path);
+
+    /// <summary>
+    ///     Opens the contents of the specified folder in File Explorer.
+    /// </summary>
+    void OpenFolder(string path);
 }

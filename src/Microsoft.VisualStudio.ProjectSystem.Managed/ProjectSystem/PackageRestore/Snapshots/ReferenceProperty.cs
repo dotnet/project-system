@@ -2,24 +2,23 @@
 
 using System.Diagnostics;
 
-namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore
+namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
+
+/// <summary>
+///     Represents a single key/value for a <see cref="ReferenceItem"/>.
+/// </summary>
+[DebuggerDisplay("{Name}: {Value}")]
+internal class ReferenceProperty
 {
-    /// <summary>
-    ///     Represents a single key/value for a <see cref="ReferenceItem"/>.
-    /// </summary>
-    [DebuggerDisplay("{Name}: {Value}")]
-    internal class ReferenceProperty
+    public ReferenceProperty(string name, string value)
     {
-        public ReferenceProperty(string name, string value)
-        {
-            Requires.NotNullOrEmpty(name);
+        Requires.NotNullOrEmpty(name);
 
-            Name = name;
-            Value = value;
-        }
-
-        public string Name { get; }
-
-        public string Value { get; }
+        Name = name;
+        Value = value;
     }
+
+    public string Name { get; }
+
+    public string Value { get; }
 }

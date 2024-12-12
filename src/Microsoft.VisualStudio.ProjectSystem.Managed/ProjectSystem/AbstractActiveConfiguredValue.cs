@@ -1,67 +1,66 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+/// <summary>
+///     Provides the base class for <see cref="ActiveConfiguredValue{T}"/> and <see cref="ActiveConfiguredValues{T}"/>.
+/// </summary>
+internal abstract class AbstractActiveConfiguredValue<T> : OnceInitializedOnceDisposed
 {
-    /// <summary>
-    ///     Provides the base class for <see cref="ActiveConfiguredValue{T}"/> and <see cref="ActiveConfiguredValues{T}"/>.
-    /// </summary>
-    internal abstract class AbstractActiveConfiguredValue<T> : OnceInitializedOnceDisposed
+    private T _value = default!;
+    private readonly UnconfiguredProject _project;
+    private readonly IProjectThreadingService _threadingService;
+    private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
+
+    protected AbstractActiveConfiguredValue(UnconfiguredProject project, IActiveConfiguredProjectProvider activeConfiguredProjectProvider, IProjectThreadingService threadingService)
     {
-        private T _value = default!;
-        private readonly UnconfiguredProject _project;
-        private readonly IProjectThreadingService _threadingService;
-        private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
+        _project = project;
+        _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
+        _threadingService = threadingService;
+    }
 
-        protected AbstractActiveConfiguredValue(UnconfiguredProject project, IActiveConfiguredProjectProvider activeConfiguredProjectProvider, IProjectThreadingService threadingService)
+    public T Value
+    {
+        get
         {
-            _project = project;
-            _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
-            _threadingService = threadingService;
+            EnsureInitialized();
+
+            return _value!;
         }
+    }
 
-        public T Value
+    protected override void Initialize()
+    {
+        _activeConfiguredProjectProvider.Changed += OnActiveConfigurationChanged;
+
+        ConfiguredProject? configuredProject = _activeConfiguredProjectProvider.ActiveConfiguredProject;
+        if (configuredProject is null)
         {
-            get
+            _threadingService.ExecuteSynchronously(async () =>
             {
-                EnsureInitialized();
-
-                return _value!;
-            }
+                configuredProject = await _project.GetSuggestedConfiguredProjectAsync();
+            });
         }
 
-        protected override void Initialize()
-        {
-            _activeConfiguredProjectProvider.Changed += OnActiveConfigurationChanged;
+        Assumes.NotNull(configuredProject);
 
-            ConfiguredProject? configuredProject = _activeConfiguredProjectProvider.ActiveConfiguredProject;
-            if (configuredProject is null)
-            {
-                _threadingService.ExecuteSynchronously(async () =>
-                {
-                    configuredProject = await _project.GetSuggestedConfiguredProjectAsync();
-                });
-            }
+        SetValueForConfiguration(configuredProject);
+    }
 
-            Assumes.NotNull(configuredProject);
+    protected override void Dispose(bool disposing)
+    {
+        _activeConfiguredProjectProvider.Changed -= OnActiveConfigurationChanged;
+    }
 
-            SetValueForConfiguration(configuredProject);
-        }
+    protected abstract T GetValue(ConfiguredProject project);
 
-        protected override void Dispose(bool disposing)
-        {
-            _activeConfiguredProjectProvider.Changed -= OnActiveConfigurationChanged;
-        }
+    private void OnActiveConfigurationChanged(object? sender, ActiveConfigurationChangedEventArgs e)
+    {
+        SetValueForConfiguration(e.NowActive);
+    }
 
-        protected abstract T GetValue(ConfiguredProject project);
-
-        private void OnActiveConfigurationChanged(object? sender, ActiveConfigurationChangedEventArgs e)
-        {
-            SetValueForConfiguration(e.NowActive);
-        }
-
-        private void SetValueForConfiguration(ConfiguredProject project)
-        {
-            _value = GetValue(project);
-        }
+    private void SetValueForConfiguration(ConfiguredProject project)
+    {
+        _value = GetValue(project);
     }
 }

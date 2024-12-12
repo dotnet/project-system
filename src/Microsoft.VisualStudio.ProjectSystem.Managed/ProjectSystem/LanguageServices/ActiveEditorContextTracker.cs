@@ -3,64 +3,63 @@
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+
+/// <summary>
+///     Provides an implementation of <see cref="IActiveEditorContextTracker"/> that tracks the "active" context for the editor.
+/// </summary>
+[Export(typeof(IActiveEditorContextTracker))]
+[AppliesTo(ProjectCapability.DotNetLanguageService)]
+internal class ActiveEditorContextTracker : IActiveEditorContextTracker
 {
-    /// <summary>
-    ///     Provides an implementation of <see cref="IActiveEditorContextTracker"/> that tracks the "active" context for the editor.
-    /// </summary>
-    [Export(typeof(IActiveEditorContextTracker))]
-    [AppliesTo(ProjectCapability.DotNetLanguageService)]
-    internal class ActiveEditorContextTracker : IActiveEditorContextTracker
+    private ImmutableList<string> _contexts = ImmutableList<string>.Empty;
+    private string? _activeIntellisenseProjectContext;
+
+    // UnconfiguredProject is only included for scoping reasons.
+    [ImportingConstructor]
+    public ActiveEditorContextTracker(UnconfiguredProject? project)
     {
-        private ImmutableList<string> _contexts = ImmutableList<string>.Empty;
-        private string? _activeIntellisenseProjectContext;
+    }
 
-        // UnconfiguredProject is only included for scoping reasons.
-        [ImportingConstructor]
-        public ActiveEditorContextTracker(UnconfiguredProject? project)
+    public string? ActiveIntellisenseProjectContext
+    {
+        get { return _activeIntellisenseProjectContext ?? _contexts.FirstOrDefault(); }
+        set { _activeIntellisenseProjectContext = value; }
+    }
+
+    public bool IsActiveEditorContext(string contextId)
+    {
+        Requires.NotNullOrEmpty(contextId);
+
+        if (!_contexts.Contains(contextId))
         {
+            throw new InvalidOperationException($"Context with ID '{contextId}' has not been registered or has already been unregistered.");
         }
 
-        public string? ActiveIntellisenseProjectContext
-        {
-            get { return _activeIntellisenseProjectContext ?? _contexts.FirstOrDefault(); }
-            set { _activeIntellisenseProjectContext = value; }
-        }
+        return StringComparers.WorkspaceProjectContextIds.Equals(ActiveIntellisenseProjectContext, contextId);
+    }
 
-        public bool IsActiveEditorContext(string contextId)
-        {
-            Requires.NotNullOrEmpty(contextId);
+    public IDisposable RegisterContext(string contextId)
+    {
+        Requires.NotNullOrEmpty(contextId);
 
-            if (!_contexts.Contains(contextId))
+        bool changed = ThreadingTools.ApplyChangeOptimistically(ref _contexts, projectContexts =>
+        {
+            if (!projectContexts.Contains(contextId))
             {
-                throw new InvalidOperationException($"Context with ID '{contextId}' has not been registered or has already been unregistered.");
+                projectContexts = projectContexts.Add(contextId);
             }
 
-            return StringComparers.WorkspaceProjectContextIds.Equals(ActiveIntellisenseProjectContext, contextId);
-        }
+            return projectContexts;
+        });
 
-        public IDisposable RegisterContext(string contextId)
+        if (!changed)
         {
-            Requires.NotNullOrEmpty(contextId);
-
-            bool changed = ThreadingTools.ApplyChangeOptimistically(ref _contexts, projectContexts =>
-            {
-                if (!projectContexts.Contains(contextId))
-                {
-                    projectContexts = projectContexts.Add(contextId);
-                }
-
-                return projectContexts;
-            });
-
-            if (!changed)
-            {
-                throw new InvalidOperationException($"Context with ID '{contextId}' has already been registered.");
-            }
-
-            return new DisposableDelegate(() =>
-                Assumes.True(ThreadingTools.ApplyChangeOptimistically(ref _contexts, contextId, static (projectContexts, contextId) =>
-                    projectContexts.Remove(contextId))));
+            throw new InvalidOperationException($"Context with ID '{contextId}' has already been registered.");
         }
+
+        return new DisposableDelegate(() =>
+            Assumes.True(ThreadingTools.ApplyChangeOptimistically(ref _contexts, contextId, static (projectContexts, contextId) =>
+                projectContexts.Remove(contextId))));
     }
 }

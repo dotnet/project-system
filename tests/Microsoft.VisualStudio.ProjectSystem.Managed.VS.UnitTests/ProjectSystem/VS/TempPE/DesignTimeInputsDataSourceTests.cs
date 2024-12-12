@@ -4,176 +4,175 @@
 // MemberData doesn't work anyway
 #nullable disable
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
+namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
+
+public class DesignTimeInputsDataSourceTests
 {
-    public class DesignTimeInputsDataSourceTests
+    public static IEnumerable<object[]> GetTestCases()
     {
-        public static IEnumerable<object[]> GetTestCases()
+        return new[]
         {
-            return new[]
+            // A single design time input
+            new object[]
             {
-                // A single design time input
-                new object[]
-                {
-                    """
-                    "CurrentState": {
-                        "Compile": {
-                            "Items": { 
-                                "File1.cs": {
-                                    "DesignTime": true,
-                                    "FullPath": "C:\\Project\\File1.cs"
-                                }
-                            }
-                        }
-                    }
-                    """,
-                    new string[] { "C:\\Project\\File1.cs" },
-                    new string[] { }
-                },
-
-                // A single design time input, and a normal file
-                new object[]
-                {
-                    """
-                    "CurrentState": {
-                        "Compile": {
-                            "Items": { 
-                                "File1.cs": {
-                                    "DesignTime": true,
-                                    "FullPath": "C:\\Project\\File1.cs"
-                                },
-                                "File2.cs": {
-                                    "FullPath": "C:\\Project\\File2.cs"
-                                }
-                            }
-                        }
-                    }
-                    """,
-                    new string[] { "C:\\Project\\File1.cs" },
-                    new string[] { }
-                },
-
-                // A single design time input, and a single shared design time input
-                new object[]
-                {
-                    """
-                    "CurrentState": {
-                        "Compile": {
-                            "Items": { 
-                                "File1.cs": {
-                                    "DesignTime": true,
-                                    "FullPath": "C:\\Project\\File1.cs"
-                                },
-                                "File2.cs": {
-                                    "DesignTimeSharedInput": true,
-                                    "FullPath": "C:\\Project\\File2.cs"
-                                }
-                            }
-                        }
-                    }
-                    """,
-                    new string[] { "C:\\Project\\File1.cs" },
-                    new string[] { "C:\\Project\\File2.cs" }
-                },
-
-                // A file that is both a design time and shared design time input
-                new object[]
-                {
-                    """
-                    "CurrentState": {
-                        "Compile": {
-                            "Items": { 
-                                "File1.cs": {
-                                    "DesignTime": true,
-                                    "DesignTimeSharedInput": true,
-                                    "FullPath": "C:\\Project\\File1.cs"
-                                }
-                            }
-                        }
-                    }
-                    """,
-                    new string[] { "C:\\Project\\File1.cs" },
-                    new string[] { "C:\\Project\\File1.cs" }
-                },
-
-                // A design time input that is a linked file, and hence ignored
-                new object[]
-                {
-                    """
-                    "CurrentState": {
-                        "Compile": {
-                            "Items": { 
-                                "File1.cs": {
-                                    "DesignTime": true,
-                                    "Link": "foo",
-                                    "FullPath": "C:\\Project\\File1.cs"
-                                }
-                            }
-                        }
-                    }
-                    """,
-                    new string[] { },
-                    new string[] { }
-                },
-            };
-        }
-
-        [Theory]
-        [MemberData(nameof(GetTestCases))]
-        public async Task VerifyDesignTimeInputsProcessed(string projectState, string[] designTimeInputs, string[] sharedDesignTimeInputs)
-        {
-            using DesignTimeInputsDataSource dataSource = CreateDesignTimeInputsDataSource(out ProjectValueDataSource<IProjectSubscriptionUpdate> sourceItemsRuleSource);
-
-            const string defaultProjectConfig =
                 """
-                "ProjectConfiguration": {
-                    "Name": "Debug|AnyCPU",
-                    "Dimensions": {
-                        "Configuration": "Debug",
-                        "Platform": "AnyCPU"
+                "CurrentState": {
+                    "Compile": {
+                        "Items": { 
+                            "File1.cs": {
+                                "DesignTime": true,
+                                "FullPath": "C:\\Project\\File1.cs"
+                            }
+                        }
                     }
                 }
-                """;
+                """,
+                new string[] { "C:\\Project\\File1.cs" },
+                new string[] { }
+            },
 
-            // Create a block to receive the results of the block under test
-            DesignTimeInputs inputs = null;
-            var receiver = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<DesignTimeInputs>>(val =>
+            // A single design time input, and a normal file
+            new object[]
             {
-                inputs = val.Value;
-            });
-            dataSource.SourceBlock.LinkTo(receiver, DataflowOption.PropagateCompletion);
+                """
+                "CurrentState": {
+                    "Compile": {
+                        "Items": { 
+                            "File1.cs": {
+                                "DesignTime": true,
+                                "FullPath": "C:\\Project\\File1.cs"
+                            },
+                            "File2.cs": {
+                                "FullPath": "C:\\Project\\File2.cs"
+                            }
+                        }
+                    }
+                }
+                """,
+                new string[] { "C:\\Project\\File1.cs" },
+                new string[] { }
+            },
 
-            // Construct our input value, including a default project config
-            var configUpdate = IProjectSubscriptionUpdateFactory.FromJson("{ " + projectState + "," + defaultProjectConfig + " }");
+            // A single design time input, and a single shared design time input
+            new object[]
+            {
+                """
+                "CurrentState": {
+                    "Compile": {
+                        "Items": { 
+                            "File1.cs": {
+                                "DesignTime": true,
+                                "FullPath": "C:\\Project\\File1.cs"
+                            },
+                            "File2.cs": {
+                                "DesignTimeSharedInput": true,
+                                "FullPath": "C:\\Project\\File2.cs"
+                            }
+                        }
+                    }
+                }
+                """,
+                new string[] { "C:\\Project\\File1.cs" },
+                new string[] { "C:\\Project\\File2.cs" }
+            },
 
-            // Send our input, and wait for our receiver to complete
-            await sourceItemsRuleSource.SendAndCompleteAsync(configUpdate, receiver);
+            // A file that is both a design time and shared design time input
+            new object[]
+            {
+                """
+                "CurrentState": {
+                    "Compile": {
+                        "Items": { 
+                            "File1.cs": {
+                                "DesignTime": true,
+                                "DesignTimeSharedInput": true,
+                                "FullPath": "C:\\Project\\File1.cs"
+                            }
+                        }
+                    }
+                }
+                """,
+                new string[] { "C:\\Project\\File1.cs" },
+                new string[] { "C:\\Project\\File1.cs" }
+            },
 
-            // Assert
-            Assert.NotNull(inputs);
-            Assert.Equal(designTimeInputs, inputs.Inputs);
-            Assert.Equal(sharedDesignTimeInputs, inputs.SharedInputs);
-        }
+            // A design time input that is a linked file, and hence ignored
+            new object[]
+            {
+                """
+                "CurrentState": {
+                    "Compile": {
+                        "Items": { 
+                            "File1.cs": {
+                                "DesignTime": true,
+                                "Link": "foo",
+                                "FullPath": "C:\\Project\\File1.cs"
+                            }
+                        }
+                    }
+                }
+                """,
+                new string[] { },
+                new string[] { }
+            },
+        };
+    }
 
-        private static DesignTimeInputsDataSource CreateDesignTimeInputsDataSource(out ProjectValueDataSource<IProjectSubscriptionUpdate> sourceItemsRuleSource)
+    [Theory]
+    [MemberData(nameof(GetTestCases))]
+    public async Task VerifyDesignTimeInputsProcessed(string projectState, string[] designTimeInputs, string[] sharedDesignTimeInputs)
+    {
+        using DesignTimeInputsDataSource dataSource = CreateDesignTimeInputsDataSource(out ProjectValueDataSource<IProjectSubscriptionUpdate> sourceItemsRuleSource);
+
+        const string defaultProjectConfig =
+            """
+            "ProjectConfiguration": {
+                "Name": "Debug|AnyCPU",
+                "Dimensions": {
+                    "Configuration": "Debug",
+                    "Platform": "AnyCPU"
+                }
+            }
+            """;
+
+        // Create a block to receive the results of the block under test
+        DesignTimeInputs inputs = null;
+        var receiver = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<DesignTimeInputs>>(val =>
         {
-            var unconfiguredProjectServices = UnconfiguredProjectServicesFactory.Create(
-                    projectService: IProjectServiceFactory.Create(
-                        services: ProjectServicesFactory.Create(
-                            threadingService: IProjectThreadingServiceFactory.Create(),
-                            projectLockService: IProjectLockServiceFactory.Create())));
+            inputs = val.Value;
+        });
+        dataSource.SourceBlock.LinkTo(receiver, DataflowOption.PropagateCompletion);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(
-                unconfiguredProjectServices: unconfiguredProjectServices,
-                fullPath: @"C:\Project\Project.csproj");
+        // Construct our input value, including a default project config
+        var configUpdate = IProjectSubscriptionUpdateFactory.FromJson("{ " + projectState + "," + defaultProjectConfig + " }");
 
-            sourceItemsRuleSource = new ProjectValueDataSource<IProjectSubscriptionUpdate>(unconfiguredProjectServices);
+        // Send our input, and wait for our receiver to complete
+        await sourceItemsRuleSource.SendAndCompleteAsync(configUpdate, receiver);
 
-            var projectSubscriptionService = IActiveConfiguredProjectSubscriptionServiceFactory.Create(sourceItemsRuleSource: sourceItemsRuleSource);
+        // Assert
+        Assert.NotNull(inputs);
+        Assert.Equal(designTimeInputs, inputs.Inputs);
+        Assert.Equal(sharedDesignTimeInputs, inputs.SharedInputs);
+    }
 
-            var dataSource = new DesignTimeInputsDataSource(unconfiguredProject, unconfiguredProjectServices, projectSubscriptionService);
+    private static DesignTimeInputsDataSource CreateDesignTimeInputsDataSource(out ProjectValueDataSource<IProjectSubscriptionUpdate> sourceItemsRuleSource)
+    {
+        var unconfiguredProjectServices = UnconfiguredProjectServicesFactory.Create(
+                projectService: IProjectServiceFactory.Create(
+                    services: ProjectServicesFactory.Create(
+                        threadingService: IProjectThreadingServiceFactory.Create(),
+                        projectLockService: IProjectLockServiceFactory.Create())));
 
-            return dataSource;
-        }
+        var unconfiguredProject = UnconfiguredProjectFactory.Create(
+            unconfiguredProjectServices: unconfiguredProjectServices,
+            fullPath: @"C:\Project\Project.csproj");
+
+        sourceItemsRuleSource = new ProjectValueDataSource<IProjectSubscriptionUpdate>(unconfiguredProjectServices);
+
+        var projectSubscriptionService = IActiveConfiguredProjectSubscriptionServiceFactory.Create(sourceItemsRuleSource: sourceItemsRuleSource);
+
+        var dataSource = new DesignTimeInputsDataSource(unconfiguredProject, unconfiguredProjectServices, projectSubscriptionService);
+
+        return dataSource;
     }
 }

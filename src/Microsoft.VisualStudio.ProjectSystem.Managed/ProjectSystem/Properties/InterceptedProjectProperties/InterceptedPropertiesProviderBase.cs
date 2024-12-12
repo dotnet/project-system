@@ -2,86 +2,85 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.Properties;
+
+/// <summary>
+/// An intercepting project properties provider that validates and/or transforms the default <see cref="IProjectProperties"/>
+/// using the exported <see cref="IInterceptingPropertyValueProvider"/>s.
+/// </summary>
+internal class InterceptedPropertiesProviderBase : DelegatedProjectPropertiesProviderBase
 {
-    /// <summary>
-    /// An intercepting project properties provider that validates and/or transforms the default <see cref="IProjectProperties"/>
-    /// using the exported <see cref="IInterceptingPropertyValueProvider"/>s.
-    /// </summary>
-    internal class InterceptedPropertiesProviderBase : DelegatedProjectPropertiesProviderBase
+    private readonly Dictionary<string, Providers> _interceptingValueProviders = new(StringComparers.PropertyNames);
+
+    protected InterceptedPropertiesProviderBase(
+        IProjectPropertiesProvider provider,
+        IProjectInstancePropertiesProvider instanceProvider,
+        UnconfiguredProject project,
+        IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> interceptingValueProviders)
+        : base(provider, instanceProvider, project)
     {
-        private readonly Dictionary<string, Providers> _interceptingValueProviders = new(StringComparers.PropertyNames);
+        Requires.NotNullOrEmpty(interceptingValueProviders);
 
-        protected InterceptedPropertiesProviderBase(
-            IProjectPropertiesProvider provider,
-            IProjectInstancePropertiesProvider instanceProvider,
-            UnconfiguredProject project,
-            IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> interceptingValueProviders)
-            : base(provider, instanceProvider, project)
+        foreach (Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2> valueProvider in interceptingValueProviders)
         {
-            Requires.NotNullOrEmpty(interceptingValueProviders);
+            string[] propertyNames = valueProvider.Metadata.PropertyNames;
 
-            foreach (Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2> valueProvider in interceptingValueProviders)
+            foreach (string propertyName in propertyNames)
             {
-                string[] propertyNames = valueProvider.Metadata.PropertyNames;
+                Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
 
-                foreach (string propertyName in propertyNames)
+                if (!_interceptingValueProviders.TryGetValue(propertyName, out Providers? entry))
                 {
-                    Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
-
-                    if (!_interceptingValueProviders.TryGetValue(propertyName, out Providers? entry))
-                    {
-                        entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>>(1) { valueProvider });
-                        _interceptingValueProviders.Add(propertyName, entry);
-                    }
-                    else
-                    {
-                        entry.Exports.Add(valueProvider);
-                    }
+                    entry = new Providers(new List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>>(1) { valueProvider });
+                    _interceptingValueProviders.Add(propertyName, entry);
+                }
+                else
+                {
+                    entry.Exports.Add(valueProvider);
                 }
             }
-        }
-
-        protected bool HasInterceptingValueProvider => _interceptingValueProviders.Count > 0;
-
-        internal bool TryGetInterceptingValueProvider(string propertyName, [NotNullWhen(returnValue: true)] out Providers? propertyValueProviders)
-        {
-            return _interceptingValueProviders.TryGetValue(propertyName, out propertyValueProviders);
         }
     }
 
-    internal class Providers
+    protected bool HasInterceptingValueProvider => _interceptingValueProviders.Count > 0;
+
+    internal bool TryGetInterceptingValueProvider(string propertyName, [NotNullWhen(returnValue: true)] out Providers? propertyValueProviders)
     {
-        public Providers(List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> exports)
-        {
-            Exports = exports;
-        }
+        return _interceptingValueProviders.TryGetValue(propertyName, out propertyValueProviders);
+    }
+}
 
-        public List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> Exports { get; }
+internal class Providers
+{
+    public Providers(List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> exports)
+    {
+        Exports = exports;
+    }
 
-        public IInterceptingPropertyValueProvider? GetFilteredProvider(
-            string propertyName,
-            Func<string, bool> appliesToEvaluator)
+    public List<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> Exports { get; }
+
+    public IInterceptingPropertyValueProvider? GetFilteredProvider(
+        string propertyName,
+        Func<string, bool> appliesToEvaluator)
+    {
+        // todo consider caching this based on capability
+        IInterceptingPropertyValueProvider? firstProvider = null;
+        foreach (var lazyProvider in Exports)
         {
-            // todo consider caching this based on capability
-            IInterceptingPropertyValueProvider? firstProvider = null;
-            foreach (var lazyProvider in Exports)
+            string? appliesToExpression = lazyProvider.Metadata.AppliesTo;
+            if (appliesToExpression is null || appliesToEvaluator(appliesToExpression))
             {
-                string? appliesToExpression = lazyProvider.Metadata.AppliesTo;
-                if (appliesToExpression is null || appliesToEvaluator(appliesToExpression))
+                if (firstProvider is null)
                 {
-                    if (firstProvider is null)
-                    {
-                        firstProvider = lazyProvider.Value;
-                    }
-                    else if (lazyProvider.Value.GetType() != firstProvider.GetType())
-                    {
-                        throw new ArgumentException($"Duplicate property value providers for same property name: {propertyName}");
-                    }
+                    firstProvider = lazyProvider.Value;
+                }
+                else if (lazyProvider.Value.GetType() != firstProvider.GetType())
+                {
+                    throw new ArgumentException($"Duplicate property value providers for same property name: {propertyName}");
                 }
             }
-
-            return firstProvider;
         }
+
+        return firstProvider;
     }
 }

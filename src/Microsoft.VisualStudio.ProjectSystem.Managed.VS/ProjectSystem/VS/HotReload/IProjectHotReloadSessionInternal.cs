@@ -2,16 +2,15 @@
 
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
+namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+
+/// <summary>
+/// Internal interface which Hot Reload sessions implement to provide access to the IDeltaApplier
+/// </summary>
+internal interface IProjectHotReloadSessionInternal
 {
     /// <summary>
-    /// Internal interface which Hot Reload sessions implement to provide access to the IDeltaApplier
+    /// Returns the delta applier for this session
     /// </summary>
-    internal interface IProjectHotReloadSessionInternal
-    {
-        /// <summary>
-        /// Returns the delta applier for this session
-        /// </summary>
-        IDeltaApplier? DeltaApplier { get; }
-    }
+    IDeltaApplier? DeltaApplier { get; }
 }

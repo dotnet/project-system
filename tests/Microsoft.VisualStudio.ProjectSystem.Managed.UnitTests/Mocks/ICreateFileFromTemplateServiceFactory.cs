@@ -2,21 +2,20 @@
 
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal static class ICreateFileFromTemplateServiceFactory
 {
-    internal static class ICreateFileFromTemplateServiceFactory
+    public static ICreateFileFromTemplateService Create()
     {
-        public static ICreateFileFromTemplateService Create()
-        {
-            var mock = new Mock<ICreateFileFromTemplateService>();
+        var mock = new Mock<ICreateFileFromTemplateService>();
 
-            mock.Setup(s => s.CreateFileAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns<string, string>((templateFile, path) =>
-                {
-                    return TaskResult.True;
-                });
+        mock.Setup(s => s.CreateFileAsync(It.IsAny<string>(), It.IsAny<string>()))
+            .Returns<string, string>((templateFile, path) =>
+            {
+                return TaskResult.True;
+            });
 
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }

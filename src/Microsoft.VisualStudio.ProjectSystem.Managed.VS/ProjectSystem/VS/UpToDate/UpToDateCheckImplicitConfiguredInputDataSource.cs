@@ -11,144 +11,143 @@ using UpdateValues = System.ValueTuple<
     Microsoft.VisualStudio.ProjectSystem.IProjectItemSchema,
     Microsoft.VisualStudio.ProjectSystem.Properties.IProjectCatalogSnapshot>;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate
+namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate;
+
+/// <inheritdoc cref="IUpToDateCheckImplicitConfiguredInputDataSource" />
+[Export(typeof(IUpToDateCheckImplicitConfiguredInputDataSource))]
+[AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
+[ExportInitialBuildRulesSubscriptions([
+    ResolvedAnalyzerReference.SchemaName,
+    ResolvedCompilationReference.SchemaName,
+    ResolvedProjectReference.SchemaName,
+    UpToDateCheckInput.SchemaName,
+    UpToDateCheckOutput.SchemaName,
+    UpToDateCheckBuilt.SchemaName,
+    CopyToOutputDirectoryItem.SchemaName,
+    BuildAccelerationIncompatiblePackage.SchemaName])]
+internal sealed class UpToDateCheckImplicitConfiguredInputDataSource : ChainedProjectValueDataSourceBase<UpToDateCheckImplicitConfiguredInput>, IUpToDateCheckImplicitConfiguredInputDataSource
 {
-    /// <inheritdoc cref="IUpToDateCheckImplicitConfiguredInputDataSource" />
-    [Export(typeof(IUpToDateCheckImplicitConfiguredInputDataSource))]
-    [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
-    [ExportInitialBuildRulesSubscriptions([
-        ResolvedAnalyzerReference.SchemaName,
-        ResolvedCompilationReference.SchemaName,
-        ResolvedProjectReference.SchemaName,
-        UpToDateCheckInput.SchemaName,
-        UpToDateCheckOutput.SchemaName,
-        UpToDateCheckBuilt.SchemaName,
-        CopyToOutputDirectoryItem.SchemaName,
-        BuildAccelerationIncompatiblePackage.SchemaName])]
-    internal sealed class UpToDateCheckImplicitConfiguredInputDataSource : ChainedProjectValueDataSourceBase<UpToDateCheckImplicitConfiguredInput>, IUpToDateCheckImplicitConfiguredInputDataSource
+    private readonly ConfiguredProject _configuredProject;
+    private readonly IProjectItemSchemaService _projectItemSchemaService;
+    private readonly IUpToDateCheckStatePersistence _persistentState;
+    private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
+    private readonly ICopyItemAggregator _copyItemAggregator;
+
+    /// <summary>
+    /// The set of rules we consume that come from evaluation.
+    /// </summary>
+    private static ImmutableHashSet<string> EvaluationRuleNames { get; } = ImmutableStringHashSet.EmptyOrdinal
+        .Add(ConfigurationGeneral.SchemaName)
+        .Add(CopyUpToDateMarker.SchemaName)
+        .Add(PackageReference.SchemaName);
+
+    /// <summary>
+    /// The set of rules we consume that come from design-time build.
+    /// </summary>
+    private static ImmutableHashSet<string> BuildRuleNames { get; } = ImmutableStringHashSet.EmptyOrdinal
+        .Add(ResolvedAnalyzerReference.SchemaName)
+        .Add(ResolvedCompilationReference.SchemaName)
+        .Add(ResolvedProjectReference.SchemaName)
+        .Add(UpToDateCheckInput.SchemaName)
+        .Add(UpToDateCheckOutput.SchemaName)
+        .Add(UpToDateCheckBuilt.SchemaName)
+        .Add(CopyToOutputDirectoryItem.SchemaName)
+        .Add(BuildAccelerationIncompatiblePackage.SchemaName);
+
+    [ImportingConstructor]
+    public UpToDateCheckImplicitConfiguredInputDataSource(
+        ConfiguredProject containingProject,
+        IProjectItemSchemaService projectItemSchemaService,
+        [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
+        ICopyItemAggregator copyItemAggregator,
+        IUpToDateCheckStatePersistence persistentState)
+        : base(containingProject, synchronousDisposal: false, registerDataSource: false)
     {
-        private readonly ConfiguredProject _configuredProject;
-        private readonly IProjectItemSchemaService _projectItemSchemaService;
-        private readonly IUpToDateCheckStatePersistence _persistentState;
-        private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
-        private readonly ICopyItemAggregator _copyItemAggregator;
+        _configuredProject = containingProject;
+        _projectItemSchemaService = projectItemSchemaService;
+        _projectAsynchronousTasksService = projectAsynchronousTasksService;
+        _copyItemAggregator = copyItemAggregator;
+        _persistentState = persistentState;
+    }
 
-        /// <summary>
-        /// The set of rules we consume that come from evaluation.
-        /// </summary>
-        private static ImmutableHashSet<string> EvaluationRuleNames { get; } = ImmutableStringHashSet.EmptyOrdinal
-            .Add(ConfigurationGeneral.SchemaName)
-            .Add(CopyUpToDateMarker.SchemaName)
-            .Add(PackageReference.SchemaName);
+    protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>> targetBlock)
+    {
+        Assumes.Present(_configuredProject.Services.ProjectSubscription);
 
-        /// <summary>
-        /// The set of rules we consume that come from design-time build.
-        /// </summary>
-        private static ImmutableHashSet<string> BuildRuleNames { get; } = ImmutableStringHashSet.EmptyOrdinal
-            .Add(ResolvedAnalyzerReference.SchemaName)
-            .Add(ResolvedCompilationReference.SchemaName)
-            .Add(ResolvedProjectReference.SchemaName)
-            .Add(UpToDateCheckInput.SchemaName)
-            .Add(UpToDateCheckOutput.SchemaName)
-            .Add(UpToDateCheckBuilt.SchemaName)
-            .Add(CopyToOutputDirectoryItem.SchemaName)
-            .Add(BuildAccelerationIncompatiblePackage.SchemaName);
+        bool attemptedStateRestore = false;
 
-        [ImportingConstructor]
-        public UpToDateCheckImplicitConfiguredInputDataSource(
-            ConfiguredProject containingProject,
-            IProjectItemSchemaService projectItemSchemaService,
-            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
-            ICopyItemAggregator copyItemAggregator,
-            IUpToDateCheckStatePersistence persistentState)
-            : base(containingProject, synchronousDisposal: false, registerDataSource: false)
+        // Initial state is empty. We will evolve this reference over time, updating it iteratively
+        // on each new data update.
+        UpToDateCheckImplicitConfiguredInput state = UpToDateCheckImplicitConfiguredInput.CreateEmpty(_configuredProject.ProjectConfiguration);
+
+        IPropagatorBlock<IProjectVersionedValue<UpdateValues>, IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>> transformBlock
+            = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<UpdateValues>, IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>>(TransformAsync);
+
+        IProjectValueDataSource<IProjectSubscriptionUpdate> source1 = _configuredProject.Services.ProjectSubscription.JointRuleSource;
+        IProjectValueDataSource<IProjectSubscriptionUpdate> source2 = _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource;
+        IProjectItemSchemaService source3 = _projectItemSchemaService;
+        IProjectValueDataSource<IProjectCatalogSnapshot> source4 = _configuredProject.Services.ProjectSubscription.ProjectCatalogSource;
+
+        return new DisposableBag
         {
-            _configuredProject = containingProject;
-            _projectItemSchemaService = projectItemSchemaService;
-            _projectAsynchronousTasksService = projectAsynchronousTasksService;
-            _copyItemAggregator = copyItemAggregator;
-            _persistentState = persistentState;
-        }
+            // Sync-link various sources to our transform block
+            ProjectDataSources.SyncLinkTo(
+                source1.SourceBlock.SyncLinkOptions(DataflowOption.WithJointRuleNames(EvaluationRuleNames, BuildRuleNames)),
+                source2.SourceBlock.SyncLinkOptions(),
+                source3.SourceBlock.SyncLinkOptions(),
+                source4.SourceBlock.SyncLinkOptions(),
+                target: transformBlock,
+                linkOptions: DataflowOption.PropagateCompletion,
+                CancellationToken.None),
 
-        protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>> targetBlock)
+            // Link the transform block to our target block
+            transformBlock.LinkTo(targetBlock, DataflowOption.PropagateCompletion),
+
+            JoinUpstreamDataSources(source1, source2, source3, source4)
+        };
+
+        async Task<IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>> TransformAsync(IProjectVersionedValue<UpdateValues> e)
         {
-            Assumes.Present(_configuredProject.Services.ProjectSubscription);
-
-            bool attemptedStateRestore = false;
-
-            // Initial state is empty. We will evolve this reference over time, updating it iteratively
-            // on each new data update.
-            UpToDateCheckImplicitConfiguredInput state = UpToDateCheckImplicitConfiguredInput.CreateEmpty(_configuredProject.ProjectConfiguration);
-
-            IPropagatorBlock<IProjectVersionedValue<UpdateValues>, IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>> transformBlock
-                = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<UpdateValues>, IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>>(TransformAsync);
-
-            IProjectValueDataSource<IProjectSubscriptionUpdate> source1 = _configuredProject.Services.ProjectSubscription.JointRuleSource;
-            IProjectValueDataSource<IProjectSubscriptionUpdate> source2 = _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource;
-            IProjectItemSchemaService source3 = _projectItemSchemaService;
-            IProjectValueDataSource<IProjectCatalogSnapshot> source4 = _configuredProject.Services.ProjectSubscription.ProjectCatalogSource;
-
-            return new DisposableBag
+            if (!attemptedStateRestore)
             {
-                // Sync-link various sources to our transform block
-                ProjectDataSources.SyncLinkTo(
-                    source1.SourceBlock.SyncLinkOptions(DataflowOption.WithJointRuleNames(EvaluationRuleNames, BuildRuleNames)),
-                    source2.SourceBlock.SyncLinkOptions(),
-                    source3.SourceBlock.SyncLinkOptions(),
-                    source4.SourceBlock.SyncLinkOptions(),
-                    target: transformBlock,
-                    linkOptions: DataflowOption.PropagateCompletion,
-                    CancellationToken.None),
+                attemptedStateRestore = true;
 
-                // Link the transform block to our target block
-                transformBlock.LinkTo(targetBlock, DataflowOption.PropagateCompletion),
+                // Restoring state requires the UI thread. We must use JTF.RunAsync here to ensure the UI
+                // thread is shared between related work and prevent deadlocks.
+                (int ItemHash, DateTime? InputsChangedAtUtc)? restoredState =
+                    await JoinableFactory.RunAsync(() => _persistentState.RestoreItemStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, _projectAsynchronousTasksService.UnloadCancellationToken));
 
-                JoinUpstreamDataSources(source1, source2, source3, source4)
-            };
-
-            async Task<IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>> TransformAsync(IProjectVersionedValue<UpdateValues> e)
-            {
-                if (!attemptedStateRestore)
+                if (restoredState is not null)
                 {
-                    attemptedStateRestore = true;
-
-                    // Restoring state requires the UI thread. We must use JTF.RunAsync here to ensure the UI
-                    // thread is shared between related work and prevent deadlocks.
-                    (int ItemHash, DateTime? InputsChangedAtUtc)? restoredState =
-                        await JoinableFactory.RunAsync(() => _persistentState.RestoreItemStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, _projectAsynchronousTasksService.UnloadCancellationToken));
-
-                    if (restoredState is not null)
-                    {
-                        state = state.WithRestoredState(restoredState.Value.ItemHash, restoredState.Value.InputsChangedAtUtc);
-                    }
+                    state = state.WithRestoredState(restoredState.Value.ItemHash, restoredState.Value.InputsChangedAtUtc);
                 }
-
-                int? priorItemHash = state.ItemHash;
-                DateTime? priorLastItemsChangedAtUtc = state.LastItemsChangedAtUtc;
-                ProjectCopyData priorCopyData = state.ProjectCopyData;
-
-                state = state.Update(
-                    jointRuleUpdate: e.Value.Item1,
-                    sourceItemsUpdate: e.Value.Item2,
-                    projectItemSchema: e.Value.Item3,
-                    projectCatalogSnapshot: e.Value.Item4);
-
-                if (priorCopyData != state.ProjectCopyData)
-                {
-                    // If the FUTDC is disabled, we won't have valid copy items in the snapshot.
-                    if (!state.IsDisabled)
-                    {
-                        _copyItemAggregator.SetProjectData(state.ProjectCopyData);
-                    }
-                }
-
-                if (state.ItemHash is not null && (priorItemHash != state.ItemHash || priorLastItemsChangedAtUtc != state.LastItemsChangedAtUtc))
-                {
-                    await _persistentState.StoreItemStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, state.ItemHash.Value, state.LastItemsChangedAtUtc, _projectAsynchronousTasksService.UnloadCancellationToken);
-                }
-
-                return new ProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>(state, e.DataSourceVersions);
             }
+
+            int? priorItemHash = state.ItemHash;
+            DateTime? priorLastItemsChangedAtUtc = state.LastItemsChangedAtUtc;
+            ProjectCopyData priorCopyData = state.ProjectCopyData;
+
+            state = state.Update(
+                jointRuleUpdate: e.Value.Item1,
+                sourceItemsUpdate: e.Value.Item2,
+                projectItemSchema: e.Value.Item3,
+                projectCatalogSnapshot: e.Value.Item4);
+
+            if (priorCopyData != state.ProjectCopyData)
+            {
+                // If the FUTDC is disabled, we won't have valid copy items in the snapshot.
+                if (!state.IsDisabled)
+                {
+                    _copyItemAggregator.SetProjectData(state.ProjectCopyData);
+                }
+            }
+
+            if (state.ItemHash is not null && (priorItemHash != state.ItemHash || priorLastItemsChangedAtUtc != state.LastItemsChangedAtUtc))
+            {
+                await _persistentState.StoreItemStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, state.ItemHash.Value, state.LastItemsChangedAtUtc, _projectAsynchronousTasksService.UnloadCancellationToken);
+            }
+
+            return new ProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>(state, e.DataSourceVersions);
         }
     }
 }

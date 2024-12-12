@@ -2,37 +2,36 @@
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+
+/// <summary>
+///     Handles changes within the command-line, and applies them to a
+///     <see cref="IWorkspaceProjectContext"/> instance.
+/// </summary>
+internal interface ICommandLineHandler : IWorkspaceUpdateHandler
 {
     /// <summary>
-    ///     Handles changes within the command-line, and applies them to a
-    ///     <see cref="IWorkspaceProjectContext"/> instance.
+    ///     Handles the specified added and removed command-line arguments, and applies
+    ///     them to the underlying <see cref="IWorkspaceProjectContext"/>.
     /// </summary>
-    internal interface ICommandLineHandler : IWorkspaceUpdateHandler
-    {
-        /// <summary>
-        ///     Handles the specified added and removed command-line arguments, and applies
-        ///     them to the underlying <see cref="IWorkspaceProjectContext"/>.
-        /// </summary>
-        /// <param name="context">
-        ///     The <see cref="IWorkspaceProjectContext"/> to update.
-        /// </param>
-        /// <param name="version">
-        ///     An <see cref="IComparable"/> representing the <see cref="ConfiguredProject.ProjectVersion"/> at
-        ///     the time the <see cref="BuildOptions"/> were produced.
-        /// </param>
-        /// <param name="added">
-        ///     A <see cref="BuildOptions"/> representing the added arguments.
-        /// </param>
-        /// <param name="removed">
-        ///     A <see cref="BuildOptions"/> representing the removed arguments.
-        /// </param>
-        /// <param name="state">
-        ///     A <see cref="ContextState"/> describing the state of the <see cref="IWorkspaceProjectContext"/>.
-        /// </param>
-        /// <param name="logger">
-        ///     The <see cref="IManagedProjectDiagnosticOutputService"/> for logging to the log.
-        /// </param>
-        void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger);
-    }
+    /// <param name="context">
+    ///     The <see cref="IWorkspaceProjectContext"/> to update.
+    /// </param>
+    /// <param name="version">
+    ///     An <see cref="IComparable"/> representing the <see cref="ConfiguredProject.ProjectVersion"/> at
+    ///     the time the <see cref="BuildOptions"/> were produced.
+    /// </param>
+    /// <param name="added">
+    ///     A <see cref="BuildOptions"/> representing the added arguments.
+    /// </param>
+    /// <param name="removed">
+    ///     A <see cref="BuildOptions"/> representing the removed arguments.
+    /// </param>
+    /// <param name="state">
+    ///     A <see cref="ContextState"/> describing the state of the <see cref="IWorkspaceProjectContext"/>.
+    /// </param>
+    /// <param name="logger">
+    ///     The <see cref="IManagedProjectDiagnosticOutputService"/> for logging to the log.
+    /// </param>
+    void Handle(IWorkspaceProjectContext context, IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IManagedProjectDiagnosticOutputService logger);
 }

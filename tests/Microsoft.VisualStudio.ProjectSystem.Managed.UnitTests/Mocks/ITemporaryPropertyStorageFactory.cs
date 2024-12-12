@@ -2,23 +2,22 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal static class ITemporaryPropertyStorageFactory
 {
-    internal static class ITemporaryPropertyStorageFactory
+    public static ITemporaryPropertyStorage Create(Dictionary<string, string>? values = null)
     {
-        public static ITemporaryPropertyStorage Create(Dictionary<string, string>? values = null)
-        {
-            values ??= new();
+        values ??= new();
 
-            var mock = new Mock<ITemporaryPropertyStorage>();
+        var mock = new Mock<ITemporaryPropertyStorage>();
 
-            mock.Setup(o => o.AddOrUpdatePropertyValue(It.IsAny<string>(), It.IsAny<string>()))
-                .Callback<string, string>((name, value) => values[name] = value);
+        mock.Setup(o => o.AddOrUpdatePropertyValue(It.IsAny<string>(), It.IsAny<string>()))
+            .Callback<string, string>((name, value) => values[name] = value);
 
-            mock.Setup(o => o.GetPropertyValue(It.IsAny<string>()))
-                .Returns<string>(name => { values.TryGetValue(name, out string value); return value; });
+        mock.Setup(o => o.GetPropertyValue(It.IsAny<string>()))
+            .Returns<string>(name => { values.TryGetValue(name, out string value); return value; });
 
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }

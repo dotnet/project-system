@@ -2,30 +2,29 @@
 
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+/// <summary>
+///     An implementation of <see cref="ISafeProjectGuidService"/> that waits until the project
+///     has been loaded into the host environment before returning the project GUID.
+/// </summary>
+[Export(typeof(ISafeProjectGuidService))]
+internal class VsSafeProjectGuidService : ISafeProjectGuidService
 {
-    /// <summary>
-    ///     An implementation of <see cref="ISafeProjectGuidService"/> that waits until the project
-    ///     has been loaded into the host environment before returning the project GUID.
-    /// </summary>
-    [Export(typeof(ISafeProjectGuidService))]
-    internal class VsSafeProjectGuidService : ISafeProjectGuidService
+    private readonly UnconfiguredProject _project;
+    private readonly IUnconfiguredProjectTasksService _tasksService;
+
+    [ImportingConstructor]
+    public VsSafeProjectGuidService(UnconfiguredProject project, IUnconfiguredProjectTasksService tasksService)
     {
-        private readonly UnconfiguredProject _project;
-        private readonly IUnconfiguredProjectTasksService _tasksService;
+        _project = project;
+        _tasksService = tasksService;
+    }
 
-        [ImportingConstructor]
-        public VsSafeProjectGuidService(UnconfiguredProject project, IUnconfiguredProjectTasksService tasksService)
-        {
-            _project = project;
-            _tasksService = tasksService;
-        }
+    public async Task<Guid> GetProjectGuidAsync(CancellationToken cancellationToken = default)
+    {
+        await _tasksService.PrioritizedProjectLoadedInHost.WithCancellation(cancellationToken);
 
-        public async Task<Guid> GetProjectGuidAsync(CancellationToken cancellationToken = default)
-        {
-            await _tasksService.PrioritizedProjectLoadedInHost.WithCancellation(cancellationToken);
-
-            return await _project.GetProjectGuidAsync();
-        }
+        return await _project.GetProjectGuidAsync();
     }
 }

@@ -3,23 +3,22 @@
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// Handles retrieving a set of <see cref="ISupportedValueSnapshot"/>s from an <see cref="IUIPropertyValueSnapshot"/>.
+/// </summary>
+internal class SupportedValueFromPropertyDataProducer : QueryDataFromProviderStateProducerBase<PropertyValueProviderState>
 {
-    /// <summary>
-    /// Handles retrieving a set of <see cref="ISupportedValueSnapshot"/>s from an <see cref="IUIPropertyValueSnapshot"/>.
-    /// </summary>
-    internal class SupportedValueFromPropertyDataProducer : QueryDataFromProviderStateProducerBase<PropertyValueProviderState>
+    private readonly ISupportedValuePropertiesAvailableStatus _properties;
+
+    public SupportedValueFromPropertyDataProducer(ISupportedValuePropertiesAvailableStatus properties)
     {
-        private readonly ISupportedValuePropertiesAvailableStatus _properties;
+        _properties = properties;
+    }
 
-        public SupportedValueFromPropertyDataProducer(ISupportedValuePropertiesAvailableStatus properties)
-        {
-            _properties = properties;
-        }
-
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, PropertyValueProviderState providerState)
-        {
-            return SupportedValueDataProducer.CreateSupportedValuesAsync(parent, providerState.Property, _properties);
-        }
+    protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, PropertyValueProviderState providerState)
+    {
+        return SupportedValueDataProducer.CreateSupportedValuesAsync(parent, providerState.Property, _properties);
     }
 }

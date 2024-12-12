@@ -7,43 +7,42 @@ using ExportAttribute = System.Composition.ExportAttribute;
 using SharedAttribute = System.Composition.SharedAttribute;
 using SharingBoundaryAttribute = System.Composition.SharingBoundaryAttribute;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+internal partial class ComponentComposition
 {
-    internal partial class ComponentComposition
+    // These components solely exist so that the MEF composition for 
+    // these tests can see the "scopes" used within CPS.
+
+    [Export]
+    private class GlobalScope
     {
-        // These components solely exist so that the MEF composition for 
-        // these tests can see the "scopes" used within CPS.
+        [Import]
+        [SharingBoundary(ExportContractNames.Scopes.ProjectService)]
+        private System.Composition.ExportFactory<IProjectService>? ProjectServiceFactory { get; set; }
+    }
 
-        [Export]
-        private class GlobalScope
-        {
-            [Import]
-            [SharingBoundary(ExportContractNames.Scopes.ProjectService)]
-            private System.Composition.ExportFactory<IProjectService>? ProjectServiceFactory { get; set; }
-        }
+    [Export(typeof(IProjectService))]
+    [Shared(ExportContractNames.Scopes.ProjectService)]
+    private class ProjectServiceScope
+    {
+        [Import]
+        [SharingBoundary(ExportContractNames.Scopes.UnconfiguredProject)]
+        private ExportFactory<UnconfiguredProject>? UnconfiguredProjectFactory { get; set; }
+    }
 
-        [Export(typeof(IProjectService))]
-        [Shared(ExportContractNames.Scopes.ProjectService)]
-        private class ProjectServiceScope
-        {
-            [Import]
-            [SharingBoundary(ExportContractNames.Scopes.UnconfiguredProject)]
-            private ExportFactory<UnconfiguredProject>? UnconfiguredProjectFactory { get; set; }
-        }
+    [Export(typeof(UnconfiguredProject))]
+    [Shared(ExportContractNames.Scopes.UnconfiguredProject)]
+    private class UnconfiguredProjectScope
+    {
+        [Import]
+        [SharingBoundary(ExportContractNames.Scopes.ConfiguredProject)]
+        private ExportFactory<ConfiguredProject>? ConfiguredProjectFactory { get; set; }
+    }
 
-        [Export(typeof(UnconfiguredProject))]
-        [Shared(ExportContractNames.Scopes.UnconfiguredProject)]
-        private class UnconfiguredProjectScope
-        {
-            [Import]
-            [SharingBoundary(ExportContractNames.Scopes.ConfiguredProject)]
-            private ExportFactory<ConfiguredProject>? ConfiguredProjectFactory { get; set; }
-        }
-
-        [Export(typeof(ConfiguredProject))]
-        [Shared(ExportContractNames.Scopes.ConfiguredProject)]
-        private class ConfiguredProjectScope
-        {
-        }
+    [Export(typeof(ConfiguredProject))]
+    [Shared(ExportContractNames.Scopes.ConfiguredProject)]
+    private class ConfiguredProjectScope
+    {
     }
 }
