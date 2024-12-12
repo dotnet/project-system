@@ -6,7 +6,7 @@ internal static class ConfiguredProjectFactory
 {
     public static ConfiguredProject Create(IProjectCapabilitiesScope? capabilities = null, ProjectConfiguration? projectConfiguration = null, ConfiguredProjectServices? services = null, UnconfiguredProject? unconfiguredProject = null)
     {
-        var mock = new Mock<ConfiguredProject>();
+        var mock = new Mock<ITestConfiguredProjectImpl>();
         mock.Setup(c => c.Capabilities).Returns(capabilities!);
         mock.Setup(c => c.ProjectConfiguration).Returns(projectConfiguration!);
         mock.Setup(c => c.Services).Returns(services!);
