@@ -7,20 +7,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
 [ExportInterceptingPropertyValueProvider(ConfiguredBrowseObject.DefineConstantsProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
 [AppliesTo(ProjectCapability.CSharpOrFSharp)]
-internal class DefineConstantsCSharpValueProvider : InterceptingPropertyValueProviderBase
+[method: ImportingConstructor]
+internal class DefineConstantsCAndFSharpValueProvider(IProjectAccessor projectAccessor, ConfiguredProject project) : InterceptingPropertyValueProviderBase
 {
     private const string DefineConstantsRecursivePrefix = "$(DefineConstants)";
-
-    private readonly IProjectAccessor _projectAccessor;
-    private readonly ConfiguredProject _project;
-    private HashSet<string> _removedValues = [];
-    
-    [ImportingConstructor]
-    public DefineConstantsCSharpValueProvider(IProjectAccessor projectAccessor, ConfiguredProject project)
-    {
-        _projectAccessor = projectAccessor;
-        _project = project;
-    }
 
     private static IEnumerable<string> ParseDefinedConstantsFromUnevaluatedValue(string unevaluatedValue)
     {
@@ -43,8 +33,7 @@ internal class DefineConstantsCSharpValueProvider : InterceptingPropertyValuePro
 
         var pairs = KeyValuePairListEncoding.Parse(unevaluatedDefineConstantsValue, separator: ';').Select(pair => pair.Name)
             .Where(symbol => !string.IsNullOrEmpty(symbol))
-            .Select(symbol => (symbol, _removedValues.Contains(symbol) ? "null" : bool.FalseString)).ToList();
-        pairs.AddRange(_removedValues.Select(value => (value, "null")));
+            .Select(symbol => (symbol, bool.FalseString)).ToList();
         
         return KeyValuePairListEncoding.Format(pairs, separator: ',');
     }
@@ -56,15 +45,12 @@ internal class DefineConstantsCSharpValueProvider : InterceptingPropertyValuePro
     // 2. to override IsValueDefinedInContextAsync, as this will always return false
     private async Task<string?> GetUnevaluatedDefineConstantsPropertyValueAsync()
     {
-        if (_project is ConfiguredProject2 configuredProject2)
-        {
-            await configuredProject2.EnsureProjectEvaluatedAsync();
-        }
+        await ((ConfiguredProject2)project).EnsureProjectEvaluatedAsync();
 
-        return await _projectAccessor.OpenProjectForReadAsync(_project, project =>
+        return await projectAccessor.OpenProjectForReadAsync(project, msbuildProject =>
         {
-            project.ReevaluateIfNecessary();
-            ProjectProperty defineConstantsProperty = project.GetProperty(ConfiguredBrowseObject.DefineConstantsProperty);
+            msbuildProject.ReevaluateIfNecessary();
+            ProjectProperty defineConstantsProperty = msbuildProject.GetProperty(ConfiguredBrowseObject.DefineConstantsProperty);
             while (defineConstantsProperty.IsImported && defineConstantsProperty.Predecessor is not null)
             {
                 defineConstantsProperty = defineConstantsProperty.Predecessor;
@@ -85,25 +71,13 @@ internal class DefineConstantsCSharpValueProvider : InterceptingPropertyValuePro
         IEnumerable<string> innerConstants =
             ParseDefinedConstantsFromUnevaluatedValue(await defaultProperties.GetUnevaluatedPropertyValueAsync(ConfiguredBrowseObject.DefineConstantsProperty) ?? string.Empty);
 
-        var separatedPairs = KeyValuePairListEncoding.Parse(unevaluatedPropertyValue, separator: ',').ToList();
-        
-        var foundConstants = separatedPairs 
-            // we receive a comma-separated list, and each item may have multiple values separated by semicolons
-            // so we should also parse each value using ; as the separator
-            // ie "A,B;C" -> [A, B;C] -> [A, B, C]
-            .SelectMany(pair => KeyValuePairListEncoding.Parse(pair.Name, allowsEmptyKey: true, separator: ';'))
+        var foundConstants = KeyValuePairListEncoding.Parse(unevaluatedPropertyValue, separator: ',') 
             .Select(pair => pair.Name)
             .Where(pair => !string.IsNullOrEmpty(pair))
             .Select(constant => constant.Trim(';')) // trim any leading or trailing semicolons, because we will add our own separating semicolons
             .Where(constant => !string.IsNullOrEmpty(constant)) // you aren't allowed to add a semicolon as a constant
             .Distinct()
             .ToList();
-
-        // if a value included multiple constants (such as A;B), we should remove the value in the UI (since it's been replaced) 
-        _removedValues = separatedPairs
-            .Select(pair => pair.Name)
-            .Where(name => !foundConstants.Contains(name) && !string.IsNullOrWhiteSpace(name.Replace(";", "")))
-            .ToHashSet();
 
         var writeableConstants = foundConstants.Where(constant => !innerConstants.Contains(constant)).ToList();
         if (writeableConstants.Count == 0)

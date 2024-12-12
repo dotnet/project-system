@@ -6,10 +6,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static ConfiguredProject Create(IProjectCapabilitiesScope? capabilities = null, ProjectConfiguration? projectConfiguration = null, ConfiguredProjectServices? services = null, UnconfiguredProject? unconfiguredProject = null)
         {
-            var mock = new Mock<ConfiguredProject>();
+            var mock = new Mock<ITestConfiguredProjectImpl>();
             mock.Setup(c => c.Capabilities).Returns(capabilities!);
             mock.Setup(c => c.ProjectConfiguration).Returns(projectConfiguration!);
             mock.Setup(c => c.Services).Returns(services!);
+            mock.Setup(c => c.EnsureProjectEvaluatedAsync()).Returns(Task.CompletedTask);
             mock.SetupGet(c => c.UnconfiguredProject).Returns(unconfiguredProject ?? UnconfiguredProjectFactory.Create());
             return mock.Object;
         }
@@ -33,4 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
     }
+
+    internal interface ITestConfiguredProjectImpl : ConfiguredProject, ConfiguredProject2;
 }

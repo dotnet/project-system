@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 
-public class DefineConstantsCSharpValueProviderTests
+public class DefineConstantsCAndFSharpValueProviderTests
 {
     private const string PropertyName = "DefineConstants";
     
@@ -23,7 +23,6 @@ public class DefineConstantsCSharpValueProviderTests
     [Theory]
     [InlineData("DEBUG,TRACE", null, "DEBUG;TRACE", "DEBUG=False,TRACE=False")]
     [InlineData("$(DefineConstants),DEBUG,TRACE", "PROP1;PROP2", "$(DefineConstants);DEBUG;TRACE", "$(DefineConstants)=False,DEBUG=False,TRACE=False")]
-    [InlineData("Constant0,$(DefineConstants),Constant1;;Constant2;Constant3;,Constant4", "Constant4", "Constant0;$(DefineConstants);Constant1;Constant2;Constant3", "Constant0=False,$(DefineConstants)=False,Constant1=False,Constant2=False,Constant3=False,Constant1;;Constant2;Constant3;=null")]
     public async Task SetUnevaluatedValue(string unevaluatedValueToSet, string? defineConstantsValue, string? expectedSetUnevaluatedValue, string expectedFormattedValue)
     {
         var provider = CreateInstance(null, out var projectAccessor, out var project);
@@ -41,7 +40,7 @@ public class DefineConstantsCSharpValueProviderTests
         Assert.Equal(expectedFormattedValue, actualPropertyFormattedValue);
     }
     
-    private static DefineConstantsCSharpValueProvider CreateInstance(string? defineConstantsValue, out IProjectAccessor projectAccessor, out ConfiguredProject project)
+    private static DefineConstantsCAndFSharpValueProvider CreateInstance(string? defineConstantsValue, out IProjectAccessor projectAccessor, out ConfiguredProject project)
     {
         var projectXml = defineConstantsValue is not null
             ? $"""
@@ -56,7 +55,7 @@ public class DefineConstantsCSharpValueProviderTests
         projectAccessor = IProjectAccessorFactory.Create(ProjectRootElementFactory.Create(projectXml));
         project = ConfiguredProjectFactory.Create();
         
-        return new DefineConstantsCSharpValueProvider(projectAccessor, project);
+        return new DefineConstantsCAndFSharpValueProvider(projectAccessor, project);
     }
     
     private static async Task SetDefineConstantsPropertyAsync(IProjectAccessor projectAccessor, ConfiguredProject project, string? setPropertyValue)
