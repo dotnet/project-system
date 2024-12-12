@@ -54,24 +54,27 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
         /// <remarks>
         /// The initial capacity here is based on an empty .NET Console App's DTB, which has
         /// around 120 targets, and aims to avoid resizing the dictionary during the build.
+        ///
+        /// Targets can run concurrently, so use of this collection must be protected by a lock.
         /// </remarks>
         private readonly Dictionary<int, TargetRecord> _targetRecordById = new(capacity: 140);
 
         /// <summary>
-        /// The names of any targets that reported errors. Names may be hashed.
-        /// May be empty even when errors exist, as not all errors come from a target.
+        /// Data about any errors that occurred during the build. Note that design-time build
+        /// targets are supposed to be authored to respect ContinueOnError, so errors might
+        /// not fail the build. However it's still useful to know which targets reported errors.
+        /// 
+        /// Similarly, this collection may be empty even when the build fails.
         /// </summary>
-        private List<string>? _errorTargets;
+        /// <remarks>
+        /// Targets can run concurrently, so use of this collection must be protected by a lock.
+        /// </remarks>
+        private readonly List<ErrorData> _errors = [];
 
         /// <summary>
         /// Whether the build succeeded.
         /// </summary>
         private bool? _succeeded;
-
-        /// <summary>
-        /// The number of errors reported during the build.
-        /// </summary>
-        private int _errorCount;
 
         LoggerVerbosity ILogger.Verbosity { get; set; }
 
@@ -93,7 +96,10 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
                         e.TargetFile,
                         file => ProjectFileClassifier.IsShippedByMicrosoft(e.TargetFile));
 
-                    _targetRecordById[id] = new TargetRecord(e.TargetName, IsMicrosoft: isMicrosoft, e.Timestamp);
+                    lock (_targetRecordById)
+                    {
+                        _targetRecordById[id] = new TargetRecord(e.TargetName, IsMicrosoft: isMicrosoft, e.Timestamp);
+                    }
                 }
             }
 
@@ -107,12 +113,16 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
 
             void OnErrorRaised(object sender, BuildErrorEventArgs e)
             {
-                _errorCount++;
+                string? targetName = null;
 
                 if (TryGetTargetRecord(e.BuildEventContext, out TargetRecord? record))
                 {
-                    _errorTargets ??= [];
-                    _errorTargets.Add(GetHashedTargetName(record));
+                    targetName = GetHashedTargetName(record);
+                }
+
+                lock (_errors)
+                {
+                    _errors.Add(new(targetName, e.Code));
                 }
             }
 
@@ -123,9 +133,12 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
 
             bool TryGetTargetRecord(BuildEventContext? context, [NotNullWhen(returnValue: true)] out TargetRecord? record)
             {
-                if (context is { TargetId: int id } && _targetRecordById.TryGetValue(id, out record))
+                lock (_targetRecordById)
                 {
-                    return true;
+                    if (context is { TargetId: int id } && _targetRecordById.TryGetValue(id, out record))
+                    {
+                        return true;
+                    }
                 }
 
                 record = null;
@@ -141,29 +154,40 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
 
             void SendTelemetry()
             {
-                // Filter out very fast targets (to reduce the cost of ordering) then take the top ten by elapsed time.
-                // Note that targets can run multiple times, so the same target may appear more than once in the results.
-                object[][] targetDurations = _targetRecordById.Values
-                    .Where(static record => record.Elapsed > new TimeSpan(ticks: 5 * TimeSpan.TicksPerMillisecond))
-                    .OrderByDescending(record => record.Elapsed)
-                    .Take(10)
-                    .Select(record => new object[] { GetHashedTargetName(record), record.Elapsed.Milliseconds })
-                    .ToArray();
+                object[][] targetDurations;
+                ErrorData[] errors;
+
+                lock (_targetRecordById)
+                {
+                    // Filter out very fast targets (to reduce the cost of ordering) then take the top ten by elapsed time.
+                    // Note that targets can run multiple times, so the same target may appear more than once in the results.
+                    targetDurations = _targetRecordById.Values
+                        .Where(static record => record.Elapsed > new TimeSpan(ticks: 5 * TimeSpan.TicksPerMillisecond))
+                        .OrderByDescending(record => record.Elapsed)
+                        .Take(10)
+                        .Select(record => new object[] { GetHashedTargetName(record), record.Elapsed.Milliseconds })
+                        .ToArray();
+
+                    errors = _errors.ToArray();
+                }
 
                 telemetryService.PostProperties(
                     TelemetryEventName.DesignTimeBuildComplete,
                     [
                         (TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, _succeeded),
                         (TelemetryPropertyName.DesignTimeBuildComplete.Targets, new ComplexPropertyValue(targetDurations)),
-                        (TelemetryPropertyName.DesignTimeBuildComplete.ErrorCount, _errorCount),
-                        (TelemetryPropertyName.DesignTimeBuildComplete.ErrorTargets, _errorTargets),
+                        (TelemetryPropertyName.DesignTimeBuildComplete.ErrorCount, errors.Length),
+                        (TelemetryPropertyName.DesignTimeBuildComplete.Errors, new ComplexPropertyValue(errors)),
                     ]);
             }
 
             void ReportBuildErrors()
             {
-                if (_errorCount is 0)
+                if (_succeeded is not false)
                 {
+                    // Only report a failure if the build failed. Specific targets can have
+                    // errors, yet if ContinueOnError is set accordingly they won't fail the
+                    // build. We don't want to report those to the user.
                     return;
                 }
 
@@ -208,5 +232,12 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
 
             public TimeSpan Elapsed => Ended - Started;
         }
+
+        /// <summary>
+        /// Data about errors reported during design-time builds.
+        /// </summary>
+        /// <param name="TargetName">Names of the targets that reported the error. May be hashed. <see langword="null"/> if the target name could not be identified.</param>
+        /// <param name="ErrorCode">An error code that identifies the type of error.</param>
+        private sealed record class ErrorData(string? TargetName, string ErrorCode);
     }
 }
