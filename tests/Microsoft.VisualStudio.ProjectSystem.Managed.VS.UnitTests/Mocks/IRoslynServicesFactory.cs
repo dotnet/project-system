@@ -2,18 +2,17 @@
 
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+internal static class IRoslynServicesFactory
 {
-    internal static class IRoslynServicesFactory
+    public static IRoslynServices Implement(ISyntaxFactsService syntaxFactsService)
     {
-        public static IRoslynServices Implement(ISyntaxFactsService syntaxFactsService)
-        {
-            var mock = new Mock<IRoslynServices>();
+        var mock = new Mock<IRoslynServices>();
 
-            mock.Setup(h => h.IsValidIdentifier(It.IsAny<string>()))
-                .Returns<string>(syntaxFactsService.IsValidIdentifier);
+        mock.Setup(h => h.IsValidIdentifier(It.IsAny<string>()))
+            .Returns<string>(syntaxFactsService.IsValidIdentifier);
 
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }

@@ -2,37 +2,36 @@
 
 using EnvDTE80;
 
-namespace EnvDTE
+namespace EnvDTE;
+
+internal static class ProjectFactory
 {
-    internal static class ProjectFactory
+    public static Project Create()
     {
-        public static Project Create()
-        {
-            return Mock.Of<Project>();
-        }
+        return Mock.Of<Project>();
+    }
 
-        public static Project ImplementObject(Func<object> action)
-        {
-            var mock = new Mock<Project>();
-            mock.SetupGet(p => p.Object)
-                .Returns(action);
+    public static Project ImplementObject(Func<object> action)
+    {
+        var mock = new Mock<Project>();
+        mock.SetupGet(p => p.Object)
+            .Returns(action);
 
-            return mock.Object;
-        }
+        return mock.Object;
+    }
 
-        public static Project CreateWithSolution(Solution2 solution)
-        {
-            var mock = new Mock<Project>();
+    public static Project CreateWithSolution(Solution2 solution)
+    {
+        var mock = new Mock<Project>();
 
-            mock.SetupGet(p => p.DTE.Solution).Returns((Solution)solution);
+        mock.SetupGet(p => p.DTE.Solution).Returns((Solution)solution);
 
-            return mock.Object;
-        }
+        return mock.Object;
+    }
 
-        internal static void ImplementCodeModelLanguage(Project project, string language)
-        {
-            var mock = Mock.Get(project);
-            mock.SetupGet(p => p.CodeModel.Language).Returns(language);
-        }
+    internal static void ImplementCodeModelLanguage(Project project, string language)
+    {
+        var mock = Mock.Get(project);
+        mock.SetupGet(p => p.CodeModel.Language).Returns(language);
     }
 }

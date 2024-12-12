@@ -3,68 +3,67 @@
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering;
+
+internal abstract class AbstractAddItemCommand : AbstractSingleNodeProjectCommand
 {
-    internal abstract class AbstractAddItemCommand : AbstractSingleNodeProjectCommand
+    private readonly IAddItemDialogService _addItemDialogService;
+    private readonly OrderAddItemHintReceiver _orderAddItemHintReceiver;
+
+    protected AbstractAddItemCommand(
+        IAddItemDialogService addItemDialogService,
+        OrderAddItemHintReceiver orderAddItemHintReceiver)
     {
-        private readonly IAddItemDialogService _addItemDialogService;
-        private readonly OrderAddItemHintReceiver _orderAddItemHintReceiver;
+        Requires.NotNull(addItemDialogService);
+        Requires.NotNull(orderAddItemHintReceiver);
 
-        protected AbstractAddItemCommand(
-            IAddItemDialogService addItemDialogService,
-            OrderAddItemHintReceiver orderAddItemHintReceiver)
+        _addItemDialogService = addItemDialogService;
+        _orderAddItemHintReceiver = orderAddItemHintReceiver;
+    }
+
+    protected abstract bool CanAdd(IProjectTree target);
+
+    protected abstract Task OnAddingNodesAsync(IProjectTree nodeToAddTo);
+
+    protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
+    {
+        IProjectTree? nodeToAddTo = GetNodeToAddTo(node);
+
+        if (nodeToAddTo is not null && _addItemDialogService.CanAddNewOrExistingItemTo(nodeToAddTo) && CanAdd(node))
         {
-            Requires.NotNull(addItemDialogService);
-            Requires.NotNull(orderAddItemHintReceiver);
+            return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
+        }
+        else
+        {
+            return GetCommandStatusResult.Unhandled;
+        }
+    }
 
-            _addItemDialogService = addItemDialogService;
-            _orderAddItemHintReceiver = orderAddItemHintReceiver;
+    protected virtual OrderingMoveAction Action => OrderingMoveAction.MoveToTop;
+
+    protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+    {
+        IProjectTree? nodeToAddTo = GetNodeToAddTo(node);
+
+        if (nodeToAddTo is null)
+        {
+            return false;
         }
 
-        protected abstract bool CanAdd(IProjectTree target);
+        // We use a hint receiver that listens for when a file gets added.
+        // The reason is so we can modify the MSBuild project inside the same write lock of when a file gets added internally in CPS.
+        // This ensures that we only perform actions on the items that were added as result of a e.g. a add new/existing item dialog.
+        await _orderAddItemHintReceiver.CaptureAsync(Action, node, () => OnAddingNodesAsync(nodeToAddTo));
 
-        protected abstract Task OnAddingNodesAsync(IProjectTree nodeToAddTo);
+        return true;
+    }
 
-        protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
+    private IProjectTree? GetNodeToAddTo(IProjectTree node)
+    {
+        return Action switch
         {
-            IProjectTree? nodeToAddTo = GetNodeToAddTo(node);
-
-            if (nodeToAddTo is not null && _addItemDialogService.CanAddNewOrExistingItemTo(nodeToAddTo) && CanAdd(node))
-            {
-                return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
-            }
-            else
-            {
-                return GetCommandStatusResult.Unhandled;
-            }
-        }
-
-        protected virtual OrderingMoveAction Action => OrderingMoveAction.MoveToTop;
-
-        protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
-        {
-            IProjectTree? nodeToAddTo = GetNodeToAddTo(node);
-
-            if (nodeToAddTo is null)
-            {
-                return false;
-            }
-
-            // We use a hint receiver that listens for when a file gets added.
-            // The reason is so we can modify the MSBuild project inside the same write lock of when a file gets added internally in CPS.
-            // This ensures that we only perform actions on the items that were added as result of a e.g. a add new/existing item dialog.
-            await _orderAddItemHintReceiver.CaptureAsync(Action, node, () => OnAddingNodesAsync(nodeToAddTo));
-
-            return true;
-        }
-
-        private IProjectTree? GetNodeToAddTo(IProjectTree node)
-        {
-            return Action switch
-            {
-                OrderingMoveAction.MoveAbove or OrderingMoveAction.MoveBelow => node.Parent,
-                _ => node,
-            };
-        }
+            OrderingMoveAction.MoveAbove or OrderingMoveAction.MoveBelow => node.Parent,
+            _ => node,
+        };
     }
 }

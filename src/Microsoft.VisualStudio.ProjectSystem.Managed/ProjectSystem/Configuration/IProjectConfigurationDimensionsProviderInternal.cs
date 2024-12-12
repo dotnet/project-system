@@ -2,10 +2,9 @@
 
 using Microsoft.Build.Construction;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal interface IProjectConfigurationDimensionsProviderInternal : IProjectConfigurationDimensionsProvider5
 {
-    internal interface IProjectConfigurationDimensionsProviderInternal : IProjectConfigurationDimensionsProvider5
-    {
-        IEnumerable<string> GetBestGuessDimensionNames(ImmutableArray<ProjectPropertyElement> properties);
-    }
+    IEnumerable<string> GetBestGuessDimensionNames(ImmutableArray<ProjectPropertyElement> properties);
 }

@@ -4,29 +4,28 @@ using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 using Microsoft.VisualStudio.ProjectSystem.Query.Framework.Actions;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// <see cref="IQueryActionExecutor"/> handling <see cref="RenameLaunchProfile"/> actions.
+/// </summary>
+internal sealed class RenameLaunchProfileAction : LaunchProfileActionBase
 {
-    /// <summary>
-    /// <see cref="IQueryActionExecutor"/> handling <see cref="RenameLaunchProfile"/> actions.
-    /// </summary>
-    internal sealed class RenameLaunchProfileAction : LaunchProfileActionBase
+    private readonly RenameLaunchProfile _executableStep;
+
+    public RenameLaunchProfileAction(RenameLaunchProfile executableStep)
     {
-        private readonly RenameLaunchProfile _executableStep;
+        _executableStep = executableStep;
+    }
 
-        public RenameLaunchProfileAction(RenameLaunchProfile executableStep)
+    protected override async Task ExecuteAsync(IQueryExecutionContext queryExecutionContext, IEntityValue projectEntity, IProjectLaunchProfileHandler launchProfileHandler, CancellationToken cancellationToken)
+    {
+        (EntityIdentity currentProfileId, EntityIdentity newProfileId)? changes = await launchProfileHandler.RenameLaunchProfileAsync(queryExecutionContext, projectEntity, _executableStep.CurrentProfileName, _executableStep.NewProfileName, cancellationToken);
+
+        if (changes.HasValue)
         {
-            _executableStep = executableStep;
-        }
-
-        protected override async Task ExecuteAsync(IQueryExecutionContext queryExecutionContext, IEntityValue projectEntity, IProjectLaunchProfileHandler launchProfileHandler, CancellationToken cancellationToken)
-        {
-            (EntityIdentity currentProfileId, EntityIdentity newProfileId)? changes = await launchProfileHandler.RenameLaunchProfileAsync(queryExecutionContext, projectEntity, _executableStep.CurrentProfileName, _executableStep.NewProfileName, cancellationToken);
-
-            if (changes.HasValue)
-            {
-                RemovedLaunchProfiles.Add((projectEntity, changes.Value.currentProfileId));
-                AddedLaunchProfiles.Add((projectEntity, changes.Value.newProfileId));
-            }
+            RemovedLaunchProfiles.Add((projectEntity, changes.Value.currentProfileId));
+            AddedLaunchProfiles.Add((projectEntity, changes.Value.newProfileId));
         }
     }
 }

@@ -2,29 +2,28 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
+namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages;
+
+/// <summary>
+/// Implementation of IRemoteAuthenticationProvider for the "No Auth" authentication type.
+/// </summary>
+[Export(typeof(IRemoteAuthenticationProvider))]
+[AppliesTo(ProjectCapabilities.AlwaysApplicable)]
+[Order(10)]
+internal class NoAuthRemoteAuthenticationProvider : IRemoteAuthenticationProvider
 {
-    /// <summary>
-    /// Implementation of IRemoteAuthenticationProvider for the "No Auth" authentication type.
-    /// </summary>
-    [Export(typeof(IRemoteAuthenticationProvider))]
-    [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
-    [Order(10)]
-    internal class NoAuthRemoteAuthenticationProvider : IRemoteAuthenticationProvider
+    [ImportingConstructor]
+    public NoAuthRemoteAuthenticationProvider()
     {
-        [ImportingConstructor]
-        public NoAuthRemoteAuthenticationProvider()
-        {
-        }
-
-        public string DisplayName => Resources.NoAuth;
-
-        public string Name => "None";
-
-        public Guid PortSupplierGuid => VSConstants.DebugPortSupplierGuids.NoAuth_guid;
-
-        public Guid AuthenticationModeGuid => VSConstants.DebugPortSupplierGuids.NoAuth_guid;
-
-        public uint AdditionalRemoteDiscoveryDialogFlags => 0;
     }
+
+    public string DisplayName => Resources.NoAuth;
+
+    public string Name => "None";
+
+    public Guid PortSupplierGuid => VSConstants.DebugPortSupplierGuids.NoAuth_guid;
+
+    public Guid AuthenticationModeGuid => VSConstants.DebugPortSupplierGuids.NoAuth_guid;
+
+    public uint AdditionalRemoteDiscoveryDialogFlags => 0;
 }

@@ -4,54 +4,53 @@ using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering;
+
+internal abstract class AbstractMoveCommand : AbstractSingleNodeProjectCommand
 {
-    internal abstract class AbstractMoveCommand : AbstractSingleNodeProjectCommand
+    private readonly IPhysicalProjectTree _projectTree;
+    private readonly SVsServiceProvider _serviceProvider;
+    private readonly ConfiguredProject _configuredProject;
+    private readonly IProjectAccessor _accessor;
+
+    protected AbstractMoveCommand(IPhysicalProjectTree projectTree, SVsServiceProvider serviceProvider, ConfiguredProject configuredProject, IProjectAccessor accessor)
     {
-        private readonly IPhysicalProjectTree _projectTree;
-        private readonly SVsServiceProvider _serviceProvider;
-        private readonly ConfiguredProject _configuredProject;
-        private readonly IProjectAccessor _accessor;
+        Requires.NotNull(projectTree);
+        Requires.NotNull(serviceProvider);
+        Requires.NotNull(configuredProject);
+        Requires.NotNull(accessor);
 
-        protected AbstractMoveCommand(IPhysicalProjectTree projectTree, SVsServiceProvider serviceProvider, ConfiguredProject configuredProject, IProjectAccessor accessor)
+        _projectTree = projectTree;
+        _serviceProvider = serviceProvider;
+        _configuredProject = configuredProject;
+        _accessor = accessor;
+    }
+
+    protected abstract bool CanMove(IProjectTree node);
+
+    protected abstract bool TryMove(Project project, IProjectTree node);
+
+    protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
+    {
+        return GetCommandStatusResult.Handled(
+            commandText,
+            CanMove(node) ? CommandStatus.Enabled : CommandStatus.Ninched);
+    }
+
+    protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+    {
+        bool didMove = false;
+
+        await _accessor.OpenProjectForWriteAsync(_configuredProject, project => didMove = TryMove(project, node));
+
+        if (didMove)
         {
-            Requires.NotNull(projectTree);
-            Requires.NotNull(serviceProvider);
-            Requires.NotNull(configuredProject);
-            Requires.NotNull(accessor);
-
-            _projectTree = projectTree;
-            _serviceProvider = serviceProvider;
-            _configuredProject = configuredProject;
-            _accessor = accessor;
+            // Wait for updating to finish before re-selecting the node that moved.
+            // We need to re-select the node after it is moved in order to continuously move the node using hotkeys.
+            await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true);
+            await NodeHelper.SelectAsync(_configuredProject, _serviceProvider, node);
         }
 
-        protected abstract bool CanMove(IProjectTree node);
-
-        protected abstract bool TryMove(Project project, IProjectTree node);
-
-        protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
-        {
-            return GetCommandStatusResult.Handled(
-                commandText,
-                CanMove(node) ? CommandStatus.Enabled : CommandStatus.Ninched);
-        }
-
-        protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
-        {
-            bool didMove = false;
-
-            await _accessor.OpenProjectForWriteAsync(_configuredProject, project => didMove = TryMove(project, node));
-
-            if (didMove)
-            {
-                // Wait for updating to finish before re-selecting the node that moved.
-                // We need to re-select the node after it is moved in order to continuously move the node using hotkeys.
-                await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true);
-                await NodeHelper.SelectAsync(_configuredProject, _serviceProvider, node);
-            }
-
-            return didMove;
-        }
+        return didMove;
     }
 }

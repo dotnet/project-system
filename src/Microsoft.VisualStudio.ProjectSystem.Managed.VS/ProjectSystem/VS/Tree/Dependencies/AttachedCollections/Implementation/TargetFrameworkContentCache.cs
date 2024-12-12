@@ -3,87 +3,86 @@
 using System.Xml.Linq;
 using Microsoft.VisualStudio.Text;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Implementation
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Implementation;
+
+[Export(typeof(ITargetFrameworkContentCache))]
+internal sealed class TargetFrameworkContentCache : ITargetFrameworkContentCache
 {
-    [Export(typeof(ITargetFrameworkContentCache))]
-    internal sealed class TargetFrameworkContentCache : ITargetFrameworkContentCache
+    private ImmutableDictionary<FrameworkReferenceIdentity, ImmutableArray<FrameworkReferenceAssemblyItem>> _cache = ImmutableDictionary<FrameworkReferenceIdentity, ImmutableArray<FrameworkReferenceAssemblyItem>>.Empty;
+
+    public ImmutableArray<FrameworkReferenceAssemblyItem> GetContents(FrameworkReferenceIdentity framework)
     {
-        private ImmutableDictionary<FrameworkReferenceIdentity, ImmutableArray<FrameworkReferenceAssemblyItem>> _cache = ImmutableDictionary<FrameworkReferenceIdentity, ImmutableArray<FrameworkReferenceAssemblyItem>>.Empty;
+        return ImmutableInterlocked.GetOrAdd(ref _cache, framework, LoadItems);
 
-        public ImmutableArray<FrameworkReferenceAssemblyItem> GetContents(FrameworkReferenceIdentity framework)
+        static ImmutableArray<FrameworkReferenceAssemblyItem> LoadItems(FrameworkReferenceIdentity framework)
         {
-            return ImmutableInterlocked.GetOrAdd(ref _cache, framework, LoadItems);
+            string frameworkListPath = Path.Combine(framework.Path, "data", "FrameworkList.xml");
+            var pool = new Dictionary<string, string>(StringComparer.Ordinal);
 
-            static ImmutableArray<FrameworkReferenceAssemblyItem> LoadItems(FrameworkReferenceIdentity framework)
+            XDocument doc;
+            try
             {
-                string frameworkListPath = Path.Combine(framework.Path, "data", "FrameworkList.xml");
-                var pool = new Dictionary<string, string>(StringComparer.Ordinal);
+                doc = XDocument.Load(frameworkListPath);
+            }
+            catch
+            {
+                return ImmutableArray<FrameworkReferenceAssemblyItem>.Empty;
+            }
 
-                XDocument doc;
-                try
-                {
-                    doc = XDocument.Load(frameworkListPath);
-                }
-                catch
-                {
-                    return ImmutableArray<FrameworkReferenceAssemblyItem>.Empty;
-                }
+            ImmutableArray<FrameworkReferenceAssemblyItem>.Builder results = ImmutableArray.CreateBuilder<FrameworkReferenceAssemblyItem>();
 
-                ImmutableArray<FrameworkReferenceAssemblyItem>.Builder results = ImmutableArray.CreateBuilder<FrameworkReferenceAssemblyItem>();
-
-                foreach (XElement file in doc.Root.Elements("File"))
+            foreach (XElement file in doc.Root.Elements("File"))
+            {
+                if (!Strings.IsNullOrEmpty(framework.Profile))
                 {
-                    if (!Strings.IsNullOrEmpty(framework.Profile))
+                    //  We must filter to a specific profile
+                    string? fileProfile = file.Attribute("Profile")?.Value;
+
+                    if (fileProfile is null)
                     {
-                        //  We must filter to a specific profile
-                        string? fileProfile = file.Attribute("Profile")?.Value;
-
-                        if (fileProfile is null)
-                        {
-                            // The file doesn't specify a profile, so skip it
-                            continue;
-                        }
-
-                        if (!new LazyStringSplit(fileProfile, ';').Contains(framework.Profile, StringComparer.OrdinalIgnoreCase))
-                        {
-                            // File file specifies a profile, but not one we are looking for, so skip it
-                            continue;
-                        }
-                    }
-
-                    if (file.Attribute("ReferencedByDefault")?.Value.Equals("false", StringComparison.OrdinalIgnoreCase) == true)
-                    {
-                        // Don't include if ReferencedByDefault=false
+                        // The file doesn't specify a profile, so skip it
                         continue;
                     }
 
-                    string? assemblyName = Pool(file.Attribute("AssemblyName")?.Value);
-                    string? path = Pool(file.Attribute("Path")?.Value);
-                    string? assemblyVersion = Pool(file.Attribute("AssemblyVersion")?.Value);
-                    string? fileVersion = Pool(file.Attribute("FileVersion")?.Value);
-
-                    if (assemblyName is not null)
+                    if (!new LazyStringSplit(fileProfile, ';').Contains(framework.Profile, StringComparer.OrdinalIgnoreCase))
                     {
-                        results.Add(new FrameworkReferenceAssemblyItem(assemblyName, path, assemblyVersion, fileVersion, framework));
+                        // File file specifies a profile, but not one we are looking for, so skip it
+                        continue;
                     }
                 }
 
-                return results.ToImmutable();
-
-                string? Pool(string? s)
+                if (file.Attribute("ReferencedByDefault")?.Value.Equals("false", StringComparison.OrdinalIgnoreCase) == true)
                 {
-                    if (s is not null)
-                    {
-                        if (pool.TryGetValue(s, out string existing))
-                        {
-                            return existing;
-                        }
+                    // Don't include if ReferencedByDefault=false
+                    continue;
+                }
 
-                        pool.Add(s, s);
+                string? assemblyName = Pool(file.Attribute("AssemblyName")?.Value);
+                string? path = Pool(file.Attribute("Path")?.Value);
+                string? assemblyVersion = Pool(file.Attribute("AssemblyVersion")?.Value);
+                string? fileVersion = Pool(file.Attribute("FileVersion")?.Value);
+
+                if (assemblyName is not null)
+                {
+                    results.Add(new FrameworkReferenceAssemblyItem(assemblyName, path, assemblyVersion, fileVersion, framework));
+                }
+            }
+
+            return results.ToImmutable();
+
+            string? Pool(string? s)
+            {
+                if (s is not null)
+                {
+                    if (pool.TryGetValue(s, out string existing))
+                    {
+                        return existing;
                     }
 
-                    return s;
+                    pool.Add(s, s);
                 }
+
+                return s;
             }
         }
     }

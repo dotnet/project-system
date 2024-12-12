@@ -2,19 +2,18 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal partial class ProjectTreeParser
 {
-    internal partial class ProjectTreeParser
+    private class MutableProjectPropertiesContext : IProjectPropertiesContext
     {
-        private class MutableProjectPropertiesContext : IProjectPropertiesContext
-        {
-            public bool IsProjectFile => throw new NotImplementedException();
+        public bool IsProjectFile => throw new NotImplementedException();
 
-            public string File => throw new NotImplementedException();
+        public string File => throw new NotImplementedException();
 
-            public string ItemType { get; set; } = "";
+        public string ItemType { get; set; } = "";
 
-            public string? ItemName { get; set; }
-        }
+        public string? ItemName { get; set; }
     }
 }

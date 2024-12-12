@@ -3,29 +3,28 @@
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
+
+public class OpenProjectDesignerCommandTests : AbstractOpenProjectDesignerCommandTests
 {
-    public class OpenProjectDesignerCommandTests : AbstractOpenProjectDesignerCommandTests
+    [Fact]
+    public void Constructor_NullAsDesignerService_ThrowsArgumentNull()
     {
-        [Fact]
-        public void Constructor_NullAsDesignerService_ThrowsArgumentNull()
+        Assert.Throws<ArgumentNullException>("designerService", () =>
         {
-            Assert.Throws<ArgumentNullException>("designerService", () =>
-            {
-                new OpenProjectDesignerCommand(null!);
-            });
-        }
+            new OpenProjectDesignerCommand(null!);
+        });
+    }
 
-        internal override long GetCommandId()
-        {
-            return VisualStudioStandard97CommandId.Open;
-        }
+    internal override long GetCommandId()
+    {
+        return VisualStudioStandard97CommandId.Open;
+    }
 
-        internal override AbstractOpenProjectDesignerCommand CreateInstance(IProjectDesignerService? designerService = null)
-        {
-            designerService ??= IProjectDesignerServiceFactory.Create();
+    internal override AbstractOpenProjectDesignerCommand CreateInstance(IProjectDesignerService? designerService = null)
+    {
+        designerService ??= IProjectDesignerServiceFactory.Create();
 
-            return new OpenProjectDesignerCommand(designerService);
-        }
+        return new OpenProjectDesignerCommand(designerService);
     }
 }

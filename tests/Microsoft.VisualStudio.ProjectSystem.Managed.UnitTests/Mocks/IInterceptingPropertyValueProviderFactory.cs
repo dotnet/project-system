@@ -2,57 +2,56 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal static class IInterceptingPropertyValueProviderFactory
 {
-    internal static class IInterceptingPropertyValueProviderFactory
+    public static IInterceptingPropertyValueProvider Create(
+        Func<string, IProjectProperties, string>? onGetEvaluatedPropertyValue = null,
+        Func<string, IProjectProperties, string>? onGetUnevaluatedPropertyValue = null,
+        Func<string, IProjectProperties, IReadOnlyDictionary<string, string>, string?>? onSetPropertyValue = null)
     {
-        public static IInterceptingPropertyValueProvider Create(
-            Func<string, IProjectProperties, string>? onGetEvaluatedPropertyValue = null,
-            Func<string, IProjectProperties, string>? onGetUnevaluatedPropertyValue = null,
-            Func<string, IProjectProperties, IReadOnlyDictionary<string, string>, string?>? onSetPropertyValue = null)
+        var mock = new Mock<IInterceptingPropertyValueProvider>();
+
+        if (onGetEvaluatedPropertyValue is not null)
         {
-            var mock = new Mock<IInterceptingPropertyValueProvider>();
-
-            if (onGetEvaluatedPropertyValue is not null)
-            {
-                mock.Setup(t => t.OnGetEvaluatedPropertyValueAsync(
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<IProjectProperties>()))
-                     .Returns<string, string, IProjectProperties>((n, u, p) => Task.FromResult(onGetEvaluatedPropertyValue(u, p)));
-            }
-
-            if (onGetUnevaluatedPropertyValue is not null)
-            {
-                mock.Setup(t => t.OnGetUnevaluatedPropertyValueAsync(
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<IProjectProperties>()))
-                     .Returns<string, string, IProjectProperties>((n, u, p) => Task.FromResult(onGetUnevaluatedPropertyValue(u, p)));
-            }
-
-            if (onSetPropertyValue is not null)
-            {
-                mock.Setup(t => t.OnSetPropertyValueAsync(
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<IProjectProperties>(),
-                    It.IsAny<IReadOnlyDictionary<string, string>>()))
-                     .Returns<string, string, IProjectProperties, IReadOnlyDictionary<string, string>>((n, u, p, d) => Task.FromResult(onSetPropertyValue(u, p, d)));
-            }
-
-            return mock.Object;
+            mock.Setup(t => t.OnGetEvaluatedPropertyValueAsync(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<IProjectProperties>()))
+                 .Returns<string, string, IProjectProperties>((n, u, p) => Task.FromResult(onGetEvaluatedPropertyValue(u, p)));
         }
 
-        public static Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2> Create(
-            string propertyName,
-            Func<string, IProjectProperties, string>? onGetEvaluatedPropertyValue = null,
-            Func<string, IProjectProperties, string>? onGetUnevaluatedPropertyValue = null,
-            Func<string, IProjectProperties, IReadOnlyDictionary<string, string>, string?>? onSetPropertyValue = null)
+        if (onGetUnevaluatedPropertyValue is not null)
         {
-            var mockMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName);
-            var mockProvider = Create(onGetEvaluatedPropertyValue, onGetUnevaluatedPropertyValue, onSetPropertyValue);
-            return new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>(() => mockProvider, mockMetadata);
+            mock.Setup(t => t.OnGetUnevaluatedPropertyValueAsync(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<IProjectProperties>()))
+                 .Returns<string, string, IProjectProperties>((n, u, p) => Task.FromResult(onGetUnevaluatedPropertyValue(u, p)));
         }
+
+        if (onSetPropertyValue is not null)
+        {
+            mock.Setup(t => t.OnSetPropertyValueAsync(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<IProjectProperties>(),
+                It.IsAny<IReadOnlyDictionary<string, string>>()))
+                 .Returns<string, string, IProjectProperties, IReadOnlyDictionary<string, string>>((n, u, p, d) => Task.FromResult(onSetPropertyValue(u, p, d)));
+        }
+
+        return mock.Object;
+    }
+
+    public static Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2> Create(
+        string propertyName,
+        Func<string, IProjectProperties, string>? onGetEvaluatedPropertyValue = null,
+        Func<string, IProjectProperties, string>? onGetUnevaluatedPropertyValue = null,
+        Func<string, IProjectProperties, IReadOnlyDictionary<string, string>, string?>? onSetPropertyValue = null)
+    {
+        var mockMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName);
+        var mockProvider = Create(onGetEvaluatedPropertyValue, onGetUnevaluatedPropertyValue, onSetPropertyValue);
+        return new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>(() => mockProvider, mockMetadata);
     }
 }

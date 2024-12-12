@@ -4,36 +4,35 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 using VSLangProj;
 using BCLDebug = System.Diagnostics.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.CSharp
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.CSharp;
+
+[Export(typeof(IExtenderCATIDProvider))]
+[AppliesTo(ProjectCapability.CSharp)]
+internal class CSharpExtenderCATIDProvider : AbstractExtenderCATIDProvider
 {
-    [Export(typeof(IExtenderCATIDProvider))]
-    [AppliesTo(ProjectCapability.CSharp)]
-    internal class CSharpExtenderCATIDProvider : AbstractExtenderCATIDProvider
+    [ImportingConstructor]
+    public CSharpExtenderCATIDProvider()
     {
-        [ImportingConstructor]
-        public CSharpExtenderCATIDProvider()
-        {
-        }
+    }
 
-        protected override string GetExtenderCATID(ExtendeeObject extendee)
+    protected override string GetExtenderCATID(ExtendeeObject extendee)
+    {
+        return extendee switch
         {
-            return extendee switch
-            {
-                ExtendeeObject.Project =>                   PrjCATID.prjCATIDProject,
-                ExtendeeObject.ProjectBrowseObject =>       PrjBrowseObjectCATID.prjCATIDCSharpProjectBrowseObject,
-                ExtendeeObject.Configuration =>             PrjBrowseObjectCATID.prjCATIDCSharpConfig,
-                ExtendeeObject.ConfigurationBrowseObject => PrjBrowseObjectCATID.prjCATIDCSharpProjectConfigBrowseObject,
-                ExtendeeObject.ProjectItem =>               PrjCATID.prjCATIDProjectItem,
-                ExtendeeObject.FolderBrowseObject =>        PrjBrowseObjectCATID.prjCATIDCSharpFolderBrowseObject,
-                ExtendeeObject.ReferenceBrowseObject =>     PrjBrowseObjectCATID.prjCATIDCSharpReferenceBrowseObject,
-                ExtendeeObject.FileBrowseObject or _ =>     FileBrowseObjectOrDefault()
-            };
+            ExtendeeObject.Project =>                   PrjCATID.prjCATIDProject,
+            ExtendeeObject.ProjectBrowseObject =>       PrjBrowseObjectCATID.prjCATIDCSharpProjectBrowseObject,
+            ExtendeeObject.Configuration =>             PrjBrowseObjectCATID.prjCATIDCSharpConfig,
+            ExtendeeObject.ConfigurationBrowseObject => PrjBrowseObjectCATID.prjCATIDCSharpProjectConfigBrowseObject,
+            ExtendeeObject.ProjectItem =>               PrjCATID.prjCATIDProjectItem,
+            ExtendeeObject.FolderBrowseObject =>        PrjBrowseObjectCATID.prjCATIDCSharpFolderBrowseObject,
+            ExtendeeObject.ReferenceBrowseObject =>     PrjBrowseObjectCATID.prjCATIDCSharpReferenceBrowseObject,
+            ExtendeeObject.FileBrowseObject or _ =>     FileBrowseObjectOrDefault()
+        };
 
-            string FileBrowseObjectOrDefault()
-            {
-                BCLDebug.Assert(extendee == ExtendeeObject.FileBrowseObject);
-                return PrjBrowseObjectCATID.prjCATIDCSharpFileBrowseObject;
-            }
+        string FileBrowseObjectOrDefault()
+        {
+            BCLDebug.Assert(extendee == ExtendeeObject.FileBrowseObject);
+            return PrjBrowseObjectCATID.prjCATIDCSharpFileBrowseObject;
         }
     }
 }

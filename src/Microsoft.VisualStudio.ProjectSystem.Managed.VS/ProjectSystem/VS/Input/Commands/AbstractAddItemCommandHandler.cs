@@ -5,91 +5,90 @@ using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
+
+/// <summary>
+/// Provides support for all Add Item commands that operate on <see cref="IProjectTree"/> nodes, across C# and VB.
+/// </summary>
+internal abstract class AbstractAddItemCommandHandler : IAsyncCommandGroupHandler
 {
-    /// <summary>
-    /// Provides support for all Add Item commands that operate on <see cref="IProjectTree"/> nodes, across C# and VB.
-    /// </summary>
-    internal abstract class AbstractAddItemCommandHandler : IAsyncCommandGroupHandler
+    internal sealed record class TemplateDetails(
+        string AppliesTo,
+        Guid DirNamePackageGuid,
+        uint DirNameResourceId,
+        Guid TemplateNamePackageGuid,
+        uint TemplateNameResourceId);
+
+    protected static readonly Guid LegacyCSharpPackageGuid = new("{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}");
+    protected static readonly Guid LegacyVBPackageGuid = new("{164B10B9-B200-11d0-8C61-00A0C91E29D5}");
+
+    private readonly ConfiguredProject _configuredProject;
+    private readonly IAddItemDialogService _addItemDialogService;
+    private readonly IVsUIService<IVsShell> _vsShell;
+
+    protected AbstractAddItemCommandHandler(ConfiguredProject configuredProject, IAddItemDialogService addItemDialogService, IVsUIService<SVsShell, IVsShell> vsShell)
     {
-        internal sealed record class TemplateDetails(
-            string AppliesTo,
-            Guid DirNamePackageGuid,
-            uint DirNameResourceId,
-            Guid TemplateNamePackageGuid,
-            uint TemplateNameResourceId);
+        _configuredProject = configuredProject;
+        _addItemDialogService = addItemDialogService;
+        _vsShell = vsShell;
+    }
 
-        protected static readonly Guid LegacyCSharpPackageGuid = new("{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}");
-        protected static readonly Guid LegacyVBPackageGuid = new("{164B10B9-B200-11d0-8C61-00A0C91E29D5}");
+    /// <summary>
+    /// Gets the list of potential templates that could apply to this handler, keyed by command ID.
+    /// </summary>
+    protected abstract ImmutableDictionary<long, ImmutableArray<TemplateDetails>> TemplatesByCommandId { get; }
 
-        private readonly ConfiguredProject _configuredProject;
-        private readonly IAddItemDialogService _addItemDialogService;
-        private readonly IVsUIService<IVsShell> _vsShell;
+    public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
+    {
+        Requires.NotNull(nodes);
 
-        protected AbstractAddItemCommandHandler(ConfiguredProject configuredProject, IAddItemDialogService addItemDialogService, IVsUIService<SVsShell, IVsShell> vsShell)
+        if (nodes.Count == 1 && TryGetTemplateDetails(commandId, out _) && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()))
         {
-            _configuredProject = configuredProject;
-            _addItemDialogService = addItemDialogService;
-            _vsShell = vsShell;
+            return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
         }
 
-        /// <summary>
-        /// Gets the list of potential templates that could apply to this handler, keyed by command ID.
-        /// </summary>
-        protected abstract ImmutableDictionary<long, ImmutableArray<TemplateDetails>> TemplatesByCommandId { get; }
+        return GetCommandStatusResult.Unhandled;
+    }
 
-        public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
+    public async Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+    {
+        Requires.NotNull(nodes);
+
+        if (nodes.Count == 1 && TryGetTemplateDetails(commandId, out TemplateDetails? result) && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()))
         {
-            Requires.NotNull(nodes);
+            IVsShell vsShell = _vsShell.Value;
 
-            if (nodes.Count == 1 && TryGetTemplateDetails(commandId, out _) && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()))
-            {
-                return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
-            }
+            // Look up the resources from each package to get the strings to pass to the Add Item dialog.
+            // These strings must match what is used in the template exactly, including localized versions. Rather than relying on
+            // our localizations being the same as the VS repository localizations we just load the right strings using the same
+            // resource IDs as the templates themselves use.
+            string localizedDirectoryName = vsShell.LoadPackageString(result.DirNamePackageGuid, result.DirNameResourceId);
+            string localizedTemplateName = vsShell.LoadPackageString(result.TemplateNamePackageGuid, result.TemplateNameResourceId);
 
-            return GetCommandStatusResult.Unhandled;
+            await _addItemDialogService.ShowAddNewItemDialogAsync(nodes.First(), localizedDirectoryName, localizedTemplateName);
+            return true;
         }
 
-        public async Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+        return false;
+    }
+
+    private bool TryGetTemplateDetails(long commandId, [NotNullWhen(returnValue: true)] out TemplateDetails? result)
+    {
+        if (TemplatesByCommandId.TryGetValue(commandId, out ImmutableArray<TemplateDetails> templates))
         {
-            Requires.NotNull(nodes);
+            IProjectCapabilitiesScope capabilities = _configuredProject.Capabilities;
 
-            if (nodes.Count == 1 && TryGetTemplateDetails(commandId, out TemplateDetails? result) && _addItemDialogService.CanAddNewOrExistingItemTo(nodes.First()))
+            foreach (TemplateDetails template in templates)
             {
-                IVsShell vsShell = _vsShell.Value;
-
-                // Look up the resources from each package to get the strings to pass to the Add Item dialog.
-                // These strings must match what is used in the template exactly, including localized versions. Rather than relying on
-                // our localizations being the same as the VS repository localizations we just load the right strings using the same
-                // resource IDs as the templates themselves use.
-                string localizedDirectoryName = vsShell.LoadPackageString(result.DirNamePackageGuid, result.DirNameResourceId);
-                string localizedTemplateName = vsShell.LoadPackageString(result.TemplateNamePackageGuid, result.TemplateNameResourceId);
-
-                await _addItemDialogService.ShowAddNewItemDialogAsync(nodes.First(), localizedDirectoryName, localizedTemplateName);
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool TryGetTemplateDetails(long commandId, [NotNullWhen(returnValue: true)] out TemplateDetails? result)
-        {
-            if (TemplatesByCommandId.TryGetValue(commandId, out ImmutableArray<TemplateDetails> templates))
-            {
-                IProjectCapabilitiesScope capabilities = _configuredProject.Capabilities;
-
-                foreach (TemplateDetails template in templates)
+                if (capabilities.AppliesTo(template.AppliesTo))
                 {
-                    if (capabilities.AppliesTo(template.AppliesTo))
-                    {
-                        result = template;
-                        return true;
-                    }
+                    result = template;
+                    return true;
                 }
             }
-
-            result = null;
-            return false;
         }
+
+        result = null;
+        return false;
     }
 }

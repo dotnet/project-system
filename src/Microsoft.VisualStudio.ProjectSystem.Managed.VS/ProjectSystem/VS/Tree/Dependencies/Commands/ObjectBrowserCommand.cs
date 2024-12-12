@@ -54,7 +54,7 @@ internal sealed class ObjectBrowserCommand(UnconfiguredProject project, IVsUISer
     protected override async Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string? commandText, CommandStatus progressiveStatus)
     {
         string? path = await TryGetAssemblyPathAsync(node);
-        
+
         if (path is not null)
         {
             // We handle this.

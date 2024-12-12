@@ -2,41 +2,40 @@
 
 using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.References
+namespace Microsoft.VisualStudio.ProjectSystem.VS.References;
+
+internal class RemoveReferenceCommand : IProjectSystemUpdateReferenceOperation
 {
-    internal class RemoveReferenceCommand : IProjectSystemUpdateReferenceOperation
+    private readonly AbstractReferenceHandler _referenceHandler;
+    private readonly ConfiguredProject _selectedConfiguredProject;
+    private readonly string _itemSpecification;
+
+    private Dictionary<string, string>? _projectPropertiesValues;
+
+    public RemoveReferenceCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, ProjectSystemReferenceUpdate referenceUpdate)
     {
-        private readonly AbstractReferenceHandler _referenceHandler;
-        private readonly ConfiguredProject _selectedConfiguredProject;
-        private readonly string _itemSpecification;
+        _referenceHandler = abstractReferenceHandler;
+        _selectedConfiguredProject = selectedConfiguredProject;
+        _itemSpecification = referenceUpdate.ReferenceInfo.ItemSpecification;
+    }
 
-        private Dictionary<string, string>? _projectPropertiesValues;
+    public async Task<bool> ApplyAsync(CancellationToken cancellationToken)
+    {
+        _projectPropertiesValues = await _referenceHandler.GetAttributesAsync(_selectedConfiguredProject, _itemSpecification);
 
-        public RemoveReferenceCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, ProjectSystemReferenceUpdate referenceUpdate)
+        await _referenceHandler.RemoveReferenceAsync(_selectedConfiguredProject, _itemSpecification);
+        return true;
+    }
+
+    public async Task<bool> RevertAsync(CancellationToken cancellationToken)
+    {
+        await _referenceHandler.AddReferenceAsync(_selectedConfiguredProject, _itemSpecification);
+
+        if (_projectPropertiesValues is not null)
         {
-            _referenceHandler = abstractReferenceHandler;
-            _selectedConfiguredProject = selectedConfiguredProject;
-            _itemSpecification = referenceUpdate.ReferenceInfo.ItemSpecification;
+            await _referenceHandler.SetAttributesAsync(_selectedConfiguredProject, _itemSpecification, _projectPropertiesValues);
         }
 
-        public async Task<bool> ApplyAsync(CancellationToken cancellationToken)
-        {
-            _projectPropertiesValues = await _referenceHandler.GetAttributesAsync(_selectedConfiguredProject, _itemSpecification);
-
-            await _referenceHandler.RemoveReferenceAsync(_selectedConfiguredProject, _itemSpecification);
-            return true;
-        }
-
-        public async Task<bool> RevertAsync(CancellationToken cancellationToken)
-        {
-            await _referenceHandler.AddReferenceAsync(_selectedConfiguredProject, _itemSpecification);
-
-            if (_projectPropertiesValues is not null)
-            {
-                await _referenceHandler.SetAttributesAsync(_selectedConfiguredProject, _itemSpecification, _projectPropertiesValues);
-            }
-            
-            return true;
-        }
+        return true;
     }
 }

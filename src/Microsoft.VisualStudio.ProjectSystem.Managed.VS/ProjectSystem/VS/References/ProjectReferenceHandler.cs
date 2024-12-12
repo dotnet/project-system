@@ -2,34 +2,33 @@
 
 using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.References
+namespace Microsoft.VisualStudio.ProjectSystem.VS.References;
+
+internal class ProjectReferenceHandler : AbstractReferenceHandler
 {
-    internal class ProjectReferenceHandler : AbstractReferenceHandler
+    internal ProjectReferenceHandler()
+        : base(ProjectSystemReferenceType.Project)
+    { }
+
+    protected override Task RemoveReferenceAsync(ConfiguredProjectServices services,
+        string itemSpecification)
     {
-        internal ProjectReferenceHandler()
-            : base(ProjectSystemReferenceType.Project)
-        { }
+        Assumes.Present(services.ProjectReferences);
 
-        protected override Task RemoveReferenceAsync(ConfiguredProjectServices services,
-            string itemSpecification)
-        {
-            Assumes.Present(services.ProjectReferences);
+        return services.ProjectReferences.RemoveAsync(itemSpecification);
+    }
 
-            return services.ProjectReferences.RemoveAsync(itemSpecification);
-        }
+    protected override Task AddReferenceAsync(ConfiguredProjectServices services, string itemSpecification)
+    {
+        Assumes.Present(services.ProjectReferences);
 
-        protected override Task AddReferenceAsync(ConfiguredProjectServices services, string itemSpecification)
-        {
-            Assumes.Present(services.ProjectReferences);
+        return services.ProjectReferences.AddAsync(itemSpecification);
+    }
 
-            return services.ProjectReferences.AddAsync(itemSpecification);
-        }
+    protected override async Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProjectServices services)
+    {
+        Assumes.Present(services.ProjectReferences);
 
-        protected override async Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProjectServices services)
-        {
-            Assumes.Present(services.ProjectReferences);
-
-            return (await services.ProjectReferences.GetUnresolvedReferencesAsync()).Cast<IProjectItem>();
-        }
+        return (await services.ProjectReferences.GetUnresolvedReferencesAsync()).Cast<IProjectItem>();
     }
 }

@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Threading.Tasks.Dataflow;
-using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Legacy;
 

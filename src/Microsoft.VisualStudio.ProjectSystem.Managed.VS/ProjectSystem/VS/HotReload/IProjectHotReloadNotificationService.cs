@@ -18,7 +18,7 @@ public interface IProjectHotReloadNotificationService
     /// <summary>
     /// The current state of hot reload for the project
     /// </summary>
-    bool IsProjectInHotReload{ get; }
+    bool IsProjectInHotReload { get; }
 
     /// <summary>
     /// Called by project systems when it enters or exits a hot reload session.

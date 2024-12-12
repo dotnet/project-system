@@ -62,7 +62,7 @@ internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider, IDynamicE
             foreach (INamedTypeSymbol typeMember in namespaceSymbol.GetTypeMembers())
             {
                 if (typeMember.CanBeReferencedByName
-                    && (typeMember.DeclaredAccessibility == Microsoft.CodeAnalysis.Accessibility.Public
+                    && (typeMember.DeclaredAccessibility == Accessibility.Public
                         || SymbolEqualityComparer.Default.Equals(typeMember.ContainingAssembly, compilation.Assembly)
                         || typeMember.ContainingAssembly.GivesAccessTo(compilation.Assembly)))
                 {
@@ -80,7 +80,8 @@ internal class DotNetImportsEnumProvider : IDynamicEnumValuesProvider, IDynamicE
     {
         return (await GetNamespacesAsync()).Select(namespaceString => (IEnumValue)new PageEnumValue(new EnumValue
         {
-            Name = namespaceString, DisplayName = namespaceString
+            Name = namespaceString,
+            DisplayName = namespaceString
         })).ToImmutableList();
     }
 

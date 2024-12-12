@@ -2,18 +2,17 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal static class IInterceptingPropertyValueProviderMetadataFactory
 {
-    internal static class IInterceptingPropertyValueProviderMetadataFactory
+    public static IInterceptingPropertyValueProviderMetadata2 Create(string propertyName)
     {
-        public static IInterceptingPropertyValueProviderMetadata2 Create(string propertyName)
-        {
-            var mock = new Mock<IInterceptingPropertyValueProviderMetadata2>();
+        var mock = new Mock<IInterceptingPropertyValueProviderMetadata2>();
 
-            mock.SetupGet(s => s.PropertyNames)
-                .Returns(new[] { propertyName });
+        mock.SetupGet(s => s.PropertyNames)
+            .Returns(new[] { propertyName });
 
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }

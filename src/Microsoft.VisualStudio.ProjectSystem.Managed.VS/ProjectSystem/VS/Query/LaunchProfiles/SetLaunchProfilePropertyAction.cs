@@ -6,42 +6,41 @@ using Microsoft.VisualStudio.ProjectSystem.Query.Execution;
 using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Query.Framework.Actions;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+internal class SetLaunchProfilePropertyAction : QueryDataProducerBase<IEntityValue>, IQueryActionExecutor
 {
-    internal class SetLaunchProfilePropertyAction : QueryDataProducerBase<IEntityValue>, IQueryActionExecutor
+    private readonly SetLaunchProfilePropertyValue _executableStep;
+
+    public SetLaunchProfilePropertyAction(SetLaunchProfilePropertyValue executableStep)
     {
-        private readonly SetLaunchProfilePropertyValue _executableStep;
+        _executableStep = executableStep;
+    }
 
-        public SetLaunchProfilePropertyAction(SetLaunchProfilePropertyValue executableStep)
-        {
-            _executableStep = executableStep;
-        }
+    public Task OnRequestProcessFinishedAsync(IQueryProcessRequest request)
+    {
+        return ResultReceiver.OnRequestProcessFinishedAsync(request);
+    }
 
-        public Task OnRequestProcessFinishedAsync(IQueryProcessRequest request)
+    public async Task ReceiveResultAsync(QueryProcessResult<IEntityValue> result)
+    {
+        result.Request.QueryExecutionContext.CancellationToken.ThrowIfCancellationRequested();
+        if (((IEntityValueFromProvider)result.Result).ProviderState is ContextAndRuleProviderState state)
         {
-            return ResultReceiver.OnRequestProcessFinishedAsync(request);
-        }
-
-        public async Task ReceiveResultAsync(QueryProcessResult<IEntityValue> result)
-        {
-            result.Request.QueryExecutionContext.CancellationToken.ThrowIfCancellationRequested();
-            if (((IEntityValueFromProvider)result.Result).ProviderState is ContextAndRuleProviderState state)
+            IProjectState projectState = state.ProjectState;
+            if (await projectState.GetSuggestedConfigurationAsync() is ProjectConfiguration configuration
+                && await projectState.BindToRuleAsync(configuration, state.Rule.Name, state.PropertiesContext) is IRule boundRule
+                && boundRule.GetProperty(_executableStep.PropertyName) is IProperty property)
             {
-                IProjectState projectState = state.ProjectState;
-                if (await projectState.GetSuggestedConfigurationAsync() is ProjectConfiguration configuration
-                    && await projectState.BindToRuleAsync(configuration, state.Rule.Name, state.PropertiesContext) is IRule boundRule
-                    && boundRule.GetProperty(_executableStep.PropertyName) is IProperty property)
-                {
-                    await property.SetValueAsync(_executableStep.Value);
+                await property.SetValueAsync(_executableStep.Value);
 
-                    if (await projectState.GetDataVersionAsync(configuration) is (string versionKey, long versionNumber))
-                    {
-                        result.Request.QueryExecutionContext.ReportUpdatedDataVersion(versionKey, versionNumber);
-                    }
+                if (await projectState.GetDataVersionAsync(configuration) is (string versionKey, long versionNumber))
+                {
+                    result.Request.QueryExecutionContext.ReportUpdatedDataVersion(versionKey, versionNumber);
                 }
             }
-
-            await ResultReceiver.ReceiveResultAsync(result);
         }
+
+        await ResultReceiver.ReceiveResultAsync(result);
     }
 }

@@ -3,42 +3,41 @@
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties;
+
+[ExportInterceptingPropertyValueProvider("TargetPlatformMonikers", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+internal class TargetPlatformMonikersValueProvider : InterceptingPropertyValueProviderBase
 {
-    [ExportInterceptingPropertyValueProvider("TargetPlatformMonikers", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal class TargetPlatformMonikersValueProvider : InterceptingPropertyValueProviderBase
+    private readonly IActiveConfiguredProjectsProvider _projectProvider;
+
+    [ImportingConstructor]
+    public TargetPlatformMonikersValueProvider(IActiveConfiguredProjectsProvider projectProvider)
     {
-        private readonly IActiveConfiguredProjectsProvider _projectProvider;
+        _projectProvider = projectProvider;
+    }
 
-        [ImportingConstructor]
-        public TargetPlatformMonikersValueProvider(IActiveConfiguredProjectsProvider projectProvider)
+    public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+    {
+        ActiveConfiguredObjects<ConfiguredProject>? configuredProjects = await _projectProvider.GetActiveConfiguredProjectsAsync();
+
+        if (configuredProjects is null)
         {
-            _projectProvider = projectProvider;
+            return "";
         }
 
-        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        var builder = PooledArray<string>.GetInstance(capacity: configuredProjects.Objects.Length);
+
+        foreach (ConfiguredProject configuredProject in configuredProjects.Objects)
         {
-            ActiveConfiguredObjects<ConfiguredProject>? configuredProjects = await _projectProvider.GetActiveConfiguredProjectsAsync();
+            ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
+            ConfigurationGeneral configuration = await projectProperties.GetConfigurationGeneralPropertiesAsync();
+            string? currentPlatformMoniker = (string?)await configuration.TargetPlatformIdentifier.GetValueAsync();
+            string? currentPlatformVersion = (string?)await configuration.TargetPlatformVersion.GetValueAsync();
 
-            if (configuredProjects is null)
-            {
-                return "";
-            }
-
-            var builder = PooledArray<string>.GetInstance(capacity: configuredProjects.Objects.Length);
-
-            foreach (ConfiguredProject configuredProject in configuredProjects.Objects)
-            {
-                ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
-                ConfigurationGeneral configuration = await projectProperties.GetConfigurationGeneralPropertiesAsync();
-                string? currentPlatformMoniker = (string?)await configuration.TargetPlatformIdentifier.GetValueAsync();
-                string? currentPlatformVersion = (string?)await configuration.TargetPlatformVersion.GetValueAsync();
-
-                Assumes.NotNull(currentPlatformMoniker);
-                builder.Add($"{ currentPlatformMoniker }, Version={ currentPlatformVersion }");
-            }
-
-            return string.Join(";", builder.ToArrayAndFree());
+            Assumes.NotNull(currentPlatformMoniker);
+            builder.Add($"{currentPlatformMoniker}, Version={currentPlatformVersion}");
         }
+
+        return string.Join(";", builder.ToArrayAndFree());
     }
 }

@@ -3,19 +3,18 @@
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+internal static class LaunchProfileDataProducer
 {
-    internal static class LaunchProfileDataProducer
+    public static EntityIdentity CreateLaunchProfileId(IEntityValue parent, string itemType, string itemName)
     {
-        public static EntityIdentity CreateLaunchProfileId(IEntityValue parent, string itemType, string itemName)
-        {
-            return new EntityIdentity(
-                ((IEntityWithId)parent).Id,
-                new Dictionary<string, string>
-                {
-                    { ProjectModelIdentityKeys.SourceItemType, itemType },
-                    { ProjectModelIdentityKeys.SourceItemName, itemName }
-                });
-        }
+        return new EntityIdentity(
+            ((IEntityWithId)parent).Id,
+            new Dictionary<string, string>
+            {
+                { ProjectModelIdentityKeys.SourceItemType, itemType },
+                { ProjectModelIdentityKeys.SourceItemName, itemName }
+            });
     }
 }

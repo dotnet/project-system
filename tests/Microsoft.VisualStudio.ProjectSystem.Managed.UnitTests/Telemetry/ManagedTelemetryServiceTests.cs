@@ -2,224 +2,223 @@
 
 using Moq.Protected;
 
-namespace Microsoft.VisualStudio.Telemetry
+namespace Microsoft.VisualStudio.Telemetry;
+
+public class ManagedTelemetryServiceTests
 {
-    public class ManagedTelemetryServiceTests
+    [Fact]
+    public void PostEvent_NullAsEventName_ThrowsArgumentNull()
     {
-        [Fact]
-        public void PostEvent_NullAsEventName_ThrowsArgumentNull()
+        var service = CreateInstance();
+
+        Assert.Throws<ArgumentNullException>("eventName", () =>
         {
-            var service = CreateInstance();
+            service.PostEvent(null!);
+        });
+    }
 
-            Assert.Throws<ArgumentNullException>("eventName", () =>
-            {
-                service.PostEvent(null!);
-            });
-        }
+    [Fact]
+    public void PostEvent_EmptyAsEventName_ThrowsArgument()
+    {
+        var service = CreateInstance();
 
-        [Fact]
-        public void PostEvent_EmptyAsEventName_ThrowsArgument()
+        Assert.Throws<ArgumentException>("eventName", () =>
         {
-            var service = CreateInstance();
+            service.PostEvent(string.Empty);
+        });
+    }
 
-            Assert.Throws<ArgumentException>("eventName", () =>
-            {
-                service.PostEvent(string.Empty);
-            });
-        }
+    [Fact]
+    public void PostProperty_NullAsEventName_ThrowArgumentNull()
+    {
+        var service = CreateInstance();
 
-        [Fact]
-        public void PostProperty_NullAsEventName_ThrowArgumentNull()
+        Assert.Throws<ArgumentNullException>("eventName", () =>
         {
-            var service = CreateInstance();
+            service.PostProperty(null!, "propName", "value");
+        });
+    }
 
-            Assert.Throws<ArgumentNullException>("eventName", () =>
-            {
-                service.PostProperty(null!, "propName", "value");
-            });
-        }
+    [Fact]
+    public void PostProperty_EmptyAsEventName_ThrowArgument()
+    {
+        var service = CreateInstance();
 
-        [Fact]
-        public void PostProperty_EmptyAsEventName_ThrowArgument()
+        Assert.Throws<ArgumentException>("eventName", () =>
         {
-            var service = CreateInstance();
+            service.PostProperty(string.Empty, "propName", "value");
+        });
+    }
 
-            Assert.Throws<ArgumentException>("eventName", () =>
-            {
-                service.PostProperty(string.Empty, "propName", "value");
-            });
-        }
+    [Fact]
+    public void PostProperty_NullAsPropertyName_ThrowArgumentNull()
+    {
+        var service = CreateInstance();
 
-        [Fact]
-        public void PostProperty_NullAsPropertyName_ThrowArgumentNull()
+        Assert.Throws<ArgumentNullException>("propertyName", () =>
         {
-            var service = CreateInstance();
+            service.PostProperty("event1", null!, "value");
+        });
+    }
 
-            Assert.Throws<ArgumentNullException>("propertyName", () =>
-            {
-                service.PostProperty("event1", null!, "value");
-            });
-        }
+    [Fact]
+    public void PostProperty_EmptyAsPropertyName_ThrowArgument()
+    {
+        var service = CreateInstance();
 
-        [Fact]
-        public void PostProperty_EmptyAsPropertyName_ThrowArgument()
+        Assert.Throws<ArgumentException>("propertyName", () =>
         {
-            var service = CreateInstance();
+            service.PostProperty("event1", string.Empty, "value");
+        });
+    }
 
-            Assert.Throws<ArgumentException>("propertyName", () =>
-            {
-                service.PostProperty("event1", string.Empty, "value");
-            });
-        }
+    [Fact]
+    public void PostProperty_NullAsPropertyValue()
+    {
+        var service = CreateInstance();
 
-        [Fact]
-        public void PostProperty_NullAsPropertyValue()
+        service.PostProperty("vs/projectsystem/managed/test", "vs.projectsystem.managed.test", null);
+    }
+
+    [Fact]
+    public void PostProperties_NullAsEventName_ThrowArgumentNull()
+    {
+        var service = CreateInstance();
+
+        Assert.Throws<ArgumentNullException>("eventName", () =>
         {
-            var service = CreateInstance();
+            service.PostProperties(null!, [("propertyName", "propertyValue")]);
+        });
+    }
 
-            service.PostProperty("vs/projectsystem/managed/test", "vs.projectsystem.managed.test", null);
-        }
+    [Fact]
+    public void PostProperties_EmptyAsEventName_ThrowArgument()
+    {
+        var service = CreateInstance();
 
-        [Fact]
-        public void PostProperties_NullAsEventName_ThrowArgumentNull()
+        Assert.Throws<ArgumentException>("eventName", () =>
         {
-            var service = CreateInstance();
+            service.PostProperties(string.Empty, [("propertyName", "propertyValue")]);
+        });
+    }
 
-            Assert.Throws<ArgumentNullException>("eventName", () =>
-            {
-                service.PostProperties(null!, [("propertyName", "propertyValue")]);
-            });
-        }
+    [Fact]
+    public void PostProperties_NullAsPropertyName_ThrowArgumentNull()
+    {
+        var service = CreateInstance();
 
-        [Fact]
-        public void PostProperties_EmptyAsEventName_ThrowArgument()
+        Assert.Throws<ArgumentNullException>("properties", () =>
         {
-            var service = CreateInstance();
+            service.PostProperties("event1", null!);
+        });
+    }
 
-            Assert.Throws<ArgumentException>("eventName", () =>
-            {
-                service.PostProperties(string.Empty, [("propertyName", "propertyValue")]);
-            });
-        }
+    [Fact]
+    public void PostProperties_EmptyProperties_ThrowArgument()
+    {
+        var service = CreateInstance();
 
-        [Fact]
-        public void PostProperties_NullAsPropertyName_ThrowArgumentNull()
+        Assert.Throws<ArgumentException>("properties", () =>
         {
-            var service = CreateInstance();
+            service.PostProperties("event1", []);
+        });
+    }
 
-            Assert.Throws<ArgumentNullException>("properties", () =>
-            {
-                service.PostProperties("event1", null!);
-            });
-        }
+    [Fact]
+    public void PostEvent_SendsTelemetryEvent()
+    {
+        TelemetryEvent? result = null;
+        var service = CreateInstance((e) => { result = e; });
 
-        [Fact]
-        public void PostProperties_EmptyProperties_ThrowArgument()
+        service.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
+
+        Assert.NotNull(result);
+        Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, result.Name);
+    }
+
+    [Fact]
+    public void PostProperty_SendsTelemetryEventWithProperty()
+    {
+        TelemetryEvent? result = null;
+        var service = CreateInstance((e) => { result = e; });
+
+        service.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheck.FailReason, "Reason");
+
+        Assert.NotNull(result);
+        Assert.Equal(TelemetryEventName.UpToDateCheckFail, result.Name);
+        Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.UpToDateCheck.FailReason, "Reason"), result.Properties);
+    }
+
+    [Fact]
+    public void PostProperties_SendsTelemetryEventWithProperties()
+    {
+        TelemetryEvent? result = null;
+        var service = CreateInstance((e) => { result = e; });
+
+        service.PostProperties(TelemetryEventName.DesignTimeBuildComplete,
+        [
+            (TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, true),
+            (TelemetryPropertyName.DesignTimeBuildComplete.Targets, "Compile")
+        ]);
+
+        Assert.NotNull(result);
+        Assert.Equal(TelemetryEventName.DesignTimeBuildComplete, result.Name);
+        Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, true), result.Properties);
+        Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildComplete.Targets, "Compile"), result.Properties);
+    }
+
+    [Fact]
+    public void BeginOperation_NullAsEventName_ThrowsArgumentNull()
+    {
+        var service = CreateInstance();
+
+        Assert.Throws<ArgumentNullException>("eventName", () =>
         {
-            var service = CreateInstance();
+            _ = service.BeginOperation(null!);
+        });
+    }
 
-            Assert.Throws<ArgumentException>("properties", () =>
-            {
-                service.PostProperties("event1", []);
-            });
-        }
+    [Fact]
+    public void BeginOperation_EmptyAsEventName_ThrowsArgument()
+    {
+        var service = CreateInstance();
 
-        [Fact]
-        public void PostEvent_SendsTelemetryEvent()
+        Assert.Throws<ArgumentException>("eventName", () =>
         {
-            TelemetryEvent? result = null;
-            var service = CreateInstance((e) => { result = e; });
+            _ = service.BeginOperation(string.Empty);
+        });
+    }
 
-            service.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
+    [Fact]
+    public void HashValue()
+    {
+        var service = CreateInstance();
 
-            Assert.NotNull(result);
-            Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, result.Name);
-        }
+        service.IsUserMicrosoftInternal = true;
 
-        [Fact]
-        public void PostProperty_SendsTelemetryEventWithProperty()
-        {
-            TelemetryEvent? result = null;
-            var service = CreateInstance((e) => { result = e; });
+        Assert.Equal("Hello", service.HashValue("Hello"));
+        Assert.Equal("World", service.HashValue("World"));
+        Assert.Equal("", service.HashValue(""));
+        Assert.Equal(" ", service.HashValue(" "));
 
-            service.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheck.FailReason, "Reason");
+        service.IsUserMicrosoftInternal = false;
 
-            Assert.NotNull(result);
-            Assert.Equal(TelemetryEventName.UpToDateCheckFail, result.Name);
-            Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.UpToDateCheck.FailReason, "Reason"), result.Properties);
-        }
+        Assert.Equal("185f8db32271fe25", service.HashValue("Hello"));
+        Assert.Equal("78ae647dc5544d22", service.HashValue("World"));
+        Assert.Equal("e3b0c44298fc1c14", service.HashValue(""));
+        Assert.Equal("36a9e7f1c95b82ff", service.HashValue(" "));
+    }
 
-        [Fact]
-        public void PostProperties_SendsTelemetryEventWithProperties()
-        {
-            TelemetryEvent? result = null;
-            var service = CreateInstance((e) => { result = e; });
+    private static ManagedTelemetryService CreateInstance(Action<TelemetryEvent>? action = null)
+    {
+        if (action is null)
+            return new ManagedTelemetryService();
 
-            service.PostProperties(TelemetryEventName.DesignTimeBuildComplete,
-            [
-                (TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, true),
-                (TelemetryPropertyName.DesignTimeBuildComplete.Targets, "Compile")
-            ]);
+        // Override PostEventToSession to avoid actually sending to telemetry
+        var mock = new Mock<ManagedTelemetryService>();
+        mock.Protected().Setup("PostEventToSession", ItExpr.IsAny<TelemetryEvent>())
+            .Callback(action);
 
-            Assert.NotNull(result);
-            Assert.Equal(TelemetryEventName.DesignTimeBuildComplete, result.Name);
-            Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildComplete.Succeeded, true), result.Properties);
-            Assert.Contains(new KeyValuePair<string, object>(TelemetryPropertyName.DesignTimeBuildComplete.Targets, "Compile"), result.Properties);
-        }
-
-        [Fact]
-        public void BeginOperation_NullAsEventName_ThrowsArgumentNull()
-        {
-            var service = CreateInstance();
-
-            Assert.Throws<ArgumentNullException>("eventName", () =>
-            {
-                _ = service.BeginOperation(null!);
-            });
-        }
-
-        [Fact]
-        public void BeginOperation_EmptyAsEventName_ThrowsArgument()
-        {
-            var service = CreateInstance();
-
-            Assert.Throws<ArgumentException>("eventName", () =>
-            {
-                _ = service.BeginOperation(string.Empty);
-            });
-        }
-
-        [Fact]
-        public void HashValue()
-        {
-            var service = CreateInstance();
-
-            service.IsUserMicrosoftInternal = true;
-
-            Assert.Equal("Hello", service.HashValue("Hello"));
-            Assert.Equal("World", service.HashValue("World"));
-            Assert.Equal("", service.HashValue(""));
-            Assert.Equal(" ", service.HashValue(" "));
-
-            service.IsUserMicrosoftInternal = false;
-
-            Assert.Equal("185f8db32271fe25", service.HashValue("Hello"));
-            Assert.Equal("78ae647dc5544d22", service.HashValue("World"));
-            Assert.Equal("e3b0c44298fc1c14", service.HashValue(""));
-            Assert.Equal("36a9e7f1c95b82ff", service.HashValue(" "));
-        }
-
-        private static ManagedTelemetryService CreateInstance(Action<TelemetryEvent>? action = null)
-        {
-            if (action is null)
-                return new ManagedTelemetryService();
-
-            // Override PostEventToSession to avoid actually sending to telemetry
-            var mock = new Mock<ManagedTelemetryService>();
-            mock.Protected().Setup("PostEventToSession", ItExpr.IsAny<TelemetryEvent>())
-                .Callback(action);
-
-            return mock.Object;
-        }
+        return mock.Object;
     }
 }

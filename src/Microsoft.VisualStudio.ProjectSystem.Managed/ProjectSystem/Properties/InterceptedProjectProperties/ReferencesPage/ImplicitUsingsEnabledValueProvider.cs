@@ -2,62 +2,61 @@
 
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.Properties;
+
+[ExportInterceptingPropertyValueProvider("ImplicitUsings", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+internal sealed class ImplicitUsingsEnabledValueProvider : InterceptingPropertyValueProviderBase
 {
-    [ExportInterceptingPropertyValueProvider("ImplicitUsings", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal sealed class ImplicitUsingsEnabledValueProvider : InterceptingPropertyValueProviderBase
+    private static readonly Task<string?> s_enableStringTaskResult = Task.FromResult<string?>("enable");
+    private static readonly Task<string?> s_disableStringTaskResult = Task.FromResult<string?>("disable");
+
+    public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
     {
-        private static readonly Task<string?> s_enableStringTaskResult = Task.FromResult<string?>("enable");
-        private static readonly Task<string?> s_disableStringTaskResult = Task.FromResult<string?>("disable");
+        return ToBooleanStringAsync(evaluatedPropertyValue);
+    }
 
-        public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+    public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+    {
+        return ToBooleanStringAsync(unevaluatedPropertyValue);
+    }
+
+    public override Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+    {
+        return FromBooleanStringAsync(unevaluatedPropertyValue);
+    }
+
+    private static Task<string> ToBooleanStringAsync(string value)
+    {
+        if (StringComparer.OrdinalIgnoreCase.Equals(value, "enable"))
         {
-            return ToBooleanStringAsync(evaluatedPropertyValue);
+            return TaskResult.TrueString;
         }
 
-        public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+        if (StringComparer.OrdinalIgnoreCase.Equals(value, "disable"))
         {
-            return ToBooleanStringAsync(unevaluatedPropertyValue);
+            return TaskResult.FalseString;
         }
 
-        public override Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        return Task.FromResult(value);
+    }
+
+    private static Task<string?> FromBooleanStringAsync(string? value)
+    {
+        if (StringComparer.OrdinalIgnoreCase.Equals(value, bool.TrueString))
         {
-            return FromBooleanStringAsync(unevaluatedPropertyValue);
+            return s_enableStringTaskResult;
         }
 
-        private static Task<string> ToBooleanStringAsync(string value)
+        if (StringComparer.OrdinalIgnoreCase.Equals(value, bool.FalseString))
         {
-            if (StringComparer.OrdinalIgnoreCase.Equals(value, "enable"))
-            {
-                return TaskResult.TrueString;
-            }
-
-            if (StringComparer.OrdinalIgnoreCase.Equals(value, "disable"))
-            {
-                return TaskResult.FalseString;
-            }
-
-            return Task.FromResult(value);
+            return s_disableStringTaskResult;
         }
 
-        private static Task<string?> FromBooleanStringAsync(string? value)
+        if (value is null)
         {
-            if (StringComparer.OrdinalIgnoreCase.Equals(value, bool.TrueString))
-            {
-                return s_enableStringTaskResult;
-            }
-
-            if (StringComparer.OrdinalIgnoreCase.Equals(value, bool.FalseString))
-            {
-                return s_disableStringTaskResult;
-            }
-
-            if (value is null)
-            {
-                return TaskResult.Null<string>();
-            }
-
-            return Task.FromResult<string?>(value);
+            return TaskResult.Null<string>();
         }
+
+        return Task.FromResult<string?>(value);
     }
 }

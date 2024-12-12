@@ -2,52 +2,51 @@
 
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Build
+namespace Microsoft.VisualStudio.ProjectSystem.Build;
+
+[Export(typeof(IOutputGroupProvider))]
+[AppliesTo(ProjectCapabilities.VisualStudioWellKnownOutputGroups)]
+[Order(Order.Default)]
+internal class PublishItemsOutputGroupProvider : IOutputGroupProvider
 {
-    [Export(typeof(IOutputGroupProvider))]
-    [AppliesTo(ProjectCapabilities.VisualStudioWellKnownOutputGroups)]
-    [Order(Order.Default)]
-    internal class PublishItemsOutputGroupProvider : IOutputGroupProvider
+    private const string PublishItemsOutputGroupTargetName = "PublishItemsOutputGroup";
+
+    /// <summary>
+    /// Collection containing a single "publish items" output group.
+    /// This is a singleton instance, shared across all projects/configurations.
+    /// </summary>
+    private static readonly ImmutableHashSet<IOutputGroup> s_outputGroups = ImmutableHashSet.Create<IOutputGroup>(
+        new OutputGroup(
+            name: "PublishItems",
+            targetName: PublishItemsOutputGroupTargetName,
+            displayName: Resources.OutputGroupPublishItemsDisplayName,
+            description: Resources.OutputGroupPublishItemsDescription,
+            items: ImmutableList<KeyValuePair<string, IImmutableDictionary<string, string>>>.Empty,
+            successful: false));
+
+    private readonly AsyncLazy<IImmutableSet<IOutputGroup>> _outputGroups;
+
+    [ImportingConstructor]
+    internal PublishItemsOutputGroupProvider(
+        IProjectAccessor projectAccessor,
+        ConfiguredProject configuredProject,
+        IProjectThreadingService projectThreadingService)
     {
-        private const string PublishItemsOutputGroupTargetName = "PublishItemsOutputGroup";
+        _outputGroups = new AsyncLazy<IImmutableSet<IOutputGroup>>(
+            GetOutputGroupMetadataAsync,
+            projectThreadingService.JoinableTaskFactory);
 
-        /// <summary>
-        /// Collection containing a single "publish items" output group.
-        /// This is a singleton instance, shared across all projects/configurations.
-        /// </summary>
-        private static readonly ImmutableHashSet<IOutputGroup> s_outputGroups = ImmutableHashSet.Create<IOutputGroup>(
-            new OutputGroup(
-                name: "PublishItems",
-                targetName: PublishItemsOutputGroupTargetName,
-                displayName: Resources.OutputGroupPublishItemsDisplayName,
-                description: Resources.OutputGroupPublishItemsDescription,
-                items: ImmutableList<KeyValuePair<string, IImmutableDictionary<string, string>>>.Empty,
-                successful: false));
-
-        private readonly AsyncLazy<IImmutableSet<IOutputGroup>> _outputGroups;
-
-        [ImportingConstructor]
-        internal PublishItemsOutputGroupProvider(
-            IProjectAccessor projectAccessor,
-            ConfiguredProject configuredProject,
-            IProjectThreadingService projectThreadingService)
+        async Task<IImmutableSet<IOutputGroup>> GetOutputGroupMetadataAsync()
         {
-            _outputGroups = new AsyncLazy<IImmutableSet<IOutputGroup>>(
-                GetOutputGroupMetadataAsync,
-                projectThreadingService.JoinableTaskFactory);
+            bool hasPublishItemsTarget = await projectAccessor.OpenProjectForReadAsync(
+                configuredProject,
+                project => project.Targets.ContainsKey(PublishItemsOutputGroupTargetName));
 
-            async Task<IImmutableSet<IOutputGroup>> GetOutputGroupMetadataAsync()
-            {
-                bool hasPublishItemsTarget = await projectAccessor.OpenProjectForReadAsync(
-                    configuredProject,
-                    project => project.Targets.ContainsKey(PublishItemsOutputGroupTargetName));
-
-                return hasPublishItemsTarget
-                    ? s_outputGroups
-                    : ImmutableHashSet<IOutputGroup>.Empty;
-            }
+            return hasPublishItemsTarget
+                ? s_outputGroups
+                : ImmutableHashSet<IOutputGroup>.Empty;
         }
-
-        public Task<IImmutableSet<IOutputGroup>> OutputGroups => _outputGroups.GetValueAsync();
     }
+
+    public Task<IImmutableSet<IOutputGroup>> OutputGroups => _outputGroups.GetValueAsync();
 }

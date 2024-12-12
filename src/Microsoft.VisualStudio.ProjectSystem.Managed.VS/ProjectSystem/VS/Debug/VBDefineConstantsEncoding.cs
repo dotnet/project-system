@@ -2,152 +2,151 @@
 
 using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.Designer;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.Debug;
+
+
+[Export(typeof(INameValuePairListEncoding))]
+[ExportMetadata("Encoding", "VBDefineConstantsEncoding")]
+internal sealed class VBDefineConstantsEncoding : INameValuePairListEncoding
 {
-
-    [Export(typeof(INameValuePairListEncoding))]
-    [ExportMetadata("Encoding", "VBDefineConstantsEncoding")]
-    internal sealed class VBDefineConstantsEncoding : INameValuePairListEncoding
+    public IEnumerable<(string Name, string Value)> Parse(string value)
     {
-        public IEnumerable<(string Name, string Value)> Parse(string value)
+        Requires.NotNull(value);
+        if (string.IsNullOrEmpty(value))
         {
-            Requires.NotNull(value);
-            if (string.IsNullOrEmpty(value))
-            {
-                yield break;
-            }
-
-            foreach (string entry in ReadEntries(value))
-            {
-                if (!TryParseSplitPairedEntry(entry, out (string, string) resultingEntry)
-                    && !TryParseSingleEntry(entry, out resultingEntry))
-                {
-                    throw new FormatException("Expected valid name value pair for defining custom constants.");
-                }
-
-                yield return resultingEntry;
-                
-            }
-
-            static IEnumerable<string> ReadEntries(string rawText)
-            {
-                bool escaped = false;
-                int entryStart = 0;
-                for (int i = 0; i < rawText.Length; i++)
-                {
-                    if (rawText[i] == ',' && !escaped)
-                    {
-                        yield return rawText.Substring(entryStart, i - entryStart);
-                        entryStart = i + 1;
-                        escaped = false;
-                    }
-                    else if (rawText[i] == '/')
-                    {
-                        escaped = !escaped;
-                    }
-                    else
-                    {
-                        escaped = false;
-                    }
-                }
-
-                yield return rawText.Substring(entryStart);
-            }
-
-            static bool TryParseSplitPairedEntry(string entry, out (string, string) result)
-            {
-                bool escaped = false;
-                for (int i = 0; i < entry.Length; i++)
-                {
-                    if (entry[i] == '=' && !escaped)
-                    {
-                        string name = entry.Substring(0, i);
-                        string value = entry.Substring(i + 1);
-                        if (name.Length == 0 || value.Length == 0)
-                        {
-                            break;
-                        }
-                        result = (DecodeCharacters(name), DecodeCharacters(value));
-
-                        return true;
-                    }
-                    else if (entry[i] == '/')
-                    {
-                        escaped = !escaped;
-                    }
-                    else
-                    {
-                        escaped = false;
-                    }
-                }
-
-                result = default;
-                return false;
-            }
-
-            static bool TryParseSingleEntry(string entry, out (string, string) result)
-            {
-                bool escaped = false;
-                for (int i = 0; i < entry.Length; i++)
-                {
-                    if (entry[i] == '=' && !escaped)
-                    {
-                        break;
-                    }
-                    else if (i == entry.Length - 1)
-                    {
-                        result = (DecodeCharacters(entry), "");
-                        return true;
-                    }
-                    escaped = entry[i] == '/' && !escaped;
-                }
-
-                result = default;
-                return false;
-            }
-
-            static string DecodeCharacters(string value)
-            {
-                return value.Replace("/\"", "\"").Replace("/=", "=").Replace("/,", ",").Replace("//", "/");
-            }
+            yield break;
         }
 
-        public string Format(IEnumerable<(string Name, string Value)> pairs)
+        foreach (string entry in ReadEntries(value))
         {
-            return string.Join(",", pairs.Select(EncodePair));
-
-            static string EncodePair((string Name, string Value) pair)
+            if (!TryParseSplitPairedEntry(entry, out (string, string) resultingEntry)
+                && !TryParseSingleEntry(entry, out resultingEntry))
             {
-                if (string.IsNullOrEmpty(pair.Value))
+                throw new FormatException("Expected valid name value pair for defining custom constants.");
+            }
+
+            yield return resultingEntry;
+
+        }
+
+        static IEnumerable<string> ReadEntries(string rawText)
+        {
+            bool escaped = false;
+            int entryStart = 0;
+            for (int i = 0; i < rawText.Length; i++)
+            {
+                if (rawText[i] == ',' && !escaped)
                 {
-                    return EncodeCharacters(pair.Name);
+                    yield return rawText.Substring(entryStart, i - entryStart);
+                    entryStart = i + 1;
+                    escaped = false;
+                }
+                else if (rawText[i] == '/')
+                {
+                    escaped = !escaped;
                 }
                 else
                 {
-                    return $"{EncodeCharacters(pair.Name)}={EncodeCharacters(pair.Value)}";
+                    escaped = false;
                 }
             }
-            
-            static string EncodeCharacters(string value)
+
+            yield return rawText.Substring(entryStart);
+        }
+
+        static bool TryParseSplitPairedEntry(string entry, out (string, string) result)
+        {
+            bool escaped = false;
+            for (int i = 0; i < entry.Length; i++)
             {
-                int i = value.Length - 1;
-                while (i > -1)
+                if (entry[i] == '=' && !escaped)
                 {
-                    if (value[i] == '/' || value[i] == ',' || value[i] == '=' || value[i] == '"')
+                    string name = entry.Substring(0, i);
+                    string value = entry.Substring(i + 1);
+                    if (name.Length == 0 || value.Length == 0)
                     {
-                        if (i == 0 || value[i - 1] != '/')
-                        {
-                            value = value.Insert(i, "/");
-                        }
-                        else if (value[i - 1] == '/')
-                        {
-                            i--;
-                        }
+                        break;
                     }
-                    i--;
+                    result = (DecodeCharacters(name), DecodeCharacters(value));
+
+                    return true;
                 }
-                return value;
+                else if (entry[i] == '/')
+                {
+                    escaped = !escaped;
+                }
+                else
+                {
+                    escaped = false;
+                }
             }
+
+            result = default;
+            return false;
+        }
+
+        static bool TryParseSingleEntry(string entry, out (string, string) result)
+        {
+            bool escaped = false;
+            for (int i = 0; i < entry.Length; i++)
+            {
+                if (entry[i] == '=' && !escaped)
+                {
+                    break;
+                }
+                else if (i == entry.Length - 1)
+                {
+                    result = (DecodeCharacters(entry), "");
+                    return true;
+                }
+                escaped = entry[i] == '/' && !escaped;
+            }
+
+            result = default;
+            return false;
+        }
+
+        static string DecodeCharacters(string value)
+        {
+            return value.Replace("/\"", "\"").Replace("/=", "=").Replace("/,", ",").Replace("//", "/");
+        }
+    }
+
+    public string Format(IEnumerable<(string Name, string Value)> pairs)
+    {
+        return string.Join(",", pairs.Select(EncodePair));
+
+        static string EncodePair((string Name, string Value) pair)
+        {
+            if (string.IsNullOrEmpty(pair.Value))
+            {
+                return EncodeCharacters(pair.Name);
+            }
+            else
+            {
+                return $"{EncodeCharacters(pair.Name)}={EncodeCharacters(pair.Value)}";
+            }
+        }
+
+        static string EncodeCharacters(string value)
+        {
+            int i = value.Length - 1;
+            while (i > -1)
+            {
+                if (value[i] == '/' || value[i] == ',' || value[i] == '=' || value[i] == '"')
+                {
+                    if (i == 0 || value[i - 1] != '/')
+                    {
+                        value = value.Insert(i, "/");
+                    }
+                    else if (value[i - 1] == '/')
+                    {
+                        i--;
+                    }
+                }
+                i--;
+            }
+            return value;
         }
     }
 }

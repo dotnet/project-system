@@ -2,21 +2,20 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+internal static class IStartupProjectHelperFactory
 {
-    internal static class IStartupProjectHelperFactory
+    internal static IStartupProjectHelper Create(ImmutableArray<string>? startProjectFullPaths = null)
     {
-        internal static IStartupProjectHelper Create(ImmutableArray<string>? startProjectFullPaths = null)
+        var mock = new Mock<IStartupProjectHelper>();
+
+        if (startProjectFullPaths.HasValue)
         {
-            var mock = new Mock<IStartupProjectHelper>();
-
-            if (startProjectFullPaths.HasValue)
-            {
-                mock.Setup(t => t.GetFullPathsOfStartupProjects())
-                    .Returns(startProjectFullPaths.Value);
-            }
-
-            return mock.Object;
+            mock.Setup(t => t.GetFullPathsOfStartupProjects())
+                .Returns(startProjectFullPaths.Value);
         }
+
+        return mock.Object;
     }
 }

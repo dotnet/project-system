@@ -5,82 +5,81 @@ using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections;
+
+public abstract partial class RelatableItemBase
 {
-    public abstract partial class RelatableItemBase
+    /// <summary>
+    /// Creates a <see cref="IContextMenuController"/> for use in overrides of <see cref="ContextMenuController"/>.
+    /// </summary>
+    public static IContextMenuController CreateContextMenuController(Guid menuGuid, int menuId) => new MenuController(menuGuid, menuId);
+
+    internal sealed class MenuController(Guid menuGuid, int menuId) : IContextMenuController
     {
-        /// <summary>
-        /// Creates a <see cref="IContextMenuController"/> for use in overrides of <see cref="ContextMenuController"/>.
-        /// </summary>
-        public static IContextMenuController CreateContextMenuController(Guid menuGuid, int menuId) => new MenuController(menuGuid, menuId);
+        public static ImmutableArray<IRelatableItem> CurrentItems { get; private set; } = [];
 
-        internal sealed class MenuController(Guid menuGuid, int menuId) : IContextMenuController
+        public bool ShowContextMenu(IEnumerable<object> items, Point location)
         {
-            public static ImmutableArray<IRelatableItem> CurrentItems { get; private set; } = [];
+            ImmutableArray<IRelatableItem>? relatableItems = GetItems();
 
-            public bool ShowContextMenu(IEnumerable<object> items, Point location)
+            if (relatableItems is null)
             {
-                ImmutableArray<IRelatableItem>? relatableItems = GetItems();
+                return false;
+            }
 
-                if (relatableItems is null)
+            CurrentItems = relatableItems.Value;
+
+            try
+            {
+                return ShowContextMenu();
+            }
+            finally
+            {
+                CurrentItems = [];
+            }
+
+            ImmutableArray<IRelatableItem>? GetItems()
+            {
+                ImmutableArray<IRelatableItem>.Builder? builder = null;
+
+                foreach (object item in items)
                 {
-                    return false;
-                }
-
-                CurrentItems = relatableItems.Value;
-
-                try
-                {
-                    return ShowContextMenu();
-                }
-                finally
-                {
-                    CurrentItems = [];
-                }
-
-                ImmutableArray<IRelatableItem>? GetItems()
-                {
-                    ImmutableArray<IRelatableItem>.Builder? builder = null;
-
-                    foreach (object item in items)
+                    if (item is IRelatableItem relatableItem)
                     {
-                        if (item is IRelatableItem relatableItem)
-                        {
-                            builder ??= ImmutableArray.CreateBuilder<IRelatableItem>();
-                            builder.Add(relatableItem);
-                        }
-                        else
-                        {
-                            return null;
-                        }
+                        builder ??= ImmutableArray.CreateBuilder<IRelatableItem>();
+                        builder.Add(relatableItem);
                     }
-
-                    if (builder is null)
+                    else
                     {
                         return null;
                     }
-
-                    return builder.ToImmutable();
                 }
 
-                bool ShowContextMenu()
+                if (builder is null)
                 {
-                    if (Package.GetGlobalService(typeof(SVsUIShell)) is IVsUIShell shell)
-                    {
-                        Guid guidContextMenu = menuGuid;
-
-                        int result = shell.ShowContextMenu(
-                            dwCompRole: 0,
-                            rclsidActive: ref guidContextMenu,
-                            nMenuId: menuId,
-                            pos: [new POINTS { x = (short)location.X, y = (short)location.Y }],
-                            pCmdTrgtActive: null);
-
-                        return ErrorHandler.Succeeded(result);
-                    }
-
-                    return false;
+                    return null;
                 }
+
+                return builder.ToImmutable();
+            }
+
+            bool ShowContextMenu()
+            {
+                if (Package.GetGlobalService(typeof(SVsUIShell)) is IVsUIShell shell)
+                {
+                    Guid guidContextMenu = menuGuid;
+
+                    int result = shell.ShowContextMenu(
+                        dwCompRole: 0,
+                        rclsidActive: ref guidContextMenu,
+                        nMenuId: menuId,
+                        pos: [new POINTS { x = (short)location.X, y = (short)location.Y }],
+                        pCmdTrgtActive: null);
+
+                    return ErrorHandler.Succeeded(result);
+                }
+
+                return false;
             }
         }
     }

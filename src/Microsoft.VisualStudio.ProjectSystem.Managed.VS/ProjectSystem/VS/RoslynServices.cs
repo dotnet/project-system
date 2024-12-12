@@ -5,38 +5,37 @@ using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 using Workspace = Microsoft.CodeAnalysis.Workspace;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+[Export(typeof(IRoslynServices))]
+internal class RoslynServices : IRoslynServices
 {
-    [Export(typeof(IRoslynServices))]
-    internal class RoslynServices : IRoslynServices
+    private readonly IProjectThreadingService _threadingService;
+
+    [ImportingConstructor]
+    public RoslynServices(
+        IProjectThreadingService threadingService,
+        UnconfiguredProject project)
     {
-        private readonly IProjectThreadingService _threadingService;
+        _threadingService = threadingService;
+        SyntaxFactsServicesImpl = new OrderPrecedenceImportCollection<ISyntaxFactsService>(projectCapabilityCheckProvider: project);
+    }
 
-        [ImportingConstructor]
-        public RoslynServices(
-            IProjectThreadingService threadingService,
-            UnconfiguredProject project)
-        {
-            _threadingService = threadingService;
-            SyntaxFactsServicesImpl = new OrderPrecedenceImportCollection<ISyntaxFactsService>(projectCapabilityCheckProvider: project);
-        }
+    [ImportMany]
+    protected OrderPrecedenceImportCollection<ISyntaxFactsService> SyntaxFactsServicesImpl { get; }
 
-        [ImportMany]
-        protected OrderPrecedenceImportCollection<ISyntaxFactsService> SyntaxFactsServicesImpl { get; }
+    private ISyntaxFactsService? SyntaxFactsService => SyntaxFactsServicesImpl.FirstOrDefault()?.Value;
 
-        private ISyntaxFactsService? SyntaxFactsService => SyntaxFactsServicesImpl.FirstOrDefault()?.Value;
+    public bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution)
+    {
+        _threadingService.VerifyOnUIThread();
 
-        public bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution)
-        {
-            _threadingService.VerifyOnUIThread();
+        // Always make sure TryApplyChanges is called from an UI thread.
+        return ws.TryApplyChanges(renamedSolution);
+    }
 
-            // Always make sure TryApplyChanges is called from an UI thread.
-            return ws.TryApplyChanges(renamedSolution);
-        }
-
-        public bool IsValidIdentifier(string identifierName)
-        {
-            return SyntaxFactsService?.IsValidIdentifier(identifierName) ?? false;
-        }
+    public bool IsValidIdentifier(string identifierName)
+    {
+        return SyntaxFactsService?.IsValidIdentifier(identifierName) ?? false;
     }
 }

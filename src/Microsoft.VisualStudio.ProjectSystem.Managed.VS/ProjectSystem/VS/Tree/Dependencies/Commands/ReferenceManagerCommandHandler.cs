@@ -5,91 +5,90 @@ using Microsoft.VisualStudio.ProjectSystem.VS.References;
 
 using VsReferenceManagerUserImportCollection = Microsoft.VisualStudio.ProjectSystem.OrderPrecedenceImportCollection<Microsoft.VisualStudio.ProjectSystem.VS.References.IVsReferenceManagerUserAsync, Microsoft.VisualStudio.ProjectSystem.VS.References.IVsReferenceManagerUserComponentMetadataView>;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands;
+
+/// <summary>
+/// Enables commands for launching Reference Manager at a specific page.
+/// </summary>
+[ExportCommandGroup(VSConstants.CMDSETID.StandardCommandSet16_string)]
+[AppliesTo(ProjectCapability.DependenciesTree)]
+[Order(Order.Default)]
+internal sealed class ReferenceManagerCommandHandler : ICommandGroupHandler
 {
-    /// <summary>
-    /// Enables commands for launching Reference Manager at a specific page.
-    /// </summary>
-    [ExportCommandGroup(VSConstants.CMDSETID.StandardCommandSet16_string)]
-    [AppliesTo(ProjectCapability.DependenciesTree)]
-    [Order(Order.Default)]
-    internal sealed class ReferenceManagerCommandHandler : ICommandGroupHandler
+    private readonly IReferencesUI _referencesUI;
+
+    [ImportingConstructor]
+    public ReferenceManagerCommandHandler(ConfiguredProject project, IReferencesUI referencesUI)
     {
-        private readonly IReferencesUI _referencesUI;
+        _referencesUI = referencesUI;
+        ReferenceManagerUsers = new VsReferenceManagerUserImportCollection(projectCapabilityCheckProvider: project);
+    }
 
-        [ImportingConstructor]
-        public ReferenceManagerCommandHandler(ConfiguredProject project, IReferencesUI referencesUI)
+    [ImportMany]
+    public VsReferenceManagerUserImportCollection ReferenceManagerUsers
+    {
+        get;
+    }
+
+    public CommandStatusResult GetCommandStatus(IImmutableSet<IProjectTree> items, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
+    {
+        if (CanAddReference(commandId))
         {
-            _referencesUI = referencesUI;
-            ReferenceManagerUsers = new VsReferenceManagerUserImportCollection(projectCapabilityCheckProvider: project);
-        }
+            progressiveStatus &= ~CommandStatus.Invisible;
+            progressiveStatus |= CommandStatus.Enabled | CommandStatus.Supported;
 
-        [ImportMany]
-        public VsReferenceManagerUserImportCollection ReferenceManagerUsers
-        {
-            get;
-        }
-
-        public CommandStatusResult GetCommandStatus(IImmutableSet<IProjectTree> items, long commandId, bool focused, string? commandText, CommandStatus progressiveStatus)
-        {
-            if (CanAddReference(commandId))
-            {
-                progressiveStatus &= ~CommandStatus.Invisible;
-                progressiveStatus |= CommandStatus.Enabled | CommandStatus.Supported;
-
-                if (items.Any(tree => tree.IsFolder))
-                {   // Hide these commands for Folder -> Add
-                    progressiveStatus |= CommandStatus.InvisibleOnContextMenu;
-                }
-
-                return new CommandStatusResult(handled: true, commandText, progressiveStatus);
+            if (items.Any(tree => tree.IsFolder))
+            {   // Hide these commands for Folder -> Add
+                progressiveStatus |= CommandStatus.InvisibleOnContextMenu;
             }
 
-            return CommandStatusResult.Unhandled;
+            return new CommandStatusResult(handled: true, commandText, progressiveStatus);
         }
 
-        public bool TryHandleCommand(IImmutableSet<IProjectTree> items, long commandId, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+        return CommandStatusResult.Unhandled;
+    }
+
+    public bool TryHandleCommand(IImmutableSet<IProjectTree> items, long commandId, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
+    {
+        string? identifier = GetReferenceProviderIdentifier(commandId);
+
+        if (identifier is not null)
         {
-            string? identifier = GetReferenceProviderIdentifier(commandId);
-
-            if (identifier is not null)
-            {
-                _referencesUI.ShowReferenceManagerDialog(new Guid(identifier));
-                return true;
-            }
-
-            return false;
+            _referencesUI.ShowReferenceManagerDialog(new Guid(identifier));
+            return true;
         }
 
-        private bool CanAddReference(long commandId)
+        return false;
+    }
+
+    private bool CanAddReference(long commandId)
+    {
+        string? identifier = GetReferenceProviderIdentifier(commandId);
+        if (identifier is not null)
         {
-            string? identifier = GetReferenceProviderIdentifier(commandId);
-            if (identifier is not null)
-            {
-                Lazy<IVsReferenceManagerUserAsync>? user = ReferenceManagerUsers.FirstOrDefault(u => u.Metadata.ProviderContextIdentifier == identifier);
+            Lazy<IVsReferenceManagerUserAsync>? user = ReferenceManagerUsers.FirstOrDefault(u => u.Metadata.ProviderContextIdentifier == identifier);
 
-                return user?.Value.IsApplicable() == true;
-            }
-
-            return false;
+            return user?.Value.IsApplicable() == true;
         }
 
-        private static string? GetReferenceProviderIdentifier(long commandId)
+        return false;
+    }
+
+    private static string? GetReferenceProviderIdentifier(long commandId)
+    {
+        return (VSConstants.VSStd16CmdID)commandId switch
         {
-            return (VSConstants.VSStd16CmdID)commandId switch
-            {
-                VSConstants.VSStd16CmdID.AddAssemblyReference => VSConstants.AssemblyReferenceProvider_string,
-                VSConstants.VSStd16CmdID.AddComReference => VSConstants.ComReferenceProvider_string,
-                VSConstants.VSStd16CmdID.AddProjectReference => VSConstants.ProjectReferenceProvider_string,
-                VSConstants.VSStd16CmdID.AddSharedProjectReference => VSConstants.SharedProjectReferenceProvider_string,
-                VSConstants.VSStd16CmdID.AddSdkReference => VSConstants.PlatformReferenceProvider_string,
-                _ => null,
-            };
+            VSConstants.VSStd16CmdID.AddAssemblyReference => VSConstants.AssemblyReferenceProvider_string,
+            VSConstants.VSStd16CmdID.AddComReference => VSConstants.ComReferenceProvider_string,
+            VSConstants.VSStd16CmdID.AddProjectReference => VSConstants.ProjectReferenceProvider_string,
+            VSConstants.VSStd16CmdID.AddSharedProjectReference => VSConstants.SharedProjectReferenceProvider_string,
+            VSConstants.VSStd16CmdID.AddSdkReference => VSConstants.PlatformReferenceProvider_string,
+            _ => null,
+        };
 
-            // Other known provider GUIDs:
-            //
-            // - VSConstants.FileReferenceProvider_string
-            // - VSConstants.ConnectedServiceInstanceReferenceProvider_string
-        }
+        // Other known provider GUIDs:
+        //
+        // - VSConstants.FileReferenceProvider_string
+        // - VSConstants.ConnectedServiceInstanceReferenceProvider_string
     }
 }

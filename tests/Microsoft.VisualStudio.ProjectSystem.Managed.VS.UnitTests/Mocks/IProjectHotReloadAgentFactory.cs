@@ -2,23 +2,22 @@
 
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+internal static class IProjectHotReloadAgentFactory
 {
-    internal static class IProjectHotReloadAgentFactory
+    public static IProjectHotReloadAgent Create(IProjectHotReloadSession? session = null)
     {
-        public static IProjectHotReloadAgent Create(IProjectHotReloadSession? session = null)
+        var mock = new Mock<IProjectHotReloadAgent>();
+
+        if (session is null)
         {
-            var mock = new Mock<IProjectHotReloadAgent>();
-
-            if (session is null)
-            {
-                session = IProjectHotReloadSessionFactory.Create();
-            }
-
-            mock.Setup(agent => agent.CreateHotReloadSession(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IProjectHotReloadSessionCallback>()))
-                .Returns(session);
-
-            return mock.Object;
+            session = IProjectHotReloadSessionFactory.Create();
         }
+
+        mock.Setup(agent => agent.CreateHotReloadSession(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IProjectHotReloadSessionCallback>()))
+            .Returns(session);
+
+        return mock.Object;
     }
 }

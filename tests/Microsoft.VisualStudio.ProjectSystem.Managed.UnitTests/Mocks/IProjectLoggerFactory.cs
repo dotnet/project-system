@@ -1,12 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+internal static class IManagedProjectDiagnosticOutputServiceFactory
 {
-    internal static class IManagedProjectDiagnosticOutputServiceFactory
+    public static IManagedProjectDiagnosticOutputService Create()
     {
-        public static IManagedProjectDiagnosticOutputService Create()
-        {
-            return Mock.Of<IManagedProjectDiagnosticOutputService>();
-        }
+        return Mock.Of<IManagedProjectDiagnosticOutputService>();
     }
 }

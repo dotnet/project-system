@@ -2,11 +2,10 @@
 
 using Microsoft.VisualStudio.Shell;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+[Export(typeof(IVsOnlineServices))]
+internal class VsOnlineServices : IVsOnlineServices
 {
-    [Export(typeof(IVsOnlineServices))]
-    internal class VsOnlineServices : IVsOnlineServices
-    {
-        public bool ConnectedToVSOnline => KnownUIContexts.CloudEnvironmentConnectedContext.IsActive;
-    }
+    public bool ConnectedToVSOnline => KnownUIContexts.CloudEnvironmentConnectedContext.IsActive;
 }

@@ -2,20 +2,19 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp
-{
-    internal class FSharpBuildOptions : BuildOptions
-    {
-        public FSharpBuildOptions(ImmutableArray<CommandLineSourceFile> sourceFiles,
-                                  ImmutableArray<CommandLineSourceFile> additionalFiles,
-                                  ImmutableArray<CommandLineReference> metadataReferences,
-                                  ImmutableArray<CommandLineAnalyzerReference> analyzerReferences,
-                                  ImmutableArray<string> compileOptions)
-            : base(sourceFiles, additionalFiles, metadataReferences, analyzerReferences, ImmutableArray<string>.Empty)
-        {
-            CompileOptions = compileOptions;
-        }
+namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp;
 
-        public ImmutableArray<string> CompileOptions { get; }
+internal class FSharpBuildOptions : BuildOptions
+{
+    public FSharpBuildOptions(ImmutableArray<CommandLineSourceFile> sourceFiles,
+                              ImmutableArray<CommandLineSourceFile> additionalFiles,
+                              ImmutableArray<CommandLineReference> metadataReferences,
+                              ImmutableArray<CommandLineAnalyzerReference> analyzerReferences,
+                              ImmutableArray<string> compileOptions)
+        : base(sourceFiles, additionalFiles, metadataReferences, analyzerReferences, ImmutableArray<string>.Empty)
+    {
+        CompileOptions = compileOptions;
     }
+
+    public ImmutableArray<string> CompileOptions { get; }
 }

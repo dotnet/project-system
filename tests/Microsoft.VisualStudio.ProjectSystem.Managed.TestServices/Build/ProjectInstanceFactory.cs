@@ -3,15 +3,14 @@
 using Microsoft.Build.Construction;
 using Microsoft.Build.Definition;
 
-namespace Microsoft.Build.Execution
-{
-    internal static class ProjectInstanceFactory
-    {
-        public static ProjectInstance Create(string? xml = null)
-        {
-            var element = ProjectRootElementFactory.Create(xml);
+namespace Microsoft.Build.Execution;
 
-            return ProjectInstance.FromProjectRootElement(element, new ProjectOptions());
-        }
+internal static class ProjectInstanceFactory
+{
+    public static ProjectInstance Create(string? xml = null)
+    {
+        var element = ProjectRootElementFactory.Create(xml);
+
+        return ProjectInstance.FromProjectRootElement(element, new ProjectOptions());
     }
 }

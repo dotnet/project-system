@@ -2,25 +2,24 @@
 
 using System.Diagnostics;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
-{
-    internal partial class DesignTimeInputsCompiler
-    {
-        [DebuggerDisplay("{FileName}")]
-        public class QueueItem
-        {
-            public string FileName { get; }
-            public string TempPEOutputPath { get; }
-            public bool IgnoreFileWriteTime { get; }
-            public ImmutableHashSet<string> SharedInputs { get; }
+namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
 
-            public QueueItem(string fileName, ImmutableHashSet<string> sharedInputs, string tempPEOutputPath, bool ignoreFileWriteTime)
-            {
-                FileName = fileName;
-                SharedInputs = sharedInputs;
-                TempPEOutputPath = tempPEOutputPath;
-                IgnoreFileWriteTime = ignoreFileWriteTime;
-            }
+internal partial class DesignTimeInputsCompiler
+{
+    [DebuggerDisplay("{FileName}")]
+    public class QueueItem
+    {
+        public string FileName { get; }
+        public string TempPEOutputPath { get; }
+        public bool IgnoreFileWriteTime { get; }
+        public ImmutableHashSet<string> SharedInputs { get; }
+
+        public QueueItem(string fileName, ImmutableHashSet<string> sharedInputs, string tempPEOutputPath, bool ignoreFileWriteTime)
+        {
+            FileName = fileName;
+            SharedInputs = sharedInputs;
+            TempPEOutputPath = tempPEOutputPath;
+            IgnoreFileWriteTime = ignoreFileWriteTime;
         }
     }
 }

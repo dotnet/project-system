@@ -2,67 +2,66 @@
 
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFilesProviders
+namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFilesProviders;
+
+public class VsProjectSpecialFilesManagerTests
 {
-    public class VsProjectSpecialFilesManagerTests
+    [Fact]
+    public async Task GetFiles_WhenUnderlyingGetFilesReturnsOK_ReturnsFileName()
     {
-        [Fact]
-        public async Task GetFiles_WhenUnderlyingGetFilesReturnsOK_ReturnsFileName()
+        var specialFiles = IVsProjectSpecialFilesFactory.ImplementGetFile((int fileId, uint flags, out uint itemId, out string fileName) =>
         {
-            var specialFiles = IVsProjectSpecialFilesFactory.ImplementGetFile((int fileId, uint flags, out uint itemId, out string fileName) =>
-            {
-                itemId = 0;
-                fileName = "FileName";
-                return VSConstants.S_OK;
-            });
+            itemId = 0;
+            fileName = "FileName";
+            return VSConstants.S_OK;
+        });
 
-            var manager = CreateInstance(specialFiles);
+        var manager = CreateInstance(specialFiles);
 
-            var result = await manager.GetFileAsync(SpecialFiles.AppConfig, SpecialFileFlags.CheckoutIfExists);
+        var result = await manager.GetFileAsync(SpecialFiles.AppConfig, SpecialFileFlags.CheckoutIfExists);
 
-            Assert.Equal("FileName", result);
-        }
+        Assert.Equal("FileName", result);
+    }
 
-        [Fact]
-        public async Task GetFiles_WhenUnderlyingGetFilesReturnsNotImpl_ReturnsNull()
+    [Fact]
+    public async Task GetFiles_WhenUnderlyingGetFilesReturnsNotImpl_ReturnsNull()
+    {
+        var specialFiles = IVsProjectSpecialFilesFactory.ImplementGetFile((int fileId, uint flags, out uint itemId, out string fileName) =>
         {
-            var specialFiles = IVsProjectSpecialFilesFactory.ImplementGetFile((int fileId, uint flags, out uint itemId, out string fileName) =>
-            {
-                itemId = 0;
-                fileName = "FileName";
-                return VSConstants.E_NOTIMPL;
-            });
+            itemId = 0;
+            fileName = "FileName";
+            return VSConstants.E_NOTIMPL;
+        });
 
-            var manager = CreateInstance(specialFiles);
+        var manager = CreateInstance(specialFiles);
 
-            var result = await manager.GetFileAsync(SpecialFiles.AppConfig, SpecialFileFlags.CheckoutIfExists);
+        var result = await manager.GetFileAsync(SpecialFiles.AppConfig, SpecialFileFlags.CheckoutIfExists);
 
-            Assert.Null(result);
-        }
+        Assert.Null(result);
+    }
 
-        [Fact]
-        public async Task GetFiles_WhenUnderlyingGetFilesReturnsHResult_Throws()
+    [Fact]
+    public async Task GetFiles_WhenUnderlyingGetFilesReturnsHResult_Throws()
+    {
+        var specialFiles = IVsProjectSpecialFilesFactory.ImplementGetFile((int fileId, uint flags, out uint itemId, out string fileName) =>
         {
-            var specialFiles = IVsProjectSpecialFilesFactory.ImplementGetFile((int fileId, uint flags, out uint itemId, out string fileName) =>
-            {
-                itemId = 0;
-                fileName = "FileName";
-                return VSConstants.E_OUTOFMEMORY;
-            });
+            itemId = 0;
+            fileName = "FileName";
+            return VSConstants.E_OUTOFMEMORY;
+        });
 
-            var manager = CreateInstance(specialFiles);
+        var manager = CreateInstance(specialFiles);
 
-            await Assert.ThrowsAsync<OutOfMemoryException>(() =>
-            {
-                return manager.GetFileAsync(SpecialFiles.AppConfig, SpecialFileFlags.CheckoutIfExists);
-            });
-        }
-
-        private VsProjectSpecialFilesManager CreateInstance(IVsProjectSpecialFiles specialFiles)
+        await Assert.ThrowsAsync<OutOfMemoryException>(() =>
         {
-            IUnconfiguredProjectVsServices projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(hierarchyCreator: () => (IVsHierarchy)specialFiles);
+            return manager.GetFileAsync(SpecialFiles.AppConfig, SpecialFileFlags.CheckoutIfExists);
+        });
+    }
 
-            return new VsProjectSpecialFilesManager(projectVsServices);
-        }
+    private VsProjectSpecialFilesManager CreateInstance(IVsProjectSpecialFiles specialFiles)
+    {
+        IUnconfiguredProjectVsServices projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(hierarchyCreator: () => (IVsHierarchy)specialFiles);
+
+        return new VsProjectSpecialFilesManager(projectVsServices);
     }
 }

@@ -9,52 +9,51 @@ using Microsoft.VisualStudio.Utilities;
 
 using Flags = Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Implementation
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Implementation;
+
+[AppliesToProject(ProjectCapability.DependenciesTree)]
+[Export(typeof(IAttachedCollectionSourceProvider))]
+[Name(nameof(FrameworkReferenceAssemblyAttachedCollectionSourceProvider))]
+[VisualStudio.Utilities.Order(Before = HierarchyItemsProviderNames.Contains)]
+internal sealed class FrameworkReferenceAssemblyAttachedCollectionSourceProvider : DependenciesAttachedCollectionSourceProviderBase
 {
-    [AppliesToProject(ProjectCapability.DependenciesTree)]
-    [Export(typeof(IAttachedCollectionSourceProvider))]
-    [Name(nameof(FrameworkReferenceAssemblyAttachedCollectionSourceProvider))]
-    [VisualStudio.Utilities.Order(Before = HierarchyItemsProviderNames.Contains)]
-    internal sealed class FrameworkReferenceAssemblyAttachedCollectionSourceProvider : DependenciesAttachedCollectionSourceProviderBase
+    [ImportingConstructor]
+    public FrameworkReferenceAssemblyAttachedCollectionSourceProvider()
+        : base(Flags.FrameworkDependency)
     {
-        [ImportingConstructor]
-        public FrameworkReferenceAssemblyAttachedCollectionSourceProvider()
-            : base(Flags.FrameworkDependency)
-        {
-        }
+    }
 
-        protected override bool TryCreateCollectionSource(
-            IVsHierarchyItem hierarchyItem,
-            string flagsString,
-            string? target,
-            IRelationProvider relationProvider,
-            [NotNullWhen(returnValue: true)] out AggregateRelationCollectionSource? containsCollectionSource)
+    protected override bool TryCreateCollectionSource(
+        IVsHierarchyItem hierarchyItem,
+        string flagsString,
+        string? target,
+        IRelationProvider relationProvider,
+        [NotNullWhen(returnValue: true)] out AggregateRelationCollectionSource? containsCollectionSource)
+    {
+        if (ErrorHandler.Succeeded(hierarchyItem.HierarchyIdentity.Hierarchy.GetProperty(
+            hierarchyItem.HierarchyIdentity.ItemID, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectItemObject)))
         {
-            if (ErrorHandler.Succeeded(hierarchyItem.HierarchyIdentity.Hierarchy.GetProperty(
-                hierarchyItem.HierarchyIdentity.ItemID, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectItemObject)))
+            var projectItem = projectItemObject as ProjectItem;
+            EnvDTE.Properties? props = projectItem?.Properties;
+
+            if (props?.Item("TargetingPackPath")?.Value is string path &&
+                props?.Item("OriginalItemSpec")?.Value is string name &&
+                !string.IsNullOrWhiteSpace(path) &&
+                !string.IsNullOrWhiteSpace(name))
             {
-                var projectItem = projectItemObject as ProjectItem;
-                EnvDTE.Properties? props = projectItem?.Properties;
+                string? profile = props?.Item("Profile").Value as string;
 
-                if (props?.Item("TargetingPackPath")?.Value is string path &&
-                    props?.Item("OriginalItemSpec")?.Value is string name &&
-                    !string.IsNullOrWhiteSpace(path) &&
-                    !string.IsNullOrWhiteSpace(name))
+                var framework = new FrameworkReferenceIdentity(path, profile, name);
+                var item = new FrameworkReferenceItem(framework);
+                if (AggregateContainsRelationCollection.TryCreate(item, relationProvider, out AggregateContainsRelationCollection? collection))
                 {
-                    string? profile = props?.Item("Profile").Value as string;
-
-                    var framework = new FrameworkReferenceIdentity(path, profile, name);
-                    var item = new FrameworkReferenceItem(framework);
-                    if (AggregateContainsRelationCollection.TryCreate(item, relationProvider, out AggregateContainsRelationCollection? collection))
-                    {
-                        containsCollectionSource = new AggregateRelationCollectionSource(hierarchyItem, collection);
-                        return true;
-                    }
+                    containsCollectionSource = new AggregateRelationCollectionSource(hierarchyItem, collection);
+                    return true;
                 }
             }
-
-            containsCollectionSource = null;
-            return false;
         }
+
+        containsCollectionSource = null;
+        return false;
     }
 }

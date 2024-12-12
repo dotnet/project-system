@@ -2,17 +2,16 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
+
+/// <summary>
+/// Interface definition used by StartupProjectRegistrar to display only debuggable projects
+/// </summary>
+[ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Extension)]
+internal interface IStartupProjectProvider
 {
     /// <summary>
-    /// Interface definition used by StartupProjectRegistrar to display only debuggable projects
+    /// Returns true if this project can be selected as a startup project.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Extension)]
-    internal interface IStartupProjectProvider
-    {
-        /// <summary>
-        /// Returns true if this project can be selected as a startup project.
-        /// </summary>
-        Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions);
-    }
+    Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions);
 }

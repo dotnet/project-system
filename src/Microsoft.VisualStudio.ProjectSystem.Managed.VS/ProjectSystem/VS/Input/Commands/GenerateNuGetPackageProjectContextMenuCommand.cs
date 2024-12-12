@@ -5,24 +5,23 @@ using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
+
+[ProjectCommand(CommandGroup.ManagedProjectSystem, ManagedProjectSystemCommandId.GenerateNuGetPackageProjectContextMenu)]
+[AppliesTo(ProjectCapability.Pack)]
+internal class GenerateNuGetPackageProjectContextMenuCommand : AbstractGenerateNuGetPackageCommand
 {
-    [ProjectCommand(CommandGroup.ManagedProjectSystem, ManagedProjectSystemCommandId.GenerateNuGetPackageProjectContextMenu)]
-    [AppliesTo(ProjectCapability.Pack)]
-    internal class GenerateNuGetPackageProjectContextMenuCommand : AbstractGenerateNuGetPackageCommand
+    [ImportingConstructor]
+    public GenerateNuGetPackageProjectContextMenuCommand(
+        UnconfiguredProject project,
+        IProjectThreadingService threadingService,
+        ISolutionBuildManager vsSolutionBuildManagerService,
+        GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
+        : base(project, threadingService, vsSolutionBuildManagerService, generatePackageOnBuildPropertyProvider)
     {
-        [ImportingConstructor]
-        public GenerateNuGetPackageProjectContextMenuCommand(
-            UnconfiguredProject project,
-            IProjectThreadingService threadingService,
-            ISolutionBuildManager vsSolutionBuildManagerService,
-            GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
-            : base(project, threadingService, vsSolutionBuildManagerService, generatePackageOnBuildPropertyProvider)
-        {
-        }
-
-        protected override bool ShouldHandle(IProjectTree node) => node.IsRoot();
-
-        protected override string GetCommandText() => VSResources.PackCommand;
     }
+
+    protected override bool ShouldHandle(IProjectTree node) => node.IsRoot();
+
+    protected override string GetCommandText() => VSResources.PackCommand;
 }

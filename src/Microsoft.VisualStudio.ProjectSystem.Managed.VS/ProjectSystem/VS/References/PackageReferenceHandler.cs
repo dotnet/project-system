@@ -2,35 +2,34 @@
 
 using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.References
+namespace Microsoft.VisualStudio.ProjectSystem.VS.References;
+
+internal class PackageReferenceHandler : AbstractReferenceHandler
 {
-    internal class PackageReferenceHandler : AbstractReferenceHandler
+    internal PackageReferenceHandler()
+        : base(ProjectSystemReferenceType.Package)
+    { }
+
+    protected override Task RemoveReferenceAsync(ConfiguredProjectServices services,
+        string itemSpecification)
     {
-        internal PackageReferenceHandler()
-            : base(ProjectSystemReferenceType.Package)
-        { }
+        Assumes.Present(services.PackageReferences);
 
-        protected override Task RemoveReferenceAsync(ConfiguredProjectServices services,
-            string itemSpecification)
-        {
-            Assumes.Present(services.PackageReferences);
+        return services.PackageReferences.RemoveAsync(itemSpecification);
+    }
 
-            return services.PackageReferences.RemoveAsync(itemSpecification);
-        }
+    protected override Task AddReferenceAsync(ConfiguredProjectServices services, string itemSpecification)
+    {
+        Assumes.Present(services.PackageReferences);
 
-        protected override Task AddReferenceAsync(ConfiguredProjectServices services, string itemSpecification)
-        {
-            Assumes.Present(services.PackageReferences);
+        // todo: Get the Version from the Remove Command
+        return services.PackageReferences.AddAsync(itemSpecification, "");
+    }
 
-            // todo: Get the Version from the Remove Command
-            return services.PackageReferences.AddAsync(itemSpecification, "");
-        }
+    protected override async Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProjectServices services)
+    {
+        Assumes.Present(services.PackageReferences);
 
-        protected override async Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProjectServices services)
-        {
-            Assumes.Present(services.PackageReferences);
-
-            return (await services.PackageReferences.GetUnresolvedReferencesAsync()).Cast<IProjectItem>();
-        }
+        return (await services.PackageReferences.GetUnresolvedReferencesAsync()).Cast<IProjectItem>();
     }
 }

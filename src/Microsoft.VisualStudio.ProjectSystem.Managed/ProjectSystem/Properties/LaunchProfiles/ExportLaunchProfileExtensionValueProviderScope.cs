@@ -2,24 +2,23 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.Properties;
+
+/// <summary>
+/// Specifies the "backing store" for an <see cref="ILaunchProfileExtensionValueProvider"/>
+/// or <see cref="IGlobalSettingExtensionValueProvider"/>. This determines where the
+/// property value is read from/stored to.
+/// </summary>
+public enum ExportLaunchProfileExtensionValueProviderScope
 {
     /// <summary>
-    /// Specifies the "backing store" for an <see cref="ILaunchProfileExtensionValueProvider"/>
-    /// or <see cref="IGlobalSettingExtensionValueProvider"/>. This determines where the
-    /// property value is read from/stored to.
+    /// Extension properties are backed by an <see cref="ILaunchProfile"/>. The related
+    /// type must implement <see cref="ILaunchProfileExtensionValueProvider"/>.
     /// </summary>
-    public enum ExportLaunchProfileExtensionValueProviderScope
-    {
-        /// <summary>
-        /// Extension properties are backed by an <see cref="ILaunchProfile"/>. The related
-        /// type must implement <see cref="ILaunchProfileExtensionValueProvider"/>.
-        /// </summary>
-        LaunchProfile,
-        /// <summary>
-        /// Extensions properties are backed by <see cref="ILaunchSettings.GlobalSettings"/>.
-        /// The related type must implement <see cref="IGlobalSettingExtensionValueProvider"/>.
-        /// </summary>
-        GlobalSettings
-    }
+    LaunchProfile,
+    /// <summary>
+    /// Extensions properties are backed by <see cref="ILaunchSettings.GlobalSettings"/>.
+    /// The related type must implement <see cref="IGlobalSettingExtensionValueProvider"/>.
+    /// </summary>
+    GlobalSettings
 }

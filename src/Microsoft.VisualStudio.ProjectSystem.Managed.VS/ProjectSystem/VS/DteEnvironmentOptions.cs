@@ -4,42 +4,41 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
+
+/// <summary>
+///     Provides an implementation of <see cref="IEnvironmentOptions"/> that calls into <see cref="DTE"/>.
+/// </summary>
+[Export(typeof(IEnvironmentOptions))]
+internal class DteEnvironmentOptions : IEnvironmentOptions
 {
-    /// <summary>
-    ///     Provides an implementation of <see cref="IEnvironmentOptions"/> that calls into <see cref="DTE"/>.
-    /// </summary>
-    [Export(typeof(IEnvironmentOptions))]
-    internal class DteEnvironmentOptions : IEnvironmentOptions
+    private readonly IVsUIService<DTE2> _dte;
+
+    [ImportingConstructor]
+    public DteEnvironmentOptions(IVsUIService<SDTE, DTE2> dte)
     {
-        private readonly IVsUIService<DTE2> _dte;
+        _dte = dte;
+    }
 
-        [ImportingConstructor]
-        public DteEnvironmentOptions(IVsUIService<SDTE, DTE2> dte)
+    public T GetOption<T>(string category, string page, string option, T defaultValue)
+    {
+        EnvDTE.Properties? properties = _dte.Value.get_Properties(category, page);
+
+        if (properties is not null)
         {
-            _dte = dte;
+            return (T)properties.Item(option).Value;
         }
 
-        public T GetOption<T>(string category, string page, string option, T defaultValue)
+        return defaultValue;
+    }
+
+    public void SetOption<T>(string category, string page, string option, T newValue)
+    {
+        EnvDTE.Properties? properties = _dte.Value.get_Properties(category, page);
+
+        if (properties is not null)
         {
-            EnvDTE.Properties? properties = _dte.Value.get_Properties(category, page);
-
-            if (properties is not null)
-            {
-                return (T)properties.Item(option).Value;
-            }
-
-            return defaultValue;
-        }
-
-        public void SetOption<T>(string category, string page, string option, T newValue)
-        {
-            EnvDTE.Properties? properties = _dte.Value.get_Properties(category, page);
-
-            if (properties is not null)
-            {
-                properties.Item(option).Value = newValue;
-            }
+            properties.Item(option).Value = newValue;
         }
     }
 }

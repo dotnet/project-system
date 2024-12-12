@@ -2,45 +2,44 @@
 
 using EnvDTE;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename;
+
+internal partial class RenamerProjectTreeActionHandler
 {
-    internal partial class RenamerProjectTreeActionHandler
+    private sealed class UndoScope : IDisposable
     {
-        private sealed class UndoScope : IDisposable
+        private readonly string _renameOperationName;
+        private readonly DTE _dte;
+        private bool _shouldClose = true;
+
+        private UndoScope(string renameOperationName, DTE dte)
         {
-            private readonly string _renameOperationName;
-            private readonly DTE _dte;
-            private bool _shouldClose = true;
+            _renameOperationName = renameOperationName;
+            _dte = dte;
+        }
 
-            private UndoScope(string renameOperationName, DTE dte)
+        internal static UndoScope Create(DTE dte, string renameOperationName)
+        {
+            var undo = new UndoScope(renameOperationName, dte);
+            undo.StartUndo();
+            return undo;
+        }
+
+        private void StartUndo()
+        {
+            if (_dte.UndoContext.IsOpen)
             {
-                _renameOperationName = renameOperationName;
-                _dte = dte;
+                _shouldClose = false;
             }
 
-            internal static UndoScope Create(DTE dte, string renameOperationName)
-            {
-                var undo = new UndoScope(renameOperationName, dte);
-                undo.StartUndo();
-                return undo;
-            }
+            _dte.UndoContext.Open(_renameOperationName, false);
+        }
 
-            private void StartUndo()
+        public void Dispose()
+        {
+            if (_shouldClose)
             {
-                if (_dte.UndoContext.IsOpen)
-                {
-                    _shouldClose = false;
-                }
-
-                _dte.UndoContext.Open(_renameOperationName, false);
-            }
-
-            public void Dispose()
-            {
-                if (_shouldClose)
-                {
-                    _dte.UndoContext.Close();
-                }
+                _dte.UndoContext.Close();
             }
         }
     }

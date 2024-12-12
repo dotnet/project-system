@@ -3,48 +3,47 @@
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Framework;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+/// <summary>
+/// Handles the creation of <see cref="IConfigurationDimensionSnapshot"/> instances and populating the requested
+/// members.
+/// </summary>
+internal static class ConfigurationDimensionDataProducer
 {
-    /// <summary>
-    /// Handles the creation of <see cref="IConfigurationDimensionSnapshot"/> instances and populating the requested
-    /// members.
-    /// </summary>
-    internal static class ConfigurationDimensionDataProducer
+    public static IEntityValue CreateProjectConfigurationDimension(
+        IEntityRuntimeModel runtimeModel,
+        KeyValuePair<string, string> projectConfigurationDimension,
+        IConfigurationDimensionPropertiesAvailableStatus requestedProperties)
     {
-        public static IEntityValue CreateProjectConfigurationDimension(
-            IEntityRuntimeModel runtimeModel,
-            KeyValuePair<string, string> projectConfigurationDimension,
-            IConfigurationDimensionPropertiesAvailableStatus requestedProperties)
+        var newProjectConfigurationDimension = new ConfigurationDimensionSnapshot(runtimeModel, new ConfigurationDimensionPropertiesAvailableStatus());
+
+        if (requestedProperties.Name)
         {
-            var newProjectConfigurationDimension = new ConfigurationDimensionSnapshot(runtimeModel, new ConfigurationDimensionPropertiesAvailableStatus());
-
-            if (requestedProperties.Name)
-            {
-                newProjectConfigurationDimension.Name = projectConfigurationDimension.Key;
-            }
-
-            if (requestedProperties.Value)
-            {
-                newProjectConfigurationDimension.Value = projectConfigurationDimension.Value;
-            }
-
-            return newProjectConfigurationDimension;
+            newProjectConfigurationDimension.Name = projectConfigurationDimension.Key;
         }
 
-        public static IEnumerable<IEntityValue> CreateProjectConfigurationDimensions(IEntityValue parent, ProjectConfiguration configuration, ProjectSystem.Properties.IProperty property, IConfigurationDimensionPropertiesAvailableStatus requestedProperties)
+        if (requestedProperties.Value)
         {
-            // If the property is configuration-independent then report no dimensions;
-            // the parent property value applies to all configurations.
-            if (!property.DataSource.HasConfigurationCondition)
-            {
-                yield break;
-            }
+            newProjectConfigurationDimension.Value = projectConfigurationDimension.Value;
+        }
 
-            foreach (KeyValuePair<string, string> dimension in configuration.Dimensions)
-            {
-                IEntityValue projectConfigurationDimension = CreateProjectConfigurationDimension(parent.EntityRuntime, dimension, requestedProperties);
-                yield return projectConfigurationDimension;
-            }
+        return newProjectConfigurationDimension;
+    }
+
+    public static IEnumerable<IEntityValue> CreateProjectConfigurationDimensions(IEntityValue parent, ProjectConfiguration configuration, ProjectSystem.Properties.IProperty property, IConfigurationDimensionPropertiesAvailableStatus requestedProperties)
+    {
+        // If the property is configuration-independent then report no dimensions;
+        // the parent property value applies to all configurations.
+        if (!property.DataSource.HasConfigurationCondition)
+        {
+            yield break;
+        }
+
+        foreach (KeyValuePair<string, string> dimension in configuration.Dimensions)
+        {
+            IEntityValue projectConfigurationDimension = CreateProjectConfigurationDimension(parent.EntityRuntime, dimension, requestedProperties);
+            yield return projectConfigurationDimension;
         }
     }
 }

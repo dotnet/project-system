@@ -1,60 +1,59 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.References
+namespace Microsoft.VisualStudio.ProjectSystem.VS.References;
+
+internal abstract class SetTreatAsUsedAttributeCommand : IProjectSystemUpdateReferenceOperation
 {
-    internal abstract class SetTreatAsUsedAttributeCommand : IProjectSystemUpdateReferenceOperation
+    private readonly ConfiguredProject _selectedConfiguredProject;
+    private readonly string _itemSpecification;
+    private readonly AbstractReferenceHandler _referenceHandler;
+    protected string SetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(true);
+    protected string UnsetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(false);
+
+    public SetTreatAsUsedAttributeCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, string itemSpecification)
     {
-        private readonly ConfiguredProject _selectedConfiguredProject;
-        private readonly string _itemSpecification;
-        private readonly AbstractReferenceHandler _referenceHandler;
-        protected string SetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(true);
-        protected string UnsetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(false);
+        _referenceHandler = abstractReferenceHandler;
+        _selectedConfiguredProject = selectedConfiguredProject;
+        _itemSpecification = itemSpecification;
+    }
 
-        public SetTreatAsUsedAttributeCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, string itemSpecification)
+    public async Task<bool> ApplyAsync(CancellationToken cancellationToken)
+    {
+        IProjectItem item = await GetProjectItemAsync();
+
+        if (item is null)
         {
-            _referenceHandler = abstractReferenceHandler;
-            _selectedConfiguredProject = selectedConfiguredProject;
-            _itemSpecification = itemSpecification;
+            return false;
         }
 
-        public async Task<bool> ApplyAsync(CancellationToken cancellationToken)
+        await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, SetTreatAsUsed);
+
+        return true;
+    }
+
+    public async Task<bool> RevertAsync(CancellationToken cancellationToken)
+    {
+        IProjectItem item = await GetProjectItemAsync();
+
+        if (item is null)
         {
-            IProjectItem item = await GetProjectItemAsync();
-
-            if (item is null)
-            {
-                return false;
-            }
-
-            await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, SetTreatAsUsed);
-
-            return true;
+            return false;
         }
 
-        public async Task<bool> RevertAsync(CancellationToken cancellationToken)
-        {
-            IProjectItem item = await GetProjectItemAsync();
+        await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, UnsetTreatAsUsed);
 
-            if (item is null)
-            {
-                return false;
-            }
+        return true;
+    }
 
-            await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, UnsetTreatAsUsed);
+    private async Task<IProjectItem> GetProjectItemAsync()
+    {
+        var projectItems = await _referenceHandler.GetUnresolvedReferencesAsync(_selectedConfiguredProject);
 
-            return true;
-        }
-
-        private async Task<IProjectItem> GetProjectItemAsync()
-        {
-            var projectItems = await _referenceHandler.GetUnresolvedReferencesAsync(_selectedConfiguredProject);
-
-            var item = projectItems
-                .FirstOrDefault(c => string.CompareOrdinal(c.EvaluatedInclude, _itemSpecification) == 0);
-            return item;
-        }
+        var item = projectItems
+            .FirstOrDefault(c => string.CompareOrdinal(c.EvaluatedInclude, _itemSpecification) == 0);
+        return item;
     }
 }

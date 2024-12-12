@@ -4,51 +4,50 @@
 
 using System.Threading.Tasks.Dataflow;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+/// <summary>
+///     Produces <see cref="IDataflowBlock"/> instances.
+/// </summary>
+internal static class DataflowBlockFactory
 {
     /// <summary>
-    ///     Produces <see cref="IDataflowBlock"/> instances.
+    ///     Provides a dataflow block that invokes a provided <see cref="Action{T}"/> delegate for every data element received.
     /// </summary>
-    internal static class DataflowBlockFactory
+    public static ITargetBlock<TInput> CreateActionBlock<TInput>(Action<TInput> target, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable, string? nameFormat = null, bool skipIntermediateInputData = false)
     {
-        /// <summary>
-        ///     Provides a dataflow block that invokes a provided <see cref="Action{T}"/> delegate for every data element received.
-        /// </summary>
-        public static ITargetBlock<TInput> CreateActionBlock<TInput>(Action<TInput> target, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable, string? nameFormat = null, bool skipIntermediateInputData = false)
-        {
-            Requires.NotNull(target);
-            Requires.NotNull(project);
+        Requires.NotNull(target);
+        Requires.NotNull(project);
 
-            ITargetBlock<TInput> block = DataflowBlockSlim.CreateActionBlock(target, nameFormat, skipIntermediateInputData: skipIntermediateInputData);
+        ITargetBlock<TInput> block = DataflowBlockSlim.CreateActionBlock(target, nameFormat, skipIntermediateInputData: skipIntermediateInputData);
 
-            RegisterFaultHandler(block, project, severity);
+        RegisterFaultHandler(block, project, severity);
 
-            return block;
-        }
+        return block;
+    }
 
-        /// <summary>
-        ///     Provides a dataflow block that invokes a provided <see cref="Func{T, TResult}"/> delegate for every data element received.
-        /// </summary>
-        public static ITargetBlock<TInput> CreateActionBlock<TInput>(Func<TInput, Task> target, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable, string? nameFormat = null, bool skipIntermediateInputData = false)
-        {
-            Requires.NotNull(target);
-            Requires.NotNull(project);
+    /// <summary>
+    ///     Provides a dataflow block that invokes a provided <see cref="Func{T, TResult}"/> delegate for every data element received.
+    /// </summary>
+    public static ITargetBlock<TInput> CreateActionBlock<TInput>(Func<TInput, Task> target, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable, string? nameFormat = null, bool skipIntermediateInputData = false)
+    {
+        Requires.NotNull(target);
+        Requires.NotNull(project);
 
-            ITargetBlock<TInput> block = DataflowBlockSlim.CreateActionBlock(target, nameFormat, skipIntermediateInputData: skipIntermediateInputData);
+        ITargetBlock<TInput> block = DataflowBlockSlim.CreateActionBlock(target, nameFormat, skipIntermediateInputData: skipIntermediateInputData);
 
-            RegisterFaultHandler(block, project, severity);
+        RegisterFaultHandler(block, project, severity);
 
-            return block;
-        }
+        return block;
+    }
 
-        private static void RegisterFaultHandler(IDataflowBlock block, UnconfiguredProject project, ProjectFaultSeverity severity)
-        {
-            IProjectFaultHandlerService faultHandlerService = project.Services.FaultHandler;
+    private static void RegisterFaultHandler(IDataflowBlock block, UnconfiguredProject project, ProjectFaultSeverity severity)
+    {
+        IProjectFaultHandlerService faultHandlerService = project.Services.FaultHandler;
 
-            Task faultTask = faultHandlerService.RegisterFaultHandlerAsync(block, project, severity);
+        Task faultTask = faultHandlerService.RegisterFaultHandlerAsync(block, project, severity);
 
-            // We don't actually care about the result of reporting the fault if one occurs
-            faultHandlerService.Forget(faultTask, project);
-        }
+        // We don't actually care about the result of reporting the fault if one occurs
+        faultHandlerService.Forget(faultTask, project);
     }
 }

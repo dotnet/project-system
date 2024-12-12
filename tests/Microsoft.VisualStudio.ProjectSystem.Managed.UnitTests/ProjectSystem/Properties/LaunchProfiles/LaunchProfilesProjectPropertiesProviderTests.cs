@@ -2,165 +2,164 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.Properties;
+
+public class LaunchProfilesProjectPropertiesProviderTests
 {
-    public class LaunchProfilesProjectPropertiesProviderTests
+    private const string DefaultTestProjectPath = @"C:\alpha\beta\gamma.csproj";
+
+    private static readonly IEnumerable<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> EmptyLaunchProfileExtensionValueProviders =
+        Enumerable.Empty<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>>();
+    private static readonly IEnumerable<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> EmptyGlobalSettingExtensionValueProviders = 
+        Enumerable.Empty<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>>();
+
+    [Fact]
+    public void DefaultProjectPath_IsTheProjectPath()
     {
-        private const string DefaultTestProjectPath = @"C:\alpha\beta\gamma.csproj";
+        var provider = new LaunchProfileProjectPropertiesProvider(
+            CreateDefaultTestProject(),
+            ILaunchSettingsProviderFactory.Create(),
+            EmptyLaunchProfileExtensionValueProviders,
+            EmptyGlobalSettingExtensionValueProviders);
 
-        private static readonly IEnumerable<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> EmptyLaunchProfileExtensionValueProviders =
-            Enumerable.Empty<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>>();
-        private static readonly IEnumerable<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> EmptyGlobalSettingExtensionValueProviders = 
-            Enumerable.Empty<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>>();
+        var defaultProjectPath = provider.DefaultProjectPath;
+        Assert.Equal(expected: DefaultTestProjectPath, actual: defaultProjectPath);
+    }
 
-        [Fact]
-        public void DefaultProjectPath_IsTheProjectPath()
-        {
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                CreateDefaultTestProject(),
-                ILaunchSettingsProviderFactory.Create(),
-                EmptyLaunchProfileExtensionValueProviders,
-                EmptyGlobalSettingExtensionValueProviders);
+    [Fact]
+    public void WhenRetrievingProjectLevelProperties_NullIsReturned()
+    {
+        var project = UnconfiguredProjectFactory.Create();
+        var provider = new LaunchProfileProjectPropertiesProvider(
+            project,
+            ILaunchSettingsProviderFactory.Create(),
+            EmptyLaunchProfileExtensionValueProviders,
+            EmptyGlobalSettingExtensionValueProviders);
 
-            var defaultProjectPath = provider.DefaultProjectPath;
-            Assert.Equal(expected: DefaultTestProjectPath, actual: defaultProjectPath);
-        }
+        var commonProperties = provider.GetCommonProperties();
 
-        [Fact]
-        public void WhenRetrievingProjectLevelProperties_NullIsReturned()
-        {
-            var project = UnconfiguredProjectFactory.Create();
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                project,
-                ILaunchSettingsProviderFactory.Create(),
-                EmptyLaunchProfileExtensionValueProviders,
-                EmptyGlobalSettingExtensionValueProviders);
+        Assert.Null(commonProperties);
+    }
 
-            var commonProperties = provider.GetCommonProperties();
+    [Fact]
+    public void WhenRetrievingItemTypeProperties_NullIsReturned()
+    {
+        var project = UnconfiguredProjectFactory.Create();
+        var provider = new LaunchProfileProjectPropertiesProvider(
+            project,
+            ILaunchSettingsProviderFactory.Create(),
+            EmptyLaunchProfileExtensionValueProviders,
+            EmptyGlobalSettingExtensionValueProviders);
 
-            Assert.Null(commonProperties);
-        }
+        var itemTypeProperties = provider.GetItemTypeProperties(LaunchProfileProjectItemProvider.ItemType);
 
-        [Fact]
-        public void WhenRetrievingItemTypeProperties_NullIsReturned()
-        {
-            var project = UnconfiguredProjectFactory.Create();
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                project,
-                ILaunchSettingsProviderFactory.Create(),
-                EmptyLaunchProfileExtensionValueProviders,
-                EmptyGlobalSettingExtensionValueProviders);
+        Assert.Null(itemTypeProperties);
+    }
 
-            var itemTypeProperties = provider.GetItemTypeProperties(LaunchProfileProjectItemProvider.ItemType);
+    [Fact]
+    public void WhenRetrievingItemProperties_NullIsReturnedIfTheItemIsNull()
+    {
+        var project = UnconfiguredProjectFactory.Create();
+        var provider = new LaunchProfileProjectPropertiesProvider(
+            project,
+            ILaunchSettingsProviderFactory.Create(),
+            EmptyLaunchProfileExtensionValueProviders,
+            EmptyGlobalSettingExtensionValueProviders);
 
-            Assert.Null(itemTypeProperties);
-        }
+        var itemProperties = provider.GetItemProperties(LaunchProfileProjectItemProvider.ItemType, item: null);
 
-        [Fact]
-        public void WhenRetrievingItemProperties_NullIsReturnedIfTheItemIsNull()
-        {
-            var project = UnconfiguredProjectFactory.Create();
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                project,
-                ILaunchSettingsProviderFactory.Create(),
-                EmptyLaunchProfileExtensionValueProviders,
-                EmptyGlobalSettingExtensionValueProviders);
+        Assert.Null(itemProperties);
+    }
 
-            var itemProperties = provider.GetItemProperties(LaunchProfileProjectItemProvider.ItemType, item: null);
+    [Fact]
+    public void WhenRetrievingItemProperties_PropertiesAreReturnedIfTheItemTypeMatches()
+    {
+        var provider = new LaunchProfileProjectPropertiesProvider(
+            UnconfiguredProjectFactory.Create(),
+            CreateDefaultTestLaunchSettings(),
+            EmptyLaunchProfileExtensionValueProviders,
+            EmptyGlobalSettingExtensionValueProviders);
 
-            Assert.Null(itemProperties);
-        }
+        var properties = provider.GetItemProperties(
+            itemType: LaunchProfileProjectItemProvider.ItemType,
+            item: "Profile1");
 
-        [Fact]
-        public void WhenRetrievingItemProperties_PropertiesAreReturnedIfTheItemTypeMatches()
-        {
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                UnconfiguredProjectFactory.Create(),
-                CreateDefaultTestLaunchSettings(),
-                EmptyLaunchProfileExtensionValueProviders,
-                EmptyGlobalSettingExtensionValueProviders);
+        Assert.NotNull(properties);
+    }
 
-            var properties = provider.GetItemProperties(
-                itemType: LaunchProfileProjectItemProvider.ItemType,
-                item: "Profile1");
+    [Fact]
+    public void WhenRetrievingItemProperties_PropertiesAreReturnedIfTheItemTypeIsNull()
+    {
+        var provider = new LaunchProfileProjectPropertiesProvider(
+            UnconfiguredProjectFactory.Create(),
+            CreateDefaultTestLaunchSettings(),
+            EmptyLaunchProfileExtensionValueProviders,
+            EmptyGlobalSettingExtensionValueProviders);
 
-            Assert.NotNull(properties);
-        }
+        var properties = provider.GetItemProperties(
+            itemType: null,
+            item: "Profile1");
 
-        [Fact]
-        public void WhenRetrievingItemProperties_PropertiesAreReturnedIfTheItemTypeIsNull()
-        {
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                UnconfiguredProjectFactory.Create(),
-                CreateDefaultTestLaunchSettings(),
-                EmptyLaunchProfileExtensionValueProviders,
-                EmptyGlobalSettingExtensionValueProviders);
+        Assert.NotNull(properties);
+    }
 
-            var properties = provider.GetItemProperties(
-                itemType: null,
-                item: "Profile1");
+    [Fact]
+    public void WhenRetrievingItemProperties_NullIsReturnedIfTheItemTypeDoesNotMatch()
+    {
+        var profile1 = new WritableLaunchProfile { Name = "Profile1" };
+        var profile2 = new WritableLaunchProfile { Name = "Profile2" };
+        var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
+            launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            Assert.NotNull(properties);
-        }
+        var provider = new LaunchProfileProjectPropertiesProvider(
+            UnconfiguredProjectFactory.Create(),
+            launchSettingsProvider,
+            EmptyLaunchProfileExtensionValueProviders,
+            EmptyGlobalSettingExtensionValueProviders);
 
-        [Fact]
-        public void WhenRetrievingItemProperties_NullIsReturnedIfTheItemTypeDoesNotMatch()
-        {
-            var profile1 = new WritableLaunchProfile { Name = "Profile1" };
-            var profile2 = new WritableLaunchProfile { Name = "Profile2" };
-            var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
-                launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
+        var properties = provider.GetItemProperties(
+            itemType: "RandomItemType",
+            item: "Profile1");
 
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                UnconfiguredProjectFactory.Create(),
-                launchSettingsProvider,
-                EmptyLaunchProfileExtensionValueProviders,
-                EmptyGlobalSettingExtensionValueProviders);
+        Assert.Null(properties);
+    }
 
-            var properties = provider.GetItemProperties(
-                itemType: "RandomItemType",
-                item: "Profile1");
+    [Fact]
+    public void WhenRetrievingItemProperties_NullIsReturnedWhenTheFilePathIsNotTheProjectPath()
+    {
+        var provider = new LaunchProfileProjectPropertiesProvider(
+            CreateDefaultTestProject(),
+            CreateDefaultTestLaunchSettings(),
+            EmptyLaunchProfileExtensionValueProviders,
+            EmptyGlobalSettingExtensionValueProviders);
 
-            Assert.Null(properties);
-        }
+        var properties = provider.GetProperties(
+            file: @"C:\sigma\lambda\other.csproj",
+            itemType: LaunchProfileProjectItemProvider.ItemType,
+            item: "Profile1");
 
-        [Fact]
-        public void WhenRetrievingItemProperties_NullIsReturnedWhenTheFilePathIsNotTheProjectPath()
-        {
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                CreateDefaultTestProject(),
-                CreateDefaultTestLaunchSettings(),
-                EmptyLaunchProfileExtensionValueProviders,
-                EmptyGlobalSettingExtensionValueProviders);
+        Assert.Null(properties);
+    }
 
-            var properties = provider.GetProperties(
-                file: @"C:\sigma\lambda\other.csproj",
-                itemType: LaunchProfileProjectItemProvider.ItemType,
-                item: "Profile1");
+    /// <summary>
+    /// Creates an <see cref="UnconfiguredProject"/> where the <see cref="UnconfiguredProject.FullPath"/>
+    /// is set to <see cref="DefaultTestProjectPath"/>.
+    /// </summary>
+    private static UnconfiguredProject CreateDefaultTestProject()
+    {
+        return UnconfiguredProjectFactory.ImplementFullPath(DefaultTestProjectPath);
+    }
 
-            Assert.Null(properties);
-        }
-
-        /// <summary>
-        /// Creates an <see cref="UnconfiguredProject"/> where the <see cref="UnconfiguredProject.FullPath"/>
-        /// is set to <see cref="DefaultTestProjectPath"/>.
-        /// </summary>
-        private static UnconfiguredProject CreateDefaultTestProject()
-        {
-            return UnconfiguredProjectFactory.ImplementFullPath(DefaultTestProjectPath);
-        }
-
-        /// <summary>
-        /// Creates an <see cref="ILaunchSettingsProvider"/> with two empty profiles named
-        /// "Profile1" and "Profile2".
-        /// </summary>
-        private static ILaunchSettingsProvider3 CreateDefaultTestLaunchSettings()
-        {
-            var profile1 = new WritableLaunchProfile { Name = "Profile1" };
-            var profile2 = new WritableLaunchProfile { Name = "Profile2" };
-            var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
-                launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
-            return launchSettingsProvider;
-        }
+    /// <summary>
+    /// Creates an <see cref="ILaunchSettingsProvider"/> with two empty profiles named
+    /// "Profile1" and "Profile2".
+    /// </summary>
+    private static ILaunchSettingsProvider3 CreateDefaultTestLaunchSettings()
+    {
+        var profile1 = new WritableLaunchProfile { Name = "Profile1" };
+        var profile2 = new WritableLaunchProfile { Name = "Profile2" };
+        var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
+            launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
+        return launchSettingsProvider;
     }
 }

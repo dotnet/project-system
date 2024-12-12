@@ -2,48 +2,47 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
+
+public class QueryProjectPropertiesContextTests
 {
-    public class QueryProjectPropertiesContextTests
+    [Theory]
+    [MemberData(nameof(ContextsThatAreEqual))]
+    public void Equal(IProjectPropertiesContext a, IProjectPropertiesContext b)
     {
-        [Theory]
-        [MemberData(nameof(ContextsThatAreEqual))]
-        public void Equal(IProjectPropertiesContext a, IProjectPropertiesContext b)
-        {
-            Assert.True(a.Equals(b));
-            Assert.True(b.Equals(a));
-            Assert.True(a.GetHashCode() == b.GetHashCode());
-        }
+        Assert.True(a.Equals(b));
+        Assert.True(b.Equals(a));
+        Assert.True(a.GetHashCode() == b.GetHashCode());
+    }
 
-        [Theory]
-        [MemberData(nameof(ContextsThatAreNotEqual))]
-        public void NotEqual(IProjectPropertiesContext a, IProjectPropertiesContext b)
-        {
-            Assert.False(a.Equals(b));
-            Assert.False(a.GetHashCode() == b.GetHashCode());
-        }
+    [Theory]
+    [MemberData(nameof(ContextsThatAreNotEqual))]
+    public void NotEqual(IProjectPropertiesContext a, IProjectPropertiesContext b)
+    {
+        Assert.False(a.Equals(b));
+        Assert.False(a.GetHashCode() == b.GetHashCode());
+    }
 
-        public static IEnumerable<object[]> ContextsThatAreEqual()
+    public static IEnumerable<object[]> ContextsThatAreEqual()
+    {
+        return new QueryProjectPropertiesContext[][]
         {
-            return new QueryProjectPropertiesContext[][]
-            {
-                new QueryProjectPropertiesContext[] { QueryProjectPropertiesContext.ProjectFile, QueryProjectPropertiesContext.ProjectFile },
-                new QueryProjectPropertiesContext[] { new(true, string.Empty, null, null), QueryProjectPropertiesContext.ProjectFile },
-                new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, null), new(true, @"c:\ALPHA\Beta", null, null) },
-                new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", "myItemType", null), new(true, @"C:\alpha\beta", "MyItemType", null) },
-                new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, "MyItemName"), new(true, @"C:\alpha\beta", null, "MYITEMNAME") }
-            };
-        }
+            new QueryProjectPropertiesContext[] { QueryProjectPropertiesContext.ProjectFile, QueryProjectPropertiesContext.ProjectFile },
+            new QueryProjectPropertiesContext[] { new(true, string.Empty, null, null), QueryProjectPropertiesContext.ProjectFile },
+            new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, null), new(true, @"c:\ALPHA\Beta", null, null) },
+            new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", "myItemType", null), new(true, @"C:\alpha\beta", "MyItemType", null) },
+            new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, "MyItemName"), new(true, @"C:\alpha\beta", null, "MYITEMNAME") }
+        };
+    }
 
-        public static IEnumerable<object[]> ContextsThatAreNotEqual()
+    public static IEnumerable<object[]> ContextsThatAreNotEqual()
+    {
+        return new QueryProjectPropertiesContext[][]
         {
-            return new QueryProjectPropertiesContext[][]
-            {
-                new QueryProjectPropertiesContext[] { new(false, string.Empty, null, null), QueryProjectPropertiesContext.ProjectFile },
-                new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, null), new(true, @"C:\alpha\gamma", null, null) },
-                new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", "myItemType", null), new(true, @"C:\alpha\beta", "MyOtherItemType", null) },
-                new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, "MyItemName"), new(true, @"C:\alpha\beta", null, "MyOtherItemName") }
-            };
-        }
+            new QueryProjectPropertiesContext[] { new(false, string.Empty, null, null), QueryProjectPropertiesContext.ProjectFile },
+            new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, null), new(true, @"C:\alpha\gamma", null, null) },
+            new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", "myItemType", null), new(true, @"C:\alpha\beta", "MyOtherItemType", null) },
+            new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, "MyItemName"), new(true, @"C:\alpha\beta", null, "MyOtherItemName") }
+        };
     }
 }

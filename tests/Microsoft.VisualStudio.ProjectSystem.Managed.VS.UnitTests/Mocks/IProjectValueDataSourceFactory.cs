@@ -2,15 +2,14 @@
 
 using System.Threading.Tasks.Dataflow;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem;
+
+public static class IProjectValueDataSourceFactory
 {
-    public static class IProjectValueDataSourceFactory
+    public static IProjectValueDataSource<T> CreateInstance<T>()
     {
-        public static IProjectValueDataSource<T> CreateInstance<T>()
-        {
-            var mock = new Mock<IProjectValueDataSource<T>>();
-            mock.SetupGet(m => m.SourceBlock).Returns(Mock.Of<IReceivableSourceBlock<IProjectVersionedValue<T>>>());
-            return mock.Object;
-        }
+        var mock = new Mock<IProjectValueDataSource<T>>();
+        mock.SetupGet(m => m.SourceBlock).Returns(Mock.Of<IReceivableSourceBlock<IProjectVersionedValue<T>>>());
+        return mock.Object;
     }
 }
