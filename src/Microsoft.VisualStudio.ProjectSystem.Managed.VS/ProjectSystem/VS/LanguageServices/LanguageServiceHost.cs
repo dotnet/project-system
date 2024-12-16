@@ -45,8 +45,6 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
     private readonly IUnconfiguredProjectTasksService _tasksService;
     private readonly ISafeProjectGuidService _projectGuidService;
     private readonly IProjectFaultHandlerService _projectFaultHandler;
-    private readonly JoinableTaskCollection _joinableTaskCollection;
-    private readonly JoinableTaskFactory _joinableTaskFactory;
     private readonly AsyncLazy<bool> _isEnabled;
 
     private DisposableBag? _disposables;
@@ -88,10 +86,6 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                     || await vsShell.IsPopulateSolutionCacheModeAsync();
             },
             threadingService.JoinableTaskFactory);
-
-        _joinableTaskCollection = threadingService.JoinableTaskContext.CreateCollection();
-        _joinableTaskCollection.DisplayName = "LanguageServiceHostTasks";
-        _joinableTaskFactory = new JoinableTaskFactory(_joinableTaskCollection);
     }
 
     public Task LoadAsync()
@@ -175,7 +169,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                 linkOptions: DataflowOption.PropagateCompletion,
                 cancellationToken: cancellationToken),
 
-            ProjectDataSources.JoinUpstreamDataSources(_joinableTaskFactory, _projectFaultHandler, _activeConfiguredProjectProvider, _activeConfigurationGroupSubscriptionService),
+            ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandler, _activeConfiguredProjectProvider, _activeConfigurationGroupSubscriptionService),
 
             new DisposableDelegate(() =>
             {
@@ -211,7 +205,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                     Guid projectGuid = await _projectGuidService.GetProjectGuidAsync(cancellationToken);
 
                     // New slice. Create a workspace for it.
-                    workspace = _workspaceFactory.Create(source, slice, _joinableTaskCollection, _joinableTaskFactory, projectGuid, cancellationToken);
+                    workspace = _workspaceFactory.Create(source, slice, JoinableCollection, JoinableFactory, projectGuid, cancellationToken);
 
                     if (workspace is null)
                     {
@@ -282,7 +276,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
     {
         await ValidateEnabledAsync(token);
 
-        using (_joinableTaskCollection.Join())
+        using (JoinableCollection.Join())
         {
             await _firstPrimaryWorkspaceSet.Task.WithCancellation(token);
         }
@@ -350,7 +344,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
         // Ensure the project is not considered loaded until our first publication.
         Task result = _tasksService.PrioritizedProjectLoadedInHostAsync(async () =>
         {
-            using (_joinableTaskCollection.Join())
+            using (JoinableCollection.Join())
             {
                 await WhenInitialized(_tasksService.UnloadCancellationToken);
             }
