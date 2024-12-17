@@ -91,7 +91,10 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                 return !await vsShell.IsCommandLineModeAsync()
                     || await vsShell.IsPopulateSolutionCacheModeAsync();
             },
-            threadingService.JoinableTaskFactory);
+            threadingService.JoinableTaskFactory)
+        {
+            SuppressRecursiveFactoryDetection = true
+        };
     }
 
     public Task LoadAsync()
