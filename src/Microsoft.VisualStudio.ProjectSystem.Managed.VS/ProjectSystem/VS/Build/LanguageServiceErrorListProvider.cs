@@ -36,7 +36,10 @@ internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
 
         _isLspPullDiagnosticsEnabled = new AsyncLazy<bool>(
             async () => await projectSystemOptions.IsLspPullDiagnosticsEnabledAsync(CancellationToken.None),
-            joinableTaskContext.Factory);
+            joinableTaskContext.Factory)
+        {
+            SuppressRecursiveFactoryDetection = true
+        };
     }
 
     public void SuspendRefresh()

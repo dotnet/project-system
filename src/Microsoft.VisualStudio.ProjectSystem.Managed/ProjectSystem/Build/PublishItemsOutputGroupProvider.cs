@@ -34,7 +34,10 @@ internal class PublishItemsOutputGroupProvider : IOutputGroupProvider
     {
         _outputGroups = new AsyncLazy<IImmutableSet<IOutputGroup>>(
             GetOutputGroupMetadataAsync,
-            projectThreadingService.JoinableTaskFactory);
+            projectThreadingService.JoinableTaskFactory)
+        {
+            SuppressRecursiveFactoryDetection = true
+        };
 
         async Task<IImmutableSet<IOutputGroup>> GetOutputGroupMetadataAsync()
         {
