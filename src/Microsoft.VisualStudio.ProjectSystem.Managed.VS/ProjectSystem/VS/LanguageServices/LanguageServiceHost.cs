@@ -36,6 +36,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 [AppliesTo(ProjectCapability.DotNetLanguageService)]
 internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent, IWorkspaceWriter
 {
+    /// <summary>
+    /// Singleton instance across all projects, initialized once.
+    /// </summary>
+    private static AsyncLazy<bool>? s_isEnabled;
+
     private readonly TaskCompletionSource _firstPrimaryWorkspaceSet = new();
 
     private readonly UnconfiguredProject _unconfiguredProject;
@@ -45,7 +50,6 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
     private readonly IUnconfiguredProjectTasksService _tasksService;
     private readonly ISafeProjectGuidService _projectGuidService;
     private readonly IProjectFaultHandlerService _projectFaultHandler;
-    private readonly AsyncLazy<bool> _isEnabled;
 
     private DisposableBag? _disposables;
 
@@ -76,7 +80,9 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
         _projectGuidService = projectGuidService;
         _projectFaultHandler = projectFaultHandler;
 
-        _isEnabled = new(
+        // We initialize this once across all instances. Note that we don't need any synchronization here.
+        // If more than one thread initializes this, it's not a big deal.
+        s_isEnabled ??= new(
             async () =>
             {
                 // If VS is running in command line mode (e.g. "devenv.exe /build my.sln"),
@@ -268,8 +274,10 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
 
     public Task<bool> IsEnabledAsync(CancellationToken cancellationToken)
     {
+        Assumes.NotNull(s_isEnabled);
+
         // Defer to the host environment to determine if we're enabled.
-        return _isEnabled.GetValueAsync(cancellationToken);
+        return s_isEnabled.GetValueAsync(cancellationToken);
     }
 
     public async Task WhenInitialized(CancellationToken token)
