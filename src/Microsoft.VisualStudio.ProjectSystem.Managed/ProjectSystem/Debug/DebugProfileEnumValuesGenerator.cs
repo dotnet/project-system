@@ -19,21 +19,21 @@ internal class DebugProfileEnumValuesGenerator : IDynamicEnumValuesGenerator
         ILaunchSettingsProvider profileProvider,
         IProjectThreadingService threadingService)
     {
-        Requires.NotNull(profileProvider);
-        Requires.NotNull(threadingService);
-
         _listedValues = new AsyncLazy<ICollection<IEnumValue>>(
             () =>
             {
                 ILaunchSettings? snapshot = profileProvider.CurrentSnapshot;
 
                 ICollection<IEnumValue> values = snapshot is null
-                    ? Array.Empty<IEnumValue>()
+                    ? []
                     : GetEnumeratorEnumValues(snapshot);
 
                 return Task.FromResult(values);
             },
-            threadingService.JoinableTaskFactory);
+            threadingService.JoinableTaskFactory)
+        {
+            SuppressRecursiveFactoryDetection = true
+        };
     }
 
     public Task<ICollection<IEnumValue>> GetListedValuesAsync()
