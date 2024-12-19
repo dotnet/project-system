@@ -9,8 +9,8 @@ internal abstract class AbstractProjectState : IProjectState
 {
     protected readonly UnconfiguredProject Project;
 
-    private readonly Dictionary<ProjectConfiguration, IPropertyPagesCatalog?> _catalogCache;
-    private readonly Dictionary<(ProjectConfiguration, string, QueryProjectPropertiesContext), IRule?> _ruleCache;
+    private readonly Dictionary<ProjectConfiguration, IPropertyPagesCatalog?> _catalogCache = [];
+    private readonly Dictionary<(ProjectConfiguration, string, QueryProjectPropertiesContext), IRule?> _ruleCache = [];
 
     private readonly AsyncLazy<IImmutableSet<ProjectConfiguration>?> _knownProjectConfigurations;
     private readonly AsyncLazy<ProjectConfiguration?> _defaultProjectConfiguration;
@@ -20,10 +20,34 @@ internal abstract class AbstractProjectState : IProjectState
         Project = project;
         JoinableTaskFactory joinableTaskFactory = project.Services.ThreadingPolicy.JoinableTaskFactory;
 
-        _knownProjectConfigurations = new AsyncLazy<IImmutableSet<ProjectConfiguration>?>(CreateKnownConfigurationsAsync, joinableTaskFactory);
-        _defaultProjectConfiguration = new AsyncLazy<ProjectConfiguration?>(CreateDefaultConfigurationAsync, joinableTaskFactory);
-        _catalogCache = new Dictionary<ProjectConfiguration, IPropertyPagesCatalog?>();
-        _ruleCache = new Dictionary<(ProjectConfiguration, string, QueryProjectPropertiesContext), IRule?>();
+        _knownProjectConfigurations = new AsyncLazy<IImmutableSet<ProjectConfiguration>?>(CreateKnownConfigurationsAsync, joinableTaskFactory)
+        {
+            SuppressRecursiveFactoryDetection = true
+        };
+
+        _defaultProjectConfiguration = new AsyncLazy<ProjectConfiguration?>(CreateDefaultConfigurationAsync, joinableTaskFactory)
+        {
+            SuppressRecursiveFactoryDetection = true
+        };
+
+        async Task<IImmutableSet<ProjectConfiguration>?> CreateKnownConfigurationsAsync()
+        {
+            return Project.Services.ProjectConfigurationsService switch
+            {
+                IProjectConfigurationsService configurationsService => await configurationsService.GetKnownProjectConfigurationsAsync(),
+                _ => null
+            };
+        }
+
+        async Task<ProjectConfiguration?> CreateDefaultConfigurationAsync()
+        {
+            return Project.Services.ProjectConfigurationsService switch
+            {
+                IProjectConfigurationsService2 configurationsService2 => await configurationsService2.GetSuggestedProjectConfigurationAsync(),
+                IProjectConfigurationsService configurationsService => configurationsService.SuggestedProjectConfiguration,
+                _ => null
+            };
+        }
     }
 
     /// <summary>
@@ -59,32 +83,6 @@ internal abstract class AbstractProjectState : IProjectState
     /// Retrieves a default <see cref="ProjectConfiguration"/> for the project.
     /// </summary>
     public Task<ProjectConfiguration?> GetSuggestedConfigurationAsync() => _defaultProjectConfiguration.GetValueAsync();
-
-    private async Task<ProjectConfiguration?> CreateDefaultConfigurationAsync()
-    {
-        if (Project.Services.ProjectConfigurationsService is IProjectConfigurationsService2 configurationsService2)
-        {
-            return await configurationsService2.GetSuggestedProjectConfigurationAsync();
-        }
-        else if (Project.Services.ProjectConfigurationsService is IProjectConfigurationsService configurationsService)
-        {
-            return configurationsService.SuggestedProjectConfiguration;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    private async Task<IImmutableSet<ProjectConfiguration>?> CreateKnownConfigurationsAsync()
-    {
-        if (Project.Services.ProjectConfigurationsService is IProjectConfigurationsService configurationsService)
-        {
-            return await configurationsService.GetKnownProjectConfigurationsAsync();
-        }
-
-        return null;
-    }
 
     /// <summary>
     /// Retrieves the set of property pages that apply to the project level for the given <paramref

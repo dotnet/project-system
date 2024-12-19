@@ -36,6 +36,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 [AppliesTo(ProjectCapability.DotNetLanguageService)]
 internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent, IWorkspaceWriter
 {
+    /// <summary>
+    /// Singleton instance across all projects, initialized once.
+    /// </summary>
+    private static AsyncLazy<bool>? s_isEnabled;
+
     private readonly TaskCompletionSource _firstPrimaryWorkspaceSet = new();
 
     private readonly UnconfiguredProject _unconfiguredProject;
@@ -45,9 +50,6 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
     private readonly IUnconfiguredProjectTasksService _tasksService;
     private readonly ISafeProjectGuidService _projectGuidService;
     private readonly IProjectFaultHandlerService _projectFaultHandler;
-    private readonly JoinableTaskCollection _joinableTaskCollection;
-    private readonly JoinableTaskFactory _joinableTaskFactory;
-    private readonly AsyncLazy<bool> _isEnabled;
 
     private DisposableBag? _disposables;
 
@@ -78,7 +80,9 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
         _projectGuidService = projectGuidService;
         _projectFaultHandler = projectFaultHandler;
 
-        _isEnabled = new(
+        // We initialize this once across all instances. Note that we don't need any synchronization here.
+        // If more than one thread initializes this, it's not a big deal.
+        s_isEnabled ??= new(
             async () =>
             {
                 // If VS is running in command line mode (e.g. "devenv.exe /build my.sln"),
@@ -87,11 +91,10 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                 return !await vsShell.IsCommandLineModeAsync()
                     || await vsShell.IsPopulateSolutionCacheModeAsync();
             },
-            threadingService.JoinableTaskFactory);
-
-        _joinableTaskCollection = threadingService.JoinableTaskContext.CreateCollection();
-        _joinableTaskCollection.DisplayName = "LanguageServiceHostTasks";
-        _joinableTaskFactory = new JoinableTaskFactory(_joinableTaskCollection);
+            threadingService.JoinableTaskFactory)
+        {
+            SuppressRecursiveFactoryDetection = true
+        };
     }
 
     public Task LoadAsync()
@@ -175,7 +178,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                 linkOptions: DataflowOption.PropagateCompletion,
                 cancellationToken: cancellationToken),
 
-            ProjectDataSources.JoinUpstreamDataSources(_joinableTaskFactory, _projectFaultHandler, _activeConfiguredProjectProvider, _activeConfigurationGroupSubscriptionService),
+            ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandler, _activeConfiguredProjectProvider, _activeConfigurationGroupSubscriptionService),
 
             new DisposableDelegate(() =>
             {
@@ -211,7 +214,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                     Guid projectGuid = await _projectGuidService.GetProjectGuidAsync(cancellationToken);
 
                     // New slice. Create a workspace for it.
-                    workspace = _workspaceFactory.Create(source, slice, _joinableTaskCollection, _joinableTaskFactory, projectGuid, cancellationToken);
+                    workspace = _workspaceFactory.Create(source, slice, JoinableCollection, JoinableFactory, projectGuid, cancellationToken);
 
                     if (workspace is null)
                     {
@@ -274,15 +277,17 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
 
     public Task<bool> IsEnabledAsync(CancellationToken cancellationToken)
     {
+        Assumes.NotNull(s_isEnabled);
+
         // Defer to the host environment to determine if we're enabled.
-        return _isEnabled.GetValueAsync(cancellationToken);
+        return s_isEnabled.GetValueAsync(cancellationToken);
     }
 
     public async Task WhenInitialized(CancellationToken token)
     {
         await ValidateEnabledAsync(token);
 
-        using (_joinableTaskCollection.Join())
+        using (JoinableCollection.Join())
         {
             await _firstPrimaryWorkspaceSet.Task.WithCancellation(token);
         }
@@ -350,7 +355,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
         // Ensure the project is not considered loaded until our first publication.
         Task result = _tasksService.PrioritizedProjectLoadedInHostAsync(async () =>
         {
-            using (_joinableTaskCollection.Join())
+            using (JoinableCollection.Join())
             {
                 await WhenInitialized(_tasksService.UnloadCancellationToken);
             }

@@ -227,7 +227,7 @@
   
   <Symbols>
     <GuidSymbol name="guidSolutionExplorerToolWindow" value="{3AE79031-E1BC-11D0-8F78-00A0C9110057}" />
-    
+
     <!-- The .NET Project System package GUID. -->
     <GuidSymbol name="PackageGuidString" value="{860A27C0-B665-47F3-BC12-637E16A1050A}" />
 
@@ -270,8 +270,6 @@
       <IDSymbol name="IDM_VS_CTXT_SHAREDPROJECTREFERENCE" value="0x04A8" />
       <IDSymbol name="IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE" value="0x04B1" />
     </GuidSymbol>
-  
-    <GuidSymbol name="SlnExplorerGuid" value="{3AE79031-E1BC-11D0-8F78-00A0C9110057}" />
   </Symbols>
 
 </CommandTable>

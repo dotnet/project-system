@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
 /// manner that can be passed from one provider to another and is also suitable as a
 /// key into a cache (such as the <see cref="IProjectState"/>).
 /// </remarks>
-internal sealed class QueryProjectPropertiesContext : IProjectPropertiesContext, IEquatable<QueryProjectPropertiesContext>
+public sealed class QueryProjectPropertiesContext : IProjectPropertiesContext, IEquatable<QueryProjectPropertiesContext>
 {
     /// <summary>
     /// A well-known context representing the project file as a whole.
@@ -84,7 +84,7 @@ internal sealed class QueryProjectPropertiesContext : IProjectPropertiesContext,
     /// Creates a <see cref="QueryProjectPropertiesContext"/> from a Project Query API
     /// <see cref="EntityIdentity"/>.
     /// </summary>
-    public static bool TryCreateFromEntityId(EntityIdentity id, [NotNullWhen(true)] out QueryProjectPropertiesContext? propertiesContext)
+    internal static bool TryCreateFromEntityId(EntityIdentity id, [NotNullWhen(true)] out QueryProjectPropertiesContext? propertiesContext)
     {
         if (id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string? projectPath))
         {
