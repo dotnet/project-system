@@ -34,7 +34,7 @@ public class KeyValuePairListEncodingTests
     [InlineData(new[] { "key1", "value1", "key2", "value2" }, "key1=value1;key2=value2")]
     [InlineData(new[] { "key1", "value1", "key2", "value2", "key3", "value3" }, "key1=value1;key2=value2;key3=value3")]
     [InlineData(new[] { "key1", "", "key2", "value2" }, "key1;key2=value2")]
-    [InlineData(new[] { "key1=", "", "key2=", "value2=" }, "key1=;key2/==value2/=")]
+    [InlineData(new[] { "key1=", "", "key2=", "value2=" }, "key1/=;key2/==value2/=")]
     [InlineData(new[] { "key1", "", "key2", "", "key3", "value3" }, "key1;key2;key3=value3")]
     [InlineData(new string[0], "")]
     public void Format_ValidPairs_ReturnsExpectedString(string[] pairs, string expectedString)
