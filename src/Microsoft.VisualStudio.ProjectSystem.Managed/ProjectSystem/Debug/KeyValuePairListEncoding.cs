@@ -10,7 +10,7 @@ internal static class KeyValuePairListEncoding
     /// <param name="input">The input string to parse.</param>
     /// <param name="allowsEmptyKey">Indicates whether empty keys are allowed. If this is true, a pair will be returned if an empty key has a non-empty value. ie, =4</param>
     /// <param name="separator">The character used to separate entries in the input string.</param>
-    public static IEnumerable<(string Name, string Value)> Parse(string input, bool allowsEmptyKey = false, char separator = ',')
+    public static IEnumerable<(string Name, string Value)> Parse(string input, char separator = ',')
     {
         if (string.IsNullOrWhiteSpace(input))
         {
@@ -19,12 +19,11 @@ internal static class KeyValuePairListEncoding
 
         foreach (var entry in ReadEntries(input, separator))
         {
-            var (entryKey, entryValue) = SplitEntry(entry, allowsEmptyKey);
+            var (entryKey, entryValue) = SplitEntry(entry);
             var decodedEntryKey = Decode(entryKey);
             var decodedEntryValue = Decode(entryValue);
             
-            if ((allowsEmptyKey && !string.IsNullOrEmpty(decodedEntryValue))
-                || !string.IsNullOrEmpty(decodedEntryKey) || !string.IsNullOrEmpty(decodedEntryValue))
+            if (!string.IsNullOrEmpty(decodedEntryKey))
             {
                 yield return (decodedEntryKey, decodedEntryValue);
             }
@@ -55,12 +54,12 @@ internal static class KeyValuePairListEncoding
             yield return rawText.Substring(entryStart);
         }
 
-        static (string EncodedKey, string EncodedValue) SplitEntry(string entry, bool allowsEmptyKey)
+        static (string EncodedKey, string EncodedValue) SplitEntry(string entry)
         {
             bool escaped = false;
             for (int i = 0; i < entry.Length; i++)
             {
-                if (entry[i] == '=' && !escaped && (allowsEmptyKey || i > 0))
+                if (entry[i] == '=' && !escaped)
                 {
                     return (entry.Substring(0, i), entry.Substring(i + 1));
                 }
@@ -85,8 +84,6 @@ internal static class KeyValuePairListEncoding
 
     public static string Format(IEnumerable<(string Name, string Value)> pairs, char separator = ',')
     {
-        // Copied from ActiveLaunchProfileEnvironmentVariableValueProvider in the .NET Project System.
-        // In future, EnvironmentVariablesNameValueListEncoding should be exported from that code base and imported here.
         return string.Join(
             separator.ToString(),
             pairs.Select(kvp => string.IsNullOrEmpty(kvp.Value) 
