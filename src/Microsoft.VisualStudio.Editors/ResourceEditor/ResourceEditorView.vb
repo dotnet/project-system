@@ -4985,7 +4985,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     '  Note that the property's code still refers to the old resource name, but we don't care because
                     '  this class will get regenerated anyway.
                     Try
-                        ResourceEditorRefactorNotify.AllowSymbolRename = True
                         PropertyDefinitionCodeElement2.RenameSymbol(NewName)
                     Catch ex As COMException When ex.ErrorCode = CodeModelUtils.HR_E_CSHARP_USER_CANCEL _
                                                   OrElse ex.ErrorCode = NativeMethods.E_ABORT _
@@ -4994,8 +4993,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         ' We should ignore if the customer cancels this or we can not build the project...
                     Catch ex As Exception When ReportWithoutCrash(ex, NameOf(CallGlobalRename), NameOf(ResourceEditorView))
                         DsMsgBox(ex)
-                    Finally
-                        ResourceEditorRefactorNotify.AllowSymbolRename = False
                     End Try
                 End If
             End If
