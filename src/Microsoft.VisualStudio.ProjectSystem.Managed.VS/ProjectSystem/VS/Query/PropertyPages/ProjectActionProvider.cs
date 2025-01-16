@@ -26,6 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
 [QueryActionProvider(ProjectModelActionNames.DuplicateLaunchProfile, typeof(DuplicateLaunchProfile))]
 [QueryDataProviderZone(ProjectModelZones.Cps)]
 [Export(typeof(IQueryActionProvider))]
+[AppliesTo(ProjectCapability.DotNet)]
 internal sealed class ProjectActionProvider : IQueryActionProvider
 {
     public IQueryActionExecutor CreateQueryActionDataTransformer(ExecutableStep executableStep)
