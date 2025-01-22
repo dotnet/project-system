@@ -3,7 +3,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Build.Framework;
-using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI.InfoBars;
@@ -183,6 +182,14 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
 
             void ReportBuildErrors()
             {
+                // Disabled for now, as we have too many false positives. Will revisit.
+
+                // (These lines prevent compile warnings.)
+                _ = projectFaultHandlerService;
+                _ = infoBarService;
+                _ = project;
+
+                /*
                 if (_succeeded is not false)
                 {
                     // Only report a failure if the build failed. Specific targets can have
@@ -197,6 +204,7 @@ internal sealed class DesignTimeBuildLoggerProvider(ITelemetryService telemetryS
                         KnownMonikers.StatusError,
                         CancellationToken.None),
                     project.UnconfiguredProject);
+                */
             }
         }
 
