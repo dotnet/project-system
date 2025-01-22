@@ -74,7 +74,7 @@ configuration:
           branch: main
       then:
       - addMilestone:
-          milestone: 17.12
+          milestone: 17.14
       description: Milestone tracking - main
       triggerOnOwnActions: true
 
@@ -90,6 +90,7 @@ configuration:
     #
     # Only for branches present in https://github.com/dotnet/project-system/branches/all
     #
+    # dev17.13.x
     # dev17.9.x
     # dev17.8.x
     # dev17.7.x
@@ -103,10 +104,23 @@ configuration:
       - isMerged
       - or:
         - targetsBranch:
+            branch: dev17.13.x
+      then:
+      - addMilestone:
+          milestone: 17.13
+      description: Milestone tracking - 17.13
+
+    - if:
+      - payloadType: Pull_Request
+      - isAction:
+          action: Closed
+      - isMerged
+      - or:
+        - targetsBranch:
             branch: dev17.9.x
       then:
       - addMilestone:
-          milestone: 17.8
+          milestone: 17.9
       description: Milestone tracking - 17.9
 
     - if:
