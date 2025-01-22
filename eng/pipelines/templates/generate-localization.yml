@@ -19,6 +19,14 @@ jobs:
     displayName: === Generate Localization ===
     condition: false
 
+  # Ensure the .NET runtime needed by OneLocBuildSetup is installed.
+  - task: UseDotNet@2
+    displayName: Install .NET Runtime
+    inputs:
+      packageType: runtime
+      # This should match the target in OneLocBuildSetup.csproj.
+      version: 8.0.x
+
   # Creates the LocProject.json and perform some necessary file copying and renaming.
   - task: DotNetCoreCLI@2
     displayName: Run Setup
