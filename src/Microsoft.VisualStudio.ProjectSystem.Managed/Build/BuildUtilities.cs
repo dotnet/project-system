@@ -110,7 +110,7 @@ internal static class BuildUtilities
     }
 
     /// <summary>
-    /// Renames a value inside a delimited property.
+    /// Removes a value inside a delimited property.
     /// </summary>
     /// <param name="project">Xml representation of the MsBuild project.</param>
     /// <param name="evaluatedPropertyValue">Original evaluated value of the property.</param>
@@ -126,7 +126,6 @@ internal static class BuildUtilities
         Requires.NotNull(evaluatedPropertyValue);
         Requires.NotNullOrEmpty(propertyName);
 
-        ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
         var newValue = new StringBuilder();
         bool valueFound = false;
         foreach (string value in GetPropertyValues(evaluatedPropertyValue))
@@ -146,6 +145,7 @@ internal static class BuildUtilities
             }
         }
 
+        ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
         property.Value = newValue.ToString();
 
         if (!valueFound)
