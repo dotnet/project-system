@@ -128,10 +128,6 @@
       <!-- 	// GUID:CMID                                PRIMARY GROUP                                       PRIORITY    GUID:ICONID                     BUTTON TYPE     FLAGS							BUTTON TEXT						MENU TEXT                   TOOLTIP TEXT                   COMMAND NAME -->
       <!-- 	//============================================================================================================================================================================================================================================================================================ -->
       <!--      -->
-      <!--      -->
-      <!--     // Resource editor's context menu. -->
-      <!--  -->
-      <!--  -->
 
       <!--     // We don't actually want "Edit Cell" to show up in the menus, we just want to handle F2 within the grid. -->
       <Button guid="GUID_MS_VS_Editors_CommandId" id="cmdidCOMMONEditCell" priority="0x0500" type="Button">
