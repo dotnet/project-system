@@ -492,8 +492,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
         ''' <summary>
-        ''' Initialize the fonts in the resource editor from the environment (or from the resx file,
-        '''   if hard-coded there).
+        ''' Initialize the fonts in the settings editor from the environment.
         ''' </summary>
         Private Sub SetFonts()
             Dim DialogFont As Drawing.Font = GetEnvironmentFont()
