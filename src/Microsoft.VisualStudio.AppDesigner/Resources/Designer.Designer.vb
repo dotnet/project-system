@@ -387,7 +387,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to ff4d6aca-9352-4a5f-821e-f4d6ebdcab11.
+        '''  Looks up a localized string similar to 81828910-b8b3-4d2b-99a3-067027c180c1.
         '''</summary>
         Friend Shared ReadOnly Property ResourceEditorFactory_GUID() As String
             Get
