@@ -138,66 +138,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return CUInt(LongValue And UInteger.MaxValue)
         End Function
 
-        ''' <summary>
-        ''' Retrieves a given bitmap from the manifest resources (unmodified)
-        ''' </summary>
-        ''' <param name="BitmapID">Name of the bitmap resource (not including the assembly name, e.g. "Link.bmp")</param>
-        ''' <returns>The retrieved bitmap</returns>
-        ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmap(BitmapID As String) As Bitmap
-            Return DirectCast(GetManifestImage(BitmapID), Bitmap)
-        End Function
-
-        ''' <summary>
-        ''' Retrieves a transparent copy of a given bitmap from the manifest resources.
-        ''' </summary>
-        ''' <param name="BitmapID">Name of the bitmap resource (not including the assembly name, e.g. "Link.bmp")</param>
-        ''' <param name="TransparentColor">The color that represents transparent in the bitmap</param>
-        ''' <returns>The retrieved transparent bitmap</returns>
-        ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmapTransparent(BitmapID As String, TransparentColor As Color) As Bitmap
-            Dim Bitmap As Bitmap = GetManifestBitmap(BitmapID)
-            If Bitmap IsNot Nothing Then
-                Bitmap.MakeTransparent(TransparentColor)
-                Return Bitmap
-            Else
-                Debug.Fail("Couldn't find internal resource")
-                Throw New Package.InternalException(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Unexpected_NoResource_1Arg, BitmapID))
-            End If
-        End Function
-
-        ''' <summary>
-        ''' Retrieves a transparent copy of a given bitmap from the manifest resources.
-        ''' </summary>
-        ''' <param name="BitmapID">Name of the bitmap resource (not including the assembly name, e.g. "Link.bmp")</param>
-        ''' <returns>The retrieved transparent bitmap</returns>
-        ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmapTransparent(BitmapID As String) As Bitmap
-            Return GetManifestBitmapTransparent(BitmapID, StandardTransparentColor)
-        End Function
-
-        ''' <summary>
-        ''' Retrieves a given image from the manifest resources.
-        ''' </summary>
-        ''' <param name="ImageID">Name of the bitmap resource (not including the assembly name, e.g. "Link.bmp")</param>
-        ''' <returns>The retrieved bitmap</returns>
-        ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestImage(ImageID As String) As Image
-            Dim BitmapStream As Stream = GetType(Utils).Assembly.GetManifestResourceStream(ImageID)
-            If BitmapStream IsNot Nothing Then
-                Dim Image As Image = Image.FromStream(BitmapStream)
-                If Image IsNot Nothing Then
-                    Return Image
-                Else
-                    Debug.Fail("Unable to find image resource from manifest: " & ImageID)
-                End If
-            Else
-                Debug.Fail("Unable to find image resource from manifest: " & ImageID)
-            End If
-
-            Throw New Package.InternalException(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Unexpected_NoResource_1Arg, ImageID))
-        End Function
-
         Public Function GetImageFromImageService(imageMoniker As ImageMoniker, width As Integer, height As Integer, background As Color) As Image
             If ImageService IsNot Nothing Then
                 Dim attributes As New Imaging.Interop.ImageAttributes With {

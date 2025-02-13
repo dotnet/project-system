@@ -666,575 +666,47 @@ Changing this setting will reset the settings in all configurations.</source>
         <target state="translated">要求:</target>
         <note />
       </trans-unit>
-      <trans-unit id="RSE_ResourceNameColumn">
-        <source>Name</source>
-        <target state="translated">名称</target>
-        <note>Column names for the string table</note>
-      </trans-unit>
-      <trans-unit id="RSE_TypeColumn">
-        <source>Type</source>
-        <target state="translated">类型</target>
-        <note>Column names for the string table</note>
-      </trans-unit>
-      <trans-unit id="RSE_ResourceColumn">
-        <source>Value</source>
-        <target state="translated">值</target>
-        <note>Column names for the string table</note>
-      </trans-unit>
-      <trans-unit id="RSE_CommentColumn">
-        <source>Comment</source>
-        <target state="translated">注释</target>
-        <note>Column names for the string table</note>
-      </trans-unit>
-      <trans-unit id="SD_ERR_HelpMessage_SuggestFileOpenWith">
-        <source>If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</source>
-        <target state="translated">如果这不是 Settings-Designer 文件，则使用“打开方式”在文本编辑器中打开它。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
-        <source>Failed to generate file: {0}</source>
-        <target state="translated">未能生成文件: {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Err_CantEditEmbeddedResource">
-        <source>Editing embedded resources directly is not supported. Do you wish to convert this item to a linked resource in order to edit it?</source>
-        <target state="translated">不支持直接编辑嵌入的资源。是否将此项转换为链接资源，以便对其进行编辑?</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Err_RenameNotSupported">
-        <source>The current object is auto-generated and only supports renaming through the Managed Resources Editor.</source>
-        <target state="translated">当前对象是自动生成的，只支持通过托管资源编辑器重命名。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Err_CantFindResourceFile_1Arg">
-        <source>Cannot find the file '{0}'.  It may have been moved or deleted.</source>
-        <target state="translated">无法找到文件“{0}”。该文件可能已被移动或删除。</target>
-        <note>{0} = file name and path</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_LoadingResource_1Arg">
-        <source>Unable to load resource from file '{0}'.</source>
-        <target state="translated">无法从文件“{0}”加载资源。</target>
-        <note>{0} = file name and path</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_NameBlank">
-        <source>The resource name cannot be empty.</source>
-        <target state="translated">资源名称不能是空的。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Err_DuplicateName_1Arg">
-        <source>There is already another resource with the name '{0}'.</source>
-        <target state="translated">已经存在使用名称“{0}”的其他资源。</target>
-        <note>{0} = Resource name</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_UnexpectedResourceType">
-        <source>The resource was not of the expected type.</source>
-        <target state="translated">资源不是需要的类型。</target>
-        <note>This error can happen if, for example, you try to add foo.bmp to the resource editor, but foo.bmp is really a metafile.</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_CantCreateNewResource_2Args">
-        <source>Unable to create new resource file '{0}'.  {1}</source>
-        <target state="translated">无法创建新的资源文件“{0}”。  {1}</target>
-        <note>{0} = file name and path, {1} = additional error information</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_CantPlay_1Arg">
-        <source>Unable to play the audio resource.  {0}</source>
-        <target state="translated">无法播放音频资源。 {0}</target>
-        <note>{0} = Additional error information.</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_CantSaveResource_1Arg">
-        <source>Resource '{0}' cannot be saved to a file.</source>
-        <target state="translated">无法将资源“{0}”保存到文件中。</target>
-        <note>{0} = Resource name</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_UserCancel">
-        <source>The operation has been canceled by the user.</source>
-        <target state="translated">用户已取消该操作。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Err_BadData">
-        <source>The resource value contains invalid data or has an incorrect format.</source>
-        <target state="translated">资源值包含无效数据或格式不正确。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Err_BadIdentifier_2Arg">
-        <source>The name of the resource '{0}' cannot be used as a valid identifier, because it contains one or more invalid characters: '{1}'.  Please remove or replace those characters and try again.</source>
-        <target state="translated">资源“{0}”的名称无法用作有效的标识符，因为其含有一个或多个无效字符:“{1}”。请删除或替换这些字符，然后重试。</target>
-        <note>{0} = Resource name</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_MaxFilesLimitation">
-        <source>Too many files specified.  Please select fewer files and try again.</source>
-        <target state="translated">指定的文件过多。请少选一些文件，然后重试。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="RSE_Err_InternalException">
         <source>Unexpected error.</source>
-        <target state="translated">意外错误。</target>
+        <target state="new">Unexpected error.</target>
         <note>Theoretically possible but we really don't expect to happen.  Unexpected, internal error.</note>
       </trans-unit>
       <trans-unit id="RSE_Err_Unexpected_NoResource_1Arg">
         <source>Unable to load internal localized resource '{0}'.</source>
-        <target state="translated">无法加载内部本地化资源“{0}”。</target>
+        <target state="new">Unable to load internal localized resource '{0}'.</target>
         <note>Theoretically possible but we really don't expect to happen.  Unexpected, internal error.</note>
       </trans-unit>
-      <trans-unit id="RSE_Err_CantConvertFromString_2Args">
-        <source>The value could not be converted into a resource of type {0}.
-
-{1}</source>
-        <target state="translated">未能将该值转换为 {0} 类型的资源。
-
-{1}</target>
-        <note>{0} = the type that was expected by the resource editor (e.g. System.Drawing.Point)
-{1} = more specific additional error message from the system</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_CantUseEmptyValue">
-        <source>The value cannot be empty in a resource of type {0}.</source>
-        <target state="translated">该值在 {0} 类型的资源中不能是空的。</target>
-        <note>{0} = the type that was expected by the resource editor (e.g. System.Drawing.Point)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_CantBeEmpty">
-        <source>One or more of the selected resource values could not be cleared.</source>
-        <target state="translated">未能清除一个或多个选定资源值。</target>
+      <trans-unit id="RSE_Err_UserCancel">
+        <source>The operation has been canceled by the user.</source>
+        <target state="new">The operation has been canceled by the user.</target>
         <note />
-      </trans-unit>
-      <trans-unit id="RSE_Err_CantEditInDebugMode">
-        <source>The resource file cannot be modified at this time.</source>
-        <target state="translated">此时无法修改资源文件。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Err_UpdateADependentFile">
-        <source>You are trying to edit a resource file that is a part of another project item (such as a form or a control).  Editing this item could corrupt the project item, and you will have to recover it by hand.  In addition, changes made to this resource file may be lost if further changes are made to the project item.
-
-Do you really want to edit this file?</source>
-        <target state="translated">尝试编辑的某个资源文件是另一个项目项(如窗体或控件)的一部分。编辑此项可能会损坏该项目项，之后将不得不手动将其恢复。此外，如果对该项目项做进一步更改，则对此资源文件所做的更改可能会丢失。
-
-确实要编辑此文件吗?</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Err_CantAddUnsupportedResource_1Arg">
-        <source>The resource '{0}' cannot be added.</source>
-        <target state="translated">无法添加资源“{0}”。</target>
-        <note>{0} - name of the resource</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_CantAddFileToDeviceProject_1Arg">
-        <source>The device does not support '{0}' files.</source>
-        <target state="translated">设备不支持“{0}”文件。</target>
-        <note>{0} - the extension of the file name like 'tiff'</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_TypeIsNotSupported_1Arg">
-        <source>The resource item uses the type '{0}', which is not supported in this project.</source>
-        <target state="translated">资源项使用“{0}”类型，但该类型在此项目中不受支持。</target>
-        <note>{0} - name of the type</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_CantSaveResouce_1Arg">
-        <source>The resource item(s) {0} cannot be saved correctly.  The item(s) will be discarded.</source>
-        <target state="translated">无法正确保存资源项 {0}。将弃用此项(或这些项)。</target>
-        <note>{0} - name list of the resource</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_Name">
-        <source>'{0}'</source>
-        <target state="translated">“{0}”</target>
-        <note>{0} - name</note>
-      </trans-unit>
-      <trans-unit id="RSE_Err_NameList">
-        <source>{0}, '{1}'</source>
-        <target state="translated">{0}，“{1}”</target>
-        <note># {0} - name list
-# {1} - another name</note>
-      </trans-unit>
-      <trans-unit id="RSE_NothingValue">
-        <source>(Nothing/null)</source>
-        <target state="translated">(Nothing/null)</target>
-        <note>Displayed in a string table for values of Nothing/null
-CONSIDER: get this from CodeDom</note>
-      </trans-unit>
-      <trans-unit id="RSE_UnknownType">
-        <source>(Unknown type)</source>
-        <target state="translated">(未知类型)</target>
-        <note>This actually shouldn't be needed, but if we get an exception trying to get the type name of an entry in the resx file (not supposed to happen), then we'll display this as its type.</note>
-      </trans-unit>
-      <trans-unit id="RSE_NonEditableValue">
-        <source>(Value cannot be displayed)</source>
-        <target state="translated">(无法显示值)</target>
-        <note>Displayed in a string table for values which cannot be edited by the user</note>
-      </trans-unit>
-      <trans-unit id="RSE_DetailsCol_Name">
-        <source>Name</source>
-        <target state="translated">名称</target>
-        <note>Columns for the "Details" view of the resource editor</note>
-      </trans-unit>
-      <trans-unit id="RSE_DetailsCol_Filename">
-        <source>Filename</source>
-        <target state="translated">文件名</target>
-        <note>Columns for the "Details" view of the resource editor</note>
-      </trans-unit>
-      <trans-unit id="RSE_DetailsCol_ImageType">
-        <source>Type</source>
-        <target state="translated">类型</target>
-        <note>Columns for the "Details" view of the resource editor</note>
-      </trans-unit>
-      <trans-unit id="RSE_DetailsCol_Size">
-        <source>Size</source>
-        <target state="translated">大小</target>
-        <note>Columns for the "Details" view of the resource editor</note>
-      </trans-unit>
-      <trans-unit id="RSE_DetailsCol_Comment">
-        <source>Comment</source>
-        <target state="translated">注释</target>
-        <note>Columns for the "Details" view of the resource editor</note>
-      </trans-unit>
-      <trans-unit id="RSE_GraphicSizeFormat">
-        <source>{0} x {1}</source>
-        <target state="translated">{0} x {1}</target>
-        <note>Format string for showing a graphic's size
-
-#  {0} = width (as an integer)
-#  {1} = height (as an integer)
-#Example, for a bitmap of width=123, height = 456, the English version of this string would be "123x456"</note>
-      </trans-unit>
-      <trans-unit id="RSE_FileSizeFormatKB">
-        <source>{0} KB</source>
-        <target state="translated">{0} KB</target>
-        <note>#Format string for showing a file's size
-# {0} = length in kilobytes</note>
-      </trans-unit>
-      <trans-unit id="RSE_FileSizeFormatBytes_1Arg">
-        <source>{0} byte(s)</source>
-        <target state="translated">{0} 字节</target>
-        <note>Format string for showing a file's size.
-{0} = length in bytes</note>
-      </trans-unit>
-      <trans-unit id="RSE_Cat_Strings">
-        <source>Strings</source>
-        <target state="translated">字符串</target>
-        <note>Resource category names (these show up in the category buttons in the ToolStrip at the top of the resource editor)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Cat_Images">
-        <source>Images</source>
-        <target state="translated">图像</target>
-        <note>Resource category names (these show up in the category buttons in the ToolStrip at the top of the resource editor)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Cat_Icons">
-        <source>Icons</source>
-        <target state="translated">图标</target>
-        <note>Resource category names (these show up in the category buttons in the ToolStrip at the top of the resource editor)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Cat_Audio">
-        <source>Audio</source>
-        <target state="translated">音频</target>
-        <note>Resource category names (these show up in the category buttons in the ToolStrip at the top of the resource editor)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Cat_Files">
-        <source>Files</source>
-        <target state="translated">文件</target>
-        <note>Resource category names (these show up in the category buttons in the ToolStrip at the top of the resource editor)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Cat_Other">
-        <source>Other</source>
-        <target state="translated">其他</target>
-        <note>Resource category names (these show up in the category buttons in the ToolStrip at the top of the resource editor)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Type_BMP">
-        <source>Windows Bitmap</source>
-        <target state="translated">Windows 位图</target>
-        <note>Friendly Image types</note>
-      </trans-unit>
-      <trans-unit id="RSE_Type_EXIF">
-        <source>EXIF Image</source>
-        <target state="translated">EXIF 图像</target>
-        <note>Friendly Image types</note>
-      </trans-unit>
-      <trans-unit id="RSE_Type_GIF">
-        <source>Graphics Interchange Format</source>
-        <target state="translated">图形交换格式</target>
-        <note>Friendly Image types</note>
-      </trans-unit>
-      <trans-unit id="RSE_Type_JPEG">
-        <source>JPEG File Interchange Format</source>
-        <target state="translated">JPEG 文件交换格式</target>
-        <note>Friendly Image types</note>
-      </trans-unit>
-      <trans-unit id="RSE_Type_MEMBMP">
-        <source>Windows Bitmap</source>
-        <target state="translated">Windows 位图</target>
-        <note>Friendly Image types</note>
-      </trans-unit>
-      <trans-unit id="RSE_Type_PNG">
-        <source>Portable Network Graphics</source>
-        <target state="translated">可移植网络图形</target>
-        <note>Friendly Image types</note>
-      </trans-unit>
-      <trans-unit id="RSE_Type_TIFF">
-        <source>Tag Image File Format</source>
-        <target state="translated">标记图像文件格式</target>
-        <note>Friendly Image types</note>
-      </trans-unit>
-      <trans-unit id="RSE_Type_Icon">
-        <source>Icon</source>
-        <target state="translated">图标</target>
-        <note>Friendly Image types</note>
-      </trans-unit>
-      <trans-unit id="RSE_Type_TextFile">
-        <source>Text File</source>
-        <target state="translated">文本文件</target>
-        <note>Friendly Image types</note>
-      </trans-unit>
-      <trans-unit id="RSE_Type_BinaryFile">
-        <source>Binary File</source>
-        <target state="translated">二进制文件</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Type_Wave">
-        <source>Wave Sound</source>
-        <target state="translated">波形声音</target>
-        <note>Friendly Image types</note>
-      </trans-unit>
-      <trans-unit id="RES_PersistenceMode_Linked">
-        <source>Linked at compile time</source>
-        <target state="translated">在编译时链接</target>
-        <note>File Persistence Mode</note>
-      </trans-unit>
-      <trans-unit id="RES_PersistenceMode_Embeded">
-        <source>Embedded in .resx</source>
-        <target state="translated">嵌入在 .resx 中</target>
-        <note>File Persistence Mode</note>
-      </trans-unit>
-      <trans-unit id="RSE_Filter_Bitmap">
-        <source>Bitmaps</source>
-        <target state="translated">位图</target>
-        <note># File dialog filters
-#
-# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
-#  represent the first part of that filter
-#</note>
       </trans-unit>
       <trans-unit id="RSE_Filter_Icon">
         <source>Icons</source>
-        <target state="translated">图标</target>
+        <target state="new">Icons</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
 #  represent the first part of that filter
 #</note>
       </trans-unit>
-      <trans-unit id="RSE_Filter_Audio">
-        <source>Audio</source>
-        <target state="translated">音频</target>
+      <trans-unit id="RSE_Filter_License">
+        <source>License Files</source>
+        <target state="new">License Files</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
 #  represent the first part of that filter
 #</note>
-      </trans-unit>
-      <trans-unit id="RSE_Filter_Text">
-        <source>Text Files</source>
-        <target state="translated">文本文件</target>
-        <note># File dialog filters
-#
-# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
-#  represent the first part of that filter
-#</note>
-      </trans-unit>
-      <trans-unit id="RSE_Filter_All">
-        <source>All Files</source>
-        <target state="translated">所有文件</target>
-        <note># File dialog filters
-#
-# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
-#  represent the first part of that filter
-#</note>
-      </trans-unit>
-      <trans-unit id="RSE_FilterSave_BMP">
-        <source>Windows Bitmap</source>
-        <target state="translated">Windows 位图</target>
-        <note># File dialog filters
-#
-# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
-#  represent the first part of that filter
-#</note>
-      </trans-unit>
-      <trans-unit id="RSE_FilterSave_PNG">
-        <source>Portable Network Graphics</source>
-        <target state="translated">可移植网络图形</target>
-        <note># File dialog filters
-#
-# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
-#  represent the first part of that filter
-#</note>
-      </trans-unit>
-      <trans-unit id="RSE_FilterSave_GIF">
-        <source>Graphics Interchange Format</source>
-        <target state="translated">图形交换格式</target>
-        <note># File dialog filters
-#
-# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
-#  represent the first part of that filter
-#</note>
-      </trans-unit>
-      <trans-unit id="RSE_FilterSave_JPEG">
-        <source>JPEG File Interchange Format</source>
-        <target state="translated">JPEG 文件交换格式</target>
-        <note># File dialog filters
-#
-# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
-#  represent the first part of that filter
-#</note>
-      </trans-unit>
-      <trans-unit id="RSE_FilterSave_TIFF">
-        <source>Tag Image File Format</source>
-        <target state="translated">标记图像文件格式</target>
-        <note># File dialog filters
-#
-# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
-#  represent the first part of that filter
-#</note>
-      </trans-unit>
-      <trans-unit id="RSE_FilterSave_Icon">
-        <source>Icon</source>
-        <target state="translated">图标</target>
-        <note># File dialog filters
-#
-# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
-#  represent the first part of that filter
-#</note>
-      </trans-unit>
-      <trans-unit id="RSE_ResourceEditor">
-        <source>Managed Resources Editor</source>
-        <target state="translated">托管资源编辑器</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_DlgTitle_AddExisting">
-        <source>Add existing file to resources</source>
-        <target state="translated">将现有文件添加到资源中</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_DlgTitle_Import_1Arg">
-        <source>Import file into resource '{0}'</source>
-        <target state="translated">将文件导入到资源“{0}”中</target>
-        <note>{0} = Name of resource being imported into</note>
-      </trans-unit>
-      <trans-unit id="RSE_DlgTitle_Export_1Arg">
-        <source>Export resource '{0}' to file</source>
-        <target state="translated">将资源“{0}”导出到文件中</target>
-        <note>{0} = Name of resource being exported from</note>
-      </trans-unit>
-      <trans-unit id="RSE_DlgTitle_AddNew">
-        <source>Please specify where to save the new file</source>
-        <target state="translated">请指定保存新文件的位置</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Dlg_ReplaceExistingFile">
-        <source>The file '{0}' already exists.  Do you want to replace it?</source>
-        <target state="translated">文件“{0}”已经存在。是否替换它?</target>
-        <note>{0} = full file path and name</note>
-      </trans-unit>
-      <trans-unit id="RSE_Dlg_ReplaceExistingFiles">
-        <source>The following files already exist.  Do you want to replace them?</source>
-        <target state="translated">以下文件已经存在。是否替换它们?</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Dlg_ExportMultiple">
-        <source>Select a folder in which to export the resources.</source>
-        <target state="translated">选择要将资源导出到的文件夹。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Dlg_ContinueAnyway">
-        <source>Do you want to continue anyway?</source>
-        <target state="translated">是否仍要继续?</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Task_BadLink_2Args">
-        <source>Resource '{0}' could not be loaded because the file to which it is linked could not be found: {1}.</source>
-        <target state="translated">由于未能找到资源“{0}”链接到的文件，未能加载该资源: {1}。</target>
-        <note>{0} = resource name that had the error, {1} = file path/name that could not be found</note>
-      </trans-unit>
-      <trans-unit id="RSE_Task_CantInstantiate_2Args">
-        <source>Resource '{0}' could not be instantiated.  {1}</source>
-        <target state="translated">未能实例化资源“{0}”。 {1}</target>
-        <note>{0} = resource name that had the error, {1} = extended error information</note>
-      </trans-unit>
-      <trans-unit id="RSE_Task_NonrecommendedName_1Arg">
-        <source>Resource '{0}' has a name that is not recommended and that may cause compilation errors in your code.  Please choose another name.</source>
-        <target state="translated">资源“{0}”具有不建议使用的名称，可能会导致代码中出现编译错误。请选择其他名称。</target>
-        <note>{0} = resource name that had the error</note>
       </trans-unit>
       <trans-unit id="RSE_Task_CantChangeCustomToolOrNamespace">
         <source>Unable to set the Custom Tool or Custom Tool Namespace properties of this file in order to change strongly-typed resource generation options.  If the project file is checked in, try checking it out.</source>
-        <target state="translated">无法设置此文件的“自定义工具”或“自定义工具命名空间”属性以更改强类型资源生成选项。如果已签入此项目文件，请尝试将它签出。</target>
+        <target state="new">Unable to set the Custom Tool or Custom Tool Namespace properties of this file in order to change strongly-typed resource generation options.  If the project file is checked in, try checking it out.</target>
         <note>One possible source for this error is that source code control checkout failed or was canceled.</note>
       </trans-unit>
-      <trans-unit id="RSE_Task_InvalidName_1Arg">
-        <source>The resource name '{0}' is not a valid identifier.</source>
-        <target state="translated">资源名称“{0}”不是有效的标识符。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_EncodingDisplayName">
-        <source>{0} - Codepage {1}</source>
-        <target state="translated">{0} - 代码页 {1}</target>
-        <note>{0} = encoding name (e.g., "Western European (Windows)"), {1} = code page # (e.g., 85001)</note>
-      </trans-unit>
-      <trans-unit id="RSE_DefaultEncoding">
-        <source>(Default)</source>
-        <target state="translated">(默认值)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Undo_ChangeName">
-        <source>Change resource name</source>
-        <target state="translated">更改资源名称</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_Undo_AddResources_1Arg">
-        <source>Add {0} new resource(s)</source>
-        <target state="translated">添加 {0} 个新资源</target>
-        <note>{0} = number of resources added</note>
-      </trans-unit>
-      <trans-unit id="RSE_Undo_RemoveResources_1Arg">
-        <source>Remove {0} resource(s)</source>
-        <target state="translated">移除 {0} 个新资源</target>
-        <note>{0} = number of resources removed</note>
-      </trans-unit>
-      <trans-unit id="RSE_Undo_DeleteResourceCell">
-        <source>Delete values in {0} cell(s)</source>
-        <target state="translated">删除 {0} 个单元格中的值</target>
-        <note>{0} = number of cells cleared</note>
-      </trans-unit>
-      <trans-unit id="RSE_PropDesc_Name">
-        <source>Name used to identify the resource in code.</source>
-        <target state="translated">用于在代码中标识资源的名称。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_PropDesc_Comment">
-        <source>Additional information about the resource.  This property is only meaningful at design time.</source>
-        <target state="translated">关于该资源的附加信息。此属性仅在设计时有意义。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_PropDesc_Encoding">
-        <source>Character encoding of the file.</source>
-        <target state="translated">文件的字符编码。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_PropDesc_Filename">
-        <source>The path to the linked resource.</source>
-        <target state="translated">指向链接资源的路径。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_PropDesc_FileType">
-        <source>Specifies whether the file resource is text or binary.</source>
-        <target state="translated">指定文件资源是文本格式还是二进制格式。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_PropDesc_Persistence">
-        <source>Specifies whether the resource is embedded or linked.  Embedded resources are saved in the resource file.  Linked resources reside in an external location on disk.</source>
-        <target state="translated">指定资源是嵌入的资源还是链接的资源。嵌入的资源保存在资源文件中。链接的资源驻留在磁盘的外部位置。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_PropDesc_Type">
-        <source>The resource will be generated as this type in the strongly-typed resource class.  For example, the resource might be generated as a String or Bitmap object.</source>
-        <target state="translated">在强类型资源类中，资源将生成为此类型。例如，资源可能生成为 String 对象或 Bitmap 对象。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="RSE_PropDesc_Value">
-        <source>The value of the resource.</source>
-        <target state="translated">资源的值。</target>
+      <trans-unit id="SD_ERR_HelpMessage_SuggestFileOpenWith">
+        <source>If this is not a Settings-Designer file then use 'Open With' to open it in a text editor.</source>
+        <target state="translated">如果这不是 Settings-Designer 文件，则使用“打开方式”在文本编辑器中打开它。</target>
         <note />
       </trans-unit>
       <trans-unit id="RFS_CantCreateResourcesFolder_Folder_ExMsg">
@@ -1859,6 +1331,11 @@ app.config 文件中的新值为“{1}”
         <target state="translated">签出期间重新加载了一个或多个文件。请重试操作。</target>
         <note />
       </trans-unit>
+      <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
+        <source>Failed to generate file: {0}</source>
+        <target state="new">Failed to generate file: {0}</target>
+        <note />
+      </trans-unit>
       <trans-unit id="XmlToSchema_InvalidXMLFormat">
         <source>Invalid XML Format: {0}</source>
         <target state="translated">无效的 XML 格式: {0}</target>
@@ -1998,15 +1475,6 @@ app.config 文件中的新值为“{1}”
         <source>Extended Metafile</source>
         <target state="translated">扩展元文件</target>
         <note />
-      </trans-unit>
-      <trans-unit id="RSE_Filter_License">
-        <source>License Files</source>
-        <target state="translated">许可证文件</target>
-        <note># File dialog filters
-#
-# E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
-#  represent the first part of that filter
-#</note>
       </trans-unit>
       <trans-unit id="PPG_CodeAnalysisTitle">
         <source>Code Analysis</source>

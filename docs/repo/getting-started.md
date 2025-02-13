@@ -117,7 +117,7 @@ While the long term goal is to have all C#, F# and Visual Basic projects use thi
 4. In __File Explorer__, rename project from _[project].csproj_ -> _[project].msbuildproj_
 5. __File__ -> __Open__ -> __Project/Solution__ and browse to the project you just renamed and choose __Open__
 
-### AppDesigner, Settings, Resource Editors and Property Pages
+### AppDesigner, Settings and Property Pages
 Both the new project system and the existing project system use the features built from this repository.
 
 ## Code Coverage

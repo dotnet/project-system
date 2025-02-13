@@ -125,7 +125,6 @@ Imports System.Diagnostics.CodeAnalysis
 <Assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.Common.Utils.GetFilesViaBrowse(System.IServiceProvider,System.IntPtr,System.String,System.String,System.String,System.UInt32,System.Boolean,System.String,System.Boolean)~System.Collections.ArrayList")>
 <Assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.Common.Utils.GetFullPathTolerant(System.String)~System.String")>
 <Assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.Common.Utils.GetManifestBitmap(System.String)~System.Drawing.Bitmap")>
-<Assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.Common.Utils.GetManifestBitmapTransparent(System.String)~System.Drawing.Bitmap")>
 <Assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.Common.Utils.GetManifestBitmapTransparent(System.String,System.Drawing.Color)~System.Drawing.Bitmap")>
 <Assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.Common.Utils.GetManifestImage(System.String)~System.Drawing.Image")>
 <Assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.Common.Utils.GetNativeFilter(System.String)~System.String")>
