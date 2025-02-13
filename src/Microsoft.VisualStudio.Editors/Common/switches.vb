@@ -143,48 +143,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
     ''' </summary>
     Friend Class Switches
 
-        '------------- Resource Editor -------------
-
-        ''' <summary>
-        ''' Trace for the ResourceEditor.FileWatcher class
-        ''' </summary>
-        Public Shared RSEFileWatcher As New TraceSwitch("RSEFileWatcher", "Trace the resource editor FileWatcher class.")
-
-        ''' <summary>
-        ''' Tracing for the ResourceEditor.ResourceSerializationService class
-        ''' </summary>
-        Public Shared RSEResourceSerializationService As New TraceSwitch("RSEResourceSerializationService", "Trace the resource editor ResourceSerializationService class.")
-
-        ''' <summary>
-        ''' Track adding and removing resources in the resource editor
-        ''' </summary>
-        Public Shared RSEAddRemoveResources As New TraceSwitch("RSEAddRemoveResources", "Trace adding/removing resources in the resource editor")
-
-        ''' <summary>
-        ''' Trace virtual mode methods in the resource editor's string table
-        ''' </summary>
-        Public Shared RSEVirtualStringTable As New TraceSwitch("RSEVirtualStringTable", "Trace virtual mode methods in the resource editor's string table")
-
-        ''' <summary>
-        ''' Trace virtual mode methods in the resource editor's listview
-        ''' </summary>
-        Public Shared RSEVirtualListView As New TraceSwitch("RSEVirtualListView", "Trace virtual mode methods in the resource editor's listview")
-
-        ''' <summary>
-        ''' Trace the delayed checking of errors in resources
-        ''' </summary>
-        Public Shared RSEDelayCheckErrors As New TraceSwitch("RSEDelayCheckErrors", "Trace the delayed checking of errors in resources")
-
-        ''' <summary>
-        ''' Disable high-quality options on the Graphics object when creating thumbnails in the resource editor
-        ''' </summary>
-        Public Shared RSEDisableHighQualityThumbnails As New BooleanSwitch("RSEDisableHighQualityThumbnails", "Disable high-quality options on the Graphics object when creating thumbnails in the resource editor")
-
-        ''' <summary>
-        ''' Trace find/replace in the resource editor
-        ''' </summary>
-        Public Shared RSEFindReplace As New TraceSwitch("RSEFindReplace", "Trace find/replace in the resource editor")
-
         '------------- Designer Framework -------------
 
         ''' <summary>

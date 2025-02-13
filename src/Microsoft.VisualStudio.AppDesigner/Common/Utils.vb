@@ -18,11 +18,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
     Friend Module Utils
 
-        'The transparent color used for all bitmaps in the resource editor is lime (R=0, G=255, B=0).
-        '  Any pixels of this color will be converted to transparent if StandardTransparentColor
-        '  is passed to GetManifestBitmap
-        Public ReadOnly StandardTransparentColor As Color = Color.Lime
-
         Public VBPackageInstance As IVBPackage
 
         ' The maximal amount of files that can be added at one shot. (copied from other VS features)
@@ -107,17 +102,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Debug.Fail("Couldn't find internal resource")
                 Throw New Package.InternalException(String.Format(My.Resources.Designer.RSE_Err_Unexpected_NoResource_1Arg, BitmapID))
             End If
-        End Function
-
-        ''' <summary>
-        ''' Retrieves a transparent copy of a given bitmap from the manifest resources.
-        ''' </summary>
-        ''' <param name="BitmapID">Name of the bitmap resource (not including the assembly name, e.g. "Link.bmp")</param>
-        ''' <param name="assembly">Name of assembly containing the manifest resource</param>
-        ''' <returns>The retrieved transparent bitmap</returns>
-        ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmapTransparent(BitmapID As String, Optional ByRef assembly As Assembly = Nothing) As Bitmap
-            Return GetManifestBitmapTransparent(BitmapID, StandardTransparentColor, assembly)
         End Function
 
         ''' <summary>
