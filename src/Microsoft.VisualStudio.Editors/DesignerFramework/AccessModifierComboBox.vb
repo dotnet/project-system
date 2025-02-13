@@ -4,11 +4,9 @@ Imports System.CodeDom
 Imports System.CodeDom.Compiler
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
-Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.Common
-Imports Microsoft.VisualStudio.Editors.ResourceEditor
 Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
@@ -83,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' checked the project system yet)
         ' This field should only be accessed through the CustomToolsRegistered property.
         Private _customToolsRegistered As Boolean?
-        Private _allowEdit As Boolean
+        'Private _allowEdit As Boolean
 
 #Region "Nested class CodeGenerator"
 
@@ -441,25 +439,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             For Each codeGenerator As CodeGenerator In _codeGeneratorEntries
                 If codeGenerator.DisplayName.Equals(value, StringComparison.CurrentCultureIgnoreCase) Then
-                    If TypeOf RootDesigner Is ResourceEditorRootDesigner Then
-                        Dim Designer = CType(RootDesigner, ResourceEditorRootDesigner)
-                        Dim ResourceView As ResourceEditorView = Designer.GetView()
-                        ' We let the base class handle the read only mode
-                        ' As mentioned in ResourceEditorDesignerLoader, "We actually don't want users to edit Form RESX file"
-                        ' so we just need to add the same warning as there for now until the new resource explorer is released
-                        If ResourceView IsNot Nothing AndAlso Not ResourceView.ReadOnlyMode Then
-                            If ResourceView.DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UpdateADependentFile, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2, HelpIDs.Err_EditFormResx) = DialogResult.Yes Then
-                                _allowEdit = True
-                            End If
-                        End If
-                        If _allowEdit Then
-                            TrySetCustomToolValue(codeGenerator.CustomToolValue)
-                        End If
-
-                        _allowEdit = False
-                    Else
-                        TrySetCustomToolValue(codeGenerator.CustomToolValue)
-                    End If
+                    TrySetCustomToolValue(codeGenerator.CustomToolValue)
                     Return
                 End If
             Next

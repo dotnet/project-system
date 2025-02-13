@@ -37,15 +37,12 @@ Namespace Microsoft.VisualStudio.Editors
     ProvideEditorFactory(GetType(ApplicationDesigner.ApplicationDesignerEditorFactory), 1300, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
     ProvideEditorFactory(GetType(SettingsDesigner.SettingsDesignerEditorFactory), 1200, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
     ProvideEditorFactory(GetType(PropPageDesigner.PropPageDesignerEditorFactory), 1400, False, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
-    ProvideEditorFactory(GetType(ResourceEditor.ResourceEditorFactory), 1100, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
-    ProvideService(GetType(ResourceEditor.ResourceEditorRefactorNotify), ServiceName:="ResX RefactorNotify Service"),
     ProvideService(GetType(AddImports.IVBAddImportsDialogService), ServiceName:="Add Imports Dialog Service"),
     ProvideService(GetType(XmlIntellisense.IXmlIntellisenseService), ServiceName:="Vb Xml Intellisense Service"),
     ProvideService(GetType(VBAttributeEditor.Interop.IVbPermissionSetService), ServiceName:="Vb Permission Set Service"),
     ProvideService(GetType(Interop.IVsBuildEventCommandLineDialogService), ServiceName:="Vb Build Event Command Line Dialog Service"),
     ProvideService(GetType(VBRefChangedSvc.Interop.IVbReferenceChangedService), ServiceName:="VB Project Reference Changed Service"),
     ProvideKeyBindingTable(Constants.MenuConstants.GUID_SETTINGSDESIGNER_CommandUIString, 1200, AllowNavKeyBinding:=False),
-    ProvideKeyBindingTable(Constants.MenuConstants.GUID_RESXEditorCommandUIString, 1100, AllowNavKeyBinding:=False),
     CLSCompliant(False)
     >
     Friend Class VBPackage
@@ -56,7 +53,6 @@ Namespace Microsoft.VisualStudio.Editors
         Private _xmlIntellisenseService As XmlIntellisense.XmlIntellisenseService
         Private _buildEventCommandLineDialogService As PropertyPages.BuildEventCommandLineDialogService
         Private _vbReferenceChangedService As VBRefChangedSvc.VBReferenceChangedService
-        Private _resourceEditorRefactorNotify As ResourceEditor.ResourceEditorRefactorNotify
         Private _userConfigCleaner As UserConfigCleaner
         Private _addImportsDialogService As AddImports.AddImportsDialogService
 
@@ -94,13 +90,8 @@ Namespace Microsoft.VisualStudio.Editors
                 Throw
             End Try
             Try
-                RegisterEditorFactory(New ResourceEditor.ResourceEditorFactory)
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception registering resource editor factory", NameOf(VBPackage))
-                Throw
-            End Try
-            Try
                 RegisterEditorFactory(New ApplicationDesigner.ApplicationDesignerEditorFactory)
-            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception registering application resource editor factory", NameOf(VBPackage))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception registering application designer editor factory", NameOf(VBPackage))
                 Throw
             End Try
             Try
@@ -123,9 +114,6 @@ Namespace Microsoft.VisualStudio.Editors
 
             ' Expose IVsBuildEventCommandLineDialogService
             ServiceContainer.AddService(GetType(Interop.IVsBuildEventCommandLineDialogService), CallBack, True)
-
-            ' Expose IVsRefactorNotify through the ResourceEditorFactory
-            ServiceContainer.AddService(GetType(ResourceEditor.ResourceEditorRefactorNotify), CallBack, True)
 
             'Expose Add Imports Dialog Service
             ServiceContainer.AddService(GetType(AddImports.IVBAddImportsDialogService), CallBack, True)
@@ -173,15 +161,6 @@ Namespace Microsoft.VisualStudio.Editors
 
                 ' Return cached BuildEventCommandLineDialogService
                 Return _buildEventCommandLineDialogService
-            End If
-
-            If serviceType Is GetType(ResourceEditor.ResourceEditorRefactorNotify) Then
-                If _resourceEditorRefactorNotify Is Nothing Then
-                    _resourceEditorRefactorNotify = New ResourceEditor.ResourceEditorRefactorNotify()
-                End If
-
-                ' return cached refactor-notify implementer
-                Return _resourceEditorRefactorNotify
             End If
 
             If serviceType Is GetType(AddImports.IVBAddImportsDialogService) Then
