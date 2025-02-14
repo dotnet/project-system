@@ -572,84 +572,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 #End If
         End Sub
 
-        ''' <summary>
-        ''' Traces the access modifier combobox functionality
-        ''' </summary>
-        <Conditional("DEBUG")>
-        Public Shared Sub TracePDAccessModifierCombobox(traceLevel As TraceLevel, message As String)
-#If DEBUG Then
-            Trace.WriteLineIf(PDAccessModifierCombobox.Level >= traceLevel, "PDAccessModifierCombobox: " & message)
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace serialization of settings
-        ''' </summary>
-        ''' <param name="tracelevel"></param>
-        ''' <param name="message"></param>
-        <Conditional("DEBUG")>
-        Public Overloads Shared Sub TraceSDSerializeSettings(tracelevel As TraceLevel, message As String)
-#If DEBUG Then
-            Trace.WriteLineIf(SDSerializeSettings.Level >= tracelevel, message)
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace serialization of settings
-        ''' </summary>
-        ''' <param name="tracelevel"></param>
-        ''' <param name="formatString"></param>
-        ''' <param name="parameters"></param>
-        <Conditional("DEBUG")>
-        Public Overloads Shared Sub TraceSDSerializeSettings(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
-#If DEBUG Then
-            Trace.WriteLineIf(SDSerializeSettings.Level >= tracelevel, String.Format(formatString, parameters))
-#End If
-        End Sub
-
-        <Conditional("DEBUG")>
-        Public Overloads Shared Sub TracePDLinqImports(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
-#If DEBUG Then
-            Trace.WriteLineIf(PDLinqImports.Level >= tracelevel, Format(formatString, parameters))
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace changes to one of the monitored configuration files 
-        ''' </summary>
-        ''' <param name="tracelevel"></param>
-        <Conditional("DEBUG")>
-        Public Overloads Shared Sub TraceWCFConfigFileChangeWatch(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
-#If DEBUG Then
-            Trace.WriteLineIf(WCF_Config_FileChangeWatch.Level >= tracelevel, String.Format(formatString, parameters))
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace changes to one of the monitored configuration files 
-        ''' </summary>
-        ''' <param name="tracelevel"></param>
-        ''' <param name="message"></param>
-        <Conditional("DEBUG")>
-        Public Overloads Shared Sub TraceWCFConfigFileChangeWatch(tracelevel As TraceLevel, message As String)
-#If DEBUG Then
-            Trace.WriteLineIf(WCF_Config_FileChangeWatch.Level >= tracelevel, message)
-#End If
-        End Sub
-
         <Conditional("DEBUG")>
         Public Shared Sub TracePDPerfBegin(e As System.Windows.Forms.LayoutEventArgs, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             TracePDPerfBegin(Message, FormatArguments)
             TraceOnLayout(e)
-#End If
-        End Sub
-
-        <Conditional("DEBUG")>
-        Public Shared Sub TraceMyExtensibility(traceLevel As TraceLevel, message As String)
-#If DEBUG Then
-            Trace.WriteLineIf(MyExtensibilityTraceSwitch.Level >= traceLevel, String.Format("MyExtensibility {0} {1}: ", Date.Now.ToLongDateString(), Date.Now.ToLongTimeString()))
-            Trace.WriteLineIf(MyExtensibilityTraceSwitch.Level >= traceLevel, message)
 #End If
         End Sub
 

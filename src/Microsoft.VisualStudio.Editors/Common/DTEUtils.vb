@@ -158,27 +158,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         ''' <summary>
-        ''' Finds all files within a given ProjectItem that contain the given extension
-        ''' </summary>
-        ''' <param name="ProjectItems">The ProjectItems node to search through</param>
-        ''' <param name="Extension">The extension to search for, including the period.  E.g. ".resx"</param>
-        ''' <param name="SearchChildren">If True, the search will continue to children.</param>
-        Public Shared Function FindAllFilesWithExtension(ProjectItems As ProjectItems, Extension As String, SearchChildren As Boolean) As List(Of ProjectItem)
-            Dim ResXFiles As New List(Of ProjectItem)
-            For Each Item As ProjectItem In ProjectItems
-                If Path.GetExtension(Item.FileNames(1)).Equals(Extension, StringComparison.OrdinalIgnoreCase) Then
-                    ResXFiles.Add(Item)
-                End If
-
-                If SearchChildren AndAlso Item.ProjectItems.Count > 0 Then
-                    ResXFiles.AddRange(FindAllFilesWithExtension(Item.ProjectItems, Extension, SearchChildren))
-                End If
-            Next
-
-            Return ResXFiles
-        End Function
-
-        ''' <summary>
         ''' Get the file name from a project item.
         ''' </summary>
         ''' <param name="ProjectItem"></param>
