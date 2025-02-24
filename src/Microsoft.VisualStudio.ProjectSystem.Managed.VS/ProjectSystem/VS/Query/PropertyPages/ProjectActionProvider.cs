@@ -21,8 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
 [QueryActionProvider(ProjectModelActionNames.SetEvaluatedUIPropertyValue, typeof(SetEvaluatedUIPropertyValue))]
 [QueryActionProvider(ProjectModelActionNames.SetUnevaluatedUIPropertyValue, typeof(SetUnevaluatedUIPropertyValue))]
 [QueryDataProviderZone(ProjectModelZones.Cps)]
-[AppliesTo(ProjectCapabilities.AlwaysApplicable)]
 [Export(typeof(IQueryActionProvider))]
+[AppliesTo(ProjectCapabilities.AlwaysApplicable)]
 internal sealed class ProjectActionProvider : IQueryActionProvider
 {
     public IQueryActionExecutor CreateQueryActionDataTransformer(ExecutableStep executableStep)
