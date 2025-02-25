@@ -18,12 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
 /// </para>
 /// </summary>
 [QueryDataProvider(ProjectSystem.Query.Metadata.ProjectType.TypeName, ProjectModel.ModelName)]
-[QueryActionProvider(ProjectModelActionNames.SetEvaluatedUIPropertyValue, typeof(SetEvaluatedUIPropertyValue))]
-[QueryActionProvider(ProjectModelActionNames.SetUnevaluatedUIPropertyValue, typeof(SetUnevaluatedUIPropertyValue))]
+[QueryActionProvider(ProjectModelActionNames.AddLaunchProfile, typeof(AddLaunchProfile))]
+[QueryActionProvider(ProjectModelActionNames.RemoveLaunchProfile, typeof(RemoveLaunchProfile))]
+[QueryActionProvider(ProjectModelActionNames.RenameLaunchProfile, typeof(RenameLaunchProfile))]
+[QueryActionProvider(ProjectModelActionNames.DuplicateLaunchProfile, typeof(DuplicateLaunchProfile))]
 [QueryDataProviderZone(ProjectModelZones.Cps)]
 [Export(typeof(IQueryActionProvider))]
-[AppliesTo(ProjectCapabilities.AlwaysApplicable)]
-internal sealed class ProjectActionProvider : IQueryActionProvider
+[AppliesTo(ProjectCapability.DotNet)]
+internal sealed class LaunchProfileProjectActionProvider : IQueryActionProvider
 {
     public IQueryActionExecutor CreateQueryActionDataTransformer(ExecutableStep executableStep)
     {
@@ -31,10 +33,12 @@ internal sealed class ProjectActionProvider : IQueryActionProvider
 
         return executableStep.Action switch
         {
-            ProjectModelActionNames.SetEvaluatedUIPropertyValue => new ProjectSetEvaluatedUIPropertyValueAction((SetEvaluatedUIPropertyValue)executableStep),
-            ProjectModelActionNames.SetUnevaluatedUIPropertyValue => new ProjectSetUnevaluatedUIPropertyValueAction((SetUnevaluatedUIPropertyValue)executableStep),
+            ProjectModelActionNames.AddLaunchProfile => new AddLaunchProfileAction((AddLaunchProfile)executableStep),
+            ProjectModelActionNames.RemoveLaunchProfile => new RemoveLaunchProfileAction((RemoveLaunchProfile)executableStep),
+            ProjectModelActionNames.RenameLaunchProfile => new RenameLaunchProfileAction((RenameLaunchProfile)executableStep),
+            ProjectModelActionNames.DuplicateLaunchProfile => new DuplicateLaunchProfileAction((DuplicateLaunchProfile)executableStep),
 
-            _ => throw new InvalidOperationException($"{nameof(ProjectActionProvider)} does not handle action '{executableStep.Action}'.")
+            _ => throw new InvalidOperationException($"{nameof(LaunchProfileProjectActionProvider)} does not handle action '{executableStep.Action}'.")
         };
     }
 }
