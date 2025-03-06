@@ -33,7 +33,7 @@ internal class ProjectFileOrAssemblyInfoPropertiesProvider : AbstractProjectFile
     {
     }
 
-    private static ProjectId? GetProjectId(IProjectThreadingService threadingService, IWorkspaceWriter workspaceWriter)
+    private static ProjectId GetProjectId(IProjectThreadingService threadingService, IWorkspaceWriter workspaceWriter)
     {
         return threadingService.ExecuteSynchronously(() =>
         {
