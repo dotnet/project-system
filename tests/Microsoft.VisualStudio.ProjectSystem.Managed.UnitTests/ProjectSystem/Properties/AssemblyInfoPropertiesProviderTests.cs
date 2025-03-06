@@ -15,7 +15,7 @@ internal class TestProjectFileOrAssemblyInfoPropertiesProvider : AbstractProject
         IProjectThreadingService? threadingService = null,
         IProjectProperties? defaultProperties = null,
         IProjectInstancePropertiesProvider? instanceProvider = null,
-        Func<ProjectId>? getActiveProjectId = null)
+        Func<Task<ProjectId>>? getActiveProjectId = null)
         : this(workspace ?? WorkspaceFactory.Create(""),
               project: project ?? UnconfiguredProjectFactory.Create(),
               interceptingProvider: interceptingProvider,
@@ -33,7 +33,7 @@ internal class TestProjectFileOrAssemblyInfoPropertiesProvider : AbstractProject
         IProjectThreadingService? threadingService = null,
         IProjectProperties? defaultProperties = null,
         IProjectInstancePropertiesProvider? instanceProvider = null,
-        Func<ProjectId>? getActiveProjectId = null)
+        Func<Task<ProjectId>>? getActiveProjectId = null)
         : base(delegatedProvider: IProjectPropertiesProviderFactory.Create(defaultProperties ?? IProjectPropertiesFactory.MockWithProperty("").Object),
               instanceProvider: instanceProvider ?? IProjectInstancePropertiesProviderFactory.Create(),
               interceptingValueProviders: interceptingProvider is null
@@ -42,7 +42,7 @@ internal class TestProjectFileOrAssemblyInfoPropertiesProvider : AbstractProject
                     IInterceptingPropertyValueProviderMetadataFactory.Create("TestPropertyName")) }
                 : new[] { interceptingProvider },
               project: project,
-              getActiveProjectId: getActiveProjectId ?? (() => workspace.CurrentSolution.ProjectIds.SingleOrDefault()),
+              getActiveProjectId: getActiveProjectId ?? (() => Task.FromResult(workspace.CurrentSolution.ProjectIds.SingleOrDefault())),
               workspace: workspace,
               threadingService: threadingService ?? IProjectThreadingServiceFactory.Create())
     {

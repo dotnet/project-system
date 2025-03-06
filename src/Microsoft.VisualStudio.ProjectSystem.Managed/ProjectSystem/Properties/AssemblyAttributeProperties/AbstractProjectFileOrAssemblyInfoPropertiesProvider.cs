@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 internal abstract class AbstractProjectFileOrAssemblyInfoPropertiesProvider : InterceptedPropertiesProviderBase
 {
     private readonly UnconfiguredProject _project;
-    private readonly Func<ProjectId?> _getActiveProjectId;
+    private readonly Func<Task<ProjectId>> _getActiveProjectId;
     private readonly Workspace _workspace;
     private readonly IProjectThreadingService _threadingService;
 
@@ -19,7 +19,7 @@ internal abstract class AbstractProjectFileOrAssemblyInfoPropertiesProvider : In
         IProjectInstancePropertiesProvider instanceProvider,
         IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>> interceptingValueProviders,
         UnconfiguredProject project,
-        Func<ProjectId?> getActiveProjectId,
+        Func<Task<ProjectId>> getActiveProjectId,
         Workspace workspace,
         IProjectThreadingService threadingService)
         : base(delegatedProvider, instanceProvider, project, interceptingValueProviders)
