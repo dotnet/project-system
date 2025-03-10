@@ -27,7 +27,7 @@ internal class AssemblyInfoProperties : DelegatedProjectPropertiesBase
 
     public AssemblyInfoProperties(
         IProjectProperties delegatedProjectProperties,
-        Func<ProjectId?> getActiveProjectId,
+        Func<Task<ProjectId>> getActiveProjectId,
         Workspace workspace,
         IProjectThreadingService threadingService)
         : base(delegatedProjectProperties)
@@ -36,7 +36,7 @@ internal class AssemblyInfoProperties : DelegatedProjectPropertiesBase
     }
 
     private static ImmutableDictionary<string, SourceAssemblyAttributePropertyValueProvider> CreateAttributeValueProviderMap(
-        Func<ProjectId?> getActiveProjectId,
+        Func<Task<ProjectId>> getActiveProjectId,
         Workspace workspace,
         IProjectThreadingService threadingService)
     {

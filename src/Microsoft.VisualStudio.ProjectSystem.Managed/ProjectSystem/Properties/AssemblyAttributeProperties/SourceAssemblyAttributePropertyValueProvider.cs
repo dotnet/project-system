@@ -11,13 +11,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 internal class SourceAssemblyAttributePropertyValueProvider
 {
     private readonly string _assemblyAttributeFullName;
-    private readonly Func<ProjectId?> _getActiveProjectId;
+    private readonly Func<Task<ProjectId>> _getActiveProjectId;
     private readonly Workspace _workspace;
     private readonly IProjectThreadingService _threadingService;
 
     public SourceAssemblyAttributePropertyValueProvider(
         string assemblyAttributeFullName,
-        Func<ProjectId?> getActiveProjectId,
+        Func<Task<ProjectId>> getActiveProjectId,
         Workspace workspace,
         IProjectThreadingService threadingService)
     {
@@ -27,13 +27,9 @@ internal class SourceAssemblyAttributePropertyValueProvider
         _threadingService = threadingService;
     }
 
-    private Project? GetActiveProject()
+    private async Task<Project?> GetActiveProjectAsync()
     {
-        ProjectId? activeProjectId = _getActiveProjectId();
-        if (activeProjectId is null)
-        {
-            return null;
-        }
+        ProjectId activeProjectId = await _getActiveProjectId();
 
         return _workspace.CurrentSolution.Projects.SingleOrDefault((p, id) => p.Id == id, activeProjectId);
     }
@@ -43,7 +39,7 @@ internal class SourceAssemblyAttributePropertyValueProvider
     /// </summary>
     public async Task<string?> GetPropertyValueAsync()
     {
-        Project? project = GetActiveProject();
+        Project? project = await GetActiveProjectAsync();
         if (project is null)
         {
             return null;
@@ -60,7 +56,7 @@ internal class SourceAssemblyAttributePropertyValueProvider
     /// <param name="value"></param>
     public async Task SetPropertyValueAsync(string value)
     {
-        Project? project = GetActiveProject();
+        Project? project = await GetActiveProjectAsync();
         if (project is null)
         {
             return;

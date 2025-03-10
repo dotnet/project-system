@@ -27,20 +27,17 @@ internal class ProjectFileOrAssemblyInfoPropertiesProvider : AbstractProjectFile
         VisualStudioWorkspace workspace,
         IProjectThreadingService threadingService)
         : base(delegatedProvider, instanceProvider, interceptingValueProviders, project,
-              getActiveProjectId: () => GetProjectId(threadingService, workspaceWriter),
+              getActiveProjectId: () => GetProjectIdAsync(workspaceWriter),
               workspace: workspace,
               threadingService: threadingService)
     {
     }
 
-    private static ProjectId? GetProjectId(IProjectThreadingService threadingService, IWorkspaceWriter workspaceWriter)
+    private static Task<ProjectId> GetProjectIdAsync(IWorkspaceWriter workspaceWriter)
     {
-        return threadingService.ExecuteSynchronously(() =>
+        return workspaceWriter.WriteAsync(workspace =>
         {
-            return workspaceWriter.WriteAsync(workspace =>
-            {
-                return Task.FromResult(workspace.Context.Id);
-            });
+            return Task.FromResult(workspace.Context.Id);
         });
     }
 }
