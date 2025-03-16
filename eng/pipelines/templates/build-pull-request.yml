@@ -24,6 +24,13 @@ jobs:
   - powershell: npm --version
     displayName: Check npm version
 
+  # Ensure the required .NET SDK version is installed.
+  - task: UseDotNet@2
+    displayName: Use .NET SDK from global.json
+    inputs:
+      packageType: 'sdk'
+      useGlobalJson: true
+
   # Ensure the .NET runtime needed by our unit tests is installed.
   - task: UseDotNet@2
     displayName: Install .NET Runtime
