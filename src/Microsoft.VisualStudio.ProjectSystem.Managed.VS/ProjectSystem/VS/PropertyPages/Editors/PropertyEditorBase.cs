@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Implementation.PropertyPages.Designer;
 
-
 /// <summary>
 /// Base class for property editors that ship with the Project Properties UI.
 /// </summary>
