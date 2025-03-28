@@ -148,8 +148,6 @@ extends:
       jobs:
       - template: eng/pipelines/templates/publish-assets-and-packages.yml@self
       - template: eng/pipelines/templates/publish-symbols.yml@self
-      # Disabling RichNav due to an acquisition issue. See: https://dev.azure.com/devdiv/DevDiv/_workitems/edit/1659507
-      # - template: templates/publish-richnav.yml
     
     - stage: Localization
       displayName: Localization
