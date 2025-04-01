@@ -24,6 +24,11 @@ jobs:
   - powershell: npm --version
     displayName: Check npm version
 
+  - task: NuGetAuthenticate@1
+    displayName: Authenticate NuGet feeds
+    inputs:
+      forceReinstallCredentialProvider: true
+
   # Ensure the required .NET SDK version is installed.
   - task: UseDotNet@2
     displayName: Use .NET SDK from global.json
