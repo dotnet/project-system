@@ -400,12 +400,7 @@ internal sealed class UpToDateCheckImplicitConfiguredInput
                 continue;
             }
 
-            // Rule name (schema name) is usually the same as its item type, but not always (eg: auto-generated rules)
-            string? itemType = null;
-            if (projectCatalogSnapshot.NamedCatalogs.TryGetValue(PropertyPageContexts.File, out IPropertyPagesCatalog? fileCatalog))
-            {
-                itemType = fileCatalog.GetSchema(schemaName)?.DataSource.ItemType;
-            }
+            string? itemType = MapSchemaNameToItemType(schemaName);
 
             if (itemType is null || !inputSourceItemTypes.Contains(itemType))
             {
@@ -488,6 +483,24 @@ internal sealed class UpToDateCheckImplicitConfiguredInput
             lastItemChanges.ToImmutableArray(),
             itemHash,
             projectCopyData: UpdateCopyData());
+
+        string? MapSchemaNameToItemType(string schemaName)
+        {
+            // Rule name (schema name) is usually the same as its item type, but not always.
+            // Source items come from both the "File" and "Project" catalogs, so check both.
+            // Prefer the "File" catalog, as it's the more logical choice.
+            return CheckCatalog(PropertyPageContexts.File) ?? CheckCatalog(PropertyPageContexts.Project);
+
+            string? CheckCatalog(string catalogName)
+            {
+                if (projectCatalogSnapshot.NamedCatalogs.TryGetValue(catalogName, out IPropertyPagesCatalog? fileCatalog))
+                {
+                    return fileCatalog.GetSchema(schemaName)?.DataSource.ItemType;
+                }
+
+                return null;
+            }
+        }
 
         string? UpdateCopyUpToDateMarkerItem()
         {
