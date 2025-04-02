@@ -430,3 +430,24 @@ Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationS
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IObjectBrowserItem
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IObjectBrowserItem.AssemblyPath.get -> string?
 static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase.CreateContextMenuController(System.Guid menuGuid, int menuId) -> Microsoft.Internal.VisualStudio.PlatformUI.IContextMenuController!
+Microsoft.VisualStudio.ProjectSystem.VS.Query.ContextAndRuleProviderState
+Microsoft.VisualStudio.ProjectSystem.VS.Query.ContextAndRuleProviderState.ContextAndRuleProviderState(Microsoft.VisualStudio.ProjectSystem.VS.Query.IProjectState! projectState, Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext! propertiesContext, Microsoft.Build.Framework.XamlTypes.Rule! rule) -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Query.ContextAndRuleProviderState.ProjectState.get -> Microsoft.VisualStudio.ProjectSystem.VS.Query.IProjectState!
+Microsoft.VisualStudio.ProjectSystem.VS.Query.ContextAndRuleProviderState.PropertiesContext.get -> Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext!
+Microsoft.VisualStudio.ProjectSystem.VS.Query.ContextAndRuleProviderState.Rule.get -> Microsoft.Build.Framework.XamlTypes.Rule!
+Microsoft.VisualStudio.ProjectSystem.VS.Query.IProjectState
+Microsoft.VisualStudio.ProjectSystem.VS.Query.IProjectState.BindToRuleAsync(Microsoft.VisualStudio.ProjectSystem.ProjectConfiguration! projectConfiguration, string! schemaName, Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext! propertiesContext) -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.Properties.IRule?>!
+Microsoft.VisualStudio.ProjectSystem.VS.Query.IProjectState.GetDataVersionAsync(Microsoft.VisualStudio.ProjectSystem.ProjectConfiguration! configuration) -> System.Threading.Tasks.Task<(string! versionKey, long versionNumber)?>!
+Microsoft.VisualStudio.ProjectSystem.VS.Query.IProjectState.GetKnownConfigurationsAsync() -> System.Threading.Tasks.Task<System.Collections.Immutable.IImmutableSet<Microsoft.VisualStudio.ProjectSystem.ProjectConfiguration!>?>!
+Microsoft.VisualStudio.ProjectSystem.VS.Query.IProjectState.GetMetadataVersionAsync() -> System.Threading.Tasks.Task<(string! versionKey, long versionNumber)?>!
+Microsoft.VisualStudio.ProjectSystem.VS.Query.IProjectState.GetSuggestedConfigurationAsync() -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.ProjectConfiguration?>!
+Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext
+Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.Equals(Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext? other) -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.File.get -> string!
+Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.IsProjectFile.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.ItemName.get -> string?
+Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.ItemType.get -> string?
+Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.QueryProjectPropertiesContext(bool isProjectFile, string! file, string? itemType, string? itemName) -> void
+override Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.Equals(object! obj) -> bool
+override Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.GetHashCode() -> int
+static readonly Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.ProjectFile -> Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext!

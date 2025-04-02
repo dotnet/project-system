@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.Designer;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
-
 [Export(typeof(INameValuePairListEncoding))]
 [ExportMetadata("Encoding", "VBDefineConstantsEncoding")]
 internal sealed class VBDefineConstantsEncoding : INameValuePairListEncoding
