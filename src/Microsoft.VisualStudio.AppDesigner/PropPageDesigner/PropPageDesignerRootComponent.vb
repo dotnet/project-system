@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''   designer which is showing the UI to the user which allows this component's
         '''   resx file to be edited by the user.
         ''' </summary>
-        ''' <value>The associated ResourceEditorRootDesigner.</value>
+        ''' <value>The associated PropPageDesignerRootDesigner.</value>
         Public ReadOnly Property RootDesigner As PropPageDesignerRootDesigner
             Get
                 If _rootDesigner Is Nothing Then

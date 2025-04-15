@@ -9,7 +9,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     '{ 0xe18b7249, 0x8322, 0x44c3, { 0x9a, 0x57, 0xfe, 0x5f, 0xf3, 0x88, 0x9f, 0x89 } };
 
     ''' <summary>
-    ''' This is the designer for the top-level resource editor component (PropPageDesigner).  I.e., this
+    ''' This is the designer for the top-level property page editor component (PropPageDesigner).  I.e., this
     ''' is the top-level designer.  
     ''' </summary>
     Public NotInheritable Class PropPageDesignerRootDesigner
@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         ''' <summary>
         '''   Called by the managed designer technology to get our view, or the actual control that implements
-        '''   our resource editor's designer surface.  In this case, we return an instance of PropPageDesignerView.
+        '''   our property page editor's designer surface.  In this case, we return an instance of PropPageDesignerView.
         ''' </summary>
         ''' <param name="Technology"></param>
         ''' <remarks>

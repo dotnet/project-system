@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         .
         .
         .
-        Public Shared FileWatcher As New TraceSwitch("FileWatcher", "Trace the resource editor FileWatcher class.")
+        Public Shared FileWatcher As New TraceSwitch("FileWatcher", "Trace the property page editor FileWatcher class.")
         .
         .
         .

@@ -18,6 +18,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' file-name. If it is a localized .resx file (e.g. foo.en.resx), this class will skip setting
     ''' any CustomTool-related properties [CustomTool is the project-property name for a generator]
     ''' </summary>
+    ''' <remarks>
+    ''' This class is invoked from outside of this repository, such as via templates.
+    ''' </remarks>
     Public Class ResxItemWizard
         Implements IWizard
 
