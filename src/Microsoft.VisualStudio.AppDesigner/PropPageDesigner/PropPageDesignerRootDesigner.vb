@@ -45,7 +45,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         ''' <summary>
         ''' Called by the managed designer mechanism to determine what kinds of view technologies we support.
-        ''' We currently support only Windows Forms technology (i.e., our designer view, ResourceEditorView,
+        ''' We currently support only Windows Forms technology (i.e., our designer view which
         ''' inherits from System.Windows.Forms.Control)
         ''' </summary>
         ''' <remarks>
@@ -59,11 +59,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         ''' <summary>
         '''   Called by the managed designer technology to get our view, or the actual control that implements
-        '''   our resource editor's designer surface.  In this case, we return an instance of ResourceEditorView.
+        '''   our resource editor's designer surface.  In this case, we return an instance of PropPageDesignerView.
         ''' </summary>
         ''' <param name="Technology"></param>
         ''' <remarks>
-        '''   The newly-instantiated ResourceEditorView object.
+        '''   The newly-instantiated PropPageDesignerView object.
         ''' </remarks>
         Private Function RootDesigner_GetView(Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
             If Technology <> ViewTechnology.Default Then
