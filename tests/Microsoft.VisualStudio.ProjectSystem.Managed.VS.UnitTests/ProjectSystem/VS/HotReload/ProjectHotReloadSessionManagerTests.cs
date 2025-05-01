@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
+using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -173,14 +175,15 @@ public class ProjectHotReloadSessionManagerTests
         var iVSSolutionBuildManagerServiceMock = new Mock<IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2>>();
 
         var manager = new ProjectHotReloadSessionManager(
-            UnconfiguredProjectFactory.Create(),
-            IProjectThreadingServiceFactory.Create(),
-            IProjectFaultHandlerServiceFactory.Create(),
-            activeDebugFrameworkServices,
-            new Lazy<IProjectHotReloadAgent>(() => IProjectHotReloadAgentFactory.Create()),
-            new Lazy<IHotReloadDiagnosticOutputService>(() => IHotReloadDiagnosticOutputServiceFactory.Create(outputServiceCallback)),
-            new Lazy<IProjectHotReloadNotificationService>(() => IProjectHotReloadNotificationServiceFactory.Create()),
-            iVSSolutionBuildManagerServiceMock.Object);
+            project: UnconfiguredProjectFactory.Create(),
+            threadingService: IProjectThreadingServiceFactory.Create(),
+            projectFaultHandlerService: IProjectFaultHandlerServiceFactory.Create(),
+            activeDebugFrameworkServices: activeDebugFrameworkServices,
+            managedDeltaApplierCreator: new Lazy<IManagedDeltaApplierCreator>(() => IManagedDeltaApplierCreatorFactory.Create()),
+            hotReloadAgentManagerClient: new Lazy<IHotReloadAgentManagerClient>(() => IHotReloadAgentManagerClientFactory.Create()),
+            hotReloadDiagnosticOutputService: new Lazy<IHotReloadDiagnosticOutputService>(() => IHotReloadDiagnosticOutputServiceFactory.Create(outputServiceCallback)),
+            projectHotReloadNotificationService: new Lazy<IProjectHotReloadNotificationService>(() => IProjectHotReloadNotificationServiceFactory.Create()),
+            solutionBuildManagerService: iVSSolutionBuildManagerServiceMock.Object);
 
         return manager;
     }

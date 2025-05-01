@@ -18,11 +18,16 @@ internal interface IProjectHotReloadSessionManager
     /// <see langword="true"/> if the session was created; <see langword="false"/>
     /// otherwise.
     /// </returns>
-    Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables, DebugLaunchOptions launchOptions, ILaunchProfile? launchProfile);
+    Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables, DebugLaunchOptions? launchOptions, ILaunchProfile? launchProfile);
 
     /// <summary>
     /// Activates the pending Hot Reload session and associates it with the specified
     /// process.
     /// </summary>
     Task ActivateSessionAsync(int processId, bool runningUnderDebugger, string projectName);
+
+    /// <summary>
+    /// Build project and wait for the build to complete.
+    /// </summary>
+    Task<bool> BuildProjectAsync(CancellationToken cancellationToken);
 }

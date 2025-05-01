@@ -16,7 +16,7 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
     private readonly Lazy<IManagedDeltaApplierCreator> _deltaApplierCreator;
     private readonly IProjectHotReloadSessionCallback _callback;
-    private readonly IDebugLaunchProvider? _launchProvider;
+    private readonly IInternalDebugLaunchProvider? _launchProvider;
     private readonly ILaunchProfile? _launchProfile;
     private readonly DebugLaunchOptions? _debugLaunchOptions;
     private readonly IProjectHotReloadSessionManager? _sessionManager;
@@ -36,7 +36,7 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
         Lazy<IManagedDeltaApplierCreator> deltaApplierCreator,
         IProjectHotReloadSessionCallback callback,
         IProjectHotReloadSessionManager? sessionManager = null,
-        IDebugLaunchProvider? launchProvider = null,
+        IInternalDebugLaunchProvider? launchProvider = null,
         ILaunchProfile? launchProfile = null,
         DebugLaunchOptions? debugLaunchOptions = null)
     {
@@ -179,18 +179,18 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
     {
         WriteToOutputWindow(VSResources.HotReloadRestartInProgress, cancellationToken);
         
-        if (_launchProvider is LaunchProfilesDebugLaunchProvider launchProvider && _launchProfile is not null && _debugLaunchOptions.HasValue && _sessionManager is ProjectHotReloadSessionManager projectHotReloadSessionManager)
+        if (_launchProvider is not null && _launchProfile is not null && _debugLaunchOptions.HasValue && _sessionManager is not null)
         {
             // rebuild project first
-            var isSucceed = await projectHotReloadSessionManager.RebuildProjectAsync(cancellationToken);
+            var isSucceed = await _sessionManager.BuildProjectAsync(cancellationToken);
 
             if (!isSucceed)
             {
-                WriteToOutputWindow(VSResources.HotReloadRebuildFail, cancellationToken, HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel.Error);
+                WriteToOutputWindow(VSResources.HotReloadBuildFail, cancellationToken, HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel.Error);
                 return;
             }
 
-            await launchProvider.LaunchWithProfileAsync(_debugLaunchOptions.Value, _launchProfile);
+            await _launchProvider.LaunchWithProfileAsync(_debugLaunchOptions.Value, _launchProfile);
         }
     }
 

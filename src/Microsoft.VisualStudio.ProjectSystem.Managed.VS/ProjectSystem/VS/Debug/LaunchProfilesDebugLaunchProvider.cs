@@ -13,8 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 /// other types to get the DebugTarget information to launch.
 /// </summary>
 [ExportDebugger(ProjectDebugger.SchemaName)]
+[Export(typeof(IInternalDebugLaunchProvider))]
 [AppliesTo(ProjectCapability.LaunchProfiles)]
-internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider, IStartupProjectProvider
+internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider, IStartupProjectProvider, IInternalDebugLaunchProvider
 {
     private readonly IVsService<IVsDebuggerLaunchAsync> _vsDebuggerService;
     // Launch providers to enforce requirements for debuggable projects
@@ -85,30 +86,32 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     }
 
     /// <summary>
-    /// This is called on F5 to return the list of debug targets. What is returned depends on the debug provider extensions
-    /// which understands how to launch the currently active profile type.
+    /// This is called on F5 to return the list of debug targets.
+    /// What is returned depends on the debug provider extensions
+    /// which understands how to launch the given profile type.
+    /// If the given profile is null, the active profile will be used.
     /// </summary>
     private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsInternalAsync(DebugLaunchOptions launchOptions, bool fromDebugLaunch, ILaunchProfile? profile = null)
     {
-        ILaunchProfile? activeProfile = profile ?? await GetActiveProfileAsync();
+        profile ??= await GetActiveProfileAsync();
 
-        if (activeProfile is null)
+        if (profile is null)
         {
             throw new Exception(VSResources.ActiveLaunchProfileNotFound);
         }
 
         // Now find the DebugTargets provider for this profile
-        IDebugProfileLaunchTargetsProvider launchProvider = GetLaunchTargetsProvider(activeProfile) ??
-            throw new Exception(string.Format(VSResources.DontKnowHowToRunProfile_2, activeProfile.Name, activeProfile.CommandName));
+        IDebugProfileLaunchTargetsProvider launchProvider = GetLaunchTargetsProvider(profile) ??
+            throw new Exception(string.Format(VSResources.DontKnowHowToRunProfile_2, profile.Name, profile.CommandName));
 
         IReadOnlyList<IDebugLaunchSettings> launchSettings;
         if (fromDebugLaunch && launchProvider is IDebugProfileLaunchTargetsProvider2 launchProvider2)
         {
-            launchSettings = await launchProvider2.QueryDebugTargetsForDebugLaunchAsync(launchOptions, activeProfile);
+            launchSettings = await launchProvider2.QueryDebugTargetsForDebugLaunchAsync(launchOptions, profile);
         }
         else
         {
-            launchSettings = await launchProvider.QueryDebugTargetsAsync(launchOptions, activeProfile);
+            launchSettings = await launchProvider.QueryDebugTargetsAsync(launchOptions, profile);
         }
 
         _lastLaunchProvider = launchProvider;
@@ -175,10 +178,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     /// <summary>
     /// Launches the Visual Studio debugger using the specified profile.
     /// </summary>
-    /// <param name="launchOptions"></param>
-    /// <param name="profile"></param>
-    /// <returns></returns>
-    internal async Task LaunchWithProfileAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+    public async Task LaunchWithProfileAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
     {
         IReadOnlyList<IDebugLaunchSettings> targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true, profile: profile);
 
