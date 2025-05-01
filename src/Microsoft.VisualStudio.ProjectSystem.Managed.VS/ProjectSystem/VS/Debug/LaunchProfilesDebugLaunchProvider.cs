@@ -88,9 +88,9 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     /// This is called on F5 to return the list of debug targets. What is returned depends on the debug provider extensions
     /// which understands how to launch the currently active profile type.
     /// </summary>
-    private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsInternalAsync(DebugLaunchOptions launchOptions, bool fromDebugLaunch)
+    private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsInternalAsync(DebugLaunchOptions launchOptions, bool fromDebugLaunch, ILaunchProfile? profile = null)
     {
-        ILaunchProfile? activeProfile = await GetActiveProfileAsync();
+        ILaunchProfile? activeProfile = profile ?? await GetActiveProfileAsync();
 
         if (activeProfile is null)
         {
@@ -163,25 +163,36 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     /// <summary>
     /// Overridden to direct the launch to the current active provider as determined by the active launch profile
     /// </summary>
-    public override async Task LaunchAsync(DebugLaunchOptions launchOptions)
+    public override Task LaunchAsync(DebugLaunchOptions launchOptions)
     {
-        IReadOnlyList<IDebugLaunchSettings> targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true);
-
         ILaunchProfile? activeProfile = _launchSettingsProvider.ActiveProfile;
 
         Assumes.NotNull(activeProfile);
 
-        IDebugProfileLaunchTargetsProvider? targetProvider = GetLaunchTargetsProvider(activeProfile);
+        return LaunchWithProfileAsync(launchOptions, activeProfile);
+    }
+
+    /// <summary>
+    /// Launches the Visual Studio debugger using the specified profile.
+    /// </summary>
+    /// <param name="launchOptions"></param>
+    /// <param name="profile"></param>
+    /// <returns></returns>
+    internal async Task LaunchWithProfileAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+    {
+        IReadOnlyList<IDebugLaunchSettings> targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true, profile: profile);
+
+        IDebugProfileLaunchTargetsProvider? targetProvider = GetLaunchTargetsProvider(profile);
         if (targetProvider is IDebugProfileLaunchTargetsProvider4 targetsProvider4)
         {
-            await targetsProvider4.OnBeforeLaunchAsync(launchOptions, activeProfile, targets);
+            await targetsProvider4.OnBeforeLaunchAsync(launchOptions, profile, targets);
         }
         else if (targetProvider is not null)
         {
-            await targetProvider.OnBeforeLaunchAsync(launchOptions, activeProfile);
+            await targetProvider.OnBeforeLaunchAsync(launchOptions, profile);
         }
 
-        await DoLaunchAsync(new LaunchCompleteCallback(ThreadingService, launchOptions, targetProvider, activeProfile), targets.ToArray());
+        await DoLaunchAsync(new LaunchCompleteCallback(ThreadingService, launchOptions, targetProvider, profile), targets.ToArray());
     }
 
     /// <summary>

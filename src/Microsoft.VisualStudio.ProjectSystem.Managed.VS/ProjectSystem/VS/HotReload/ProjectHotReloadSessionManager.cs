@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics;
+using System.Net;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -13,14 +14,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
 [Export(typeof(IProjectHotReloadSessionManager))]
 [Export(typeof(IProjectHotReloadUpdateApplier))]
-internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager, IProjectHotReloadUpdateApplier
+internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager, IProjectHotReloadUpdateApplier, IVsUpdateSolutionEvents
 {
     private readonly UnconfiguredProject _project;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
     private readonly IActiveDebugFrameworkServices _activeDebugFrameworkServices;
-    private readonly Lazy<IProjectHotReloadAgent> _projectHotReloadAgent;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
     private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
+    private readonly Lazy<IManagedDeltaApplierCreator> _managedDeltaApplierCreator;
+    private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
+
     private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
     private IVsSolutionBuildManager2? _vsSolutionBuildManager2;
     private readonly IProjectThreadingService _projectThreadingService;
@@ -33,6 +36,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
     private readonly Dictionary<int, HotReloadState> _activeSessions = [];
     private HotReloadState? _pendingSessionState = null;
     private int _nextUniqueId = 1;
+    private TaskCompletionSource<bool>? _solutionBuidCompleteTask = null;
 
     public bool HasActiveHotReloadSessions => _activeSessions.Count != 0;
 
@@ -42,9 +46,10 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         IProjectThreadingService threadingService,
         IProjectFaultHandlerService projectFaultHandlerService,
         IActiveDebugFrameworkServices activeDebugFrameworkServices,
-        Lazy<IProjectHotReloadAgent> projectHotReloadAgent,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
         Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
+        Lazy<IManagedDeltaApplierCreator> managedDeltaApplierCreator,
+        Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
         IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService)
         : base(threadingService.JoinableTaskContext)
     {
@@ -52,11 +57,11 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         _projectThreadingService = threadingService;
         _projectFaultHandlerService = projectFaultHandlerService;
         _activeDebugFrameworkServices = activeDebugFrameworkServices;
-        _projectHotReloadAgent = projectHotReloadAgent;
         _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
         _projectHotReloadNotificationService = projectHotReloadNotificationService;
         _vsSolutionBuildManagerService = solutionBuildManagerService;
-
+        _managedDeltaApplierCreator = managedDeltaApplierCreator;
+        _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
         _semaphore = ReentrantSemaphore.Create(
             initialCount: 1,
             joinableTaskContext: project.Services.ThreadingPolicy.JoinableTaskContext.Context,
@@ -154,7 +159,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         }
     }
 
-    public Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables)
+    public Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables, DebugLaunchOptions launchOptions, ILaunchProfile? launchProfile = null)
     {
         return _semaphore.ExecuteAsync(TryCreatePendingSessionInternalAsync).AsTask();
 
@@ -168,7 +173,23 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
                 {
                     string name = Path.GetFileNameWithoutExtension(_project.FullPath);
                     HotReloadState state = new(this);
-                    IProjectHotReloadSession? projectHotReloadSession = _projectHotReloadAgent.Value.CreateHotReloadSession(name, _nextUniqueId++, frameworkVersion, state);
+                    var configuredProject = await GetConfiguredProjectForDebugAsync();
+                    Assumes.Present(configuredProject);
+
+                    var debugLaunchProvider = configuredProject.Services.ExportProvider.GetExportedValueOrDefault<IDebugLaunchProvider>();
+                    IProjectHotReloadSession? projectHotReloadSession = new ProjectHotReloadSession(
+                        name: name,
+                        variant: _nextUniqueId++,
+                        runtimeVersion: frameworkVersion,
+                        hotReloadAgentManagerClient: _hotReloadAgentManagerClient,
+                        hotReloadOutputService: _hotReloadDiagnosticOutputService,
+                        deltaApplierCreator: _managedDeltaApplierCreator,
+                        sessionManager: this,
+                        callback: state,
+                        launchProvider: debugLaunchProvider,
+                        launchProfile: launchProfile,
+                        debugLaunchOptions: launchOptions);
+
 
                     if (projectHotReloadSession is not null)
                     {
@@ -225,6 +246,53 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
             _activeSessions.Clear();
 
             return Task.CompletedTask;
+        }
+    }
+
+    internal async Task<bool> RebuildProjectAsync(
+        CancellationToken cancellationToken)
+    {
+        Assumes.NotNull(_project.Services.HostObject);
+        await _projectThreadingService.SwitchToUIThread();
+
+        if (_vsSolutionBuildManager2 is null)
+        {
+            _vsSolutionBuildManager2 = await _vsSolutionBuildManagerService.GetValueAsync(cancellationToken);
+        }
+
+       
+        // Step 1: Register sbm events
+        var _ = _vsSolutionBuildManager2.AdviseUpdateSolutionEvents(this, out uint cookie);
+        try
+        {
+            // Step 2: Build
+            var projectVsHierarchy = (IVsHierarchy)_project.Services.HostObject;
+
+            var result = _vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(
+                pIVsHierarchyToBuild: projectVsHierarchy,
+                pIVsHierarchyDependent: null,
+                pszDependentConfigurationCanonicalName: null,
+                dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD,
+                dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
+                fSuppressUI: 0);
+
+            ErrorHandler.ThrowOnFailure(result);
+
+            // Step 3: Wait for the build to complete
+            if (_solutionBuidCompleteTask is not null)
+            {
+                // Wait for the build to complete
+                var isBuildSucceed = await _solutionBuidCompleteTask.Task;
+
+                return isBuildSucceed;
+            }
+
+            return false;
+        }
+        finally
+        {
+            _solutionBuidCompleteTask = null;
+            _vsSolutionBuildManager2.UnadviseUpdateSolutionEvents(cookie);
         }
     }
 
@@ -528,5 +596,42 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         {
             return ProjectHotReloadSessionManager.GetDeltaApplier(this);
         }
+    }
+
+    public int UpdateSolution_Begin(ref int pfCancelUpdate)
+    {
+        _solutionBuidCompleteTask = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        return HResult.OK;
+    }
+
+    public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
+    {
+        if (_solutionBuidCompleteTask is not null)
+        {
+            _solutionBuidCompleteTask.TrySetResult(fSucceeded != 0);
+            _solutionBuidCompleteTask = null;
+        }
+        return HResult.OK;
+    }
+
+    public int UpdateSolution_StartUpdate(ref int pfCancelUpdate)
+    {
+        return HResult.OK;
+    }
+
+    public int UpdateSolution_Cancel()
+    {
+        if (_solutionBuidCompleteTask is not null)
+        {
+            _solutionBuidCompleteTask.TrySetResult(false);
+            _solutionBuidCompleteTask = null;
+        }
+        return HResult.OK;
+    }
+
+    public int OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy)
+    {
+        return HResult.OK;
     }
 }

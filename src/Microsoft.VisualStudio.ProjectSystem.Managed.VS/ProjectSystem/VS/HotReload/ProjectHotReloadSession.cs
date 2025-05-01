@@ -3,6 +3,8 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
@@ -14,6 +16,10 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
     private readonly Lazy<IManagedDeltaApplierCreator> _deltaApplierCreator;
     private readonly IProjectHotReloadSessionCallback _callback;
+    private readonly IDebugLaunchProvider? _launchProvider;
+    private readonly ILaunchProfile? _launchProfile;
+    private readonly DebugLaunchOptions? _debugLaunchOptions;
+    private readonly IProjectHotReloadSessionManager? _sessionManager;
 
     private bool _sessionActive;
 
@@ -28,7 +34,11 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
         Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadOutputService,
         Lazy<IManagedDeltaApplierCreator> deltaApplierCreator,
-        IProjectHotReloadSessionCallback callback)
+        IProjectHotReloadSessionCallback callback,
+        IProjectHotReloadSessionManager? sessionManager = null,
+        IDebugLaunchProvider? launchProvider = null,
+        ILaunchProfile? launchProfile = null,
+        DebugLaunchOptions? debugLaunchOptions = null)
     {
         Name = name;
         _variant = variant.ToString();
@@ -37,6 +47,10 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
         _hotReloadOutputService = hotReloadOutputService;
         _deltaApplierCreator = deltaApplierCreator;
         _callback = callback;
+        _launchProvider = launchProvider;
+        _launchProfile = launchProfile;
+        _sessionManager = sessionManager;
+        _debugLaunchOptions = debugLaunchOptions;
     }
 
     // IProjectHotReloadSession
@@ -164,14 +178,19 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
     public async ValueTask RestartAsync(CancellationToken cancellationToken)
     {
         WriteToOutputWindow(VSResources.HotReloadRestartInProgress, cancellationToken);
+        
+        if (_launchProvider is LaunchProfilesDebugLaunchProvider launchProvider && _launchProfile is not null && _debugLaunchOptions.HasValue && _sessionManager is ProjectHotReloadSessionManager projectHotReloadSessionManager)
+        {
+            // rebuild project first
+            var isSucceed = await projectHotReloadSessionManager.RebuildProjectAsync(cancellationToken);
 
-        if (_callback is IProjectHotReloadSessionCallback2 callBack2)
-        {
-            await callBack2.RestartProjectAsync(_isRunningUnderDebugger, cancellationToken);
-        }
-        else
-        {
-            await _callback.RestartProjectAsync(cancellationToken);
+            if (!isSucceed)
+            {
+                WriteToOutputWindow(VSResources.HotReloadRebuildFail, cancellationToken, HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel.Error);
+                return;
+            }
+
+            await launchProvider.LaunchWithProfileAsync(_debugLaunchOptions.Value, _launchProfile);
         }
     }
 
@@ -186,7 +205,7 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
 
     public ValueTask<bool> SupportsRestartAsync(CancellationToken cancellationToken)
     {
-        return new ValueTask<bool>(_callback.SupportsRestart);
+        return new ValueTask<bool>(_launchProvider is LaunchProfilesDebugLaunchProvider && _launchProfile is not null && _debugLaunchOptions.HasValue);
     }
 
     private void WriteToOutputWindow(string message, CancellationToken cancellationToken, HotReloadVerbosity verbosity = HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel errorLevel = HotReloadDiagnosticErrorLevel.Info)

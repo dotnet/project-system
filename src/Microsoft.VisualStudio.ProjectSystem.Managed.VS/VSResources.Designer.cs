@@ -934,6 +934,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HotReload rebuild fail.
+        /// </summary>
+        internal static string HotReloadRebuildFail {
+            get {
+                return ResourceManager.GetString("HotReloadRebuildFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rebuilding and restarting the application since the edits can&apos;t be applied dynamically..
         /// </summary>
         internal static string HotReloadRestartInProgress {

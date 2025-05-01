@@ -455,6 +455,11 @@
         <target state="translated">핫 다시 로드</target>
         <note>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</note>
       </trans-unit>
+      <trans-unit id="HotReloadRebuildFail">
+        <source>HotReload rebuild fail</source>
+        <target state="new">HotReload rebuild fail</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HotReloadRestartInProgress">
         <source>Rebuilding and restarting the application since the edits can't be applied dynamically.</source>
         <target state="translated">편집 내용을 동적으로 적용할 수 없으므로 애플리케이션을 다시 빌드하고 다시 시작하세요.</target>
