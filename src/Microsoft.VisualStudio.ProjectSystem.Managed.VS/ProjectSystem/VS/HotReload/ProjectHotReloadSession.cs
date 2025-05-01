@@ -20,11 +20,7 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
     private readonly ILaunchProfile? _launchProfile;
     private readonly DebugLaunchOptions? _debugLaunchOptions;
     private readonly IProjectHotReloadSessionManager? _sessionManager;
-
     private bool _sessionActive;
-
-    // This flag is used to identify Debug|NonDebug cases
-    private bool _isRunningUnderDebugger;
     private IDeltaApplier? _deltaApplier;
 
     public ProjectHotReloadSession(
@@ -92,7 +88,6 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
 
         WriteToOutputWindow(VSResources.HotReloadStartSession, default);
         _sessionActive = true;
-        _isRunningUnderDebugger = runningUnderDebugger;
         EnsureDeltaApplierForSession();
     }
 

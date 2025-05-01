@@ -412,38 +412,6 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         return null;
     }
 
-    private async Task<bool> RestartProjectAsync(
-        HotReloadState hotReloadState,
-        bool isRunningUnderDebug,
-        CancellationToken cancellationToken)
-    {
-        Assumes.NotNull(_project.Services.HostObject);
-        await _projectThreadingService.SwitchToUIThread();
-
-        if (_vsSolutionBuildManager2 is null)
-        {
-            _vsSolutionBuildManager2 = await _vsSolutionBuildManagerService.GetValueAsync(cancellationToken);
-        }
-
-        // Step 1: Debug or NonDebug?
-        uint dbgLaunchFlag = isRunningUnderDebug ? (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCHDEBUG : (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCH;
-
-        // Step 2: Build and Launch Debug
-        var projectVsHierarchy = (IVsHierarchy)_project.Services.HostObject;
-
-        var result = _vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(
-            pIVsHierarchyToBuild: projectVsHierarchy,
-            pIVsHierarchyDependent: null,
-            pszDependentConfigurationCanonicalName: null,
-            dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD | dbgLaunchFlag,
-            dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
-            fSuppressUI: 0);
-
-        ErrorHandler.ThrowOnFailure(result);
-
-        return result == HResult.OK;
-    }
-
     private static Task OnAfterChangesAppliedAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
@@ -573,7 +541,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
         public Task<bool> RestartProjectAsync(bool isRunningUnderDebug, CancellationToken cancellationToken)
         {
-            return _sessionManager.RestartProjectAsync(this, isRunningUnderDebug, cancellationToken);
+            return TaskResult.False;
         }
 
         public IDeltaApplier? GetDeltaApplier()
@@ -584,11 +552,17 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
     private class SolutionBuildCompleteListener : IVsUpdateSolutionEvents, IDisposable
     {
-        private TaskCompletionSource<bool>? _solutionBuildCompleteTask;
+        /// <summary>
+        /// The countdown for the number of builds that are still in progress. This is used to determine when the build is complete.
+        /// </summary>
+        private int _buildLeft;
+        private bool? _isBuildSucceed;
         public SolutionBuildCompleteListener()
         {
-            _solutionBuildCompleteTask = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            _buildLeft = 1;
+            _isBuildSucceed = null;
         }
+
         public static int UpdateSolution_Start(ref int pfCancelUpdate)
         {
             return HResult.OK;
@@ -600,15 +574,13 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
         public int UpdateSolution_Begin(ref int pfCancelUpdate)
         {
-            _solutionBuildCompleteTask = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
             return HResult.OK;
         }
 
         public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
         {
-            _solutionBuildCompleteTask?.TrySetResult(fSucceeded != 0);
-
-            _solutionBuildCompleteTask = null;
+            _isBuildSucceed = fSucceeded != 0;
+            Interlocked.Decrement(ref _buildLeft);
             return HResult.OK;
         }
 
@@ -619,8 +591,8 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
         public int UpdateSolution_Cancel()
         {
-            _solutionBuildCompleteTask?.TrySetResult(false);
-            _solutionBuildCompleteTask = null;
+            _isBuildSucceed = false;
+            Interlocked.Decrement(ref _buildLeft);
             return HResult.OK;
         }
 
@@ -631,27 +603,24 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
         public async Task<bool> WaitForSolutionBuildCompletedAsync(CancellationToken ct = default)
         {
-            if (_solutionBuildCompleteTask is null)
-            {
-                return true;
-            }
-
-            ct.Register(() =>
+            
+            using var registration = ct.Register(() =>
                 {
-                    _solutionBuildCompleteTask.TrySetResult(false);
-                    _solutionBuildCompleteTask = null;
+                    _isBuildSucceed = false;
+                    Interlocked.Decrement(ref _buildLeft);
                 });
 
-            return await _solutionBuildCompleteTask.Task;
+            while (Interlocked.CompareExchange(ref _buildLeft, 0, 0) > 0)
+            {
+                // Wait for the build to complete
+                await Task.Yield();
+            }
+
+            return _isBuildSucceed == true;
         }
 
         public void Dispose()
         {
-            if (_solutionBuildCompleteTask is not null)
-            {
-                _solutionBuildCompleteTask.TrySetResult(false);
-                _solutionBuildCompleteTask = null;
-            }
         }
     }
 }
