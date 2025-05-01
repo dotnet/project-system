@@ -603,7 +603,6 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
         public async Task<bool> WaitForSolutionBuildCompletedAsync(CancellationToken ct = default)
         {
-            
             using var registration = ct.Register(() =>
                 {
                     _isBuildSucceed = false;
@@ -614,6 +613,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
             {
                 // Wait for the build to complete
                 await Task.Yield();
+                await Task.Delay(100, ct);
             }
 
             return _isBuildSucceed == true;
