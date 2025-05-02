@@ -176,7 +176,7 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
         
         if (_launchProvider is not null && _launchProfile is not null && _debugLaunchOptions.HasValue && _sessionManager is not null)
         {
-            // rebuild project first
+            // build project first
             var isSucceed = await _sessionManager.BuildProjectAsync(cancellationToken);
 
             if (!isSucceed)

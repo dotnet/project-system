@@ -510,8 +510,6 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         public Process? Process { get; set; }
         public IProjectHotReloadSession? Session { get; set; }
 
-        public bool SupportsRestart => true;
-
         public UnconfiguredProject? Project => _sessionManager._project;
 
         public HotReloadState(ProjectHotReloadSessionManager sessionManager)
@@ -532,16 +530,6 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         public Task<bool> StopProjectAsync(CancellationToken cancellationToken)
         {
             return _sessionManager.StopProjectAsync(this, cancellationToken).AsTask();
-        }
-
-        public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
-        {
-            return TaskResult.False;
-        }
-
-        public Task<bool> RestartProjectAsync(bool isRunningUnderDebug, CancellationToken cancellationToken)
-        {
-            return TaskResult.False;
         }
 
         public IDeltaApplier? GetDeltaApplier()

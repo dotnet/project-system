@@ -5,5 +5,5 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 internal interface IInternalDebugLaunchProvider : IDebugLaunchProvider
 {
-    public Task LaunchWithProfileAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);
+    Task LaunchWithProfileAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);
 }
