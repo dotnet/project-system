@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '''   designer which is showing the UI to the user which allows this component's
         '''   resx file to be edited by the user.
         ''' </summary>
-        ''' <value>The associated ResourceEditorRootDesigner.</value>
+        ''' <value>The associated ApplicationDesignerRootDesigner.</value>
         Public ReadOnly Property RootDesigner As ApplicationDesignerRootDesigner
             Get
                 If _rootDesigner Is Nothing Then

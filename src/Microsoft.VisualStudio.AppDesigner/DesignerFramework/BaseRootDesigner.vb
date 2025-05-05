@@ -82,8 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '''  TRUE to keep previously registered menu commands for this designer.
         '''  FALSE otherwise, the root designer will clear its menu commands list and add the new one.
         ''' </param>
-        ''' <remarks>Child root designers call this method to register their own menu commands. 
-        '''      See ResourceEditorRootDesigner.</remarks>
+        ''' <remarks>Child root designers call this method to register their own menu commands.</remarks>
         Public Sub RegisterMenuCommands(MenuCommands As ArrayList,
                 Optional KeepRegisteredMenuCommands As Boolean = True)
             ' Clear the list of menu commands if specified.

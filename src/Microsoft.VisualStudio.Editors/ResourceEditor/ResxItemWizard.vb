@@ -4,6 +4,7 @@ Option Strict On
 Option Explicit On
 Option Compare Binary
 Imports System.Collections.Specialized
+Imports System.Globalization
 
 Imports EnvDTE
 
@@ -17,6 +18,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' file-name. If it is a localized .resx file (e.g. foo.en.resx), this class will skip setting
     ''' any CustomTool-related properties [CustomTool is the project-property name for a generator]
     ''' </summary>
+    ''' <remarks>
+    ''' This class is invoked from outside of this repository, such as via templates.
+    ''' </remarks>
     Public Class ResxItemWizard
         Implements IWizard
 
@@ -50,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim fileName As String = projectItem.FileNames(1)
                 Debug.Assert(fileName IsNot Nothing AndAlso fileName.Length > 0, "bogus ProjectItem.FileNames(1) value?")
 
-                Dim isLocalizedResxFile As Boolean = ResourceEditorView.IsLocalizedResXFile(fileName)
+                Dim isLocalizedResxFile As Boolean = ResxItemWizard.IsLocalizedResXFile(fileName)
                 Dim itemProperties As Properties = projectItem.Properties
 
                 Debug.Assert(itemProperties IsNot Nothing, "null projectItem.Properties?")
@@ -94,6 +98,46 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
         End Sub
+
+        ''' <summary>
+        ''' Tells whether the given file-name is a localized .resx file by comparing the text
+        ''' between the next-to-last and last period characters to see if that is a valid culture.
+        ''' If it is, this returns True, else it returns False.
+        ''' An example is Form1.en-US.resx  [en-US is a valid CultureInfo]
+        ''' </summary>
+        ''' <param name="fileName"></param>
+        Private Shared Function IsLocalizedResXFile(fileName As String) As Boolean
+
+            Dim isLocalizedFileName As Boolean = False
+
+            If fileName IsNot Nothing AndAlso HasResourceFileExtension(fileName) Then
+
+                Dim idx As Integer = fileName.Substring(0, fileName.Length - 5).LastIndexOf("."c)
+                If idx > 0 Then
+                    Dim cultureString As String = fileName.Substring(idx + 1, fileName.Length - 6 - idx)
+                    Try
+                        Dim cultureInfo As New CultureInfo(cultureString)
+                        If cultureInfo IsNot Nothing Then
+                            isLocalizedFileName = True
+                        End If
+                    Catch ex As Exception
+                    End Try
+                End If
+            End If
+
+            Return isLocalizedFileName
+
+        End Function
+
+        ''' <summary>
+        ''' Determines if the provided file name has any resource file extension (.resx or .resw)
+        ''' </summary>
+        ''' <param name="fileName"></param>
+        Private Shared Function HasResourceFileExtension(fileName As String) As Boolean
+            Dim extension As String = System.IO.Path.GetExtension(fileName)
+            Return extension.Equals(".resx", StringComparison.OrdinalIgnoreCase) OrElse
+                   extension.Equals(".resw", StringComparison.OrdinalIgnoreCase)
+        End Function
 
         ''' <summary>
         ''' Do nothing

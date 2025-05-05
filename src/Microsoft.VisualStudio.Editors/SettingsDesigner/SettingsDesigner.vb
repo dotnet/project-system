@@ -2,8 +2,8 @@
 
 Imports System.ComponentModel.Design
 Imports System.IO
+Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports Microsoft.VisualStudio.Editors.Interop
-Imports Microsoft.VisualStudio.Editors.ResourceEditor
 Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
@@ -225,7 +225,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Debug.Fail("Can't get a class name from an empty path!")
                 Return ""
             End If
-            Return ResourceEditorView.GetGeneratedClassNameFromFileName(IO.Path.GetFileNameWithoutExtension(PathName))
+            Return GetGeneratedClassNameFromFileName(IO.Path.GetFileNameWithoutExtension(PathName))
+        End Function
+
+        ''' <summary>
+        ''' Given a filename, determines what the generated class name would be
+        ''' </summary>
+        ''' <param name="FileName"></param>
+        Friend Shared Function GetGeneratedClassNameFromFileName(FileName As String) As String
+            Return DesignUtil.GenerateValidLanguageIndependentIdentifier(Path.GetFileNameWithoutExtension(FileName))
         End Function
 
         ''' <summary>

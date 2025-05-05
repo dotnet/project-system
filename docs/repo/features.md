@@ -13,11 +13,6 @@ This repository contains the following broad features:
 ## Property Pages
 [Source](/src/Microsoft.VisualStudio.Editors/PropPages)
 
-## Resources Editor
-[Source](/src/Microsoft.VisualStudio.Editors/ResourceEditor)
-
-![Resources Editor](/docs/repo/images/resourceseditor.png?raw=true)
-
 ## Settings Designer
 [Source](/src/Microsoft.VisualStudio.Editors/SettingsDesigner)
 

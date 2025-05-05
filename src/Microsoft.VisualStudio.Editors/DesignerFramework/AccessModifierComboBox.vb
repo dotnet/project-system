@@ -4,11 +4,9 @@ Imports System.CodeDom
 Imports System.CodeDom.Compiler
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
-Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.Common
-Imports Microsoft.VisualStudio.Editors.ResourceEditor
 Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
@@ -67,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Private _isDisposed As Boolean
         Private ReadOnly _rootDesigner As BaseRootDesigner
-        Private ReadOnly _resxFileProjectItem As EnvDTE.ProjectItem
+        Private ReadOnly _projectItem As EnvDTE.ProjectItem
         Private ReadOnly _serviceProvider As IServiceProvider
         Private ReadOnly _namespaceToOverrideIfCustomToolIsEmpty As String
         Private ReadOnly _codeGeneratorEntries As New List(Of CodeGenerator)
@@ -83,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' checked the project system yet)
         ' This field should only be accessed through the CustomToolsRegistered property.
         Private _customToolsRegistered As Boolean?
-        Private _allowEdit As Boolean
+        'Private _allowEdit As Boolean
 
 #Region "Nested class CodeGenerator"
 
@@ -302,7 +300,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Requires.NotNull(serviceProvider)
 
             _rootDesigner = rootDesigner
-            _resxFileProjectItem = projectItem
+            _projectItem = projectItem
             _serviceProvider = serviceProvider
             _namespaceToOverrideIfCustomToolIsEmpty = namespaceToOverrideIfCustomToolIsEmpty
         End Sub
@@ -411,7 +409,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Dim customToolProperty As EnvDTE.Property = Nothing
 
             Try
-                customToolProperty = DTEUtils.GetProjectItemProperty(_resxFileProjectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
+                customToolProperty = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
             Catch ex As KeyNotFoundException
                 ' Possible limitation of Cps. In some cases Cps is not able to maintain the same item id for items,
                 ' causing them to Not be found. In some scenarios (i.e., when the item Is moved), it ends up having
@@ -441,25 +439,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             For Each codeGenerator As CodeGenerator In _codeGeneratorEntries
                 If codeGenerator.DisplayName.Equals(value, StringComparison.CurrentCultureIgnoreCase) Then
-                    If TypeOf RootDesigner Is ResourceEditorRootDesigner Then
-                        Dim Designer = CType(RootDesigner, ResourceEditorRootDesigner)
-                        Dim ResourceView As ResourceEditorView = Designer.GetView()
-                        ' We let the base class handle the read only mode
-                        ' As mentioned in ResourceEditorDesignerLoader, "We actually don't want users to edit Form RESX file"
-                        ' so we just need to add the same warning as there for now until the new resource explorer is released
-                        If ResourceView IsNot Nothing AndAlso Not ResourceView.ReadOnlyMode Then
-                            If ResourceView.DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UpdateADependentFile, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2, HelpIDs.Err_EditFormResx) = DialogResult.Yes Then
-                                _allowEdit = True
-                            End If
-                        End If
-                        If _allowEdit Then
-                            TrySetCustomToolValue(codeGenerator.CustomToolValue)
-                        End If
-
-                        _allowEdit = False
-                    Else
-                        TrySetCustomToolValue(codeGenerator.CustomToolValue)
-                    End If
+                    TrySetCustomToolValue(codeGenerator.CustomToolValue)
                     Return
                 End If
             Next
@@ -474,8 +454,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="value"></param>
         Private Sub TrySetCustomToolValue(value As String)
             Try
-                Dim customToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_resxFileProjectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
-                Dim customToolNamespaceProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_resxFileProjectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
+                Dim customToolProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOL)
+                Dim customToolNamespaceProperty As EnvDTE.Property = DTEUtils.GetProjectItemProperty(_projectItem, DTEUtils.PROJECTPROPERTY_CUSTOMTOOLNAMESPACE)
 
                 If customToolProperty IsNot Nothing Then
                     Dim previousCustomToolValue As String = TryCast(customToolProperty.Value, String)
@@ -588,7 +568,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         Protected Overridable ReadOnly Property Hierarchy As IVsHierarchy
             Get
-                Return ShellUtil.VsHierarchyFromDTEProject(_serviceProvider, _resxFileProjectItem.ContainingProject)
+                Return ShellUtil.VsHierarchyFromDTEProject(_serviceProvider, _projectItem.ContainingProject)
             End Get
         End Property
 

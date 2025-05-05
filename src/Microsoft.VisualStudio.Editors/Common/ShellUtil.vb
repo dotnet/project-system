@@ -56,20 +56,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         ''' <summary>
-        ''' Retrieves the window that should be used as the owner of all dialogs and messageboxes.
-        ''' </summary>
-        Friend Shared Function GetDialogOwnerWindow(serviceProvider As IServiceProvider) As IWin32Window
-            Dim dialogOwner As IWin32Window = Nothing
-            Dim UIService As IUIService = DirectCast(serviceProvider.GetService(GetType(IUIService)), IUIService)
-            If UIService IsNot Nothing Then
-                dialogOwner = UIService.GetDialogOwnerWindow()
-            End If
-
-            Debug.Assert(dialogOwner IsNot Nothing, "Couldn't get DialogOwnerWindow")
-            Return dialogOwner
-        End Function
-
-        ''' <summary>
         ''' Given an IVsCfg, get its configuration and platform names.
         ''' </summary>
         ''' <param name="Config">The IVsCfg to get the configuration and platform name from.</param>
@@ -232,24 +218,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return Nothing
             End If
             Return TryCast(ConfigProvider, IVsCfgProvider2)
-        End Function
-
-        ''' <summary>
-        ''' Given a hierarchy, determine if this is a devices project...
-        ''' </summary>
-        ''' <param name="hierarchy"></param>
-        Public Shared Function IsDeviceProject(hierarchy As IVsHierarchy) As Boolean
-            If hierarchy Is Nothing Then
-                Debug.Fail("I can't determine if this is a devices project from a NULL hierarchy!?")
-                Return False
-            End If
-
-            Dim vsdProperty As Object = Nothing
-            Dim hr As Integer = hierarchy.GetProperty(VSITEMID.ROOT, 8000, vsdProperty)
-            If Interop.NativeMethods.Succeeded(hr) AndAlso vsdProperty IsNot Nothing AndAlso TryCast(vsdProperty, IVSDProjectProperties) IsNot Nothing Then
-                Return True
-            End If
-            Return False
         End Function
 
         ''' <summary>
@@ -443,13 +411,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return result
 
         End Function
-
-        '''<summary>
-        ''' a fake IVSDProjectProperties definition. We only use this to check whether the project supports this interface, but don't pay attention to the detail.
-        '''</summary>
-        <System.Runtime.InteropServices.ComImport, System.Runtime.InteropServices.ComVisible(False), System.Runtime.InteropServices.Guid("1A27878B-EE15-41CE-B427-58B10390C821"), System.Runtime.InteropServices.InterfaceType(System.Runtime.InteropServices.ComInterfaceType.InterfaceIsDual)>
-        Private Interface IVSDProjectProperties
-        End Interface
 
         ''' <summary>
         ''' Wrapper class for IVsShell.OnBroadcastMessage
@@ -654,45 +615,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Public Shared Function GetServiceProvider(dte As DTE) As IServiceProvider
             Return New Shell.ServiceProvider(DirectCast(dte, OLE.Interop.IServiceProvider))
-        End Function
-        ''' <summary>
-        ''' VSHPROPID_IsDefaultNamespaceRefactorNotify only exists in C#.  Other langs will not have this property
-        ''' 
-        ''' C# does not support default namespace rename.  this flag will tell the caller if
-        ''' this is a default renamespace rename or not.
-        ''' </summary>
-        ''' <param name="pHier"></param>
-        ''' <param name="itemId"></param>
-        Public Shared Function IsDefaultNamespaceRename(pHier As IVsHierarchy, itemId As UInteger) As Boolean
-            ' result <<== out
-            Dim result As Object = Nothing
-            Dim success As Boolean = VSErrorHandler.Succeeded(pHier.GetProperty(itemId, CType(__VSHPROPID3.VSHPROPID_IsDefaultNamespaceRefactorNotify, Integer), result))
-
-            If Not success OrElse result Is Nothing Then
-                Return False
-            End If
-
-            Return CType(result, Boolean)
-        End Function
-
-        ''' <summary>
-        ''' Create a Type Resolution Service.
-        ''' </summary>
-        ''' <param name="serviceProvider"></param>
-        ''' <param name="hierarchy"></param>
-        Friend Shared Function CreateTypeResolutionService(serviceProvider As IServiceProvider, hierarchy As IVsHierarchy) As System.ComponentModel.Design.ITypeResolutionService
-            Dim dynamicTypeService As Shell.Design.DynamicTypeService =
-                    TryCast(serviceProvider.GetService(
-                    GetType(Shell.Design.DynamicTypeService)),
-                    Shell.Design.DynamicTypeService)
-
-            Dim trs As System.ComponentModel.Design.ITypeResolutionService = Nothing
-
-            If dynamicTypeService IsNot Nothing Then
-                trs = dynamicTypeService.GetTypeResolutionService(hierarchy, VSITEMID.ROOT)
-            End If
-
-            Return trs
         End Function
 
         ''' <summary>

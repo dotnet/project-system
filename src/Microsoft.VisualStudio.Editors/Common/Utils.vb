@@ -24,46 +24,10 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
     Friend Module Utils
 
-        'The transparent color used for all bitmaps in the resource editor is lime (R=0, G=255, B=0).
-        '  Any pixels of this color will be converted to transparent if StandardTransparentColor
-        '  is passed to GetManifestBitmap
-        Public ReadOnly StandardTransparentColor As Color = Color.Lime
-
         ' The maximal amount of files that can be added at one shot. (copied from other VS features)
         Private Const VSDPLMAXFILES As Integer = 200
 
         Private s_imageService As IVsImageService2
-
-        'Property page GUIDs.  These are used only for sorting the tabs in the project designer, and for providing a
-        '  unique ID for SQM.  Both cases are optional (we handle getting property pages with GUIDs we don't recognize).
-        'PERF: NOTE: Initializing GUIDs from numeric values as below is a lot faster than initializing from strings.
-        Friend Class KnownPropertyPageGuids
-            Friend Shared ReadOnly GuidApplicationPage_VB As Guid = New Guid(&H8998E48EUI, &HB89AUS, &H4034US, &HB6, &H6E, &H35, &H3D, &H8C, &H1F, &HDC, &H2E)
-            Friend Shared ReadOnly GuidApplicationPage_VB_WPF As Guid = New Guid(&HAA1F44UI, &H2BA3US, &H4EAAUS, &HB5, &H4A, &HCE, &H18, &H0, &HE, &H6C, &H5D)
-            Friend Shared ReadOnly GuidApplicationPage_CS As Guid = New Guid(&H5E9A8AC2UI, &H4F34US, &H4521US, CByte(&H85), CByte(&H8F), CByte(&H4C), CByte(&H24), CByte(&H8B), CByte(&HA3), CByte(&H15), CByte(&H32))
-            Friend Shared ReadOnly GuidApplicationPage_JS As Guid = GuidApplicationPage_CS
-            Friend Shared ReadOnly GuidSigningPage As Guid = New Guid(&HF8D6553FUI, &HF752US, &H4DBFUS, CByte(&HAC), CByte(&HB6), CByte(&HF2), CByte(&H91), CByte(&HB7), CByte(&H44), CByte(&HA7), CByte(&H92))
-            Friend Shared ReadOnly GuidReferencesPage_VB As Guid = New Guid(&H4E43F4ABUI, &H9F03US, &H4129US, CByte(&H95), CByte(&HBF), CByte(&HB8), CByte(&HFF), CByte(&H87), CByte(&HA), CByte(&HF6), CByte(&HAB))
-            Friend Shared ReadOnly GuidServicesPropPage As Guid = New Guid(&H43E38D2EUI, &H4EB8US, &H4204US, CByte(&H82), CByte(&H25), CByte(&H93), CByte(&H57), CByte(&H31), CByte(&H61), CByte(&H37), CByte(&HA4))
-            Friend Shared ReadOnly GuidSecurityPage As Guid = New Guid(&HDF8F7042UI, &HBB1US, &H47D1US, CByte(&H8E), CByte(&H6D), CByte(&HDE), CByte(&HB3), CByte(&HD0), CByte(&H76), CByte(&H98), CByte(&HBD))
-            Friend Shared ReadOnly GuidSecurityPage_WPF As Guid = New Guid(&HA2C8FEUI, &H3844US, &H41BEUS, CByte(&H96), CByte(&H37), CByte(&H16), CByte(&H74), CByte(&H54), CByte(&HA7), CByte(&HF1), CByte(&HA7))
-            Friend Shared ReadOnly GuidPublishPage As Guid = New Guid(&HCC4014F5UI, &HB18DUS, &H439CUS, CByte(&H93), CByte(&H52), CByte(&HF9), CByte(&H9D), CByte(&H98), CByte(&H4C), CByte(&HCA), CByte(&H85))
-            Friend Shared ReadOnly GuidDebugPage As Guid = New Guid(&H6185191FUI, &H1008US, &H4FB2US, CByte(&HA7), CByte(&H15), CByte(&H3A), CByte(&H4E), CByte(&H4F), CByte(&H27), CByte(&HE6), CByte(&H10))
-            Friend Shared ReadOnly GuidCompilePage_VB As Guid = New Guid(&HEDA661EAUI, &HDC61US, &H4750US, CByte(&HB3), CByte(&HA5), CByte(&HF6), CByte(&HE9), CByte(&HC7), CByte(&H40), CByte(&H60), CByte(&HF5))
-            Friend Shared ReadOnly GuidBuildPage_CS As Guid = New Guid(&HA54AD834UI, &H9219US, &H4AA6US, CByte(&HB5), CByte(&H89), CByte(&H60), CByte(&H7A), CByte(&HF2), CByte(&H1C), CByte(&H3E), CByte(&H26))
-            Friend Shared ReadOnly GuidBuildPage_JS As Guid = New Guid(&H8ADF8DB1UI, &HA8B8US, &H4E04US, CByte(&HA6), CByte(&H16), CByte(&H2E), CByte(&HFC), CByte(&H59), CByte(&H5F), CByte(&H27), CByte(&HF4))
-            Friend Shared ReadOnly GuidReferencePathsPage As Guid = New Guid(&H31911C8UI, &H6148US, &H4E25US, CByte(&HB1), CByte(&HB1), CByte(&H44), CByte(&HBC), CByte(&HA9), CByte(&HA0), CByte(&HC4), CByte(&H5C))
-            Friend Shared ReadOnly GuidBuildEventsPage As Guid = New Guid(&H1E78F8DBUI, &H6C07US, &H4D61US, CByte(&HA1), CByte(&H8F), CByte(&H75), CByte(&H14), CByte(&H1), CByte(&HA), CByte(&HBD), CByte(&H56))
-            Friend Shared ReadOnly GuidDatabasePage_SQL As Guid = New Guid(&H87F6ADCEUI, &H9161US, &H489FUS, CByte(&H90), CByte(&H7E), CByte(&H39), CByte(&H30), CByte(&HA6), CByte(&H42), CByte(&H96), CByte(&H9))
-            Friend Shared ReadOnly GuidFxCopPage As Guid = New Guid(&H984AE51AUI, &H4B21US, &H44E7US, CByte(&H82), CByte(&H2C), CByte(&HDD), CByte(&H5E), CByte(&H4), CByte(&H68), CByte(&H93), CByte(&HEF))
-            Friend Shared ReadOnly GuidDeployPage As Guid = New Guid(&H29AB1D1BUI, &H10E8US, &H4511US, CByte(&HA3), CByte(&H62), CByte(&HEF), CByte(&H15), CByte(&H71), CByte(&HB8), CByte(&H44), CByte(&H3C))
-            Friend Shared ReadOnly GuidDevicesPage_VSD As Guid = New Guid(&H7B74AADFUI, &HACA4US, &H410EUS, CByte(&H8D), CByte(&H4B), CByte(&HAF), CByte(&HE1), CByte(&H19), CByte(&H83), CByte(&H5B), CByte(&H99))
-            Friend Shared ReadOnly GuidDebugPage_VSD As Guid = New Guid(&HAC5FAEC7UI, &HD452US, &H4AC1US, CByte(&HBC), CByte(&H44), CByte(&H2D), CByte(&H7E), CByte(&HCE), CByte(&H6D), CByte(&HF0), CByte(&H6C))
-            Friend Shared ReadOnly GuidMyExtensionsPage As Guid = New Guid(&HF24459FCUI, &HE883US, &H4A8EUS, CByte(&H9D), CByte(&HA2), CByte(&HAE), CByte(&HF6), CByte(&H84), CByte(&HF0), CByte(&HE1), CByte(&HF4))
-            Friend Shared ReadOnly GuidOfficePublishPage As Guid = New Guid(&HCC7369A8UI, &HB9B0US, &H439CUS, CByte(&HB1), CByte(&H36), CByte(&HBA), CByte(&H95), CByte(&H58), CByte(&H19), CByte(&HF7), CByte(&HF8))
-            Friend Shared ReadOnly GuidServicesPage As Guid = New Guid(&H43E38D2EUI, &H43B8US, &H4204US, CByte(&H82), CByte(&H25), CByte(&H93), CByte(&H57), CByte(&H31), CByte(&H61), CByte(&H37), CByte(&HA4))
-            Friend Shared ReadOnly GuidWAPWebPage As Guid = New Guid(&H909D16B3UI, &HC8E8US, &H43D1US, CByte(&HA2), CByte(&HB8), CByte(&H26), CByte(&HEA), CByte(&HD), CByte(&H4B), CByte(&H6B), CByte(&H57))
-        End Class
 
         ''' <summary>
         ''' test if vs in build process BUGFIX: Dev11#45255 
@@ -87,115 +51,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End If
             End If
             Return False
-        End Function
-
-        ''' <summary>
-        ''' Convert a variant to integer value
-        ''' </summary>
-        ''' <param name="obj"></param>
-        ''' <param name="value"></param>
-        ''' <return> return true if the variant is an integer type value</return>
-        Public Function TryConvertVariantToInt(obj As Object, ByRef value As Integer) As Boolean
-            If obj Is Nothing Then
-                Return False
-            End If
-
-            Dim objType As Type = obj.GetType()
-            If objType Is GetType(UShort) OrElse
-                objType Is GetType(Short) OrElse
-                objType Is GetType(UInteger) OrElse
-                objType Is GetType(Integer) OrElse
-                objType Is GetType(ULong) OrElse
-                objType Is GetType(Long) OrElse
-                objType Is GetType(Byte) OrElse
-                objType Is GetType(SByte) OrElse
-                objType Is GetType(Single) OrElse
-                objType Is GetType(Double) Then
-
-                value = CInt(obj)
-                Return True
-            End If
-            Return False
-        End Function
-
-        ''' <summary>
-        ''' Helper to convert ItemIds or other 32 bit ID values
-        ''' where it is sometimes treated as an Int32 and sometimes UInt32
-        ''' ItemId is sometimes marshaled as a VT_INT_PTR, and often declared 
-        ''' UInt in the interop assemblies. Otherwise we get overflow exceptions converting 
-        ''' negative numbers to UInt32.  We just want raw bit translation.
-        ''' </summary>
-        ''' <param name="obj"></param>
-        Public Function NoOverflowCUInt(obj As Object) As UInteger
-            Return NoOverflowCUInt(CLng(obj))
-        End Function
-
-        ''' <summary>
-        ''' Masks the top 32 bits to get just the lower 32bit number
-        ''' </summary>
-        ''' <param name="LongValue"></param>
-        Public Function NoOverflowCUInt(LongValue As Long) As UInteger
-            Return CUInt(LongValue And UInteger.MaxValue)
-        End Function
-
-        ''' <summary>
-        ''' Retrieves a given bitmap from the manifest resources (unmodified)
-        ''' </summary>
-        ''' <param name="BitmapID">Name of the bitmap resource (not including the assembly name, e.g. "Link.bmp")</param>
-        ''' <returns>The retrieved bitmap</returns>
-        ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmap(BitmapID As String) As Bitmap
-            Return DirectCast(GetManifestImage(BitmapID), Bitmap)
-        End Function
-
-        ''' <summary>
-        ''' Retrieves a transparent copy of a given bitmap from the manifest resources.
-        ''' </summary>
-        ''' <param name="BitmapID">Name of the bitmap resource (not including the assembly name, e.g. "Link.bmp")</param>
-        ''' <param name="TransparentColor">The color that represents transparent in the bitmap</param>
-        ''' <returns>The retrieved transparent bitmap</returns>
-        ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmapTransparent(BitmapID As String, TransparentColor As Color) As Bitmap
-            Dim Bitmap As Bitmap = GetManifestBitmap(BitmapID)
-            If Bitmap IsNot Nothing Then
-                Bitmap.MakeTransparent(TransparentColor)
-                Return Bitmap
-            Else
-                Debug.Fail("Couldn't find internal resource")
-                Throw New Package.InternalException(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Unexpected_NoResource_1Arg, BitmapID))
-            End If
-        End Function
-
-        ''' <summary>
-        ''' Retrieves a transparent copy of a given bitmap from the manifest resources.
-        ''' </summary>
-        ''' <param name="BitmapID">Name of the bitmap resource (not including the assembly name, e.g. "Link.bmp")</param>
-        ''' <returns>The retrieved transparent bitmap</returns>
-        ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmapTransparent(BitmapID As String) As Bitmap
-            Return GetManifestBitmapTransparent(BitmapID, StandardTransparentColor)
-        End Function
-
-        ''' <summary>
-        ''' Retrieves a given image from the manifest resources.
-        ''' </summary>
-        ''' <param name="ImageID">Name of the bitmap resource (not including the assembly name, e.g. "Link.bmp")</param>
-        ''' <returns>The retrieved bitmap</returns>
-        ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestImage(ImageID As String) As Image
-            Dim BitmapStream As Stream = GetType(Utils).Assembly.GetManifestResourceStream(ImageID)
-            If BitmapStream IsNot Nothing Then
-                Dim Image As Image = Image.FromStream(BitmapStream)
-                If Image IsNot Nothing Then
-                    Return Image
-                Else
-                    Debug.Fail("Unable to find image resource from manifest: " & ImageID)
-                End If
-            Else
-                Debug.Fail("Unable to find image resource from manifest: " & ImageID)
-            End If
-
-            Throw New Package.InternalException(String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_Unexpected_NoResource_1Arg, ImageID))
         End Function
 
         Public Function GetImageFromImageService(imageMoniker As ImageMoniker, width As Integer, height As Integer, background As Color) As Image
@@ -328,10 +183,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return True
         End Function
 
-        Public Function IsIOException(ex As Exception) As Boolean
-            Return TypeOf ex Is IOException OrElse TypeOf ex Is UnauthorizedAccessException
-        End Function
-
         ''' <summary>
         ''' Given an exception, returns True if it is a CheckOut exception.
         ''' </summary>
@@ -373,22 +224,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Else
                 Return Str
             End If
-        End Function
-
-        ''' <summary>
-        ''' Does the same as System.IO.Path.GetFullPath(), except that if the filename
-        '''   is malformed, it returns the original file path.
-        ''' </summary>
-        ''' <param name="Path">The path to get the full path from.</param>
-        Public Function GetFullPathTolerant(Path As String) As String
-            Try
-                Return IO.Path.GetFullPath(Path)
-            Catch ex As ArgumentException
-            Catch ex As NotSupportedException
-            End Try
-
-            'If we hit an exception we want to be tolerant of, just return the original path
-            Return Path
         End Function
 
         ''' <summary>
@@ -775,75 +610,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         ''' <summary>
-        ''' Browses to save a File.
-        ''' </summary>
-        ''' <param name="ServiceProvider">Service Provider</param>
-        ''' <param name="ParentWindow">Window Handle of the parent window</param>
-        ''' <param name="InitialDirectory">The initial directory for the dialog.  Can be Nothing or empty.</param>
-        ''' <param name="DialogTitle">The dialog title.</param>
-        ''' <param name="Filter">The filter string to use.</param>
-        ''' <param name="FilterIndex">The filter index to start out with.</param>
-        ''' <param name="DefaultFileName">The default file name.</param>
-        ''' <param name="OverwritePrompt">If true, Windows will ask the user to overwrite the file if it already exists.</param>
-        ''' <returns>The selected file/path, or Nothing if the user canceled.</returns>
-        Friend Function GetNewFileNameViaBrowse(ServiceProvider As IServiceProvider, ParentWindow As IntPtr,
-                InitialDirectory As String, DialogTitle As String,
-                Filter As String, FilterIndex As UInteger,
-                Optional DefaultFileName As String = Nothing,
-                Optional OverwritePrompt As Boolean = False) As String
-
-            Dim uishell As IVsUIShell =
-                CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
-
-            InitialDirectory = NormalizeInitialDirectory(InitialDirectory)
-            Filter = GetNativeFilter(Filter)
-
-            Const MAX_PATH_NAME As Integer = 4096
-
-            Dim defaultName(MAX_PATH_NAME) As Char
-            If DefaultFileName IsNot Nothing Then
-                DefaultFileName.CopyTo(0, defaultName, 0, DefaultFileName.Length)
-            End If
-
-            Dim vsSaveFileName As VSSAVEFILENAMEW()
-            Dim stringMemPtr As IntPtr = Marshal.AllocHGlobal(MAX_PATH_NAME * 2 + 2)
-            Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
-
-            Try
-                vsSaveFileName = New VSSAVEFILENAMEW(0) {}
-                vsSaveFileName(0).lStructSize = CUInt(Marshal.SizeOf(vsSaveFileName(0)))
-                vsSaveFileName(0).hwndOwner = ParentWindow
-                vsSaveFileName(0).pwzDlgTitle = DialogTitle
-                vsSaveFileName(0).nMaxFileName = MAX_PATH_NAME
-                vsSaveFileName(0).pwzFileName = stringMemPtr
-                vsSaveFileName(0).pwzInitialDir = InitialDirectory
-                vsSaveFileName(0).pwzFilter = Filter
-                vsSaveFileName(0).nFilterIndex = FilterIndex
-                vsSaveFileName(0).nFileOffset = 0
-                vsSaveFileName(0).nFileExtension = FilterIndex
-                vsSaveFileName(0).dwHelpTopic = 0
-                vsSaveFileName(0).pSaveOpts = Nothing
-
-                If OverwritePrompt Then
-                    vsSaveFileName(0).dwFlags = &H2   'OFN_OVERWRITEPROMPT
-                Else
-                    vsSaveFileName(0).dwFlags = 0
-                End If
-
-                Dim hr As Integer = uishell.GetSaveFileNameViaDlg(vsSaveFileName)
-                If VSErrorHandler.Succeeded(hr) Then
-                    Dim sFileName As String = Marshal.PtrToStringUni(stringMemPtr)
-                    Return sFileName
-                End If
-
-            Finally
-                Marshal.FreeHGlobal(stringMemPtr)
-            End Try
-
-            Return Nothing
-        End Function
-
-        ''' <summary>
         '''  Returns a relative path from a given directory to another file or directory.
         ''' </summary>
         ''' <param name="baseDirectory">The path to start from, always assumed to be a directory.</param>
@@ -958,22 +724,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Function
 
-        ''' <summary>
-        ''' Check whether the screen reader is running
-        ''' </summary>
-        Friend Function IsScreenReaderRunning() As Boolean
-            Dim pvParam As IntPtr = Marshal.AllocCoTaskMem(4)
-            Try
-                If NativeMethods.SystemParametersInfo(Win32Constant.SPI_GETSCREENREADER, 0, pvParam, 0) <> 0 Then
-                    Dim result As Integer = Marshal.ReadInt32(pvParam)
-                    Return result <> 0
-                End If
-            Finally
-                Marshal.FreeCoTaskMem(pvParam)
-            End Try
-            Return False
-        End Function
-
         '''<summary>
         ''' We use this function to map one color in the image to another color
         '''</summary>
@@ -1058,75 +808,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Debug.Fail("Could not get IVsUIShell from service provider. Can't set specific error message.")
             End If
         End Sub
-
-        ''' <summary>
-        ''' Sets focus to the first (or last) control inside of a parent HWND.
-        ''' </summary>
-        ''' <param name="HwndParent">The container HWND.</param>
-        ''' <param name="First">If True, sets focus to the first control, otherwise the last.</param>
-        Public Function FocusFirstOrLastTabItem(HwndParent As IntPtr, First As Boolean) As Boolean
-            If HwndParent.Equals(IntPtr.Zero) Then
-                Return False
-            End If
-
-            Dim c As Control = Control.FromChildHandle(HwndParent)
-            If c IsNot Nothing Then
-                'WinForms controls don't set WS_TABSTOP so GetNextDlgTabItem doesn't work well for them.
-
-                Dim TabStopOnly As Boolean = True
-                Dim Nested As Boolean = True
-                Dim Wrap As Boolean = True
-                If c.SelectNextControl(Nothing, First, TabStopOnly, Nested, Wrap) Then
-                    Dim cc As ContainerControl = TryCast(c, ContainerControl)
-                    If cc IsNot Nothing AndAlso cc.ActiveControl IsNot Nothing Then
-                        cc.ActiveControl.Focus()
-                    End If
-
-                    Return True
-                End If
-
-                'Perhaps all the controls are disabled
-                Return False
-            End If
-
-            'Use standard Win32 function for native dialog pages
-            Dim FirstTabStop As IntPtr = NativeMethods.GetNextDlgTabItem(HwndParent, IntPtr.Zero, False)
-            If FirstTabStop.Equals(IntPtr.Zero) Then
-                Return False
-            End If
-
-            Dim NextTabStop As IntPtr
-            If First Then
-                NextTabStop = FirstTabStop
-            Else
-                NextTabStop = NativeMethods.GetNextDlgTabItem(HwndParent, FirstTabStop, True)
-            End If
-
-            If NextTabStop.Equals(IntPtr.Zero) Then
-                Return False
-            End If
-
-            NativeMethods.SetFocus(NextTabStop)
-            Return True
-        End Function
-
-        ''' <summary>
-        ''' Validates whether it is a high-surrogate character
-        ''' </summary>
-        ''' <param name="ch">a character to check</param>
-        ''' <returns>True if it is a high-surrogate character</returns>
-        Public Function IsHighSurrogate(ch As Char) As Boolean
-            Return AscW(ch) >= &HD800 AndAlso AscW(ch) <= &HDBFF
-        End Function
-
-        ''' <summary>
-        ''' Validates whether it is a low-surrogate character
-        ''' </summary>
-        ''' <param name="ch">a character to check</param>
-        ''' <returns>True if it is a low-surrogate character</returns>
-        Public Function IsLowSurrogate(ch As Char) As Boolean
-            Return AscW(ch) >= &HDC00 AndAlso AscW(ch) <= &HDFFF
-        End Function
 
         ''' <summary>
         ''' Get the namespace for the generated file...
@@ -1377,52 +1058,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Class
 
 #End Region
-
-        ''' <summary>
-        ''' Normalizes line endings.  For instance, it will expand \r and \n to
-        '''   \r\n and reverse \n\r to \r\n
-        ''' </summary>
-        ''' <param name="text"></param>
-        Public Function NormalizeLineEndings(text As String) As String
-            If text = "" Then
-                Return text
-            End If
-
-            Dim sb As New StringBuilder(text.Length)
-
-            For i As Integer = 0 To text.Length - 1
-                Select Case AscW(text.Chars(i))
-                    Case 13 '\r
-                        If i < text.Length - 1 AndAlso text.Chars(i + 1) = vbLf Then
-                            'This one is okay, skip it
-                            sb.Append(vbCrLf)
-                            i += 1 'Skip next character
-                            Continue For
-                        Else
-                            'This is an unmatched '\r', need to expand it
-                            sb.Append(vbCrLf)
-                            Continue For
-                        End If
-
-                    Case 10 '\n
-                        If i < text.Length - 1 AndAlso text.Chars(i + 1) = vbCr Then
-                            'This is backwards (\n\r), need to reverse it
-                            sb.Append(vbCrLf)
-                            i += 1 'Skip next character
-                            Continue For
-                        Else
-                            'This is an unmatched '\n', need to expand it
-                            sb.Append(vbCrLf)
-                            Continue For
-                        End If
-
-                    Case Else
-                        sb.Append(text.Chars(i))
-                End Select
-            Next
-
-            Return sb.ToString()
-        End Function
 
         ''' <summary>
         ''' Determines whether the project associated with the given hierarchy is targeting .NET 4.5 or above

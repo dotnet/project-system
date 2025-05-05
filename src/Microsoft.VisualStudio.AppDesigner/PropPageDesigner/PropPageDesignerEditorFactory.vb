@@ -15,8 +15,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ';PropPageDesignerEditorFactory
     '
     'Remarks:
-    '   The editor factory for the resource editor.  The job of this class is
-    '   simply to create a new resource editor designer when requested by the
+    '   The editor factory for the property page editor.  The job of this class is
+    '   simply to create a new property page editor designer when requested by the
     '   shell.
     '**************************************************************************
     <CLSCompliant(False),

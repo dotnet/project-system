@@ -5,12 +5,8 @@ Imports System.ComponentModel.Design
 
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
-    ' {E18B7249-8322-44c3-9A57-FE5FF3889F89}
-    'static const GUID <<name>> = 
-    '{ 0xe18b7249, 0x8322, 0x44c3, { 0x9a, 0x57, 0xfe, 0x5f, 0xf3, 0x88, 0x9f, 0x89 } };
-
     ''' <summary>
-    ''' This is the designer for the top-level resource editor component (ApplicationDesigner).  I.e., this
+    ''' This is the designer for the top-level editor component (ApplicationDesigner).  I.e., this
     ''' is the top-level designer.  
     ''' </summary>
     Public NotInheritable Class ApplicationDesignerRootDesigner
@@ -69,7 +65,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         ''' <summary>
         ''' Called by the managed designer mechanism to determine what kinds of view technologies we support.
-        ''' We currently support only Windows Forms technology (i.e., our designer view, ResourceEditorView,
+        ''' We currently support only Windows Forms technology (i.e., our designer view which
         ''' inherits from System.Windows.Forms.Control)
         ''' </summary>
         ''' <remarks>
@@ -83,11 +79,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         ''' <summary>
         '''   Called by the managed designer technology to get our view, or the actual control that implements
-        '''   our resource editor's designer surface.  In this case, we return an instance of ResourceEditorView.
+        '''   our application designer surface.  In this case, we return an instance of ApplicationDesignerView.
         ''' </summary>
         ''' <param name="Technology"></param>
         ''' <remarks>
-        '''   The newly-instantiated ResourceEditorView object.
+        '''   The newly-instantiated ApplicationDesignerView object.
         ''' </remarks>
         Private Function RootDesigner_GetView(Technology As ViewTechnology) As Object Implements IRootDesigner.GetView
             If Technology <> ViewTechnology.Default Then

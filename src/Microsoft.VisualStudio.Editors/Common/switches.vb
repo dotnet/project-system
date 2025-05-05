@@ -1,9 +1,5 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-#If DEBUG Then
-Imports Microsoft.VisualStudio.Editors.Interop
-#End If
-
 Imports Microsoft.VisualStudio.Editors.PropertyPages
 
 Namespace Microsoft.VisualStudio.Editors.Common
@@ -19,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         .
         .
         .
-        Public Shared FileWatcher As New TraceSwitch("FileWatcher", "Trace the resource editor FileWatcher class.")
+        Public Shared FileWatcher As New TraceSwitch("FileWatcher", "Trace the property page editor FileWatcher class.")
         .
         .
         .
@@ -142,48 +138,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
     ''' Contains predefined switches for enabling/disabling trace output or code instrumentation.
     ''' </summary>
     Friend Class Switches
-
-        '------------- Resource Editor -------------
-
-        ''' <summary>
-        ''' Trace for the ResourceEditor.FileWatcher class
-        ''' </summary>
-        Public Shared RSEFileWatcher As New TraceSwitch("RSEFileWatcher", "Trace the resource editor FileWatcher class.")
-
-        ''' <summary>
-        ''' Tracing for the ResourceEditor.ResourceSerializationService class
-        ''' </summary>
-        Public Shared RSEResourceSerializationService As New TraceSwitch("RSEResourceSerializationService", "Trace the resource editor ResourceSerializationService class.")
-
-        ''' <summary>
-        ''' Track adding and removing resources in the resource editor
-        ''' </summary>
-        Public Shared RSEAddRemoveResources As New TraceSwitch("RSEAddRemoveResources", "Trace adding/removing resources in the resource editor")
-
-        ''' <summary>
-        ''' Trace virtual mode methods in the resource editor's string table
-        ''' </summary>
-        Public Shared RSEVirtualStringTable As New TraceSwitch("RSEVirtualStringTable", "Trace virtual mode methods in the resource editor's string table")
-
-        ''' <summary>
-        ''' Trace virtual mode methods in the resource editor's listview
-        ''' </summary>
-        Public Shared RSEVirtualListView As New TraceSwitch("RSEVirtualListView", "Trace virtual mode methods in the resource editor's listview")
-
-        ''' <summary>
-        ''' Trace the delayed checking of errors in resources
-        ''' </summary>
-        Public Shared RSEDelayCheckErrors As New TraceSwitch("RSEDelayCheckErrors", "Trace the delayed checking of errors in resources")
-
-        ''' <summary>
-        ''' Disable high-quality options on the Graphics object when creating thumbnails in the resource editor
-        ''' </summary>
-        Public Shared RSEDisableHighQualityThumbnails As New BooleanSwitch("RSEDisableHighQualityThumbnails", "Disable high-quality options on the Graphics object when creating thumbnails in the resource editor")
-
-        ''' <summary>
-        ''' Trace find/replace in the resource editor
-        ''' </summary>
-        Public Shared RSEFindReplace As New TraceSwitch("RSEFindReplace", "Trace find/replace in the resource editor")
 
         '------------- Designer Framework -------------
 
@@ -320,48 +274,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 #End If
 
 #If DEBUG Then
-        ''' <summary>
-        ''' Formats a Win32 message into a friendly form for debugging/tracing purposes
-        ''' </summary>
-        ''' <param name="msg"></param>
-        Private Shared Function FormatWin32Message(msg As System.Windows.Forms.Message) As String
-            Dim str As New System.Text.StringBuilder()
-            Dim MsgType As String = Nothing
-            Select Case msg.Msg
-                Case Win32Constant.WM_KEYDOWN
-                    MsgType = "WM_KEYDOWN"
-                Case AppDesInterop.Win32Constant.WM_KEYUP
-                    MsgType = "WM_KEYUP"
-                Case Win32Constant.WM_SETFOCUS
-                    MsgType = "WM_SETFOCUS"
-                Case Win32Constant.WM_CHAR
-                    MsgType = "WM_CHAR"
-                Case Win32Constant.WM_SYSCHAR
-                    MsgType = "WM_SYSCHAR"
-
-                Case Else
-                    If PDMessageRouting.Level >= TraceLevel.Verbose Then
-                        MsgType = "0x" & Hex(msg.Msg)
-                    Else
-                        Return Nothing
-                    End If
-            End Select
-            str.Append("MSG{" & MsgType & ", HWND=0x" & Hex(msg.HWnd.ToInt32))
-
-            'Get the HWND's text
-            Dim WindowText As New String(" "c, 30)
-            Dim CharsCopied As Integer = NativeMethods.GetWindowText(msg.HWnd, WindowText, WindowText.Length)
-            If CharsCopied > 0 Then
-                WindowText = WindowText.Substring(0, CharsCopied)
-                str.Append(" """ & WindowText & """")
-            End If
-
-            str.Append("}"c)
-            Return str.ToString()
-        End Function
-#End If
-
-#If DEBUG Then
         Private Shared s_timeCodeStart As Date
         Private Shared s_firstTimeCodeTaken As Boolean
 #End If
@@ -466,52 +378,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Message"></param>
         ''' <param name="FormatArguments"></param>
         <Conditional("DEBUG")>
-        Public Shared Sub TracePDUndo(Message As String, ParamArray FormatArguments() As Object)
-#If DEBUG Then
-            Trace.WriteLineIf(PDUndo.TraceVerbose, "PDUndo: " & Format(Message, FormatArguments))
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace project designer focus-related events
-        ''' </summary>
-        ''' <param name="Message"></param>
-        ''' <param name="FormatArguments"></param>
-        <Conditional("DEBUG")>
         Public Shared Sub TracePDProperties(Level As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(PDProperties.Level >= Level, "PDProperties: " & Format(Message, FormatArguments))
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace the functionality of extender properties
-        ''' </summary>
-        ''' <param name="Message"></param>
-        ''' <param name="FormatArguments"></param>
-        <Conditional("DEBUG")>
-        Public Shared Sub TracePDExtenders(Level As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
-#If DEBUG Then
-            Trace.WriteLineIf(PDExtenders.Level >= Level, "PDExtenders: " & Format(Message, FormatArguments))
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace configuration setup and changes tracking in the project designer
-        ''' </summary>
-        ''' <param name="Message"></param>
-        ''' <param name="FormatArguments"></param>
-        <Conditional("DEBUG")>
-        Public Shared Sub TracePDConfigs(TraceLevel As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
-#If DEBUG Then
-            Trace.WriteLineIf(PDConfigs.Level >= TraceLevel, "PDConfigs: " & Format(Message, FormatArguments))
-#End If
-        End Sub
-
-        <Conditional("DEBUG")>
-        Public Shared Sub TracePDConfigs(Message As String, ParamArray FormatArguments() As Object)
-#If DEBUG Then
-            TracePDConfigs(TraceLevel.Verbose, Message, FormatArguments)
 #End If
         End Sub
 
@@ -524,91 +393,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Shared Sub TracePDPerf(Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(PDPerf.TraceInfo, "PDPerf:" & vbTab & TimeCode() & Format(Message, FormatArguments))
-#End If
-        End Sub
-
-        <Conditional("DEBUG")>
-        Public Shared Sub TracePDPerfBegin(Message As String, ParamArray FormatArguments() As Object)
-#If DEBUG Then
-            If PDPerf.TraceInfo Then
-                TracePDPerf("BEGIN: " & Message)
-            Else
-                TracePDPerf(Message)
-            End If
-#End If
-        End Sub
-
-        <Conditional("DEBUG")>
-        Public Shared Sub TracePDPerfEnd(Message As String, ParamArray FormatArguments() As Object)
-#If DEBUG Then
-            If PDPerf.TraceInfo Then
-                TracePDPerf("  END: " & Message)
-            Else
-                'Don't bother with this message unless it's verbose
-            End If
-#End If
-        End Sub
-
-        <Conditional("DEBUG")>
-        Public Shared Sub TracePDPerf(e As System.Windows.Forms.LayoutEventArgs, Message As String, ParamArray FormatArguments() As Object)
-#If DEBUG Then
-            TracePDPerf(Message, FormatArguments)
-            TraceOnLayout(e)
-#End If
-        End Sub
-
-#If DEBUG Then
-        Private Shared Sub TraceOnLayout(e As System.Windows.Forms.LayoutEventArgs)
-            If PDPerf.TraceInfo Then
-                Trace.WriteLine("  AffectedControl=" & DebugToString(e.AffectedControl))
-                Trace.WriteLine("  AffectedComponent=" & DebugToString(e.AffectedComponent))
-                Trace.WriteLine("  AffectedProperty=" & DebugToString(e.AffectedProperty))
-                If PDPerf.TraceVerbose Then
-                    Trace.WriteLine(New StackTrace().ToString)
-                End If
-            End If
-        End Sub
-#End If
-
-        ''' <summary>
-        ''' Trace configuration setup and changes tracking in the project designer
-        ''' </summary>
-        ''' <param name="Message"></param>
-        ''' <param name="FormatArguments"></param>
-        <Conditional("DEBUG")>
-        Public Shared Sub TracePDCmdTarget(TraceLevel As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
-#If DEBUG Then
-            Trace.WriteLineIf(PDCmdTarget.Level >= TraceLevel, "PDCmdTarget: " & Format(Message, FormatArguments))
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace Win32 message routing
-        ''' </summary>
-        ''' <param name="TraceLevel"></param>
-        ''' <param name="Message"></param>
-        ''' <param name="msg"></param>
-        <Conditional("DEBUG")>
-        Public Shared Sub TracePDMessageRouting(TraceLevel As TraceLevel, Message As String, msg As System.Windows.Forms.Message)
-#If DEBUG Then
-            If PDMessageRouting.Level >= TraceLevel Then
-                Dim FormattedMessage As String = FormatWin32Message(msg)
-                If FormattedMessage IsNot Nothing Then
-                    Trace.WriteLine("PDMessageRouting: " & Message & ": " & FormattedMessage)
-                End If
-            End If
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace Win32 message routing
-        ''' </summary>
-        ''' <param name="TraceLevel"></param>
-        ''' <param name="Message"></param>
-        <Conditional("DEBUG")>
-        Public Shared Sub TracePDMessageRouting(TraceLevel As TraceLevel, Message As String)
-#If DEBUG Then
-            Trace.WriteLineIf(PDMessageRouting.Level >= TraceLevel, "PDMessageRouting: " & Message)
 #End If
         End Sub
 
@@ -644,44 +428,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Overloads Shared Sub TraceSDSerializeSettings(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
 #If DEBUG Then
             Trace.WriteLineIf(SDSerializeSettings.Level >= tracelevel, String.Format(formatString, parameters))
-#End If
-        End Sub
-
-        <Conditional("DEBUG")>
-        Public Overloads Shared Sub TracePDLinqImports(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
-#If DEBUG Then
-            Trace.WriteLineIf(PDLinqImports.Level >= tracelevel, Format(formatString, parameters))
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace changes to one of the monitored configuration files 
-        ''' </summary>
-        ''' <param name="tracelevel"></param>
-        <Conditional("DEBUG")>
-        Public Overloads Shared Sub TraceWCFConfigFileChangeWatch(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
-#If DEBUG Then
-            Trace.WriteLineIf(WCF_Config_FileChangeWatch.Level >= tracelevel, String.Format(formatString, parameters))
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace changes to one of the monitored configuration files 
-        ''' </summary>
-        ''' <param name="tracelevel"></param>
-        ''' <param name="message"></param>
-        <Conditional("DEBUG")>
-        Public Overloads Shared Sub TraceWCFConfigFileChangeWatch(tracelevel As TraceLevel, message As String)
-#If DEBUG Then
-            Trace.WriteLineIf(WCF_Config_FileChangeWatch.Level >= tracelevel, message)
-#End If
-        End Sub
-
-        <Conditional("DEBUG")>
-        Public Shared Sub TracePDPerfBegin(e As System.Windows.Forms.LayoutEventArgs, Message As String, ParamArray FormatArguments() As Object)
-#If DEBUG Then
-            TracePDPerfBegin(Message, FormatArguments)
-            TraceOnLayout(e)
 #End If
         End Sub
 

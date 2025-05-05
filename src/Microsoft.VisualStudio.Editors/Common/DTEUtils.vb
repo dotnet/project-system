@@ -3,6 +3,7 @@
 Imports System.IO
 
 Imports EnvDTE
+Imports EnvDTE.Constants
 
 Imports Microsoft.VisualStudio.Shell.Interop
 
@@ -12,6 +13,14 @@ Namespace Microsoft.VisualStudio.Editors.Common
     ''' Utilities related to DTE projects and project items
     ''' </summary>
     Friend NotInheritable Class DTEUtils
+
+#Region "Constants from DTE.idl"
+
+        'A Guid version of vsProjectItemKindPhysicalFolder, which as a projectitem kind indicates that the
+        '  projectitem is a physical folder on disk (as opposed to a virtual folder, etc.)
+        Private Shared ReadOnly s_guid_vsProjectItemKindPhysicalFolder As New Guid(vsProjectItemKindPhysicalFolder)
+
+#End Region
 
         Public Const PROJECTPROPERTY_CUSTOMTOOL As String = "CustomTool"
         Public Const PROJECTPROPERTY_CUSTOMTOOLNAMESPACE As String = "CustomToolNamespace"
@@ -33,7 +42,15 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Name">The key to check for.</param>
         ''' <returns>The ProjectItem for the given key, if found, else Nothing.  Throws exceptions only in unexpected cases.</returns>
         Public Shared Function QueryProjectItems(ProjectItems As ProjectItems, Name As String) As ProjectItem
-            Return ResourceEditor.ResourcesFolderService.QueryProjectItems(ProjectItems, Name)
+            Try
+                Return ProjectItems.Item(Name)
+            Catch ex As ArgumentException
+                'This is the expected exception if the key could not be found.
+            Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected exception searching for an item in ProjectItems", NameOf(DTEUtils))
+                'Any other error - shouldn't be the case, but it might depend on the project implementation
+            End Try
+
+            Return Nothing
         End Function
 
         ''' <summary>
@@ -42,7 +59,80 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="ProjectItems">The ProjectItems collection to check.  Must refer to a physical folder on disk.</param>
         ''' <returns>The directory name of the collection on disk.</returns>
         Public Shared Function GetFolderNameFromProjectItems(ProjectItems As ProjectItems) As String
-            Return ResourceEditor.ResourcesFolderService.GetFolderNameFromProjectItems(ProjectItems)
+            If s_guid_vsProjectItemKindPhysicalFolder.Equals(New Guid(ProjectItems.Kind)) Then
+                If TypeOf ProjectItems.Parent Is Project Then
+                    Return GetProjectDirectory(DirectCast(ProjectItems.Parent, Project))
+                ElseIf TypeOf ProjectItems.Parent Is ProjectItem Then
+                    Return GetFileNameFromFolderProjectItem(DirectCast(ProjectItems.Parent, ProjectItem))
+                Else
+                    Debug.Fail("Unexpected Parent type for ProjectItems")
+                    Return Nothing
+                End If
+            Else
+                Debug.Fail("Shouldn't call GetFileNameFromProjectItems for a ProjectItems collection that is not a physical disk folder.")
+                Return ""
+            End If
+        End Function
+
+        ''' <summary>
+        ''' Retrieves the file name on disk for a ProjectItem.
+        ''' </summary>
+        ''' <param name="ProjectItem">The project item to check.</param>
+        ''' <returns>The filename and path of the project item.</returns>
+        Private Shared Function GetFileNameFromFolderProjectItem(ProjectItem As ProjectItem) As String
+            If s_guid_vsProjectItemKindPhysicalFolder.Equals(New Guid(ProjectItem.Kind)) Then
+                'The FileNames property represents the actual full path of the directory if the folder
+                '  is an actual physical folder on disk.
+                Debug.Assert(ProjectItem.FileCount = 1, "Didn't expect multiple filenames for a folder ProjectItem")
+                Return ProjectItem.FileNames(1) 'this collection is 1-indexed
+            Else
+                Debug.Fail("Trying to get filename of a non-physical folder in the project")
+                Return ""
+            End If
+        End Function
+
+        ''' <summary>
+        ''' Given a project, returns the project's directory on disk.
+        ''' </summary>
+        ''' <param name="Project">The project to query.</param>
+        Private Shared Function GetProjectDirectory(Project As Project) As String
+            'Some special cases.  In particular, note that the Miscellaneous Files project
+            '  has a FullName value of the empty string.
+            If Project Is Nothing OrElse Project.FullName Is Nothing OrElse Project.FullName = "" OrElse IsMiscellaneousProject(Project) Then
+                Debug.Fail("Shouldn't be calling this with a null Project or with the Miscellaneous Files Project")
+                Return ""
+            End If
+
+            Dim ProjectDirectory As String
+            Try
+                ProjectDirectory = Path.GetFullPath(Path.GetDirectoryName(Project.FullName))
+            Catch ex As ArgumentException
+                'In some scenarios Project.FullName does not give us an actual location on the local file
+                '  system (e.g. when working with ASP.NET projects created on a URL instead of the local file
+                '  system).  ASP.NET projects have a FullPath property which gives us what we want.  Let's try
+                '  that before giving up.
+                ProjectDirectory = Path.GetFullPath(Path.GetDirectoryName(CStr(Project.Properties.Item("FullPath").Value)))
+            End Try
+
+            Debug.Assert(Directory.Exists(ProjectDirectory), "Project's FullName property is not its path on disk?")
+            Return ProjectDirectory
+        End Function
+
+        ''' <summary>
+        ''' Given a project, determine if it is the Miscellaneous Files project
+        ''' </summary>
+        ''' <param name="Project"></param>
+        Private Shared Function IsMiscellaneousProject(Project As Project) As Boolean
+            If vsMiscFilesProjectUniqueName.Equals(Project.UniqueName, StringComparison.OrdinalIgnoreCase) Then
+                Return True
+            End If
+
+            If Project.FullName = "" Then
+                Debug.Fail("This project is not the miscellaneous files project, but its FullName is empty!")
+                Return True 'defensive
+            End If
+
+            Return False
         End Function
 
         ''' <summary>
@@ -65,27 +155,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             VSErrorHandler.ThrowOnFailure(VsHierarchy.GetProperty(CUInt(ItemId), CInt(__VSHPROPID.VSHPROPID_ExtObject), ExtensibilityObject))
             Debug.Assert(ExtensibilityObject IsNot Nothing AndAlso TypeOf ExtensibilityObject Is ProjectItem)
             Return DirectCast(ExtensibilityObject, ProjectItem)
-        End Function
-
-        ''' <summary>
-        ''' Finds all files within a given ProjectItem that contain the given extension
-        ''' </summary>
-        ''' <param name="ProjectItems">The ProjectItems node to search through</param>
-        ''' <param name="Extension">The extension to search for, including the period.  E.g. ".resx"</param>
-        ''' <param name="SearchChildren">If True, the search will continue to children.</param>
-        Public Shared Function FindAllFilesWithExtension(ProjectItems As ProjectItems, Extension As String, SearchChildren As Boolean) As List(Of ProjectItem)
-            Dim ResXFiles As New List(Of ProjectItem)
-            For Each Item As ProjectItem In ProjectItems
-                If Path.GetExtension(Item.FileNames(1)).Equals(Extension, StringComparison.OrdinalIgnoreCase) Then
-                    ResXFiles.Add(Item)
-                End If
-
-                If SearchChildren AndAlso Item.ProjectItems.Count > 0 Then
-                    ResXFiles.AddRange(FindAllFilesWithExtension(Item.ProjectItems, Extension, SearchChildren))
-                End If
-            Next
-
-            Return ResXFiles
         End Function
 
         ''' <summary>
@@ -209,7 +278,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Shared Function FindProjectItem(projectItems As ProjectItems, fileName As String) As ProjectItem
             For Each projectItem As ProjectItem In projectItems
                 If projectItem.Kind.Equals(
-                    EnvDTE.Constants.vsProjectItemKindPhysicalFile, StringComparison.OrdinalIgnoreCase) AndAlso
+                    vsProjectItemKindPhysicalFile, StringComparison.OrdinalIgnoreCase) AndAlso
                     projectItem.FileCount > 0 Then
 
                     Dim itemFileName As String = Path.GetFileName(projectItem.FileNames(1))

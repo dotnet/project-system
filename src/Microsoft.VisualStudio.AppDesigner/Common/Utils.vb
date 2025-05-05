@@ -18,11 +18,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
     Friend Module Utils
 
-        'The transparent color used for all bitmaps in the resource editor is lime (R=0, G=255, B=0).
-        '  Any pixels of this color will be converted to transparent if StandardTransparentColor
-        '  is passed to GetManifestBitmap
-        Public ReadOnly StandardTransparentColor As Color = Color.Lime
-
         Public VBPackageInstance As IVBPackage
 
         ' The maximal amount of files that can be added at one shot. (copied from other VS features)
@@ -107,17 +102,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Debug.Fail("Couldn't find internal resource")
                 Throw New Package.InternalException(String.Format(My.Resources.Designer.RSE_Err_Unexpected_NoResource_1Arg, BitmapID))
             End If
-        End Function
-
-        ''' <summary>
-        ''' Retrieves a transparent copy of a given bitmap from the manifest resources.
-        ''' </summary>
-        ''' <param name="BitmapID">Name of the bitmap resource (not including the assembly name, e.g. "Link.bmp")</param>
-        ''' <param name="assembly">Name of assembly containing the manifest resource</param>
-        ''' <returns>The retrieved transparent bitmap</returns>
-        ''' <remarks>Throws an internal exception if the bitmap cannot be found or loaded.</remarks>
-        Public Function GetManifestBitmapTransparent(BitmapID As String, Optional ByRef assembly As Assembly = Nothing) As Bitmap
-            Return GetManifestBitmapTransparent(BitmapID, StandardTransparentColor, assembly)
         End Function
 
         ''' <summary>
@@ -300,22 +284,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         End Sub
 
         ''' <summary>
-        ''' Set the drop-down width of a datagridviewcomboboxcolumn wide enough to show the text of all entries in it
-        ''' </summary>
-        ''' <param name="column">The column to change the width for</param>
-        ''' <remarks>
-        ''' This does not take the current cell style into account - it uses the font from the parent datagridview (if any)
-        ''' It also makes room for the scrollbar even though it may not be visible...
-        ''' </remarks>
-        Public Sub SetComboBoxColumnDropdownWidth(column As DataGridViewComboBoxColumn)
-            If column IsNot Nothing AndAlso column.DataGridView IsNot Nothing Then
-                column.DropDownWidth = Math.Max(MeasureMaxTextWidth(column.DataGridView, column.Items) + SystemInformation.VerticalScrollBarWidth, column.Width)
-            Else
-                Debug.Fail("SetComboBoxColumnDropdownWidth: No combobox column specified, or the column didn't have a parent datagridview!")
-            End If
-        End Sub
-
-        ''' <summary>
         ''' Check whether the screen reader is running
         ''' </summary>
         Public Function IsScreenReaderRunning() As Boolean
@@ -330,29 +298,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             End Try
             Return False
         End Function
-
-        ''' <summary>
-        ''' Sets error code and error message through IVsUIShell interface
-        ''' </summary>
-        ''' <param name="hr">error code</param>
-        ''' <param name="errorMessage">error message</param>
-        Public Sub SetErrorInfo(sp As ServiceProvider, hr As Integer, errorMessage As String)
-            Dim vsUIShell As IVsUIShell = Nothing
-
-            If sp IsNot Nothing Then
-                vsUIShell = CType(sp.GetService(GetType(IVsUIShell)), IVsUIShell)
-            End If
-
-            If vsUIShell Is Nothing AndAlso Not VBPackageInstance IsNot Nothing Then
-                vsUIShell = CType(VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
-            End If
-
-            If vsUIShell IsNot Nothing Then
-                vsUIShell.SetErrorInfo(hr, errorMessage, 0, Nothing, Nothing)
-            Else
-                Debug.Fail("Could not get IVsUIShell from service provider. Can't set specific error message.")
-            End If
-        End Sub
 
         ''' <summary>
         ''' Sets focus to the first (or last) control inside of a parent HWND.

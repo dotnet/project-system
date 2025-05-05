@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         .
         .
         .
-        Public Shared FileWatcher As New TraceSwitch("FileWatcher", "Trace the resource editor FileWatcher class.")
+        Public Shared FileWatcher As New TraceSwitch("FileWatcher", "Trace the property page editor FileWatcher class.")
         .
         .
         .
@@ -144,48 +144,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
     ''' Contains predefined switches for enabling/disabling trace output or code instrumentation.
     ''' </summary>
     Friend NotInheritable Class Switches
-
-        '------------- Resource Editor -------------
-
-        ''' <summary>
-        ''' Trace for the ResourceEditor.FileWatcher class
-        ''' </summary>
-        Public Shared RSEFileWatcher As New TraceSwitch("RSEFileWatcher", "Trace the resource editor FileWatcher class.")
-
-        ''' <summary>
-        ''' Tracing for the ResourceEditor.ResourceSerializationService class
-        ''' </summary>
-        Public Shared RSEResourceSerializationService As New TraceSwitch("RSEResourceSerializationService", "Trace the resource editor ResourceSerializationService class.")
-
-        ''' <summary>
-        ''' Track adding and removing resources in the resource editor
-        ''' </summary>
-        Public Shared RSEAddRemoveResources As New TraceSwitch("RSEAddRemoveResources", "Trace adding/removing resources in the resource editor")
-
-        ''' <summary>
-        ''' Trace virtual mode methods in the resource editor's string table
-        ''' </summary>
-        Public Shared RSEVirtualStringTable As New TraceSwitch("RSEVirtualStringTable", "Trace virtual mode methods in the resource editor's string table")
-
-        ''' <summary>
-        ''' Trace virtual mode methods in the resource editor's listview
-        ''' </summary>
-        Public Shared RSEVirtualListView As New TraceSwitch("RSEVirtualListView", "Trace virtual mode methods in the resource editor's listview")
-
-        ''' <summary>
-        ''' Trace the delayed checking of errors in resources
-        ''' </summary>
-        Public Shared RSEDelayCheckErrors As New TraceSwitch("RSEDelayCheckErrors", "Trace the delayed checking of errors in resources")
-
-        ''' <summary>
-        ''' Disable high-quality options on the Graphics object when creating thumbnails in the resource editor
-        ''' </summary>
-        Public Shared RSEDisableHighQualityThumbnails As New BooleanSwitch("RSEDisableHighQualityThumbnails", "Disable high-quality options on the Graphics object when creating thumbnails in the resource editor")
-
-        ''' <summary>
-        ''' Trace find/replace in the resource editor
-        ''' </summary>
-        Public Shared RSEFindReplace As New TraceSwitch("RSEFindReplace", "Trace find/replace in the resource editor")
 
         '------------- Designer Framework -------------
 
@@ -614,84 +572,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 #End If
         End Sub
 
-        ''' <summary>
-        ''' Traces the access modifier combobox functionality
-        ''' </summary>
-        <Conditional("DEBUG")>
-        Public Shared Sub TracePDAccessModifierCombobox(traceLevel As TraceLevel, message As String)
-#If DEBUG Then
-            Trace.WriteLineIf(PDAccessModifierCombobox.Level >= traceLevel, "PDAccessModifierCombobox: " & message)
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace serialization of settings
-        ''' </summary>
-        ''' <param name="tracelevel"></param>
-        ''' <param name="message"></param>
-        <Conditional("DEBUG")>
-        Public Overloads Shared Sub TraceSDSerializeSettings(tracelevel As TraceLevel, message As String)
-#If DEBUG Then
-            Trace.WriteLineIf(SDSerializeSettings.Level >= tracelevel, message)
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace serialization of settings
-        ''' </summary>
-        ''' <param name="tracelevel"></param>
-        ''' <param name="formatString"></param>
-        ''' <param name="parameters"></param>
-        <Conditional("DEBUG")>
-        Public Overloads Shared Sub TraceSDSerializeSettings(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
-#If DEBUG Then
-            Trace.WriteLineIf(SDSerializeSettings.Level >= tracelevel, String.Format(formatString, parameters))
-#End If
-        End Sub
-
-        <Conditional("DEBUG")>
-        Public Overloads Shared Sub TracePDLinqImports(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
-#If DEBUG Then
-            Trace.WriteLineIf(PDLinqImports.Level >= tracelevel, Format(formatString, parameters))
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace changes to one of the monitored configuration files 
-        ''' </summary>
-        ''' <param name="tracelevel"></param>
-        <Conditional("DEBUG")>
-        Public Overloads Shared Sub TraceWCFConfigFileChangeWatch(tracelevel As TraceLevel, formatString As String, ParamArray parameters() As Object)
-#If DEBUG Then
-            Trace.WriteLineIf(WCF_Config_FileChangeWatch.Level >= tracelevel, String.Format(formatString, parameters))
-#End If
-        End Sub
-
-        ''' <summary>
-        ''' Trace changes to one of the monitored configuration files 
-        ''' </summary>
-        ''' <param name="tracelevel"></param>
-        ''' <param name="message"></param>
-        <Conditional("DEBUG")>
-        Public Overloads Shared Sub TraceWCFConfigFileChangeWatch(tracelevel As TraceLevel, message As String)
-#If DEBUG Then
-            Trace.WriteLineIf(WCF_Config_FileChangeWatch.Level >= tracelevel, message)
-#End If
-        End Sub
-
         <Conditional("DEBUG")>
         Public Shared Sub TracePDPerfBegin(e As System.Windows.Forms.LayoutEventArgs, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             TracePDPerfBegin(Message, FormatArguments)
             TraceOnLayout(e)
-#End If
-        End Sub
-
-        <Conditional("DEBUG")>
-        Public Shared Sub TraceMyExtensibility(traceLevel As TraceLevel, message As String)
-#If DEBUG Then
-            Trace.WriteLineIf(MyExtensibilityTraceSwitch.Level >= traceLevel, String.Format("MyExtensibility {0} {1}: ", Date.Now.ToLongDateString(), Date.Now.ToLongTimeString()))
-            Trace.WriteLineIf(MyExtensibilityTraceSwitch.Level >= traceLevel, message)
 #End If
         End Sub
 

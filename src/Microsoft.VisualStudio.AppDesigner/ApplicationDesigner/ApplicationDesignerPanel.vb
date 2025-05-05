@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _docCookie As UInteger
         Private _docData As Object
         'The DocView for the designer, if we were able to retrieve it (if we understood the designer type).  This would
-        '  be a PropPageDesignerView for our hosted property pages, ResourceEditorView for the resource editor, etc.
+        '  be a PropPageDesignerView for our hosted property pages, etc.
         Private _docView As Control
 
         'This is Nothing if we're not displaying a property page

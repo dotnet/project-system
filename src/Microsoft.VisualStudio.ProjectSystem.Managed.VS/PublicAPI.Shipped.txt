@@ -450,4 +450,5 @@ Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.Item
 Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.QueryProjectPropertiesContext(bool isProjectFile, string! file, string? itemType, string? itemName) -> void
 override Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.Equals(object! obj) -> bool
 override Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.GetHashCode() -> int
+static Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.TryCreateFromEntityId(Microsoft.VisualStudio.ProjectSystem.Query.EntityIdentity! id, out Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext? propertiesContext) -> bool
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.ProjectFile -> Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext!

@@ -131,7 +131,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Public Overrides Sub SerializeMemberAbsolute(Store As SerializationStore, OwningObject As Object, Member As MemberDescriptor)
             'This method is intended for properties such as collections which might have had only some of their
             '  members changed.
-            'The resource editor doesn't have any such properties, so we just treat this the same
+            'The property page editor doesn't have any such properties, so we just treat this the same
             '  as simple SerializeMember (ignoring OldValue)
 
             SerializeMember(Store, OwningObject, Member)
