@@ -254,7 +254,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         _vsSolutionBuildManager2 ??= await _vsSolutionBuildManagerService.GetValueAsync(cancellationToken);
 
         // Step 1: Register sbm events
-        using var solutionBuildCompleteListener = new SolutionBuildCompleteListener();
+        using var solutionBuildCompleteListener = new SolutionBuildCompleteListener(_projectThreadingService.JoinableTaskContext.Context);
         Verify.HResult(_vsSolutionBuildManager2.AdviseUpdateSolutionEvents(solutionBuildCompleteListener, out uint cookie));
         try
         {
@@ -543,12 +543,14 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         /// <summary>
         /// The countdown for the number of builds that are still in progress. This is used to determine when the build is complete.
         /// </summary>
-        private int _buildLeft;
-        private bool? _isBuildSucceed;
-        public SolutionBuildCompleteListener()
+        private readonly JoinableTaskCollection _joinableTaskCollection;
+        private readonly JoinableTaskFactory _joinableTaskFactory;
+        private readonly TaskCompletionSource<bool> _buildCompletedSource = new();
+
+        public SolutionBuildCompleteListener(JoinableTaskContext joinsableTaskContext)
         {
-            _buildLeft = 1;
-            _isBuildSucceed = null;
+            _joinableTaskCollection = joinsableTaskContext.CreateCollection();
+            _joinableTaskFactory = joinsableTaskContext.CreateFactory(_joinableTaskCollection);
         }
 
         public static int UpdateSolution_Start(ref int pfCancelUpdate)
@@ -567,8 +569,14 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
         public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
         {
-            _isBuildSucceed = fSucceeded != 0;
-            Interlocked.Decrement(ref _buildLeft);
+            _joinableTaskFactory.Run(() =>
+            {
+                var isBuildSucceed = fSucceeded != 0;
+                _buildCompletedSource.TrySetResult(fSucceeded != 0);
+
+                return Task.CompletedTask;
+            });
+
             return HResult.OK;
         }
 
@@ -579,8 +587,12 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
         public int UpdateSolution_Cancel()
         {
-            _isBuildSucceed = false;
-            Interlocked.Decrement(ref _buildLeft);
+            _joinableTaskFactory.Run(() =>
+            {
+                _buildCompletedSource.TrySetCanceled();
+                return Task.CompletedTask;
+            });
+
             return HResult.OK;
         }
 
@@ -591,24 +603,31 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
         public async Task<bool> WaitForSolutionBuildCompletedAsync(CancellationToken ct = default)
         {
-            using var registration = ct.Register(() =>
-                {
-                    _isBuildSucceed = false;
-                    Interlocked.Decrement(ref _buildLeft);
-                });
-
-            while (Interlocked.CompareExchange(ref _buildLeft, 0, 0) > 0)
+            using var _ = ct.Register(() =>
             {
-                // Wait for the build to complete
-                await Task.Yield();
-                await Task.Delay(100, ct);
-            }
+                _joinableTaskFactory.Run(() =>
+                {
+                    _buildCompletedSource.TrySetCanceled();
+                    return Task.CompletedTask;
+                });
+            });
 
-            return _isBuildSucceed == true;
+            using (_joinableTaskCollection.Join())
+            {
+                try
+                {
+                    return await _buildCompletedSource.Task;
+                }
+                catch (TaskCanceledException)
+                {
+                    return false;
+                }
+            }
         }
 
         public void Dispose()
         {
+            _buildCompletedSource.TrySetCanceled();
         }
     }
 }
