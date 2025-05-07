@@ -445,6 +445,11 @@
         <target state="translated">Gli aggiornamenti sono stati applicati.</target>
         <note />
       </trans-unit>
+      <trans-unit id="HotReloadBuildFail">
+        <source>Unable to restart the project due to a build failure. Fix the build and try again.</source>
+        <target state="new">Unable to restart the project due to a build failure. Fix the build and try again.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HotReloadErrorsInApplication">
         <source>Errors found in application: </source>
         <target state="translated">Errori trovati nell'applicazione: </target>
