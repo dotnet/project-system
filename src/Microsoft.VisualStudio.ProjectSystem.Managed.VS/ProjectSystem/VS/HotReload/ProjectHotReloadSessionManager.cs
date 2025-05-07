@@ -249,12 +249,15 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
     public async Task<bool> BuildProjectAsync(CancellationToken cancellationToken)
     {
         Assumes.NotNull(_project.Services.HostObject);
-        await _projectThreadingService.SwitchToUIThread();
-
         _vsSolutionBuildManager2 ??= await _vsSolutionBuildManagerService.GetValueAsync(cancellationToken);
 
+        if (_projectThreadingService.JoinableTaskContext.IsMainThreadBlocked())
+        {
+            throw new InvalidOperationException("This task cannot be blocked on by the UI thread.");
+        }
+
         // Step 1: Register sbm events
-        using var solutionBuildCompleteListener = new SolutionBuildCompleteListener(_projectThreadingService.JoinableTaskContext.Context);
+        using var solutionBuildCompleteListener = new SolutionBuildCompleteListener();
         Verify.HResult(_vsSolutionBuildManager2.AdviseUpdateSolutionEvents(solutionBuildCompleteListener, out uint cookie));
         try
         {
@@ -540,17 +543,10 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
     private class SolutionBuildCompleteListener : IVsUpdateSolutionEvents, IDisposable
     {
-        /// <summary>
-        /// The countdown for the number of builds that are still in progress. This is used to determine when the build is complete.
-        /// </summary>
-        private readonly JoinableTaskCollection _joinableTaskCollection;
-        private readonly JoinableTaskFactory _joinableTaskFactory;
         private readonly TaskCompletionSource<bool> _buildCompletedSource = new();
 
-        public SolutionBuildCompleteListener(JoinableTaskContext joinsableTaskContext)
+        public SolutionBuildCompleteListener()
         {
-            _joinableTaskCollection = joinsableTaskContext.CreateCollection();
-            _joinableTaskFactory = joinsableTaskContext.CreateFactory(_joinableTaskCollection);
         }
 
         public static int UpdateSolution_Start(ref int pfCancelUpdate)
@@ -569,13 +565,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
         public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
         {
-            _joinableTaskFactory.Run(() =>
-            {
-                var isBuildSucceed = fSucceeded != 0;
-                _buildCompletedSource.TrySetResult(fSucceeded != 0);
-
-                return Task.CompletedTask;
-            });
+            _buildCompletedSource.TrySetResult(fSucceeded != 0);
 
             return HResult.OK;
         }
@@ -587,11 +577,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
         public int UpdateSolution_Cancel()
         {
-            _joinableTaskFactory.Run(() =>
-            {
-                _buildCompletedSource.TrySetCanceled();
-                return Task.CompletedTask;
-            });
+            _buildCompletedSource.TrySetCanceled();
 
             return HResult.OK;
         }
@@ -605,23 +591,16 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         {
             using var _ = ct.Register(() =>
             {
-                _joinableTaskFactory.Run(() =>
-                {
-                    _buildCompletedSource.TrySetCanceled();
-                    return Task.CompletedTask;
-                });
+                _buildCompletedSource.TrySetCanceled();
             });
 
-            using (_joinableTaskCollection.Join())
+            try
             {
-                try
-                {
-                    return await _buildCompletedSource.Task;
-                }
-                catch (TaskCanceledException)
-                {
-                    return false;
-                }
+                return await _buildCompletedSource.Task;
+            }
+            catch (TaskCanceledException)
+            {
+                return false;
             }
         }
 
