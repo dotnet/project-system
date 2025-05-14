@@ -1046,10 +1046,8 @@ internal class LaunchSettingsUnderTest : LaunchSettingsProvider
         IProjectFaultHandlerService projectFaultHandler,
         IDefaultLaunchProfileProvider defaultLaunchProfileProvider,
         JoinableTaskContext joinableTaskContext)
-      : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, projectProperties, projectFaultHandler, joinableTaskContext)
+      : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, projectProperties, projectFaultHandler, new SimpleFileWatcher(), joinableTaskContext)
     {
-        // Block the code from setting up one on the real file system. Since we block, it we need to set up the fileChange scheduler manually
-        FileWatcher = new SimpleFileWatcher();
         // Make the unit tests run faster
         FileChangeProcessingDelay = TimeSpan.FromMilliseconds(50);
         FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, commonProjectServices.ThreadingService,

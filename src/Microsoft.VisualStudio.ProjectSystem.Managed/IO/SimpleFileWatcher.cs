@@ -1,23 +1,31 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.FileWatch;
+using Microsoft.VisualStudio.ProjectSystem;
+
 namespace Microsoft.VisualStudio.IO;
 
 /// <summary>
 /// Simple wrapper around the FileSystemWatcher.
 /// </summary>
-internal sealed class SimpleFileWatcher : IDisposable
+[Export(typeof(IFileWatcherService))]
+[Order(Order.Lowest)]
+internal sealed class SimpleFileWatcher : IFileWatcherService
 {
-    private FileSystemWatcher? _fileWatcher;
-    private FileSystemEventHandler? _handler;
-    private RenamedEventHandler? _renameHandler;
+    private readonly FileSystemWatcher? _fileWatcher;
+    public event EventHandler<FileWatcherEventArgs> OnDidCreate;
+    public event EventHandler<FileWatcherEventArgs> OnDidChange;
+    public event EventHandler<FileWatcherEventArgs> OnDidDelete;
 
-    // For unit tests
     public SimpleFileWatcher()
     {
     }
 
-    public SimpleFileWatcher(string dirToWatch, bool includeSubDirs, NotifyFilters notifyFilters, string fileFilter,
-                             FileSystemEventHandler? handler, RenamedEventHandler? renameHandler)
+    public SimpleFileWatcher(
+        string dirToWatch,
+        bool includeSubDirs,
+        NotifyFilters notifyFilters,
+        string fileFilter)
     {
         _fileWatcher = new FileSystemWatcher(dirToWatch)
         {
@@ -26,21 +34,35 @@ internal sealed class SimpleFileWatcher : IDisposable
             Filter = fileFilter
         };
 
-        if (handler is not null)
-        {
-            _fileWatcher.Created += handler;
-            _fileWatcher.Deleted += handler;
-            _fileWatcher.Changed += handler;
-        }
-
-        if (renameHandler is not null)
-        {
-            _fileWatcher.Renamed += renameHandler;
-        }
-
+        _fileWatcher.Changed += _fileWatcher_handler;
+        _fileWatcher.Created += _fileWatcher_handler;
+        _fileWatcher.Deleted += _fileWatcher_handler;
+        _fileWatcher.Renamed += _fileWatcher_handler;
         _fileWatcher.EnableRaisingEvents = true;
-        _handler = handler;
-        _renameHandler = renameHandler;
+    }
+
+    private void _fileWatcher_handler(object sender, FileSystemEventArgs e)
+    {
+        var fileWatcherArgs = new FileWatcherEventArgs
+        {
+            WatcherChangeType = e.ChangeType,
+            FsPath = e.FullPath,
+        };
+
+        switch (e.ChangeType)
+        {
+            case WatcherChangeTypes.Created:
+                OnDidCreate(this, fileWatcherArgs);
+                break;
+            case WatcherChangeTypes.Deleted:
+                OnDidDelete(this, fileWatcherArgs);
+                break;
+            case WatcherChangeTypes.Changed:
+                OnDidChange(this, fileWatcherArgs);
+                break;
+            default:
+                break;
+        }
     }
 
     public void Dispose()
@@ -48,20 +70,7 @@ internal sealed class SimpleFileWatcher : IDisposable
         if (_fileWatcher is not null)
         {
             _fileWatcher.EnableRaisingEvents = false;
-            if (_handler is not null)
-            {
-                _fileWatcher.Created -= _handler;
-                _fileWatcher.Deleted -= _handler;
-                _fileWatcher.Changed -= _handler;
-                _handler = null;
-            }
-            if (_renameHandler is not null)
-            {
-                _fileWatcher.Renamed -= _renameHandler;
-                _renameHandler = null;
-            }
             _fileWatcher.Dispose();
-            _fileWatcher = null;
         }
     }
 }
