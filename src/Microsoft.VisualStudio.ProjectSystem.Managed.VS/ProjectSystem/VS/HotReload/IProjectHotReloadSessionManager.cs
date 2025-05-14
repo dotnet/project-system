@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
@@ -18,7 +19,7 @@ internal interface IProjectHotReloadSessionManager
     /// <see langword="true"/> if the session was created; <see langword="false"/>
     /// otherwise.
     /// </returns>
-    Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables, DebugLaunchOptions? launchOptions, ILaunchProfile? launchProfile);
+    Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables, DebugLaunchOptions? launchOptions, ILaunchProfile? launchProfile, IInternalDebugLaunchProvider? debugLaunchProvider);
 
     /// <summary>
     /// Activates the pending Hot Reload session and associates it with the specified

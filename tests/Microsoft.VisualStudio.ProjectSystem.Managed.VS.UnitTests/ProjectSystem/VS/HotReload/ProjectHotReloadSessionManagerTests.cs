@@ -2,7 +2,9 @@
 
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
+using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
@@ -25,7 +27,7 @@ public class ProjectHotReloadSessionManagerTests
         var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
         var environmentVariables = new Dictionary<string, string>();
-        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables, debugLaunchProvider: Mock.Of<IInternalDebugLaunchProvider>());
 
         Assert.True(sessionCreated);
     }
