@@ -5,7 +5,8 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
-
+using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.FileWatch;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
 /// <summary>
@@ -44,6 +45,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     private readonly TaskCompletionSource _firstSnapshotCompletionSource = new();
     private readonly SequentialTaskExecutor _sequentialTaskQueue;
     private readonly Lazy<LaunchProfile?> _defaultLaunchProfile;
+    private readonly IFileWatcherService _fileWatcherService;
     private IReceivableSourceBlock<ILaunchSettings>? _changedSourceBlock;
     private IBroadcastBlock<ILaunchSettings>? _broadcastBlock;
     private IReceivableSourceBlock<IProjectVersionedValue<ILaunchSettings>>? _versionedChangedSourceBlock;
@@ -61,6 +63,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
         IActiveConfiguredValue<ProjectProperties?> projectProperties,
         IProjectFaultHandlerService projectFaultHandler,
+        IFileWatcherService fileWatchService,
         JoinableTaskContext joinableTaskContext)
         : base(projectServices, synchronousDisposal: false, registerDataSource: false)
     {
@@ -68,6 +71,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         _projectServices = projectServices;
         _fileSystem = fileSystem;
         _commonProjectServices = commonProjectServices;
+        _fileWatcherService = fileWatchService;
 
         _sequentialTaskQueue = new SequentialTaskExecutor(new JoinableTaskContextNode(joinableTaskContext), nameof(LaunchSettingsProvider));
 
@@ -102,8 +106,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
 
     [ImportMany]
     protected OrderPrecedenceImportCollection<IDefaultLaunchProfileProvider> DefaultLaunchProfileProviders { get; set; }
-
-    protected SimpleFileWatcher? FileWatcher { get; set; }
 
     // When we are saving the file we set this to minimize noise from the file change
     protected bool IgnoreFileChanges { get; set; }
@@ -531,24 +533,12 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     }
 
     /// <summary>
-    /// Cleans up our watcher on the debugsettings.Json file
-    /// </summary>
-    private void CleanupFileWatcher()
-    {
-        if (FileWatcher is not null)
-        {
-            FileWatcher.Dispose();
-            FileWatcher = null;
-        }
-    }
-
-    /// <summary>
     /// Sets up a file system watcher to look for changes to the launchsettings.json file. It watches at the root of the
     /// project otherwise we force the project to have a properties folder.
     /// </summary>
     private void WatchLaunchSettingsFile()
     {
-        if (FileWatcher is null)
+        if (FileChangeScheduler is null)
         {
             FileChangeScheduler?.Dispose();
 
@@ -560,12 +550,28 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
 
             try
             {
-                FileWatcher = new SimpleFileWatcher(_commonProjectServices.Project.GetProjectDirectory(),
-                                                    true,
-                                                    NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.LastWrite,
-                                                    LaunchSettingsFilename,
-                                                    LaunchSettingsFile_Changed,
-                                                    LaunchSettingsFile_Changed);
+                var projectDirectory = _commonProjectServices.Project.GetProjectDirectory();
+                _fileWatcherService.OnDidCreate += LaunchSettingsFile_ChangedOrDeleted;
+                _fileWatcherService.OnDidChange += LaunchSettingsFile_ChangedOrDeleted;
+                _fileWatcherService.OnDidDelete += LaunchSettingsFile_ChangedOrDeleted;
+
+                void LaunchSettingsFile_ChangedOrDeleted(object sender, FileWatcherEventArgs e)
+                {
+                    var fileAttribution = File.GetAttributes(e.FsPath);
+                    if (fileAttribution.HasFlag(FileAttributes.Directory))
+                    {
+                        return;
+                    }
+
+                    var directory = Path.GetDirectoryName(e.FsPath);
+                    var fileName = Path.GetFileName(e.FsPath);
+
+                    // check if fileName is LaunchSettingsFilename and is inside projectDirectory
+                    if (fileName == LaunchSettingsFilename && directory.StartsWith(projectDirectory))
+                    {
+                        _projectFaultHandler.Forget(HandleLaunchSettingsFileChangedAsync(), _project);
+                    }
+                }
             }
             catch (Exception ex) when (ex is IOException || ex is ArgumentException)
             {
@@ -582,7 +588,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     {
         if (disposing)
         {
-            CleanupFileWatcher();
+            _fileWatcherService.Dispose();
             if (FileChangeScheduler is not null)
             {
                 FileChangeScheduler.Dispose();
