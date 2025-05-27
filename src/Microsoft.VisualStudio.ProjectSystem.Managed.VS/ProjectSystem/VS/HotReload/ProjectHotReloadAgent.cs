@@ -32,7 +32,8 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent
             _hotReloadAgentManagerClient,
             _hotReloadDiagnosticOutputService,
             _managedDeltaApplierCreator,
-            callback);
+            callback,
+            configuredProject: null);
     }
 
     public IProjectHotReloadSession? CreateHotReloadSession(string id, string runtimeVersion, IProjectHotReloadSessionCallback callback)

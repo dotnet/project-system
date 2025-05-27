@@ -407,7 +407,7 @@ internal class ProjectLaunchTargetsProvider :
         }
 
         if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions)
-            && await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(settings.Environment, launchOptions, resolvedProfile, null))
+            && await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(settings.Environment, launchOptions, resolvedProfile))
         {
             // Enable XAML Hot Reload
             settings.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] = "1";

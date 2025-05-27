@@ -8,6 +8,9 @@ internal static class IManagedDeltaApplierCreatorFactory
     public static IManagedDeltaApplierCreator Create()
     {
         var mock = new Mock<IManagedDeltaApplierCreator>();
+
+        mock.Setup(m => m.CreateManagedDeltaApplier(It.IsAny<string>()))
+            .Returns(new Mock<IDeltaApplier>().Object);
         return mock.Object;
     }
 }

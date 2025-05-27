@@ -27,7 +27,7 @@ public class ProjectHotReloadSessionManagerTests
         var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
         var environmentVariables = new Dictionary<string, string>();
-        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables, debugLaunchProvider: Mock.Of<IInternalDebugLaunchProvider>());
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
 
         Assert.True(sessionCreated);
     }

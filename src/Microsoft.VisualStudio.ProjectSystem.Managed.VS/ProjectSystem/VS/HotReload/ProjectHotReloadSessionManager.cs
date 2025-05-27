@@ -5,8 +5,6 @@ using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
-using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -158,7 +156,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         }
     }
 
-    public Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables, DebugLaunchOptions? launchOptions = null, ILaunchProfile? launchProfile = null, IInternalDebugLaunchProvider? debugLaunchProvider = null)
+    public Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables, DebugLaunchOptions? launchOptions = null, ILaunchProfile? launchProfile = null)
     {
         return _semaphore.ExecuteAsync(TryCreatePendingSessionInternalAsync).AsTask();
 
@@ -175,7 +173,6 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
                     var configuredProject = await GetConfiguredProjectForDebugAsync();
                     Assumes.Present(configuredProject);
 
-                    debugLaunchProvider ??= configuredProject.Services.ExportProvider.GetExportedValueOrDefault<IInternalDebugLaunchProvider>();
                     IProjectHotReloadSession projectHotReloadSession = new ProjectHotReloadSession(
                         name: name,
                         variant: _nextUniqueId++,
@@ -185,8 +182,8 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
                         deltaApplierCreator: _managedDeltaApplierCreator,
                         sessionManager: this,
                         callback: state,
-                        launchProvider: debugLaunchProvider,
                         launchProfile: launchProfile,
+                        configuredProject: configuredProject,
                         debugLaunchOptions: launchOptions);
 
                     state.Session = projectHotReloadSession;
