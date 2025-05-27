@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <VSDebuggerVersion>17.13.0-beta.24561.1</VSDebuggerVersion>
+    <VSDebuggerVersion>17.13.0-beta.25105.1</VSDebuggerVersion>
   </PropertyGroup>
 
   <!--
