@@ -8,9 +8,8 @@ namespace Microsoft.VisualStudio.IO;
 /// <summary>
 /// Simple wrapper around the FileSystemWatcher.
 /// </summary>
-[Export(typeof(IFileWatcherService))]
 [Order(Order.Lowest)]
-internal sealed class SimpleFileWatcher : IFileWatcherService
+internal sealed class SimpleFileWatcher
 {
     private readonly FileSystemWatcher? _fileWatcher;
     public event EventHandler<FileWatcherEventArgs> OnDidCreate;

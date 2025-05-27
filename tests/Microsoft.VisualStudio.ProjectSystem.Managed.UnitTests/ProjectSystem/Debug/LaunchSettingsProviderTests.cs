@@ -32,9 +32,7 @@ public class LaunchSettingsProviderTests
                 services: ProjectServicesFactory.Create(
                     threadingService: threadingService)));
         var projectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
-#pragma warning disable VSSDK005
         var joinableTaskContext = new JoinableTaskContext();
-#pragma warning restore VSSDK005
         var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, activeConfigurationProjectProperties, projectFaultHandlerService, new DefaultLaunchProfileProvider(project), joinableTaskContext);
         return provider;
     }
@@ -337,9 +335,9 @@ public class LaunchSettingsProviderTests
         SetJsonSerializationProviders(provider);
 
         var (profiles, globalSettings) = await provider.ReadSettingsFileFromDiskTestAsync();
-        
+
         AssertEx.CollectionLength(profiles, 2);
-        
+
         var (name, value) = Assert.Single(globalSettings);
         Assert.Equal("iisSettings", name);
         Assert.IsType<IISSettingsData>(value);
@@ -803,7 +801,8 @@ public class LaunchSettingsProviderTests
 
         var newSettings = new IISSettingsData() { WindowsAuthentication = true, DoNotPersist = isInMemory };
 
-        await provider.UpdateGlobalSettingsAsync(existing => {
+        await provider.UpdateGlobalSettingsAsync(existing =>
+        {
             var updates = ImmutableDictionary<string, object?>.Empty
                 .Add("iisSettings", newSettings);
             return updates;
@@ -879,7 +878,8 @@ public class LaunchSettingsProviderTests
 
         var newSettings = new IISSettingsData() { WindowsAuthentication = true, DoNotPersist = isInMemory };
 
-        await provider.UpdateGlobalSettingsAsync(existing => {
+        await provider.UpdateGlobalSettingsAsync(existing =>
+        {
             var updates = ImmutableDictionary<string, object?>.Empty
                 .Add("iisSettings", newSettings);
             return updates;
@@ -1046,7 +1046,7 @@ internal class LaunchSettingsUnderTest : LaunchSettingsProvider
         IProjectFaultHandlerService projectFaultHandler,
         IDefaultLaunchProfileProvider defaultLaunchProfileProvider,
         JoinableTaskContext joinableTaskContext)
-      : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, projectProperties, projectFaultHandler, new SimpleFileWatcher(), joinableTaskContext)
+      : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, projectProperties, projectFaultHandler, Mock.Of<IFileWatcherService>(), null, joinableTaskContext)
     {
         // Make the unit tests run faster
         FileChangeProcessingDelay = TimeSpan.FromMilliseconds(50);
