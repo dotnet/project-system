@@ -28,7 +28,7 @@ internal partial class ProjectCapabilitiesMissingVetoProjectLoad : IVetoProjectP
         _projectCapabilitiesService = projectCapabilitiesService;
     }
 
-    public Task<bool> AllowProjectLoadAsync(bool isNewProject, ProjectConfiguration activeConfiguration, CancellationToken cancellationToken = default)
+    public Task<bool> AllowProjectLoadAsync(bool isNewProject, ProjectConfiguration? activeConfiguration, CancellationToken cancellationToken = default)
     {
         ProjectType? projectType = GetCurrentProjectType();
         if (projectType is null)    // Unrecognized, probably a Shared Project

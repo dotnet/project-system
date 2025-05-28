@@ -36,7 +36,7 @@ public sealed class PackageContentTests
             config,
             "obj",
             "Microsoft.VisualStudio.ProjectSystem.Managed",
-            "net8.0",
+            "net9.0",
             "npmsrc");
 
         return Directory.EnumerateFiles(packagesDirectory, "*", SearchOption.AllDirectories)
