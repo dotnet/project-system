@@ -3,6 +3,8 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
@@ -11,14 +13,14 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
     private readonly string _variant;
     private readonly string _runtimeVersion;
     private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
+    private readonly ConfiguredProject? _configuredProject;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
     private readonly Lazy<IManagedDeltaApplierCreator> _deltaApplierCreator;
     private readonly IProjectHotReloadSessionCallback _callback;
-
+    private readonly ILaunchProfile? _launchProfile;
+    private readonly DebugLaunchOptions? _debugLaunchOptions;
+    private readonly IProjectHotReloadSessionManager? _sessionManager;
     private bool _sessionActive;
-
-    // This flag is used to identify Debug|NonDebug cases
-    private bool _isRunningUnderDebugger;
     private IDeltaApplier? _deltaApplier;
 
     public ProjectHotReloadSession(
@@ -28,8 +30,13 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
         Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadOutputService,
         Lazy<IManagedDeltaApplierCreator> deltaApplierCreator,
-        IProjectHotReloadSessionCallback callback)
+        IProjectHotReloadSessionCallback callback,
+        IProjectHotReloadSessionManager? sessionManager = null,
+        ConfiguredProject? configuredProject = null,
+        ILaunchProfile? launchProfile = null,
+        DebugLaunchOptions? debugLaunchOptions = null)
     {
+        _configuredProject = configuredProject;
         Name = name;
         _variant = variant.ToString();
         _runtimeVersion = runtimeVersion;
@@ -37,6 +44,9 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
         _hotReloadOutputService = hotReloadOutputService;
         _deltaApplierCreator = deltaApplierCreator;
         _callback = callback;
+        _launchProfile = launchProfile;
+        _sessionManager = sessionManager;
+        _debugLaunchOptions = debugLaunchOptions;
     }
 
     // IProjectHotReloadSession
@@ -78,7 +88,6 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
 
         WriteToOutputWindow(VSResources.HotReloadStartSession, default);
         _sessionActive = true;
-        _isRunningUnderDebugger = runningUnderDebugger;
         EnsureDeltaApplierForSession();
     }
 
@@ -164,14 +173,19 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
     public async ValueTask RestartAsync(CancellationToken cancellationToken)
     {
         WriteToOutputWindow(VSResources.HotReloadRestartInProgress, cancellationToken);
+        var launchProvider = _configuredProject?.Services.ExportProvider.GetExportedValueOrDefault<IInternalDebugLaunchProvider>();
+        if (launchProvider is not null && _launchProfile is not null && _debugLaunchOptions.HasValue && _sessionManager is not null)
+        {
+            // build project first
+            var isSucceed = await _sessionManager.BuildProjectAsync(cancellationToken);
 
-        if (_callback is IProjectHotReloadSessionCallback2 callBack2)
-        {
-            await callBack2.RestartProjectAsync(_isRunningUnderDebugger, cancellationToken);
-        }
-        else
-        {
-            await _callback.RestartProjectAsync(cancellationToken);
+            if (!isSucceed)
+            {
+                WriteToOutputWindow(VSResources.HotReloadBuildFail, cancellationToken, HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel.Error);
+                return;
+            }
+
+            await launchProvider.LaunchWithProfileAsync(_debugLaunchOptions.Value, _launchProfile);
         }
     }
 
@@ -186,7 +200,8 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
 
     public ValueTask<bool> SupportsRestartAsync(CancellationToken cancellationToken)
     {
-        return new ValueTask<bool>(_callback.SupportsRestart);
+        var launchProvider = _configuredProject?.Services.ExportProvider.GetExportedValueOrDefault<IInternalDebugLaunchProvider>();
+        return new ValueTask<bool>(launchProvider is not null && _launchProfile is not null && _debugLaunchOptions.HasValue);
     }
 
     private void WriteToOutputWindow(string message, CancellationToken cancellationToken, HotReloadVerbosity verbosity = HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel errorLevel = HotReloadDiagnosticErrorLevel.Info)

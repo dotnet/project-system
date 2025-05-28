@@ -916,6 +916,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to restart the project due to a build failure. Fix the build and try again..
+        /// </summary>
+        internal static string HotReloadBuildFail {
+            get {
+                return ResourceManager.GetString("HotReloadBuildFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Errors found in application: .
         /// </summary>
         internal static string HotReloadErrorsInApplication {

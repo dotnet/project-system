@@ -18,9 +18,11 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
     private readonly UnconfiguredProject _project;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
     private readonly IActiveDebugFrameworkServices _activeDebugFrameworkServices;
-    private readonly Lazy<IProjectHotReloadAgent> _projectHotReloadAgent;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
     private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
+    private readonly Lazy<IManagedDeltaApplierCreator> _managedDeltaApplierCreator;
+    private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
+
     private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
     private IVsSolutionBuildManager2? _vsSolutionBuildManager2;
     private readonly IProjectThreadingService _projectThreadingService;
@@ -33,7 +35,6 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
     private readonly Dictionary<int, HotReloadState> _activeSessions = [];
     private HotReloadState? _pendingSessionState = null;
     private int _nextUniqueId = 1;
-
     public bool HasActiveHotReloadSessions => _activeSessions.Count != 0;
 
     [ImportingConstructor]
@@ -42,9 +43,10 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         IProjectThreadingService threadingService,
         IProjectFaultHandlerService projectFaultHandlerService,
         IActiveDebugFrameworkServices activeDebugFrameworkServices,
-        Lazy<IProjectHotReloadAgent> projectHotReloadAgent,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
         Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
+        Lazy<IManagedDeltaApplierCreator> managedDeltaApplierCreator,
+        Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
         IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService)
         : base(threadingService.JoinableTaskContext)
     {
@@ -52,11 +54,11 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         _projectThreadingService = threadingService;
         _projectFaultHandlerService = projectFaultHandlerService;
         _activeDebugFrameworkServices = activeDebugFrameworkServices;
-        _projectHotReloadAgent = projectHotReloadAgent;
         _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
         _projectHotReloadNotificationService = projectHotReloadNotificationService;
         _vsSolutionBuildManagerService = solutionBuildManagerService;
-
+        _managedDeltaApplierCreator = managedDeltaApplierCreator;
+        _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
         _semaphore = ReentrantSemaphore.Create(
             initialCount: 1,
             joinableTaskContext: project.Services.ThreadingPolicy.JoinableTaskContext.Context,
@@ -154,7 +156,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         }
     }
 
-    public Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables)
+    public Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables, DebugLaunchOptions? launchOptions = null, ILaunchProfile? launchProfile = null)
     {
         return _semaphore.ExecuteAsync(TryCreatePendingSessionInternalAsync).AsTask();
 
@@ -168,16 +170,27 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
                 {
                     string name = Path.GetFileNameWithoutExtension(_project.FullPath);
                     HotReloadState state = new(this);
-                    IProjectHotReloadSession? projectHotReloadSession = _projectHotReloadAgent.Value.CreateHotReloadSession(name, _nextUniqueId++, frameworkVersion, state);
+                    var configuredProject = await GetConfiguredProjectForDebugAsync();
+                    Assumes.Present(configuredProject);
 
-                    if (projectHotReloadSession is not null)
-                    {
-                        state.Session = projectHotReloadSession;
-                        await projectHotReloadSession.ApplyLaunchVariablesAsync(environmentVariables, default);
-                        _pendingSessionState = state;
+                    IProjectHotReloadSession projectHotReloadSession = new ProjectHotReloadSession(
+                        name: name,
+                        variant: _nextUniqueId++,
+                        runtimeVersion: frameworkVersion,
+                        hotReloadAgentManagerClient: _hotReloadAgentManagerClient,
+                        hotReloadOutputService: _hotReloadDiagnosticOutputService,
+                        deltaApplierCreator: _managedDeltaApplierCreator,
+                        sessionManager: this,
+                        callback: state,
+                        launchProfile: launchProfile,
+                        configuredProject: configuredProject,
+                        debugLaunchOptions: launchOptions);
 
-                        return true;
-                    }
+                    state.Session = projectHotReloadSession;
+                    await projectHotReloadSession.ApplyLaunchVariablesAsync(environmentVariables, default);
+                    _pendingSessionState = state;
+
+                    return true;
                 }
                 else
                 {
@@ -225,6 +238,46 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
             _activeSessions.Clear();
 
             return Task.CompletedTask;
+        }
+    }
+
+    /// <summary>
+    /// Build project and wait for the build to complete.
+    /// </summary>
+    public async Task<bool> BuildProjectAsync(CancellationToken cancellationToken)
+    {
+        Assumes.NotNull(_project.Services.HostObject);
+        _vsSolutionBuildManager2 ??= await _vsSolutionBuildManagerService.GetValueAsync(cancellationToken);
+
+        if (_projectThreadingService.JoinableTaskContext.IsMainThreadBlocked())
+        {
+            throw new InvalidOperationException("This task cannot be blocked on by the UI thread.");
+        }
+
+        // Step 1: Register sbm events
+        using var solutionBuildCompleteListener = new SolutionBuildCompleteListener();
+        Verify.HResult(_vsSolutionBuildManager2.AdviseUpdateSolutionEvents(solutionBuildCompleteListener, out uint cookie));
+        try
+        {
+            // Step 2: Build
+            var projectVsHierarchy = (IVsHierarchy)_project.Services.HostObject;
+
+            var result = _vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(
+                pIVsHierarchyToBuild: projectVsHierarchy,
+                pIVsHierarchyDependent: null,
+                pszDependentConfigurationCanonicalName: null,
+                dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD,
+                dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
+                fSuppressUI: 0);
+
+            ErrorHandler.ThrowOnFailure(result);
+
+            // Step 3: Wait for the build to complete
+            return await solutionBuildCompleteListener.WaitForSolutionBuildCompletedAsync(cancellationToken);
+        }
+        finally
+        {
+            _vsSolutionBuildManager2.UnadviseUpdateSolutionEvents(cookie);
         }
     }
 
@@ -360,38 +413,6 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         return null;
     }
 
-    private async Task<bool> RestartProjectAsync(
-        HotReloadState hotReloadState,
-        bool isRunningUnderDebug,
-        CancellationToken cancellationToken)
-    {
-        Assumes.NotNull(_project.Services.HostObject);
-        await _projectThreadingService.SwitchToUIThread();
-
-        if (_vsSolutionBuildManager2 is null)
-        {
-            _vsSolutionBuildManager2 = await _vsSolutionBuildManagerService.GetValueAsync(cancellationToken);
-        }
-
-        // Step 1: Debug or NonDebug?
-        uint dbgLaunchFlag = isRunningUnderDebug ? (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCHDEBUG : (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_LAUNCH;
-
-        // Step 2: Build and Launch Debug
-        var projectVsHierarchy = (IVsHierarchy)_project.Services.HostObject;
-
-        var result = _vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(
-            pIVsHierarchyToBuild: projectVsHierarchy,
-            pIVsHierarchyDependent: null,
-            pszDependentConfigurationCanonicalName: null,
-            dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD | dbgLaunchFlag,
-            dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
-            fSuppressUI: 0);
-
-        ErrorHandler.ThrowOnFailure(result);
-
-        return result == HResult.OK;
-    }
-
     private static Task OnAfterChangesAppliedAsync(HotReloadState hotReloadState, CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
@@ -490,9 +511,10 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         public Process? Process { get; set; }
         public IProjectHotReloadSession? Session { get; set; }
 
-        public bool SupportsRestart => true;
-
         public UnconfiguredProject? Project => _sessionManager._project;
+
+        [Obsolete]
+        public bool SupportsRestart => throw new NotImplementedException();
 
         public HotReloadState(ProjectHotReloadSessionManager sessionManager)
         {
@@ -514,19 +536,75 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
             return _sessionManager.StopProjectAsync(this, cancellationToken).AsTask();
         }
 
-        public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
-        {
-            return TaskResult.False;
-        }
-
-        public Task<bool> RestartProjectAsync(bool isRunningUnderDebug, CancellationToken cancellationToken)
-        {
-            return _sessionManager.RestartProjectAsync(this, isRunningUnderDebug, cancellationToken);
-        }
-
         public IDeltaApplier? GetDeltaApplier()
         {
             return ProjectHotReloadSessionManager.GetDeltaApplier(this);
+        }
+
+        [Obsolete]
+        public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    private class SolutionBuildCompleteListener : IVsUpdateSolutionEvents, IDisposable
+    {
+        private readonly TaskCompletionSource<bool> _buildCompletedSource = new();
+
+        public SolutionBuildCompleteListener()
+        {
+        }
+
+        public int UpdateSolution_Begin(ref int pfCancelUpdate)
+        {
+            return HResult.OK;
+        }
+
+        public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
+        {
+            _buildCompletedSource.TrySetResult(fSucceeded != 0);
+
+            return HResult.OK;
+        }
+
+        public int UpdateSolution_StartUpdate(ref int pfCancelUpdate)
+        {
+            return HResult.OK;
+        }
+
+        public int UpdateSolution_Cancel()
+        {
+            _buildCompletedSource.TrySetCanceled();
+
+            return HResult.OK;
+        }
+
+        public int OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy)
+        {
+            return HResult.OK;
+        }
+
+        public async Task<bool> WaitForSolutionBuildCompletedAsync(CancellationToken ct = default)
+        {
+            using var _ = ct.Register(() =>
+            {
+                _buildCompletedSource.TrySetCanceled();
+            });
+
+            try
+            {
+                return await _buildCompletedSource.Task;
+            }
+            catch (TaskCanceledException)
+            {
+                return false;
+            }
+        }
+
+        public void Dispose()
+        {
+            _buildCompletedSource.TrySetCanceled();
         }
     }
 }

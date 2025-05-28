@@ -445,6 +445,11 @@
         <target state="translated">已成功套用更新。</target>
         <note />
       </trans-unit>
+      <trans-unit id="HotReloadBuildFail">
+        <source>Unable to restart the project due to a build failure. Fix the build and try again.</source>
+        <target state="new">Unable to restart the project due to a build failure. Fix the build and try again.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="HotReloadErrorsInApplication">
         <source>Errors found in application: </source>
         <target state="translated">在應用程式中發現錯誤: </target>
