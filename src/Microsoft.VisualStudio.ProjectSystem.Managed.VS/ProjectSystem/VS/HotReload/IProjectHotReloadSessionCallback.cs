@@ -7,9 +7,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
 public interface IProjectHotReloadSessionCallback
 {
+    [Obsolete]
+    bool SupportsRestart { get; }
+
     Task OnAfterChangesAppliedAsync(CancellationToken cancellationToken);
 
     Task<bool> StopProjectAsync(CancellationToken cancellationToken);
+
+    [Obsolete]
+    Task<bool> RestartProjectAsync(CancellationToken cancellationToken);
 
     IDeltaApplier? GetDeltaApplier();
 }

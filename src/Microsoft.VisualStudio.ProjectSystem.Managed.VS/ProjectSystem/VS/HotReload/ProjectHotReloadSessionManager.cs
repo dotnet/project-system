@@ -513,6 +513,9 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
         public UnconfiguredProject? Project => _sessionManager._project;
 
+        [Obsolete]
+        public bool SupportsRestart => throw new NotImplementedException();
+
         public HotReloadState(ProjectHotReloadSessionManager sessionManager)
         {
             _sessionManager = sessionManager;
@@ -537,6 +540,12 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         {
             return ProjectHotReloadSessionManager.GetDeltaApplier(this);
         }
+
+        [Obsolete]
+        public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     private class SolutionBuildCompleteListener : IVsUpdateSolutionEvents, IDisposable
@@ -545,15 +554,6 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
 
         public SolutionBuildCompleteListener()
         {
-        }
-
-        public static int UpdateSolution_Start(ref int pfCancelUpdate)
-        {
-            return HResult.OK;
-        }
-        public static int UpdateSolution_Progress(ref int pfCancelUpdate)
-        {
-            return HResult.OK;
         }
 
         public int UpdateSolution_Begin(ref int pfCancelUpdate)
