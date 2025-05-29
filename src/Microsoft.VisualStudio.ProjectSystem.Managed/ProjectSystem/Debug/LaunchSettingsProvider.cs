@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Threading.Tasks.Dataflow;
+using EnvDTE;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -48,7 +49,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     private readonly IFileWatcherService _fileWatcherService;
     private readonly IManagedProjectDiagnosticOutputService? _diagnosticOutputService;
     private IFileWatcher? _launchSettingFileWatcher;
-    private int? _launchSettingFileWatcherCookie;
+    private int _launchSettingFileWatcherCookie;
     private IReceivableSourceBlock<ILaunchSettings>? _changedSourceBlock;
     private IBroadcastBlock<ILaunchSettings>? _broadcastBlock;
     private IReceivableSourceBlock<IProjectVersionedValue<ILaunchSettings>>? _versionedChangedSourceBlock;
@@ -84,7 +85,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: project);
 
         DefaultLaunchProfileProviders = new OrderPrecedenceImportCollection<IDefaultLaunchProfileProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, project);
-
+        _launchSettingFileWatcherCookie = 0;
         _projectSubscriptionService = projectSubscriptionService;
         _projectProperties = projectProperties;
         _projectFaultHandler = projectFaultHandler;
@@ -555,7 +556,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
 
             try
             {
-                _ = JoinableFactory.RunAsync(async () =>
+                JoinableFactory.Run(async () =>
                 {
                     var launchSettingsToWatch = await GetLaunchSettingsFilePathAsync();
                     if (launchSettingsToWatch is not null)
@@ -580,12 +581,13 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     {
         if (disposing)
         {
-            if (_launchSettingFileWatcherCookie is not null && _launchSettingFileWatcher is not null)
+            if (_launchSettingFileWatcherCookie != 0 && _launchSettingFileWatcher is not null)
             {
                 // Unregister the file watcher
-                _launchSettingFileWatcher.Unregister(_launchSettingFileWatcherCookie.Value);
+                _launchSettingFileWatcher.Unregister(_launchSettingFileWatcherCookie);
                 _launchSettingFileWatcher.Dispose();
                 _launchSettingFileWatcher = null;
+                _launchSettingFileWatcherCookie = 0;
             }
 
             if (FileChangeScheduler is not null)

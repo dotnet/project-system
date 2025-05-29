@@ -3,6 +3,7 @@
 #pragma warning disable CS0618 // Type or member is obsolete
 
 using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
@@ -33,7 +34,8 @@ public class LaunchSettingsProviderTests
                     threadingService: threadingService)));
         var projectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
         var joinableTaskContext = new JoinableTaskContext();
-        var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, activeConfigurationProjectProperties, projectFaultHandlerService, new DefaultLaunchProfileProvider(project), joinableTaskContext);
+        var fileWatcherService = IFileWatcherServiceFactory.Create();
+        var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, activeConfigurationProjectProperties, projectFaultHandlerService, new DefaultLaunchProfileProvider(project), fileWatcherService, joinableTaskContext);
         return provider;
     }
 
@@ -1045,8 +1047,9 @@ internal class LaunchSettingsUnderTest : LaunchSettingsProvider
         IActiveConfiguredValue<ProjectProperties?> projectProperties,
         IProjectFaultHandlerService projectFaultHandler,
         IDefaultLaunchProfileProvider defaultLaunchProfileProvider,
+        IFileWatcherService fileWatcherService,
         JoinableTaskContext joinableTaskContext)
-      : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, projectProperties, projectFaultHandler, Mock.Of<IFileWatcherService>(), null, joinableTaskContext)
+      : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, projectProperties, projectFaultHandler, fileWatcherService, null, joinableTaskContext)
     {
         // Make the unit tests run faster
         FileChangeProcessingDelay = TimeSpan.FromMilliseconds(50);
