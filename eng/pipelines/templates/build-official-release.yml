@@ -10,6 +10,9 @@ parameters:
     type: boolean
   - name: InsertionVSGreenBranch
     type: string
+  - name: VisualStudioMinimumVersion
+    type: string
+    default: '17'
   
 jobs:
 - job: BuildOfficialRelease
@@ -196,7 +199,7 @@ jobs:
     displayName: Build VS Bootstrapper
     inputs:
       bootstrapperCoreVersion: latest
-      vsMajorVersion: $(SetVisualStudioMinimumVersionVariable.VisualStudioMinimumVersion)
+      vsMajorVersion: ${{ parameters.VisualStudioMinimumVersion }}
       channelName: int.main
       manifests: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion/SetupManifest.vsman
       # Outputting to the Insertion folder allows the bootstrapper to be published to the Products drop, along with our insertion files.

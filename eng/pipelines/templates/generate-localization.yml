@@ -25,7 +25,7 @@ jobs:
     inputs:
       packageType: runtime
       # This should match the target in OneLocBuildSetup.csproj.
-      version: 8.0.x
+      version: 9.0.105
 
   # Creates the LocProject.json and perform some necessary file copying and renaming.
   - task: DotNetCoreCLI@2
