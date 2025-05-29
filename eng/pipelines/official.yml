@@ -108,6 +108,10 @@ parameters:
   displayName: Do Not Optimize Assemblies
   type: boolean
   default: false
+- name: VisualStudioMinimumVersion
+  displayName: Visual Studio Minimum Version
+  type: string
+  default: '17'
 
 ###################################################################################################################################################################
 # STAGES
@@ -142,6 +146,7 @@ extends:
             InsertionVSBranch: ${{ parameters.InsertionVSBranch }}
             CreateVSGreenInsertion: ${{ parameters.CreateVSGreenInsertion }}
             InsertionVSGreenBranch: ${{ parameters.InsertionVSGreenBranch }}
+            VisualStudioMinimumVersion: ${{ parameters.VisualStudioMinimumVersion }}
     - stage: Publish
       displayName: Publish
       dependsOn: Build
