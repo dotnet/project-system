@@ -111,3 +111,4 @@ T:System.Composition.ImportAttribute; Use System.ComponentModel.Composition.Impo
 T:System.Composition.ExportAttribute; Use System.ComponentModel.Composition.ExportAttribute instead
 T:System.Composition.SharedAttribute; Use System.ComponentModel.Composition.SharedAttribute instead
 T:System.Composition.SharingBoundaryAttribute; Use System.ComponentModel.Composition.SharingBoundaryAttribute instead
+T:System.IO.FileSystemWatcher; Use Microsoft.VisualStudio.ProjectSystem.IFileWatcherService instead. (The one from CPS)

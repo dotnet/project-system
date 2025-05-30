@@ -3,6 +3,7 @@
 #pragma warning disable CS0618 // Type or member is obsolete
 
 using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
@@ -32,10 +33,9 @@ public class LaunchSettingsProviderTests
                 services: ProjectServicesFactory.Create(
                     threadingService: threadingService)));
         var projectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
-#pragma warning disable VSSDK005
         var joinableTaskContext = new JoinableTaskContext();
-#pragma warning restore VSSDK005
-        var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, activeConfigurationProjectProperties, projectFaultHandlerService, new DefaultLaunchProfileProvider(project), joinableTaskContext);
+        var fileWatcherService = IFileWatcherServiceFactory.Create();
+        var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, activeConfigurationProjectProperties, projectFaultHandlerService, new DefaultLaunchProfileProvider(project), fileWatcherService, joinableTaskContext);
         return provider;
     }
 
@@ -337,9 +337,9 @@ public class LaunchSettingsProviderTests
         SetJsonSerializationProviders(provider);
 
         var (profiles, globalSettings) = await provider.ReadSettingsFileFromDiskTestAsync();
-        
+
         AssertEx.CollectionLength(profiles, 2);
-        
+
         var (name, value) = Assert.Single(globalSettings);
         Assert.Equal("iisSettings", name);
         Assert.IsType<IISSettingsData>(value);
@@ -803,7 +803,8 @@ public class LaunchSettingsProviderTests
 
         var newSettings = new IISSettingsData() { WindowsAuthentication = true, DoNotPersist = isInMemory };
 
-        await provider.UpdateGlobalSettingsAsync(existing => {
+        await provider.UpdateGlobalSettingsAsync(existing =>
+        {
             var updates = ImmutableDictionary<string, object?>.Empty
                 .Add("iisSettings", newSettings);
             return updates;
@@ -879,7 +880,8 @@ public class LaunchSettingsProviderTests
 
         var newSettings = new IISSettingsData() { WindowsAuthentication = true, DoNotPersist = isInMemory };
 
-        await provider.UpdateGlobalSettingsAsync(existing => {
+        await provider.UpdateGlobalSettingsAsync(existing =>
+        {
             var updates = ImmutableDictionary<string, object?>.Empty
                 .Add("iisSettings", newSettings);
             return updates;
@@ -1045,11 +1047,10 @@ internal class LaunchSettingsUnderTest : LaunchSettingsProvider
         IActiveConfiguredValue<ProjectProperties?> projectProperties,
         IProjectFaultHandlerService projectFaultHandler,
         IDefaultLaunchProfileProvider defaultLaunchProfileProvider,
+        IFileWatcherService fileWatcherService,
         JoinableTaskContext joinableTaskContext)
-      : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, projectProperties, projectFaultHandler, joinableTaskContext)
+      : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, projectProperties, projectFaultHandler, fileWatcherService, null, joinableTaskContext)
     {
-        // Block the code from setting up one on the real file system. Since we block, it we need to set up the fileChange scheduler manually
-        FileWatcher = new SimpleFileWatcher();
         // Make the unit tests run faster
         FileChangeProcessingDelay = TimeSpan.FromMilliseconds(50);
         FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, commonProjectServices.ThreadingService,
