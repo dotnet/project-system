@@ -668,22 +668,22 @@ Změnou tohoto nastavení dojde k resetování nastavení ve všech konfigurací
       </trans-unit>
       <trans-unit id="RSE_Err_InternalException">
         <source>Unexpected error.</source>
-        <target state="new">Unexpected error.</target>
+        <target state="translated">Nečekaná chyba.</target>
         <note>Theoretically possible but we really don't expect to happen.  Unexpected, internal error.</note>
       </trans-unit>
       <trans-unit id="RSE_Err_Unexpected_NoResource_1Arg">
         <source>Unable to load internal localized resource '{0}'.</source>
-        <target state="new">Unable to load internal localized resource '{0}'.</target>
+        <target state="translated">Nepodařilo se načíst vnitřně umístěný prostředek '{0}'.</target>
         <note>Theoretically possible but we really don't expect to happen.  Unexpected, internal error.</note>
       </trans-unit>
       <trans-unit id="RSE_Err_UserCancel">
         <source>The operation has been canceled by the user.</source>
-        <target state="new">The operation has been canceled by the user.</target>
+        <target state="translated">Operace se přerušila na žádost uživatele.</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Filter_Icon">
         <source>Icons</source>
-        <target state="new">Icons</target>
+        <target state="translated">Ikony</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -692,7 +692,7 @@ Změnou tohoto nastavení dojde k resetování nastavení ve všech konfigurací
       </trans-unit>
       <trans-unit id="RSE_Filter_License">
         <source>License Files</source>
-        <target state="new">License Files</target>
+        <target state="translated">Soubory licencí</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -701,7 +701,7 @@ Změnou tohoto nastavení dojde k resetování nastavení ve všech konfigurací
       </trans-unit>
       <trans-unit id="RSE_Task_CantChangeCustomToolOrNamespace">
         <source>Unable to set the Custom Tool or Custom Tool Namespace properties of this file in order to change strongly-typed resource generation options.  If the project file is checked in, try checking it out.</source>
-        <target state="new">Unable to set the Custom Tool or Custom Tool Namespace properties of this file in order to change strongly-typed resource generation options.  If the project file is checked in, try checking it out.</target>
+        <target state="translated">U tohoto souboru se nepodařilo nastavit vlastnosti Vlastní nástroje a Obor názvů vlastního nástroje, aby bylo možné změnit tučně napsané možnosti generování prostředků.  Pokud je soubor projektu zaškrtnutý, zkuste ho odškrtnout.</target>
         <note>One possible source for this error is that source code control checkout failed or was canceled.</note>
       </trans-unit>
       <trans-unit id="SD_ERR_HelpMessage_SuggestFileOpenWith">
@@ -1333,7 +1333,7 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
       </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
         <source>Failed to generate file: {0}</source>
-        <target state="new">Failed to generate file: {0}</target>
+        <target state="translated">Generování souboru selhalo: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlToSchema_InvalidXMLFormat">
