@@ -668,22 +668,22 @@ Changing this setting will reset the settings in all configurations.</source>
       </trans-unit>
       <trans-unit id="RSE_Err_InternalException">
         <source>Unexpected error.</source>
-        <target state="new">Unexpected error.</target>
+        <target state="translated">予期しないエラーです。</target>
         <note>Theoretically possible but we really don't expect to happen.  Unexpected, internal error.</note>
       </trans-unit>
       <trans-unit id="RSE_Err_Unexpected_NoResource_1Arg">
         <source>Unable to load internal localized resource '{0}'.</source>
-        <target state="new">Unable to load internal localized resource '{0}'.</target>
+        <target state="translated">ローカライズされた内部リソース '{0}' を読み込めません。</target>
         <note>Theoretically possible but we really don't expect to happen.  Unexpected, internal error.</note>
       </trans-unit>
       <trans-unit id="RSE_Err_UserCancel">
         <source>The operation has been canceled by the user.</source>
-        <target state="new">The operation has been canceled by the user.</target>
+        <target state="translated">操作はユーザーによって取り消されました。</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Filter_Icon">
         <source>Icons</source>
-        <target state="new">Icons</target>
+        <target state="translated">アイコン</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -692,7 +692,7 @@ Changing this setting will reset the settings in all configurations.</source>
       </trans-unit>
       <trans-unit id="RSE_Filter_License">
         <source>License Files</source>
-        <target state="new">License Files</target>
+        <target state="translated">ライセンス ファイル</target>
         <note># File dialog filters
 #
 # E.g., for icons, the actual filter created would look like "Icons (*.ico)".  These resources
@@ -701,7 +701,7 @@ Changing this setting will reset the settings in all configurations.</source>
       </trans-unit>
       <trans-unit id="RSE_Task_CantChangeCustomToolOrNamespace">
         <source>Unable to set the Custom Tool or Custom Tool Namespace properties of this file in order to change strongly-typed resource generation options.  If the project file is checked in, try checking it out.</source>
-        <target state="new">Unable to set the Custom Tool or Custom Tool Namespace properties of this file in order to change strongly-typed resource generation options.  If the project file is checked in, try checking it out.</target>
+        <target state="translated">厳密に型指定されたリソースの生成オプションを変更するためにこのファイルのカスタム ツール、またはカスタム ツールの名前空間プロパティを設定できませんでした。プロジェクト ファイルがチェックインされている場合、チェックアウトしてください。</target>
         <note>One possible source for this error is that source code control checkout failed or was canceled.</note>
       </trans-unit>
       <trans-unit id="SD_ERR_HelpMessage_SuggestFileOpenWith">
@@ -1333,7 +1333,7 @@ app.config ファイルでの新しい値は '{1}' です
       </trans-unit>
       <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
         <source>Failed to generate file: {0}</source>
-        <target state="new">Failed to generate file: {0}</target>
+        <target state="translated">ファイルの生成に失敗しました: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlToSchema_InvalidXMLFormat">
