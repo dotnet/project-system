@@ -581,13 +581,17 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     {
         if (disposing)
         {
-            if (_launchSettingFileWatcherCookie != 0 && _launchSettingFileWatcher is not null)
+            if (_launchSettingFileWatcher is not null)
             {
-                // Unregister the file watcher
-                _launchSettingFileWatcher.Unregister(_launchSettingFileWatcherCookie);
+                if (_launchSettingFileWatcherCookie is not 0)
+                {
+                    // Unregister the file watcher
+                    _launchSettingFileWatcher.Unregister(_launchSettingFileWatcherCookie);
+                    _launchSettingFileWatcherCookie = 0;
+                }
+
                 _launchSettingFileWatcher.Dispose();
                 _launchSettingFileWatcher = null;
-                _launchSettingFileWatcherCookie = 0;
             }
 
             if (FileChangeScheduler is not null)
