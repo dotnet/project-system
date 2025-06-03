@@ -1,7 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Threading.Tasks.Dataflow;
+using EnvDTE;
 using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
@@ -18,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 [Export(typeof(ILaunchSettingsProvider3))]
 [Export(typeof(IVersionedLaunchSettingsProvider))]
 [AppliesTo(ProjectCapability.LaunchProfiles)]
-internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettings>, ILaunchSettingsProvider3, IVersionedLaunchSettingsProvider
+internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettings>, ILaunchSettingsProvider3, IVersionedLaunchSettingsProvider, IFileWatcherServiceClient
 {
     public const string LaunchSettingsFilename = "launchSettings.json";
 
@@ -44,6 +46,10 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     private readonly TaskCompletionSource _firstSnapshotCompletionSource = new();
     private readonly SequentialTaskExecutor _sequentialTaskQueue;
     private readonly Lazy<LaunchProfile?> _defaultLaunchProfile;
+    private readonly IFileWatcherService _fileWatcherService;
+    private readonly IManagedProjectDiagnosticOutputService? _diagnosticOutputService;
+    private IFileWatcher? _launchSettingFileWatcher;
+    private int _launchSettingFileWatcherCookie;
     private IReceivableSourceBlock<ILaunchSettings>? _changedSourceBlock;
     private IBroadcastBlock<ILaunchSettings>? _broadcastBlock;
     private IReceivableSourceBlock<IProjectVersionedValue<ILaunchSettings>>? _versionedChangedSourceBlock;
@@ -61,6 +67,8 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
         IActiveConfiguredValue<ProjectProperties?> projectProperties,
         IProjectFaultHandlerService projectFaultHandler,
+        IFileWatcherService fileWatchService,
+        IManagedProjectDiagnosticOutputService? diagnosticOutputService,
         JoinableTaskContext joinableTaskContext)
         : base(projectServices, synchronousDisposal: false, registerDataSource: false)
     {
@@ -68,6 +76,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         _projectServices = projectServices;
         _fileSystem = fileSystem;
         _commonProjectServices = commonProjectServices;
+        _fileWatcherService = fileWatchService;
 
         _sequentialTaskQueue = new SequentialTaskExecutor(new JoinableTaskContextNode(joinableTaskContext), nameof(LaunchSettingsProvider));
 
@@ -76,16 +85,17 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: project);
 
         DefaultLaunchProfileProviders = new OrderPrecedenceImportCollection<IDefaultLaunchProfileProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, project);
-
+        _launchSettingFileWatcherCookie = 0;
         _projectSubscriptionService = projectSubscriptionService;
         _projectProperties = projectProperties;
         _projectFaultHandler = projectFaultHandler;
         _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
 
+        _diagnosticOutputService = diagnosticOutputService;
         _defaultLaunchProfile = new Lazy<LaunchProfile?>(() =>
         {
             ILaunchProfile? profile = DefaultLaunchProfileProviders?.FirstOrDefault()?.Value?.CreateDefaultProfile();
-            
+
             return profile is null
                 ? null
                 : LaunchProfile.Clone(profile);
@@ -102,8 +112,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
 
     [ImportMany]
     protected OrderPrecedenceImportCollection<IDefaultLaunchProfileProvider> DefaultLaunchProfileProviders { get; set; }
-
-    protected SimpleFileWatcher? FileWatcher { get; set; }
 
     // When we are saving the file we set this to minimize noise from the file change
     protected bool IgnoreFileChanges { get; set; }
@@ -531,24 +539,12 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     }
 
     /// <summary>
-    /// Cleans up our watcher on the debugsettings.Json file
-    /// </summary>
-    private void CleanupFileWatcher()
-    {
-        if (FileWatcher is not null)
-        {
-            FileWatcher.Dispose();
-            FileWatcher = null;
-        }
-    }
-
-    /// <summary>
     /// Sets up a file system watcher to look for changes to the launchsettings.json file. It watches at the root of the
     /// project otherwise we force the project to have a properties folder.
     /// </summary>
     private void WatchLaunchSettingsFile()
     {
-        if (FileWatcher is null)
+        if (_launchSettingFileWatcher is null)
         {
             FileChangeScheduler?.Dispose();
 
@@ -560,12 +556,15 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
 
             try
             {
-                FileWatcher = new SimpleFileWatcher(_commonProjectServices.Project.GetProjectDirectory(),
-                                                    true,
-                                                    NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.LastWrite,
-                                                    LaunchSettingsFilename,
-                                                    LaunchSettingsFile_Changed,
-                                                    LaunchSettingsFile_Changed);
+                JoinableFactory.Run(async () =>
+                {
+                    var launchSettingsToWatch = await GetLaunchSettingsFilePathAsync();
+                    if (launchSettingsToWatch is not null)
+                    {
+                        _launchSettingFileWatcher = await _fileWatcherService.CreateFileWatcherAsync(this, FileWatchChangeKinds.Changed | FileWatchChangeKinds.Added | FileWatchChangeKinds.Removed, CancellationToken.None);
+                        _launchSettingFileWatcherCookie = await _launchSettingFileWatcher.RegisterFileAsync(launchSettingsToWatch, CancellationToken.None);
+                    }
+                });
             }
             catch (Exception ex) when (ex is IOException || ex is ArgumentException)
             {
@@ -582,7 +581,19 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     {
         if (disposing)
         {
-            CleanupFileWatcher();
+            if (_launchSettingFileWatcher is not null)
+            {
+                if (_launchSettingFileWatcherCookie is not 0)
+                {
+                    // Unregister the file watcher
+                    _launchSettingFileWatcher.Unregister(_launchSettingFileWatcherCookie);
+                    _launchSettingFileWatcherCookie = 0;
+                }
+
+                _launchSettingFileWatcher.Dispose();
+                _launchSettingFileWatcher = null;
+            }
+
             if (FileChangeScheduler is not null)
             {
                 FileChangeScheduler.Dispose();
@@ -895,7 +906,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
 
         // Default to the project directory if we're not able to get the AppDesigner folder.
         string folder = _commonProjectServices.Project.GetProjectDirectory();
-        
+
         if (_projectProperties.Value is not null)
         {
             AppDesigner appDesignerProperties = await _projectProperties.Value.GetAppDesignerPropertiesAsync();
@@ -941,4 +952,10 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     /// Protected method for testing purposes.
     /// </summary>
     protected void SetNextVersion(long nextVersion) => _nextVersion = nextVersion;
+
+    public void OnFilesChanged(IReadOnlyCollection<(string FilePath, FileWatchChangeKinds FileWatchChangeKinds)> changes)
+    {
+        _diagnosticOutputService?.WriteLine(string.Join(Environment.NewLine, changes.Select(change => $"File changed: {change.FilePath} ({change.FileWatchChangeKinds})")));
+        _projectFaultHandler.Forget(HandleLaunchSettingsFileChangedAsync(), _project);
+    }
 }
