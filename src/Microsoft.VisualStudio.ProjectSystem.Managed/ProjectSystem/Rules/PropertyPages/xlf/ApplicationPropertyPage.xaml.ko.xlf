@@ -267,6 +267,16 @@
         <target state="translated">어셈블리 이름</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|AssemblyTitle|Description">
+        <source>Specifies the title embedded in the output assembly.</source>
+        <target state="new">Specifies the title embedded in the output assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyTitle|DisplayName">
+        <source>Assembly title</source>
+        <target state="new">Assembly title</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|InstallOtherFrameworks|DisplayName">
         <source>Install other frameworks</source>
         <target state="translated">기타 프레임워크 설치</target>

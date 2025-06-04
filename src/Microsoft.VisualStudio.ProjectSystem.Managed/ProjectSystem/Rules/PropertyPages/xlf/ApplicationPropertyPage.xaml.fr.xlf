@@ -267,6 +267,16 @@
         <target state="translated">Nom d'assembly</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|AssemblyTitle|Description">
+        <source>Specifies the title embedded in the output assembly.</source>
+        <target state="new">Specifies the title embedded in the output assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyTitle|DisplayName">
+        <source>Assembly title</source>
+        <target state="new">Assembly title</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|InstallOtherFrameworks|DisplayName">
         <source>Install other frameworks</source>
         <target state="translated">Installer d'autres frameworks</target>
