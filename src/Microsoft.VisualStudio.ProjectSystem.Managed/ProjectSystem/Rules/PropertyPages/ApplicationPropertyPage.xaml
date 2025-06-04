@@ -272,6 +272,11 @@
                   Description="Specifies the name of the output file that will hold the assembly manifest."
                   Category="General" />
 
+  <StringProperty Name="AssemblyTitle"
+                  DisplayName="Assembly title"
+                  Description="Specifies the title embedded in the output assembly."
+                  Category="General" />
+
   <StringProperty Name="RootNamespace"
                   DisplayName="Default namespace"
                   Description="Specifies the base namespace for files added to the project."
