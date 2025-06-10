@@ -2,7 +2,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
-using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -17,7 +16,8 @@ using Newtonsoft.Json.Linq;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 /// <summary>
-/// Provides QueryDebugTargetsAsync() support for running the project output or any random executable. It is not an exported
+/// Provides <see cref="IDebugProfileLaunchTargetsProvider.QueryDebugTargetsAsync(DebugLaunchOptions, ILaunchProfile)"/>
+/// support for running the project output or any random executable. It is not an exported
 /// CPS debugger but hooks into the launch profiles extensibility point. The order of this provider is
 /// near the bottom to ensure other providers get chance to handle it first
 /// </summary>

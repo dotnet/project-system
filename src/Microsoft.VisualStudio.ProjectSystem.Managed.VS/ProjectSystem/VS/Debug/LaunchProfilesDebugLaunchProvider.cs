@@ -9,9 +9,11 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 /// <summary>
-/// The exported CPS debugger for all types of K projects (web, consoles, class libraries). Defers to
-/// other types to get the DebugTarget information to launch.
+/// An implementation of CPS's <see cref="IDebugLaunchProvider"/> that supports multiple launch profiles.
 /// </summary>
+/// <remarks>
+/// Applies to projects having the <see cref="ProjectCapability.LaunchProfiles"/> capability.
+/// </remarks>
 [ExportDebugger(ProjectDebugger.SchemaName)]
 [Export(typeof(IInternalDebugLaunchProvider))]
 [AppliesTo(ProjectCapability.LaunchProfiles)]
@@ -42,14 +44,8 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     [ImportMany]
     public OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> LaunchTargetsProviders { get; }
 
-    /// <summary>
-    /// Called by CPS to determine whether we can launch
-    /// </summary>
     public override Task<bool> CanLaunchAsync(DebugLaunchOptions launchOptions) => TaskResult.True;
 
-    /// <summary>
-    /// Called by StartupProjectRegistrar to determine whether this project should appear in the Startup list.
-    /// </summary>
     public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions)
     {
         if (await GetActiveProfileAsync() is not ILaunchProfile activeProfile)

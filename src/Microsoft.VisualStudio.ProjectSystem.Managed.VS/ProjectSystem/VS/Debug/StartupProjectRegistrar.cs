@@ -6,8 +6,17 @@ using Microsoft.VisualStudio.Shell.Interop;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 /// <summary>
-///     Responsible for adding or removing the project from the startup list based on whether the project
-///     is debuggable or not.
+/// Adds or removes a project from <see cref="IVsStartupProjectsListService" /> based on whether the project is debuggable or not.
+/// </summary>
+/// <summary>
+/// <para>
+/// This is an unconfigured project scoped <see cref="ProjectAutoLoadAttribute"/> component for
+/// <see cref="ProjectCapability.DotNet"/> projects, and initializes after the project factory completes.
+/// </para>
+/// <para>
+/// It subscribes to project data for the active configuration and reevalutes on every update. Data provided by the
+/// subscription is not used directly. Instead, the downstream logic obtains its own data once triggered by this class.
+/// </para>
 /// </summary>
 [method: ImportingConstructor]
 internal sealed class StartupProjectRegistrar(
@@ -60,6 +69,7 @@ internal sealed class StartupProjectRegistrar(
 
     internal Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate>? _ = null)
     {
+        // Ensure the project doesn't unload while we're computing this.
         return projectTasksService.LoadedProjectAsync(async () =>
         {
             IVsStartupProjectsListService? startupList = await startupProjectsListService.GetValueOrNullAsync();

@@ -10,10 +10,21 @@ using Microsoft.VisualStudio.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
 /// <summary>
-/// Manages the set of Debug profiles and web server settings and provides these as a dataflow source. Note
-/// that many of the methods are protected so that unit tests can derive from this class and poke them as
-/// needed w/o making them public
+/// Produces and updates the <see cref="ILaunchSettings"/> for a project based on its <c>launchSettings.json</c> file.
 /// </summary>
+/// <remarks>
+/// <para>
+/// Listens for changes to both the <c>launchSettings.json</c> file and the <c>ActiveDebugProfile</c> property in the <c>.user</c> file.
+/// When changes occur, an updated <see cref="ILaunchSettings"/> snapshot is published via Dataflow.
+/// </para>
+/// <para>
+/// If joining this provider to a dataflow pipeline, use <see cref="IVersionedLaunchSettingsProvider"/> over
+/// <see cref="ILaunchSettingsProvider.SourceBlock"/> so that project versions are propagated to downstream consumers.
+/// </para>
+/// <para>
+/// Some methods are <see langword="protected"/> for testing purposes.
+/// </para>
+/// </remarks>
 [Export(typeof(ILaunchSettingsProvider))]
 [Export(typeof(ILaunchSettingsProvider2))]
 [Export(typeof(ILaunchSettingsProvider3))]
@@ -368,8 +379,8 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     }
 
     /// <summary>
-    /// Returns true of the file has changed since we last read it. Note that it returns true if the file
-    /// does not exist
+    /// Returns <see langword="true"/> if the file has changed since we last read it,
+    /// or if the file does not exist.
     /// </summary>
     protected async Task<bool> SettingsFileHasChangedAsync()
     {
@@ -469,7 +480,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     }
 
     /// <summary>
-    /// Helper to check out the launchSettings.json file.
+    /// Helper to check out the <c>launchSettings.json</c> file, if needed.
     /// </summary>
     protected async Task CheckoutSettingsFileAsync()
     {
