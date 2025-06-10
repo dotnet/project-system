@@ -177,13 +177,7 @@ internal class ProjectLaunchTargetsProvider :
         }
     }
 
-    private sealed class ProjectLaunchSettingValidationException : Exception
-    {
-        public ProjectLaunchSettingValidationException(string message)
-            : base(message)
-        {
-        }
-    }
+    private sealed class ProjectLaunchSettingValidationException(string message) : Exception(message);
 
     /// <summary>
     /// Helper returns cmd.exe as the launcher for Ctrl-F5 (useCmdShell == true), otherwise just the exe and args passed in.
