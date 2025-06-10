@@ -52,22 +52,22 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     /// </summary>
     public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions)
     {
-        if (await GetActiveProfileAsync() is ILaunchProfile activeProfile)
+        if (await GetActiveProfileAsync() is not ILaunchProfile activeProfile)
         {
-            // Now find the DebugTargets provider for this profile
-            IDebugProfileLaunchTargetsProvider? launchProvider = GetLaunchTargetsProvider(activeProfile);
-
-            if (launchProvider is IDebugProfileLaunchTargetsProvider3 provider3)
-            {
-                return await provider3.CanBeStartupProjectAsync(launchOptions, activeProfile);
-            }
-
-            // Maintain backwards compat
-            return true;
+            // If we can't identify the active launch profile, we can't start the project.
+            return false;
         }
 
-        // If we can't identify the active launch profile, we can't start the project.
-        return false;
+        // Find the DebugTargets provider for this profile
+        IDebugProfileLaunchTargetsProvider? launchProvider = GetLaunchTargetsProvider(activeProfile);
+
+        if (launchProvider is IDebugProfileLaunchTargetsProvider3 provider3)
+        {
+            return await provider3.CanBeStartupProjectAsync(launchOptions, activeProfile);
+        }
+
+        // Maintain backwards compat
+        return true;
     }
 
     private async Task<ILaunchProfile?> GetActiveProfileAsync()
