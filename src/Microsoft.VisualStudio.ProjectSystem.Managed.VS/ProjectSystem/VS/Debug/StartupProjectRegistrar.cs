@@ -105,7 +105,7 @@ internal class StartupProjectRegistrar : OnceInitializedOnceDisposedAsync
 
     private async Task<bool> IsDebuggableAsync()
     {
-        var foundStartupProjectProvider = false;
+        bool foundStartupProjectProvider = false;
 
         foreach (Lazy<IDebugLaunchProvider> provider in _launchProviders.Values)
         {

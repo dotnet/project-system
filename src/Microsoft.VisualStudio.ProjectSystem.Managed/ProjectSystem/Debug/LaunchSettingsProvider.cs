@@ -158,9 +158,12 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
 
     public override NamedIdentity DataSourceKey { get; } = new NamedIdentity(nameof(LaunchSettingsProvider));
 
-    // _nextVersion represents the version we will use in the future, so we need to
-    // subtract 1 to get the current version.
-    public override IComparable DataSourceVersion => _nextVersion - 1;
+    public override IComparable DataSourceVersion
+    {
+        // _nextVersion represents the version we will use in the future, so we need to
+        // subtract 1 to get the current version.
+        get => _nextVersion - 1;
+    }
 
     public override IReceivableSourceBlock<IProjectVersionedValue<ILaunchSettings>> SourceBlock
     {
@@ -470,12 +473,13 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     /// </summary>
     protected async Task CheckoutSettingsFileAsync()
     {
-        Lazy<ISourceCodeControlIntegration, IOrderPrecedenceMetadataView>? sourceControlIntegration = SourceControlIntegrations.FirstOrDefault();
+        Lazy<ISourceCodeControlIntegration>? sourceControlIntegration = SourceControlIntegrations.FirstOrDefault();
+
         if (sourceControlIntegration?.Value is not null)
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            await sourceControlIntegration.Value.CanChangeProjectFilesAsync(new[] { fileName });
+            await sourceControlIntegration.Value.CanChangeProjectFilesAsync([fileName]);
         }
     }
 
@@ -540,7 +544,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
             {
                 JoinableFactory.Run(async () =>
                 {
-                    var launchSettingsToWatch = await GetLaunchSettingsFilePathAsync();
+                    string launchSettingsToWatch = await GetLaunchSettingsFilePathAsync();
                     if (launchSettingsToWatch is not null)
                     {
                         _launchSettingFileWatcher = await _fileWatcherService.CreateFileWatcherAsync(this, FileWatchChangeKinds.Changed | FileWatchChangeKinds.Added | FileWatchChangeKinds.Removed, CancellationToken.None);

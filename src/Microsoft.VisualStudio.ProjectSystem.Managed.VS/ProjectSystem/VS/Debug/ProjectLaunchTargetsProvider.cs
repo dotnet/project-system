@@ -73,13 +73,17 @@ internal class ProjectLaunchTargetsProvider :
     }
 
     private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync()
-        => _activeDebugFramework.GetConfiguredProjectForActiveFrameworkAsync();
+    {
+        return _activeDebugFramework.GetConfiguredProjectForActiveFrameworkAsync();
+    }
 
     /// <summary>
     /// This provider handles running the Project and empty commandName (this generally just runs the executable)
     /// </summary>
     public bool SupportsProfile(ILaunchProfile profile)
-        => string.IsNullOrWhiteSpace(profile.CommandName) || IsRunProjectCommand(profile) || IsRunExecutableCommand(profile);
+    {
+        return string.IsNullOrWhiteSpace(profile.CommandName) || profile.IsRunProjectCommand() || profile.IsRunExecutableCommand();
+    }
 
     /// <summary>
     /// Called just prior to launch to do additional work (put up ui, do special configuration etc).
@@ -90,7 +94,9 @@ internal class ProjectLaunchTargetsProvider :
     }
 
     public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<IDebugLaunchSettings> debugLaunchSettings)
-        => Task.CompletedTask;
+    {
+        return Task.CompletedTask;
+    }
 
     /// <summary>
     /// Called just after the launch to do additional work (put up ui, do special configuration etc).
@@ -123,6 +129,7 @@ internal class ProjectLaunchTargetsProvider :
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
             string? runCommand = await ProjectAndExecutableLaunchHandlerHelpers.GetTargetCommandAsync(properties, _environment, _fileSystem, _outputTypeChecker, validateSettings: true);
+
             if (string.IsNullOrWhiteSpace(runCommand))
             {
                 return false;
@@ -135,14 +142,18 @@ internal class ProjectLaunchTargetsProvider :
     }
 
     public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
-        => await QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: true) ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
+    {
+        return await QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: true) ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
+    }
 
     /// <summary>
     /// This is called on F5/Ctrl-F5 to return the list of debug targets. What we return depends on the type
     /// of project.
     /// </summary>
     public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
-        => await QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: false) ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
+    {
+        return await QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: false) ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
+    }
 
     /// <summary>
     /// Returns <see langword="null"/> if the debug launch settings are <see langword="null"/>. Otherwise, the list of debug launch settings.

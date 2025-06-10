@@ -20,6 +20,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     private readonly IVsService<IVsDebuggerLaunchAsync> _vsDebuggerService;
     // Launch providers to enforce requirements for debuggable projects
     private readonly ILaunchSettingsProvider _launchSettingsProvider;
+
     private IDebugProfileLaunchTargetsProvider? _lastLaunchProvider;
 
     [ImportingConstructor]
@@ -135,33 +136,25 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         return null;
     }
 
-    private class LaunchCompleteCallback : IVsDebuggerLaunchCompletionCallback
+    private sealed class LaunchCompleteCallback(
+        IProjectThreadingService threadingService,
+        DebugLaunchOptions launchOptions,
+        IDebugProfileLaunchTargetsProvider? targetsProvider,
+        ILaunchProfile activeProfile)
+        : IVsDebuggerLaunchCompletionCallback
     {
-        private readonly DebugLaunchOptions _launchOptions;
-        private readonly IDebugProfileLaunchTargetsProvider? _targetsProvider;
-        private readonly ILaunchProfile _activeProfile;
-        private readonly IProjectThreadingService _threadingService;
-
-        public LaunchCompleteCallback(IProjectThreadingService threadingService, DebugLaunchOptions launchOptions, IDebugProfileLaunchTargetsProvider? targetsProvider, ILaunchProfile activeProfile)
-        {
-            _threadingService = threadingService;
-            _launchOptions = launchOptions;
-            _targetsProvider = targetsProvider;
-            _activeProfile = activeProfile;
-        }
-
         public void OnComplete(int hr, uint debugTargetCount, VsDebugTargetProcessInfo[] processInfoArray)
         {
-            if (_targetsProvider is IDebugProfileLaunchTargetsProvider4 targetsProvider4)
+            if (targetsProvider is IDebugProfileLaunchTargetsProvider4 targetsProvider4)
             {
-                _threadingService.ExecuteSynchronously(() => targetsProvider4.OnAfterLaunchAsync(_launchOptions, _activeProfile, processInfoArray));
+                threadingService.ExecuteSynchronously(() => targetsProvider4.OnAfterLaunchAsync(launchOptions, activeProfile, processInfoArray));
             }
-            else if (_targetsProvider is not null)
+            else if (targetsProvider is not null)
             {
-                _threadingService.ExecuteSynchronously(() => _targetsProvider.OnAfterLaunchAsync(_launchOptions, _activeProfile));
+                threadingService.ExecuteSynchronously(() => targetsProvider.OnAfterLaunchAsync(launchOptions, activeProfile));
             }
         }
-    };
+    }
 
     /// <summary>
     /// Overridden to direct the launch to the current active provider as determined by the active launch profile

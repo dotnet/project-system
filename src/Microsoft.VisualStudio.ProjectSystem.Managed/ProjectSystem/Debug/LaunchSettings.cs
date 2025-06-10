@@ -19,8 +19,8 @@ internal class LaunchSettings : ILaunchSettings, IVersionedLaunchSettings
         long version = 0)
     {
         Profiles = profiles is null
-            ? ImmutableList<ILaunchProfile>.Empty
-            : ImmutableList.CreateRange<ILaunchProfile>(profiles.Select(LaunchProfile.Clone));
+            ? []
+            : [.. profiles.Select(LaunchProfile.Clone)];
         GlobalSettings = globalSettings ?? ImmutableStringDictionary<object>.EmptyOrdinal;
         ActiveProfile = launchProfile ?? FindActiveProfile();
         Version = version;
