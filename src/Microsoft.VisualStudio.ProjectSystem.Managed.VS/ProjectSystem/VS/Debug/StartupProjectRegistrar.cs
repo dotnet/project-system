@@ -41,7 +41,7 @@ internal sealed class StartupProjectRegistrar(
     {
         _projectGuid = await projectGuidService.GetProjectGuidAsync(cancellationToken);
 
-        Assumes.False(_projectGuid == Guid.Empty);
+        Assumes.False(_projectGuid == Guid.Empty, "Project GUID cannot be empty.");
 
         _subscription = projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
             target: OnProjectChangedAsync,
