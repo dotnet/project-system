@@ -156,15 +156,19 @@ internal class ProjectLaunchTargetsProvider :
     }
 
     /// <summary>
-    /// Returns <see langword="null"/> if the debug launch settings are <see langword="null"/>. Otherwise, the list of debug launch settings.
+    /// Returns the list of debug launch settings.
     /// </summary>
-    private async Task<IReadOnlyList<IDebugLaunchSettings>?> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile, bool validateSettings)
+    /// <exception cref="Exception">The project is not runnable.</exception>
+    private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile, bool validateSettings)
     {
         // Resolve the tokens in the profile
         ILaunchProfile resolvedProfile = await _tokenReplacer.ReplaceTokensInProfileAsync(activeProfile);
 
-        DebugLaunchSettings? consoleTarget = await GetConsoleTargetForProfileAsync(resolvedProfile, launchOptions, validateSettings);
-        return consoleTarget is null ? null : new[] { consoleTarget };
+        DebugLaunchSettings consoleTarget
+            = await GetConsoleTargetForProfileAsync(resolvedProfile, launchOptions, validateSettings)
+                ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
+
+        return [consoleTarget];
     }
 
     /// <summary>
