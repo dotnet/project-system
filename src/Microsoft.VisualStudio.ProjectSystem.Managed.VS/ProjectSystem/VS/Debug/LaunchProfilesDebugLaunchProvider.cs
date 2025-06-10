@@ -219,12 +219,20 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         }
     }
 
+    #region Code copied from CPS
+
+    // NOTE these methods were copied from the base class (defined in CPS) because they were not accessible.
+    // TODO remove if https://dev.azure.com/devdiv/DevDiv/_git/CPS/pullrequest/642055 merges.
+
     /// <summary>
     /// Copy information over from the contract struct to the native one.
     /// </summary>
     /// <returns>The native struct.</returns>
-    internal static VsDebugTargetInfo4 GetDebuggerStruct4(IDebugLaunchSettings info)
+    private static VsDebugTargetInfo4 GetDebuggerStruct4(IDebugLaunchSettings info)
     {
+        // **Begin common section -- keep this in sync with GetDebuggerStruct**
+        List<Guid> guids = GetDebuggerGuids(info);
+
         var debugInfo = new VsDebugTargetInfo4
         {
             // **Begin common section -- keep this in sync with GetDebuggerStruct**
@@ -234,34 +242,19 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             bstrArg = info.Arguments,
             bstrCurDir = info.CurrentDirectory,
             bstrExe = info.Executable,
-
             bstrEnv = GetSerializedEnvironmentString(info.Environment),
-            guidLaunchDebugEngine = info.LaunchDebugEngineGuid
+            guidLaunchDebugEngine = info.LaunchDebugEngineGuid,
+
+            dwDebugEngineCount = (uint)guids.Count,
+            pDebugEngines = GetDebugEngineBytes(guids),
+            guidPortSupplier = info.PortSupplierGuid,
+            bstrPortName = info.PortName,
+            bstrOptions = info.Options,
+            fSendToOutputWindow = info.SendToOutputWindow,
+            dwProcessId = unchecked((uint)info.ProcessId),
+            pUnknown = info.Unknown,
+            guidProcessLanguage = info.ProcessLanguageGuid,
         };
-
-        var guids = new List<Guid>(1 + info.AdditionalDebugEngines?.Count ?? 0)
-        {
-            info.LaunchDebugEngineGuid
-        };
-
-        if (info.AdditionalDebugEngines is not null)
-        {
-            guids.AddRange(info.AdditionalDebugEngines);
-        }
-
-        debugInfo.dwDebugEngineCount = (uint)guids.Count;
-
-        byte[] guidBytes = GetGuidBytes(guids);
-        debugInfo.pDebugEngines = Marshal.AllocCoTaskMem(guidBytes.Length);
-        Marshal.Copy(guidBytes, 0, debugInfo.pDebugEngines, guidBytes.Length);
-
-        debugInfo.guidPortSupplier = info.PortSupplierGuid;
-        debugInfo.bstrPortName = info.PortName;
-        debugInfo.bstrOptions = info.Options;
-        debugInfo.fSendToOutputWindow = info.SendToOutputWindow ? true : false;
-        debugInfo.dwProcessId = unchecked((uint)info.ProcessId);
-        debugInfo.pUnknown = info.Unknown;
-        debugInfo.guidProcessLanguage = info.ProcessLanguageGuid;
 
         // **End common section**
 
@@ -282,10 +275,77 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         debugInfo.project = info.Project;
 
         return debugInfo;
+
+        static string? GetSerializedEnvironmentString(IDictionary<string, string> environment)
+        {
+            // Converts the environment key value pairs to a valid environment string of the form
+            // key=value/0key2=value2/0/0, with nulls between each entry and a double null terminator.
+
+            // If no dictionary was set, or its empty, the debugger wants null for its environment block.
+            if (environment is null || environment.Count == 0)
+            {
+                return null;
+            }
+
+            // Collect all the variables as a null delimited list of key=value pairs.
+            var result = PooledStringBuilder.GetInstance();
+            foreach ((string key, string value) in environment)
+            {
+                result.Append(key);
+                result.Append('=');
+                result.Append(value);
+                result.Append('\0');
+            }
+
+            // Add a final list-terminating null character.
+            // This is sent to native code as a BSTR and no null is added automatically.
+            // But the contract of the format of the data requires that this be a null-delimited,
+            // null-terminated list.
+            result.Append('\0');
+            return result.ToStringAndFree();
+        }
+
+        static IntPtr GetDebugEngineBytes(List<Guid> guids)
+        {
+            byte[] guidBytes = GetGuidBytes(guids);
+            IntPtr bytesPtr = Marshal.AllocCoTaskMem(guidBytes.Length);
+            Marshal.Copy(guidBytes, 0, bytesPtr, guidBytes.Length);
+            return bytesPtr;
+
+            static byte[] GetGuidBytes(List<Guid> guids)
+            {
+                const int sizeOfGuid = 16;
+                byte[] bytes = new byte[guids.Count * sizeOfGuid];
+                for (int i = 0; i < guids.Count; i++)
+                {
+                    byte[] guidBytes = guids[i].ToByteArray();
+                    guidBytes.CopyTo(bytes, i * sizeOfGuid);
+                }
+
+                return bytes;
+            }
+        }
+
+        static List<Guid> GetDebuggerGuids(IDebugLaunchSettings info)
+        {
+            Requires.NotNull(info);
+
+            var guids = new List<Guid>(1 + (info.AdditionalDebugEngines?.Count ?? 0))
+            {
+                info.LaunchDebugEngineGuid,
+            };
+
+            if (info.AdditionalDebugEngines is not null)
+            {
+                guids.AddRange(info.AdditionalDebugEngines);
+            }
+
+            return guids;
+        }
     }
 
     /// <summary>
-    /// Frees memory allocated by GetDebuggerStruct.
+    /// Frees memory allocated by <see cref="GetDebuggerStruct4"/>.
     /// </summary>
     internal static void FreeVsDebugTargetInfoStruct(VsDebugTargetInfo4 nativeStruct)
     {
@@ -296,59 +356,12 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
 
         if (nativeStruct.pStartupInfo != IntPtr.Zero)
         {
-            Marshal.DestroyStructure(nativeStruct.pStartupInfo, typeof(VsDebugStartupInfo));
+            Marshal.DestroyStructure<VsDebugStartupInfo>(nativeStruct.pStartupInfo);
             Marshal.FreeCoTaskMem(nativeStruct.pStartupInfo);
         }
     }
 
-    /// <summary>
-    /// Converts the environment key value pairs to a valid environment string of the form
-    /// key=value/0key2=value2/0/0, with nulls between each entry and a double null terminator.
-    /// </summary>
-    private static string? GetSerializedEnvironmentString(IDictionary<string, string> environment)
-    {
-        // If no dictionary was set, or its empty, the debugger wants null for its environment block.
-        if (environment is null || environment.Count == 0)
-        {
-            return null;
-        }
-
-        // Collect all the variables as a null delimited list of key=value pairs.
-        var result = PooledStringBuilder.GetInstance();
-        foreach ((string key, string value) in environment)
-        {
-            result.Append(key);
-            result.Append('=');
-            result.Append(value);
-            result.Append('\0');
-        }
-
-        // Add a final list-terminating null character.
-        // This is sent to native code as a BSTR and no null is added automatically.
-        // But the contract of the format of the data requires that this be a null-delimited,
-        // null-terminated list.
-        result.Append('\0');
-        return result.ToStringAndFree();
-    }
-
-    /// <summary>
-    /// Collects an array of GUIDs into an array of bytes.
-    /// </summary>
-    /// <remarks>
-    /// The order of the GUIDs are preserved, and each GUID is copied exactly one after the other in the byte array.
-    /// </remarks>
-    private static byte[] GetGuidBytes(IList<Guid> guids)
-    {
-        const int sizeOfGuid = 16;
-        byte[] bytes = new byte[guids.Count * sizeOfGuid];
-        for (int i = 0; i < guids.Count; i++)
-        {
-            byte[] guidBytes = guids[i].ToByteArray();
-            guidBytes.CopyTo(bytes, i * sizeOfGuid);
-        }
-
-        return bytes;
-    }
+    #endregion
 
     /// <summary>
     /// IDeployedProjectItemMappingProvider
