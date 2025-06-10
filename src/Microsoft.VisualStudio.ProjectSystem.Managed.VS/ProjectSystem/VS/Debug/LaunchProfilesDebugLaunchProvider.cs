@@ -122,7 +122,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     /// <summary>
     /// Returns the provider which knows how to launch the profile type.
     /// </summary>
-    public IDebugProfileLaunchTargetsProvider? GetLaunchTargetsProvider(ILaunchProfile profile)
+    internal IDebugProfileLaunchTargetsProvider? GetLaunchTargetsProvider(ILaunchProfile profile)
     {
         // We search through the imports in order to find the one which supports the profile
         foreach (Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView> provider in LaunchTargetsProviders)
@@ -185,29 +185,24 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             await targetProvider.OnBeforeLaunchAsync(launchOptions, profile);
         }
 
-        await DoLaunchAsync(new LaunchCompleteCallback(ThreadingService, launchOptions, targetProvider, profile), targets.ToArray());
-    }
+        LaunchCompleteCallback callback = new(ThreadingService, launchOptions, targetProvider, profile);
 
-    /// <summary>
-    /// Launches the Visual Studio debugger.
-    /// </summary>
-    protected async Task DoLaunchAsync(IVsDebuggerLaunchCompletionCallback cb, params IDebugLaunchSettings[] launchSettings)
-    {
-        if (launchSettings.Length == 0)
+        if (targets.Count == 0)
         {
-            cb.OnComplete(0, 0, null);
+            callback.OnComplete(hr: 0, debugTargetCount: 0, processInfoArray: []);
             return;
         }
 
-        VsDebugTargetInfo4[] launchSettingsNative = launchSettings.Select(GetDebuggerStruct4).ToArray();
+        VsDebugTargetInfo4[] launchSettingsNative = targets.Select(GetDebuggerStruct4).ToArray();
 
         try
         {
+            IVsDebuggerLaunchAsync shellDebugger = await _vsDebuggerService.GetValueAsync();
+
             // The debugger needs to be called on the UI thread
             await ThreadingService.SwitchToUIThread();
 
-            IVsDebuggerLaunchAsync shellDebugger = await _vsDebuggerService.GetValueAsync();
-            shellDebugger.LaunchDebugTargetsAsync((uint)launchSettingsNative.Length, launchSettingsNative, cb);
+            shellDebugger.LaunchDebugTargetsAsync((uint)launchSettingsNative.Length, launchSettingsNative, callback);
         }
         finally
         {
