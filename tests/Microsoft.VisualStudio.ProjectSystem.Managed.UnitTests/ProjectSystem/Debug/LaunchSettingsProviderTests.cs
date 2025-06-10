@@ -23,7 +23,7 @@ public class LaunchSettingsProviderTests
         var projectProperties = ProjectPropertiesFactory.Create(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, appDesignerFolder);
         var activeConfigurationProjectProperties = IActiveConfiguredValueFactory.ImplementValue<ProjectProperties?>(() => projectProperties);
         var project = UnconfiguredProjectFactory.Create(fullPath: @"c:\test\Project1\Project1.csproj");
-        var properties = ProjectPropertiesFactory.Create(project, new[] { debuggerData });
+        var properties = ProjectPropertiesFactory.Create(project, [debuggerData]);
         var threadingService = IProjectThreadingServiceFactory.Create();
         var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, threadingService, null, properties);
         var projectServices = IUnconfiguredProjectServicesFactory.Create(
@@ -181,12 +181,12 @@ public class LaunchSettingsProviderTests
         var curProfiles = new Mock<ILaunchSettings>();
         curProfiles.Setup(m => m.Profiles).Returns(() =>
         {
-            return new List<ILaunchProfile>()
-            {
+            return
+            [
                 new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true, doNotPersist: true),
                 new LaunchProfile("InMemory1", null, doNotPersist: true),
                 new LaunchProfile("ShouldNotBeIncluded", LaunchSettingsProvider.ErrorProfileCommandName, doNotPersist: true)
-            }.ToImmutableList();
+            ];
         });
 
         provider.SetCurrentSnapshot(curProfiles.Object);
@@ -208,15 +208,15 @@ public class LaunchSettingsProviderTests
         var curProfiles = new Mock<ILaunchSettings>();
         curProfiles.Setup(m => m.Profiles).Returns(() =>
         {
-            return new List<ILaunchProfile>
-            {
+            return
+            [
                 new LaunchProfile("profile1", "IISExpress", launchBrowser: true),
                 new LaunchProfile("profile2", "IISExpress", launchBrowser: true),
                 new LaunchProfile("profile3", "IISExpress", launchBrowser: true),
                 new LaunchProfile("profile4", "IISExpress", launchBrowser: true),
                 new LaunchProfile("profile5", "IISExpress", launchBrowser: true),
                 new LaunchProfile("InMemory1", null, doNotPersist: true)
-            }.ToImmutableList();
+            ];
         });
 
         provider.SetCurrentSnapshot(curProfiles.Object);
@@ -237,11 +237,11 @@ public class LaunchSettingsProviderTests
         var curProfiles = new Mock<ILaunchSettings>();
         curProfiles.Setup(m => m.Profiles).Returns(() =>
         {
-            return new List<ILaunchProfile>()
-            {
+            return
+            [
                 new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true, doNotPersist: true),
                 new LaunchProfile("InMemory1", null, doNotPersist: true)
-            }.ToImmutableList();
+            ];
         });
         curProfiles.Setup(m => m.GlobalSettings).Returns(() =>
         {
@@ -349,17 +349,17 @@ public class LaunchSettingsProviderTests
     {
         var moqFS = new IFileSystemMock();
         using var provider = GetLaunchSettingsProvider(moqFS);
-        var profiles = new List<ILaunchProfile>()
-            {
-                new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
-                new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
-            };
+        ImmutableList<ILaunchProfile> profiles =
+        [
+            new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+            new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
+        ];
 
         var testSettings = new Mock<ILaunchSettings>();
         testSettings.Setup(m => m.ActiveProfile).Returns(() => { return profiles[0]; });
         testSettings.Setup(m => m.Profiles).Returns(() =>
         {
-            return profiles.ToImmutableList();
+            return profiles;
         });
         testSettings.Setup(m => m.GlobalSettings).Returns(() =>
         {
@@ -458,17 +458,17 @@ public class LaunchSettingsProviderTests
     {
         var moqFS = new IFileSystemMock();
         using var provider = GetLaunchSettingsProvider(moqFS);
-        var profiles = new List<ILaunchProfile>()
-            {
-                new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
-                new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
-            };
+        ImmutableList<ILaunchProfile> profiles =
+        [
+            new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+            new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
+        ];
 
         var testSettings = new Mock<ILaunchSettings>();
         testSettings.Setup(m => m.ActiveProfile).Returns(() => { return profiles[0]; });
         testSettings.Setup(m => m.Profiles).Returns(() =>
         {
-            return profiles.ToImmutableList();
+            return profiles;
         });
 
         testSettings.Setup(m => m.GlobalSettings).Returns(() =>
@@ -520,17 +520,17 @@ public class LaunchSettingsProviderTests
         var existingSettings = new Mock<ILaunchSettings>();
         existingSettings.Setup(m => m.ActiveProfile).Returns(new LaunchProfile("bar", null));
         provider.SetCurrentSnapshot(existingSettings.Object);
-        var profiles = new List<ILaunchProfile>()
-            {
-                new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
-                new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
-            };
+        ImmutableList<ILaunchProfile> profiles =
+        [
+            new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+            new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
+        ];
 
         var testSettings = new Mock<ILaunchSettings>();
         testSettings.Setup(m => m.ActiveProfile).Returns(() => { return profiles[0]; });
         testSettings.Setup(m => m.Profiles).Returns(() =>
         {
-            return profiles.ToImmutableList();
+            return profiles;
         });
 
         testSettings.Setup(m => m.GlobalSettings).Returns(() => ImmutableStringDictionary<object>.EmptyOrdinal);
@@ -549,17 +549,17 @@ public class LaunchSettingsProviderTests
         var existingSettings = new Mock<ILaunchSettings>();
         existingSettings.Setup(m => m.ActiveProfile).Returns(new LaunchProfile("bar", null));
         provider.SetCurrentSnapshot(existingSettings.Object);
-        var profiles = new List<ILaunchProfile>()
-            {
-                new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
-                new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
-            };
+        ImmutableList<ILaunchProfile> profiles =
+        [
+            new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+            new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
+        ];
 
         var testSettings = new Mock<ILaunchSettings>();
         testSettings.Setup(m => m.ActiveProfile).Returns(() => { return profiles[0]; });
         testSettings.Setup(m => m.Profiles).Returns(() =>
         {
-            return profiles.ToImmutableList();
+            return profiles;
         });
 
         testSettings.Setup(m => m.GlobalSettings).Returns(() => ImmutableStringDictionary<object>.EmptyOrdinal);
@@ -586,14 +586,14 @@ public class LaunchSettingsProviderTests
     {
         var moqFS = new IFileSystemMock();
         using var provider = GetLaunchSettingsProvider(moqFS);
-        var profiles = new List<ILaunchProfile>()
-            {
-                new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
-                new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
-            };
+        ImmutableList<ILaunchProfile> profiles =
+        [
+            new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+            new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg")
+        ];
 
         var testSettings = new Mock<ILaunchSettings>();
-        testSettings.Setup(m => m.Profiles).Returns(profiles.ToImmutableList());
+        testSettings.Setup(m => m.Profiles).Returns(profiles);
 
         provider.SetCurrentSnapshot(testSettings.Object);
         provider.SetNextVersionTest(123);
@@ -621,15 +621,15 @@ public class LaunchSettingsProviderTests
     {
         var moqFS = new IFileSystemMock();
         using var provider = GetLaunchSettingsProvider(moqFS);
-        var profiles = new List<ILaunchProfile>()
-            {
-                new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
-                new LaunchProfile("test", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg", doNotPersist: existingIsInMemory),
-                new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\bar.exe")
-            };
+        ImmutableList<ILaunchProfile> profiles =
+        [
+            new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+            new LaunchProfile("test", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg", doNotPersist: existingIsInMemory),
+            new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\bar.exe")
+        ];
 
         var testSettings = new Mock<ILaunchSettings>();
-        testSettings.Setup(m => m.Profiles).Returns(profiles.ToImmutableList());
+        testSettings.Setup(m => m.Profiles).Returns(profiles);
 
         provider.SetCurrentSnapshot(testSettings.Object);
         provider.SetNextVersionTest(123);
@@ -657,15 +657,15 @@ public class LaunchSettingsProviderTests
     {
         var moqFS = new IFileSystemMock();
         using var provider = GetLaunchSettingsProvider(moqFS);
-        var profiles = new List<ILaunchProfile>()
-            {
-                new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
-                new LaunchProfile("test", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg", doNotPersist: existingIsInMemory),
-                new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\bar.exe")
-            };
+        ImmutableList<ILaunchProfile> profiles =
+        [
+            new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+            new LaunchProfile("test", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg", doNotPersist: existingIsInMemory),
+            new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\bar.exe")
+        ];
 
         var testSettings = new Mock<ILaunchSettings>();
-        testSettings.Setup(m => m.Profiles).Returns(profiles.ToImmutableList());
+        testSettings.Setup(m => m.Profiles).Returns(profiles);
 
         provider.SetCurrentSnapshot(testSettings.Object);
         provider.SetNextVersionTest(123);
@@ -697,15 +697,15 @@ public class LaunchSettingsProviderTests
     {
         var moqFS = new IFileSystemMock();
         using var provider = GetLaunchSettingsProvider(moqFS);
-        var profiles = new List<ILaunchProfile>()
-            {
-                new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
-                new LaunchProfile("test", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg", doNotPersist: isInMemory),
-                new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\bar.exe")
-            };
+        ImmutableList<ILaunchProfile> profiles =
+        [
+            new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+            new LaunchProfile("test", null, executablePath: "c:\\test\\project\\bin\\test.exe", commandLineArgs: "-someArg", doNotPersist: isInMemory),
+            new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\bar.exe")
+        ];
 
         var testSettings = new Mock<ILaunchSettings>();
-        testSettings.Setup(m => m.Profiles).Returns(profiles.ToImmutableList());
+        testSettings.Setup(m => m.Profiles).Returns(profiles);
 
         provider.SetCurrentSnapshot(testSettings.Object);
         provider.SetNextVersionTest(123);
@@ -726,14 +726,14 @@ public class LaunchSettingsProviderTests
     {
         var moqFS = new IFileSystemMock();
         using var provider = GetLaunchSettingsProvider(moqFS);
-        var profiles = new List<ILaunchProfile>()
-            {
-                new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
-                new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\bar.exe")
-            };
+        ImmutableList<ILaunchProfile> profiles =
+        [
+            new LaunchProfile("IIS Express", "IISExpress", launchBrowser: true),
+            new LaunchProfile("bar", null, executablePath: "c:\\test\\project\\bin\\bar.exe")
+        ];
 
         var testSettings = new Mock<ILaunchSettings>();
-        testSettings.Setup(m => m.Profiles).Returns(profiles.ToImmutableList());
+        testSettings.Setup(m => m.Profiles).Returns(profiles);
         var versionedTestSettings = testSettings.As<IVersionedLaunchSettings>();
         versionedTestSettings.Setup(m => m.Version).Returns(42);
 
@@ -763,7 +763,7 @@ public class LaunchSettingsProviderTests
 
         var testSettings = new Mock<ILaunchSettings>();
         testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
-        testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+        testSettings.Setup(m => m.Profiles).Returns([]);
 
         provider.SetCurrentSnapshot(testSettings.Object);
         provider.SetNextVersionTest(123);
@@ -795,7 +795,7 @@ public class LaunchSettingsProviderTests
 
         var testSettings = new Mock<ILaunchSettings>();
         testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
-        testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+        testSettings.Setup(m => m.Profiles).Returns([]);
 
         provider.SetCurrentSnapshot(testSettings.Object);
         provider.SetNextVersionTest(123);
@@ -815,6 +815,7 @@ public class LaunchSettingsProviderTests
 
         // Check snapshot
         Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
+        Assumes.NotNull(updatedSettings);
         Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
         Assert.True(((IVersionedLaunchSettings)provider.CurrentSnapshot).Version >= 123);
     }
@@ -836,7 +837,7 @@ public class LaunchSettingsProviderTests
 
         var testSettings = new Mock<ILaunchSettings>();
         testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
-        testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+        testSettings.Setup(m => m.Profiles).Returns([]);
 
         provider.SetCurrentSnapshot(testSettings.Object);
         provider.SetNextVersionTest(123);
@@ -872,7 +873,7 @@ public class LaunchSettingsProviderTests
 
         var testSettings = new Mock<ILaunchSettings>();
         testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
-        testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+        testSettings.Setup(m => m.Profiles).Returns([]);
 
         provider.SetCurrentSnapshot(testSettings.Object);
         provider.SetNextVersionTest(123);
@@ -907,7 +908,7 @@ public class LaunchSettingsProviderTests
 
         var testSettings = new Mock<ILaunchSettings>();
         testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
-        testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+        testSettings.Setup(m => m.Profiles).Returns([]);
         var versionedTestSettings = testSettings.As<IVersionedLaunchSettings>();
         versionedTestSettings.Setup(m => m.Version).Returns(42);
 
@@ -937,7 +938,7 @@ public class LaunchSettingsProviderTests
 
         var testSettings = new Mock<ILaunchSettings>();
         testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
-        testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+        testSettings.Setup(m => m.Profiles).Returns([]);
 
         provider.SetCurrentSnapshot(testSettings.Object);
         provider.SetNextVersionTest(123);
