@@ -27,7 +27,7 @@ internal class OutputTypeChecker : IOutputTypeChecker
         return actualOutputType is not null && StringComparers.PropertyLiteralValues.Equals(actualOutputType.Name, outputType);
     }
 
-    public virtual async Task<IEnumValue?> GetEvaluatedOutputTypeAsync()
+    protected virtual async Task<IEnumValue?> GetEvaluatedOutputTypeAsync()
     {
         // Used by default Windows debugger to figure out whether to add an extra
         // pause to end of window when CTRL+F5'ing a console application

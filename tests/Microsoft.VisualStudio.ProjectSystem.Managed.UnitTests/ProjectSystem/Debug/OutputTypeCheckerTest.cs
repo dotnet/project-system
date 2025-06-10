@@ -73,7 +73,7 @@ public class OutputTypeCheckerTest
         {
         }
 
-        public override Task<IEnumValue?> GetEvaluatedOutputTypeAsync()
+        protected override Task<IEnumValue?> GetEvaluatedOutputTypeAsync()
         {
             // Evaluation fails
             return Task.FromResult<IEnumValue?>(null);
