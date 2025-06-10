@@ -35,19 +35,23 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     public const string ErrorProfileCommandName = "ErrorProfile";
     private const string ErrorProfileErrorMessageSettingsKey = "ErrorString";
 
-    private readonly UnconfiguredProject _project;
-    private readonly IActiveConfiguredValue<ProjectProperties?> _projectProperties;
-    private readonly IProjectFaultHandlerService _projectFaultHandler;
-    private readonly AsyncLazy<string> _launchSettingsFilePath;
-    private readonly IUnconfiguredProjectServices _projectServices;
-    private readonly IUnconfiguredProjectCommonServices _commonProjectServices;
-    private readonly IActiveConfiguredProjectSubscriptionService? _projectSubscriptionService;
-    private readonly IFileSystem _fileSystem;
     private readonly TaskCompletionSource _firstSnapshotCompletionSource = new();
-    private readonly SequentialTaskExecutor _sequentialTaskQueue;
-    private readonly Lazy<LaunchProfile?> _defaultLaunchProfile;
+
+    // MEF imports
+    private readonly UnconfiguredProject _project;
+    private readonly IUnconfiguredProjectServices _projectServices;
+    private readonly IFileSystem _fileSystem;
+    private readonly IUnconfiguredProjectCommonServices _commonProjectServices;
     private readonly IFileWatcherService _fileWatcherService;
     private readonly IManagedProjectDiagnosticOutputService? _diagnosticOutputService;
+    private readonly IActiveConfiguredProjectSubscriptionService? _projectSubscriptionService;
+    private readonly IActiveConfiguredValue<ProjectProperties?> _projectProperties;
+    private readonly IProjectFaultHandlerService _projectFaultHandler;
+
+    private readonly AsyncLazy<string> _launchSettingsFilePath;
+    private readonly SequentialTaskExecutor _sequentialTaskQueue;
+    private readonly Lazy<LaunchProfile?> _defaultLaunchProfile;
+
     private IFileWatcher? _launchSettingFileWatcher;
     private int _launchSettingFileWatcherCookie;
     private IReceivableSourceBlock<ILaunchSettings>? _changedSourceBlock;
@@ -56,7 +60,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     private IBroadcastBlock<IProjectVersionedValue<ILaunchSettings>>? _versionedBroadcastBlock;
     private ILaunchSettings? _currentSnapshot;
     private IDisposable? _projectRuleSubscriptionLink;
-    private long _nextVersion;
+    private long _nextVersion = 1;
 
     [ImportingConstructor]
     public LaunchSettingsProvider(
@@ -77,21 +81,19 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         _fileSystem = fileSystem;
         _commonProjectServices = commonProjectServices;
         _fileWatcherService = fileWatchService;
-
-        _sequentialTaskQueue = new SequentialTaskExecutor(new JoinableTaskContextNode(joinableTaskContext), nameof(LaunchSettingsProvider));
-
-        JsonSerializationProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
-                                                                                                                project);
-        SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: project);
-
-        DefaultLaunchProfileProviders = new OrderPrecedenceImportCollection<IDefaultLaunchProfileProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, project);
-        _launchSettingFileWatcherCookie = 0;
+        _diagnosticOutputService = diagnosticOutputService;
         _projectSubscriptionService = projectSubscriptionService;
         _projectProperties = projectProperties;
         _projectFaultHandler = projectFaultHandler;
+
+        DefaultLaunchProfileProviders = new OrderPrecedenceImportCollection<IDefaultLaunchProfileProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, project);
+        JsonSerializationProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, project);
+        SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: project);
+
+        _sequentialTaskQueue = new SequentialTaskExecutor(new JoinableTaskContextNode(joinableTaskContext), nameof(LaunchSettingsProvider));
+
         _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
 
-        _diagnosticOutputService = diagnosticOutputService;
         _defaultLaunchProfile = new Lazy<LaunchProfile?>(() =>
         {
             ILaunchProfile? profile = DefaultLaunchProfileProviders?.FirstOrDefault()?.Value?.CreateDefaultProfile();
@@ -100,8 +102,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
                 ? null
                 : LaunchProfile.Clone(profile);
         });
-
-        _nextVersion = 1;
     }
 
     [ImportMany]
