@@ -206,18 +206,6 @@ internal class ProjectLaunchTargetsProvider :
     private static bool IsRunProjectCommand(ILaunchProfile profile)
         => string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparisons.LaunchProfileCommandNames);
 
-    private async Task<bool> IsIntegratedConsoleEnabledAsync()
-    {
-        if (!_project.Capabilities.Contains(ProjectCapabilities.IntegratedConsoleDebugging))
-            return false;
-
-        await _threadingService.SwitchToUIThread();
-
-        _debugger.Value.IsIntegratedConsoleEnabled(out bool enabled);
-
-        return enabled;
-    }
-
     /// <summary>
     /// This is called on F5 to return the list of debug targets. What we return depends on the type
     /// of project.
@@ -414,73 +402,83 @@ internal class ProjectLaunchTargetsProvider :
         }
 
         return settings;
-    }
 
-    private async Task<bool> HotReloadShouldBeEnabledAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions)
-    {
-        bool hotReloadEnabledAtProjectLevel = IsRunProjectCommand(resolvedProfile)
-            && resolvedProfile.IsHotReloadEnabled()
-            && !resolvedProfile.IsRemoteDebugEnabled()
-            && (launchOptions & DebugLaunchOptions.Profiling) != DebugLaunchOptions.Profiling;
-
-        if (hotReloadEnabledAtProjectLevel)
+        static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
         {
-            bool debugging = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
-            bool hotReloadEnabledGlobally = await _debuggerSettings.Value.IsHotReloadEnabledAsync(debugging, default);
+            Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
 
-            return hotReloadEnabledGlobally;
+            IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            string framework = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkIdentifierProperty);
+
+            return GetManagedDebugEngineForFramework(framework);
         }
 
-        return false;
-    }
+        async Task<bool> IsIntegratedConsoleEnabledAsync()
+        {
+            if (!_project.Capabilities.Contains(ProjectCapabilities.IntegratedConsoleDebugging))
+            {
+                return false;
+            }
 
-    private static bool UseCmdShellForConsoleLaunch(ILaunchProfile profile, DebugLaunchOptions options)
-    {
-        if (!IsRunProjectCommand(profile))
+            await _threadingService.SwitchToUIThread();
+
+            _debugger.Value.IsIntegratedConsoleEnabled(out bool enabled);
+
+            return enabled;
+        }
+
+        static bool UseCmdShellForConsoleLaunch(ILaunchProfile profile, DebugLaunchOptions options)
+        {
+            if (!profile.IsRunProjectCommand())
+                return false;
+
+            if ((options & DebugLaunchOptions.IntegratedConsole) == DebugLaunchOptions.IntegratedConsole)
+                return false;
+
+            if ((options & DebugLaunchOptions.Profiling) == DebugLaunchOptions.Profiling)
+                return false;
+
+            return (options & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug;
+        }
+
+        async Task<bool> HotReloadShouldBeEnabledAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions)
+        {
+            bool hotReloadEnabledAtProjectLevel = resolvedProfile.IsRunProjectCommand()
+                && resolvedProfile.IsHotReloadEnabled()
+                && !resolvedProfile.IsRemoteDebugEnabled()
+                && (launchOptions & DebugLaunchOptions.Profiling) != DebugLaunchOptions.Profiling;
+
+            if (hotReloadEnabledAtProjectLevel)
+            {
+                bool debugging = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
+                bool hotReloadEnabledGlobally = await _debuggerSettings.Value.IsHotReloadEnabledAsync(debugging, default);
+
+                return hotReloadEnabledGlobally;
+            }
+
             return false;
-
-        if ((options & DebugLaunchOptions.IntegratedConsole) == DebugLaunchOptions.IntegratedConsole)
-            return false;
-
-        if ((options & DebugLaunchOptions.Profiling) == DebugLaunchOptions.Profiling)
-            return false;
-
-        return (options & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug;
-    }
-
-    private static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
-    {
-        Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
-
-        IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-        string framework = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkIdentifierProperty);
-
-        return GetManagedDebugEngineForFramework(framework);
+        }
     }
 
     /// <summary>
     /// Helper returns the correct debugger engine based on the targeted framework
     /// </summary>
     internal static Guid GetManagedDebugEngineForFramework(string targetFramework)
+    {
         // The engine depends on the framework
-        => IsDotNetCoreFramework(targetFramework)
-            ? DebuggerEngines.ManagedCoreEngine
-            : DebuggerEngines.ManagedOnlyEngine;
+        return IsDotNetCoreFramework(targetFramework)
+             ? DebuggerEngines.ManagedCoreEngine
+             : DebuggerEngines.ManagedOnlyEngine;
 
-    /// <summary>
-    /// TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed.
-    /// This information should come from the targets file.
-    /// </summary>
-    private static bool IsDotNetCoreFramework(string targetFramework)
-    {
-        const string NetStandardPrefix = ".NetStandard";
-        const string NetCorePrefix = ".NetCore";
-        return targetFramework.StartsWith(NetCorePrefix, StringComparisons.FrameworkIdentifiers) ||
-               targetFramework.StartsWith(NetStandardPrefix, StringComparisons.FrameworkIdentifiers);
-    }
+        static bool IsDotNetCoreFramework(string targetFramework)
+        {
+            // TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed.
+            // This information should come from the targets file.
 
-    private enum StringState
-    {
-        NormalCharacter, EscapedCharacter, QuotedString, QuotedStringEscapedCharacter
+            const string NetStandardPrefix = ".NetStandard";
+            const string NetCorePrefix = ".NetCore";
+            return targetFramework.StartsWith(NetCorePrefix, StringComparisons.FrameworkIdentifiers) ||
+                   targetFramework.StartsWith(NetStandardPrefix, StringComparisons.FrameworkIdentifiers);
+        }
     }
 }
