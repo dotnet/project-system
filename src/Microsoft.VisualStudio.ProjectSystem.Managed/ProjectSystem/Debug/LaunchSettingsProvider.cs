@@ -479,34 +479,32 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         }
     }
 
-    protected Task HandleLaunchSettingsFileChangedAsync()
+    protected async Task HandleLaunchSettingsFileChangedAsync()
     {
-        if (!IgnoreFileChanges)
+        if (IgnoreFileChanges)
         {
-#pragma warning disable CS0618  // We're in a synchronous callback
-            string fileName = LaunchSettingsFile;
-#pragma warning restore CS0618
-
-            // Only do something if the file is truly different than what we synced. Here, we want to
-            // throttle.
-            if (_fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName) != LastSettingsFileSyncTimeUtc)
-            {
-                Assumes.NotNull(FileChangeScheduler);
-
-                return FileChangeScheduler.ScheduleAsyncTask(token =>
-                {
-                    if (token.IsCancellationRequested)
-                    {
-                        return Task.CompletedTask;
-                    }
-
-                    // Updates need to be sequenced
-                    return _sequentialTaskQueue.ExecuteTask(() => UpdateProfilesAsync(null));
-                }).Task;
-            }
+            return;
         }
 
-        return Task.CompletedTask;
+        string fileName = await GetLaunchSettingsFilePathAsync();
+
+        // Only do something if the file is truly different than what we synced. Here, we want to
+        // throttle.
+        if (_fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName) != LastSettingsFileSyncTimeUtc)
+        {
+            Assumes.NotNull(FileChangeScheduler);
+
+            await FileChangeScheduler.ScheduleAsyncTask(token =>
+            {
+                if (token.IsCancellationRequested)
+                {
+                    return Task.CompletedTask;
+                }
+
+                // Updates need to be sequenced
+                return _sequentialTaskQueue.ExecuteTask(() => UpdateProfilesAsync(null));
+            });
+        }
     }
 
     /// <summary>

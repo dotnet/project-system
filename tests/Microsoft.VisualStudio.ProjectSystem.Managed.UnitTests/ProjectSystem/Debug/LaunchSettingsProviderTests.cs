@@ -413,7 +413,7 @@ public class LaunchSettingsProviderTests
         // Set the ignore flag. It should be ignored.
         provider.LastSettingsFileSyncTimeTest = DateTime.MinValue;
         provider.SetIgnoreFileChanges(true);
-        Assert.Equal(provider.LaunchSettingsFile_ChangedTest(), Task.CompletedTask);
+        Assert.Equal(TaskStatus.RanToCompletion, provider.LaunchSettingsFile_ChangedTest().Status);
         Assert.Null(provider.CurrentSnapshot);
 
         // Should run this time
@@ -435,7 +435,7 @@ public class LaunchSettingsProviderTests
         // Write new file, but set the timestamp to match
         await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithWebSettings);
         provider.LastSettingsFileSyncTimeTest = moqFS.GetLastFileWriteTimeOrMinValueUtc(provider.LaunchSettingsFile);
-        Assert.Equal(provider.LaunchSettingsFile_ChangedTest(), Task.CompletedTask);
+        Assert.Equal(TaskStatus.RanToCompletion, provider.LaunchSettingsFile_ChangedTest().Status);
         AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 4);
 
         await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithWebSettings);
