@@ -49,7 +49,7 @@ public class OutputTypeCheckerTest
         Assert.False(await outputTypeChecker.IsConsoleAsync());
     }
 
-    private OutputTypeChecker CreateFailedOutputTypeChecker()
+    private static OutputTypeChecker CreateFailedOutputTypeChecker()
     {
         var projectProperties = ProjectPropertiesFactory.CreateEmpty();
 
