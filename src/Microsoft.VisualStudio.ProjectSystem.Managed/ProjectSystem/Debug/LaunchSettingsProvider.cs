@@ -123,7 +123,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     // Tracks when we last read or wrote to the file. Prevents picking up needless changes
     protected DateTime LastSettingsFileSyncTimeUtc { get; set; }
 
-    [Obsolete("Use GetLaunchSettingsFilePathAsync instead.")]
+    [Obsolete($"Use {nameof(GetLaunchSettingsFilePathAsync)} instead.")]
     public string LaunchSettingsFile => _commonProjectServices.ThreadingService.ExecuteSynchronously(GetLaunchSettingsFilePathAsync);
 
     public ILaunchProfile? ActiveProfile => CurrentSnapshot?.ActiveProfile;
