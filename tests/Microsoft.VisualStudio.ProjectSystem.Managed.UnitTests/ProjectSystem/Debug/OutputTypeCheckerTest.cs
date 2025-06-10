@@ -67,12 +67,8 @@ public class OutputTypeCheckerTest
         return new OutputTypeChecker(projectProperties);
     }
 
-    internal class OutputTypeChecker2 : OutputTypeChecker
+    internal class OutputTypeChecker2(ProjectProperties properties) : OutputTypeChecker(properties)
     {
-        public OutputTypeChecker2(ProjectProperties properties) : base(properties)
-        {
-        }
-
         protected override Task<IEnumValue?> GetEvaluatedOutputTypeAsync()
         {
             // Evaluation fails
