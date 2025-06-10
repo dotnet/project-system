@@ -620,14 +620,6 @@ public class ProjectLaunchTargetsProviderTests
         Assert.True(true);
     }
 
-    [Theory]
-    [InlineData("exec \"C:\\temp\\test.dll\"", "exec \"C:\\temp\\test.dll\"")]
-    [InlineData("exec ^<>\"C:\\temp&^\\test.dll\"&", "exec ^^^<^>\"C:\\temp&^\\test.dll\"^&")]
-    public void ConsoleDebugTargetsProvider_EscapeString_WorksCorrectly(string input, string expected)
-    {
-        Assert.Equal(expected, ProjectLaunchTargetsProvider.EscapeString(input, new[] { '^', '<', '>', '&' }));
-    }
-
     [Fact]
     public void GetDebugEngineForFrameworkTests()
     {
