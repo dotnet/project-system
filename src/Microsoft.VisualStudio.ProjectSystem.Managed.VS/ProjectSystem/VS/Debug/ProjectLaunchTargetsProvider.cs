@@ -117,7 +117,7 @@ internal class ProjectLaunchTargetsProvider :
 
     public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
     {
-        if (IsRunProjectCommand(profile))
+        if (profile.IsRunProjectCommand())
         {
             // If the profile uses the "Project" command, check that the project specifies
             // something we can run.
@@ -211,12 +211,6 @@ internal class ProjectLaunchTargetsProvider :
         }
     }
 
-    private static bool IsRunExecutableCommand(ILaunchProfile profile)
-        => string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparisons.LaunchProfileCommandNames);
-
-    private static bool IsRunProjectCommand(ILaunchProfile profile)
-        => string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparisons.LaunchProfileCommandNames);
-
     /// <summary>
     /// This is called on F5 to return the list of debug targets. What we return depends on the type
     /// of project.
@@ -242,7 +236,7 @@ internal class ProjectLaunchTargetsProvider :
             : Regex.Replace(resolvedProfile.CommandLineArgs, "[\r\n]+", " ");
 
         // Is this profile just running the project? If so we ignore the exe
-        if (IsRunProjectCommand(resolvedProfile))
+        if (resolvedProfile.IsRunProjectCommand())
         {
             // Get the executable to run, the arguments and the default working directory
             (string, string, string)? runnableProjectInfo = await ProjectAndExecutableLaunchHandlerHelpers.GetRunnableProjectInformationAsync(
@@ -383,7 +377,7 @@ internal class ProjectLaunchTargetsProvider :
         }
 
         // WebView2 debugging is only supported for Project and Executable commands
-        if (resolvedProfile.IsJSWebView2DebuggingEnabled() && (IsRunExecutableCommand(resolvedProfile) || IsRunProjectCommand(resolvedProfile)))
+        if (resolvedProfile.IsJSWebView2DebuggingEnabled() && (resolvedProfile.IsRunExecutableCommand() || resolvedProfile.IsRunProjectCommand()))
         {
             // If JS Debugger is selected, we would need to change the launch debugger to that one
             settings.LaunchDebugEngineGuid = DebuggerEngines.JavaScriptForWebView2Engine;
