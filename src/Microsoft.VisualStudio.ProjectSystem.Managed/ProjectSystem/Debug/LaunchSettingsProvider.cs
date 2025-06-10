@@ -480,16 +480,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         }
     }
 
-    /// <summary>
-    /// Handler for when the Launch settings file changes. Actually, we watch the project root so any
-    /// file with the name LaunchSettings.json. We don't need to special case because, if a file with this name
-    /// changes we will only check if the one we cared about was modified.
-    /// </summary>
-    private void LaunchSettingsFile_Changed(object sender, FileSystemEventArgs e)
-    {
-        _projectFaultHandler.Forget(HandleLaunchSettingsFileChangedAsync(), _project);
-    }
-
     protected Task HandleLaunchSettingsFileChangedAsync()
     {
         if (!IgnoreFileChanges)
