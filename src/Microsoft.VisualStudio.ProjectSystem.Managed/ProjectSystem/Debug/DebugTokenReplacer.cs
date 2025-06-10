@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
 [Export(typeof(IDebugTokenReplacer))]
 [AppliesTo(ProjectCapability.LaunchProfiles)]
-internal class DebugTokenReplacer : IDebugTokenReplacer
+internal sealed class DebugTokenReplacer : IDebugTokenReplacer
 {
     // Regular expression string to extract $(sometoken) elements from a string
     private static readonly Regex s_matchTokenRegex = new(@"\$\((?<token>[^\)]+)\)", RegexOptions.IgnoreCase);
