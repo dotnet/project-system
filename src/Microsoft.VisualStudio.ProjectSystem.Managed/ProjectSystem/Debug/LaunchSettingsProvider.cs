@@ -172,11 +172,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         }
     }
 
-    /// <summary>
-    /// The LaunchSettingsProvider sinks 2 sets of information:
-    /// 1. Changes to the launchSettings.json file on disk
-    /// 2. Changes to the ActiveDebugProfile property in the .user file
-    /// </summary>
     protected override void Initialize()
     {
         base.Initialize();
@@ -573,10 +568,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         }
     }
 
-    /// <summary>
-    /// Need to make sure we cleanup the dataflow links and file watcher
-    /// </summary>
-    /// <param name="disposing"></param>
     protected override void Dispose(bool disposing)
     {
         if (disposing)
@@ -624,11 +615,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         }
     }
 
-    /// <summary>
-    /// Replaces the current set of profiles with the contents of profiles. If changes were
-    /// made, the file will be checked out and saved. Note it ignores the value of the active profile
-    /// as this setting is controlled by a user property.
-    /// </summary>
     public Task UpdateAndSaveSettingsAsync(ILaunchSettings newSettings)
     {
         // Updates need to be sequenced. Do not call this version from within an ExecuteTask as it
@@ -660,10 +646,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         FinishUpdate(newSnapshot);
     }
 
-    /// <summary>
-    /// This function blocks until a snapshot is available. It will return null if the timeout occurs
-    /// prior to the snapshot is available. The wait operation will be cancelled if this object is disposed or the project is unloaded.
-    /// </summary>
     public async Task<ILaunchSettings?> WaitForFirstSnapshot(int timeout)
     {
         if (CurrentSnapshot is not null)
@@ -684,13 +666,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         return CurrentSnapshot;
     }
 
-    /// <summary>
-    /// Adds the given profile to the list and saves to disk. If a profile with the same
-    /// name exists (case sensitive), it will be replaced with the new profile. If addToFront is
-    /// true the profile will be the first one in the list. This is useful since quite often callers want
-    /// their just added profile to be listed first in the start menu. If addToFront is false but there is
-    /// an existing profile, the new one will be inserted at the same location rather than at the end.
-    /// </summary>
     public Task AddOrUpdateProfileAsync(ILaunchProfile profile, bool addToFront)
     {
         // Updates need to be sequenced
@@ -739,9 +714,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         });
     }
 
-    /// <summary>
-    /// Removes the specified profile from the list and saves to disk.
-    /// </summary>
     public Task RemoveProfileAsync(string profileName)
     {
         // Updates need to be sequenced
@@ -804,10 +776,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         });
     }
 
-    /// <summary>
-    /// Adds or updates the global settings represented by settingName. Saves the
-    /// updated settings to disk. Note that the settings object must be serializable.
-    /// </summary>
     public Task AddOrUpdateGlobalSettingAsync(string settingName, object settingContent)
     {
         // Updates need to be sequenced
@@ -831,9 +799,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         });
     }
 
-    /// <summary>
-    /// Removes the specified global setting and saves the settings to disk
-    /// </summary>
     public Task RemoveGlobalSettingAsync(string settingName)
     {
         // Updates need to be sequenced
@@ -850,10 +815,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         });
     }
 
-    /// <summary>
-    /// Retrieves and updates the global settings as a single operation and saves the
-    /// settings to disk.
-    /// </summary>
     public Task UpdateGlobalSettingsAsync(Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>> updateFunction)
     {
         return _sequentialTaskQueue.ExecuteTask(async () =>
@@ -888,10 +849,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         });
     }
 
-    /// <summary>
-    /// Sets the active profile. This just sets the property it does not validate that the setting matches an
-    /// existing profile
-    /// </summary>
     public async Task SetActiveProfileAsync(string profileName)
     {
         ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
