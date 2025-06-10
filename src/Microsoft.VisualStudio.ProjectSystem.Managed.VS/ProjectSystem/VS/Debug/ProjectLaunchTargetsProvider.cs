@@ -88,7 +88,7 @@ internal class ProjectLaunchTargetsProvider :
     /// <summary>
     /// Called just prior to launch to do additional work (put up ui, do special configuration etc).
     /// </summary>
-    public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+    Task IDebugProfileLaunchTargetsProvider.OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
     {
         throw new InvalidOperationException($"Wrong overload of {nameof(OnBeforeLaunchAsync)} called.");
     }
@@ -101,7 +101,7 @@ internal class ProjectLaunchTargetsProvider :
     /// <summary>
     /// Called just after the launch to do additional work (put up ui, do special configuration etc).
     /// </summary>
-    public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+    Task IDebugProfileLaunchTargetsProvider.OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
     {
         throw new InvalidOperationException($"Wrong overload of {nameof(OnAfterLaunchAsync)} called.");
     }
