@@ -95,6 +95,7 @@ internal class UnconfiguredProjectTasksService : IUnconfiguredProjectTasksServic
         JoinableTask<T> task = _threadingService.JoinableTaskFactory.RunAsync(action);
 
         _prioritizedTasks.Add(task);
+        _tasksService.RegisterAsyncTask(task, ProjectCriticalOperation.Load);
 
         return task.Task;
     }
@@ -108,6 +109,7 @@ internal class UnconfiguredProjectTasksService : IUnconfiguredProjectTasksServic
         JoinableTask task = _threadingService.JoinableTaskFactory.RunAsync(action);
 
         _prioritizedTasks.Add(task);
+        _tasksService.RegisterAsyncTask(task, ProjectCriticalOperation.Load);
 
         return task.Task;
     }
