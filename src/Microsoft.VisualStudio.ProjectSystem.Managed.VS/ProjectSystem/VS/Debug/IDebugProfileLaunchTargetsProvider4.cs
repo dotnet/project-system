@@ -6,8 +6,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 /// <summary>
-/// Optional interface that allows the provider to receive more information about
-/// launch settings and started processes.
+/// Implementations of <see cref="IDebugProfileLaunchTargetsProvider"/> may optionally
+/// implement this version of the interface to be notified before and after launch operations.
 /// </summary>
 public interface IDebugProfileLaunchTargetsProvider4
 {

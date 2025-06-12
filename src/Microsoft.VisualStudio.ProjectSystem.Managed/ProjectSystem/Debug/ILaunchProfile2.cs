@@ -3,7 +3,7 @@
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
 /// <summary>
-/// Extends the default profile with properties for environment variables and settings
+/// Extends the <see cref="ILaunchProfile"/> with properties for environment variables and settings
 /// that preserve the order of these collections.
 /// </summary>
 public interface ILaunchProfile2 : ILaunchProfile

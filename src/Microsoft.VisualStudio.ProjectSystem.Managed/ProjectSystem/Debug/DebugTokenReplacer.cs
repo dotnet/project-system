@@ -7,22 +7,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
 [Export(typeof(IDebugTokenReplacer))]
 [AppliesTo(ProjectCapability.LaunchProfiles)]
-internal class DebugTokenReplacer : IDebugTokenReplacer
+internal sealed class DebugTokenReplacer : IDebugTokenReplacer
 {
+    // Regular expression string to extract $(sometoken) elements from a string
+    private static readonly Regex s_matchTokenRegex = new(@"\$\((?<token>[^\)]+)\)", RegexOptions.IgnoreCase);
+
+    private readonly IEnvironmentHelper _environmentHelper;
+    private readonly IActiveDebugFrameworkServices _activeDebugFrameworkService;
+    private readonly IProjectAccessor _projectAccessor;
+
     [ImportingConstructor]
     public DebugTokenReplacer(IEnvironmentHelper environmentHelper, IActiveDebugFrameworkServices activeDebugFrameworkService, IProjectAccessor projectAccessor)
     {
-        EnvironmentHelper = environmentHelper;
-        ActiveDebugFrameworkService = activeDebugFrameworkService;
-        ProjectAccessor = projectAccessor;
+        _environmentHelper = environmentHelper;
+        _activeDebugFrameworkService = activeDebugFrameworkService;
+        _projectAccessor = projectAccessor;
     }
-
-    private IEnvironmentHelper EnvironmentHelper { get; }
-    private IActiveDebugFrameworkServices ActiveDebugFrameworkService { get; }
-    private IProjectAccessor ProjectAccessor { get; }
-
-    // Regular expression string to extract $(sometoken) elements from a string
-    private static readonly Regex s_matchTokenRegex = new(@"\$\((?<token>[^\)]+)\)", RegexOptions.IgnoreCase);
 
     public async Task<ILaunchProfile> ReplaceTokensInProfileAsync(ILaunchProfile profile)
     {
@@ -37,7 +37,7 @@ internal class DebugTokenReplacer : IDebugTokenReplacer
             return Task.FromResult(rawString);
 
         string expandedString = expandEnvironmentVars
-            ? EnvironmentHelper.ExpandEnvironmentVariables(rawString)
+            ? _environmentHelper.ExpandEnvironmentVariables(rawString)
             : rawString;
 
         if (!s_matchTokenRegex.IsMatch(expandedString))
@@ -47,11 +47,11 @@ internal class DebugTokenReplacer : IDebugTokenReplacer
 
         async Task<string> ReplaceMSBuildTokensAsync()
         {
-            ConfiguredProject? configuredProject = await ActiveDebugFrameworkService.GetConfiguredProjectForActiveFrameworkAsync();
+            ConfiguredProject? configuredProject = await _activeDebugFrameworkService.GetConfiguredProjectForActiveFrameworkAsync();
 
             Assumes.NotNull(configuredProject);
 
-            return await ProjectAccessor.OpenProjectForReadAsync(
+            return await _projectAccessor.OpenProjectForReadAsync(
                 configuredProject,
                 project => s_matchTokenRegex.Replace(expandedString, m => project.ExpandString(m.Value)));
         }

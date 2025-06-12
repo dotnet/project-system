@@ -44,6 +44,9 @@ public interface ILaunchSettingsProvider
     /// <summary>
     /// Blocks until at least one snapshot has been generated.
     /// </summary>
+    /// <remarks>
+    /// The operation will be cancelled if the project is unloaded during the wait.
+    /// </remarks>
     /// <param name="timeout">The timeout in milliseconds.</param>
     /// <returns>
     /// The current <see cref="ILaunchSettings"/> snapshot, or <see langword="null"/> if the
@@ -55,7 +58,7 @@ public interface ILaunchSettingsProvider
     /// Adds the given profile to the list and saves to disk. If a profile with the same
     /// name exists (case sensitive), it will be replaced with the new profile. If <paramref name="addToFront"/> is
     /// <see langword="true"/> the profile will be the first one in the list. This is useful since quite often callers want
-    /// their just added profile to be listed first in the start menu.
+    /// their just-added profile to be listed first in the start menu.
     /// </summary>
     Task AddOrUpdateProfileAsync(ILaunchProfile profile, bool addToFront);
 

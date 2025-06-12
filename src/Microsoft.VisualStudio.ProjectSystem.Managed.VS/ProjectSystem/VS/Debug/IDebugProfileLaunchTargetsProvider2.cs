@@ -5,10 +5,8 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 /// <summary>
-/// Optional interface that can be cast from IDebugProfileLaunchTargetsProvider for those implementations which need to distinguish
-/// calls to QueryDebugTargetsAsync that originate from IVsDebuggableProjectCfg:QueryDebugTargets, from calls that originate from
-/// IVsDebuggableProjectCfg:DebugLaunch. If this interface is implemented, calls that originate from a debugLaunch will call
-/// QueryDebugTargetsForDebugLaunchAsync(). Calls from QueryDebugTargets will call IDebugProfileLaunchTargetsProvider:QueryDebugTargetsAsync
+/// Implementations of <see cref="IDebugProfileLaunchTargetsProvider"/> may optionally
+/// implement this version of the interface to expose additional capabilities.
 /// </summary>
 public interface IDebugProfileLaunchTargetsProvider2
 {
@@ -16,5 +14,15 @@ public interface IDebugProfileLaunchTargetsProvider2
     /// Called in response to an F5/Ctrl+F5 operation to get the debug launch settings to pass to the
     /// debugger for the active profile.
     /// </summary>
+    /// <remarks>
+    /// Implementing this optional method (in comparison to <see cref="IDebugProfileLaunchTargetsProvider.QueryDebugTargetsAsync"/>
+    /// which must also be implemented) allows the provider to distinguish calls that are happening as part of a debug launch.
+    ///
+    /// Specifically:
+    /// <list type="bullet">
+    ///   <item><see cref="IDebugProfileLaunchTargetsProvider.QueryDebugTargetsAsync"/> is called via <c>IVsDebuggableProjectCfg:QueryDebugTargets</c>.</item>
+    ///   <item><see cref="QueryDebugTargetsForDebugLaunchAsync"/> is called via <c>IVsDebuggableProjectCfg:DebugLaunch</c>.</item>
+    /// </list>
+    /// </remarks>
     Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);
 }

@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
-using Task = System.Threading.Tasks.Task;
 using Moq.Language.Flow;
 
 #pragma warning disable CA1068 // CancellationToken parameters must come last
