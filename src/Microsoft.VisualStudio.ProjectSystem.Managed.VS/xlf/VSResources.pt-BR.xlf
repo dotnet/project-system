@@ -447,7 +447,7 @@
       </trans-unit>
       <trans-unit id="HotReloadBuildFail">
         <source>Unable to restart the project due to a build failure. Fix the build and try again.</source>
-        <target state="new">Unable to restart the project due to a build failure. Fix the build and try again.</target>
+        <target state="translated">Não foi possível reiniciar o projeto devido a uma falha na compilação. Corrija a compilação e tente novamente.</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadErrorsInApplication">
