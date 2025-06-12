@@ -269,12 +269,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyTitle|Description">
         <source>Specifies the title embedded in the output assembly.</source>
-        <target state="new">Specifies the title embedded in the output assembly.</target>
+        <target state="translated">출력 어셈블리에 포함된 제목을 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyTitle|DisplayName">
         <source>Assembly title</source>
-        <target state="new">Assembly title</target>
+        <target state="translated">어셈블리 제목</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|InstallOtherFrameworks|DisplayName">
