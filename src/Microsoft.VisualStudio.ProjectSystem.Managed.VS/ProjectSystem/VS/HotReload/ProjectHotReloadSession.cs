@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.Debugger.Contracts.EditAndContinue;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
@@ -84,7 +86,37 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
         }
 
         HotReloadAgentFlags flags = runningUnderDebugger ? HotReloadAgentFlags.IsDebuggedProcess : HotReloadAgentFlags.None;
-        await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, cancellationToken);
+        var processInfo = new ManagedEditAndContinueProcessInfo();
+        RunningProjectInfo runningProjectInfo;
+        if (_configuredProject?.Services.ProjectPropertiesProvider?.GetCommonProperties() is IProjectProperties commonProperties)
+        {
+            var tfm = await commonProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkMonikerProperty);
+            var restartOnRudeEdit = await commonProperties.GetEvaluatedPropertyValueAsync("HotReloadAutoRestart");
+            runningProjectInfo = new RunningProjectInfo
+            {
+                RestartAutomatically = bool.TryParse(restartOnRudeEdit, out bool restart) && restart,
+                ProjectInstanceId = new ProjectInstanceId
+                {
+                    ProjectFilePath = _configuredProject.UnconfiguredProject.FullPath,
+                    TargetFramework = tfm,
+                }
+            };
+        }
+        else
+        {
+            runningProjectInfo = new RunningProjectInfo
+            {
+                RestartAutomatically = false,
+                ProjectInstanceId = new ProjectInstanceId
+                {
+                    ProjectFilePath = _configuredProject?.UnconfiguredProject.FullPath ?? string.Empty,
+                    TargetFramework = string.Empty,
+                }
+            };
+        }
+        WriteToOutputWindow($"start session for project '{_configuredProject?.UnconfiguredProject.FullPath}' with TFM '{runningProjectInfo.ProjectInstanceId.TargetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}", cancellationToken, HotReloadVerbosity.Detailed);
+
+        await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
 
         WriteToOutputWindow(VSResources.HotReloadStartSession, default);
         _sessionActive = true;
