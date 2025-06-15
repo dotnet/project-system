@@ -427,7 +427,15 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
 
         using Stream stream = _fileSystem.OpenTextStream(fileName);
 
-        var result = LaunchSettingsJsonEncoding.FromJson(new StreamReader(stream), JsonSerializationProviders);
+        // read launch settings file into a memory stream with async method,
+        // because the Json reader doesn't support async reading directly,
+        // and traces show that it blocks multiple threads at the same time during solution load.
+        // Most settings files are small, so we load them into memory.
+        var bufferStream = new MemoryStream((int)stream.Length);
+        await stream.CopyToAsync(bufferStream);
+
+        bufferStream.Position = 0; // Reset the stream position to the beginning for reading
+        var result = LaunchSettingsJsonEncoding.FromJson(new StreamReader(bufferStream), JsonSerializationProviders);
 
         // Remember the time we are sync'd to.
         // Only do this when we successfully obtain a result.
