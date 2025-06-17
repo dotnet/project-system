@@ -9,9 +9,11 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 /// <summary>
-/// The exported CPS debugger for all types of K projects (web, consoles, class libraries). Defers to
-/// other types to get the DebugTarget information to launch.
+/// An implementation of CPS's <see cref="IDebugLaunchProvider"/> that supports multiple launch profiles.
 /// </summary>
+/// <remarks>
+/// Applies to projects having the <see cref="ProjectCapability.LaunchProfiles"/> capability.
+/// </remarks>
 [ExportDebugger(ProjectDebugger.SchemaName)]
 [Export(typeof(IInternalDebugLaunchProvider))]
 [AppliesTo(ProjectCapability.LaunchProfiles)]
@@ -20,6 +22,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     private readonly IVsService<IVsDebuggerLaunchAsync> _vsDebuggerService;
     // Launch providers to enforce requirements for debuggable projects
     private readonly ILaunchSettingsProvider _launchSettingsProvider;
+
     private IDebugProfileLaunchTargetsProvider? _lastLaunchProvider;
 
     [ImportingConstructor]
@@ -41,32 +44,26 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     [ImportMany]
     public OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> LaunchTargetsProviders { get; }
 
-    /// <summary>
-    /// Called by CPS to determine whether we can launch
-    /// </summary>
     public override Task<bool> CanLaunchAsync(DebugLaunchOptions launchOptions) => TaskResult.True;
 
-    /// <summary>
-    /// Called by StartupProjectRegistrar to determine whether this project should appear in the Startup list.
-    /// </summary>
     public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions)
     {
-        if (await GetActiveProfileAsync() is ILaunchProfile activeProfile)
+        if (await GetActiveProfileAsync() is not ILaunchProfile activeProfile)
         {
-            // Now find the DebugTargets provider for this profile
-            IDebugProfileLaunchTargetsProvider? launchProvider = GetLaunchTargetsProvider(activeProfile);
-
-            if (launchProvider is IDebugProfileLaunchTargetsProvider3 provider3)
-            {
-                return await provider3.CanBeStartupProjectAsync(launchOptions, activeProfile);
-            }
-
-            // Maintain backwards compat
-            return true;
+            // If we can't identify the active launch profile, we can't start the project.
+            return false;
         }
 
-        // If we can't identify the active launch profile, we can't start the project.
-        return false;
+        // Find the DebugTargets provider for this profile
+        IDebugProfileLaunchTargetsProvider? launchProvider = GetLaunchTargetsProvider(activeProfile);
+
+        if (launchProvider is IDebugProfileLaunchTargetsProvider3 provider3)
+        {
+            return await provider3.CanBeStartupProjectAsync(launchOptions, activeProfile);
+        }
+
+        // Maintain backwards compat
+        return true;
     }
 
     private async Task<ILaunchProfile?> GetActiveProfileAsync()
@@ -121,7 +118,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     /// <summary>
     /// Returns the provider which knows how to launch the profile type.
     /// </summary>
-    public IDebugProfileLaunchTargetsProvider? GetLaunchTargetsProvider(ILaunchProfile profile)
+    internal IDebugProfileLaunchTargetsProvider? GetLaunchTargetsProvider(ILaunchProfile profile)
     {
         // We search through the imports in order to find the one which supports the profile
         foreach (Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView> provider in LaunchTargetsProviders)
@@ -135,33 +132,25 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         return null;
     }
 
-    private class LaunchCompleteCallback : IVsDebuggerLaunchCompletionCallback
+    private sealed class LaunchCompleteCallback(
+        IProjectThreadingService threadingService,
+        DebugLaunchOptions launchOptions,
+        IDebugProfileLaunchTargetsProvider? targetsProvider,
+        ILaunchProfile activeProfile)
+        : IVsDebuggerLaunchCompletionCallback
     {
-        private readonly DebugLaunchOptions _launchOptions;
-        private readonly IDebugProfileLaunchTargetsProvider? _targetsProvider;
-        private readonly ILaunchProfile _activeProfile;
-        private readonly IProjectThreadingService _threadingService;
-
-        public LaunchCompleteCallback(IProjectThreadingService threadingService, DebugLaunchOptions launchOptions, IDebugProfileLaunchTargetsProvider? targetsProvider, ILaunchProfile activeProfile)
-        {
-            _threadingService = threadingService;
-            _launchOptions = launchOptions;
-            _targetsProvider = targetsProvider;
-            _activeProfile = activeProfile;
-        }
-
         public void OnComplete(int hr, uint debugTargetCount, VsDebugTargetProcessInfo[] processInfoArray)
         {
-            if (_targetsProvider is IDebugProfileLaunchTargetsProvider4 targetsProvider4)
+            if (targetsProvider is IDebugProfileLaunchTargetsProvider4 targetsProvider4)
             {
-                _threadingService.ExecuteSynchronously(() => targetsProvider4.OnAfterLaunchAsync(_launchOptions, _activeProfile, processInfoArray));
+                threadingService.ExecuteSynchronously(() => targetsProvider4.OnAfterLaunchAsync(launchOptions, activeProfile, processInfoArray));
             }
-            else if (_targetsProvider is not null)
+            else if (targetsProvider is not null)
             {
-                _threadingService.ExecuteSynchronously(() => _targetsProvider.OnAfterLaunchAsync(_launchOptions, _activeProfile));
+                threadingService.ExecuteSynchronously(() => targetsProvider.OnAfterLaunchAsync(launchOptions, activeProfile));
             }
         }
-    };
+    }
 
     /// <summary>
     /// Overridden to direct the launch to the current active provider as determined by the active launch profile
@@ -192,169 +181,33 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             await targetProvider.OnBeforeLaunchAsync(launchOptions, profile);
         }
 
-        await DoLaunchAsync(new LaunchCompleteCallback(ThreadingService, launchOptions, targetProvider, profile), targets.ToArray());
-    }
+        LaunchCompleteCallback callback = new(ThreadingService, launchOptions, targetProvider, profile);
 
-    /// <summary>
-    /// Launches the Visual Studio debugger.
-    /// </summary>
-    protected async Task DoLaunchAsync(IVsDebuggerLaunchCompletionCallback cb, params IDebugLaunchSettings[] launchSettings)
-    {
-        if (launchSettings.Length == 0)
+        if (targets.Count == 0)
         {
-            cb.OnComplete(0, 0, null);
+            callback.OnComplete(hr: 0, debugTargetCount: 0, processInfoArray: []);
             return;
         }
 
-        VsDebugTargetInfo4[] launchSettingsNative = launchSettings.Select(GetDebuggerStruct4).ToArray();
+        VsDebugTargetInfo4[] launchSettingsNative = targets.Select(GetDebuggerStruct4).ToArray();
 
         try
         {
+            IVsDebuggerLaunchAsync shellDebugger = await _vsDebuggerService.GetValueAsync();
+
             // The debugger needs to be called on the UI thread
             await ThreadingService.SwitchToUIThread();
 
-            IVsDebuggerLaunchAsync shellDebugger = await _vsDebuggerService.GetValueAsync();
-            shellDebugger.LaunchDebugTargetsAsync((uint)launchSettingsNative.Length, launchSettingsNative, cb);
+            shellDebugger.LaunchDebugTargetsAsync((uint)launchSettingsNative.Length, launchSettingsNative, callback);
         }
         finally
         {
             // Free up the memory allocated to the (mostly) managed debugger structure.
             foreach (VsDebugTargetInfo4 nativeStruct in launchSettingsNative)
             {
-                FreeVsDebugTargetInfoStruct(nativeStruct);
+                FreeDebuggerStruct(nativeStruct);
             }
         }
-    }
-
-    /// <summary>
-    /// Copy information over from the contract struct to the native one.
-    /// </summary>
-    /// <returns>The native struct.</returns>
-    internal static VsDebugTargetInfo4 GetDebuggerStruct4(IDebugLaunchSettings info)
-    {
-        var debugInfo = new VsDebugTargetInfo4
-        {
-            // **Begin common section -- keep this in sync with GetDebuggerStruct**
-            dlo = (uint)info.LaunchOperation,
-            LaunchFlags = (uint)info.LaunchOptions,
-            bstrRemoteMachine = info.RemoteMachine,
-            bstrArg = info.Arguments,
-            bstrCurDir = info.CurrentDirectory,
-            bstrExe = info.Executable,
-
-            bstrEnv = GetSerializedEnvironmentString(info.Environment),
-            guidLaunchDebugEngine = info.LaunchDebugEngineGuid
-        };
-
-        var guids = new List<Guid>(1 + info.AdditionalDebugEngines?.Count ?? 0)
-        {
-            info.LaunchDebugEngineGuid
-        };
-
-        if (info.AdditionalDebugEngines is not null)
-        {
-            guids.AddRange(info.AdditionalDebugEngines);
-        }
-
-        debugInfo.dwDebugEngineCount = (uint)guids.Count;
-
-        byte[] guidBytes = GetGuidBytes(guids);
-        debugInfo.pDebugEngines = Marshal.AllocCoTaskMem(guidBytes.Length);
-        Marshal.Copy(guidBytes, 0, debugInfo.pDebugEngines, guidBytes.Length);
-
-        debugInfo.guidPortSupplier = info.PortSupplierGuid;
-        debugInfo.bstrPortName = info.PortName;
-        debugInfo.bstrOptions = info.Options;
-        debugInfo.fSendToOutputWindow = info.SendToOutputWindow ? true : false;
-        debugInfo.dwProcessId = unchecked((uint)info.ProcessId);
-        debugInfo.pUnknown = info.Unknown;
-        debugInfo.guidProcessLanguage = info.ProcessLanguageGuid;
-
-        // **End common section**
-
-        if (info.StandardErrorHandle != IntPtr.Zero || info.StandardInputHandle != IntPtr.Zero || info.StandardOutputHandle != IntPtr.Zero)
-        {
-            var processStartupInfo = new VsDebugStartupInfo
-            {
-                hStdInput = unchecked(info.StandardInputHandle),
-                hStdOutput = unchecked(info.StandardOutputHandle),
-                hStdError = unchecked(info.StandardErrorHandle),
-                flags = (uint)__DSI_FLAGS.DSI_USESTDHANDLES,
-            };
-            debugInfo.pStartupInfo = Marshal.AllocCoTaskMem(Marshal.SizeOf(processStartupInfo));
-            Marshal.StructureToPtr(processStartupInfo, debugInfo.pStartupInfo, false);
-        }
-
-        debugInfo.AppPackageLaunchInfo = info.AppPackageLaunchInfo;
-        debugInfo.project = info.Project;
-
-        return debugInfo;
-    }
-
-    /// <summary>
-    /// Frees memory allocated by GetDebuggerStruct.
-    /// </summary>
-    internal static void FreeVsDebugTargetInfoStruct(VsDebugTargetInfo4 nativeStruct)
-    {
-        if (nativeStruct.pDebugEngines != IntPtr.Zero)
-        {
-            Marshal.FreeCoTaskMem(nativeStruct.pDebugEngines);
-        }
-
-        if (nativeStruct.pStartupInfo != IntPtr.Zero)
-        {
-            Marshal.DestroyStructure(nativeStruct.pStartupInfo, typeof(VsDebugStartupInfo));
-            Marshal.FreeCoTaskMem(nativeStruct.pStartupInfo);
-        }
-    }
-
-    /// <summary>
-    /// Converts the environment key value pairs to a valid environment string of the form
-    /// key=value/0key2=value2/0/0, with nulls between each entry and a double null terminator.
-    /// </summary>
-    private static string? GetSerializedEnvironmentString(IDictionary<string, string> environment)
-    {
-        // If no dictionary was set, or its empty, the debugger wants null for its environment block.
-        if (environment is null || environment.Count == 0)
-        {
-            return null;
-        }
-
-        // Collect all the variables as a null delimited list of key=value pairs.
-        var result = PooledStringBuilder.GetInstance();
-        foreach ((string key, string value) in environment)
-        {
-            result.Append(key);
-            result.Append('=');
-            result.Append(value);
-            result.Append('\0');
-        }
-
-        // Add a final list-terminating null character.
-        // This is sent to native code as a BSTR and no null is added automatically.
-        // But the contract of the format of the data requires that this be a null-delimited,
-        // null-terminated list.
-        result.Append('\0');
-        return result.ToStringAndFree();
-    }
-
-    /// <summary>
-    /// Collects an array of GUIDs into an array of bytes.
-    /// </summary>
-    /// <remarks>
-    /// The order of the GUIDs are preserved, and each GUID is copied exactly one after the other in the byte array.
-    /// </remarks>
-    private static byte[] GetGuidBytes(IList<Guid> guids)
-    {
-        const int sizeOfGuid = 16;
-        byte[] bytes = new byte[guids.Count * sizeOfGuid];
-        for (int i = 0; i < guids.Count; i++)
-        {
-            byte[] guidBytes = guids[i].ToByteArray();
-            guidBytes.CopyTo(bytes, i * sizeOfGuid);
-        }
-
-        return bytes;
     }
 
     /// <summary>

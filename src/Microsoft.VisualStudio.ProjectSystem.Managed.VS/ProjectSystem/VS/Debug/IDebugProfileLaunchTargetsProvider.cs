@@ -5,15 +5,18 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 /// <summary>
-/// Interface definition used by the ProjectDebugger to decide how to launch a profile. The order
-/// of the imports is important in that this determines the order which profiles will be tested
-/// for support
+/// Implementations of this interface provide supports for a particular launch profile command (such as "executable", "project", ...).
 /// </summary>
+/// <remarks>
+/// When multiple exports of this interface are available, they are tested in precedence order.
+/// 
+/// This interface is used by <see cref="LaunchProfilesDebugLaunchProvider"/> for operations on launch profiles that involve logic specific to the type of profile.
+/// </remarks>
 [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
 public interface IDebugProfileLaunchTargetsProvider
 {
     /// <summary>
-    /// Return true if this provider supports this profile type.
+    /// Gets whether this provider supports <paramref name="profile"/>.
     /// </summary>
     bool SupportsProfile(ILaunchProfile profile);
 

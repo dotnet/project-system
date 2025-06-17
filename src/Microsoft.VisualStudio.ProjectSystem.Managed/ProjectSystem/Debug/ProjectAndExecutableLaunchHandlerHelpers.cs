@@ -161,19 +161,19 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
         // First try "RunCommand" property
         string? runCommand = await GetRunCommandAsync(properties, environment, fileSystem);
 
-        if (Strings.IsNullOrEmpty(runCommand))
+        if (!Strings.IsNullOrEmpty(runCommand))
         {
-            // If we're launching for debug purposes, prevent someone F5'ing a class library
-            if (validateSettings && await outputTypeChecker.IsLibraryAsync())
-            {
-                return null;
-            }
-
-            // Otherwise, fall back to "TargetPath"
-            runCommand = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetPathProperty);
+            return runCommand;
         }
 
-        return runCommand;
+        // If we're launching for debug purposes, prevent someone F5'ing a class library
+        if (validateSettings && await outputTypeChecker.IsLibraryAsync())
+        {
+            return null;
+        }
+
+        // Otherwise, fall back to "TargetPath"
+        return await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetPathProperty);
     }
 
     /// <summary>

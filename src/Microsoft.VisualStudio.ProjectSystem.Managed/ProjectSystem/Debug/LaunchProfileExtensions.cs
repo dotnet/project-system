@@ -14,6 +14,22 @@ internal static class LaunchProfileExtensions
     public const string RemoteDebugMachineProperty = "remoteDebugMachine";
     public const string RemoteAuthenticationModeProperty = "authenticationMode";
 
+    /// <summary>
+    /// Gets whether the profile has the "Project" command name (launches the project's output).
+    /// </summary>
+    public static bool IsRunProjectCommand(this ILaunchProfile profile)
+    {
+        return string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparisons.LaunchProfileCommandNames);
+    }
+
+    /// <summary>
+    /// Gets whether the profile has the "Executable" command name (launches the an arbitrary executable).
+    /// </summary>
+    public static bool IsRunExecutableCommand(this ILaunchProfile profile)
+    {
+        return string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparisons.LaunchProfileCommandNames);
+    }
+
     public static bool IsInMemoryObject(this object persistObject)
     {
         return persistObject is IPersistOption profile2 && profile2.DoNotPersist;

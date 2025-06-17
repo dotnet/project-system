@@ -49,7 +49,7 @@ public class OutputTypeCheckerTest
         Assert.False(await outputTypeChecker.IsConsoleAsync());
     }
 
-    private OutputTypeChecker CreateFailedOutputTypeChecker()
+    private static OutputTypeChecker CreateFailedOutputTypeChecker()
     {
         var projectProperties = ProjectPropertiesFactory.CreateEmpty();
 
@@ -67,13 +67,9 @@ public class OutputTypeCheckerTest
         return new OutputTypeChecker(projectProperties);
     }
 
-    internal class OutputTypeChecker2 : OutputTypeChecker
+    internal class OutputTypeChecker2(ProjectProperties properties) : OutputTypeChecker(properties)
     {
-        public OutputTypeChecker2(ProjectProperties properties) : base(properties)
-        {
-        }
-
-        public override Task<IEnumValue?> GetEvaluatedOutputTypeAsync()
+        protected override Task<IEnumValue?> GetEvaluatedOutputTypeAsync()
         {
             // Evaluation fails
             return Task.FromResult<IEnumValue?>(null);

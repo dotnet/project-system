@@ -2,7 +2,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
-using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -17,7 +16,8 @@ using Newtonsoft.Json.Linq;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 /// <summary>
-/// Provides QueryDebugTargetsAsync() support for running the project output or any random executable. It is not an exported
+/// Provides <see cref="IDebugProfileLaunchTargetsProvider.QueryDebugTargetsAsync(DebugLaunchOptions, ILaunchProfile)"/>
+/// support for running the project output or any random executable. It is not an exported
 /// CPS debugger but hooks into the launch profiles extensibility point. The order of this provider is
 /// near the bottom to ensure other providers get chance to handle it first
 /// </summary>
@@ -30,7 +30,6 @@ internal class ProjectLaunchTargetsProvider :
     IDebugProfileLaunchTargetsProvider3,
     IDebugProfileLaunchTargetsProvider4
 {
-    private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
     private readonly ConfiguredProject _project;
     private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
     private readonly IDebugTokenReplacer _tokenReplacer;
@@ -74,29 +73,35 @@ internal class ProjectLaunchTargetsProvider :
     }
 
     private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync()
-        => _activeDebugFramework.GetConfiguredProjectForActiveFrameworkAsync();
+    {
+        return _activeDebugFramework.GetConfiguredProjectForActiveFrameworkAsync();
+    }
 
     /// <summary>
     /// This provider handles running the Project and empty commandName (this generally just runs the executable)
     /// </summary>
     public bool SupportsProfile(ILaunchProfile profile)
-        => string.IsNullOrWhiteSpace(profile.CommandName) || IsRunProjectCommand(profile) || IsRunExecutableCommand(profile);
+    {
+        return string.IsNullOrWhiteSpace(profile.CommandName) || profile.IsRunProjectCommand() || profile.IsRunExecutableCommand();
+    }
 
     /// <summary>
     /// Called just prior to launch to do additional work (put up ui, do special configuration etc).
     /// </summary>
-    public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+    Task IDebugProfileLaunchTargetsProvider.OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
     {
         throw new InvalidOperationException($"Wrong overload of {nameof(OnBeforeLaunchAsync)} called.");
     }
 
     public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<IDebugLaunchSettings> debugLaunchSettings)
-        => Task.CompletedTask;
+    {
+        return Task.CompletedTask;
+    }
 
     /// <summary>
     /// Called just after the launch to do additional work (put up ui, do special configuration etc).
     /// </summary>
-    public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+    Task IDebugProfileLaunchTargetsProvider.OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
     {
         throw new InvalidOperationException($"Wrong overload of {nameof(OnAfterLaunchAsync)} called.");
     }
@@ -112,7 +117,7 @@ internal class ProjectLaunchTargetsProvider :
 
     public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
     {
-        if (IsRunProjectCommand(profile))
+        if (profile.IsRunProjectCommand())
         {
             // If the profile uses the "Project" command, check that the project specifies
             // something we can run.
@@ -124,6 +129,7 @@ internal class ProjectLaunchTargetsProvider :
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
             string? runCommand = await ProjectAndExecutableLaunchHandlerHelpers.GetTargetCommandAsync(properties, _environment, _fileSystem, _outputTypeChecker, validateSettings: true);
+
             if (string.IsNullOrWhiteSpace(runCommand))
             {
                 return false;
@@ -136,25 +142,33 @@ internal class ProjectLaunchTargetsProvider :
     }
 
     public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
-        => await QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: true) ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
+    {
+        return await QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: true) ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
+    }
 
     /// <summary>
     /// This is called on F5/Ctrl-F5 to return the list of debug targets. What we return depends on the type
     /// of project.
     /// </summary>
     public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
-        => await QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: false) ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
+    {
+        return await QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: false) ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
+    }
 
     /// <summary>
-    /// Returns <see langword="null"/> if the debug launch settings are <see langword="null"/>. Otherwise, the list of debug launch settings.
+    /// Returns the list of debug launch settings.
     /// </summary>
-    private async Task<IReadOnlyList<IDebugLaunchSettings>?> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile, bool validateSettings)
+    /// <exception cref="Exception">The project is not runnable.</exception>
+    private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile, bool validateSettings)
     {
         // Resolve the tokens in the profile
         ILaunchProfile resolvedProfile = await _tokenReplacer.ReplaceTokensInProfileAsync(activeProfile);
 
-        DebugLaunchSettings? consoleTarget = await GetConsoleTargetForProfileAsync(resolvedProfile, launchOptions, validateSettings);
-        return consoleTarget is null ? null : new[] { consoleTarget };
+        DebugLaunchSettings consoleTarget
+            = await GetConsoleTargetForProfileAsync(resolvedProfile, launchOptions, validateSettings)
+                ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
+
+        return [consoleTarget];
     }
 
     /// <summary>
@@ -178,13 +192,7 @@ internal class ProjectLaunchTargetsProvider :
         }
     }
 
-    private sealed class ProjectLaunchSettingValidationException : Exception
-    {
-        public ProjectLaunchSettingValidationException(string message)
-            : base(message)
-        {
-        }
-    }
+    private sealed class ProjectLaunchSettingValidationException(string message) : Exception(message);
 
     /// <summary>
     /// Helper returns cmd.exe as the launcher for Ctrl-F5 (useCmdShell == true), otherwise just the exe and args passed in.
@@ -193,9 +201,11 @@ internal class ProjectLaunchTargetsProvider :
     {
         if (useCmdShell)
         {
-            // Escape the characters ^<>& so that they are passed to the application rather than interpreted by cmd.exe.
-            string? escapedArgs = EscapeString(debugArgs, s_escapedChars);
-            finalArguments = $"/c \"\"{debugExe}\" {escapedArgs} & pause\"";
+            // Any debug arguments must be escaped.
+            finalArguments = debugArgs is null
+                ? $"/c \"\"{debugExe}\" & pause\""
+                : $"/c \"\"{debugExe}\" {CommandEscaping.EscapeString(debugArgs)} & pause\"";
+
             finalExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
         }
         else
@@ -203,24 +213,6 @@ internal class ProjectLaunchTargetsProvider :
             finalArguments = debugArgs;
             finalExePath = debugExe;
         }
-    }
-
-    private static bool IsRunExecutableCommand(ILaunchProfile profile)
-        => string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparisons.LaunchProfileCommandNames);
-
-    private static bool IsRunProjectCommand(ILaunchProfile profile)
-        => string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparisons.LaunchProfileCommandNames);
-
-    private async Task<bool> IsIntegratedConsoleEnabledAsync()
-    {
-        if (!_project.Capabilities.Contains(ProjectCapabilities.IntegratedConsoleDebugging))
-            return false;
-
-        await _threadingService.SwitchToUIThread();
-
-        _debugger.Value.IsIntegratedConsoleEnabled(out bool enabled);
-
-        return enabled;
     }
 
     /// <summary>
@@ -248,7 +240,7 @@ internal class ProjectLaunchTargetsProvider :
             : Regex.Replace(resolvedProfile.CommandLineArgs, "[\r\n]+", " ");
 
         // Is this profile just running the project? If so we ignore the exe
-        if (IsRunProjectCommand(resolvedProfile))
+        if (resolvedProfile.IsRunProjectCommand())
         {
             // Get the executable to run, the arguments and the default working directory
             (string, string, string)? runnableProjectInfo = await ProjectAndExecutableLaunchHandlerHelpers.GetRunnableProjectInformationAsync(
@@ -389,7 +381,7 @@ internal class ProjectLaunchTargetsProvider :
         }
 
         // WebView2 debugging is only supported for Project and Executable commands
-        if (resolvedProfile.IsJSWebView2DebuggingEnabled() && (IsRunExecutableCommand(resolvedProfile) || IsRunProjectCommand(resolvedProfile)))
+        if (resolvedProfile.IsJSWebView2DebuggingEnabled() && (resolvedProfile.IsRunExecutableCommand() || resolvedProfile.IsRunProjectCommand()))
         {
             // If JS Debugger is selected, we would need to change the launch debugger to that one
             settings.LaunchDebugEngineGuid = DebuggerEngines.JavaScriptForWebView2Engine;
@@ -419,160 +411,83 @@ internal class ProjectLaunchTargetsProvider :
         }
 
         return settings;
-    }
 
-    private async Task<bool> HotReloadShouldBeEnabledAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions)
-    {
-        bool hotReloadEnabledAtProjectLevel = IsRunProjectCommand(resolvedProfile)
-            && resolvedProfile.IsHotReloadEnabled()
-            && !resolvedProfile.IsRemoteDebugEnabled()
-            && (launchOptions & DebugLaunchOptions.Profiling) != DebugLaunchOptions.Profiling;
-
-        if (hotReloadEnabledAtProjectLevel)
+        static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
         {
-            bool debugging = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
-            bool hotReloadEnabledGlobally = await _debuggerSettings.Value.IsHotReloadEnabledAsync(debugging, default);
+            Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
 
-            return hotReloadEnabledGlobally;
+            IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            string framework = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkIdentifierProperty);
+
+            return GetManagedDebugEngineForFramework(framework);
         }
 
-        return false;
-    }
-
-    private static bool UseCmdShellForConsoleLaunch(ILaunchProfile profile, DebugLaunchOptions options)
-    {
-        if (!IsRunProjectCommand(profile))
-            return false;
-
-        if ((options & DebugLaunchOptions.IntegratedConsole) == DebugLaunchOptions.IntegratedConsole)
-            return false;
-
-        if ((options & DebugLaunchOptions.Profiling) == DebugLaunchOptions.Profiling)
-            return false;
-
-        return (options & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug;
-    }
-
-    private static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
-    {
-        Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
-
-        IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-        string framework = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkIdentifierProperty);
-
-        return GetManagedDebugEngineForFramework(framework);
-    }
-
-    /// <summary>
-    /// Escapes the given characters in a given string, ignoring escape sequences when inside a quoted string.
-    /// </summary>
-    /// <param name="unescaped">The string to escape.</param>
-    /// <param name="toEscape">The characters to escape in the string.</param>
-    /// <returns>The escaped string.</returns>
-    [return: NotNullIfNotNull(nameof(unescaped))]
-    internal static string? EscapeString(string? unescaped, char[] toEscape)
-    {
-        if (Strings.IsNullOrWhiteSpace(unescaped))
+        async Task<bool> IsIntegratedConsoleEnabledAsync()
         {
-            return unescaped;
-        }
-
-        bool ShouldEscape(char c)
-        {
-            foreach (char escapeChar in toEscape)
+            if (!_project.Capabilities.Contains(ProjectCapabilities.IntegratedConsoleDebugging))
             {
-                if (escapeChar == c)
-                    return true;
-            }
-            return false;
-        }
-
-        StringState currentState = StringState.NormalCharacter;
-        var finalBuilder = PooledStringBuilder.GetInstance();
-        foreach (char currentChar in unescaped)
-        {
-            switch (currentState)
-            {
-                case StringState.NormalCharacter:
-                    // If we're currently not in a quoted string, then we need to escape anything in toEscape.
-                    // The valid transitions are to EscapedCharacter (for a '\', such as '\"'), and QuotedString.
-                    if (currentChar == '\\')
-                    {
-                        currentState = StringState.EscapedCharacter;
-                    }
-                    else if (currentChar == '"')
-                    {
-                        currentState = StringState.QuotedString;
-                    }
-                    else if (ShouldEscape(currentChar))
-                    {
-                        finalBuilder.Append('^');
-                    }
-
-                    break;
-                case StringState.EscapedCharacter:
-                    // If a '\' was the previous character, then we blindly append to the string, escaping if necessary,
-                    // and move back to NormalCharacter. This handles '\"'
-                    if (ShouldEscape(currentChar))
-                    {
-                        finalBuilder.Append('^');
-                    }
-
-                    currentState = StringState.NormalCharacter;
-                    break;
-                case StringState.QuotedString:
-                    // If we're in a string, we don't escape any characters. If the current character is a '\',
-                    // then we move to QuotedStringEscapedCharacter. This handles '\"'. If the current character
-                    // is a '"', then we're out of the string. Otherwise, we stay in the string.
-                    if (currentChar == '\\')
-                    {
-                        currentState = StringState.QuotedStringEscapedCharacter;
-                    }
-                    else if (currentChar == '"')
-                    {
-                        currentState = StringState.NormalCharacter;
-                    }
-
-                    break;
-                case StringState.QuotedStringEscapedCharacter:
-                    // If we have one slash, then we blindly append to the string, no escaping, and move back to
-                    // QuotedString. This handles escaped '"' inside strings.
-                    currentState = StringState.QuotedString;
-                    break;
-                default:
-                    // We can't get here.
-                    throw new InvalidOperationException();
+                return false;
             }
 
-            finalBuilder.Append(currentChar);
+            await _threadingService.SwitchToUIThread();
+
+            _debugger.Value.IsIntegratedConsoleEnabled(out bool enabled);
+
+            return enabled;
         }
 
-        return finalBuilder.ToStringAndFree();
+        static bool UseCmdShellForConsoleLaunch(ILaunchProfile profile, DebugLaunchOptions options)
+        {
+            if (!profile.IsRunProjectCommand())
+                return false;
+
+            if ((options & DebugLaunchOptions.IntegratedConsole) == DebugLaunchOptions.IntegratedConsole)
+                return false;
+
+            if ((options & DebugLaunchOptions.Profiling) == DebugLaunchOptions.Profiling)
+                return false;
+
+            return (options & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug;
+        }
+
+        async Task<bool> HotReloadShouldBeEnabledAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions)
+        {
+            bool hotReloadEnabledAtProjectLevel = resolvedProfile.IsRunProjectCommand()
+                && resolvedProfile.IsHotReloadEnabled()
+                && !resolvedProfile.IsRemoteDebugEnabled()
+                && (launchOptions & DebugLaunchOptions.Profiling) != DebugLaunchOptions.Profiling;
+
+            if (hotReloadEnabledAtProjectLevel)
+            {
+                bool debugging = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
+                bool hotReloadEnabledGlobally = await _debuggerSettings.Value.IsHotReloadEnabledAsync(debugging, default);
+
+                return hotReloadEnabledGlobally;
+            }
+
+            return false;
+        }
     }
 
     /// <summary>
     /// Helper returns the correct debugger engine based on the targeted framework
     /// </summary>
     internal static Guid GetManagedDebugEngineForFramework(string targetFramework)
+    {
         // The engine depends on the framework
-        => IsDotNetCoreFramework(targetFramework)
-            ? DebuggerEngines.ManagedCoreEngine
-            : DebuggerEngines.ManagedOnlyEngine;
+        return IsDotNetCoreFramework(targetFramework)
+             ? DebuggerEngines.ManagedCoreEngine
+             : DebuggerEngines.ManagedOnlyEngine;
 
-    /// <summary>
-    /// TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed.
-    /// This information should come from the targets file.
-    /// </summary>
-    private static bool IsDotNetCoreFramework(string targetFramework)
-    {
-        const string NetStandardPrefix = ".NetStandard";
-        const string NetCorePrefix = ".NetCore";
-        return targetFramework.StartsWith(NetCorePrefix, StringComparisons.FrameworkIdentifiers) ||
-               targetFramework.StartsWith(NetStandardPrefix, StringComparisons.FrameworkIdentifiers);
-    }
+        static bool IsDotNetCoreFramework(string targetFramework)
+        {
+            // TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed.
+            // This information should come from the targets file.
 
-    private enum StringState
-    {
-        NormalCharacter, EscapedCharacter, QuotedString, QuotedStringEscapedCharacter
+            const string NetStandardPrefix = ".NetStandard";
+            const string NetCorePrefix = ".NetCore";
+            return targetFramework.StartsWith(NetCorePrefix, StringComparisons.FrameworkIdentifiers) ||
+                   targetFramework.StartsWith(NetStandardPrefix, StringComparisons.FrameworkIdentifiers);
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Threading.Tasks.Dataflow;
-using EnvDTE;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -11,10 +10,21 @@ using Microsoft.VisualStudio.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
 /// <summary>
-/// Manages the set of Debug profiles and web server settings and provides these as a dataflow source. Note
-/// that many of the methods are protected so that unit tests can derive from this class and poke them as
-/// needed w/o making them public
+/// Produces and updates the <see cref="ILaunchSettings"/> for a project based on its <c>launchSettings.json</c> file.
 /// </summary>
+/// <remarks>
+/// <para>
+/// Listens for changes to both the <c>launchSettings.json</c> file and the <c>ActiveDebugProfile</c> property in the <c>.user</c> file.
+/// When changes occur, an updated <see cref="ILaunchSettings"/> snapshot is published via Dataflow.
+/// </para>
+/// <para>
+/// If joining this provider to a dataflow pipeline, use <see cref="IVersionedLaunchSettingsProvider"/> over
+/// <see cref="ILaunchSettingsProvider.SourceBlock"/> so that project versions are propagated to downstream consumers.
+/// </para>
+/// <para>
+/// Some methods are <see langword="protected"/> for testing purposes.
+/// </para>
+/// </remarks>
 [Export(typeof(ILaunchSettingsProvider))]
 [Export(typeof(ILaunchSettingsProvider2))]
 [Export(typeof(ILaunchSettingsProvider3))]
@@ -35,19 +45,23 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     public const string ErrorProfileCommandName = "ErrorProfile";
     private const string ErrorProfileErrorMessageSettingsKey = "ErrorString";
 
-    private readonly UnconfiguredProject _project;
-    private readonly IActiveConfiguredValue<ProjectProperties?> _projectProperties;
-    private readonly IProjectFaultHandlerService _projectFaultHandler;
-    private readonly AsyncLazy<string> _launchSettingsFilePath;
-    private readonly IUnconfiguredProjectServices _projectServices;
-    private readonly IUnconfiguredProjectCommonServices _commonProjectServices;
-    private readonly IActiveConfiguredProjectSubscriptionService? _projectSubscriptionService;
-    private readonly IFileSystem _fileSystem;
     private readonly TaskCompletionSource _firstSnapshotCompletionSource = new();
-    private readonly SequentialTaskExecutor _sequentialTaskQueue;
-    private readonly Lazy<LaunchProfile?> _defaultLaunchProfile;
+
+    // MEF imports
+    private readonly UnconfiguredProject _project;
+    private readonly IUnconfiguredProjectServices _projectServices;
+    private readonly IFileSystem _fileSystem;
+    private readonly IUnconfiguredProjectCommonServices _commonProjectServices;
     private readonly IFileWatcherService _fileWatcherService;
     private readonly IManagedProjectDiagnosticOutputService? _diagnosticOutputService;
+    private readonly IActiveConfiguredProjectSubscriptionService? _projectSubscriptionService;
+    private readonly IActiveConfiguredValue<ProjectProperties?> _projectProperties;
+    private readonly IProjectFaultHandlerService _projectFaultHandler;
+
+    private readonly AsyncLazy<string> _launchSettingsFilePath;
+    private readonly SequentialTaskExecutor _sequentialTaskQueue;
+    private readonly Lazy<LaunchProfile?> _defaultLaunchProfile;
+
     private IFileWatcher? _launchSettingFileWatcher;
     private int _launchSettingFileWatcherCookie;
     private IReceivableSourceBlock<ILaunchSettings>? _changedSourceBlock;
@@ -56,7 +70,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     private IBroadcastBlock<IProjectVersionedValue<ILaunchSettings>>? _versionedBroadcastBlock;
     private ILaunchSettings? _currentSnapshot;
     private IDisposable? _projectRuleSubscriptionLink;
-    private long _nextVersion;
+    private long _nextVersion = 1;
 
     [ImportingConstructor]
     public LaunchSettingsProvider(
@@ -77,21 +91,19 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         _fileSystem = fileSystem;
         _commonProjectServices = commonProjectServices;
         _fileWatcherService = fileWatchService;
-
-        _sequentialTaskQueue = new SequentialTaskExecutor(new JoinableTaskContextNode(joinableTaskContext), nameof(LaunchSettingsProvider));
-
-        JsonSerializationProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
-                                                                                                                project);
-        SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: project);
-
-        DefaultLaunchProfileProviders = new OrderPrecedenceImportCollection<IDefaultLaunchProfileProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, project);
-        _launchSettingFileWatcherCookie = 0;
+        _diagnosticOutputService = diagnosticOutputService;
         _projectSubscriptionService = projectSubscriptionService;
         _projectProperties = projectProperties;
         _projectFaultHandler = projectFaultHandler;
+
+        DefaultLaunchProfileProviders = new OrderPrecedenceImportCollection<IDefaultLaunchProfileProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, project);
+        JsonSerializationProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, project);
+        SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: project);
+
+        _sequentialTaskQueue = new SequentialTaskExecutor(new JoinableTaskContextNode(joinableTaskContext), nameof(LaunchSettingsProvider));
+
         _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
 
-        _diagnosticOutputService = diagnosticOutputService;
         _defaultLaunchProfile = new Lazy<LaunchProfile?>(() =>
         {
             ILaunchProfile? profile = DefaultLaunchProfileProviders?.FirstOrDefault()?.Value?.CreateDefaultProfile();
@@ -100,8 +112,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
                 ? null
                 : LaunchProfile.Clone(profile);
         });
-
-        _nextVersion = 1;
     }
 
     [ImportMany]
@@ -123,7 +133,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     // Tracks when we last read or wrote to the file. Prevents picking up needless changes
     protected DateTime LastSettingsFileSyncTimeUtc { get; set; }
 
-    [Obsolete("Use GetLaunchSettingsFilePathAsync instead.")]
+    [Obsolete($"Use {nameof(GetLaunchSettingsFilePathAsync)} instead.")]
     public string LaunchSettingsFile => _commonProjectServices.ThreadingService.ExecuteSynchronously(GetLaunchSettingsFilePathAsync);
 
     public ILaunchProfile? ActiveProfile => CurrentSnapshot?.ActiveProfile;
@@ -159,9 +169,12 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
 
     public override NamedIdentity DataSourceKey { get; } = new NamedIdentity(nameof(LaunchSettingsProvider));
 
-    // _nextVersion represents the version we will use in the future, so we need to
-    // subtract 1 to get the current version.
-    public override IComparable DataSourceVersion => _nextVersion - 1;
+    public override IComparable DataSourceVersion
+    {
+        // _nextVersion represents the version we will use in the future, so we need to
+        // subtract 1 to get the current version.
+        get => _nextVersion - 1;
+    }
 
     public override IReceivableSourceBlock<IProjectVersionedValue<ILaunchSettings>> SourceBlock
     {
@@ -172,11 +185,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         }
     }
 
-    /// <summary>
-    /// The LaunchSettingsProvider sinks 2 sets of information:
-    /// 1. Changes to the launchSettings.json file on disk
-    /// 2. Changes to the ActiveDebugProfile property in the .user file
-    /// </summary>
     protected override void Initialize()
     {
         base.Initialize();
@@ -371,8 +379,8 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     }
 
     /// <summary>
-    /// Returns true of the file has changed since we last read it. Note that it returns true if the file
-    /// does not exist
+    /// Returns <see langword="true"/> if the file has changed since we last read it,
+    /// or if the file does not exist.
     /// </summary>
     protected async Task<bool> SettingsFileHasChangedAsync()
     {
@@ -480,57 +488,46 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     }
 
     /// <summary>
-    /// Helper to check out the launchSettings.json file.
+    /// Helper to check out the <c>launchSettings.json</c> file, if needed.
     /// </summary>
     protected async Task CheckoutSettingsFileAsync()
     {
-        Lazy<ISourceCodeControlIntegration, IOrderPrecedenceMetadataView>? sourceControlIntegration = SourceControlIntegrations.FirstOrDefault();
+        Lazy<ISourceCodeControlIntegration>? sourceControlIntegration = SourceControlIntegrations.FirstOrDefault();
+
         if (sourceControlIntegration?.Value is not null)
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            await sourceControlIntegration.Value.CanChangeProjectFilesAsync(new[] { fileName });
+            await sourceControlIntegration.Value.CanChangeProjectFilesAsync([fileName]);
         }
     }
 
-    /// <summary>
-    /// Handler for when the Launch settings file changes. Actually, we watch the project root so any
-    /// file with the name LaunchSettings.json. We don't need to special case because, if a file with this name
-    /// changes we will only check if the one we cared about was modified.
-    /// </summary>
-    private void LaunchSettingsFile_Changed(object sender, FileSystemEventArgs e)
+    protected async Task HandleLaunchSettingsFileChangedAsync()
     {
-        _projectFaultHandler.Forget(HandleLaunchSettingsFileChangedAsync(), _project);
-    }
-
-    protected Task HandleLaunchSettingsFileChangedAsync()
-    {
-        if (!IgnoreFileChanges)
+        if (IgnoreFileChanges)
         {
-#pragma warning disable CS0618  // We're in a synchronous callback
-            string fileName = LaunchSettingsFile;
-#pragma warning restore CS0618
-
-            // Only do something if the file is truly different than what we synced. Here, we want to
-            // throttle.
-            if (_fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName) != LastSettingsFileSyncTimeUtc)
-            {
-                Assumes.NotNull(FileChangeScheduler);
-
-                return FileChangeScheduler.ScheduleAsyncTask(token =>
-                {
-                    if (token.IsCancellationRequested)
-                    {
-                        return Task.CompletedTask;
-                    }
-
-                    // Updates need to be sequenced
-                    return _sequentialTaskQueue.ExecuteTask(() => UpdateProfilesAsync(null));
-                }).Task;
-            }
+            return;
         }
 
-        return Task.CompletedTask;
+        string fileName = await GetLaunchSettingsFilePathAsync();
+
+        // Only do something if the file is truly different than what we synced. Here, we want to
+        // throttle.
+        if (_fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName) != LastSettingsFileSyncTimeUtc)
+        {
+            Assumes.NotNull(FileChangeScheduler);
+
+            await FileChangeScheduler.ScheduleAsyncTask(token =>
+            {
+                if (token.IsCancellationRequested)
+                {
+                    return Task.CompletedTask;
+                }
+
+                // Updates need to be sequenced
+                return _sequentialTaskQueue.ExecuteTask(() => UpdateProfilesAsync(null));
+            });
+        }
     }
 
     /// <summary>
@@ -566,7 +563,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
             {
                 JoinableFactory.Run(async () =>
                 {
-                    var launchSettingsToWatch = await GetLaunchSettingsFilePathAsync();
+                    string launchSettingsToWatch = await GetLaunchSettingsFilePathAsync();
                     if (launchSettingsToWatch is not null)
                     {
                         _launchSettingFileWatcher = await _fileWatcherService.CreateFileWatcherAsync(this, FileWatchChangeKinds.Changed | FileWatchChangeKinds.Added | FileWatchChangeKinds.Removed, CancellationToken.None);
@@ -581,10 +578,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         }
     }
 
-    /// <summary>
-    /// Need to make sure we cleanup the dataflow links and file watcher
-    /// </summary>
-    /// <param name="disposing"></param>
     protected override void Dispose(bool disposing)
     {
         if (disposing)
@@ -632,11 +625,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         }
     }
 
-    /// <summary>
-    /// Replaces the current set of profiles with the contents of profiles. If changes were
-    /// made, the file will be checked out and saved. Note it ignores the value of the active profile
-    /// as this setting is controlled by a user property.
-    /// </summary>
     public Task UpdateAndSaveSettingsAsync(ILaunchSettings newSettings)
     {
         // Updates need to be sequenced. Do not call this version from within an ExecuteTask as it
@@ -668,10 +656,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         FinishUpdate(newSnapshot);
     }
 
-    /// <summary>
-    /// This function blocks until a snapshot is available. It will return null if the timeout occurs
-    /// prior to the snapshot is available. The wait operation will be cancelled if this object is disposed or the project is unloaded.
-    /// </summary>
     public async Task<ILaunchSettings?> WaitForFirstSnapshot(int timeout)
     {
         if (CurrentSnapshot is not null)
@@ -692,13 +676,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         return CurrentSnapshot;
     }
 
-    /// <summary>
-    /// Adds the given profile to the list and saves to disk. If a profile with the same
-    /// name exists (case sensitive), it will be replaced with the new profile. If addToFront is
-    /// true the profile will be the first one in the list. This is useful since quite often callers want
-    /// their just added profile to be listed first in the start menu. If addToFront is false but there is
-    /// an existing profile, the new one will be inserted at the same location rather than at the end.
-    /// </summary>
     public Task AddOrUpdateProfileAsync(ILaunchProfile profile, bool addToFront)
     {
         // Updates need to be sequenced
@@ -747,9 +724,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         });
     }
 
-    /// <summary>
-    /// Removes the specified profile from the list and saves to disk.
-    /// </summary>
     public Task RemoveProfileAsync(string profileName)
     {
         // Updates need to be sequenced
@@ -812,10 +786,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         });
     }
 
-    /// <summary>
-    /// Adds or updates the global settings represented by settingName. Saves the
-    /// updated settings to disk. Note that the settings object must be serializable.
-    /// </summary>
     public Task AddOrUpdateGlobalSettingAsync(string settingName, object settingContent)
     {
         // Updates need to be sequenced
@@ -839,9 +809,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         });
     }
 
-    /// <summary>
-    /// Removes the specified global setting and saves the settings to disk
-    /// </summary>
     public Task RemoveGlobalSettingAsync(string settingName)
     {
         // Updates need to be sequenced
@@ -858,10 +825,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         });
     }
 
-    /// <summary>
-    /// Retrieves and updates the global settings as a single operation and saves the
-    /// settings to disk.
-    /// </summary>
     public Task UpdateGlobalSettingsAsync(Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>> updateFunction)
     {
         return _sequentialTaskQueue.ExecuteTask(async () =>
@@ -896,10 +859,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         });
     }
 
-    /// <summary>
-    /// Sets the active profile. This just sets the property it does not validate that the setting matches an
-    /// existing profile
-    /// </summary>
     public async Task SetActiveProfileAsync(string profileName)
     {
         ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
