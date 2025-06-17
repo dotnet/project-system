@@ -72,7 +72,6 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
         return await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVars, cancellationToken);
     }
 
-    // TODO: remove when Web Tools is no longer calling this method.
     public Task StartSessionAsync(CancellationToken cancellationToken)
     {
         return StartSessionAsync(runningUnderDebugger: false, cancellationToken);
@@ -90,11 +89,10 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
         RunningProjectInfo runningProjectInfo;
         if (_configuredProject?.Services.ProjectPropertiesProvider?.GetCommonProperties() is IProjectProperties commonProperties)
         {
-            var tfm = await commonProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkMonikerProperty);
-            var restartOnRudeEdit = await commonProperties.GetEvaluatedPropertyValueAsync("HotReloadAutoRestart");
+            var tfm = await commonProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty);
             runningProjectInfo = new RunningProjectInfo
             {
-                RestartAutomatically = bool.TryParse(restartOnRudeEdit, out bool restart) && restart,
+                RestartAutomatically = false,
                 ProjectInstanceId = new ProjectInstanceId
                 {
                     ProjectFilePath = _configuredProject.UnconfiguredProject.FullPath,
