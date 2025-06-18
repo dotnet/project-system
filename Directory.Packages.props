@@ -5,7 +5,6 @@
 
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <VSDebuggerVersion>17.13.0-beta.25272.1</VSDebuggerVersion>
   </PropertyGroup>
 
   <!--
@@ -45,8 +44,6 @@
     <PackageVersion Include="Microsoft.ServiceHub.Framework"                                         Version="4.8.55" />
     <PackageVersion Include="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.13.13-preview" />
     <PackageVersion Include="Microsoft.VisualStudio.Composition"                                     Version="17.13.41" />
-    <PackageVersion Include="Microsoft.VisualStudio.Debugger.Contracts"                              Version="$(VSDebuggerVersion)" />
-    <PackageVersion Include="Microsoft.VisualStudio.Debugger.UI.Interfaces"                          Version="$(VSDebuggerVersion)" />
     <PackageVersion Include="Microsoft.VisualStudio.Data.Core"                                       Version="17.13.38047-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Data.Services"                                   Version="17.13.38055-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.13.38055-preview.1" />
@@ -110,7 +107,7 @@
     <PackageVersion Include="Microsoft.Build"                                                        Version="17.13.0-preview-24504-04" />
 
     <!-- Hot Reload -->
-    <PackageVersion Include="Microsoft.VisualStudio.HotReload.Components"                            Version="17.13.9-preview-0001" />
+    <PackageVersion Include="Microsoft.VisualStudio.HotReload.Components"                            Version="18.0.138-preview-0001" />
 
     <!-- 3rd party -->
     <PackageVersion Include="Newtonsoft.Json"                                                        Version="13.0.3" />

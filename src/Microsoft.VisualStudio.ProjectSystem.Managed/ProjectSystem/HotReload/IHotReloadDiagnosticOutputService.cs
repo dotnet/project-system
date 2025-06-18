@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
 /// <summary>
 /// Defines a service to print out messages to the Hot Reload output window pane.

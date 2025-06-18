@@ -435,56 +435,6 @@
         <target state="translated">출력 마커의 쓰기 타임스탬프는 '{1}'의 {0}입니다.</target>
         <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
-      <trans-unit id="HotReloadApplyUpdatesFailure">
-        <source>Applying updates failed: {0}</source>
-        <target state="translated">업데이트를 적용하지 못했습니다. {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadApplyUpdatesSuccessful">
-        <source>Updates applied successfully.</source>
-        <target state="translated">업데이트가 성공적으로 적용되었습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadBuildFail">
-        <source>Unable to restart the project due to a build failure. Fix the build and try again.</source>
-        <target state="translated">빌드 오류로 인해 프로젝트를 다시 시작할 수 없습니다. 빌드를 수정한 후 다시 시도해 주세요.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadErrorsInApplication">
-        <source>Errors found in application: </source>
-        <target state="translated">애플리케이션에서 발견된 오류: </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadOutputWindowPaneName">
-        <source>Hot Reload</source>
-        <target state="translated">핫 다시 로드</target>
-        <note>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</note>
-      </trans-unit>
-      <trans-unit id="HotReloadRestartInProgress">
-        <source>Rebuilding and restarting the application since the edits can't be applied dynamically.</source>
-        <target state="translated">편집 내용을 동적으로 적용할 수 없으므로 애플리케이션을 다시 빌드하고 다시 시작하세요.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadSendingUpdates">
-        <source>Sending updates to running application.</source>
-        <target state="translated">실행 중인 응용 프로그램에 업데이트를 보냅니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadStartSession">
-        <source>Hot Reload session started.</source>
-        <target state="translated">핫 다시 로드 세션이 시작되었습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadStopSession">
-        <source>Hot Reload session complete.</source>
-        <target state="translated">핫 다시 로드 세션이 완료되었습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadStoppingApplication">
-        <source>Stopping application.</source>
-        <target state="translated">응용 프로그램을 중지하는 중입니다.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
         <source>{0} - Import comes fom target file. This import cannot be removed.</source>
         <target state="translated">{0} - 대상 파일에서 가져옵니다. 이 가져오기는 제거할 수 없습니다.</target>
@@ -503,38 +453,6 @@
       <trans-unit id="OtherUpToDateCheckProvidersPresent">
         <source>Note that other checks may still determine the project is not up-to-date. The following checks are present:</source>
         <target state="translated">다른 검사에서도 프로젝트가 최신 상태가 아닌 것으로 확인될 수 있습니다. 다음과 같은 검사가 있습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
-        <source>Attaching to process.</source>
-        <target state="translated">프로세스에 연결하는 중입니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
-        <source>Error while stopping the session: {0}
-{1}</source>
-        <target state="translated">세션 중지 중 오류 발생: {0}
-{1}</target>
-        <note>{0} is the exception type name. {1} is the exception message.</note>
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
-        <source>Unable to start Hot Reload session: no active process.</source>
-        <target state="translated">핫 다시 로드 세션을 시작할 수 없음: 활성 프로세스가 없습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
-        <source>The process has already exited.</source>
-        <target state="translated">프로세스가 이미 종료되었습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
-        <source>The process has exited.</source>
-        <target state="translated">프로세스가 종료되었습니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
-        <source>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
-        <target state="translated">아마도 트리밍으로 인해 시작 후크가 비활성화되었으므로 핫 다시 로드 사용할 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">

@@ -3,9 +3,10 @@
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
 public class ProjectHotReloadSessionManagerTests
 {
@@ -172,18 +173,17 @@ public class ProjectHotReloadSessionManagerTests
             .ImplementGetConfiguredProjectForActiveFrameworkAsync(activeConfiguredProject)
             .Object;
 
-        var iVSSolutionBuildManagerServiceMock = new Mock<IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2>>();
-
         var manager = new ProjectHotReloadSessionManager(
             project: UnconfiguredProjectFactory.Create(),
             threadingService: IProjectThreadingServiceFactory.Create(),
             projectFaultHandlerService: IProjectFaultHandlerServiceFactory.Create(),
             activeDebugFrameworkServices: activeDebugFrameworkServices,
-            managedDeltaApplierCreator: new Lazy<IManagedDeltaApplierCreator>(() => IManagedDeltaApplierCreatorFactory.Create()),
-            hotReloadAgentManagerClient: new Lazy<IHotReloadAgentManagerClient>(() => IHotReloadAgentManagerClientFactory.Create()),
+            managedDeltaApplierCreator: new Lazy<IManagedDeltaApplierCreator>(IManagedDeltaApplierCreatorFactory.Create),
+            hotReloadAgentManagerClient: new Lazy<IHotReloadAgentManagerClient>(IHotReloadAgentManagerClientFactory.Create),
             hotReloadDiagnosticOutputService: new Lazy<IHotReloadDiagnosticOutputService>(() => IHotReloadDiagnosticOutputServiceFactory.Create(outputServiceCallback)),
-            projectHotReloadNotificationService: new Lazy<IProjectHotReloadNotificationService>(() => IProjectHotReloadNotificationServiceFactory.Create()),
-            solutionBuildManagerService: iVSSolutionBuildManagerServiceMock.Object);
+            projectHotReloadNotificationService: new Lazy<IProjectHotReloadNotificationService>(IProjectHotReloadNotificationServiceFactory.Create),
+            buildManager: IProjectHotReloadBuildManagerFactory.Create(),
+            launchProvider: IProjectHotReloadLaunchProviderFactory.Create());
 
         return manager;
     }
