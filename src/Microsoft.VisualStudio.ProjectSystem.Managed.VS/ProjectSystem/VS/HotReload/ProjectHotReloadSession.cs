@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.Debugger.Contracts.EditAndContinue;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
@@ -70,7 +72,6 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
         return await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVars, cancellationToken);
     }
 
-    // TODO: remove when Web Tools is no longer calling this method.
     public Task StartSessionAsync(CancellationToken cancellationToken)
     {
         return StartSessionAsync(runningUnderDebugger: false, cancellationToken);
@@ -84,7 +85,24 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
         }
 
         HotReloadAgentFlags flags = runningUnderDebugger ? HotReloadAgentFlags.IsDebuggedProcess : HotReloadAgentFlags.None;
-        await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, cancellationToken);
+        var processInfo = new ManagedEditAndContinueProcessInfo();
+        string targetFramework = _configuredProject?.Services.ProjectPropertiesProvider?.GetCommonProperties() is IProjectProperties commonProperties
+            ? await commonProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty)
+            : string.Empty;
+
+        RunningProjectInfo runningProjectInfo = new RunningProjectInfo
+        {
+            RestartAutomatically = false,
+            ProjectInstanceId = new ProjectInstanceId
+            {
+                ProjectFilePath = _configuredProject?.UnconfiguredProject.FullPath ?? string.Empty,
+                TargetFramework = targetFramework,
+            }
+        };
+
+        DebugTrace($"start session for project '{_configuredProject?.UnconfiguredProject.FullPath}' with TFM '{runningProjectInfo.ProjectInstanceId.TargetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
+
+        await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
 
         WriteToOutputWindow(VSResources.HotReloadStartSession, default);
         _sessionActive = true;
@@ -108,13 +126,13 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
     {
         if (!_sessionActive)
         {
-            WriteToOutputWindow($"{nameof(ApplyUpdatesAsync)} called but the session is not active.", default, HotReloadVerbosity.Detailed);
+            DebugTrace($"{nameof(ApplyUpdatesAsync)} called but the session is not active.");
             return;
         }
 
         if (_deltaApplier is null)
         {
-            WriteToOutputWindow($"{nameof(ApplyUpdatesAsync)} called but we have no delta applier.", default, HotReloadVerbosity.Detailed);
+            DebugTrace($"{nameof(ApplyUpdatesAsync)} called but we have no delta applier.");
             return;
         }
 
@@ -214,6 +232,18 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
                 _variant,
                 errorLevel: errorLevel),
             cancellationToken);
+    }
+
+    private void DebugTrace(string message)
+    {
+        _hotReloadOutputService.Value.WriteLine(
+            new HotReloadLogMessage(
+                HotReloadVerbosity.Detailed,
+                message,
+                Name,
+                _variant,
+                errorLevel: HotReloadDiagnosticErrorLevel.Info),
+            CancellationToken.None);
     }
 
     [MemberNotNull(nameof(_deltaApplier))]
