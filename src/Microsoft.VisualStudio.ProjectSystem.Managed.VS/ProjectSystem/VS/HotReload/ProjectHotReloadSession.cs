@@ -86,33 +86,21 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
 
         HotReloadAgentFlags flags = runningUnderDebugger ? HotReloadAgentFlags.IsDebuggedProcess : HotReloadAgentFlags.None;
         var processInfo = new ManagedEditAndContinueProcessInfo();
-        RunningProjectInfo runningProjectInfo;
-        if (_configuredProject?.Services.ProjectPropertiesProvider?.GetCommonProperties() is IProjectProperties commonProperties)
+        string targetFramework = _configuredProject?.Services.ProjectPropertiesProvider?.GetCommonProperties() is IProjectProperties commonProperties
+            ? await commonProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty)
+            : string.Empty;
+
+        RunningProjectInfo runningProjectInfo = new RunningProjectInfo
         {
-            var tfm = await commonProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty);
-            runningProjectInfo = new RunningProjectInfo
+            RestartAutomatically = false,
+            ProjectInstanceId = new ProjectInstanceId
             {
-                RestartAutomatically = false,
-                ProjectInstanceId = new ProjectInstanceId
-                {
-                    ProjectFilePath = _configuredProject.UnconfiguredProject.FullPath,
-                    TargetFramework = tfm,
-                }
-            };
-        }
-        else
-        {
-            runningProjectInfo = new RunningProjectInfo
-            {
-                RestartAutomatically = false,
-                ProjectInstanceId = new ProjectInstanceId
-                {
-                    ProjectFilePath = _configuredProject?.UnconfiguredProject.FullPath ?? string.Empty,
-                    TargetFramework = string.Empty,
-                }
-            };
-        }
-        WriteToOutputWindow($"start session for project '{_configuredProject?.UnconfiguredProject.FullPath}' with TFM '{runningProjectInfo.ProjectInstanceId.TargetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}", cancellationToken, HotReloadVerbosity.Detailed);
+                ProjectFilePath = _configuredProject?.UnconfiguredProject.FullPath ?? string.Empty,
+                TargetFramework = targetFramework,
+            }
+        };
+
+        DebugTrace($"start session for project '{_configuredProject?.UnconfiguredProject.FullPath}' with TFM '{runningProjectInfo.ProjectInstanceId.TargetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
 
         await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
 
@@ -138,13 +126,13 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
     {
         if (!_sessionActive)
         {
-            WriteToOutputWindow($"{nameof(ApplyUpdatesAsync)} called but the session is not active.", default, HotReloadVerbosity.Detailed);
+            DebugTrace($"{nameof(ApplyUpdatesAsync)} called but the session is not active.");
             return;
         }
 
         if (_deltaApplier is null)
         {
-            WriteToOutputWindow($"{nameof(ApplyUpdatesAsync)} called but we have no delta applier.", default, HotReloadVerbosity.Detailed);
+            DebugTrace($"{nameof(ApplyUpdatesAsync)} called but we have no delta applier.");
             return;
         }
 
@@ -244,6 +232,18 @@ internal class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotRelo
                 _variant,
                 errorLevel: errorLevel),
             cancellationToken);
+    }
+
+    private void DebugTrace(string message)
+    {
+        _hotReloadOutputService.Value.WriteLine(
+            new HotReloadLogMessage(
+                HotReloadVerbosity.Detailed,
+                message,
+                Name,
+                _variant,
+                errorLevel: HotReloadDiagnosticErrorLevel.Info),
+            CancellationToken.None);
     }
 
     [MemberNotNull(nameof(_deltaApplier))]

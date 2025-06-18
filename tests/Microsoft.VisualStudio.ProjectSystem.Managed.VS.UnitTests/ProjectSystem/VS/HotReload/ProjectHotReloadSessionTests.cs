@@ -140,9 +140,9 @@ public class ProjectHotReloadSessionTests
 
         // Create a project with a specific TFM and path
         const string expectedProjectPath = "C:\\Test\\Project.csproj";
-        const string expectedTfm = "net6.0";
+        const string expectedTf = "net6.0";
 
-        var configuredProject = CreateConfiguredProjectWithCommonProperties(expectedTfm, expectedProjectPath);
+        var configuredProject = CreateConfiguredProjectWithCommonProperties(expectedTf, expectedProjectPath);
 
         var session = CreateInstance(
             hotReloadAgentManagerClient: new Lazy<IHotReloadAgentManagerClient>(() => hotReloadAgentManagerClient.Object),
@@ -184,7 +184,7 @@ public class ProjectHotReloadSessionTests
         Assert.False(capturedRunningProjectInfo?.RestartAutomatically);
         Assert.NotNull(capturedRunningProjectInfo?.ProjectInstanceId);
         Assert.Equal(expectedProjectPath, capturedRunningProjectInfo?.ProjectInstanceId.ProjectFilePath);
-        Assert.Equal(expectedTfm, capturedRunningProjectInfo?.ProjectInstanceId.TargetFramework);
+        Assert.Equal(expectedTf, capturedRunningProjectInfo?.ProjectInstanceId.TargetFramework);
 
         // Verify processInfo was created correctly
         Assert.NotNull(capturedProcessInfo);
