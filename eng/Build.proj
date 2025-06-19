@@ -71,7 +71,7 @@
     <Message Importance="normal" Text="Relative path: %(BuildProjectWithRel.RelPath)" />
 
     <!-- Add each BuildProject to the solution. -->
-    <Exec Command="dotnet sln &quot;$(ArtifactsDirRelative)/$(MSBuildProjectName).sln&quot; add &quot;%(BuildProjectWithRel.RelPath)&quot; --solution-folder=&quot;$(ArtifactsDir)&quot;" WorkingDirectory="$(DriveRootPath)" />
+    <Exec Command="dotnet sln &quot;$(ArtifactsDirRelative)/$(MSBuildProjectName).sln&quot; add &quot;%(BuildProjectWithRel.RelPath)&quot;" WorkingDirectory="$(DriveRootPath)" />
 
     <!-- Build the solution. -->
     <MSBuild Projects="$(ArtifactsDir)$(MSBuildProjectName).sln" Targets="@(BuildTarget)" BuildInParallel="true" Condition="'@(BuildTarget)' != ''" />
