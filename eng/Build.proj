@@ -48,6 +48,8 @@
 
     <!-- https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new#options -->
 
+    <Exec Command="dotnet --info" WorkingDirectory="$(ArtifactsDir)" />
+
     <!-- Create the solution. Use 'force' to override existing. -->
     <Exec Command="dotnet new sln -n $(MSBuildProjectName) -o $(ArtifactsDir) --force" WorkingDirectory="$(ArtifactsDir)" />
 
