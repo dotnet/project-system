@@ -44,11 +44,17 @@
     <Message Text="Including 'Setup' projects..." Importance="high" Condition="'$(SetupProjects)' == 'true'" />
     <Message Text="Configuration: $(Configuration)" Importance="high" />
 
+    <!-- Create a solution file for the projects to be built. -->
+
     <!-- https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new#options -->
-    <!-- The 'force' flag overrides the existing .sln file if one already exists. -->
-    <Exec Command="dotnet new sln -n $(MSBuildProjectName) --force" WorkingDirectory="$(ArtifactsDir)" />
-    <!-- https://stackoverflow.com/a/3012224/294804 -->
-    <Exec Command="dotnet sln $(MSBuildProjectName).sln add @(BuildProject -> '&quot;%(FullPath)&quot;', ' ') --solution-folder=&quot;$(ArtifactsDir)&quot;" WorkingDirectory="$(ArtifactsDir)" />
+
+    <!-- Create the solution. Use 'force' to override existing. -->
+    <Exec Command="dotnet new sln -n $(MSBuildProjectName) -o $(ArtifactsDir) --force" WorkingDirectory="$(ArtifactsDir)" />
+
+    <!-- Add each BuildProject to the solution. -->
+    <Exec Command="dotnet sln $(MSBuildProjectName).sln add &quot;%(BuildProject.FullPath)&quot; --solution-folder=&quot;$(ArtifactsDir)&quot;" WorkingDirectory="$(ArtifactsDir)" />
+
+    <!-- Build the solution. -->
     <MSBuild Projects="$(ArtifactsDir)$(MSBuildProjectName).sln" Targets="@(BuildTarget)" BuildInParallel="true" Condition="'@(BuildTarget)' != ''" />
   </Target>
 
