@@ -55,7 +55,7 @@
     <PackageVersion Include="Microsoft.VisualStudio.ImageCatalog"                                    Version="17.13.38055-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Interop"                                         Version="17.13.38055-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.ManagedInterfaces"                               Version="17.13.38047-preview.1" />
-    <PackageVersion Include="Microsoft.VisualStudio.RpcContracts"                                    Version="17.15.10-pre" />
+    <PackageVersion Include="Microsoft.VisualStudio.RpcContracts"                                    Version="17.14.20" />
     <PackageVersion Include="Microsoft.VisualStudio.Settings.15.0"                                   Version="17.13.38055-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="3.12.2159" />
     <PackageVersion Include="Microsoft.VisualStudio.Shell.15.0"                                      Version="17.13.38055-preview.1" />
