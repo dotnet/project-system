@@ -29,20 +29,13 @@ jobs:
     inputs:
       forceReinstallCredentialProvider: true
 
-  # Ensure the required .NET SDK version is installed.
-  - task: UseDotNet@2
-    displayName: Use .NET SDK from global.json
-    inputs:
-      packageType: 'sdk'
-      useGlobalJson: true
-
   # Ensure the .NET runtime needed by our unit tests is installed.
   - task: UseDotNet@2
     displayName: Install .NET Runtime
     inputs:
       packageType: runtime
       # This should match the target of our unit test projects.
-      version: 8.0.x
+      version: 9.0.x
 
   # Allows for accessing the internal AzDO feed (vs-impl-internal) for project restore via Azure Artifacts Credential Provider.
   # See: https://github.com/microsoft/artifacts-credprovider#automatic-usage

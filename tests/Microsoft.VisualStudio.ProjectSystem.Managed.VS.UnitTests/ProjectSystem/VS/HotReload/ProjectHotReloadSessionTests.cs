@@ -1,12 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Diagnostics;
 using Microsoft.VisualStudio.Debugger.Contracts.EditAndContinue;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
@@ -642,26 +640,6 @@ public class ProjectHotReloadSessionTests
         configuredProject.Setup(c => c.Services)
             .Returns(configuredProjectServices.Object);
         configuredProject.Setup(c => c.UnconfiguredProject)
-            .Returns(unconfiguredProject.Object);
-
-        return configuredProject.Object;
-    }
-
-    private static ConfiguredProject CreateConfiguredProjectWithDebugProvider()
-    {
-        var launchProvider = new Mock<IInternalDebugLaunchProvider>();
-        launchProvider
-            .Setup(p => p.LaunchWithProfileAsync(It.IsAny<DebugLaunchOptions>(), It.IsAny<ILaunchProfile>()))
-            .Returns(Task.CompletedTask);
-
-        var unconfiguredProject = new Mock<UnconfiguredProject>();
-        unconfiguredProject
-            .Setup(p => p.FullPath)
-            .Returns("C:\\Test\\Project.csproj");
-
-        var configuredProject = new Mock<ConfiguredProject>();
-        configuredProject
-            .Setup(c => c.UnconfiguredProject)
             .Returns(unconfiguredProject.Object);
 
         return configuredProject.Object;
