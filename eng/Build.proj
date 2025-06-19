@@ -48,7 +48,7 @@
     <!-- The 'force' flag overrides the existing .sln file if one already exists. -->
     <Exec Command="dotnet new sln -n $(MSBuildProjectName) -o $(ArtifactsDir) --force" />
     <!-- https://stackoverflow.com/a/3012224/294804 -->
-    <Exec Command="dotnet sln $(ArtifactsDir)$(MSBuildProjectName).sln add @(BuildProject -> '&quot;%(FullPath)&quot;', ' ')" />
+    <Exec Command="dotnet sln $(ArtifactsDir)$(MSBuildProjectName).sln add @(BuildProject -> '&quot;%(FullPath)&quot;', ' ') --solution-folder $(ArtifactsDir)" />
     <MSBuild Projects="$(ArtifactsDir)$(MSBuildProjectName).sln" Targets="@(BuildTarget)" BuildInParallel="true" Condition="'@(BuildTarget)' != ''" />
   </Target>
 
