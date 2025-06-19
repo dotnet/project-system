@@ -50,19 +50,28 @@
 
     <Exec Command="dotnet --info" WorkingDirectory="$(ArtifactsDir)" />
 
+    <PropertyGroup>
+      <DriveRootPath>$([System.IO.Path]::GetPathRoot('$(ArtifactsDir)'))</DriveRootPath>
+      <ArtifactsDirRelative>$([System.String]::Copy('$(ArtifactsDir)').Substring(3))</ArtifactsDirRelative>
+    </PropertyGroup>
+
     <!-- Create the solution. Use 'force' to override existing. -->
-    <Exec Command="dotnet new sln -n $(MSBuildProjectName) -o $(ArtifactsDir) --force" WorkingDirectory="$(ArtifactsDir)" />
+    <Exec Command="dotnet new sln -n $(MSBuildProjectName) -o $(ArtifactsDir) --force" WorkingDirectory="$(DriveRootPath)" />
 
-    <Exec
-      Command="powershell -NoProfile -Command &quot;Write-Output ((Resolve-Path -Relative '%(BuildProject.FullPath)'))&quot;"
-      WorkingDirectory="$(ArtifactsDir)">
-      <Output TaskParameter="ConsoleOutput" ItemName="RelativeBuildProjectPath" />
-    </Exec>
+    <Message Importance="normal" Text="Absolute paths: @(BuildProject)" />
 
-    <Message Importance="normal" Text="Relative paths: @(RelativeBuildProjectPath)" />
+    <!-- Strip the drive letter and backslash, e.g. D:\ => -->
+    <ItemGroup>
+      <BuildProjectWithRel Include="@(BuildProject)">
+        <!-- Trim the first three characters: D:\ -->
+        <RelPath>$([System.String]::Copy('%(BuildProject.FullPath)').Substring(3))</RelPath>
+      </BuildProjectWithRel>
+    </ItemGroup>
+
+    <Message Importance="normal" Text="Relative path: %(BuildProjectWithRel.RelPath)" />
 
     <!-- Add each BuildProject to the solution. -->
-    <Exec Command="dotnet sln $(MSBuildProjectName).sln add &quot;%(RelativeBuildProjectPath.Identity)&quot; --solution-folder=&quot;$(ArtifactsDir)&quot;" WorkingDirectory="$(ArtifactsDir)" />
+    <Exec Command="dotnet sln &quot;$(ArtifactsDirRelative)/$(MSBuildProjectName).sln&quot; add &quot;%(BuildProjectWithRel.RelPath)&quot; --solution-folder=&quot;$(ArtifactsDir)&quot;" WorkingDirectory="$(DriveRootPath)" />
 
     <!-- Build the solution. -->
     <MSBuild Projects="$(ArtifactsDir)$(MSBuildProjectName).sln" Targets="@(BuildTarget)" BuildInParallel="true" Condition="'@(BuildTarget)' != ''" />
