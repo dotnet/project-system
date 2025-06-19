@@ -288,24 +288,14 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
                 object? hostObject = _unconfiguredProject.Services.HostObject;
 
-                JoinableTask initialWorkspaceCreationTask = _joinableTaskFactory.RunAsync(async () =>
-                {
-                    // Call into Roslyn to initialize language service for this project
-                    _context = await _workspaceProjectContextFactory.Value.CreateProjectContextAsync(
-                        _projectGuid,
-                        _contextId,
-                        languageName,
-                        evaluationData,
-                        hostObject,
-                        cancellationToken);
-                });
-
-                if (!initialWorkspaceCreationTask.IsCompleted)
-                {
-                    _unconfiguredProject.Services.ProjectAsynchronousTasks!.RegisterAsyncTask(initialWorkspaceCreationTask, ProjectCriticalOperation.Load);
-                }
-
-                await initialWorkspaceCreationTask;
+                // Call into Roslyn to initialize language service for this project
+                _context = await _workspaceProjectContextFactory.Value.CreateProjectContextAsync(
+                    _projectGuid,
+                    _contextId,
+                    languageName,
+                    evaluationData,
+                    hostObject,
+                    cancellationToken);
 
                 evaluationData.Release();
 
