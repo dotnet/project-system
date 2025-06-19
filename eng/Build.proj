@@ -54,7 +54,7 @@
     <Exec Command="dotnet new sln -n $(MSBuildProjectName) -o $(ArtifactsDir) --force" WorkingDirectory="$(ArtifactsDir)" />
 
     <!-- Add each BuildProject to the solution. -->
-    <Exec Command="dotnet sln $(MSBuildProjectName).sln add &quot;%(BuildProject.FullPath)&quot; --solution-folder=&quot;$(ArtifactsDir)&quot;" WorkingDirectory="$(ArtifactsDir)" />
+    <Exec Command="dotnet sln $(MSBuildProjectName).sln add &quot;$([System.IO.Path]::GetRelativePath('$(ArtifactsDir)', '%(BuildProject.FullPath)'))&quot; --solution-folder=&quot;$(ArtifactsDir)&quot;" WorkingDirectory="$(ArtifactsDir)" />
 
     <!-- Build the solution. -->
     <MSBuild Projects="$(ArtifactsDir)$(MSBuildProjectName).sln" Targets="@(BuildTarget)" BuildInParallel="true" Condition="'@(BuildTarget)' != ''" />
