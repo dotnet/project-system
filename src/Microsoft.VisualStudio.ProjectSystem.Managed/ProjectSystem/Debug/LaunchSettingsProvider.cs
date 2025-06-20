@@ -220,6 +220,17 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
             JoinUpstreamDataSources(_projectSubscriptionService.ProjectRuleSource, _commonProjectServices.Project.Capabilities);
         }
 
+        FileChangeScheduler?.Dispose();
+
+        Assumes.Present(_projectServices.ProjectAsynchronousTasks);
+
+        // Create our scheduler for processing file changes
+        FileChangeScheduler = new TaskDelayScheduler(
+            FileChangeProcessingDelay,
+            _commonProjectServices.ThreadingService,
+            _projectServices.ProjectAsynchronousTasks.UnloadCancellationToken);
+
+
         // establish the file watcher. We don't need wait this, because files can be changed in the system anyway, so blocking our process
         // doesn't provide real benefit. It is of course possible that the file is changed before the watcher is established. To eliminate this
         // gap, we can recheck file after the watcher is established. I will skip this for now.
@@ -525,16 +536,23 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         {
             Assumes.NotNull(FileChangeScheduler);
 
-            await FileChangeScheduler.ScheduleAsyncTask(token =>
+            try
             {
-                if (token.IsCancellationRequested)
+                await FileChangeScheduler.ScheduleAsyncTask(token =>
                 {
-                    return Task.CompletedTask;
-                }
+                    if (token.IsCancellationRequested)
+                    {
+                        return Task.CompletedTask;
+                    }
 
-                // Updates need to be sequenced
-                return _sequentialTaskQueue.ExecuteTask(() => UpdateProfilesAsync(null));
-            });
+                    // Updates need to be sequenced
+                    return _sequentialTaskQueue.ExecuteTask(() => UpdateProfilesAsync(null));
+                });
+            }
+            catch (ObjectDisposedException)
+            {
+                // during closing the FileChangeScheduler can be disposed while the task to process the last file change is still running.
+            }
         }
     }
 
@@ -557,14 +575,8 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     /// </summary>
     private async Task<IFileWatcher?> WatchLaunchSettingsFileAsync()
     {
-        FileChangeScheduler?.Dispose();
-
         Assumes.Present(_projectServices.ProjectAsynchronousTasks);
-
         CancellationToken cancellationToken = _projectServices.ProjectAsynchronousTasks.UnloadCancellationToken;
-
-        // Create our scheduler for processing file changes
-        FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, _commonProjectServices.ThreadingService, cancellationToken);
 
         IFileWatcher? fileWatcher = null;
 
