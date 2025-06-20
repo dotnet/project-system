@@ -213,10 +213,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                 {
                     Assumes.False(checklist.ContainsKey(slice));
 
-                    if (projectGuid is null)
-                    {
-                        projectGuid = await _projectGuidService.GetProjectGuidAsync(cancellationToken);
-                    }
+                    projectGuid ??= await _projectGuidService.GetProjectGuidAsync(cancellationToken);
 
                     // New slice. Create a workspace for it.
                     workspace = _workspaceFactory.Create(source, slice, JoinableCollection, JoinableFactory, projectGuid.Value, cancellationToken);
