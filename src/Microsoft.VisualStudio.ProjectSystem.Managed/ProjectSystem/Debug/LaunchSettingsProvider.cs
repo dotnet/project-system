@@ -61,9 +61,8 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     private readonly AsyncLazy<string> _launchSettingsFilePath;
     private readonly SequentialTaskExecutor _sequentialTaskQueue;
     private readonly Lazy<LaunchProfile?> _defaultLaunchProfile;
+    private readonly AsyncLazy<IFileWatcher?> _launchSettingFileWatcher;
 
-    private IFileWatcher? _launchSettingFileWatcher;
-    private int _launchSettingFileWatcherCookie;
     private IReceivableSourceBlock<ILaunchSettings>? _changedSourceBlock;
     private IBroadcastBlock<ILaunchSettings>? _broadcastBlock;
     private IReceivableSourceBlock<IProjectVersionedValue<ILaunchSettings>>? _versionedChangedSourceBlock;
@@ -103,6 +102,10 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         _sequentialTaskQueue = new SequentialTaskExecutor(new JoinableTaskContextNode(joinableTaskContext), nameof(LaunchSettingsProvider));
 
         _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
+        _launchSettingFileWatcher = new AsyncLazy<IFileWatcher?>(WatchLaunchSettingsFileAsync, commonProjectServices.ThreadingService.JoinableTaskFactory)
+        {
+            SuppressRecursiveFactoryDetection = true
+        };
 
         _defaultLaunchProfile = new Lazy<LaunchProfile?>(() =>
         {
@@ -217,8 +220,13 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
             JoinUpstreamDataSources(_projectSubscriptionService.ProjectRuleSource, _commonProjectServices.Project.Capabilities);
         }
 
-        // Make sure we are watching the file at this point
-        WatchLaunchSettingsFile();
+        // establish the file watcher. We don't need wait this, because files can be changed in the system anyway, so blocking our process
+        // doesn't provide real benefit. It is of course possible that the file is changed before the watcher is established. To eliminate this
+        // gap, we can recheck file after the watcher is established. I will skip this for now.
+        _project.Services.FaultHandler.Forget(
+            _launchSettingFileWatcher.GetValueAsync(),
+            _project,
+            severity: ProjectFaultSeverity.LimitedFunctionality);
     }
 
     /// <summary>
@@ -547,53 +555,48 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     /// Sets up a file system watcher to look for changes to the launchsettings.json file. It watches at the root of the
     /// project otherwise we force the project to have a properties folder.
     /// </summary>
-    private void WatchLaunchSettingsFile()
+    private async Task<IFileWatcher?> WatchLaunchSettingsFileAsync()
     {
-        if (_launchSettingFileWatcher is null)
+        FileChangeScheduler?.Dispose();
+
+        Assumes.Present(_projectServices.ProjectAsynchronousTasks);
+
+        CancellationToken cancellationToken = _projectServices.ProjectAsynchronousTasks.UnloadCancellationToken;
+
+        // Create our scheduler for processing file changes
+        FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, _commonProjectServices.ThreadingService, cancellationToken);
+
+        IFileWatcher? fileWatcher = null;
+
+        string launchSettingsToWatch = await GetLaunchSettingsFilePathAsync();
+        if (launchSettingsToWatch is not null)
         {
-            FileChangeScheduler?.Dispose();
-
-            Assumes.Present(_projectServices.ProjectAsynchronousTasks);
-
-            // Create our scheduler for processing file changes
-            FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, _commonProjectServices.ThreadingService,
-                _projectServices.ProjectAsynchronousTasks.UnloadCancellationToken);
+            fileWatcher = await _fileWatcherService.CreateFileWatcherAsync(this, FileWatchChangeKinds.Changed | FileWatchChangeKinds.Added | FileWatchChangeKinds.Removed, cancellationToken);
 
             try
             {
-                JoinableFactory.Run(async () =>
-                {
-                    string launchSettingsToWatch = await GetLaunchSettingsFilePathAsync();
-                    if (launchSettingsToWatch is not null)
-                    {
-                        _launchSettingFileWatcher = await _fileWatcherService.CreateFileWatcherAsync(this, FileWatchChangeKinds.Changed | FileWatchChangeKinds.Added | FileWatchChangeKinds.Removed, CancellationToken.None);
-                        _launchSettingFileWatcherCookie = await _launchSettingFileWatcher.RegisterFileAsync(launchSettingsToWatch, CancellationToken.None);
-                    }
-                });
+                // disposing the file watcher will unregister the file, so we don't have to track the cookie.
+                _ = await fileWatcher.RegisterFileAsync(launchSettingsToWatch, cancellationToken);
             }
             catch (Exception ex) when (ex is IOException || ex is ArgumentException)
             {
                 // If the project folder is no longer available this will throw, which can happen during branch switching
+                await fileWatcher.DisposeAsync();
+                fileWatcher = null;
             }
         }
+
+        return fileWatcher;
     }
 
     protected override void Dispose(bool disposing)
     {
         if (disposing)
         {
-            if (_launchSettingFileWatcher is not null)
-            {
-                if (_launchSettingFileWatcherCookie is not 0)
-                {
-                    // Unregister the file watcher
-                    _launchSettingFileWatcher.Unregister(_launchSettingFileWatcherCookie);
-                    _launchSettingFileWatcherCookie = 0;
-                }
-
-                _launchSettingFileWatcher.Dispose();
-                _launchSettingFileWatcher = null;
-            }
+            _project.Services.FaultHandler.Forget(
+                _launchSettingFileWatcher.DisposeValueAsync(),
+                _project,
+                severity: ProjectFaultSeverity.Recoverable);
 
             if (FileChangeScheduler is not null)
             {
