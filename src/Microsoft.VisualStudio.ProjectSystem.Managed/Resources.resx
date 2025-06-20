@@ -226,7 +226,6 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</value>
     <comment>{0} is a file path.</comment>
   </data>
-
   <data name="HotReloadOutputWindowPaneName" xml:space="preserve">
     <value>Hot Reload</value>
     <comment>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</comment>
