@@ -435,56 +435,6 @@
         <target state="translated">Çıkış işaretçisindeki yazma zaman damgası '{1}' üzerinde {0}.</target>
         <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
-      <trans-unit id="HotReloadApplyUpdatesFailure">
-        <source>Applying updates failed: {0}</source>
-        <target state="translated">Güncelleştirmeler uygulanamadı: {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadApplyUpdatesSuccessful">
-        <source>Updates applied successfully.</source>
-        <target state="translated">Güncelleştirmeler başarıyla uygulandı.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadBuildFail">
-        <source>Unable to restart the project due to a build failure. Fix the build and try again.</source>
-        <target state="translated">Proje, bir derleme hatası nedeniyle yeniden başlatılamıyor. Derlemeyi düzeltin ve tekrar deneyin.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadErrorsInApplication">
-        <source>Errors found in application: </source>
-        <target state="translated">Uygulamada hatalar bulundu: </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadOutputWindowPaneName">
-        <source>Hot Reload</source>
-        <target state="translated">Çalışırken Yeniden Yükleme</target>
-        <note>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</note>
-      </trans-unit>
-      <trans-unit id="HotReloadRestartInProgress">
-        <source>Rebuilding and restarting the application since the edits can't be applied dynamically.</source>
-        <target state="translated">Düzenlemeler dinamik olarak uygulanamadığından, uygulama yeniden derleniyor ve yeniden başlatılıyor.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadSendingUpdates">
-        <source>Sending updates to running application.</source>
-        <target state="translated">Çalışan uygulamaya güncelleştirmeler gönderiliyor.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadStartSession">
-        <source>Hot Reload session started.</source>
-        <target state="translated">Çalışırken Yeniden Yükleme oturumu başlatıldı.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadStopSession">
-        <source>Hot Reload session complete.</source>
-        <target state="translated">Çalışırken Yeniden Yükleme oturumu tamamlandı.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadStoppingApplication">
-        <source>Stopping application.</source>
-        <target state="translated">Uygulama durduruluyor.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
         <source>{0} - Import comes fom target file. This import cannot be removed.</source>
         <target state="translated">{0} - İçeri aktarım hedef dosyadan geliyor. Bu içeri aktarım kaldırılamaz.</target>
@@ -503,38 +453,6 @@
       <trans-unit id="OtherUpToDateCheckProvidersPresent">
         <source>Note that other checks may still determine the project is not up-to-date. The following checks are present:</source>
         <target state="translated">Diğer denetimlerin hala projenin güncel olmadığını belirleyebileceğini unutmayın. Aşağıdaki denetimler mevcuttur:</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
-        <source>Attaching to process.</source>
-        <target state="translated">İşleme ekleniyor.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
-        <source>Error while stopping the session: {0}
-{1}</source>
-        <target state="translated">Oturum durdurulurken hata oluştu: {0}
-{1}</target>
-        <note>{0} is the exception type name. {1} is the exception message.</note>
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
-        <source>Unable to start Hot Reload session: no active process.</source>
-        <target state="translated">Çalışırken Yeniden Yükleme oturumu başlatılamıyor: etkin işlem yok.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
-        <source>The process has already exited.</source>
-        <target state="translated">İşlemden zaten çıkıldı.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
-        <source>The process has exited.</source>
-        <target state="translated">İşlemden çıkıldı.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
-        <source>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
-        <target state="translated">Başlatma kancaları, büyük olasılıkla kırpma nedeniyle devre dışı bırakıldığından Çalışırken Yeniden Yükleme kullanılamıyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">

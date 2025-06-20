@@ -1,8 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
 /// <summary>
 /// MEF Export that can be used to be notified when a project enters and exits hot reload 

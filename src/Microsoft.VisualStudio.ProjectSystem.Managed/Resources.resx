@@ -226,4 +226,55 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>A NuGet restore loop has been detected in project '{0}'. Further restores have been aborted. The project might be in a bad state.</value>
     <comment>{0} is a file path.</comment>
   </data>
+  <data name="HotReloadOutputWindowPaneName" xml:space="preserve">
+    <value>Hot Reload</value>
+    <comment>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</comment>
+  </data>
+  <data name="HotReloadApplyUpdatesSuccessful" xml:space="preserve">
+    <value>Updates applied successfully.</value>
+  </data>
+  <data name="HotReloadApplyUpdatesFailure" xml:space="preserve">
+    <value>Applying updates failed: {0}</value>
+  </data>
+  <data name="HotReloadErrorsInApplication" xml:space="preserve">
+    <value>Errors found in application: </value>
+  </data>
+  <data name="HotReloadRestartInProgress" xml:space="preserve">
+    <value>Rebuilding and restarting the application since the edits can't be applied dynamically.</value>
+  </data>
+  <data name="HotReloadStoppingApplication" xml:space="preserve">
+    <value>Stopping application.</value>
+  </data>
+  <data name="HotReloadStartSession" xml:space="preserve">
+    <value>Hot Reload session started.</value>
+  </data>
+  <data name="HotReloadStopSession" xml:space="preserve">
+    <value>Hot Reload session complete.</value>
+  </data>
+  <data name="HotReloadSendingUpdates" xml:space="preserve">
+    <value>Sending updates to running application.</value>
+  </data>
+  <data name="ProjectHotReloadSessionManager_AttachingToProcess" xml:space="preserve">
+    <value>Attaching to process.</value>
+  </data>
+  <data name="ProjectHotReloadSessionManager_ProcessAlreadyExited" xml:space="preserve">
+    <value>The process has already exited.</value>
+  </data>
+  <data name="ProjectHotReloadSessionManager_NoActiveProcess" xml:space="preserve">
+    <value>Unable to start Hot Reload session: no active process.</value>
+  </data>
+  <data name="ProjectHotReloadSessionManager_ProcessExited" xml:space="preserve">
+    <value>The process has exited.</value>
+  </data>
+  <data name="ProjectHotReloadSessionManager_ErrorStoppingTheSession" xml:space="preserve">
+    <value>Error while stopping the session: {0}
+{1}</value>
+    <comment>{0} is the exception type name. {1} is the exception message.</comment>
+  </data>
+  <data name="ProjectHotReloadSessionManager_StartupHooksDisabled" xml:space="preserve">
+    <value>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</value>
+  </data>
+  <data name="HotReloadBuildFail" xml:space="preserve">
+    <value>Unable to restart the project due to a build failure. Fix the build and try again.</value>
+  </data>
 </root>

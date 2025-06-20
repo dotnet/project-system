@@ -5,15 +5,14 @@ using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
 [Export(typeof(IProjectHotReloadSessionManager))]
 [Export(typeof(IProjectHotReloadUpdateApplier))]
-internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager, IProjectHotReloadUpdateApplier
+internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager, IProjectHotReloadUpdateApplier
 {
     private readonly UnconfiguredProject _project;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
@@ -22,10 +21,8 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
     private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
     private readonly Lazy<IManagedDeltaApplierCreator> _managedDeltaApplierCreator;
     private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
-
-    private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
-    private IVsSolutionBuildManager2? _vsSolutionBuildManager2;
-    private readonly IProjectThreadingService _projectThreadingService;
+    private readonly IProjectHotReloadBuildManager _buildManager;
+    private readonly IProjectHotReloadLaunchProvider _launchProvider;
 
     // Protect the state from concurrent access. For example, our Process.Exited event
     // handler may run on one thread while we're still setting up the session on
@@ -47,18 +44,20 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
         Lazy<IManagedDeltaApplierCreator> managedDeltaApplierCreator,
         Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
-        IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService)
+        IProjectHotReloadBuildManager buildManager,
+        IProjectHotReloadLaunchProvider launchProvider)
         : base(threadingService.JoinableTaskContext)
     {
         _project = project;
-        _projectThreadingService = threadingService;
         _projectFaultHandlerService = projectFaultHandlerService;
         _activeDebugFrameworkServices = activeDebugFrameworkServices;
         _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
         _projectHotReloadNotificationService = projectHotReloadNotificationService;
-        _vsSolutionBuildManagerService = solutionBuildManagerService;
+        
         _managedDeltaApplierCreator = managedDeltaApplierCreator;
         _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
+        _buildManager = buildManager;
+        _launchProvider = launchProvider;
         _semaphore = ReentrantSemaphore.Create(
             initialCount: 1,
             joinableTaskContext: project.Services.ThreadingPolicy.JoinableTaskContext.Context,
@@ -82,7 +81,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
                     WriteOutputMessage(
                         new HotReloadLogMessage(
                             HotReloadVerbosity.Detailed,
-                            VSResources.ProjectHotReloadSessionManager_AttachingToProcess,
+                            Resources.ProjectHotReloadSessionManager_AttachingToProcess,
                             projectName,
                             _pendingSessionState.Session.Name,
                             (uint)processId,
@@ -98,7 +97,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
                         WriteOutputMessage(
                             new HotReloadLogMessage(
                                 HotReloadVerbosity.Detailed,
-                                VSResources.ProjectHotReloadSessionManager_ProcessAlreadyExited,
+                                Resources.ProjectHotReloadSessionManager_ProcessAlreadyExited,
                                 projectName,
                                 _pendingSessionState.Session.Name,
                                 (uint)processId,
@@ -131,7 +130,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
                     WriteOutputMessage(
                         new HotReloadLogMessage(
                             HotReloadVerbosity.Minimal,
-                            VSResources.ProjectHotReloadSessionManager_NoActiveProcess,
+                            Resources.ProjectHotReloadSessionManager_NoActiveProcess,
                             projectName,
                             _pendingSessionState.Session.Name,
                             (uint)processId,
@@ -180,8 +179,10 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
                         hotReloadAgentManagerClient: _hotReloadAgentManagerClient,
                         hotReloadOutputService: _hotReloadDiagnosticOutputService,
                         deltaApplierCreator: _managedDeltaApplierCreator,
-                        sessionManager: this,
                         callback: state,
+                        _buildManager,
+                        _launchProvider,
+                        sessionManager: this,
                         launchProfile: launchProfile,
                         configuredProject: configuredProject,
                         debugLaunchOptions: launchOptions);
@@ -200,7 +201,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
                     WriteOutputMessage(
                         new HotReloadLogMessage(
                             HotReloadVerbosity.Minimal,
-                            VSResources.ProjectHotReloadSessionManager_StartupHooksDisabled,
+                            Resources.ProjectHotReloadSessionManager_StartupHooksDisabled,
                             projectName,
                             null,
                             HotReloadDiagnosticOutputService.GetProcessId(),
@@ -238,46 +239,6 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
             _activeSessions.Clear();
 
             return Task.CompletedTask;
-        }
-    }
-
-    /// <summary>
-    /// Build project and wait for the build to complete.
-    /// </summary>
-    public async Task<bool> BuildProjectAsync(CancellationToken cancellationToken)
-    {
-        Assumes.NotNull(_project.Services.HostObject);
-        _vsSolutionBuildManager2 ??= await _vsSolutionBuildManagerService.GetValueAsync(cancellationToken);
-
-        if (_projectThreadingService.JoinableTaskContext.IsMainThreadBlocked())
-        {
-            throw new InvalidOperationException("This task cannot be blocked on by the UI thread.");
-        }
-
-        // Step 1: Register sbm events
-        using var solutionBuildCompleteListener = new SolutionBuildCompleteListener();
-        Verify.HResult(_vsSolutionBuildManager2.AdviseUpdateSolutionEvents(solutionBuildCompleteListener, out uint cookie));
-        try
-        {
-            // Step 2: Build
-            var projectVsHierarchy = (IVsHierarchy)_project.Services.HostObject;
-
-            var result = _vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(
-                pIVsHierarchyToBuild: projectVsHierarchy,
-                pIVsHierarchyDependent: null,
-                pszDependentConfigurationCanonicalName: null,
-                dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD,
-                dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
-                fSuppressUI: 0);
-
-            ErrorHandler.ThrowOnFailure(result);
-
-            // Step 3: Wait for the build to complete
-            return await solutionBuildCompleteListener.WaitForSolutionBuildCompletedAsync(cancellationToken);
-        }
-        finally
-        {
-            _vsSolutionBuildManager2.UnadviseUpdateSolutionEvents(cookie);
         }
     }
 
@@ -395,7 +356,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         WriteOutputMessage(
             new HotReloadLogMessage(
                 HotReloadVerbosity.Minimal,
-                VSResources.ProjectHotReloadSessionManager_ProcessExited,
+                Resources.ProjectHotReloadSessionManager_ProcessExited,
                 hotReloadState.Session?.Name,
                 (_nextUniqueId - 1).ToString(),
                 HotReloadDiagnosticOutputService.GetProcessId(hotReloadState.Process),
@@ -450,7 +411,7 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
                 WriteOutputMessage(
                     new HotReloadLogMessage(
                         HotReloadVerbosity.Minimal,
-                        string.Format(VSResources.ProjectHotReloadSessionManager_ErrorStoppingTheSession, ex.GetType(), ex.Message),
+                        string.Format(Resources.ProjectHotReloadSessionManager_ErrorStoppingTheSession, ex.GetType(), ex.Message),
                         hotReloadState.Session?.Name,
                         null,
                         HotReloadDiagnosticOutputService.GetProcessId(hotReloadState.Process),
@@ -545,66 +506,6 @@ internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync
         public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
-        }
-    }
-
-    private class SolutionBuildCompleteListener : IVsUpdateSolutionEvents, IDisposable
-    {
-        private readonly TaskCompletionSource<bool> _buildCompletedSource = new();
-
-        public SolutionBuildCompleteListener()
-        {
-        }
-
-        public int UpdateSolution_Begin(ref int pfCancelUpdate)
-        {
-            return HResult.OK;
-        }
-
-        public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
-        {
-            _buildCompletedSource.TrySetResult(fSucceeded != 0);
-
-            return HResult.OK;
-        }
-
-        public int UpdateSolution_StartUpdate(ref int pfCancelUpdate)
-        {
-            return HResult.OK;
-        }
-
-        public int UpdateSolution_Cancel()
-        {
-            _buildCompletedSource.TrySetCanceled();
-
-            return HResult.OK;
-        }
-
-        public int OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy)
-        {
-            return HResult.OK;
-        }
-
-        public async Task<bool> WaitForSolutionBuildCompletedAsync(CancellationToken ct = default)
-        {
-            using var _ = ct.Register(() =>
-            {
-                _buildCompletedSource.TrySetCanceled();
-            });
-
-            try
-            {
-                return await _buildCompletedSource.Task;
-            }
-            catch (TaskCanceledException)
-            {
-                return false;
-            }
-        }
-
-        public void Dispose()
-        {
-            _buildCompletedSource.TrySetCanceled();
         }
     }
 }

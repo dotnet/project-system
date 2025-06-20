@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
 /// <summary>
 /// Tracks and manages the pending and active Hot Reload sessions for the project.
@@ -25,9 +25,4 @@ internal interface IProjectHotReloadSessionManager
     /// process.
     /// </summary>
     Task ActivateSessionAsync(int processId, bool runningUnderDebugger, string projectName);
-
-    /// <summary>
-    /// Build project and wait for the build to complete.
-    /// </summary>
-    Task<bool> BuildProjectAsync(CancellationToken cancellationToken);
 }

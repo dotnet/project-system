@@ -3,7 +3,7 @@
 using System.Diagnostics;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
 [Export(typeof(IHotReloadDiagnosticOutputService))]
 internal class HotReloadDiagnosticOutputService : IHotReloadDiagnosticOutputService

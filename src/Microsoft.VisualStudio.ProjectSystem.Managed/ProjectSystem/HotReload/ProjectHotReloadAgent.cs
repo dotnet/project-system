@@ -2,8 +2,9 @@
 
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
+using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
 [Export(typeof(IProjectHotReloadAgent))]
 internal class ProjectHotReloadAgent : IProjectHotReloadAgent
@@ -11,16 +12,22 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent
     private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
     private readonly Lazy<IManagedDeltaApplierCreator> _managedDeltaApplierCreator;
+    private readonly IProjectHotReloadBuildManager _buildManager;
+    private readonly IProjectHotReloadLaunchProvider _launchProvider;
 
     [ImportingConstructor]
     public ProjectHotReloadAgent(
         Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
-        Lazy<IManagedDeltaApplierCreator> managedDeltaApplierCreator)
+        Lazy<IManagedDeltaApplierCreator> managedDeltaApplierCreator,
+        IProjectHotReloadBuildManager buildManager,
+        IProjectHotReloadLaunchProvider launchProvider)
     {
         _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
         _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
         _managedDeltaApplierCreator = managedDeltaApplierCreator;
+        _buildManager = buildManager;
+        _launchProvider = launchProvider;
     }
 
     public IProjectHotReloadSession? CreateHotReloadSession(string id, int variant, string runtimeVersion, IProjectHotReloadSessionCallback callback)
@@ -33,6 +40,8 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent
             _hotReloadDiagnosticOutputService,
             _managedDeltaApplierCreator,
             callback,
+            _buildManager,
+            _launchProvider,
             configuredProject: null);
     }
 

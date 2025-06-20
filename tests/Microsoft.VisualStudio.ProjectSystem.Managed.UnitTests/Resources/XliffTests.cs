@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.VisualStudio.Utilities;
 
-namespace Microsoft.VisualStudio.Resources;
+namespace Microsoft.VisualStudio.UnitTests;
 
 public sealed class XliffTests
 {

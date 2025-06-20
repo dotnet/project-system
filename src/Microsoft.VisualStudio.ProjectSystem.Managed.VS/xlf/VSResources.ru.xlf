@@ -435,56 +435,6 @@
         <target state="translated">Метка времени записи в выходном маркере {0} в "{1}".</target>
         <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
-      <trans-unit id="HotReloadApplyUpdatesFailure">
-        <source>Applying updates failed: {0}</source>
-        <target state="translated">Не удалось применить обновления: {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadApplyUpdatesSuccessful">
-        <source>Updates applied successfully.</source>
-        <target state="translated">Обновления успешно применены.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadBuildFail">
-        <source>Unable to restart the project due to a build failure. Fix the build and try again.</source>
-        <target state="translated">Не удалось перезапустить проект из-за сбоя сборки. Исправьте сборку и повторите попытку.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadErrorsInApplication">
-        <source>Errors found in application: </source>
-        <target state="translated">В приложении обнаружены ошибки: </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadOutputWindowPaneName">
-        <source>Hot Reload</source>
-        <target state="translated">Горячая перезагрузка</target>
-        <note>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</note>
-      </trans-unit>
-      <trans-unit id="HotReloadRestartInProgress">
-        <source>Rebuilding and restarting the application since the edits can't be applied dynamically.</source>
-        <target state="translated">Выполняется повторное создание и перезапуск приложения, так как изменения невозможно применить динамически.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadSendingUpdates">
-        <source>Sending updates to running application.</source>
-        <target state="translated">Отправка обновлений в запущенное приложение.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadStartSession">
-        <source>Hot Reload session started.</source>
-        <target state="translated">Сеанс горячей перезагрузки запущен.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadStopSession">
-        <source>Hot Reload session complete.</source>
-        <target state="translated">Сеанс горячей перезагрузки завершен.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadStoppingApplication">
-        <source>Stopping application.</source>
-        <target state="translated">Остановка приложения.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
         <source>{0} - Import comes fom target file. This import cannot be removed.</source>
         <target state="translated">{0} — источником импорта является целевой файл. Удалить этот импорт невозможно.</target>
@@ -503,38 +453,6 @@
       <trans-unit id="OtherUpToDateCheckProvidersPresent">
         <source>Note that other checks may still determine the project is not up-to-date. The following checks are present:</source>
         <target state="translated">Обратите внимание, что другие проверки могут по-прежнему определять, что проект устарел. Присутствуют следующие проверки:</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
-        <source>Attaching to process.</source>
-        <target state="translated">Выполняется подключение к процессу.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
-        <source>Error while stopping the session: {0}
-{1}</source>
-        <target state="translated">Ошибка при остановке сеанса: {0}
-{1}</target>
-        <note>{0} is the exception type name. {1} is the exception message.</note>
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
-        <source>Unable to start Hot Reload session: no active process.</source>
-        <target state="translated">Невозможно запустить сеанс Горячей перезагрузки: нет активного процесса.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
-        <source>The process has already exited.</source>
-        <target state="translated">Этот процесс уже завершил работу.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
-        <source>The process has exited.</source>
-        <target state="translated">Процесс завершился.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
-        <source>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
-        <target state="translated">Горячая перезагрузка недоступна, так как перехватчики запуска отключены, возможно, из-за фильтрации.</target>
         <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">

@@ -435,56 +435,6 @@
         <target state="translated">Escribir marca de tiempo en el marcador de salida es {0} en "{1}".</target>
         <note>{0} is a datetime. {1} is a file path.</note>
       </trans-unit>
-      <trans-unit id="HotReloadApplyUpdatesFailure">
-        <source>Applying updates failed: {0}</source>
-        <target state="translated">Error al aplicar las actualizaciones: {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadApplyUpdatesSuccessful">
-        <source>Updates applied successfully.</source>
-        <target state="translated">Se han aplicado las actualizaciones correctamente.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadBuildFail">
-        <source>Unable to restart the project due to a build failure. Fix the build and try again.</source>
-        <target state="translated">No se puede reiniciar el proyecto debido a un error de compilación. Corrija la compilación e inténtelo de nuevo.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadErrorsInApplication">
-        <source>Errors found in application: </source>
-        <target state="translated">Se han encontrado errores en la aplicación: </target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadOutputWindowPaneName">
-        <source>Hot Reload</source>
-        <target state="translated">Recarga activa</target>
-        <note>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</note>
-      </trans-unit>
-      <trans-unit id="HotReloadRestartInProgress">
-        <source>Rebuilding and restarting the application since the edits can't be applied dynamically.</source>
-        <target state="translated">Recompilar y reiniciar la aplicación, ya que las ediciones no se pueden aplicar de forma dinámica.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadSendingUpdates">
-        <source>Sending updates to running application.</source>
-        <target state="translated">Enviando actualizaciones a la aplicación en ejecución.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadStartSession">
-        <source>Hot Reload session started.</source>
-        <target state="translated">Se inició la sesión de recarga activa.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadStopSession">
-        <source>Hot Reload session complete.</source>
-        <target state="translated">Sesión de recarga activa completada.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="HotReloadStoppingApplication">
-        <source>Stopping application.</source>
-        <target state="translated">Deteniendo la aplicación.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
         <source>{0} - Import comes fom target file. This import cannot be removed.</source>
         <target state="translated">{0}: la importación procede del archivo de destino. Esta importación no se puede quitar.</target>
@@ -503,38 +453,6 @@
       <trans-unit id="OtherUpToDateCheckProvidersPresent">
         <source>Note that other checks may still determine the project is not up-to-date. The following checks are present:</source>
         <target state="translated">Tenga en cuenta que otras comprobaciones pueden determinar que el proyecto no está actualizado. Las siguientes comprobaciones están presentes:</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
-        <source>Attaching to process.</source>
-        <target state="translated">Adjuntando al proceso.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
-        <source>Error while stopping the session: {0}
-{1}</source>
-        <target state="translated">Error al detener la sesión: {0}
-{1}</target>
-        <note>{0} is the exception type name. {1} is the exception message.</note>
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
-        <source>Unable to start Hot Reload session: no active process.</source>
-        <target state="translated">No se puede iniciar la sesión de recarga activa: no hay ningún proceso activo.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
-        <source>The process has already exited.</source>
-        <target state="translated">El proceso ya se cerró.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
-        <source>The process has exited.</source>
-        <target state="translated">El proceso se ha cerrado.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
-        <source>Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
-        <target state="translated">La recarga activa no está disponible porque se han deshabilitado los enlaces de inicio, posiblemente debido al recorte.</target>
         <note />
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">

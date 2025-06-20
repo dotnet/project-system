@@ -193,3 +193,26 @@ static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Dependenc
 static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.SupportsFolderBrowse -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.SupportsRemove -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 static readonly Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.DependencyTreeFlags.UnresolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent.CreateHotReloadSession(string! id, int variant, string! runtimeVersion, Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback! callback) -> Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession?
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent.CreateHotReloadSession(string! id, string! runtimeVersion, Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback! callback) -> Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession?
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession.ApplyChangesAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession.ApplyLaunchVariablesAsync(System.Collections.Generic.IDictionary<string!, string!>! envVars, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<bool>!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession.Name.get -> string!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession.StartSessionAsync(bool runningUnderDebugger, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession.StartSessionAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession.StopSessionAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback.GetDeltaApplier() -> Microsoft.VisualStudio.HotReload.Components.DeltaApplier.IDeltaApplier?
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback.OnAfterChangesAppliedAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback.RestartProjectAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<bool>!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback.StopProjectAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<bool>!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback.SupportsRestart.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier.ApplyHotReloadUpdateAsync(System.Func<Microsoft.VisualStudio.HotReload.Components.DeltaApplier.IDeltaApplier!, System.Threading.CancellationToken, System.Threading.Tasks.Task!>! applyFunction, System.Threading.CancellationToken cancelToken) -> System.Threading.Tasks.Task!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier.HasActiveHotReloadSessions.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService.HotReloadStateChangedAsync -> Microsoft.VisualStudio.Threading.AsyncEventHandler<bool>!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService.IsProjectInHotReload.get -> bool
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService.SetHotReloadStateAsync(bool isInHotReload) -> System.Threading.Tasks.Task!

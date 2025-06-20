@@ -2,8 +2,9 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
-internal interface IInternalDebugLaunchProvider : IDebugLaunchProvider
+namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
+
+internal interface IProjectHotReloadLaunchProvider
 {
     Task LaunchWithProfileAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);
 }

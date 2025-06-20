@@ -3,7 +3,7 @@
 using Microsoft.VisualStudio.Utilities;
 using Xunit.Sdk;
 
-namespace Microsoft.VisualStudio.Resources;
+namespace Microsoft.VisualStudio.UnitTests;
 
 public sealed class ResourceTests
 {
