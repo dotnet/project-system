@@ -2,7 +2,7 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
-internal class IProjectHotReloadBuildManagerFactory
+internal static class IProjectHotReloadBuildManagerFactory
 {
     public static IProjectHotReloadBuildManager Create()
     {
