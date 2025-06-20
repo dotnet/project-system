@@ -27,13 +27,26 @@ internal class VsSafeProjectGuidService : ISafeProjectGuidService
         _backgroundSolutionImport = backgroundSolutionImport;
     }
 
-    public async Task<Guid> GetProjectGuidAsync(CancellationToken cancellationToken = default)
+    public Task<Guid> GetProjectGuidAsync(CancellationToken cancellationToken = default)
     {
         if (!_tasksService.PrioritizedProjectLoadedInHost.IsCompleted)
         {
+            return GetProjectGuidSlowAsync(cancellationToken);
+        }
+
+        return _project.GetProjectGuidAsync();
+
+        async Task<Guid> GetProjectGuidSlowAsync(CancellationToken cancellationToken)
+        {
             Guid projectGuid = await _project.GetProjectGuidAsync();
+
+            // if this is a newly created project, the project GUID might be empty.
+            // we should wait until the project is added to the solution.
             if (projectGuid != Guid.Empty)
             {
+                // now, get the GUID recorded by the solution.
+                // the solution might not know the project, if this is a project just to be added to the solution.
+                // or if the project saves a different GUID, we need wait the solution to resolve this conflict.
                 IVsBackgroundSolution solution = await _backgroundSolutionImport.GetValueAsync(cancellationToken);
                 if (solution.GetProjectGuidFromAbsolutePath(_project.FullPath) == projectGuid)
                 {
@@ -43,8 +56,7 @@ internal class VsSafeProjectGuidService : ISafeProjectGuidService
             }
 
             await _tasksService.PrioritizedProjectLoadedInHost.WithCancellation(cancellationToken);
+            return await _project.GetProjectGuidAsync();
         }
-
-        return await _project.GetProjectGuidAsync();
     }
 }
