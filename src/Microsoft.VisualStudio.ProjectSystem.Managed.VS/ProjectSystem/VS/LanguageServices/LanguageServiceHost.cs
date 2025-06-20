@@ -205,16 +205,21 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
             // Remember the first slice's workspace. We may use it later, if the active workspace is removed.
             Workspace? firstWorkspace = null;
 
+            Guid? projectGuid = null;
+
             foreach ((ProjectConfigurationSlice slice, IActiveConfigurationSubscriptionSource source) in sources)
             {
                 if (!workspaceBySlice.TryGetValue(slice, out Workspace? workspace))
                 {
                     Assumes.False(checklist.ContainsKey(slice));
 
-                    Guid projectGuid = await _projectGuidService.GetProjectGuidAsync(cancellationToken);
+                    if (projectGuid is null)
+                    {
+                        projectGuid = await _projectGuidService.GetProjectGuidAsync(cancellationToken);
+                    }
 
                     // New slice. Create a workspace for it.
-                    workspace = _workspaceFactory.Create(source, slice, JoinableCollection, JoinableFactory, projectGuid, cancellationToken);
+                    workspace = _workspaceFactory.Create(source, slice, JoinableCollection, JoinableFactory, projectGuid.Value, cancellationToken);
 
                     if (workspace is null)
                     {

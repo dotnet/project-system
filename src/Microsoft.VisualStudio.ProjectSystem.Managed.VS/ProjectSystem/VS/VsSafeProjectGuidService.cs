@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS;
@@ -13,17 +14,36 @@ internal class VsSafeProjectGuidService : ISafeProjectGuidService
 {
     private readonly UnconfiguredProject _project;
     private readonly IUnconfiguredProjectTasksService _tasksService;
+    private readonly IVsService<SVsBackgroundSolution, IVsBackgroundSolution> _backgroundSolutionImport;
 
     [ImportingConstructor]
-    public VsSafeProjectGuidService(UnconfiguredProject project, IUnconfiguredProjectTasksService tasksService)
+    public VsSafeProjectGuidService(
+        UnconfiguredProject project,
+        IUnconfiguredProjectTasksService tasksService,
+        IVsService<SVsBackgroundSolution, IVsBackgroundSolution> backgroundSolutionImport)
     {
         _project = project;
         _tasksService = tasksService;
+        _backgroundSolutionImport = backgroundSolutionImport;
     }
 
     public async Task<Guid> GetProjectGuidAsync(CancellationToken cancellationToken = default)
     {
-        await _tasksService.PrioritizedProjectLoadedInHost.WithCancellation(cancellationToken);
+        if (!_tasksService.PrioritizedProjectLoadedInHost.IsCompleted)
+        {
+            Guid projectGuid = await _project.GetProjectGuidAsync();
+            if (projectGuid != Guid.Empty)
+            {
+                IVsBackgroundSolution solution = await _backgroundSolutionImport.GetValueAsync(cancellationToken);
+                if (solution.GetProjectGuidFromAbsolutePath(_project.FullPath) == projectGuid)
+                {
+                    // If the project GUID matches the one from the solution, we can return it immediately.
+                    return projectGuid;
+                }
+            }
+
+            await _tasksService.PrioritizedProjectLoadedInHost.WithCancellation(cancellationToken);
+        }
 
         return await _project.GetProjectGuidAsync();
     }
