@@ -14,7 +14,7 @@ internal class VsSafeProjectGuidService : ISafeProjectGuidService
 {
     private readonly UnconfiguredProject _project;
     private readonly IUnconfiguredProjectTasksService _tasksService;
-    private readonly IVsService<SVsBackgroundSolution, IVsBackgroundSolution> _backgroundSolutionImport;
+    private readonly IVsService<IVsBackgroundSolution> _backgroundSolutionImport;
 
     [ImportingConstructor]
     public VsSafeProjectGuidService(
