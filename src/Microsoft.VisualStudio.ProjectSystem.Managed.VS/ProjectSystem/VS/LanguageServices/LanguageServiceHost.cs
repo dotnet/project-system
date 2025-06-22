@@ -205,16 +205,18 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
             // Remember the first slice's workspace. We may use it later, if the active workspace is removed.
             Workspace? firstWorkspace = null;
 
+            Guid? projectGuid = null;
+
             foreach ((ProjectConfigurationSlice slice, IActiveConfigurationSubscriptionSource source) in sources)
             {
                 if (!workspaceBySlice.TryGetValue(slice, out Workspace? workspace))
                 {
                     Assumes.False(checklist.ContainsKey(slice));
 
-                    Guid projectGuid = await _projectGuidService.GetProjectGuidAsync(cancellationToken);
+                    projectGuid ??= await _projectGuidService.GetProjectGuidAsync(cancellationToken);
 
                     // New slice. Create a workspace for it.
-                    workspace = _workspaceFactory.Create(source, slice, JoinableCollection, JoinableFactory, projectGuid, cancellationToken);
+                    workspace = _workspaceFactory.Create(source, slice, JoinableCollection, JoinableFactory, projectGuid.Value, cancellationToken);
 
                     if (workspace is null)
                     {
@@ -352,18 +354,16 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
             return;
         }
 
-        // Ensure the project is not considered loaded until our first publication.
-        Task result = _tasksService.PrioritizedProjectLoadedInHostAsync(async () =>
+        // prevent spin-off task to have accidental relevance
+        using (_unconfiguredProject.Services.ThreadingPolicy.JoinableTaskContext.SuppressRelevance())
         {
-            using (JoinableCollection.Join())
-            {
-                await WhenInitialized(_tasksService.UnloadCancellationToken);
-            }
-        });
+            // Ensure the project is not considered loaded until our first publication.
+            Task result = _tasksService.PrioritizedProjectLoadedInHostAsync(() => WhenInitialized(_tasksService.UnloadCancellationToken));
 
-        // While we want make sure it's loaded before PrioritizedProjectLoadedInHost,
-        // we don't want to block project factory completion on its load, so fire and forget.
-        _projectFaultHandler.Forget(result, _unconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+            // While we want make sure it's loaded before PrioritizedProjectLoadedInHost,
+            // we don't want to block project factory completion on its load, so fire and forget.
+            _projectFaultHandler.Forget(result, _unconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+        }
     }
 
     protected override Task DisposeCoreAsync(bool initialized)
