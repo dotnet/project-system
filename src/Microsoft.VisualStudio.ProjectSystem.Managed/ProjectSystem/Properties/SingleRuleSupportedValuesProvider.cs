@@ -14,7 +14,7 @@ internal abstract class SingleRuleSupportedValuesProvider : SupportedValuesProvi
 
     private readonly string _ruleName;
 
-    protected sealed override string[] RuleNames => new string[] { _ruleName };
+    protected sealed override string[] RuleNames => [_ruleName];
 
     protected SingleRuleSupportedValuesProvider(ConfiguredProject project, IProjectSubscriptionService subscriptionService, string ruleName, bool useNoneValue = false) : base(project, subscriptionService)
     {

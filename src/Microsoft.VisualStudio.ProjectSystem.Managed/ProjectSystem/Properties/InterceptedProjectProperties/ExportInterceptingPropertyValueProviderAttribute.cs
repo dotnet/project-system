@@ -16,7 +16,7 @@ public sealed class ExportInterceptingPropertyValueProviderAttribute : ExportAtt
     /// class for a single intercepted property.
     /// </summary>
     public ExportInterceptingPropertyValueProviderAttribute(string propertyName, ExportInterceptingPropertyValueProviderFile file)
-        : this(new[] { propertyName }, file)
+        : this([propertyName], file)
     {
     }
 

@@ -25,7 +25,7 @@ public abstract class InterceptingPropertyValueProviderBase : IInterceptingPrope
 
     public virtual Task<bool> IsValueDefinedInContextAsync(string propertyName, IProjectProperties defaultProperties)
     {
-        return IsValueDefinedInContextMSBuildPropertiesAsync(defaultProperties, new[]{ propertyName });
+        return IsValueDefinedInContextMSBuildPropertiesAsync(defaultProperties, [propertyName]);
     }
 
     internal static async Task<bool> IsValueDefinedInContextMSBuildPropertiesAsync(IProjectProperties defaultProperties, string[] msBuildPropertyNames)

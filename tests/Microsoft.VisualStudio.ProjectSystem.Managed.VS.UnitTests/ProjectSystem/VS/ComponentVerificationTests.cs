@@ -101,11 +101,11 @@ public partial class ComponentVerificationTests
     public void CertainExportsMustNotBeMarkedWithDynamicCapabilities(Type type)
     {
         string[] contractsWithFixedCapabilities =
-        {
+        [
             ExportContractNames.VsTypes.ProjectNodeComExtension,
             "Microsoft.VisualStudio.ProjectSystem.ConfiguredProject.AutoLoad",
             "Microsoft.VisualStudio.ProjectSystem.Project.AutoLoad",
-        };
+        ];
 
         var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
@@ -140,12 +140,12 @@ public partial class ComponentVerificationTests
 
         static IEnumerable<string> GetCapabilitiesFromProjectType(string capabilities)
         {
-            return capabilities.Split(new char[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return capabilities.Split([';', ' '], StringSplitOptions.RemoveEmptyEntries);
         }
 
         static IEnumerable<string> GetRawCapabilities(string appliesTo)
         {
-            return appliesTo.Split(new char[] { '&', '|', '(', ')', ' ', '!', }, StringSplitOptions.RemoveEmptyEntries);
+            return appliesTo.Split(['&', '|', '(', ')', ' ', '!',], StringSplitOptions.RemoveEmptyEntries);
         }
     }
 
@@ -361,7 +361,7 @@ public partial class ComponentVerificationTests
     /// </summary>
     private static bool ContainsExpression(string? capability)
     {
-        return capability?.IndexOfAny(new char[] { '&', '|', '!' }) >= 0;
+        return capability?.IndexOfAny(['&', '|', '!']) >= 0;
     }
 
     /// <summary>

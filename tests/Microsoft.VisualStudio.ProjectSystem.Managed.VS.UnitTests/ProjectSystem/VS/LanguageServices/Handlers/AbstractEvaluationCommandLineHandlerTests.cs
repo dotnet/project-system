@@ -119,7 +119,7 @@ public partial class AbstractEvaluationCommandLineHandlerTests
 
         ApplyProjectEvaluation(context, handler, 1, difference, metadata: metadata);
 
-        string[] expectedFiles = new[] { @"C:\Project\B.cs", @"C:\Project\C.cs" };
+        string[] expectedFiles = [@"C:\Project\B.cs", @"C:\Project\C.cs"];
         Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
     }
 

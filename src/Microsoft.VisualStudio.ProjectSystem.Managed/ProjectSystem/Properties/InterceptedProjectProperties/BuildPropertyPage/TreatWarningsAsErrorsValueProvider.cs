@@ -9,7 +9,7 @@ internal sealed class TreatWarningsAsErrorsValueProvider : InterceptingPropertyV
     private const string WarningsNotAsErrorsProperty = "WarningsNotAsErrors";
     private readonly ITemporaryPropertyStorage _temporaryPropertyStorage;
 
-    private static readonly string[] s_msBuildPropertyNames = { WarningsAsErrorsProperty, WarningsNotAsErrorsProperty };
+    private static readonly string[] s_msBuildPropertyNames = [WarningsAsErrorsProperty, WarningsNotAsErrorsProperty];
     
     [ImportingConstructor]
     public TreatWarningsAsErrorsValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)

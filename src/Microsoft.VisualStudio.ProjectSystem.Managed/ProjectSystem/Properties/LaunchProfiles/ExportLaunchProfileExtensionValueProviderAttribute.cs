@@ -16,7 +16,7 @@ public sealed class ExportLaunchProfileExtensionValueProviderAttribute : ExportA
     /// class for a single intercepted property.
     /// </summary>
     public ExportLaunchProfileExtensionValueProviderAttribute(string propertyName, ExportLaunchProfileExtensionValueProviderScope scope)
-        : this(new[] { propertyName }, scope)
+        : this([propertyName], scope)
     {
     }
 

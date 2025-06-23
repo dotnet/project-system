@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input;
 internal class ProjectCommandAttribute : ExportAttribute
 {
     public ProjectCommandAttribute(string group, long commandId)
-        : this(group, new long[] { commandId })
+        : this(group, [commandId])
     {
     }
 

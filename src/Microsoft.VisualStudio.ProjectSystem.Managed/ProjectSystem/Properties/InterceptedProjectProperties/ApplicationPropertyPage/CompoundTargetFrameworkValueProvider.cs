@@ -11,12 +11,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 /// In the case of retrieving the values of those properties, this class looks for the associated properties found in the project's configuration.
 /// </summary>
 [ExportInterceptingPropertyValueProvider(
-    new[]
-    {
+    [
         InterceptedTargetFrameworkProperty,
         TargetPlatformProperty,
         TargetPlatformVersionProperty
-    },
+    ],
     ExportInterceptingPropertyValueProviderFile.ProjectFile)]
 internal class CompoundTargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
 {
@@ -31,7 +30,7 @@ internal class CompoundTargetFrameworkValueProvider : InterceptingPropertyValueP
     private bool? _useWPFProperty;
     private bool? _useWindowsFormsProperty;
     private bool? _useWinUIProperty;
-    private static readonly string[] s_msBuildPropertyNames = { TargetFrameworkProperty, TargetPlatformProperty, TargetPlatformVersionProperty, SupportedOSPlatformVersionProperty };
+    private static readonly string[] s_msBuildPropertyNames = [TargetFrameworkProperty, TargetPlatformProperty, TargetPlatformVersionProperty, SupportedOSPlatformVersionProperty];
     private static readonly Regex s_versionRegex = new(@"^net(?<version>[0-9.]+)$", RegexOptions.ExplicitCapture);
 
     private struct ComplexTargetFramework

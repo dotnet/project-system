@@ -86,11 +86,11 @@ public class CategoryDataProducerTests
 
         var result = CategoryDataProducer.CreateCategoryValues(context, parentEntity, rule, properties);
 
-        Assert.Collection(result, new Action<IEntityValue>[]
-        {
+        Assert.Collection(result,
+        [
             entity => { assertEqual(entity, expectedName: "Alpha", expectedDisplayName: "First category"); },
             entity => { assertEqual(entity, expectedName: "Beta", expectedDisplayName: "Second category"); }
-        });
+        ]);
 
         static void assertEqual(IEntityValue entity, string expectedName, string expectedDisplayName)
         {

@@ -34,7 +34,7 @@ internal sealed class VBDiagnosticSeverityEnumProvider : SupportedValuesProvider
     private const string WarningValue = "Warning";
     private const string ErrorValue = "Error";
 
-    private static readonly string[] s_ruleNames = new[] { TreatWarningsAsErrorsRuleProvider.RuleName };
+    private static readonly string[] s_ruleNames = [TreatWarningsAsErrorsRuleProvider.RuleName];
 
     private static readonly List<IEnumValue> s_warningsAsErrorsOffEnumList = new()
     {

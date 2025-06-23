@@ -19,7 +19,7 @@ internal sealed class ApplicationManifestPathValueProvider : InterceptingPropert
     private readonly UnconfiguredProject _unconfiguredProject;
 
     private const string ApplicationManifestMSBuildProperty = "ApplicationManifest";
-    private static readonly string[] s_msBuildPropertyNames = { ApplicationManifestMSBuildProperty };
+    private static readonly string[] s_msBuildPropertyNames = [ApplicationManifestMSBuildProperty];
     
     [ImportingConstructor]
     public ApplicationManifestPathValueProvider(UnconfiguredProject project)

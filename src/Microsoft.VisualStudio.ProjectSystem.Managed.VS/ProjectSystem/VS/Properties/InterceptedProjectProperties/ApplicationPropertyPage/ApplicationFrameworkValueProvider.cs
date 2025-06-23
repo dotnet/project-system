@@ -8,8 +8,7 @@ using static Microsoft.VisualStudio.ProjectSystem.Properties.PropertyNames;
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
 [ExportInterceptingPropertyValueProvider(
-new[]
-{
+[
     ApplicationFramework,
     EnableVisualStyles,
     SingleInstance,
@@ -19,7 +18,7 @@ new[]
     ShutdownMode,
     SplashScreen,
     MinimumSplashScreenDisplayTime
-},
+],
 ExportInterceptingPropertyValueProviderFile.ProjectFile)]
 [AppliesTo(ProjectCapability.WPF + "|" + ProjectCapability.WindowsForms)]
 internal sealed class ApplicationFrameworkValueProvider : InterceptingPropertyValueProviderBase

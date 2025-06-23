@@ -38,7 +38,7 @@ internal class VisualStudioRefactorNotifyService : IRefactorNotifyService
         refactorNotify.OnBeforeGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
                                                    rgItemsAffected: ids,
                                                    cRQNames: 1,
-                                                   rglpszRQName: new[] { rqName },
+                                                   rglpszRQName: [rqName],
                                                    lpszNewName: newName,
                                                    promptContinueOnFail: 1);
     }
@@ -61,7 +61,7 @@ internal class VisualStudioRefactorNotifyService : IRefactorNotifyService
         refactorNotify.OnGlobalSymbolRenamed(cItemsAffected: (uint)ids.Length,
                                              rgItemsAffected: ids,
                                              cRQNames: 1,
-                                             rglpszRQName: new[] { rqName },
+                                             rglpszRQName: [rqName],
                                              lpszNewName: newName);
     }
 

@@ -27,21 +27,21 @@ public class SupportedValueDataProducerTests
         var properties = PropertiesAvailableStatusFactory.CreateSupportedValuesPropertiesAvailableStatus(includeAllProperties: true);
 
         var parentEntity = IEntityWithIdFactory.Create("ParentKey", "ParentKeyValue");
-        var iproperty = IPropertyFactory.CreateEnum(new[]
-        {
+        var iproperty = IPropertyFactory.CreateEnum(
+        [
             IEnumValueFactory.Create(displayName: "Alpha", name: "a"),
             IEnumValueFactory.Create(displayName: "Beta", name: "b"),
             IEnumValueFactory.Create(displayName: "Gamma", name: "c")
-        });
+        ]);
 
         var result = await SupportedValueDataProducer.CreateSupportedValuesAsync(parentEntity, iproperty, properties);
 
-        Assert.Collection(result, new Action<IEntityValue>[]
-        {
+        Assert.Collection(result,
+        [
             entity => assertEqual(entity, expectedDisplayName: "Alpha", expectedValue: "a"),
             entity => assertEqual(entity, expectedDisplayName: "Beta", expectedValue: "b"),
             entity => assertEqual(entity, expectedDisplayName: "Gamma", expectedValue: "c")
-        });
+        ]);
 
         static void assertEqual(IEntityValue entity, string expectedDisplayName, string expectedValue)
         {

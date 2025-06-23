@@ -104,7 +104,7 @@ public class CSharpLanguageFeaturesProviderTests
 
         Assert.Throws<ArgumentException>("namespaceNames", () =>
         {
-            provider.ConcatNamespaces(new string[0]);
+            provider.ConcatNamespaces([]);
         });
     }
 
@@ -115,7 +115,7 @@ public class CSharpLanguageFeaturesProviderTests
 
         Assert.Throws<ArgumentException>("namespaceNames", () =>
         {
-            provider.ConcatNamespaces(new string[] { null! });
+            provider.ConcatNamespaces([null!]);
         });
     }
 

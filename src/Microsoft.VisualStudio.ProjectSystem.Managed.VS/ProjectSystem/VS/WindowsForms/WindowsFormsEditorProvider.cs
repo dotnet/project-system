@@ -17,13 +17,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms;
 [Order(Order.BeforeDefault)] // Need to run before CPS's version before its deleted
 internal partial class WindowsFormsEditorProvider : IProjectSpecificEditorProvider
 {
-    private static readonly SubTypeDescriptor[] s_subTypeDescriptors = new[]
-    {
+    private static readonly SubTypeDescriptor[] s_subTypeDescriptors =
+    [
         new SubTypeDescriptor("Form",           VSResources.WindowsFormEditor_DisplayName, useDesignerByDefault: true),
         new SubTypeDescriptor("Designer",       VSResources.WindowsFormEditor_DisplayName, useDesignerByDefault: true),
         new SubTypeDescriptor("UserControl",    VSResources.UserControlEditor_DisplayName, useDesignerByDefault: true),
         new SubTypeDescriptor("Component",      VSResources.ComponentEditor_DisplayName,   useDesignerByDefault: false)
-    };
+    ];
 
     private readonly UnconfiguredProject _project;
     private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;

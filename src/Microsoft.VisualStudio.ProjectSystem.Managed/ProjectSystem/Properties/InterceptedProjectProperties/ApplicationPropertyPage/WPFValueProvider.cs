@@ -5,11 +5,10 @@ using Microsoft.VisualStudio.ProjectSystem.WPF;
 namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 
 [ExportInterceptingPropertyValueProvider(
-    new[]
-    {
+    [
         StartupURIPropertyName,
         ShutdownModePropertyName
-    },
+    ],
     ExportInterceptingPropertyValueProviderFile.ProjectFile)]
 [AppliesTo(ProjectCapability.WPF)]
 internal class WPFValueProvider : InterceptingPropertyValueProviderBase

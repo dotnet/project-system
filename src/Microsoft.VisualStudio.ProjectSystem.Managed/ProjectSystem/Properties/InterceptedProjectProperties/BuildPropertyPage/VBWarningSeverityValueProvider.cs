@@ -14,7 +14,7 @@ internal sealed class VBWarningSeverityValueProvider : InterceptingPropertyValue
     internal const string DisableAllValue = "DisableAll";
     internal const string AllAsErrorsValue = "AllAsErrors";
 
-    private static readonly string[] s_msBuildPropertyNames = { WarningSeverityPropertyName, WarningLevelPropertyName, TreatWarningsAsErrorsPropertyName };
+    private static readonly string[] s_msBuildPropertyNames = [WarningSeverityPropertyName, WarningLevelPropertyName, TreatWarningsAsErrorsPropertyName];
     
     public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
     {

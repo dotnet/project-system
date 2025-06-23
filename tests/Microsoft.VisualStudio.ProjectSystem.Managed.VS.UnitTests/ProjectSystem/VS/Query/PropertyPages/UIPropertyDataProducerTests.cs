@@ -99,12 +99,12 @@ public class UIPropertyDataProducerTests
 
         var result = UIPropertyDataProducer.CreateUIPropertyValues(context, parentEntity, cache, QueryProjectPropertiesContext.ProjectFile, rule, properties);
 
-        Assert.Collection(result, new Action<IEntityValue>[]
-        {
+        Assert.Collection(result,
+        [
             entity => { assertEqual(entity, expectedName: "Alpha"); },
             entity => { assertEqual(entity, expectedName: "Beta"); },
             entity => { assertEqual(entity, expectedName: "Gamma"); }
-        });
+        ]);
 
         static void assertEqual(IEntityValue entity, string expectedName)
         {

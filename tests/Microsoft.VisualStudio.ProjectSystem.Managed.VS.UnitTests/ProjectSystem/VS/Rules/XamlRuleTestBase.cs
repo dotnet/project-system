@@ -15,10 +15,10 @@ public abstract class XamlRuleTestBase
     {
         // Not all rules are embedded as manifests so we have to read the xaml files from the file system.
         (string, Type)[] projects =
-        {
+        [
             (Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "Rules"), typeof(RuleExporter)),
             (Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.VS.Managed", "ProjectSystem", "Rules"), typeof(VSRuleExporter))
-        };
+        ];
 
         bool foundDirectory = false;
 

@@ -416,8 +416,8 @@ public class ProjectTreeParserTests
     {
         // Remove the newlines from the start and end of input and expected so that 
         // it makes it easier inside the test to layout the repro.
-        input = input.Trim(new[] { '\n', '\r' });
-        expected = expected.Trim(new[] { '\n', '\r' });
+        input = input.Trim(['\n', '\r']);
+        expected = expected.Trim(['\n', '\r']);
 
         var parser = new ProjectTreeParser(input);
         var writer = new ProjectTreeWriter(parser.Parse(), options | ProjectTreeWriterOptions.Tags);
@@ -429,7 +429,7 @@ public class ProjectTreeParserTests
 
     private static void AssertThrows(string input, ProjectTreeFormatError error)
     {
-        input = input.Trim(new[] { '\n', '\r' });
+        input = input.Trim(['\n', '\r']);
 
         var parser = new ProjectTreeParser(input);
 

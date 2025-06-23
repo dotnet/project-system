@@ -20,6 +20,6 @@ internal static class ILaunchProfileExtensionValueProviderMetadataFactory
 
     public static ILaunchProfileExtensionValueProviderMetadata Create(string propertyName)
     {
-        return Create(new[] { propertyName });
+        return Create([propertyName]);
     }
 }

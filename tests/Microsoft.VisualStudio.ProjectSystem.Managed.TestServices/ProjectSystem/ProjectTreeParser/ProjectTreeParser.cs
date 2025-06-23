@@ -20,7 +20,7 @@ internal partial class ProjectTreeParser
 
     public static IProjectTree Parse(string value)
     {
-        value = value.Trim(new char[] { '\r', '\n' });
+        value = value.Trim(['\r', '\n']);
 
         var parser = new ProjectTreeParser(value);
 

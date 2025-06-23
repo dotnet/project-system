@@ -58,7 +58,7 @@ public class PropertyPageTests
     {
         Assert.Throws<ArgumentNullException>(() =>
         {
-            Move(new RECT[0]);
+            Move([]);
         });
     }
 

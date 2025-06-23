@@ -11,7 +11,7 @@ internal static class IInterceptingPropertyValueProviderMetadataFactory
         var mock = new Mock<IInterceptingPropertyValueProviderMetadata2>();
 
         mock.SetupGet(s => s.PropertyNames)
-            .Returns(new[] { propertyName });
+            .Returns([propertyName]);
 
         return mock.Object;
     }
