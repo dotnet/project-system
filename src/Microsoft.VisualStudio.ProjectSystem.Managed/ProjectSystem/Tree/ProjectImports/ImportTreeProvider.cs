@@ -45,6 +45,7 @@ internal sealed class ImportTreeProvider : ProjectTreeProviderBase, IProjectTree
     private readonly UnconfiguredProject _project;
     private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
     private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
+    private readonly IActiveConfiguredValue<IConfiguredProjectExports> _activeConfiguredProjectExports;
 
     private DisposableBag? _subscriptions;
     private bool _showAllFiles;
@@ -54,12 +55,14 @@ internal sealed class ImportTreeProvider : ProjectTreeProviderBase, IProjectTree
         IProjectThreadingService threadingService,
         UnconfiguredProject project,
         IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-        IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
+        IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
+        IActiveConfiguredValue<IConfiguredProjectExports> activeConfiguredProjectExports)
         : base(threadingService, project, useDisplayOrdering: true)
     {
         _project = project;
         _projectSubscriptionService = projectSubscriptionService;
         _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
+        _activeConfiguredProjectExports = activeConfiguredProjectExports;
     }
 
     public override string? GetPath(IProjectTree node)
@@ -346,9 +349,7 @@ internal sealed class ImportTreeProvider : ProjectTreeProviderBase, IProjectTree
 
     protected override ConfiguredProjectExports GetActiveConfiguredProjectExports(ConfiguredProject newActiveConfiguredProject)
     {
-        Requires.NotNull(newActiveConfiguredProject);
-
-        return GetActiveConfiguredProjectExports<MyConfiguredProjectExports>(newActiveConfiguredProject);
+        return (ConfiguredProjectExports)_activeConfiguredProjectExports.Value;
     }
 
     protected override void Dispose(bool disposing)
@@ -361,13 +362,14 @@ internal sealed class ImportTreeProvider : ProjectTreeProviderBase, IProjectTree
         base.Dispose(disposing);
     }
 
-    [Export]
-    private sealed class MyConfiguredProjectExports : ConfiguredProjectExports
+    [Export(typeof(IConfiguredProjectExports))]
+    [method: ImportingConstructor]
+    private sealed class MyConfiguredProjectExports(ConfiguredProject configuredProject)
+        : ConfiguredProjectExports(configuredProject),
+          IConfiguredProjectExports
     {
-        [ImportingConstructor]
-        public MyConfiguredProjectExports(ConfiguredProject configuredProject)
-            : base(configuredProject)
-        {
-        }
     }
+
+    // NOTE this interface is needed to work around accessiblity issues when making MyConfiguredProjectExports non-private
+    internal interface IConfiguredProjectExports { }
 }
