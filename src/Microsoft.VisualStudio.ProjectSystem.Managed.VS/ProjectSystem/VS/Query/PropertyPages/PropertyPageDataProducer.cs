@@ -107,7 +107,7 @@ internal static class PropertyPageDataProducer
             return createPropertyPageValues();
         }
 
-        return Enumerable.Empty<IEntityValue>();
+        return [];
 
         IEnumerable<IEntityValue> createPropertyPageValues()
         {

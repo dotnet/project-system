@@ -44,7 +44,7 @@ public class DesignTimeInputsCompilerTests : IDisposable
 
         await VerifyCompilation(1, inputs);
 
-        string tempPEDescriptionXml = await _manager.BuildDesignTimeOutputAsync("File1.cs", _outputPath, ImmutableHashSet<string>.Empty);
+        string tempPEDescriptionXml = await _manager.BuildDesignTimeOutputAsync("File1.cs", _outputPath, []);
 
         // This also validates that getting the description didn't force a compile, because the output is up to date
         Assert.Single(_compilationResults);
@@ -80,7 +80,7 @@ public class DesignTimeInputsCompilerTests : IDisposable
         // Remove the output file, should mean that getting the XML forces a compile
         _fileSystem.RemoveFile(Path.Combine(_outputPath, "File1.cs.dll"));
 
-        string tempPEDescriptionXml = await _manager.BuildDesignTimeOutputAsync("File1.cs", _outputPath, ImmutableHashSet<string>.Empty);
+        string tempPEDescriptionXml = await _manager.BuildDesignTimeOutputAsync("File1.cs", _outputPath, []);
 
         // Verify a second compile happened
         Assert.Equal(2, _compilationResults.Count);

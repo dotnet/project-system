@@ -51,7 +51,7 @@ internal static class UIPropertyEditorDataProducer
             return createEditorValues();
         }
 
-        return Enumerable.Empty<IEntityValue>();
+        return [];
 
         IEnumerable<IEntityValue> createEditorValues()
         {

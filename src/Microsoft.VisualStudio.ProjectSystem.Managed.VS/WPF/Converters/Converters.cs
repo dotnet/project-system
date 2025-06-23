@@ -50,7 +50,7 @@ internal static partial class Converters
 {
     private const string DimensionSeparator = " & ";
 
-    public static ImmutableArray<string> ImmutableStringArray => ImmutableArray<string>.Empty;
+    public static ImmutableArray<string> ImmutableStringArray => [];
 
     public static IMultiValueConverter DimensionNames { get; } = new LambdaMultiConverter<ImmutableDictionary<string, string>, ImmutableArray<string>, string>(GetDimensionNames);
 

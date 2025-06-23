@@ -101,7 +101,7 @@ internal partial class PackageRestoreDataSource : ChainedProjectValueDataSourceB
         // Check if out of date to prevent extra restore under some conditions.
         if (!_enabled || e.Value.RestoreInfo is null || IsRestoreDataVersionOutOfDate(e.DataSourceVersions) || IsProjectConfigurationVersionOutOfDate(e.Value.ConfiguredInputs))
         {
-            return Enumerable.Empty<IProjectVersionedValue<RestoreData>>();
+            return [];
         }
 
         bool succeeded = await RestoreCoreAsync(e.Value);

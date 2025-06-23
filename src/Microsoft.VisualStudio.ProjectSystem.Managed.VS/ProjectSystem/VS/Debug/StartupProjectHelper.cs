@@ -62,7 +62,7 @@ internal class StartupProjectHelper : IStartupProjectHelper
             return results.ToImmutableAndFree();
         }
 
-        return ImmutableArray<T>.Empty;
+        return [];
     }
 
     public ImmutableArray<string> GetFullPathsOfStartupProjects()
@@ -86,6 +86,6 @@ internal class StartupProjectHelper : IStartupProjectHelper
             return results.ToImmutableAndFree();
         }
 
-        return ImmutableArray<string>.Empty;
+        return [];
     }
 }

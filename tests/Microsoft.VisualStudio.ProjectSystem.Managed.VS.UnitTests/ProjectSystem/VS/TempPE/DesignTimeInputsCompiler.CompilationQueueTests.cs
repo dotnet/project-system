@@ -11,7 +11,7 @@ public class CompilationQueueTests
     {
         var queue = new CompilationQueue();
 
-        queue.Push(new QueueItem("FileName", ImmutableHashSet<string>.Empty, "", false));
+        queue.Push(new QueueItem("FileName", [], "", false));
 
         Assert.Equal(1, queue.Count);
     }
@@ -21,7 +21,7 @@ public class CompilationQueueTests
     {
         var queue = new CompilationQueue();
 
-        queue.Push(new QueueItem("FileName", ImmutableHashSet<string>.Empty, "", false));
+        queue.Push(new QueueItem("FileName", [], "", false));
 
         queue.Pop();
 
@@ -41,9 +41,9 @@ public class CompilationQueueTests
     {
         var queue = new CompilationQueue();
 
-        queue.Push(new QueueItem("FileName", ImmutableHashSet<string>.Empty, "", false));
+        queue.Push(new QueueItem("FileName", [], "", false));
 
-        queue.Push(new QueueItem("FileName", ImmutableHashSet<string>.Empty, "", true));
+        queue.Push(new QueueItem("FileName", [], "", true));
 
         Assert.Equal(1, queue.Count);
         Assert.True(queue.Pop()?.IgnoreFileWriteTime);
@@ -54,7 +54,7 @@ public class CompilationQueueTests
     {
         var queue = new CompilationQueue();
 
-        queue.Push(new QueueItem("FileName", ImmutableHashSet<string>.Empty, "", false));
+        queue.Push(new QueueItem("FileName", [], "", false));
 
         queue.RemoveSpecific("FileName");
 
@@ -72,7 +72,7 @@ public class CompilationQueueTests
             new DesignTimeInputFileChange("FileName2", false)
         });
 
-        queue.Update(range, ImmutableHashSet.CreateRange(new string[] { "FileName1", "FileName2" }), ImmutableHashSet<string>.Empty, "");
+        queue.Update(range, ImmutableHashSet.CreateRange(new string[] { "FileName1", "FileName2" }), [], "");
 
         Assert.Equal(2, queue.Count);
     }
@@ -88,7 +88,7 @@ public class CompilationQueueTests
             new DesignTimeInputFileChange("FileName1", false)
         });
 
-        queue.Update(range, ImmutableHashSet.CreateRange(new string[] { "FileName1" }), ImmutableHashSet<string>.Empty, "");
+        queue.Update(range, ImmutableHashSet.CreateRange(new string[] { "FileName1" }), [], "");
 
         Assert.Equal(1, queue.Count);
     }
@@ -104,7 +104,7 @@ public class CompilationQueueTests
             new DesignTimeInputFileChange("FileName1", true)
         });
 
-        queue.Update(range, ImmutableHashSet.CreateRange(new string[] { "FileName1" }), ImmutableHashSet<string>.Empty, "");
+        queue.Update(range, ImmutableHashSet.CreateRange(new string[] { "FileName1" }), [], "");
 
         Assert.Equal(1, queue.Count);
         Assert.True(queue.Pop()?.IgnoreFileWriteTime);
@@ -121,7 +121,7 @@ public class CompilationQueueTests
             new DesignTimeInputFileChange("FileName2", false)
         });
 
-        queue.Update(range, ImmutableHashSet.CreateRange(new string[] { "FileName1" }), ImmutableHashSet<string>.Empty, "");
+        queue.Update(range, ImmutableHashSet.CreateRange(new string[] { "FileName1" }), [], "");
 
         Assert.Equal(1, queue.Count);
         Assert.Equal("FileName1", queue.Pop()?.FileName);

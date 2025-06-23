@@ -217,7 +217,7 @@ internal sealed class VBWarningsValueProvider : InterceptingPropertyValueProvide
 
     private static ImmutableSortedSet<int> ParseIdList(string idList)
     {
-        ImmutableSortedSet<int> ids = ImmutableSortedSet<int>.Empty;
+        ImmutableSortedSet<int> ids = [];
         string[] idsAsStrings = idList.Split(s_diagnosticIdSeparators, StringSplitOptions.RemoveEmptyEntries);
         foreach (string idString in idsAsStrings)
         {

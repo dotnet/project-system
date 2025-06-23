@@ -316,7 +316,7 @@ public class LaunchProfilesProjectItemProviderTests
     [Fact]
     public async Task WhenAddingMultipleItems_TheReturnedItemsHaveTheCorrectNames()
     {
-        ImmutableList<ILaunchProfile> newProfiles = ImmutableList<ILaunchProfile>.Empty;
+        ImmutableList<ILaunchProfile> newProfiles = [];
         var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
             addOrUpdateProfileCallback: (p, a) =>
             {

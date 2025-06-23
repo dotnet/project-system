@@ -18,14 +18,14 @@ internal sealed partial class ImplicitlyTriggeredBuildManager :
 #pragma warning restore CS0618 // Type or member is obsolete
 {
     private bool _isImplicitlyTriggeredBuild;
-    private ImmutableArray<string> _startupProjectFullPaths = ImmutableArray<string>.Empty;
+    private ImmutableArray<string> _startupProjectFullPaths = [];
 
     public bool IsImplicitlyTriggeredBuild => _isImplicitlyTriggeredBuild;
 
     public ImmutableArray<string> StartupProjectFullPaths => _startupProjectFullPaths;
 
     public void OnBuildStart()
-        => OnBuildStart(ImmutableArray<string>.Empty);
+        => OnBuildStart([]);
 
     public void OnBuildStart(ImmutableArray<string> startupProjectFullPaths)
     {
@@ -36,6 +36,6 @@ internal sealed partial class ImplicitlyTriggeredBuildManager :
     public void OnBuildEndOrCancel()
     {
         _isImplicitlyTriggeredBuild = false;
-        _startupProjectFullPaths = ImmutableArray<string>.Empty;
+        _startupProjectFullPaths = [];
     }
 }

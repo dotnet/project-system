@@ -11,9 +11,9 @@ public class LaunchProfilesProjectPropertiesTests
     private const string DefaultTestProjectPath = @"C:\alpha\beta\gamma.csproj";
 
     private static readonly ImmutableArray<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> EmptyLaunchProfileExtensionValueProviders =
-        ImmutableArray<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>>.Empty;
+        [];
     private static readonly ImmutableArray<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> EmptyGlobalSettingExtensionValueProviders =
-        ImmutableArray<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>>.Empty;
+        [];
 
     [Fact]
     public void WhenRetrievingItemProperties_TheContextHasTheExpectedValues()

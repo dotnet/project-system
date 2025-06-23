@@ -20,7 +20,7 @@ public class ImplicitlyActiveDimensionProviderTests
     {
         var provider = CreateInstance();
 
-        var result = provider.GetImplicitlyActiveDimensions(Enumerable.Empty<string>());
+        var result = provider.GetImplicitlyActiveDimensions([]);
 
         Assert.Empty(result);
     }

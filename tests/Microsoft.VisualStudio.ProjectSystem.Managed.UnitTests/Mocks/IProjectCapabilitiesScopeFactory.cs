@@ -8,7 +8,7 @@ internal static class IProjectCapabilitiesScopeFactory
 {
     public static IProjectCapabilitiesScope Create(IEnumerable<string>? capabilities = null)
     {
-        capabilities ??= Enumerable.Empty<string>();
+        capabilities ??= [];
         var snapshot = new Mock<IProjectCapabilitiesSnapshot>();
         snapshot.Setup(s => s.IsProjectCapabilityPresent(It.IsAny<string>())).Returns((string capability) => capabilities.Contains(capability));
 

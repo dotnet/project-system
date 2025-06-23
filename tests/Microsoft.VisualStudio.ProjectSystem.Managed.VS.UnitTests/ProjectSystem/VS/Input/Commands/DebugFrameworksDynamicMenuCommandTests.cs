@@ -14,7 +14,7 @@ public class DebugFrameworksDynamicMenuCommandTests
     {
         var startupHelper = new Mock<IStartupProjectHelper>();
         startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                     .Returns(ImmutableArray<IActiveDebugFrameworkServices>.Empty);
+                     .Returns([]);
 
         var command = CreateInstance(startupHelper.Object);
         Assert.False(command.ExecCommand(0, EventArgs.Empty));
@@ -85,7 +85,7 @@ public class DebugFrameworksDynamicMenuCommandTests
     {
         var startupHelper = new Mock<IStartupProjectHelper>();
         startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                     .Returns(ImmutableArray<IActiveDebugFrameworkServices>.Empty);
+                     .Returns([]);
 
         var command = CreateInstance(startupHelper.Object);
         Assert.False(command.QueryStatusCommand(0, EventArgs.Empty));

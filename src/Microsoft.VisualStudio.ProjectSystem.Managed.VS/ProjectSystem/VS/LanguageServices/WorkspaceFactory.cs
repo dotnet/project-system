@@ -211,7 +211,7 @@ internal class WorkspaceFactory : IWorkspaceFactory
                         bufferedBuilds.Add(input);
 
                         // Return an empty enumerable. We don't yet want to produce any outputs.
-                        return Enumerable.Empty<IProjectVersionedValue<WorkspaceUpdate>>();
+                        return [];
                     }
                     else
                     {

@@ -59,7 +59,7 @@ internal class LaunchProfileTypeFromProjectDataProducer : QueryDataFromProviderS
             return createLaunchProfileTypeValues();
         }
 
-        return Enumerable.Empty<IEntityValue>();
+        return [];
 
         IEnumerable<IEntityValue> createLaunchProfileTypeValues()
         {

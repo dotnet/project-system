@@ -43,7 +43,7 @@ public class ImplicitlyTriggeredDebugBuildManagerTests
     [Fact]
     public async Task StartupProjectsArePassedThrough()
     {
-        ImmutableArray<string> startupProjectPaths = ImmutableArray<string>.Empty;
+        ImmutableArray<string> startupProjectPaths = [];
         Action<ImmutableArray<string>> onImplicitBuildStartWithStartPaths = paths => startupProjectPaths = paths;
 
         var buildManager = await CreateInitializedInstanceAsync(
@@ -82,7 +82,7 @@ public class ImplicitlyTriggeredDebugBuildManagerTests
             IProjectThreadingServiceFactory.Create(),
             solutionBuildManager,
             IImplicitlyTriggeredBuildManagerFactory.Create(onImplicitBuildStart, onImplicitBuildEndOrCancel, onImplicitBuildStartWithStartupPaths),
-            IStartupProjectHelperFactory.Create(startupProjectFullPaths ?? ImmutableArray<string>.Empty));
+            IStartupProjectHelperFactory.Create(startupProjectFullPaths ?? []));
         
         await instance.LoadAsync();
 

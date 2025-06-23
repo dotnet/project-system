@@ -130,7 +130,7 @@ internal class LaunchProfileProjectProperties : IProjectProperties, IRuleAwarePr
         ILaunchProfile? profile = snapshot.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, _context.ItemName));
         if (profile is null)
         {
-            return Enumerable.Empty<string>();
+            return [];
         }
         ImmutableDictionary<string, object> globalSettings = snapshot.GlobalSettings;
 

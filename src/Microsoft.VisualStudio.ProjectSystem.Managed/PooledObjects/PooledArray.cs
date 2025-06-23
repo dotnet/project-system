@@ -170,7 +170,7 @@ internal sealed partial class PooledArray<T> : IReadOnlyCollection<T>, IReadOnly
     {
         if (Count == 0)
         {
-            return ImmutableArray<U>.Empty;
+            return [];
         }
 
         var tmp = PooledArray<U>.GetInstance(Count);

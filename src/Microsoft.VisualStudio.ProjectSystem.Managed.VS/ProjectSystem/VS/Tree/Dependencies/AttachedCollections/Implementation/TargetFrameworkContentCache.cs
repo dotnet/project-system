@@ -26,7 +26,7 @@ internal sealed class TargetFrameworkContentCache : ITargetFrameworkContentCache
             }
             catch
             {
-                return ImmutableArray<FrameworkReferenceAssemblyItem>.Empty;
+                return [];
             }
 
             ImmutableArray<FrameworkReferenceAssemblyItem>.Builder results = ImmutableArray.CreateBuilder<FrameworkReferenceAssemblyItem>();

@@ -37,7 +37,7 @@ internal static class SupportedValueDataProducer
             return createSupportedValues(enumValues);
         }
 
-        return Enumerable.Empty<IEntityValue>();
+        return [];
 
         IEnumerable<IEntityValue> createSupportedValues(ReadOnlyCollection<ProjectSystem.Properties.IEnumValue> enumValues)
         {

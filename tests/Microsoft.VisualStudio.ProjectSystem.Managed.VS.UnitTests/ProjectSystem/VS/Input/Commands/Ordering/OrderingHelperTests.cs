@@ -435,7 +435,7 @@ public class OrderingHelperTests
 
         var project = new Project(projectRootElement);
 
-        var elements = OrderingHelper.GetItemElements(project, tree.Children[0], ImmutableArray<string>.Empty);
+        var elements = OrderingHelper.GetItemElements(project, tree.Children[0], []);
 
         Assert.True(OrderingHelper.TryMoveElementsAbove(project, elements, tree.Children[2]));
         Assert.True(project.IsDirty);
@@ -488,7 +488,7 @@ public class OrderingHelperTests
 
         var project = new Project(projectRootElement);
 
-        var elements = OrderingHelper.GetItemElements(project, tree.Children[0], ImmutableArray<string>.Empty);
+        var elements = OrderingHelper.GetItemElements(project, tree.Children[0], []);
 
         Assert.True(OrderingHelper.TryMoveElementsBelow(project, elements, tree.Children[2]));
         Assert.True(project.IsDirty);
@@ -551,7 +551,7 @@ public class OrderingHelperTests
 
         var project = new Project(projectRootElement);
 
-        var elements = OrderingHelper.GetItemElements(project, updatedTree.Children[2], ImmutableArray<string>.Empty);
+        var elements = OrderingHelper.GetItemElements(project, updatedTree.Children[2], []);
 
         Assert.True(OrderingHelper.TryMoveElementsToTop(project, elements, tree), "TryMoveElementsToTop returned false.");
         Assert.True(project.IsDirty);
@@ -618,8 +618,8 @@ public class OrderingHelperTests
         var project = new Project(projectRootElement);
 
         var elements =
-            OrderingHelper.GetItemElements(project, updatedTree.Children[2], ImmutableArray<string>.Empty)
-            .AddRange(OrderingHelper.GetItemElements(project, updatedTree.Children[3], ImmutableArray<string>.Empty));
+            OrderingHelper.GetItemElements(project, updatedTree.Children[2], [])
+            .AddRange(OrderingHelper.GetItemElements(project, updatedTree.Children[3], []));
 
         Assert.True(OrderingHelper.TryMoveElementsToTop(project, elements, tree), "TryMoveElementsToTop returned false.");
         Assert.True(project.IsDirty);
@@ -691,8 +691,8 @@ public class OrderingHelperTests
         var project = new Project(projectRootElement);
 
         var elements =
-            OrderingHelper.GetItemElements(project, updatedTree.Children[2].Children[0].Children[0], ImmutableArray<string>.Empty)
-            .AddRange(OrderingHelper.GetItemElements(project, updatedTree.Children[2].Children[0].Children[1], ImmutableArray<string>.Empty));
+            OrderingHelper.GetItemElements(project, updatedTree.Children[2].Children[0].Children[0], [])
+            .AddRange(OrderingHelper.GetItemElements(project, updatedTree.Children[2].Children[0].Children[1], []));
 
         Assert.True(OrderingHelper.TryMoveElementsToTop(project, elements, tree), "TryMoveElementsToTop returned false.");
         Assert.True(project.IsDirty);
@@ -767,8 +767,8 @@ public class OrderingHelperTests
         var project = CreateProjectWithImport(projectRootElement, projectImportElement, tempPath, testPropsFile);
 
         var elements =
-            OrderingHelper.GetItemElements(project, updatedTree.Children[0], ImmutableArray<string>.Empty)
-            .AddRange(OrderingHelper.GetItemElements(project, updatedTree.Children[2], ImmutableArray<string>.Empty));
+            OrderingHelper.GetItemElements(project, updatedTree.Children[0], [])
+            .AddRange(OrderingHelper.GetItemElements(project, updatedTree.Children[2], []));
 
         Assert.True(OrderingHelper.TryMoveElementsToTop(project, elements, tree), "TryMoveElementsToTop returned false.");
         Assert.True(project.IsDirty);
