@@ -247,13 +247,11 @@ internal class LaunchProfileProjectItemProvider : IProjectItemProvider
     private class ProjectItem : IProjectItem
     {
         private readonly string _name;
-        private readonly string _projectFilePath;
         private readonly LaunchProfileProjectItemProvider _provider;
 
         public ProjectItem(string name, string projectFilePath, LaunchProfileProjectItemProvider provider)
         {
             _name = name;
-            _projectFilePath = projectFilePath;
             _provider = provider;
 
             PropertiesContext = new ProjectPropertiesContext(name, projectFilePath);
