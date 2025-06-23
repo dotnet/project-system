@@ -494,16 +494,11 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
     /// A private implementation of <see cref="IProjectTreeActionHandlerContext"/> for use with
     /// <see cref="IProjectTreeActionHandler"/> exports.
     /// </summary>
-    private sealed class ProjectDependencyTreeRemovalActionHandlerContext : IProjectTreeActionHandlerContext
+    private sealed class ProjectDependencyTreeRemovalActionHandlerContext(IProjectTreeProvider treeProvider) : IProjectTreeActionHandlerContext
     {
-        public IProjectTreeProvider TreeProvider { get; }
+        public IProjectTreeProvider TreeProvider { get; } = treeProvider;
 
         public IProjectTreeActionHandler SuccessorHandlerDelegator => throw new NotImplementedException();
-
-        public ProjectDependencyTreeRemovalActionHandlerContext(IProjectTreeProvider treeProvider)
-        {
-            TreeProvider = treeProvider;
-        }
     }
 
     // NOTE this interface is needed to work around accessiblity issues when making MyConfiguredProjectExports non-private
