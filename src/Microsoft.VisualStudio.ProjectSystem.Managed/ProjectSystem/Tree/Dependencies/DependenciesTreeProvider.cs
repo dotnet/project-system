@@ -52,6 +52,9 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
     private readonly IProjectAccessor _projectAccessor;
     private readonly TaskDelayScheduler _debounce;
 
+    // NOTE we use a property import here as importing this via the constructor creates a loop between
+    // DependenciesTreeProvider and DependenciesTreeBuilder. A property import allows MEF to break that
+    // circular dependency.
     [Import]
     private DependenciesTreeBuilder TreeBuilder { get; set; } = null!;
 
