@@ -250,7 +250,7 @@ internal class ProjectLaunchTargetsProvider :
                 _outputTypeChecker,
                 validateSettings);
 
-            if (runnableProjectInfo == null)
+            if (runnableProjectInfo is null)
             {
                 return null;
             }

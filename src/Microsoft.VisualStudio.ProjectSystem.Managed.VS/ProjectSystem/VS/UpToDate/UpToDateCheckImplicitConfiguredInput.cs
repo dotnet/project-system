@@ -441,7 +441,7 @@ internal sealed class UpToDateCheckImplicitConfiguredInput
 
         DateTime? lastItemsChangedAtUtc = LastItemsChangedAtUtc;
 
-        if (itemHash != ItemHash && ItemHash != null)
+        if (itemHash != ItemHash && ItemHash is not null)
         {
             // The set of items has changed.
             // For the case that the project loaded and no hash was available, do not touch lastItemsChangedAtUtc.

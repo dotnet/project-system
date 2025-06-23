@@ -90,13 +90,13 @@ public abstract class ProjectLayoutTestBase : IntegrationTestBase
                 thisSame = false;
             }
 
-            if (actual is not null && expect?.Icon != null && !AssertExtensions.AreEqual(expect.Icon.Value, actual.ExpandedIconMoniker))
+            if (actual is not null && expect?.Icon is not null && !AssertExtensions.AreEqual(expect.Icon.Value, actual.ExpandedIconMoniker))
             {
                 same = false;
                 thisSame = false;
             }
 
-            var actualIcon = actual?.ExpandedIconMoniker == null
+            var actualIcon = actual?.ExpandedIconMoniker is null
                 ? "null"
                 : ImageMonikerDebuggerDisplay.FromImageMoniker(actual.ExpandedIconMoniker.Value.ToImageMoniker());
 
@@ -106,7 +106,7 @@ public abstract class ProjectLayoutTestBase : IntegrationTestBase
                     .Append(' ', depth * 4)
                     .Append(expect.Text ?? actual!.Name)
                     .Append(' ')
-                    .AppendLine(expect.Icon != null
+                    .AppendLine(expect.Icon is not null
                         ? ImageMonikerDebuggerDisplay.FromImageMoniker(expect.Icon.Value)
                         : actualIcon);
             }

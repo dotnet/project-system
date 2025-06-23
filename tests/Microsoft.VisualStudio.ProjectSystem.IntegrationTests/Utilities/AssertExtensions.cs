@@ -11,7 +11,7 @@ internal static class AssertExtensions
 {
     public static void AreEqual(this Assert assert, ImageMoniker expected, ExportableImageMoniker? actual)
     {
-        if (actual == null)
+        if (actual is null)
         {
             throw new AssertFailedException($"ImageMoniker did not match.{Environment.NewLine}Expected: {S(expected)}{Environment.NewLine}Actual: null");
         }
@@ -33,7 +33,7 @@ internal static class AssertExtensions
 
     public static bool AreEqual(ImageMoniker expected, ExportableImageMoniker? actual)
     {
-        if (actual == null)
+        if (actual is null)
         {
             return false;
         }
