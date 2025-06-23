@@ -50,7 +50,7 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
     private readonly IActiveConfiguredValue<IConfiguredProjectExports> _activeConfiguredProjectExports;
     private readonly CancellationSeries _treeUpdateCancellationSeries;
     private readonly IProjectAccessor _projectAccessor;
-    private readonly ITaskDelayScheduler _debounce;
+    private readonly TaskDelayScheduler _debounce;
 
     [Import]
     private DependenciesTreeBuilder TreeBuilder { get; set; } = null!;
