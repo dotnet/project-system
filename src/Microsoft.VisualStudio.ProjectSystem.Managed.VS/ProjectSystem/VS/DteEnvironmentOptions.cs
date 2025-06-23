@@ -36,9 +36,6 @@ internal class DteEnvironmentOptions : IEnvironmentOptions
     {
         EnvDTE.Properties? properties = _dte.Value.get_Properties(category, page);
 
-        if (properties is not null)
-        {
-            properties.Item(option).Value = newValue;
-        }
+        properties?.Item(option).Value = newValue;
     }
 }
