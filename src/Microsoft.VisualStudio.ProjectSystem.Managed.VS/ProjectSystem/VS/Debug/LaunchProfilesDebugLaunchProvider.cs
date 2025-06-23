@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
@@ -13,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 /// Applies to projects having the <see cref="ProjectCapability.LaunchProfiles"/> capability.
 /// </remarks>
 [ExportDebugger(ProjectDebugger.SchemaName)]
-[Export(typeof(IInternalDebugLaunchProvider))]
+[Export(typeof(IProjectHotReloadLaunchProvider))]
 [AppliesTo(ProjectCapability.LaunchProfiles)]
-internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider, IStartupProjectProvider, IInternalDebugLaunchProvider
+internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider, IStartupProjectProvider, IProjectHotReloadLaunchProvider, IDebugLaunchProvider
 {
     private readonly IVsService<IVsDebuggerLaunchAsync> _vsDebuggerService;
     // Launch providers to enforce requirements for debuggable projects

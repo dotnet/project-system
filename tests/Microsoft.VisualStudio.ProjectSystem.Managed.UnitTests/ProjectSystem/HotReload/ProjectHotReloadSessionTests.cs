@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.Debugger.Contracts.EditAndContinue;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
@@ -334,7 +335,7 @@ public class ProjectHotReloadSessionTests
 
         hotReloadOutputService.Verify(
             service => service.WriteLine(
-                It.Is<HotReloadLogMessage>(m => m.Message == VSResources.HotReloadStopSession),
+                It.Is<HotReloadLogMessage>(m => m.Message == Microsoft.VisualStudio.Resources.HotReloadStopSession),
                 It.IsAny<CancellationToken>()),
             Times.Once);
     }
@@ -488,7 +489,7 @@ public class ProjectHotReloadSessionTests
         hotReloadOutputService.Verify(
             service => service.WriteLine(
                 It.Is<HotReloadLogMessage>(m =>
-                    m.Message == VSResources.HotReloadErrorsInApplication &&
+                    m.Message == Resources.HotReloadErrorsInApplication &&
                     m.ErrorLevel == HotReloadDiagnosticErrorLevel.Error),
                 It.IsAny<CancellationToken>()),
             Times.Once);
@@ -525,7 +526,7 @@ public class ProjectHotReloadSessionTests
 
         hotReloadOutputService.Verify(
             service => service.WriteLine(
-                It.Is<HotReloadLogMessage>(m => m.Message == VSResources.HotReloadStoppingApplication),
+                It.Is<HotReloadLogMessage>(m => m.Message == Resources.HotReloadStoppingApplication),
                 It.IsAny<CancellationToken>()),
             Times.Once);
     }
@@ -604,6 +605,9 @@ public class ProjectHotReloadSessionTests
             c.StopProjectAsync(It.IsAny<CancellationToken>()) == Task.FromResult(true) &&
             c.OnAfterChangesAppliedAsync(It.IsAny<CancellationToken>()) == Task.CompletedTask);
 
+        var buildManager = new Mock<IProjectHotReloadBuildManager>().Object;
+        var launchProvider = new Mock<IProjectHotReloadLaunchProvider>().Object;
+
         return new ProjectHotReloadSession(
             name,
             variant,
@@ -612,6 +616,8 @@ public class ProjectHotReloadSessionTests
             hotReloadOutputService,
             deltaApplierCreator,
             callback,
+            buildManager,
+            launchProvider,
             sessionManager,
             configuredProject,
             launchProfile,

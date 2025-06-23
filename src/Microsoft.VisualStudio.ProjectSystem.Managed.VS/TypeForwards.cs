@@ -12,4 +12,10 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(destination: typeof(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider))]
 [assembly: TypeForwardedTo(destination: typeof(Microsoft.VisualStudio.ProjectSystem.VS.Tree.IFileIconProvider))]
 
+[assembly: TypeForwardedTo(typeof(Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent))]
+[assembly: TypeForwardedTo(typeof(Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadNotificationService))]
+[assembly: TypeForwardedTo(typeof(Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession))]
+[assembly: TypeForwardedTo(typeof(Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback))]
+[assembly: TypeForwardedTo(typeof(Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadUpdateApplier))]
+
 #pragma warning restore RS0016
