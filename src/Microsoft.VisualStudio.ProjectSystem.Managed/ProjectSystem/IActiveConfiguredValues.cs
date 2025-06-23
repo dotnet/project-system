@@ -12,8 +12,5 @@ internal interface IActiveConfiguredValues<T>
     /// <summary>
     ///     Gets the applicable values from the active <see cref="ConfiguredProject"/>.
     /// </summary>
-    public IEnumerable<Lazy<T>> Values
-    {
-        get;
-    }
+    IEnumerable<Lazy<T>> Values { get; }
 }
