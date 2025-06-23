@@ -47,6 +47,7 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
     private readonly OrderPrecedenceImportCollection<IProjectTreeActionHandler> _removalActionHandlers;
 
     private readonly DependenciesSnapshotProvider _dependenciesSnapshotProvider;
+    private readonly IActiveConfiguredValue<IConfiguredProjectExports> _activeConfiguredProjectExports;
     private readonly CancellationSeries _treeUpdateCancellationSeries;
     private readonly IProjectAccessor _projectAccessor;
     private readonly ITaskDelayScheduler _debounce;
@@ -68,11 +69,13 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
         IProjectThreadingService threadingService,
         IUnconfiguredProjectTasksService tasksService,
         IProjectAccessor projectAccessor,
-        DependenciesSnapshotProvider dependenciesSnapshotProvider)
+        DependenciesSnapshotProvider dependenciesSnapshotProvider,
+        IActiveConfiguredValue<IConfiguredProjectExports> activeConfiguredProjectExports)
         : base(threadingService, unconfiguredProject)
     {
         _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
         _projectAccessor = projectAccessor;
+        _activeConfiguredProjectExports = activeConfiguredProjectExports;
 
         _removalActionHandlers = new OrderPrecedenceImportCollection<IProjectTreeActionHandler>(
             ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
@@ -377,7 +380,7 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
 
     protected override ConfiguredProjectExports GetActiveConfiguredProjectExports(ConfiguredProject newActiveConfiguredProject)
     {
-        return GetActiveConfiguredProjectExports<MyConfiguredProjectExports>(newActiveConfiguredProject);
+        return (ConfiguredProjectExports)_activeConfiguredProjectExports.Value;
     }
 
     #region ITreeConstruction
@@ -479,14 +482,12 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
     /// <summary>
     /// Describes services collected from the active configured project.
     /// </summary>
-    [Export]
-    private sealed class MyConfiguredProjectExports : ConfiguredProjectExports
+    [Export(typeof(IConfiguredProjectExports))]
+    [method: ImportingConstructor]
+    private sealed class MyConfiguredProjectExports(ConfiguredProject configuredProject)
+        : ConfiguredProjectExports(configuredProject),
+          IConfiguredProjectExports
     {
-        [ImportingConstructor]
-        public MyConfiguredProjectExports(ConfiguredProject configuredProject)
-            : base(configuredProject)
-        {
-        }
     }
 
     /// <summary>
@@ -504,4 +505,7 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
             TreeProvider = treeProvider;
         }
     }
+
+    // NOTE this interface is needed to work around accessiblity issues when making MyConfiguredProjectExports non-private
+    internal interface IConfiguredProjectExports { }
 }
