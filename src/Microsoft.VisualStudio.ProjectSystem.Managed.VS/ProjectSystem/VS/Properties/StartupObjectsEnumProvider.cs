@@ -65,7 +65,7 @@ internal sealed class StartupObjectsEnumProvider([Import(typeof(VisualStudioWork
 
             IEntryPointFinderService? entryPointFinderService = project.Services.GetService<IEntryPointFinderService>();
 
-            IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation.GlobalNamespace, searchForEntryPointsInFormsOnly);
+            IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation, searchForEntryPointsInFormsOnly);
 
             if (entryPoints is not null)
             {

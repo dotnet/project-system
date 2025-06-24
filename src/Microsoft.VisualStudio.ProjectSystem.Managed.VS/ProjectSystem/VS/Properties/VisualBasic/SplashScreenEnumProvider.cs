@@ -62,7 +62,7 @@ internal sealed class SplashScreenEnumProvider([Import(typeof(VisualStudioWorksp
 
             IEntryPointFinderService? entryPointFinderService = project.Services.GetService<IEntryPointFinderService>();
 
-            IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation.GlobalNamespace, searchForEntryPointsInFormsOnly);
+            IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation, searchForEntryPointsInFormsOnly);
 
             if (entryPoints is not null)
             {
