@@ -230,7 +230,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
             _commonProjectServices.ThreadingService,
             _projectServices.ProjectAsynchronousTasks.UnloadCancellationToken);
 
-
         // establish the file watcher. We don't need wait this, because files can be changed in the system anyway, so blocking our process
         // doesn't provide real benefit. It is of course possible that the file is changed before the watcher is established. To eliminate this
         // gap, we can recheck file after the watcher is established. I will skip this for now.
