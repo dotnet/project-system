@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 [ExportDynamicEnumValuesProvider("StartupObjectsEnumProvider")]
 [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
 [method: ImportingConstructor]
-internal class StartupObjectsEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject project) : IDynamicEnumValuesProvider
+internal sealed class StartupObjectsEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject project) : IDynamicEnumValuesProvider
 {
     public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
     {
@@ -35,57 +35,57 @@ internal class StartupObjectsEnumProvider([Import(typeof(VisualStudioWorkspace))
 
         return Task.FromResult<IDynamicEnumValuesGenerator>(new StartupObjectsEnumGenerator(workspace, project, includeEmptyValue, searchForEntryPointsInFormsOnly));
     }
-}
 
-internal class StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly) : IDynamicEnumValuesGenerator
-{
-    public bool AllowCustomValues => true;
-
-    public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
+    private sealed class StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly) : IDynamicEnumValuesGenerator
     {
-        Project? project = workspace.CurrentSolution.Projects.FirstOrDefault(p => PathHelper.IsSamePath(p.FilePath!, unconfiguredProject.FullPath));
+        public bool AllowCustomValues => true;
 
-        if (project is null)
+        public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
-            return [];
-        }
+            Project? project = workspace.CurrentSolution.Projects.FirstOrDefault(p => PathHelper.IsSamePath(p.FilePath!, unconfiguredProject.FullPath));
 
-        Compilation? compilation = await project.GetCompilationAsync();
-
-        if (compilation is null)
-        {
-            // Project does not support compilations
-            return [];
-        }
-
-        List<IEnumValue> enumValues = [];
-        if (includeEmptyValue)
-        {
-            enumValues.Add(new PageEnumValue(new EnumValue { Name = string.Empty, DisplayName = VSResources.StartupObjectNotSet }));
-        }
-
-        IEntryPointFinderService? entryPointFinderService = project.Services.GetService<IEntryPointFinderService>();
-
-        IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation.GlobalNamespace, searchForEntryPointsInFormsOnly);
-
-        if (entryPoints is not null)
-        {
-            enumValues.AddRange(entryPoints.Select(ep =>
+            if (project is null)
             {
-                string name = ep.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
-                return new PageEnumValue(new EnumValue { Name = name, DisplayName = name });
-            }));
+                return [];
+            }
+
+            Compilation? compilation = await project.GetCompilationAsync();
+
+            if (compilation is null)
+            {
+                // Project does not support compilations
+                return [];
+            }
+
+            List<IEnumValue> enumValues = [];
+            if (includeEmptyValue)
+            {
+                enumValues.Add(new PageEnumValue(new EnumValue { Name = string.Empty, DisplayName = VSResources.StartupObjectNotSet }));
+            }
+
+            IEntryPointFinderService? entryPointFinderService = project.Services.GetService<IEntryPointFinderService>();
+
+            IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation.GlobalNamespace, searchForEntryPointsInFormsOnly);
+
+            if (entryPoints is not null)
+            {
+                enumValues.AddRange(entryPoints.Select(ep =>
+                {
+                    string name = ep.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
+                    return new PageEnumValue(new EnumValue { Name = name, DisplayName = name });
+                }));
+            }
+
+            // Remove My.MyApplication entry if any.
+            enumValues.RemoveAll(ep => ep.Name.Contains("My.MyApplication"));
+
+            return enumValues;
         }
 
-        // Remove My.MyApplication entry if any.
-        enumValues.RemoveAll(ep => ep.Name.Contains("My.MyApplication"));
-
-        return enumValues;
-    }
-
-    public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
-    {
-        var value = new PageEnumValue(new EnumValue { Name = userSuppliedValue, DisplayName = userSuppliedValue });
-        return Task.FromResult<IEnumValue?>(value);
+        public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
+        {
+            var value = new PageEnumValue(new EnumValue { Name = userSuppliedValue, DisplayName = userSuppliedValue });
+            return Task.FromResult<IEnumValue?>(value);
+        }
     }
 }

@@ -5,14 +5,16 @@ using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Project = Microsoft.CodeAnalysis.Project;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic;
 
+/// <summary>
+/// Returns the set of splash screen forms in a project.
+/// </summary>
 [ExportDynamicEnumValuesProvider("SplashScreenEnumProvider")]
 [AppliesTo(ProjectCapability.VisualBasic)]
 [method: ImportingConstructor]
-internal class SplashScreenEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject unconfiguredProject, ProjectProperties propertiesProvider) : IDynamicEnumValuesProvider
+internal sealed class SplashScreenEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject unconfiguredProject, ProjectProperties propertiesProvider) : IDynamicEnumValuesProvider
 {
     public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
     {
@@ -27,10 +29,10 @@ internal class SplashScreenEnumProvider([Import(typeof(VisualStudioWorkspace))] 
             && bool.TryParse(pair.Value, out bool optionValue)
             && optionValue) ?? false;
 
-        return Task.FromResult<IDynamicEnumValuesGenerator>(new SplashScreenEnumGenerator(workspace, unconfiguredProject, propertiesProvider, includeEmptyValue, true));
+        return Task.FromResult<IDynamicEnumValuesGenerator>(new SplashScreenEnumGenerator(workspace, unconfiguredProject, propertiesProvider, includeEmptyValue, searchForEntryPointsInFormsOnly: true));
     }
 
-    internal class SplashScreenEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject, ProjectProperties properties, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly) : IDynamicEnumValuesGenerator
+    private sealed class SplashScreenEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject, ProjectProperties properties, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly) : IDynamicEnumValuesGenerator
     {
         public bool AllowCustomValues => false;
 
@@ -55,7 +57,7 @@ internal class SplashScreenEnumProvider([Import(typeof(VisualStudioWorkspace))] 
 
             if (includeEmptyValue)
             {
-                enumValues.Add(new PageEnumValue(new EnumValue { Name = string.Empty, DisplayName = VSResources.StartupObjectNotSet }));
+                enumValues.Add(new PageEnumValue(new EnumValue { Name = "", DisplayName = VSResources.StartupObjectNotSet }));
             }
 
             IEntryPointFinderService? entryPointFinderService = project.Services.GetService<IEntryPointFinderService>();
