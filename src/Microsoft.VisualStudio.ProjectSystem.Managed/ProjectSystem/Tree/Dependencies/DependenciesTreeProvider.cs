@@ -47,10 +47,14 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
     private readonly OrderPrecedenceImportCollection<IProjectTreeActionHandler> _removalActionHandlers;
 
     private readonly DependenciesSnapshotProvider _dependenciesSnapshotProvider;
+    private readonly IActiveConfiguredValue<IConfiguredProjectExports> _activeConfiguredProjectExports;
     private readonly CancellationSeries _treeUpdateCancellationSeries;
     private readonly IProjectAccessor _projectAccessor;
-    private readonly ITaskDelayScheduler _debounce;
+    private readonly TaskDelayScheduler _debounce;
 
+    // NOTE we use a property import here as importing this via the constructor creates a loop between
+    // DependenciesTreeProvider and DependenciesTreeBuilder. A property import allows MEF to break that
+    // circular dependency.
     [Import]
     private DependenciesTreeBuilder TreeBuilder { get; set; } = null!;
 
@@ -68,11 +72,13 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
         IProjectThreadingService threadingService,
         IUnconfiguredProjectTasksService tasksService,
         IProjectAccessor projectAccessor,
-        DependenciesSnapshotProvider dependenciesSnapshotProvider)
+        DependenciesSnapshotProvider dependenciesSnapshotProvider,
+        IActiveConfiguredValue<IConfiguredProjectExports> activeConfiguredProjectExports)
         : base(threadingService, unconfiguredProject)
     {
         _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
         _projectAccessor = projectAccessor;
+        _activeConfiguredProjectExports = activeConfiguredProjectExports;
 
         _removalActionHandlers = new OrderPrecedenceImportCollection<IProjectTreeActionHandler>(
             ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
@@ -377,7 +383,7 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
 
     protected override ConfiguredProjectExports GetActiveConfiguredProjectExports(ConfiguredProject newActiveConfiguredProject)
     {
-        return GetActiveConfiguredProjectExports<MyConfiguredProjectExports>(newActiveConfiguredProject);
+        return (ConfiguredProjectExports)_activeConfiguredProjectExports.Value;
     }
 
     #region ITreeConstruction
@@ -479,29 +485,25 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
     /// <summary>
     /// Describes services collected from the active configured project.
     /// </summary>
-    [Export]
-    private sealed class MyConfiguredProjectExports : ConfiguredProjectExports
+    [Export(typeof(IConfiguredProjectExports))]
+    [method: ImportingConstructor]
+    private sealed class MyConfiguredProjectExports(ConfiguredProject configuredProject)
+        : ConfiguredProjectExports(configuredProject),
+          IConfiguredProjectExports
     {
-        [ImportingConstructor]
-        public MyConfiguredProjectExports(ConfiguredProject configuredProject)
-            : base(configuredProject)
-        {
-        }
     }
 
     /// <summary>
     /// A private implementation of <see cref="IProjectTreeActionHandlerContext"/> for use with
     /// <see cref="IProjectTreeActionHandler"/> exports.
     /// </summary>
-    private sealed class ProjectDependencyTreeRemovalActionHandlerContext : IProjectTreeActionHandlerContext
+    private sealed class ProjectDependencyTreeRemovalActionHandlerContext(IProjectTreeProvider treeProvider) : IProjectTreeActionHandlerContext
     {
-        public IProjectTreeProvider TreeProvider { get; }
+        public IProjectTreeProvider TreeProvider { get; } = treeProvider;
 
         public IProjectTreeActionHandler SuccessorHandlerDelegator => throw new NotImplementedException();
-
-        public ProjectDependencyTreeRemovalActionHandlerContext(IProjectTreeProvider treeProvider)
-        {
-            TreeProvider = treeProvider;
-        }
     }
+
+    // NOTE this interface is needed to work around accessiblity issues when making MyConfiguredProjectExports non-private
+    internal interface IConfiguredProjectExports { }
 }
