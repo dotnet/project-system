@@ -12,18 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 /// </summary>
 [ExportDynamicEnumValuesProvider("StartupObjectsEnumProvider")]
 [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-internal class StartupObjectsEnumProvider : IDynamicEnumValuesProvider
+[method: ImportingConstructor]
+internal class StartupObjectsEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject project) : IDynamicEnumValuesProvider
 {
-    private readonly Workspace _workspace;
-    private readonly UnconfiguredProject _unconfiguredProject;
-
-    [ImportingConstructor]
-    public StartupObjectsEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject project)
-    {
-        _workspace = workspace;
-        _unconfiguredProject = project;
-    }
-
     public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
     {
         bool searchForEntryPointsInFormsOnly = options?.Any(pair =>
@@ -42,49 +33,41 @@ internal class StartupObjectsEnumProvider : IDynamicEnumValuesProvider
             && bool.TryParse(pair.Value, out bool optionValue)
             && optionValue) ?? false;
 
-        return Task.FromResult<IDynamicEnumValuesGenerator>(new StartupObjectsEnumGenerator(_workspace, _unconfiguredProject, includeEmptyValue, searchForEntryPointsInFormsOnly));
+        return Task.FromResult<IDynamicEnumValuesGenerator>(new StartupObjectsEnumGenerator(workspace, project, includeEmptyValue, searchForEntryPointsInFormsOnly));
     }
 }
 
-internal class StartupObjectsEnumGenerator : IDynamicEnumValuesGenerator
+internal class StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly) : IDynamicEnumValuesGenerator
 {
     public bool AllowCustomValues => true;
-    private readonly Workspace _workspace;
-    private readonly UnconfiguredProject _unconfiguredProject;
-    private readonly bool _includeEmptyValue;
-    private readonly bool _searchForEntryPointsInFormsOnly;
-
-    public StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject project, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly)
-    {
-        _workspace = workspace;
-        _unconfiguredProject = project;
-        _includeEmptyValue = includeEmptyValue;
-        _searchForEntryPointsInFormsOnly = searchForEntryPointsInFormsOnly;
-    }
 
     public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
     {
-        Project? project = _workspace.CurrentSolution.Projects.FirstOrDefault(p => PathHelper.IsSamePath(p.FilePath!, _unconfiguredProject.FullPath));
+        Project? project = workspace.CurrentSolution.Projects.FirstOrDefault(p => PathHelper.IsSamePath(p.FilePath!, unconfiguredProject.FullPath));
+
         if (project is null)
         {
-            return Array.Empty<IEnumValue>();
+            return [];
         }
 
         Compilation? compilation = await project.GetCompilationAsync();
+
         if (compilation is null)
         {
             // Project does not support compilations
-            return Array.Empty<IEnumValue>();
+            return [];
         }
 
-        List<IEnumValue> enumValues = new();
-        if (_includeEmptyValue)
+        List<IEnumValue> enumValues = [];
+        if (includeEmptyValue)
         {
             enumValues.Add(new PageEnumValue(new EnumValue { Name = string.Empty, DisplayName = VSResources.StartupObjectNotSet }));
         }
 
         IEntryPointFinderService? entryPointFinderService = project.Services.GetService<IEntryPointFinderService>();
-        IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation.GlobalNamespace, _searchForEntryPointsInFormsOnly);
+
+        IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation.GlobalNamespace, searchForEntryPointsInFormsOnly);
+
         if (entryPoints is not null)
         {
             enumValues.AddRange(entryPoints.Select(ep =>
