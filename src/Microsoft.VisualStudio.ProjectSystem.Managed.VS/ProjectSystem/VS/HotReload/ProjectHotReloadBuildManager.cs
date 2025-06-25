@@ -5,19 +5,19 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
-[Export(typeof(IProjectHotReloadBuildManager))]
+[Export(typeof(IProjectBuildManager))]
 [method: ImportingConstructor]
 internal sealed class ProjectHotReloadBuildManager(
     UnconfiguredProject project,
     IProjectThreadingService threadingService,
-    IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService) : IProjectHotReloadBuildManager
+    IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService) : IProjectBuildManager
 {
     private IVsSolutionBuildManager2? _vsSolutionBuildManager2;
 
     /// <summary>
     /// Build project and wait for the build to complete.
     /// </summary>
-    public async Task<bool> BuildProjectAsync(CancellationToken cancellationToken)
+    public async ValueTask<bool> BuildProjectAsync(string? _, CancellationToken cancellationToken)
     {
         Assumes.NotNull(project.Services.HostObject);
         _vsSolutionBuildManager2 ??= await solutionBuildManagerService.GetValueAsync(cancellationToken);

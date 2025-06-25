@@ -22,8 +22,8 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
     private readonly ILaunchProfile? _launchProfile;
     private readonly DebugLaunchOptions? _debugLaunchOptions;
     private readonly IProjectHotReloadSessionManager? _sessionManager;
-    private readonly IProjectHotReloadBuildManager _buildManager;
-    private readonly IProjectHotReloadLaunchProvider _launchProvider;
+    private readonly IProjectBuildManager _buildManager;
+    private readonly IProjectLaunchProvider _launchProvider;
     private bool _sessionActive;
     private IDeltaApplier? _deltaApplier;
 
@@ -35,8 +35,8 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
         Lazy<IHotReloadDiagnosticOutputService> hotReloadOutputService,
         Lazy<IManagedDeltaApplierCreator> deltaApplierCreator,
         IProjectHotReloadSessionCallback callback,
-        IProjectHotReloadBuildManager buildManager,
-        IProjectHotReloadLaunchProvider launchProvider,
+        IProjectBuildManager buildManager,
+        IProjectLaunchProvider launchProvider,
         IProjectHotReloadSessionManager? sessionManager = null,
         ConfiguredProject? configuredProject = null,
         ILaunchProfile? launchProfile = null,
@@ -200,7 +200,7 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
         if (_launchProfile is not null && _debugLaunchOptions.HasValue && _sessionManager is not null)
         {
             // build project first
-            var isSucceed = await _buildManager.BuildProjectAsync(cancellationToken);
+            var isSucceed = await _buildManager.BuildProjectAsync(null, cancellationToken);
 
             if (!isSucceed)
             {
@@ -208,7 +208,7 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
                 return;
             }
 
-            await _launchProvider.LaunchWithProfileAsync(_debugLaunchOptions.Value, _launchProfile);
+            _ = await _launchProvider.LaunchWithProfileAsync(_debugLaunchOptions.Value, _launchProfile, cancellationToken);
         }
     }
 

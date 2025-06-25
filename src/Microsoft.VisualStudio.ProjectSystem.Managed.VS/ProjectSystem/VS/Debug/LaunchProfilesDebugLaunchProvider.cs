@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 /// Applies to projects having the <see cref="ProjectCapability.LaunchProfiles"/> capability.
 /// </remarks>
 [ExportDebugger(ProjectDebugger.SchemaName)]
-[Export(typeof(IProjectHotReloadLaunchProvider))]
+[Export(typeof(IProjectLaunchProvider))]
 [AppliesTo(ProjectCapability.LaunchProfiles)]
-internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider, IStartupProjectProvider, IProjectHotReloadLaunchProvider, IDebugLaunchProvider
+internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider, IStartupProjectProvider, IProjectLaunchProvider
 {
     private readonly IVsService<IVsDebuggerLaunchAsync> _vsDebuggerService;
     // Launch providers to enforce requirements for debuggable projects
@@ -154,19 +154,19 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     /// <summary>
     /// Overridden to direct the launch to the current active provider as determined by the active launch profile
     /// </summary>
-    public override Task LaunchAsync(DebugLaunchOptions launchOptions)
+    public override async Task LaunchAsync(DebugLaunchOptions launchOptions)
     {
         ILaunchProfile? activeProfile = _launchSettingsProvider.ActiveProfile;
 
         Assumes.NotNull(activeProfile);
 
-        return LaunchWithProfileAsync(launchOptions, activeProfile);
+        _ = await LaunchWithProfileAsync(launchOptions, activeProfile);
     }
 
     /// <summary>
     /// Launches the Visual Studio debugger using the specified profile.
     /// </summary>
-    public async Task LaunchWithProfileAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+    public async ValueTask<bool> LaunchWithProfileAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, CancellationToken cancellationToken = default)
     {
         IReadOnlyList<IDebugLaunchSettings> targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true, profile: profile);
 
@@ -185,7 +185,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         if (targets.Count == 0)
         {
             callback.OnComplete(hr: 0, debugTargetCount: 0, processInfoArray: []);
-            return;
+            return true;
         }
 
         VsDebugTargetInfo4[] launchSettingsNative = targets.Select(GetDebuggerStruct4).ToArray();
@@ -198,6 +198,8 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             await ThreadingService.SwitchToUIThread();
 
             shellDebugger.LaunchDebugTargetsAsync((uint)launchSettingsNative.Length, launchSettingsNative, callback);
+
+            return true;
         }
         finally
         {

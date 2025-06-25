@@ -4,9 +4,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
 internal static class IProjectHotReloadBuildManagerFactory
 {
-    public static IProjectHotReloadBuildManager Create()
+    public static IProjectBuildManager Create()
     {
-        var mock = new Mock<IProjectHotReloadBuildManager>();
+        var mock = new Mock<IProjectBuildManager>();
         return mock.Object;
     }
 }

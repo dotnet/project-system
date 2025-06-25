@@ -21,8 +21,8 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
     private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
     private readonly Lazy<IManagedDeltaApplierCreator> _managedDeltaApplierCreator;
     private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
-    private readonly IProjectHotReloadBuildManager _buildManager;
-    private readonly IProjectHotReloadLaunchProvider _launchProvider;
+    private readonly IProjectBuildManager _buildManager;
+    private readonly IProjectLaunchProvider _launchProvider;
 
     // Protect the state from concurrent access. For example, our Process.Exited event
     // handler may run on one thread while we're still setting up the session on
@@ -44,8 +44,8 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
         Lazy<IManagedDeltaApplierCreator> managedDeltaApplierCreator,
         Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
-        IProjectHotReloadBuildManager buildManager,
-        IProjectHotReloadLaunchProvider launchProvider)
+        IProjectBuildManager buildManager,
+        IProjectLaunchProvider launchProvider)
         : base(threadingService.JoinableTaskContext)
     {
         _project = project;

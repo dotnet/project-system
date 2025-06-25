@@ -12,16 +12,16 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent
     private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
     private readonly Lazy<IManagedDeltaApplierCreator> _managedDeltaApplierCreator;
-    private readonly IProjectHotReloadBuildManager _buildManager;
-    private readonly IProjectHotReloadLaunchProvider _launchProvider;
+    private readonly IProjectBuildManager _buildManager;
+    private readonly IProjectLaunchProvider _launchProvider;
 
     [ImportingConstructor]
     public ProjectHotReloadAgent(
         Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
         Lazy<IManagedDeltaApplierCreator> managedDeltaApplierCreator,
-        IProjectHotReloadBuildManager buildManager,
-        IProjectHotReloadLaunchProvider launchProvider)
+        IProjectBuildManager buildManager,
+        IProjectLaunchProvider launchProvider)
     {
         _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
         _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
