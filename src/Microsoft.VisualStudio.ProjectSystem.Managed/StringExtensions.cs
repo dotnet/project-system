@@ -9,7 +9,7 @@ internal static class StringExtensions
         string[] values = value.Split(separator);
 
         if (values.Length == 1 && string.IsNullOrEmpty(values[0]))
-            return Array.Empty<string>();
+            return [];
 
         return values;
     }

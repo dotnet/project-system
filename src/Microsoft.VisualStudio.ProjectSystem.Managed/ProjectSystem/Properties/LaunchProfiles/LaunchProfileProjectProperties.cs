@@ -29,8 +29,8 @@ internal class LaunchProfileProjectProperties : IProjectProperties, IRuleAwarePr
     /// and as such they are always considered to exist on the profile, though they may
     /// not have a value.
     /// </remarks>
-    private static readonly string[] s_standardPropertyNames = new[]
-    {
+    private static readonly string[] s_standardPropertyNames =
+    [
         CommandNamePropertyName,
         ExecutablePathPropertyName,
         CommandLineArgumentsPropertyName,
@@ -38,7 +38,7 @@ internal class LaunchProfileProjectProperties : IProjectProperties, IRuleAwarePr
         LaunchBrowserPropertyName,
         LaunchUrlPropertyName,
         EnvironmentVariablesPropertyName
-    };
+    ];
 
     private readonly LaunchProfilePropertiesContext _context;
     private readonly ILaunchSettingsProvider3 _launchSettingsProvider;
@@ -130,7 +130,7 @@ internal class LaunchProfileProjectProperties : IProjectProperties, IRuleAwarePr
         ILaunchProfile? profile = snapshot.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, _context.ItemName));
         if (profile is null)
         {
-            return Enumerable.Empty<string>();
+            return [];
         }
         ImmutableDictionary<string, object> globalSettings = snapshot.GlobalSettings;
 

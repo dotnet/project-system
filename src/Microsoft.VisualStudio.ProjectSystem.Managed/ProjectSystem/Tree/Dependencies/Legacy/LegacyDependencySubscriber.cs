@@ -82,7 +82,7 @@ internal sealed class LegacyDependencySubscriber : IDependencySubscriber
                 groupNodeFlags: rootNode.Flags);
 
             _snapshot = ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>>.Empty
-                .Add(_dependencyType, ImmutableArray<IDependency>.Empty);
+                .Add(_dependencyType, []);
         }
 
         public ImmutableDictionary<DependencyGroupType, ImmutableArray<IDependency>> Update(IDependenciesChanges changes)

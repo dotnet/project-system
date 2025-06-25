@@ -29,7 +29,7 @@ internal static class IVsSolutionFactory
         var mock = new Mock<IVsSolution>();
         mock.Setup(x => x.AdviseSolutionEvents(It.IsAny<IVsSolutionEvents>(), out adviseCookie)).Returns(VSConstants.S_OK);
         mock.Setup(x => x.UnadviseSolutionEvents(It.IsAny<uint>())).Returns(VSConstants.S_OK);
-        if (isFullyLoaded != null)
+        if (isFullyLoaded is not null)
         {
             object value = isFullyLoaded.Value;
             mock.Setup(x => x.GetProperty(It.IsAny<int>(), out value)).Returns(VSConstants.S_OK);

@@ -10,7 +10,7 @@ public sealed class UpdateHandlersTests
         var exportFactory = ExportFactoryFactory.Implement(
             factory: () => Mock.Of<IWorkspaceUpdateHandler>(MockBehavior.Loose));
 
-        UpdateHandlers instance = new(new[] { exportFactory });
+        UpdateHandlers instance = new([exportFactory]);
     }
 
     [Fact]
@@ -22,7 +22,7 @@ public sealed class UpdateHandlersTests
             factory: () => Mock.Of<IWorkspaceUpdateHandler>(MockBehavior.Loose),
             disposeAction: () => disposeCount++);
 
-        UpdateHandlers instance = new(new[] { exportFactory });
+        UpdateHandlers instance = new([exportFactory]);
 
         Assert.Equal(0, disposeCount);
 
@@ -38,7 +38,7 @@ public sealed class UpdateHandlersTests
     [Fact]
     public void EvaluationRulesPopulated()
     {
-        using UpdateHandlers instance = new(new[] { Create("Rule1"), Create("Rule2"), Create("Rule3") });
+        using UpdateHandlers instance = new([Create("Rule1"), Create("Rule2"), Create("Rule3")]);
 
         Assert.Equal(ImmutableHashSet.Create("Rule1", "Rule2", "Rule3", "ConfigurationGeneral"), instance.EvaluationRules);
 
@@ -61,12 +61,12 @@ public sealed class UpdateHandlersTests
         var evaluationHandler = new Mock<IProjectEvaluationHandler>(MockBehavior.Loose).Object;
         var sourceItemHandler = new Mock<ISourceItemsHandler>(MockBehavior.Loose).Object;
 
-        using UpdateHandlers instance = new(new[]
-        {
+        using UpdateHandlers instance = new(
+        [
             ExportFactoryFactory.Implement<IWorkspaceUpdateHandler>(factory: () => commandLineHandler),
             ExportFactoryFactory.Implement<IWorkspaceUpdateHandler>(factory: () => evaluationHandler),
             ExportFactoryFactory.Implement<IWorkspaceUpdateHandler>(factory: () => sourceItemHandler)
-        });
+        ]);
 
         Assert.Equal(new[] { commandLineHandler }, instance.CommandLineHandlers);
         Assert.Equal(new[] { evaluationHandler }, instance.EvaluationHandlers);

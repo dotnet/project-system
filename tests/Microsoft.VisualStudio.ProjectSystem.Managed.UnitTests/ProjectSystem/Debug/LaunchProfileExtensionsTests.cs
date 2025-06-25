@@ -41,7 +41,7 @@ public class LaunchProfileExtensionsTests
         var data = new LaunchProfile(
             name: null,
             commandName: null,
-            otherSettings: value == null ? ImmutableArray<(string, object)>.Empty : ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.NativeDebuggingProperty, value.Value)));
+            otherSettings: value is null ? [] : ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.NativeDebuggingProperty, value.Value)));
 
         Assert.Equal(expected, data.IsNativeDebuggingEnabled());
     }
@@ -55,7 +55,7 @@ public class LaunchProfileExtensionsTests
         var data = new LaunchProfile(
             name: null,
             commandName: null,
-            otherSettings: value == null ? ImmutableArray<(string, object)>.Empty : ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.SqlDebuggingProperty, value.Value)));
+            otherSettings: value is null ? [] : ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.SqlDebuggingProperty, value.Value)));
 
         Assert.Equal(expected, data.IsSqlDebuggingEnabled());
     }
@@ -69,7 +69,7 @@ public class LaunchProfileExtensionsTests
         var data = new LaunchProfile(
             name: null,
             commandName: null,
-            otherSettings: value == null ? ImmutableArray<(string, object)>.Empty : ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.RemoteDebugEnabledProperty, value.Value)));
+            otherSettings: value is null ? [] : ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.RemoteDebugEnabledProperty, value.Value)));
 
         Assert.Equal(expected, data.IsRemoteDebugEnabled());
     }
@@ -83,7 +83,7 @@ public class LaunchProfileExtensionsTests
         var data = new LaunchProfile(
             name: null,
             commandName: null,
-            otherSettings: value is null ? ImmutableArray<(string, object)>.Empty : ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.RemoteDebugMachineProperty, value)));
+            otherSettings: value is null ? [] : ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.RemoteDebugMachineProperty, value)));
 
         Assert.Equal(expected, data.RemoteDebugMachine());
     }

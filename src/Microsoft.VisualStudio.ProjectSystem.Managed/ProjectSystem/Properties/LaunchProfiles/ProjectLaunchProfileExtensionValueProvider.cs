@@ -16,8 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 /// </para>
 /// </summary>
 [ExportLaunchProfileExtensionValueProvider(
-    new[]
-    {
+    [
         AuthenticationModePropertyName,
         HotReloadEnabledPropertyName,
         NativeDebuggingPropertyName,
@@ -25,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
         RemoteDebugMachinePropertyName,
         SqlDebuggingPropertyName,
         WebView2DebuggingPropertyName
-    },
+    ],
     ExportLaunchProfileExtensionValueProviderScope.LaunchProfile)]
 internal class ProjectLaunchProfileExtensionValueProvider : ILaunchProfileExtensionValueProvider
 {

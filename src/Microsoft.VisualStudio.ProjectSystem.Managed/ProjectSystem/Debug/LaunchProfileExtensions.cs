@@ -166,7 +166,7 @@ internal static class LaunchProfileExtensions
         return profile switch
         {
             ILaunchProfile2 launchProfile => launchProfile.EnvironmentVariables,
-            ILaunchProfile { EnvironmentVariables: null or { Count: 0 } } => Enumerable.Empty<(string Key, string Value)>(),
+            ILaunchProfile { EnvironmentVariables: null or { Count: 0 } } => [],
             ILaunchProfile { EnvironmentVariables: { } vars } => vars.OrderBy(pair => pair.Key, StringComparers.EnvironmentVariableNames).Select(pair => (pair.Key, pair.Value))
         };
     }
@@ -193,7 +193,7 @@ internal static class LaunchProfileExtensions
         return profile switch
         {
             ILaunchProfile2 launchProfile => launchProfile.OtherSettings,
-            ILaunchProfile { OtherSettings: null or { Count: 0 } } => Enumerable.Empty<(string Key, object Value)>(),
+            ILaunchProfile { OtherSettings: null or { Count: 0 } } => [],
             ILaunchProfile { OtherSettings: { } settings } => settings.OrderBy(pair => pair.Key, StringComparers.LaunchProfileProperties).Select(pair => (pair.Key, pair.Value))
         };
     }
@@ -257,7 +257,7 @@ internal static class LaunchProfileExtensions
         return profile switch
         {
             ILaunchProfile2 launchProfile => launchProfile.EnvironmentVariables,
-            ILaunchProfile { EnvironmentVariables: null or { Count: 0 } } => ImmutableArray<(string Key, string Value)>.Empty,
+            ILaunchProfile { EnvironmentVariables: null or { Count: 0 } } => [],
             ILaunchProfile { EnvironmentVariables: { } vars } => vars.OrderBy(pair => pair.Key, StringComparers.EnvironmentVariableNames).Select(pair => (pair.Key, pair.Value)).ToImmutableArray()
         };
     }
@@ -284,7 +284,7 @@ internal static class LaunchProfileExtensions
         return profile switch
         {
             ILaunchProfile2 launchProfile => launchProfile.OtherSettings,
-            ILaunchProfile { OtherSettings: null or { Count: 0 } } => ImmutableArray<(string Key, object Value)>.Empty,
+            ILaunchProfile { OtherSettings: null or { Count: 0 } } => [],
             ILaunchProfile { OtherSettings: { } vars } => vars.OrderBy(pair => pair.Key, StringComparers.EnvironmentVariableNames).Select(pair => (pair.Key, pair.Value)).ToImmutableArray()
         };
     }

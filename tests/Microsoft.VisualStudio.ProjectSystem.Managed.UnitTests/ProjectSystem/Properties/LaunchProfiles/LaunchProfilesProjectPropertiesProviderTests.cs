@@ -9,9 +9,9 @@ public class LaunchProfilesProjectPropertiesProviderTests
     private const string DefaultTestProjectPath = @"C:\alpha\beta\gamma.csproj";
 
     private static readonly IEnumerable<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> EmptyLaunchProfileExtensionValueProviders =
-        Enumerable.Empty<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>>();
-    private static readonly IEnumerable<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> EmptyGlobalSettingExtensionValueProviders = 
-        Enumerable.Empty<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>>();
+        [];
+    private static readonly IEnumerable<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> EmptyGlobalSettingExtensionValueProviders =
+        [];
 
     [Fact]
     public void DefaultProjectPath_IsTheProjectPath()

@@ -38,7 +38,7 @@ internal class AppDotXamlDocument : AppDotXamlDocument.IDebugLockCheck, AppDotXa
     private const char SingleQuote = '\'';
     private const char DoubleQuote = '"';
 
-    private static readonly char[] s_closingAngleBracketHelperCharacters = new[] { SingleQuote, DoubleQuote, '/', '>' };
+    private static readonly char[] s_closingAngleBracketHelperCharacters = [SingleQuote, DoubleQuote, '/', '>'];
 
     private readonly IVsTextLines _vsTextLines;
 

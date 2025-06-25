@@ -38,7 +38,7 @@ internal static class ILaunchSettingsProviderFactory
 
         var initialLaunchProfiles = launchProfiles is not null
             ? launchProfiles.ToImmutableList()
-            : ImmutableList<ILaunchProfile>.Empty;
+            : [];
 
         var initialGlobalSettings = globalSettings ?? ImmutableDictionary<string, object>.Empty;
 

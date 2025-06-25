@@ -39,7 +39,7 @@ indent_size = 2
 [*.{cs,vb}]
 # Sort using and Import directives with System.* appearing first
 dotnet_sort_system_directives_first = true
-dotnet_style_require_accessibility_modifiers = always:warning
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:warning
 
 # No blank line between System.* and Microsoft.*
 dotnet_separate_import_directive_groups = false
@@ -398,6 +398,7 @@ dotnet_diagnostic.IDE0220.severity = warning      # Add explicit cast
 dotnet_diagnostic.IDE0250.severity = warning      # Struct can be made 'readonly'
 dotnet_diagnostic.IDE0251.severity = suggestion   # Struct methods can be made 'readonly'
 dotnet_diagnostic.IDE0270.severity = suggestion   # Use coalesce expression
+dotnet_diagnostic.IDE0300.severity = suggestion   # Use collection expression
 dotnet_diagnostic.IDE1006.severity = warning      # Naming styles                                 Task Open()                                         Task OpenAsync()
 dotnet_diagnostic.IDE1006WithoutSuggestion.severity = suggestion
 

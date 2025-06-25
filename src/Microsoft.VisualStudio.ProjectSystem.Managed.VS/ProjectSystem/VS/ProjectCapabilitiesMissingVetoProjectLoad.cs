@@ -69,7 +69,7 @@ internal partial class ProjectCapabilitiesMissingVetoProjectLoad : IVetoProjectP
         Assembly assembly = typeof(ProjectCapabilitiesMissingVetoProjectLoad).Assembly;
 
         return assembly.GetCustomAttributes<ProjectTypeRegistrationAttribute>()
-                       .Select(a => new ProjectType('.' + a.DefaultProjectExtension, a.Capabilities!.Split(new[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)))
+                       .Select(a => new ProjectType('.' + a.DefaultProjectExtension, a.Capabilities!.Split([';', ' '], StringSplitOptions.RemoveEmptyEntries)))
                        .ToImmutableArray();
     }
 }

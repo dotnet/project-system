@@ -10,12 +10,12 @@ internal sealed class ProjectSystemHostConfiguration : VisualStudioHostConfigura
 {
     // This combined with TestBase.IncludeReferencedAssembliesInHostComposition set to false, deliberately limit
     // the number of assemblies added to the composition to reduce MEF composition errors in the build log.
-    internal static readonly string[] CompositionAssemblyPaths = new[] {
+    internal static readonly string[] CompositionAssemblyPaths = [
                 typeof(VisualStudioHostConfiguration).Assembly.Location,        // Microsoft.Test.Apex.VisualStudio
                 typeof(HostConfiguration).Assembly.Location,                    // Microsoft.Test.Apex.Framework
                 typeof(ProjectSystemHostConfiguration).Assembly.Location,       // This assembly
                 typeof(OmniLogSink).Assembly.Location,                          // Omni
-                };
+                ];
 
     public ProjectSystemHostConfiguration()
     {

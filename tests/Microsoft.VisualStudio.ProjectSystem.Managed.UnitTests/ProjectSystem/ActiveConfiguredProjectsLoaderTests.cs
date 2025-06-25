@@ -5,9 +5,9 @@ namespace Microsoft.VisualStudio.ProjectSystem;
 public class ActiveConfiguredProjectsLoaderTests
 {
     [Theory]
-    [InlineData(new object[] { new[] { "Debug|x86" } })]
-    [InlineData(new object[] { new[] { "Debug|x86", "Release|x86" } })]
-    [InlineData(new object[] { new[] { "Debug|x86", "Release|x86", "Release|AnyCPU" } })]
+    [InlineData([new[] { "Debug|x86" }])]
+    [InlineData([new[] { "Debug|x86", "Release|x86" }])]
+    [InlineData([new[] { "Debug|x86", "Release|x86", "Release|AnyCPU" }])]
     public async Task WhenActiveConfigurationChanges_LoadsConfiguredProject(string[] configurationNames)
     {
         var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames(configurationNames);

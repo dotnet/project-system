@@ -20,7 +20,7 @@ public abstract class ProjectLayoutTestBase : IntegrationTestBase
     /// Paths of temporary workspaces to delete when the test fixture completes.
     /// Each path is a root, so should be deleted recursively.
     /// </summary>
-    private ImmutableList<string> _rootPaths = ImmutableList<string>.Empty;
+    private ImmutableList<string> _rootPaths = [];
 
     /// <summary>
     /// Verifies that the "Dependencies" node of <paramref name="project"/> has a structure that
@@ -90,13 +90,13 @@ public abstract class ProjectLayoutTestBase : IntegrationTestBase
                 thisSame = false;
             }
 
-            if (actual is not null && expect?.Icon != null && !AssertExtensions.AreEqual(expect.Icon.Value, actual.ExpandedIconMoniker))
+            if (actual is not null && expect?.Icon is not null && !AssertExtensions.AreEqual(expect.Icon.Value, actual.ExpandedIconMoniker))
             {
                 same = false;
                 thisSame = false;
             }
 
-            var actualIcon = actual?.ExpandedIconMoniker == null
+            var actualIcon = actual?.ExpandedIconMoniker is null
                 ? "null"
                 : ImageMonikerDebuggerDisplay.FromImageMoniker(actual.ExpandedIconMoniker.Value.ToImageMoniker());
 
@@ -106,7 +106,7 @@ public abstract class ProjectLayoutTestBase : IntegrationTestBase
                     .Append(' ', depth * 4)
                     .Append(expect.Text ?? actual!.Name)
                     .Append(' ')
-                    .AppendLine(expect.Icon != null
+                    .AppendLine(expect.Icon is not null
                         ? ImageMonikerDebuggerDisplay.FromImageMoniker(expect.Icon.Value)
                         : actualIcon);
             }

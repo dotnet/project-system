@@ -40,7 +40,7 @@ internal class TestProjectFileOrAssemblyInfoPropertiesProvider : AbstractProject
                 ? new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>(
                     () => IInterceptingPropertyValueProviderFactory.Create(),
                     IInterceptingPropertyValueProviderMetadataFactory.Create("TestPropertyName")) }
-                : new[] { interceptingProvider },
+                : [interceptingProvider],
               project: project,
               getActiveProjectId: getActiveProjectId ?? (() => Task.FromResult(workspace.CurrentSolution.ProjectIds.SingleOrDefault())),
               workspace: workspace,

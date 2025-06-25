@@ -29,44 +29,40 @@ public class DesignTimeInputsFileWatcherTests
             },
 
             // A design time input and a shared design time input
-            new object[]
-            {
+            [
                 new string[] { "File1.cs" },
                 new string[] { "File2.cs" },
                 new string[] { "File1.cs", "File2.cs" },
                 new string[] { },
                 new string[] { }
-            },
+            ],
 
             // A file that is both design time and shared, should only be watched once
-            new object[]
-            {
+            [
                 new string[] { "File1.cs" },
                 new string[] { "File2.cs", "File1.cs" },
                 new string[] { "File1.cs", "File2.cs" },
                 new string[] { },
                 new string[] { }
-            },
+            ],
 
             // A design time input that gets modified
-             new object[]
-            {
+             [
                 new string[] { "File1.cs" },
                 new string[] { },
                 new string[] { "File1.cs" },
                 new string[] { "File1.cs", "File1.cs", "File1.cs" },
                 new string[] { "File1.cs", "File1.cs", "File1.cs" }
-            },
+            ],
 
             // A design time input and a shared design time input, that both change, to ensure ordering is correct
-            new object[]
-            {
+            [
                 new string[] { "File1.cs" },
                 new string[] { "File2.cs" },
                 new string[] { "File1.cs", "File2.cs" },
                 new string[] { "File1.cs", "File2.cs" },
                 new string[] { "File1.cs", "File2.cs" }
-            },
+            ],
         };
     }
 

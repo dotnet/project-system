@@ -41,7 +41,7 @@ public sealed class LazyStringSplitTests
         Assert.Equal(expected, list);
 
         // Equivalence with string.Split
-        Assert.Equal(expected, input.Split(new[] { delimiter }, StringSplitOptions.RemoveEmptyEntries));
+        Assert.Equal(expected, input.Split([delimiter], StringSplitOptions.RemoveEmptyEntries));
     }
 
     [Fact]

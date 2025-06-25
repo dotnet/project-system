@@ -32,7 +32,7 @@ internal partial class Tokenizer
     public void Skip(TokenType expected)
     {
         Token? token = ReadToken();
-        if (token == null)
+        if (token is null)
         {
             throw FormatException(ProjectTreeFormatError.DelimiterExpected_EncounteredEndOfString, $"Expected '{(char)expected}' but encountered end of string.");
         }
@@ -57,7 +57,7 @@ internal partial class Tokenizer
     public void Close()
     {
         Token? token = ReadToken();
-        if (token != null)
+        if (token is not null)
             throw FormatException(ProjectTreeFormatError.EndOfStringExpected, $"Expected end-of-string, but encountered '{token.Value.Value}'.");
     }
 
@@ -78,7 +78,7 @@ internal partial class Tokenizer
         var identifier = new StringBuilder();
 
         Token? token;
-        while ((token = PeekToken()) != null)
+        while ((token = PeekToken()) is not null)
         {
             Token t = token.Value;
 
@@ -99,7 +99,7 @@ internal partial class Tokenizer
 
         // Are we at the end of the string?
         Token? token = ReadToken();    // Consume token, so "position" is correct
-        if (token == null)
+        if (token is null)
         {
             throw FormatException(ProjectTreeFormatError.IdExpected_EncounteredEndOfString, "Expected identifier, but encountered end-of-string.");
         }

@@ -120,7 +120,7 @@ public sealed class DependenciesTreeBuilderTests
     [Fact]
     public async Task BuildTreeAsync_SingleSlice_EmptyDependenciesCollection_ShowsEmptyGroupNode()
     {
-        var snapshot = CreateDependenciesSnapshot(new() { [_slice] = new() { [DependencyGroupTypes.Packages] = Array.Empty<IDependency>() } });
+        var snapshot = CreateDependenciesSnapshot(new() { [_slice] = new() { [DependencyGroupTypes.Packages] = [] } });
 
         var tree = await _builder.BuildTreeAsync(null, snapshot, CancellationToken.None);
 

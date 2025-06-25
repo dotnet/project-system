@@ -74,12 +74,12 @@ public class UIPropertyEditorDataProducerTests
 
         var results = UIPropertyEditorDataProducer.CreateEditorValues(context, parentEntity, rule, "MyProperty", properties);
 
-        Assert.Collection(results, new Action<IEntityValue>[]
-        {
+        Assert.Collection(results,
+        [
             entity => assertEqual(entity, expectedName: "Alpha"),
             entity => assertEqual(entity, expectedName: "Beta"),
             entity => assertEqual(entity, expectedName: "Gamma")
-        });
+        ]);
 
         static void assertEqual(IEntityValue entity, string expectedName)
         {

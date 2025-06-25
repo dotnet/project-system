@@ -6,7 +6,7 @@ namespace System.Collections.Immutable;
 
 internal static class ImmutableStringHashSet
 {
-    public static readonly ImmutableHashSet<string> EmptyOrdinal = ImmutableHashSet<string>.Empty;
+    public static readonly ImmutableHashSet<string> EmptyOrdinal = [];
 
     public static readonly ImmutableHashSet<string> EmptyOrdinalIgnoreCase = ImmutableHashSet<string>.Empty.WithComparer(StringComparer.OrdinalIgnoreCase);
 

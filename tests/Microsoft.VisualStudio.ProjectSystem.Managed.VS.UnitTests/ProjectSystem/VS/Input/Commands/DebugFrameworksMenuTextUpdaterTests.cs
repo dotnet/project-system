@@ -23,7 +23,7 @@ public class DebugFrameworkMenuTextUpdaterTests
     {
         var startupHelper = new Mock<IStartupProjectHelper>();
         startupHelper.Setup(x => x.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                     .Returns(ImmutableArray<IActiveDebugFrameworkServices>.Empty);
+                     .Returns([]);
 
         var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
         command.QueryStatus();

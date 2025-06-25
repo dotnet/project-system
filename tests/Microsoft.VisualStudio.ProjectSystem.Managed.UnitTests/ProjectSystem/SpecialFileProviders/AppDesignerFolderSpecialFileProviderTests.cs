@@ -274,9 +274,9 @@ public class AppDesignerFolderSpecialFileProviderTests
 
     private static ProjectProperties CreateProperties(string appDesignerFolderName)
     {
-        return ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
+        return ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), [
                 new PropertyPageData(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, appDesignerFolderName)
-            });
+            ]);
     }
 
     private static AppDesignerFolderSpecialFileProvider CreateInstance(IPhysicalProjectTree? physicalProjectTree = null, ProjectProperties? properties = null)

@@ -56,11 +56,8 @@ internal class LaunchSettingsTracker : IProjectDynamicLoadComponent
 
     public Task UnloadAsync()
     {
-        if (_launchSettingsProviderLink is not null)
-        {
-            _launchSettingsProviderLink.Dispose();
-            _launchSettingsProviderLink = null;
-        }
+        _launchSettingsProviderLink?.Dispose();
+        _launchSettingsProviderLink = null;
 
         _versionProvider.OnLaunchSettingsTrackerDeactivated(this);
 

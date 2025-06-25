@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 [AppliesTo(ProjectCapability.DotNetLanguageService)]
 internal class ActiveEditorContextTracker : IActiveEditorContextTracker
 {
-    private ImmutableList<string> _contexts = ImmutableList<string>.Empty;
+    private ImmutableList<string> _contexts = [];
     private string? _activeIntellisenseProjectContext;
 
     // UnconfiguredProject is only included for scoping reasons.

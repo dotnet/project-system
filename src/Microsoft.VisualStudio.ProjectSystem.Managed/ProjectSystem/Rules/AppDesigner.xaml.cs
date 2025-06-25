@@ -8,5 +8,5 @@ namespace Microsoft.VisualStudio.ProjectSystem;
 [SuppressMessage("Style", "IDE0016:Use 'throw' expression")]
 internal partial class AppDesigner
 {
-    internal static string[] SchemaNameArray = new string[] { SchemaName };
+    internal static string[] SchemaNameArray = [SchemaName];
 }

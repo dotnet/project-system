@@ -32,8 +32,7 @@ public class DesignTimeInputsDataSourceTests
             },
 
             // A single design time input, and a normal file
-            new object[]
-            {
+            [
                 """
                 "CurrentState": {
                     "Compile": {
@@ -51,11 +50,10 @@ public class DesignTimeInputsDataSourceTests
                 """,
                 new string[] { "C:\\Project\\File1.cs" },
                 new string[] { }
-            },
+            ],
 
             // A single design time input, and a single shared design time input
-            new object[]
-            {
+            [
                 """
                 "CurrentState": {
                     "Compile": {
@@ -74,11 +72,10 @@ public class DesignTimeInputsDataSourceTests
                 """,
                 new string[] { "C:\\Project\\File1.cs" },
                 new string[] { "C:\\Project\\File2.cs" }
-            },
+            ],
 
             // A file that is both a design time and shared design time input
-            new object[]
-            {
+            [
                 """
                 "CurrentState": {
                     "Compile": {
@@ -94,11 +91,10 @@ public class DesignTimeInputsDataSourceTests
                 """,
                 new string[] { "C:\\Project\\File1.cs" },
                 new string[] { "C:\\Project\\File1.cs" }
-            },
+            ],
 
             // A design time input that is a linked file, and hence ignored
-            new object[]
-            {
+            [
                 """
                 "CurrentState": {
                     "Compile": {
@@ -114,7 +110,7 @@ public class DesignTimeInputsDataSourceTests
                 """,
                 new string[] { },
                 new string[] { }
-            },
+            ],
         };
     }
 

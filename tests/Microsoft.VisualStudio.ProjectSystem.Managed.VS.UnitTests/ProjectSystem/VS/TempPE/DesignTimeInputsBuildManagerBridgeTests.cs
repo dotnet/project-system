@@ -17,13 +17,13 @@ public class DesignTimeInputsBuildManagerBridgeTests : IDisposable
     {
         await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
             ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
-            ImmutableHashSet<string>.Empty,
+            [],
             ImmutableHashSet<DesignTimeInputFileChange>.Empty,
             "C:\\TempPE"));
 
         await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
             ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
-            ImmutableHashSet<string>.Empty,
+            [],
             new[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
             "C:\\TempPE"));
 
@@ -38,13 +38,13 @@ public class DesignTimeInputsBuildManagerBridgeTests : IDisposable
     {
         await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
             ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
-            ImmutableHashSet<string>.Empty,
+            [],
             Array.Empty<DesignTimeInputFileChange>(),
             ""));
 
         await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
-           ImmutableHashSet<string>.Empty,
-           ImmutableHashSet<string>.Empty,
+           [],
+           [],
            Array.Empty<DesignTimeInputFileChange>(),
            ""));
 
@@ -59,7 +59,7 @@ public class DesignTimeInputsBuildManagerBridgeTests : IDisposable
     {
         await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
             ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
-            ImmutableHashSet<string>.Empty,
+            [],
             new[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
             "C:\\TempPE"));
 
@@ -67,7 +67,7 @@ public class DesignTimeInputsBuildManagerBridgeTests : IDisposable
 
         Assert.Equal("Resources1.Designer.cs", _lastCompiledFile);
         Assert.Equal("C:\\TempPE", _lastOutputPath);
-        Assert.Equal(ImmutableHashSet<string>.Empty, _lastSharedInputs);
+        Assert.Equal([], _lastSharedInputs);
     }
 
     public DesignTimeInputsBuildManagerBridgeTests()

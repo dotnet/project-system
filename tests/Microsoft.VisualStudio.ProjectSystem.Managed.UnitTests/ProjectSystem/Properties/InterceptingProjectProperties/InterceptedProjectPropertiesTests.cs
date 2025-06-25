@@ -18,7 +18,7 @@ public class InterceptedProjectPropertiesTests
         for (int i = 0; i < capabilities.Length; i++)
         {
             var mockProviderMetadata = new Mock<IInterceptingPropertyValueProviderMetadata2>();
-            mockProviderMetadata.Setup(x => x.PropertyNames).Returns(new[] { MockPropertyName });
+            mockProviderMetadata.Setup(x => x.PropertyNames).Returns([MockPropertyName]);
             mockProviderMetadata.Setup(x => x.AppliesTo).Returns(capabilities[i]);
             metadataCollection[i] = mockProviderMetadata.Object;
         }

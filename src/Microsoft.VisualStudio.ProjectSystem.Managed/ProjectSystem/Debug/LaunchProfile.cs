@@ -149,10 +149,10 @@ internal class LaunchProfile : ILaunchProfile2, IPersistOption
         DoNotPersist = doNotPersist;
 
         EnvironmentVariables = environmentVariables.IsDefault
-            ? ImmutableArray<(string Key, string Value)>.Empty
+            ? []
             : environmentVariables;
         OtherSettings = otherSettings.IsDefault
-            ? ImmutableArray<(string Key, object Value)>.Empty
+            ? []
             : otherSettings;
     }
 

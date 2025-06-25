@@ -142,7 +142,7 @@ internal class LaunchProfileProjectItemProvider : IProjectItemProvider
 
         return snapshot.Profiles.Count > 0
             ? s_itemTypes
-            : ImmutableSortedSet<string>.Empty;
+            : [];
     }
 
     public async Task<IProjectItem?> GetItemAsync(IProjectPropertiesContext context)
@@ -163,7 +163,7 @@ internal class LaunchProfileProjectItemProvider : IProjectItemProvider
 
         if (snapshot.Profiles.Count == 0)
         {
-            return Enumerable.Empty<IProjectItem>();
+            return [];
         }
 
         return snapshot.Profiles.Select(p => new ProjectItem(p.Name ?? string.Empty, _project.FullPath, this));
@@ -247,13 +247,11 @@ internal class LaunchProfileProjectItemProvider : IProjectItemProvider
     private class ProjectItem : IProjectItem
     {
         private readonly string _name;
-        private readonly string _projectFilePath;
         private readonly LaunchProfileProjectItemProvider _provider;
 
         public ProjectItem(string name, string projectFilePath, LaunchProfileProjectItemProvider provider)
         {
             _name = name;
-            _projectFilePath = projectFilePath;
             _provider = provider;
 
             PropertiesContext = new ProjectPropertiesContext(name, projectFilePath);

@@ -136,8 +136,7 @@ public class TreeItemOrderPropertyProviderTests
                 },
 
                 // 2. nested ordering with folders that should also be ordered
-                new object[]
-                {
+                [
                     new List<(string type, string include)>
                     {
                         ("Compile", "Order/Order.fs"),
@@ -174,7 +173,7 @@ public class TreeItemOrderPropertyProviderTests
                         ("app.fsproj", null, false, true, "X:\\Project\\app.fsproj"),
                         ("app.sln", null, false, true, "X:\\Project\\app.sln")
                     }
-                }
+                ]
             };
         }
     }

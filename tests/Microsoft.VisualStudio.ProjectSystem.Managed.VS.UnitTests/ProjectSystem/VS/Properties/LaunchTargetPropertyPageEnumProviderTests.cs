@@ -41,11 +41,11 @@ public class LaunchTargetPropertyPageEnumProviderTests
 
         var values = await generator.GetListedValuesAsync();
 
-        Assert.Collection(values, new Action<IEnumValue>[]
-        {
+        Assert.Collection(values,
+        [
             ev => { Assert.Equal(expected: "BetaCommandPageId", actual: ev.Name); Assert.Equal(expected: "Beta", actual: ev.DisplayName); },
             ev => { Assert.Equal(expected: "GammaCommandPageId", actual: ev.Name); Assert.Equal(expected: "Gamma", actual: ev.DisplayName); }
-        });
+        ]);
     }
 
     private static IPropertyPagesCatalogProvider GetCatalogProviderAndData()

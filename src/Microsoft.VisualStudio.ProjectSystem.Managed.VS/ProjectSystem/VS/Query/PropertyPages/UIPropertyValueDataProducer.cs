@@ -21,7 +21,7 @@ internal static class UIPropertyValueDataProducer
 
         var identity = new EntityIdentity(
             ((IEntityWithId)parent).Id,
-            Enumerable.Empty<KeyValuePair<string, string>>());
+            []);
 
         return await CreateUIPropertyValueValueAsync(parent.EntityRuntime, identity, configuration, property, requestedProperties);
     }
@@ -99,7 +99,7 @@ internal static class UIPropertyValueDataProducer
             }
             else
             {
-                configurations = Enumerable.Empty<ProjectConfiguration>();
+                configurations = [];
             }
         }
 

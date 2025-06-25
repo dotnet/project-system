@@ -56,10 +56,10 @@ internal static partial class Converters
             if (_convertBack is not null && value is TTo to)
             {
                 var values = _convertBack(to);
-                return new object[] { values.Item1, values.Item2 };
+                return [values.Item1, values.Item2];
             }
 
-            return new[] { DependencyProperty.UnsetValue, DependencyProperty.UnsetValue };
+            return [DependencyProperty.UnsetValue, DependencyProperty.UnsetValue];
         }
     }
 
@@ -108,10 +108,10 @@ internal static partial class Converters
             if (_convertBack is not null && value is TTo to)
             {
                 var values = _convertBack(to);
-                return new object[] { values.Item1, values.Item2, values.Item3 };
+                return [values.Item1, values.Item2, values.Item3];
             }
 
-            return new[] { DependencyProperty.UnsetValue, DependencyProperty.UnsetValue, DependencyProperty.UnsetValue };
+            return [DependencyProperty.UnsetValue, DependencyProperty.UnsetValue, DependencyProperty.UnsetValue];
         }
     }
 
@@ -161,10 +161,10 @@ internal static partial class Converters
             if (_convertBack is not null && value is TTo to)
             {
                 var values = _convertBack(to);
-                return new object[] { values.Item1, values.Item2, values.Item3, values.Item4 };
+                return [values.Item1, values.Item2, values.Item3, values.Item4];
             }
 
-            return new[] { DependencyProperty.UnsetValue, DependencyProperty.UnsetValue, DependencyProperty.UnsetValue, DependencyProperty.UnsetValue };
+            return [DependencyProperty.UnsetValue, DependencyProperty.UnsetValue, DependencyProperty.UnsetValue, DependencyProperty.UnsetValue];
         }
     }
 }

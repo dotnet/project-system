@@ -27,11 +27,11 @@ public class QueryProjectPropertiesContextTests
     {
         return new QueryProjectPropertiesContext[][]
         {
-            new QueryProjectPropertiesContext[] { QueryProjectPropertiesContext.ProjectFile, QueryProjectPropertiesContext.ProjectFile },
-            new QueryProjectPropertiesContext[] { new(true, string.Empty, null, null), QueryProjectPropertiesContext.ProjectFile },
-            new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, null), new(true, @"c:\ALPHA\Beta", null, null) },
-            new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", "myItemType", null), new(true, @"C:\alpha\beta", "MyItemType", null) },
-            new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, "MyItemName"), new(true, @"C:\alpha\beta", null, "MYITEMNAME") }
+            [QueryProjectPropertiesContext.ProjectFile, QueryProjectPropertiesContext.ProjectFile],
+            [new(true, string.Empty, null, null), QueryProjectPropertiesContext.ProjectFile],
+            [new(true, @"C:\alpha\beta", null, null), new(true, @"c:\ALPHA\Beta", null, null)],
+            [new(true, @"C:\alpha\beta", "myItemType", null), new(true, @"C:\alpha\beta", "MyItemType", null)],
+            [new(true, @"C:\alpha\beta", null, "MyItemName"), new(true, @"C:\alpha\beta", null, "MYITEMNAME")]
         };
     }
 
@@ -39,10 +39,10 @@ public class QueryProjectPropertiesContextTests
     {
         return new QueryProjectPropertiesContext[][]
         {
-            new QueryProjectPropertiesContext[] { new(false, string.Empty, null, null), QueryProjectPropertiesContext.ProjectFile },
-            new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, null), new(true, @"C:\alpha\gamma", null, null) },
-            new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", "myItemType", null), new(true, @"C:\alpha\beta", "MyOtherItemType", null) },
-            new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, "MyItemName"), new(true, @"C:\alpha\beta", null, "MyOtherItemName") }
+            [new(false, string.Empty, null, null), QueryProjectPropertiesContext.ProjectFile],
+            [new(true, @"C:\alpha\beta", null, null), new(true, @"C:\alpha\gamma", null, null)],
+            [new(true, @"C:\alpha\beta", "myItemType", null), new(true, @"C:\alpha\beta", "MyOtherItemType", null)],
+            [new(true, @"C:\alpha\beta", null, "MyItemName"), new(true, @"C:\alpha\beta", null, "MyOtherItemName")]
         };
     }
 }

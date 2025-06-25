@@ -9,7 +9,7 @@ internal sealed class GenerateDocumentationFileValueProvider : InterceptingPrope
 
     private const string DocumentationFileMSBuildProperty = "DocumentationFile";
     private const string PublishDocumentationFileMSBuildProperty = "PublishDocumentationFile";
-    private static readonly string[] s_msBuildPropertyNames = { DocumentationFileMSBuildProperty };
+    private static readonly string[] s_msBuildPropertyNames = [DocumentationFileMSBuildProperty];
     
     [ImportingConstructor]
     public GenerateDocumentationFileValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)

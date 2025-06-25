@@ -25,7 +25,7 @@ internal sealed class ApplicationManifestKindValueProvider : InterceptingPropert
     private const string CustomManifestValue = "CustomManifest";
     private readonly ITemporaryPropertyStorage _temporaryPropertyStorage;
 
-    private static readonly string[] s_msBuildPropertyNames = { NoManifestMSBuildProperty, ApplicationManifestMSBuildProperty };
+    private static readonly string[] s_msBuildPropertyNames = [NoManifestMSBuildProperty, ApplicationManifestMSBuildProperty];
     
     [ImportingConstructor]
     public ApplicationManifestKindValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)

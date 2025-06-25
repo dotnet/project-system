@@ -90,7 +90,7 @@ internal class ProjectLaunchProfileHandler : IProjectLaunchProfileHandler
             return createLaunchProfileValues(launchSettings);
         }
 
-        return Enumerable.Empty<IEntityValue>();
+        return [];
 
         IEnumerable<IEntityValue> createLaunchProfileValues(ILaunchSettings launchSettings)
         {

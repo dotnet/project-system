@@ -264,10 +264,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                 // We removed the primary workspace
 
                 // If we have a new primary workspace, use it.
-                if (firstWorkspace is not null)
-                {
-                    firstWorkspace.IsPrimary = true;
-                }
+                firstWorkspace?.IsPrimary = true;
 
                 // Set the new primary workspace (or theoretically null if no slices exist).
                 _primaryWorkspace = firstWorkspace;

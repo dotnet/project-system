@@ -25,8 +25,5 @@ internal interface IActiveConfiguredValue<T>
     ///     Gets the value from the active <see cref="ConfiguredProject"/>; otherwise,
     ///     <see langword="null"/> if it does not exist.
     /// </summary>
-    public T Value
-    {
-        get;
-    }
+    T Value { get; }
 }

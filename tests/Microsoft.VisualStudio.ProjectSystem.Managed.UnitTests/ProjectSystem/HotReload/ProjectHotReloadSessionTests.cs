@@ -592,7 +592,7 @@ public class ProjectHotReloadSessionTests
         mockDeltaApplier.Setup(d => d.ApplyUpdatesAsync(It.IsAny<ImmutableArray<ManagedHotReloadUpdate>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(ApplyResult.Success);
         mockDeltaApplier.Setup(d => d.GetCapabilitiesAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(ImmutableArray<string>.Empty);
+            .ReturnsAsync([]);
 
         var mockDeltaApplierCreator = new Mock<IManagedDeltaApplierCreator>();
         mockDeltaApplierCreator.Setup(c => c.CreateManagedDeltaApplier(It.IsAny<string>()))

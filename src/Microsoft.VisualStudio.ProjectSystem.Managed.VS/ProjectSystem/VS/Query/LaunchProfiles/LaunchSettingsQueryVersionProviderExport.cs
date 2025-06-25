@@ -36,7 +36,7 @@ internal class LaunchSettingsQueryVersionProviderExport : OnceInitializedOnceDis
     /// <summary>
     /// The set of change notification observers.
     /// </summary>
-    private ImmutableHashSet<IObserver<QueryDataSourceChangeNotification>> _observers = ImmutableHashSet<IObserver<QueryDataSourceChangeNotification>>.Empty;
+    private ImmutableHashSet<IObserver<QueryDataSourceChangeNotification>> _observers = [];
     /// <remarks>
     /// Used to keep track of whether or not a new subscriber has received its initial snapshot.
     /// </remarks>

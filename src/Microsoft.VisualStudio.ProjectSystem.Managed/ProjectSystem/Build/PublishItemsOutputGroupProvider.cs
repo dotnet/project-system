@@ -47,7 +47,7 @@ internal class PublishItemsOutputGroupProvider : IOutputGroupProvider
 
             return hasPublishItemsTarget
                 ? s_outputGroups
-                : ImmutableHashSet<IOutputGroup>.Empty;
+                : [];
         }
     }
 

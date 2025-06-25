@@ -63,7 +63,7 @@ public class CreateFileFromTemplateServiceTests
             Assert.Equal(VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, itemOperation);
             Assert.Equal(fileName, itemName);
             Assert.Equal((uint)1, cOpen);
-            Assert.Equal(new string[] { templateFilePath }, files);
+            Assert.Equal([templateFilePath], files);
 
             result[0] = expectedResult ? VSADDRESULT.ADDRESULT_Success : VSADDRESULT.ADDRESULT_Failure;
 

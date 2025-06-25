@@ -5,28 +5,17 @@ using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Project = Microsoft.CodeAnalysis.Project;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic;
 
+/// <summary>
+/// Returns the set of splash screen forms in a project.
+/// </summary>
 [ExportDynamicEnumValuesProvider("SplashScreenEnumProvider")]
 [AppliesTo(ProjectCapability.VisualBasic)]
-internal class SplashScreenEnumProvider : IDynamicEnumValuesProvider
+[method: ImportingConstructor]
+internal sealed class SplashScreenEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject unconfiguredProject, ProjectProperties propertiesProvider) : IDynamicEnumValuesProvider
 {
-    private readonly Workspace _workspace;
-    private readonly UnconfiguredProject _unconfiguredProject;
-    private readonly ProjectProperties _properties;
-
-    [ImportingConstructor]
-    public SplashScreenEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace,
-                                    UnconfiguredProject unconfiguredProject,
-                                    ProjectProperties propertiesProvider)
-    {
-        _workspace = workspace;
-        _unconfiguredProject = unconfiguredProject;
-        _properties = propertiesProvider;
-    }
-
     public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
     {
         // We only include a value representing the "not set" state if requested. This is
@@ -40,50 +29,41 @@ internal class SplashScreenEnumProvider : IDynamicEnumValuesProvider
             && bool.TryParse(pair.Value, out bool optionValue)
             && optionValue) ?? false;
 
-        return Task.FromResult<IDynamicEnumValuesGenerator>(new SplashScreenEnumGenerator(_workspace, _unconfiguredProject, _properties, includeEmptyValue, true));
+        return Task.FromResult<IDynamicEnumValuesGenerator>(new SplashScreenEnumGenerator(workspace, unconfiguredProject, propertiesProvider, includeEmptyValue, searchForEntryPointsInFormsOnly: true));
     }
 
-    internal class SplashScreenEnumGenerator : IDynamicEnumValuesGenerator
+    private sealed class SplashScreenEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject, ProjectProperties properties, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly) : IDynamicEnumValuesGenerator
     {
         public bool AllowCustomValues => false;
-        private readonly Workspace _workspace;
-        private readonly UnconfiguredProject _unconfiguredProject;
-        private readonly ProjectProperties _properties;
-        private readonly bool _includeEmptyValue;
-        private readonly bool _searchForEntryPointsInFormsOnly;
-
-        public SplashScreenEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject, ProjectProperties properties, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly)
-        {
-            _workspace = workspace;
-            _unconfiguredProject = unconfiguredProject;
-            _properties = properties;
-            _includeEmptyValue = includeEmptyValue;
-            _searchForEntryPointsInFormsOnly = searchForEntryPointsInFormsOnly;
-        }
 
         public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
-            Project? project = _workspace.CurrentSolution.Projects.FirstOrDefault(p => PathHelper.IsSamePath(p.FilePath!, _unconfiguredProject.FullPath));
+            Project? project = workspace.CurrentSolution.Projects.FirstOrDefault(p => PathHelper.IsSamePath(p.FilePath!, unconfiguredProject.FullPath));
+
             if (project is null)
             {
-                return Array.Empty<IEnumValue>();
+                return [];
             }
 
             Compilation? compilation = await project.GetCompilationAsync();
+
             if (compilation is null)
             {
                 // Project does not support compilations
-                return Array.Empty<IEnumValue>();
+                return [];
             }
 
-            List<IEnumValue> enumValues = new();
-            if (_includeEmptyValue)
+            List<IEnumValue> enumValues = [];
+
+            if (includeEmptyValue)
             {
-                enumValues.Add(new PageEnumValue(new EnumValue { Name = string.Empty, DisplayName = VSResources.StartupObjectNotSet }));
+                enumValues.Add(new PageEnumValue(new EnumValue { Name = "", DisplayName = VSResources.StartupObjectNotSet }));
             }
 
             IEntryPointFinderService? entryPointFinderService = project.Services.GetService<IEntryPointFinderService>();
-            IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation.GlobalNamespace, _searchForEntryPointsInFormsOnly);
+
+            IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation, searchForEntryPointsInFormsOnly);
+
             if (entryPoints is not null)
             {
                 enumValues.AddRange(entryPoints.Select(ep =>
@@ -97,7 +77,8 @@ internal class SplashScreenEnumProvider : IDynamicEnumValuesProvider
             }
 
             // Remove selected startup object (if any) from the list, as a user should not be able to select it again.
-            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+            ConfigurationGeneral configuration = await properties.GetConfigurationGeneralPropertiesAsync();
+
             object? startupObjectObject = await configuration.StartupObject.GetValueAsync();
 
             if (startupObjectObject is string { Length: > 0 } startupObject)

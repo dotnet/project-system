@@ -11,7 +11,7 @@ internal class OrderAddItemHintReceiver : IProjectChangeHintReceiver
 {
     private readonly IProjectAccessor _accessor;
 
-    private ImmutableHashSet<string> _previousIncludes = ImmutableHashSet<string>.Empty;
+    private ImmutableHashSet<string> _previousIncludes = [];
     private OrderingMoveAction _action = OrderingMoveAction.NoOp;
     private IProjectTree? _target;
     private bool _isHinting;
@@ -78,7 +78,7 @@ internal class OrderAddItemHintReceiver : IProjectChangeHintReceiver
     {
         _action = OrderingMoveAction.NoOp;
         _target = null;
-        _previousIncludes = ImmutableHashSet<string>.Empty;
+        _previousIncludes = [];
         _isHinting = false;
     }
 

@@ -119,7 +119,7 @@ public partial class AbstractEvaluationCommandLineHandlerTests
 
         ApplyProjectEvaluation(context, handler, 1, difference, metadata: metadata);
 
-        string[] expectedFiles = new[] { @"C:\Project\B.cs", @"C:\Project\C.cs" };
+        string[] expectedFiles = [@"C:\Project\B.cs", @"C:\Project\C.cs"];
         Assert.Equal(expectedFiles.OrderBy(f => f), handler.FileNames.OrderBy(f => f));
     }
 
@@ -152,7 +152,7 @@ public partial class AbstractEvaluationCommandLineHandlerTests
     [InlineData("A.cs;B.cs;C.cs",                  "A.cs;E.cs;F.cs",                @"C:\Project\B.cs;C:\Project\C.cs")]
     public void ApplyProjectEvaluation_WithExistingEvaluationChanges_CanRemoveItem(string currentFiles, string filesToRemove, string expected)
     {
-        string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
+        string[] expectedFiles = expected.Length == 0 ? [] : expected.Split(';');
 
         var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", currentFiles);
         var context = IWorkspaceProjectContextMockFactory.Create();
@@ -172,7 +172,7 @@ public partial class AbstractEvaluationCommandLineHandlerTests
     [InlineData("A.cs;B.cs;C.cs",                  "A.cs;E.cs;F.cs",                @"C:\Project\B.cs;C:\Project\C.cs")]
     public void ApplyProjectBuild_WithExistingEvaluationChanges_CanRemoveItem(string currentFiles, string filesToRemove, string expected)
     {
-        string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
+        string[] expectedFiles = expected.Length == 0 ? [] : expected.Split(';');
 
         var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", currentFiles);
         var context = IWorkspaceProjectContextMockFactory.Create();
@@ -232,7 +232,7 @@ public partial class AbstractEvaluationCommandLineHandlerTests
     [InlineData("A.cs;B.cs;C.cs",                  "A.cs;E.cs;F.cs",                @"C:\Project\B.cs;C:\Project\C.cs")]
     public void ApplyProjectEvaluation_WithExistingDesignTimeChanges_CanRemoveItem(string currentFiles, string filesToRemove, string expected)
     {
-        string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
+        string[] expectedFiles = expected.Length == 0 ? [] : expected.Split(';');
 
         var handler = CreateInstanceWithDesignTimeItems(@"C:\Project\Project.csproj", currentFiles);
         var context = IWorkspaceProjectContextMockFactory.Create();
@@ -252,7 +252,7 @@ public partial class AbstractEvaluationCommandLineHandlerTests
     [InlineData("A.cs;B.cs;C.cs",                  "A.cs;E.cs;F.cs",                @"C:\Project\B.cs;C:\Project\C.cs")]
     public void ApplyProjectBuild_WithExistingDesignTimeChanges_CanRemoveItem(string currentFiles, string filesToRemove, string expected)
     {
-        string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
+        string[] expectedFiles = expected.Length == 0 ? [] : expected.Split(';');
 
         var handler = CreateInstanceWithDesignTimeItems(@"C:\Project\Project.csproj", currentFiles);
         var context = IWorkspaceProjectContextMockFactory.Create();
@@ -270,7 +270,7 @@ public partial class AbstractEvaluationCommandLineHandlerTests
     [InlineData("A.cs;B.cs",                       "A.cs;B.cs",         "B.cs;A.cs",                     @"C:\Project\A.cs;C:\Project\B.cs")]
     public void ApplyProjectEvaluation_WithExistingEvaluationChanges_CanRenameItem(string currentFiles, string originalNames, string newNames, string expected)
     {
-        string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
+        string[] expectedFiles = expected.Length == 0 ? [] : expected.Split(';');
 
         var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", currentFiles);
         var context = IWorkspaceProjectContextMockFactory.Create();
@@ -289,7 +289,7 @@ public partial class AbstractEvaluationCommandLineHandlerTests
     [InlineData("A.cs;B.cs",                       "A.cs;B.cs",         "B.cs;A.cs",                     @"C:\Project\A.cs;C:\Project\B.cs")]
     public void ApplyProjectEvaluation_WithExistingDesignTimeChanges_CanRenameItem(string currentFiles, string originalNames, string newNames, string expected)
     {
-        string[] expectedFiles = expected.Length == 0 ? Array.Empty<string>() : expected.Split(';');
+        string[] expectedFiles = expected.Length == 0 ? [] : expected.Split(';');
 
         var handler = CreateInstanceWithDesignTimeItems(@"C:\Project\Project.csproj", currentFiles);
         var context = IWorkspaceProjectContextMockFactory.Create();

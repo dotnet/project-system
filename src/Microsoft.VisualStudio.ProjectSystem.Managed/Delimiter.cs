@@ -10,23 +10,23 @@ internal static class Delimiter
     /// <summary>
     /// Single, static instance of an array that contains a semi-colon ';', which is used to split strings, etc.
     /// </summary>
-    internal static readonly char[] Semicolon = new char[] { ';' };
+    internal static readonly char[] Semicolon = [';'];
 
     /// <summary>
     /// Single, static instance of an array that contains a period '.', which is used to split strings, etc.
     /// </summary>
-    internal static readonly char[] Period = new char[] { '.' };
+    internal static readonly char[] Period = ['.'];
 
     /// <summary>
     /// Single, static instance of an array that contains '+' and '-' characters.
     /// </summary>
-    internal static readonly char[] PlusAndMinus = new char[] { '+', '-' };
+    internal static readonly char[] PlusAndMinus = ['+', '-'];
 
     /// <summary>
     /// Single, static instance of an array that contains platform-specific path separators
     /// </summary>
-    internal static readonly char[] Path = new char[]
-    {
+    internal static readonly char[] Path =
+    [
         System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar
-    };
+    ];
 }

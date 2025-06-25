@@ -20,8 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 /// </para>
 /// </remarks>
 [ExportInterceptingPropertyValueProvider(
-    new[]
-    {
+    [
         ImplicitConversionPropertyName,
         LateBindingPropertyName,
         ImplicitTypePropertyName,
@@ -32,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
         InstanceVariableAccessesSharedMemberPropertyName,
         RecursiveOperatorOrPropertyAccessPropertyName,
         DuplicateOrOverlappingCatchBlocksPropertyName
-    },
+    ],
     ExportInterceptingPropertyValueProviderFile.ProjectFile)]
 internal sealed class VBWarningsValueProvider : InterceptingPropertyValueProviderBase
 {
@@ -76,7 +75,7 @@ internal sealed class VBWarningsValueProvider : InterceptingPropertyValueProvide
 
     private const string DiagnosticIdSeparator = ",";
 
-    private static readonly string[] s_diagnosticIdSeparators = new[] { DiagnosticIdSeparator };
+    private static readonly string[] s_diagnosticIdSeparators = [DiagnosticIdSeparator];
 
     public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
     {
@@ -217,7 +216,7 @@ internal sealed class VBWarningsValueProvider : InterceptingPropertyValueProvide
 
     private static ImmutableSortedSet<int> ParseIdList(string idList)
     {
-        ImmutableSortedSet<int> ids = ImmutableSortedSet<int>.Empty;
+        ImmutableSortedSet<int> ids = [];
         string[] idsAsStrings = idList.Split(s_diagnosticIdSeparators, StringSplitOptions.RemoveEmptyEntries);
         foreach (string idString in idsAsStrings)
         {

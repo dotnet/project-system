@@ -98,7 +98,7 @@ public class DesignTimeAssemblyResolutionTests
     {
         var resolution = CreateInstance();
 
-        var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 0, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
+        var result = resolution.ResolveAssemblyPathInTargetFx(["mscorlib"], 0, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
 
         Assert.Equal(VSConstants.E_INVALIDARG, result);
         Assert.Equal(0u, resolvedAssemblyPaths);
@@ -109,7 +109,7 @@ public class DesignTimeAssemblyResolutionTests
     {
         var resolution = CreateInstance();
 
-        var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 1, null, out uint resolvedAssemblyPaths);
+        var result = resolution.ResolveAssemblyPathInTargetFx(["mscorlib"], 1, null, out uint resolvedAssemblyPaths);
 
         Assert.Equal(VSConstants.E_INVALIDARG, result);
         Assert.Equal(0u, resolvedAssemblyPaths);
@@ -120,7 +120,7 @@ public class DesignTimeAssemblyResolutionTests
     {
         var resolution = CreateInstance();
 
-        var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib", "System" }, 1, new VsResolvedAssemblyPath[2], out uint resolvedAssemblyPaths);
+        var result = resolution.ResolveAssemblyPathInTargetFx(["mscorlib", "System"], 1, new VsResolvedAssemblyPath[2], out uint resolvedAssemblyPaths);
 
         Assert.Equal(VSConstants.E_INVALIDARG, result);
         Assert.Equal(0u, resolvedAssemblyPaths);
@@ -131,7 +131,7 @@ public class DesignTimeAssemblyResolutionTests
     {
         var resolution = CreateInstance();
 
-        var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib", "System" }, 2, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
+        var result = resolution.ResolveAssemblyPathInTargetFx(["mscorlib", "System"], 2, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
 
         Assert.Equal(VSConstants.E_INVALIDARG, result);
         Assert.Equal(0u, resolvedAssemblyPaths);
@@ -142,7 +142,7 @@ public class DesignTimeAssemblyResolutionTests
     {
         var resolution = CreateInstance();
 
-        var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 2, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
+        var result = resolution.ResolveAssemblyPathInTargetFx(["mscorlib"], 2, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
 
         Assert.Equal(VSConstants.E_INVALIDARG, result);
         Assert.Equal(0u, resolvedAssemblyPaths);
@@ -153,7 +153,7 @@ public class DesignTimeAssemblyResolutionTests
     {
         var resolution = CreateInstance();
 
-        var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 1, new VsResolvedAssemblyPath[2], out uint resolvedAssemblyPaths);
+        var result = resolution.ResolveAssemblyPathInTargetFx(["mscorlib"], 1, new VsResolvedAssemblyPath[2], out uint resolvedAssemblyPaths);
 
         Assert.Equal(VSConstants.E_INVALIDARG, result);
         Assert.Equal(0u, resolvedAssemblyPaths);
@@ -166,7 +166,7 @@ public class DesignTimeAssemblyResolutionTests
 
         var resolution = CreateInstance(reference);
 
-        var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
+        var result = resolution.ResolveAssemblyPathInTargetFx(["mscorlib"], 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
 
         Assert.Equal(VSConstants.S_OK, result);
         Assert.Equal(0u, resolvedAssemblyPaths);
@@ -179,7 +179,7 @@ public class DesignTimeAssemblyResolutionTests
 
         var resolution = CreateInstance(reference);
 
-        var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
+        var result = resolution.ResolveAssemblyPathInTargetFx(["mscorlib"], 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
 
         Assert.Equal(VSConstants.S_OK, result);
         Assert.Equal(0u, resolvedAssemblyPaths);
@@ -193,7 +193,7 @@ public class DesignTimeAssemblyResolutionTests
 
         var resolution = CreateInstance(reference);
 
-        var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
+        var result = resolution.ResolveAssemblyPathInTargetFx(["mscorlib"], 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
 
         Assert.Equal(VSConstants.S_OK, result);
         Assert.Equal(0u, resolvedAssemblyPaths);
@@ -209,7 +209,7 @@ public class DesignTimeAssemblyResolutionTests
     {
         var resolution = CreateInstance();
 
-        var result = resolution.ResolveAssemblyPathInTargetFx(new string?[] { input }, 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
+        var result = resolution.ResolveAssemblyPathInTargetFx([input], 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
 
         Assert.Equal(VSConstants.E_INVALIDARG, result);
         Assert.Equal(0u, resolvedAssemblyPaths);
@@ -233,7 +233,7 @@ public class DesignTimeAssemblyResolutionTests
         var resolution = CreateInstance(reference);
 
         var resolvedPaths = new VsResolvedAssemblyPath[1];
-        var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { input }, 1, resolvedPaths, out uint resolvedAssemblyPaths);
+        var result = resolution.ResolveAssemblyPathInTargetFx([input], 1, resolvedPaths, out uint resolvedAssemblyPaths);
 
         Assert.Equal(VSConstants.S_OK, result);
         Assert.Equal(1u, resolvedAssemblyPaths);
@@ -254,7 +254,7 @@ public class DesignTimeAssemblyResolutionTests
         var resolution = CreateInstance(reference);
 
         var resolvedPaths = new VsResolvedAssemblyPath[1];
-        var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { input }, 1, resolvedPaths, out uint resolvedAssemblyPaths);
+        var result = resolution.ResolveAssemblyPathInTargetFx([input], 1, resolvedPaths, out uint resolvedAssemblyPaths);
 
         Assert.Equal(VSConstants.S_OK, result);
         Assert.Equal(0u, resolvedAssemblyPaths);
@@ -268,7 +268,7 @@ public class DesignTimeAssemblyResolutionTests
         var resolution = CreateInstance();
         resolution.Dispose();
 
-        var result = resolution.ResolveAssemblyPathInTargetFx(new[] { "System" }, 1, new VsResolvedAssemblyPath[1], out _);
+        var result = resolution.ResolveAssemblyPathInTargetFx(["System"], 1, new VsResolvedAssemblyPath[1], out _);
 
         Assert.Equal(VSConstants.E_UNEXPECTED, result);
     }

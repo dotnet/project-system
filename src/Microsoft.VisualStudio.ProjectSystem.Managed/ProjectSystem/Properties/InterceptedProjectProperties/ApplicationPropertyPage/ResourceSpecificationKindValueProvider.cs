@@ -14,7 +14,7 @@ internal sealed class ResourceSpecificationKindValueProvider : InterceptingPrope
     internal const string IconAndManifestValue = "IconAndManifest";
     internal const string ResourceFileValue = "ResourceFile";
 
-    private static readonly string[] s_msBuildPropertyNames = { Win32ResourceMSBuildProperty, ApplicationIconMSBuildProperty, ApplicationManifestMSBuildProperty };
+    private static readonly string[] s_msBuildPropertyNames = [Win32ResourceMSBuildProperty, ApplicationIconMSBuildProperty, ApplicationManifestMSBuildProperty];
 
     [ImportingConstructor]
     public ResourceSpecificationKindValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)

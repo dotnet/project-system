@@ -609,31 +609,19 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
                 _project,
                 severity: ProjectFaultSeverity.Recoverable);
 
-            if (FileChangeScheduler is not null)
-            {
-                FileChangeScheduler.Dispose();
-                FileChangeScheduler = null;
-            }
+            FileChangeScheduler?.Dispose();
+            FileChangeScheduler = null;
 
             _sequentialTaskQueue.Dispose();
-
-            if (_versionedBroadcastBlock is not null)
-            {
-                _versionedBroadcastBlock.Complete();
-                _versionedBroadcastBlock = null;
-            }
-
-            if (_broadcastBlock is not null)
-            {
-                _broadcastBlock.Complete();
-                _broadcastBlock = null;
-            }
-
-            if (_projectRuleSubscriptionLink is not null)
-            {
-                _projectRuleSubscriptionLink.Dispose();
-                _projectRuleSubscriptionLink = null;
-            }
+            
+            _versionedBroadcastBlock?.Complete();
+            _versionedBroadcastBlock = null;
+            
+            _broadcastBlock?.Complete();
+            _broadcastBlock = null;
+            
+            _projectRuleSubscriptionLink?.Dispose();
+            _projectRuleSubscriptionLink = null;
 
             _firstSnapshotCompletionSource.TrySetCanceled();
         }
