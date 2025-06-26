@@ -109,7 +109,7 @@
 
     <!-- Hot Reload -->
     <PackageVersion Include="Microsoft.VisualStudio.Debugger.Contracts"                              Version="17.13.0-beta.25272.1" />
-    <PackageVersion Include="Microsoft.VisualStudio.HotReload.Components"                            Version="18.0.138-preview-0001" />
+    <PackageVersion Include="Microsoft.VisualStudio.HotReload.Components"                            Version="18.0.164-preview-0001" />
 
     <!-- 3rd party -->
     <PackageVersion Include="Newtonsoft.Json"                                                        Version="13.0.3" />
