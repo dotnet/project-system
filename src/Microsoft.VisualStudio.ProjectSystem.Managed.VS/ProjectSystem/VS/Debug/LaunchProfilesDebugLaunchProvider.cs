@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -21,18 +22,25 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     private readonly IVsService<IVsDebuggerLaunchAsync> _vsDebuggerService;
     // Launch providers to enforce requirements for debuggable projects
     private readonly ILaunchSettingsProvider _launchSettingsProvider;
-
+    private readonly Lazy<IHotReloadOptionService> _debuggerSettings;
+    private readonly ConfiguredProject _configuredProject;
+    private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
     private IDebugProfileLaunchTargetsProvider? _lastLaunchProvider;
 
     [ImportingConstructor]
     public LaunchProfilesDebugLaunchProvider(
         ConfiguredProject configuredProject,
         ILaunchSettingsProvider launchSettingsProvider,
+        Lazy<IHotReloadOptionService> debuggerSettings,
+        Lazy<IProjectHotReloadSessionManager> hotReloadSessionManager,
         IVsService<IVsDebuggerLaunchAsync> vsDebuggerService)
         : base(configuredProject)
     {
         _launchSettingsProvider = launchSettingsProvider;
         _vsDebuggerService = vsDebuggerService;
+        _debuggerSettings = debuggerSettings;
+        _configuredProject = configuredProject;
+        _hotReloadSessionManager = hotReloadSessionManager;
 
         LaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(projectCapabilityCheckProvider: configuredProject.UnconfiguredProject);
     }
@@ -188,6 +196,24 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             return;
         }
 
+        if (await HotReloadShouldBeEnabledAsync(profile, launchOptions)
+            && targets.FirstOrDefault(x => x is DebugLaunchSettings) is DebugLaunchSettings consoleTargetSettings
+            && await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(
+                configuredProject: _configuredProject,
+                launchProvider: this,
+                consoleTargetSettings.Environment,
+                launchOptions,
+                profile))
+        {
+            // Enable XAML Hot Reload
+            consoleTargetSettings.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] = "1";
+
+            if (consoleTargetSettings.Environment.Count > 0)
+            {
+                consoleTargetSettings.LaunchOptions |= DebugLaunchOptions.MergeEnvironment;
+            }
+        }
+
         VsDebugTargetInfo4[] launchSettingsNative = targets.Select(GetDebuggerStruct4).ToArray();
 
         try
@@ -223,6 +249,24 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
 
         // Return false to allow normal processing
         localPath = null;
+        return false;
+    }
+
+    private async Task<bool> HotReloadShouldBeEnabledAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions)
+    {
+        bool hotReloadEnabledAtProjectLevel = resolvedProfile.IsRunProjectCommand()
+            && resolvedProfile.IsHotReloadEnabled()
+            && !resolvedProfile.IsRemoteDebugEnabled()
+            && (launchOptions & DebugLaunchOptions.Profiling) != DebugLaunchOptions.Profiling;
+
+        if (hotReloadEnabledAtProjectLevel)
+        {
+            bool debugging = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
+            bool hotReloadEnabledGlobally = await _debuggerSettings.Value.IsHotReloadEnabledAsync(debugging, default);
+
+            return hotReloadEnabledGlobally;
+        }
+
         return false;
     }
 }

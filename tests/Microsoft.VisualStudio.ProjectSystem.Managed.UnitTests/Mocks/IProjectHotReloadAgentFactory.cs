@@ -6,9 +6,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS;
 
 internal static class IProjectHotReloadAgentFactory
 {
-    public static IProjectHotReloadAgent Create(IProjectHotReloadSession? session = null)
+    public static IProjectHotReloadAgent2 Create(IProjectHotReloadSession? session = null)
     {
-        var mock = new Mock<IProjectHotReloadAgent>();
+        var mock = new Mock<IProjectHotReloadAgent2>();
 
         if (session is null)
         {

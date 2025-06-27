@@ -19,11 +19,10 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
     private readonly Lazy<IManagedDeltaApplierCreator> _deltaApplierCreator;
     private readonly IProjectHotReloadSessionCallback _callback;
+    private readonly IProjectHotReloadBuildManager _buildManager;
     private readonly ILaunchProfile? _launchProfile;
     private readonly DebugLaunchOptions? _debugLaunchOptions;
-    private readonly IProjectHotReloadSessionManager? _sessionManager;
-    private readonly IProjectHotReloadBuildManager _buildManager;
-    private readonly IProjectHotReloadLaunchProvider _launchProvider;
+    private readonly IProjectHotReloadLaunchProvider? _launchProvider;
     private bool _sessionActive;
     private IDeltaApplier? _deltaApplier;
 
@@ -36,8 +35,7 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
         Lazy<IManagedDeltaApplierCreator> deltaApplierCreator,
         IProjectHotReloadSessionCallback callback,
         IProjectHotReloadBuildManager buildManager,
-        IProjectHotReloadLaunchProvider launchProvider,
-        IProjectHotReloadSessionManager? sessionManager = null,
+        IProjectHotReloadLaunchProvider? launchProvider = null,
         ConfiguredProject? configuredProject = null,
         ILaunchProfile? launchProfile = null,
         DebugLaunchOptions? debugLaunchOptions = null)
@@ -53,7 +51,6 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
         _launchProfile = launchProfile;
         _buildManager = buildManager;
         _launchProvider = launchProvider;
-        _sessionManager = sessionManager;
         _debugLaunchOptions = debugLaunchOptions;
     }
 
@@ -197,7 +194,7 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
     public async ValueTask RestartAsync(CancellationToken cancellationToken)
     {
         WriteToOutputWindow(Resources.HotReloadRestartInProgress, cancellationToken);
-        if (_launchProfile is not null && _debugLaunchOptions.HasValue && _sessionManager is not null)
+        if (_launchProfile is not null && _debugLaunchOptions.HasValue && _launchProvider is not null)
         {
             // build project first
             var isSucceed = await _buildManager.BuildProjectAsync(cancellationToken);
@@ -223,7 +220,7 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
 
     public ValueTask<bool> SupportsRestartAsync(CancellationToken cancellationToken)
     {
-        return new ValueTask<bool>(_launchProfile is not null && _debugLaunchOptions.HasValue);
+        return new ValueTask<bool>(_launchProfile is not null && _debugLaunchOptions.HasValue && _launchProvider is not null);
     }
 
     private void WriteToOutputWindow(string message, CancellationToken cancellationToken, HotReloadVerbosity verbosity = HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel errorLevel = HotReloadDiagnosticErrorLevel.Info)

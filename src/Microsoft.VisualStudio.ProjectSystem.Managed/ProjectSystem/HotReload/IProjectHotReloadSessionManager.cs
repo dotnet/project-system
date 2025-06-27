@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 /// <summary>
 /// Tracks and manages the pending and active Hot Reload sessions for the project.
 /// </summary>
-[ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+[ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
 internal interface IProjectHotReloadSessionManager
 {
     /// <summary>
@@ -18,7 +18,12 @@ internal interface IProjectHotReloadSessionManager
     /// <see langword="true"/> if the session was created; <see langword="false"/>
     /// otherwise.
     /// </returns>
-    Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables, DebugLaunchOptions? launchOptions, ILaunchProfile? launchProfile);
+    Task<bool> TryCreatePendingSessionAsync(
+        ConfiguredProject configuredProject,
+        IProjectHotReloadLaunchProvider launchProvider,
+        IDictionary<string, string> environmentVariables,
+        DebugLaunchOptions launchOptions,
+        ILaunchProfile launchProfile);
 
     /// <summary>
     /// Activates the pending Hot Reload session and associates it with the specified

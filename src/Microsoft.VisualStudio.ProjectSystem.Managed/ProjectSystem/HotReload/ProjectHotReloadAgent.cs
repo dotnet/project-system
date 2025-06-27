@@ -2,32 +2,31 @@
 
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
+[Export(typeof(IProjectHotReloadAgent2))]
 [Export(typeof(IProjectHotReloadAgent))]
-internal class ProjectHotReloadAgent : IProjectHotReloadAgent
+internal class ProjectHotReloadAgent : IProjectHotReloadAgent2
 {
     private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
     private readonly Lazy<IManagedDeltaApplierCreator> _managedDeltaApplierCreator;
     private readonly IProjectHotReloadBuildManager _buildManager;
-    private readonly IProjectHotReloadLaunchProvider _launchProvider;
 
     [ImportingConstructor]
     public ProjectHotReloadAgent(
         Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
         Lazy<IManagedDeltaApplierCreator> managedDeltaApplierCreator,
-        IProjectHotReloadBuildManager buildManager,
-        IProjectHotReloadLaunchProvider launchProvider)
+        IProjectHotReloadBuildManager buildManager)
     {
         _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
         _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
         _managedDeltaApplierCreator = managedDeltaApplierCreator;
         _buildManager = buildManager;
-        _launchProvider = launchProvider;
     }
 
     public IProjectHotReloadSession? CreateHotReloadSession(string id, int variant, string runtimeVersion, IProjectHotReloadSessionCallback callback)
@@ -41,12 +40,37 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent
             _managedDeltaApplierCreator,
             callback,
             _buildManager,
-            _launchProvider,
+            launchProvider: null,
             configuredProject: null);
     }
 
     public IProjectHotReloadSession? CreateHotReloadSession(string id, string runtimeVersion, IProjectHotReloadSessionCallback callback)
     {
         return CreateHotReloadSession(id, 0, runtimeVersion, callback);
+    }
+
+    public IProjectHotReloadSession CreateHotReloadSession(
+        string id,
+        int variant,
+        string runtimeVersion,
+        ConfiguredProject configuredProject,
+        IProjectHotReloadLaunchProvider launchProvider,
+        IProjectHotReloadSessionCallback callback,
+        ILaunchProfile launchProfile,
+        DebugLaunchOptions debugLaunchOptions)
+    {
+        return new ProjectHotReloadSession(
+            name: id,
+            variant: variant,
+            runtimeVersion: runtimeVersion,
+            hotReloadAgentManagerClient: _hotReloadAgentManagerClient,
+            hotReloadOutputService: _hotReloadDiagnosticOutputService,
+            deltaApplierCreator: _managedDeltaApplierCreator,
+            callback: callback,
+            buildManager: _buildManager,
+            launchProvider: launchProvider,
+            configuredProject: configuredProject,
+            launchProfile: launchProfile,
+            debugLaunchOptions: debugLaunchOptions);
     }
 }
