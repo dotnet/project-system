@@ -568,6 +568,112 @@ public class ProjectHotReloadSessionTests
         }
     }
 
+    [Fact]
+    public async Task SupportsRestartAsync_WhenBuildManagerIsNull_ReturnsFalse()
+    {
+        // Arrange
+        var launchProfile = new Mock<ILaunchProfile>().Object;
+        var debugLaunchOptions = DebugLaunchOptions.NoDebug;
+        var launchProvider = new Mock<IProjectHotReloadLaunchProvider>().Object;
+
+        var session = CreateInstance(
+            launchProfile: launchProfile,
+            debugLaunchOptions: debugLaunchOptions,
+            buildManager: null, // Explicitly pass null
+            launchProvider: launchProvider);
+
+        // Act
+        bool result = await session.SupportsRestartAsync(CancellationToken.None);
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public async Task SupportsRestartAsync_WhenAllRequiredParametersPresent_ReturnsTrue()
+    {
+        // Arrange
+        var launchProfile = new Mock<ILaunchProfile>().Object;
+        var debugLaunchOptions = DebugLaunchOptions.NoDebug;
+        var buildManager = new Mock<IProjectHotReloadBuildManager>().Object;
+        var launchProvider = new Mock<IProjectHotReloadLaunchProvider>().Object;
+
+        var session = CreateInstance(
+            launchProfile: launchProfile,
+            debugLaunchOptions: debugLaunchOptions,
+            buildManager: buildManager,
+            launchProvider: launchProvider);
+
+        // Act
+        bool result = await session.SupportsRestartAsync(CancellationToken.None);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task SupportsRestartAsync_WhenLaunchProfileIsNull_ReturnsFalse()
+    {
+        // Arrange
+        var debugLaunchOptions = DebugLaunchOptions.NoDebug;
+        var buildManager = new Mock<IProjectHotReloadBuildManager>().Object;
+        var launchProvider = new Mock<IProjectHotReloadLaunchProvider>().Object;
+
+        var session = CreateInstance(
+            launchProfile: null, // Explicitly pass null
+            debugLaunchOptions: debugLaunchOptions,
+            buildManager: buildManager,
+            launchProvider: launchProvider);
+
+        // Act
+        bool result = await session.SupportsRestartAsync(CancellationToken.None);
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public async Task SupportsRestartAsync_WhenDebugLaunchOptionsIsNull_ReturnsFalse()
+    {
+        // Arrange
+        var launchProfile = new Mock<ILaunchProfile>().Object;
+        var buildManager = new Mock<IProjectHotReloadBuildManager>().Object;
+        var launchProvider = new Mock<IProjectHotReloadLaunchProvider>().Object;
+
+        var session = CreateInstance(
+            launchProfile: launchProfile,
+            debugLaunchOptions: null, // Explicitly pass null
+            buildManager: buildManager,
+            launchProvider: launchProvider);
+
+        // Act
+        bool result = await session.SupportsRestartAsync(CancellationToken.None);
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public async Task SupportsRestartAsync_WhenLaunchProviderIsNull_ReturnsFalse()
+    {
+        // Arrange
+        var launchProfile = new Mock<ILaunchProfile>().Object;
+        var debugLaunchOptions = DebugLaunchOptions.NoDebug;
+        var buildManager = new Mock<IProjectHotReloadBuildManager>().Object;
+
+        var session = CreateInstance(
+            launchProfile: launchProfile,
+            debugLaunchOptions: debugLaunchOptions,
+            buildManager: buildManager,
+            launchProvider: null); // Explicitly pass null
+
+        // Act
+        bool result = await session.SupportsRestartAsync(CancellationToken.None);
+
+        // Assert
+        Assert.False(result);
+    }
+
     #region Test Helpers
 
     private static ProjectHotReloadSession CreateInstance(
@@ -581,7 +687,9 @@ public class ProjectHotReloadSessionTests
         IProjectHotReloadSessionManager? sessionManager = null,
         ConfiguredProject? configuredProject = null,
         ILaunchProfile? launchProfile = null,
-        DebugLaunchOptions? debugLaunchOptions = null)
+        DebugLaunchOptions? debugLaunchOptions = null,
+        IProjectHotReloadBuildManager? buildManager = null,
+        IProjectHotReloadLaunchProvider? launchProvider = null)
     {
         hotReloadAgentManagerClient ??= new Lazy<IHotReloadAgentManagerClient>(() => Mock.Of<IHotReloadAgentManagerClient>());
         hotReloadOutputService ??= new Lazy<IHotReloadDiagnosticOutputService>(() => Mock.Of<IHotReloadDiagnosticOutputService>());
@@ -605,8 +713,8 @@ public class ProjectHotReloadSessionTests
             c.StopProjectAsync(It.IsAny<CancellationToken>()) == Task.FromResult(true) &&
             c.OnAfterChangesAppliedAsync(It.IsAny<CancellationToken>()) == Task.CompletedTask);
 
-        var buildManager = new Mock<IProjectHotReloadBuildManager>().Object;
-        var launchProvider = new Mock<IProjectHotReloadLaunchProvider>().Object;
+        buildManager ??= new Mock<IProjectHotReloadBuildManager>().Object;
+        launchProvider ??= new Mock<IProjectHotReloadLaunchProvider>().Object;
 
         return new ProjectHotReloadSession(
             name,

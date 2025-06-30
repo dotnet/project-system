@@ -220,7 +220,7 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
 
     public ValueTask<bool> SupportsRestartAsync(CancellationToken cancellationToken)
     {
-        return new ValueTask<bool>(_launchProfile is not null && _debugLaunchOptions.HasValue && _launchProvider is not null);
+        return new ValueTask<bool>(_launchProfile is not null && _debugLaunchOptions.HasValue && _launchProvider is not null && _buildManager is not null);
     }
 
     private void WriteToOutputWindow(string message, CancellationToken cancellationToken, HotReloadVerbosity verbosity = HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel errorLevel = HotReloadDiagnosticErrorLevel.Info)
