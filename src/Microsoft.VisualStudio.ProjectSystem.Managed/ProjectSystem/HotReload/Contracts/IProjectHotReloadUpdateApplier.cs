@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 /// Provides a mechanism to apply custom updates to the running hot reload sessions. Assumes all updates can be applied via the 
 /// IDeltaApplier created for this session
 /// </summary>
-[ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.System, Cardinality = ImportCardinality.ExactlyOne)]
+[ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.System, Cardinality = ImportCardinality.ExactlyOne)]
 public interface IProjectHotReloadUpdateApplier
 {
     /// <summary>

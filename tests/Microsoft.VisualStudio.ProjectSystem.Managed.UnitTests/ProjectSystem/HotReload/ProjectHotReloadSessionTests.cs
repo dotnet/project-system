@@ -618,7 +618,6 @@ public class ProjectHotReloadSessionTests
             callback,
             buildManager,
             launchProvider,
-            sessionManager,
             configuredProject,
             launchProfile,
             debugLaunchOptions);

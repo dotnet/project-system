@@ -22,6 +22,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
     private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
     private readonly IProjectHotReloadLaunchProvider _launchProvider;
     private readonly IProjectHotReloadAgent2 _hotReloadAgent;
+    private readonly IProjectHotReloadBuildManager _buildManager;
 
     // Protect the state from concurrent access. For example, our Process.Exited event
     // handler may run on one thread while we're still setting up the session on
@@ -42,6 +43,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
         Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
         IProjectHotReloadLaunchProvider launchProvider,
+        IProjectHotReloadBuildManager buildManager,
         IProjectHotReloadAgent2 hotReloadAgent)
         : base(threadingService.JoinableTaskContext)
     {
@@ -53,9 +55,10 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         _projectHotReloadNotificationService = projectHotReloadNotificationService;
         _hotReloadAgent = hotReloadAgent;
         _launchProvider = launchProvider;
+        _buildManager = buildManager;
         _semaphore = ReentrantSemaphore.Create(
             initialCount: 1,
-            joinableTaskContext: project.Services.ThreadingPolicy.JoinableTaskContext.Context,
+            joinableTaskContext: threadingService.JoinableTaskContext.Context,
             mode: ReentrantSemaphore.ReentrancyMode.Freeform);
     }
 
@@ -177,6 +180,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                         callback: state,
                         launchProfile: launchProfile,
                         launchProvider: _launchProvider,
+                        buildManager: _buildManager,
                         configuredProject: _configuredProject,
                         debugLaunchOptions: launchOptions);
 

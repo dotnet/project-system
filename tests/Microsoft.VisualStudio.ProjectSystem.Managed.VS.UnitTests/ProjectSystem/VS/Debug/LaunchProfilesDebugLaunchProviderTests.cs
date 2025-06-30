@@ -101,7 +101,7 @@ public class LaunchProfilesDebugLaunchProviderTests
 
     private LaunchProfilesDebugLaunchProvider CreateInstance()
     {
-        var provider = new LaunchProfilesDebugLaunchProvider(_configuredProjectMoq.Object, _launchSettingsProviderMoq.Object, vsDebuggerService: null!);
+        var provider = new LaunchProfilesDebugLaunchProvider(_configuredProjectMoq.Object, _launchSettingsProviderMoq.Object, hotReloadOptionSettings: null!, hotReloadSessionManager: null!, vsDebuggerService: null!);
 
         provider.LaunchTargetsProviders.Add(_mockWebProvider.Object);
         provider.LaunchTargetsProviders.Add(_mockDockerProvider.Object);

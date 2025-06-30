@@ -398,6 +398,17 @@ internal class ProjectLaunchTargetsProvider :
             settings.Options = JsonConvert.SerializeObject(debuggerLaunchOptions);
         }
 
+        if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions))
+        {
+            // Enable XAML Hot Reload
+            settings.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] = "1";
+        }
+
+        if (settings.Environment.Count > 0)
+        {
+            settings.LaunchOptions |= DebugLaunchOptions.MergeEnvironment;
+        }
+
         return settings;
 
         static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)

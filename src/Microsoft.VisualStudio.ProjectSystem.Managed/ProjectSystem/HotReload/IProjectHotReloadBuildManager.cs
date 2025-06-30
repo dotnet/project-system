@@ -2,6 +2,7 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
+[ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
 internal interface IProjectHotReloadBuildManager
 {
     Task<bool> BuildProjectAsync(CancellationToken cancellationToken);

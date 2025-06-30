@@ -14,19 +14,16 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent2
     private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
     private readonly Lazy<IManagedDeltaApplierCreator> _managedDeltaApplierCreator;
-    private readonly IProjectHotReloadBuildManager _buildManager;
 
     [ImportingConstructor]
     public ProjectHotReloadAgent(
         Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
-        Lazy<IManagedDeltaApplierCreator> managedDeltaApplierCreator,
-        IProjectHotReloadBuildManager buildManager)
+        Lazy<IManagedDeltaApplierCreator> managedDeltaApplierCreator)
     {
         _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
         _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
         _managedDeltaApplierCreator = managedDeltaApplierCreator;
-        _buildManager = buildManager;
     }
 
     public IProjectHotReloadSession? CreateHotReloadSession(string id, int variant, string runtimeVersion, IProjectHotReloadSessionCallback callback)
@@ -39,7 +36,7 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent2
             _hotReloadDiagnosticOutputService,
             _managedDeltaApplierCreator,
             callback,
-            _buildManager,
+            buildManager: null,
             launchProvider: null,
             configuredProject: null);
     }
@@ -55,6 +52,7 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent2
         string runtimeVersion,
         ConfiguredProject configuredProject,
         IProjectHotReloadLaunchProvider launchProvider,
+        IProjectHotReloadBuildManager buildManager,
         IProjectHotReloadSessionCallback callback,
         ILaunchProfile launchProfile,
         DebugLaunchOptions debugLaunchOptions)
@@ -67,7 +65,7 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent2
             hotReloadOutputService: _hotReloadDiagnosticOutputService,
             deltaApplierCreator: _managedDeltaApplierCreator,
             callback: callback,
-            buildManager: _buildManager,
+            buildManager: buildManager,
             launchProvider: launchProvider,
             configuredProject: configuredProject,
             launchProfile: launchProfile,

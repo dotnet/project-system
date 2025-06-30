@@ -22,7 +22,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     private readonly IVsService<IVsDebuggerLaunchAsync> _vsDebuggerService;
     // Launch providers to enforce requirements for debuggable projects
     private readonly ILaunchSettingsProvider _launchSettingsProvider;
-    private readonly Lazy<IHotReloadOptionService> _debuggerSettings;
+    private readonly Lazy<IHotReloadOptionService> _hotReloadOptionService;
     private readonly ConfiguredProject _configuredProject;
     private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
     private IDebugProfileLaunchTargetsProvider? _lastLaunchProvider;
@@ -31,14 +31,14 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     public LaunchProfilesDebugLaunchProvider(
         ConfiguredProject configuredProject,
         ILaunchSettingsProvider launchSettingsProvider,
-        Lazy<IHotReloadOptionService> debuggerSettings,
+        Lazy<IHotReloadOptionService> hotReloadOptionSettings,
         Lazy<IProjectHotReloadSessionManager> hotReloadSessionManager,
         IVsService<IVsDebuggerLaunchAsync> vsDebuggerService)
         : base(configuredProject)
     {
         _launchSettingsProvider = launchSettingsProvider;
         _vsDebuggerService = vsDebuggerService;
-        _debuggerSettings = debuggerSettings;
+        _hotReloadOptionService = hotReloadOptionSettings;
         _configuredProject = configuredProject;
         _hotReloadSessionManager = hotReloadSessionManager;
 
@@ -197,21 +197,14 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         }
 
         if (await HotReloadShouldBeEnabledAsync(profile, launchOptions)
-            && targets.FirstOrDefault(x => x is DebugLaunchSettings) is DebugLaunchSettings consoleTargetSettings
-            && await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(
+            && targets.FirstOrDefault(x => x is DebugLaunchSettings) is DebugLaunchSettings consoleTargetSettings)
+        {
+            await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(
                 configuredProject: _configuredProject,
                 launchProvider: this,
                 consoleTargetSettings.Environment,
                 launchOptions,
-                profile))
-        {
-            // Enable XAML Hot Reload
-            consoleTargetSettings.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] = "1";
-
-            if (consoleTargetSettings.Environment.Count > 0)
-            {
-                consoleTargetSettings.LaunchOptions |= DebugLaunchOptions.MergeEnvironment;
-            }
+                profile);
         }
 
         VsDebugTargetInfo4[] launchSettingsNative = targets.Select(GetDebuggerStruct4).ToArray();
@@ -262,7 +255,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         if (hotReloadEnabledAtProjectLevel)
         {
             bool debugging = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
-            bool hotReloadEnabledGlobally = await _debuggerSettings.Value.IsHotReloadEnabledAsync(debugging, default);
+            bool hotReloadEnabledGlobally = await _hotReloadOptionService.Value.IsHotReloadEnabledAsync(debugging, default);
 
             return hotReloadEnabledGlobally;
         }

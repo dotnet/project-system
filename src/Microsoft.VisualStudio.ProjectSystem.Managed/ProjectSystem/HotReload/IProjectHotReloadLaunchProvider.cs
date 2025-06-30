@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
+[ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
 internal interface IProjectHotReloadLaunchProvider
 {
     Task LaunchWithProfileAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);

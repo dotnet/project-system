@@ -22,6 +22,7 @@ internal interface IProjectHotReloadAgent2 : IProjectHotReloadAgent
         string runtimeVersion,
         ConfiguredProject configuredProject,
         IProjectHotReloadLaunchProvider launchProvider,
+        IProjectHotReloadBuildManager buildManager,
         IProjectHotReloadSessionCallback callback,
         ILaunchProfile launchProfile,
         DebugLaunchOptions debugLaunchOptions);

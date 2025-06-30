@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
-using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS;
@@ -27,7 +25,16 @@ public class ProjectHotReloadSessionManagerTests
         var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
         var environmentVariables = new Dictionary<string, string>();
-        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var launchOptions = DebugLaunchOptions.NoDebug;
+        var launchProfile = CreateMockLaunchProfile();
+        var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
+
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(
+            activeConfiguredProject,
+            launchProvider,
+            environmentVariables,
+            launchOptions,
+            launchProfile);
 
         Assert.True(sessionCreated);
     }
@@ -46,7 +53,16 @@ public class ProjectHotReloadSessionManagerTests
         var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
         var environmentVariables = new Dictionary<string, string>();
-        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var launchOptions = DebugLaunchOptions.NoDebug;
+        var launchProfile = CreateMockLaunchProfile();
+        var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
+
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(
+            activeConfiguredProject,
+            launchProvider,
+            environmentVariables,
+            launchOptions,
+            launchProfile);
 
         Assert.False(sessionCreated);
     }
@@ -65,7 +81,16 @@ public class ProjectHotReloadSessionManagerTests
         var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
         var environmentVariables = new Dictionary<string, string>();
-        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var launchOptions = DebugLaunchOptions.NoDebug;
+        var launchProfile = CreateMockLaunchProfile();
+        var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
+
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(
+            activeConfiguredProject,
+            launchProvider,
+            environmentVariables,
+            launchOptions,
+            launchProfile);
 
         Assert.False(sessionCreated);
     }
@@ -87,7 +112,16 @@ public class ProjectHotReloadSessionManagerTests
         var manager = CreateHotReloadSessionManager(activeConfiguredProject, OutputServiceCallback);
 
         var environmentVariables = new Dictionary<string, string>();
-        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var launchOptions = DebugLaunchOptions.NoDebug;
+        var launchProfile = CreateMockLaunchProfile();
+        var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
+
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(
+            activeConfiguredProject,
+            launchProvider,
+            environmentVariables,
+            launchOptions,
+            launchProfile);
 
         Assert.False(sessionCreated);
         Assert.True(outputServiceCalled);
@@ -108,7 +142,16 @@ public class ProjectHotReloadSessionManagerTests
         var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
         var environmentVariables = new Dictionary<string, string>();
-        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var launchOptions = DebugLaunchOptions.NoDebug;
+        var launchProfile = CreateMockLaunchProfile();
+        var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
+
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(
+            activeConfiguredProject,
+            launchProvider,
+            environmentVariables,
+            launchOptions,
+            launchProfile);
 
         Assert.False(sessionCreated);
     }
@@ -126,7 +169,16 @@ public class ProjectHotReloadSessionManagerTests
         var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
         var environmentVariables = new Dictionary<string, string>();
-        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var launchOptions = DebugLaunchOptions.NoDebug;
+        var launchProfile = CreateMockLaunchProfile();
+        var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
+
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(
+            activeConfiguredProject,
+            launchProvider,
+            environmentVariables,
+            launchOptions,
+            launchProfile);
 
         Assert.False(sessionCreated);
     }
@@ -145,7 +197,16 @@ public class ProjectHotReloadSessionManagerTests
         var manager = CreateHotReloadSessionManager(activeConfiguredProject);
 
         var environmentVariables = new Dictionary<string, string>();
-        var sessionCreated = await manager.TryCreatePendingSessionAsync(environmentVariables);
+        var launchOptions = DebugLaunchOptions.NoDebug;
+        var launchProfile = CreateMockLaunchProfile();
+        var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
+
+        var sessionCreated = await manager.TryCreatePendingSessionAsync(
+            activeConfiguredProject,
+            launchProvider,
+            environmentVariables,
+            launchOptions,
+            launchProfile);
 
         Assert.False(sessionCreated);
     }
@@ -175,16 +236,15 @@ public class ProjectHotReloadSessionManagerTests
             .Object;
 
         var manager = new ProjectHotReloadSessionManager(
-            project: UnconfiguredProjectFactory.Create(),
+            project: activeConfiguredProject,
             threadingService: IProjectThreadingServiceFactory.Create(),
             projectFaultHandlerService: IProjectFaultHandlerServiceFactory.Create(),
             activeDebugFrameworkServices: activeDebugFrameworkServices,
-            managedDeltaApplierCreator: new Lazy<IManagedDeltaApplierCreator>(IManagedDeltaApplierCreatorFactory.Create),
-            hotReloadAgentManagerClient: new Lazy<IHotReloadAgentManagerClient>(IHotReloadAgentManagerClientFactory.Create),
             hotReloadDiagnosticOutputService: new Lazy<IHotReloadDiagnosticOutputService>(() => IHotReloadDiagnosticOutputServiceFactory.Create(outputServiceCallback)),
             projectHotReloadNotificationService: new Lazy<IProjectHotReloadNotificationService>(IProjectHotReloadNotificationServiceFactory.Create),
             buildManager: IProjectHotReloadBuildManagerFactory.Create(),
-            launchProvider: IProjectHotReloadLaunchProviderFactory.Create());
+            launchProvider: IProjectHotReloadLaunchProviderFactory.Create(),
+            hotReloadAgent: IProjectHotReloadAgentFactory.Create());
 
         return manager;
     }
@@ -197,5 +257,13 @@ public class ProjectHotReloadSessionManagerTests
                 projectPropertiesProvider: IProjectPropertiesProviderFactory.Create(
                     commonProps: IProjectPropertiesFactory.CreateWithPropertiesAndValues(
                         propertyNamesAndValues))));
+    }
+
+    private static ILaunchProfile CreateMockLaunchProfile()
+    {
+        var mock = new Mock<ILaunchProfile>();
+        mock.Setup(p => p.Name).Returns("TestProfile");
+        mock.Setup(p => p.CommandName).Returns("TestCommand");
+        return mock.Object;
     }
 }
