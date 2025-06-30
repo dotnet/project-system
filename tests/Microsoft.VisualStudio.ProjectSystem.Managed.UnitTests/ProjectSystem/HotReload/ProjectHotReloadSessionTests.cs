@@ -713,9 +713,6 @@ public class ProjectHotReloadSessionTests
             c.StopProjectAsync(It.IsAny<CancellationToken>()) == Task.FromResult(true) &&
             c.OnAfterChangesAppliedAsync(It.IsAny<CancellationToken>()) == Task.CompletedTask);
 
-        buildManager ??= new Mock<IProjectHotReloadBuildManager>().Object;
-        launchProvider ??= new Mock<IProjectHotReloadLaunchProvider>().Object;
-
         return new ProjectHotReloadSession(
             name,
             variant,
