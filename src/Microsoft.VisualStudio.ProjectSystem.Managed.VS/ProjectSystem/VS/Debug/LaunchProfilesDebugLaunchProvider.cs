@@ -26,6 +26,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     private readonly ConfiguredProject _configuredProject;
     private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
     private IDebugProfileLaunchTargetsProvider? _lastLaunchProvider;
+    private readonly IProjectThreadingService _threadingService;
 
     [ImportingConstructor]
     public LaunchProfilesDebugLaunchProvider(
@@ -33,7 +34,8 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         ILaunchSettingsProvider launchSettingsProvider,
         Lazy<IHotReloadOptionService> hotReloadOptionSettings,
         Lazy<IProjectHotReloadSessionManager> hotReloadSessionManager,
-        IVsService<IVsDebuggerLaunchAsync> vsDebuggerService)
+        IVsService<IVsDebuggerLaunchAsync> vsDebuggerService,
+        [Import(AllowDefault = true)] IProjectThreadingService? threadingService = null)
         : base(configuredProject)
     {
         _launchSettingsProvider = launchSettingsProvider;
@@ -41,6 +43,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         _hotReloadOptionService = hotReloadOptionSettings;
         _configuredProject = configuredProject;
         _hotReloadSessionManager = hotReloadSessionManager;
+        _threadingService = threadingService ?? ThreadingService;
 
         LaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(projectCapabilityCheckProvider: configuredProject.UnconfiguredProject);
     }
@@ -214,7 +217,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             IVsDebuggerLaunchAsync shellDebugger = await _vsDebuggerService.GetValueAsync();
 
             // The debugger needs to be called on the UI thread
-            await ThreadingService.SwitchToUIThread();
+            await _threadingService.SwitchToUIThread(cancellationToken);
 
             shellDebugger.LaunchDebugTargetsAsync((uint)launchSettingsNative.Length, launchSettingsNative, callback);
         }

@@ -109,13 +109,15 @@ public class LaunchProfilesDebugLaunchProviderTests
         var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create();
         var mockVsDebuggerService = Mock.Of<IVsDebuggerLaunchAsync>();
+        var mockProjectThreadingService = IProjectThreadingServiceFactory.Create();
 
         var provider = new LaunchProfilesDebugLaunchProvider(
             _configuredProjectMoq.Object,
             _launchSettingsProviderMoq.Object,
             new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService),
             new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager),
-            IVsServiceFactory.Create(mockVsDebuggerService));
+            IVsServiceFactory.Create(mockVsDebuggerService),
+            mockProjectThreadingService);
 
         provider.LaunchTargetsProviders.Add(_mockExeProvider.Object);
 
@@ -147,15 +149,17 @@ public class LaunchProfilesDebugLaunchProviderTests
     {
         // Arrange
         var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        var mockProjectThreadingService = IProjectThreadingServiceFactory.Create();
 
         var mockVsDebuggerService = Mock.Of<IVsDebuggerLaunchAsync>();
-        var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create();
+        var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(false, false);
         var provider = new LaunchProfilesDebugLaunchProvider(
             _configuredProjectMoq.Object,
             _launchSettingsProviderMoq.Object,
             new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService),
             new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager),
-            IVsServiceFactory.Create(mockVsDebuggerService));
+            IVsServiceFactory.Create(mockVsDebuggerService),
+            mockProjectThreadingService);
 
         provider.LaunchTargetsProviders.Add(_mockExeProvider.Object);
 
@@ -190,13 +194,15 @@ public class LaunchProfilesDebugLaunchProviderTests
         var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create();
         var mockVsDebuggerService = Mock.Of<IVsDebuggerLaunchAsync>();
+        var mockProjectThreadingService = IProjectThreadingServiceFactory.Create();
 
         var provider = new LaunchProfilesDebugLaunchProvider(
             _configuredProjectMoq.Object,
             _launchSettingsProviderMoq.Object,
             new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService),
             new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager),
-            IVsServiceFactory.Create(mockVsDebuggerService));
+            IVsServiceFactory.Create(mockVsDebuggerService),
+            mockProjectThreadingService);
 
         provider.LaunchTargetsProviders.Add(_mockWebProvider.Object); // Use web provider instead
 
