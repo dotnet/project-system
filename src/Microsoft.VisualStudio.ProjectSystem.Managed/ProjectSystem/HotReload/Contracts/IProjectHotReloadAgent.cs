@@ -14,7 +14,7 @@ public interface IProjectHotReloadAgent
 }
 
 [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.System, Cardinality = ImportCardinality.ExactlyOne)]
-internal interface IProjectHotReloadAgent2 : IProjectHotReloadAgent
+public interface IProjectHotReloadAgent2 : IProjectHotReloadAgent
 {
     IProjectHotReloadSession CreateHotReloadSession(
         string id,

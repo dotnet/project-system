@@ -174,7 +174,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     /// <summary>
     /// Launches the Visual Studio debugger using the specified profile.
     /// </summary>
-    public async Task LaunchWithProfileAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+    public async Task LaunchWithProfileAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, CancellationToken cancellationToken = default)
     {
         IReadOnlyList<IDebugLaunchSettings> targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true, profile: profile);
 
