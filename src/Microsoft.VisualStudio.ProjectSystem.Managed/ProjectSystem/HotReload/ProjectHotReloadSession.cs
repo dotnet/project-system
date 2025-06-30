@@ -205,7 +205,7 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
                 return;
             }
 
-            await _launchProvider.LaunchWithProfileAsync(_debugLaunchOptions.Value, _launchProfile);
+            await _launchProvider.LaunchWithProfileAsync(_debugLaunchOptions.Value, _launchProfile, cancellationToken);
         }
     }
 

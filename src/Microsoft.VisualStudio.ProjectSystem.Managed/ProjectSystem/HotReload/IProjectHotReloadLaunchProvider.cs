@@ -27,6 +27,7 @@ public interface IProjectHotReloadLaunchProvider
     /// The launch profile to use, containing settings such as command name,
     /// executable path, working directory, and environment variables.
     /// </param>
+    /// <param name="cancellationToken"></param>
     /// <returns>A task that represents the asynchronous launch operation.</returns>
     /// <remarks>
     /// This method is primarily used by the Hot Reload system to restart applications
