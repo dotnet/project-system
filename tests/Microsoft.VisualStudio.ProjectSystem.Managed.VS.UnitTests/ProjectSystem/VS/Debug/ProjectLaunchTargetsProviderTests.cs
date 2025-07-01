@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Reflection;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -682,6 +683,43 @@ public class ProjectLaunchTargetsProviderTests
         bool canBeStartupProject = await provider.CanBeStartupProjectAsync(DebugLaunchOptions.NoDebug, activeProfile);
 
         Assert.False(canBeStartupProject);
+    }
+
+    [Fact]
+    public async Task OnBeforeLaunchAsync_DoesNotCreateHotReloadSession()
+    {
+        // Arrange - The current implementation does not set up Hot Reload sessions in OnBeforeLaunchAsync
+        var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        var provider = GetDebugTargetsProvider();
+
+        // Use reflection to set the hot reload session manager for verification
+        var hotReloadSessionManagerField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_hotReloadSessionManager", BindingFlags.NonPublic | BindingFlags.Instance);
+        hotReloadSessionManagerField?.SetValue(provider, new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager));
+
+        var profile = new LaunchProfile("TestProfile", "Project", commandLineArgs: "--test");
+        var launchOptions = DebugLaunchOptions.NoDebug;
+        var environment = new Dictionary<string, string?> { { "TEST_VAR", "test_value" } };
+        var debugLaunchSetting = new DebugLaunchSettings(launchOptions);
+        debugLaunchSetting.Environment.Add("TEST_VAR", "test_value");
+        var debugLaunchSettings = new List<IDebugLaunchSettings>
+        {
+            debugLaunchSetting,
+        };
+
+        // Act
+        await provider.OnBeforeLaunchAsync(launchOptions, profile, debugLaunchSettings);
+
+        // Assert - Verify that no Hot Reload session is created during Pre-Launch setup
+        // as per current implementation (session creation happens later in LaunchProfilesDebugLaunchProvider)
+        Mock.Get(mockHotReloadSessionManager).Verify(
+            manager => manager.TryCreatePendingSessionAsync(
+                It.IsAny<ConfiguredProject>(),
+                It.IsAny<IProjectHotReloadLaunchProvider>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<DebugLaunchOptions>(),
+                It.IsAny<ILaunchProfile>()),
+            Times.Never);
     }
 
     private ProjectLaunchTargetsProvider GetDebugTargetsProvider(ProjectOutputType outputType = ProjectOutputType.Console, Dictionary<string, string?>? properties = null, IVsDebugger10? debugger = null, IProjectCapabilitiesScope? scope = null)

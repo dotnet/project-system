@@ -14,15 +14,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 [Export(typeof(IProjectHotReloadUpdateApplier))]
 internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager, IProjectHotReloadUpdateApplier
 {
-    private readonly UnconfiguredProject _project;
+    private readonly ConfiguredProject _configuredProject;
+    private readonly UnconfiguredProject _unconfiguredProject;
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
     private readonly IActiveDebugFrameworkServices _activeDebugFrameworkServices;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
     private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
-    private readonly Lazy<IManagedDeltaApplierCreator> _managedDeltaApplierCreator;
-    private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
-    private readonly IProjectHotReloadBuildManager _buildManager;
     private readonly IProjectHotReloadLaunchProvider _launchProvider;
+    private readonly IProjectHotReloadAgent2 _hotReloadAgent;
+    private readonly IProjectHotReloadBuildManager _buildManager;
 
     // Protect the state from concurrent access. For example, our Process.Exited event
     // handler may run on one thread while we're still setting up the session on
@@ -36,31 +36,29 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
     [ImportingConstructor]
     public ProjectHotReloadSessionManager(
-        UnconfiguredProject project,
+        ConfiguredProject project,
         IProjectThreadingService threadingService,
         IProjectFaultHandlerService projectFaultHandlerService,
         IActiveDebugFrameworkServices activeDebugFrameworkServices,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
         Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
-        Lazy<IManagedDeltaApplierCreator> managedDeltaApplierCreator,
-        Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
+        IProjectHotReloadLaunchProvider launchProvider,
         IProjectHotReloadBuildManager buildManager,
-        IProjectHotReloadLaunchProvider launchProvider)
+        IProjectHotReloadAgent2 hotReloadAgent)
         : base(threadingService.JoinableTaskContext)
     {
-        _project = project;
+        _configuredProject = project;
+        _unconfiguredProject = project.UnconfiguredProject;
         _projectFaultHandlerService = projectFaultHandlerService;
         _activeDebugFrameworkServices = activeDebugFrameworkServices;
         _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
         _projectHotReloadNotificationService = projectHotReloadNotificationService;
-        
-        _managedDeltaApplierCreator = managedDeltaApplierCreator;
-        _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
-        _buildManager = buildManager;
+        _hotReloadAgent = hotReloadAgent;
         _launchProvider = launchProvider;
+        _buildManager = buildManager;
         _semaphore = ReentrantSemaphore.Create(
             initialCount: 1,
-            joinableTaskContext: project.Services.ThreadingPolicy.JoinableTaskContext.Context,
+            joinableTaskContext: threadingService.JoinableTaskContext.Context,
             mode: ReentrantSemaphore.ReentrancyMode.Freeform);
     }
 
@@ -155,7 +153,12 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         }
     }
 
-    public Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables, DebugLaunchOptions? launchOptions = null, ILaunchProfile? launchProfile = null)
+    public Task<bool> TryCreatePendingSessionAsync(
+        ConfiguredProject configuredProject,
+        IProjectHotReloadLaunchProvider launchProvider,
+        IDictionary<string, string> environmentVariables,
+        DebugLaunchOptions launchOptions,
+        ILaunchProfile launchProfile)
     {
         return _semaphore.ExecuteAsync(TryCreatePendingSessionInternalAsync).AsTask();
 
@@ -167,24 +170,18 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             {
                 if (await DebugFrameworkSupportsStartupHooksAsync())
                 {
-                    string name = Path.GetFileNameWithoutExtension(_project.FullPath);
+                    string name = Path.GetFileNameWithoutExtension(_unconfiguredProject.FullPath);
                     HotReloadState state = new(this);
-                    var configuredProject = await GetConfiguredProjectForDebugAsync();
-                    Assumes.Present(configuredProject);
 
-                    IProjectHotReloadSession projectHotReloadSession = new ProjectHotReloadSession(
-                        name: name,
+                    IProjectHotReloadSession projectHotReloadSession = _hotReloadAgent.CreateHotReloadSession(
+                        id: name,
                         variant: _nextUniqueId++,
                         runtimeVersion: frameworkVersion,
-                        hotReloadAgentManagerClient: _hotReloadAgentManagerClient,
-                        hotReloadOutputService: _hotReloadDiagnosticOutputService,
-                        deltaApplierCreator: _managedDeltaApplierCreator,
                         callback: state,
-                        _buildManager,
-                        _launchProvider,
-                        sessionManager: this,
                         launchProfile: launchProfile,
-                        configuredProject: configuredProject,
+                        launchProvider: _launchProvider,
+                        buildManager: _buildManager,
+                        configuredProject: _configuredProject,
                         debugLaunchOptions: launchOptions);
 
                     state.Session = projectHotReloadSession;
@@ -196,7 +193,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 else
                 {
                     // If startup hooks are not supported then tell the user why Hot Reload isn't available.
-                    string projectName = Path.GetFileNameWithoutExtension(_project.FullPath);
+                    string projectName = Path.GetFileNameWithoutExtension(_unconfiguredProject.FullPath);
 
                     WriteOutputMessage(
                         new HotReloadLogMessage(
@@ -233,7 +230,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 Assumes.NotNull(sessionState.Session);
 
                 sessionState.Process.Exited -= sessionState.OnProcessExited;
-                _projectFaultHandlerService.Forget(sessionState.Session.StopSessionAsync(default), _project);
+                _projectFaultHandlerService.Forget(sessionState.Session.StopSessionAsync(default), _unconfiguredProject);
             }
 
             _activeSessions.Clear();
@@ -345,7 +342,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
     private void OnProcessExited(HotReloadState hotReloadState)
     {
-        _projectFaultHandlerService.Forget(OnProcessExitedAsync(hotReloadState), _project);
+        _projectFaultHandlerService.Forget(OnProcessExitedAsync(hotReloadState), _unconfiguredProject);
     }
 
     private async Task OnProcessExitedAsync(HotReloadState hotReloadState)
@@ -472,7 +469,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         public Process? Process { get; set; }
         public IProjectHotReloadSession? Session { get; set; }
 
-        public UnconfiguredProject? Project => _sessionManager._project;
+        public UnconfiguredProject? Project => _sessionManager._unconfiguredProject;
 
         [Obsolete]
         public bool SupportsRestart => throw new NotImplementedException();

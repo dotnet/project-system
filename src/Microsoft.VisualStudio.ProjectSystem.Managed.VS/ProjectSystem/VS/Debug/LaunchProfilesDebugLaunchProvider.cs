@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -21,18 +22,28 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     private readonly IVsService<IVsDebuggerLaunchAsync> _vsDebuggerService;
     // Launch providers to enforce requirements for debuggable projects
     private readonly ILaunchSettingsProvider _launchSettingsProvider;
-
+    private readonly Lazy<IHotReloadOptionService> _hotReloadOptionService;
+    private readonly ConfiguredProject _configuredProject;
+    private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
     private IDebugProfileLaunchTargetsProvider? _lastLaunchProvider;
+    private readonly IProjectThreadingService _threadingService;
 
     [ImportingConstructor]
     public LaunchProfilesDebugLaunchProvider(
         ConfiguredProject configuredProject,
         ILaunchSettingsProvider launchSettingsProvider,
-        IVsService<IVsDebuggerLaunchAsync> vsDebuggerService)
+        Lazy<IHotReloadOptionService> hotReloadOptionSettings,
+        Lazy<IProjectHotReloadSessionManager> hotReloadSessionManager,
+        IVsService<IVsDebuggerLaunchAsync> vsDebuggerService,
+        [Import(AllowDefault = true)] IProjectThreadingService? threadingService = null)
         : base(configuredProject)
     {
         _launchSettingsProvider = launchSettingsProvider;
         _vsDebuggerService = vsDebuggerService;
+        _hotReloadOptionService = hotReloadOptionSettings;
+        _configuredProject = configuredProject;
+        _hotReloadSessionManager = hotReloadSessionManager;
+        _threadingService = threadingService ?? ThreadingService;
 
         LaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(projectCapabilityCheckProvider: configuredProject.UnconfiguredProject);
     }
@@ -166,7 +177,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     /// <summary>
     /// Launches the Visual Studio debugger using the specified profile.
     /// </summary>
-    public async Task LaunchWithProfileAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+    public async Task LaunchWithProfileAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, CancellationToken cancellationToken = default)
     {
         IReadOnlyList<IDebugLaunchSettings> targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true, profile: profile);
 
@@ -188,6 +199,17 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             return;
         }
 
+        if (await HotReloadShouldBeEnabledAsync(profile, launchOptions)
+            && targets.FirstOrDefault(x => x is DebugLaunchSettings) is DebugLaunchSettings consoleTargetSettings)
+        {
+            await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(
+                configuredProject: _configuredProject,
+                launchProvider: this,
+                consoleTargetSettings.Environment,
+                launchOptions,
+                profile);
+        }
+
         VsDebugTargetInfo4[] launchSettingsNative = targets.Select(GetDebuggerStruct4).ToArray();
 
         try
@@ -195,7 +217,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             IVsDebuggerLaunchAsync shellDebugger = await _vsDebuggerService.GetValueAsync();
 
             // The debugger needs to be called on the UI thread
-            await ThreadingService.SwitchToUIThread();
+            await _threadingService.SwitchToUIThread(cancellationToken);
 
             shellDebugger.LaunchDebugTargetsAsync((uint)launchSettingsNative.Length, launchSettingsNative, callback);
         }
@@ -223,6 +245,24 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
 
         // Return false to allow normal processing
         localPath = null;
+        return false;
+    }
+
+    private async Task<bool> HotReloadShouldBeEnabledAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions)
+    {
+        bool hotReloadEnabledAtProjectLevel = resolvedProfile.IsRunProjectCommand()
+            && resolvedProfile.IsHotReloadEnabled()
+            && !resolvedProfile.IsRemoteDebugEnabled()
+            && (launchOptions & DebugLaunchOptions.Profiling) != DebugLaunchOptions.Profiling;
+
+        if (hotReloadEnabledAtProjectLevel)
+        {
+            bool debugging = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
+            bool hotReloadEnabledGlobally = await _hotReloadOptionService.Value.IsHotReloadEnabledAsync(debugging, default);
+
+            return hotReloadEnabledGlobally;
+        }
+
         return false;
     }
 }
