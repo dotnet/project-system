@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
-internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManagedHotReloadAgent2, IManagedHotReloadAgent4, IProjectHotReloadSession, IProjectHotReloadSessionInternal
+internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 {
     private readonly string _variant;
     private readonly string _runtimeVersion;
@@ -25,7 +25,6 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
     private readonly IProjectHotReloadLaunchProvider? _launchProvider;
     private bool _sessionActive;
     private IDeltaApplier? _deltaApplier;
-
     public ProjectHotReloadSession(
         string name,
         int variant,
@@ -89,17 +88,22 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
 
         HotReloadAgentFlags flags = runningUnderDebugger ? HotReloadAgentFlags.IsDebuggedProcess : HotReloadAgentFlags.None;
         var processInfo = new ManagedEditAndContinueProcessInfo();
-        string targetFramework = _configuredProject?.Services.ProjectPropertiesProvider?.GetCommonProperties() is IProjectProperties commonProperties
-            ? await commonProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty)
-            : string.Empty;
+        string? targetFramework = null;
+        bool? hotReloadAutoRestart = false;
+        var update = await _configuredProject?.Services.ProjectSubscription?.ProjectRuleSource.GetLatestVersionAsync(_configuredProject, cancellationToken: cancellationToken);
+        if (update.Value.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot configurationGeneralSnapshot))
+        {
+            targetFramework = configurationGeneralSnapshot.Properties.GetStringProperty(ConfigurationGeneral.TargetFrameworkMonikerProperty);
+            hotReloadAutoRestart = configurationGeneralSnapshot.Properties.GetBoolProperty(ConfigurationGeneral.HotReloadAutoRestartProperty);
+        }
 
         RunningProjectInfo runningProjectInfo = new RunningProjectInfo
         {
-            RestartAutomatically = false,
+            RestartAutomatically = hotReloadAutoRestart ?? false,
             ProjectInstanceId = new ProjectInstanceId
             {
                 ProjectFilePath = _configuredProject?.UnconfiguredProject.FullPath ?? string.Empty,
-                TargetFramework = targetFramework,
+                TargetFramework = targetFramework ?? string.Empty,
             }
         };
 
@@ -194,17 +198,8 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
     public async ValueTask RestartAsync(CancellationToken cancellationToken)
     {
         WriteToOutputWindow(Resources.HotReloadRestartInProgress, cancellationToken);
-        if (_launchProfile is not null && _debugLaunchOptions.HasValue && _launchProvider is not null && _buildManager is not null)
+        if (_launchProfile is not null && _debugLaunchOptions.HasValue && _launchProvider is not null)
         {
-            // build project first
-            var isSucceed = await _buildManager.BuildProjectAsync(cancellationToken);
-
-            if (!isSucceed)
-            {
-                WriteToOutputWindow(Resources.HotReloadBuildFail, cancellationToken, HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel.Error);
-                return;
-            }
-
             await _launchProvider.LaunchWithProfileAsync(_debugLaunchOptions.Value, _launchProfile, cancellationToken);
         }
     }
@@ -273,5 +268,20 @@ internal sealed class ProjectHotReloadSession : IManagedHotReloadAgent, IManaged
         }
 
         return new ValueTask<string?>();
+    }
+
+    public async ValueTask BuildAsync(CancellationToken cancellationToken)
+    {
+        if (_buildManager is not null)
+        {
+            var isBuildSucceed = await _buildManager.BuildProjectAsync(cancellationToken);
+
+            if (!isBuildSucceed)
+            {
+                WriteToOutputWindow(Resources.HotReloadBuildFail, cancellationToken, HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel.Error);
+
+                throw new InvalidOperationException();
+            }
+        }
     }
 }

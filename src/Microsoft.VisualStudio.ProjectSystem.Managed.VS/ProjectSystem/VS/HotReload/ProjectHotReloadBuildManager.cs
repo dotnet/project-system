@@ -2,6 +2,7 @@
 
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
@@ -13,44 +14,55 @@ internal sealed class ProjectHotReloadBuildManager(
     IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> solutionBuildManagerService) : IProjectHotReloadBuildManager
 {
     private IVsSolutionBuildManager2? _vsSolutionBuildManager2;
+    private readonly ReentrantSemaphore _semaphore = ReentrantSemaphore.Create(
+        initialCount: 1,
+        joinableTaskContext: threadingService.JoinableTaskContext.Context,
+        mode: ReentrantSemaphore.ReentrancyMode.Freeform);
 
     /// <summary>
     /// Build project and wait for the build to complete.
     /// </summary>
-    public async Task<bool> BuildProjectAsync(CancellationToken cancellationToken)
+    public Task<bool> BuildProjectAsync(CancellationToken cancellationToken)
     {
         Assumes.NotNull(project.Services.HostObject);
-        _vsSolutionBuildManager2 ??= await solutionBuildManagerService.GetValueAsync(cancellationToken);
+        return _semaphore.ExecuteAsync(BuildProjectCoreAsync, cancellationToken).AsTask();
 
-        if (threadingService.JoinableTaskContext.IsMainThreadBlocked())
+        async ValueTask<bool> BuildProjectCoreAsync()
         {
-            throw new InvalidOperationException("This task cannot be blocked on by the UI thread.");
-        }
+            _vsSolutionBuildManager2 ??= await solutionBuildManagerService.GetValueAsync(cancellationToken);
 
-        // Step 1: Register sbm events
-        using var solutionBuildCompleteListener = new SolutionBuildCompleteListener();
-        Verify.HResult(_vsSolutionBuildManager2.AdviseUpdateSolutionEvents(solutionBuildCompleteListener, out uint cookie));
-        try
-        {
-            // Step 2: Build
-            var projectVsHierarchy = (IVsHierarchy)project.Services.HostObject;
+            if (threadingService.JoinableTaskContext.IsMainThreadBlocked())
+            {
+                throw new InvalidOperationException("This task cannot be blocked on by the UI thread.");
+            }
 
-            var result = _vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(
-                pIVsHierarchyToBuild: projectVsHierarchy,
-                pIVsHierarchyDependent: null,
-                pszDependentConfigurationCanonicalName: null,
-                dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD,
-                dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
-                fSuppressUI: 0);
+            // Step 1: Register sbm events
+            using var solutionBuildCompleteListener = new SolutionBuildCompleteListener();
+            Verify.HResult(_vsSolutionBuildManager2.AdviseUpdateSolutionEvents(solutionBuildCompleteListener, out uint cookie));
+            try
+            {
+                // Step 2: Build
+                // TODO: Switch to UI thread && add a test for it
+                await threadingService.SwitchToUIThread(cancellationToken);
+                var projectVsHierarchy = (IVsHierarchy)project.Services.HostObject;
 
-            ErrorHandler.ThrowOnFailure(result);
+                var result = _vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(
+                    pIVsHierarchyToBuild: projectVsHierarchy,
+                    pIVsHierarchyDependent: null,
+                    pszDependentConfigurationCanonicalName: null,
+                    dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD,
+                    dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
+                    fSuppressUI: 0);
 
-            // Step 3: Wait for the build to complete
-            return await solutionBuildCompleteListener.WaitForSolutionBuildCompletedAsync(cancellationToken);
-        }
-        finally
-        {
-            _vsSolutionBuildManager2.UnadviseUpdateSolutionEvents(cookie);
+                ErrorHandler.ThrowOnFailure(result);
+
+                // Step 3: Wait for the build to complete
+                return await solutionBuildCompleteListener.WaitForSolutionBuildCompletedAsync(cancellationToken);
+            }
+            finally
+            {
+                _vsSolutionBuildManager2.UnadviseUpdateSolutionEvents(cookie);
+            }
         }
     }
 

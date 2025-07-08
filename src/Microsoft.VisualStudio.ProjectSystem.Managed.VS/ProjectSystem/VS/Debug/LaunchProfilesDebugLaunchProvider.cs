@@ -151,6 +151,9 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     {
         public void OnComplete(int hr, uint debugTargetCount, VsDebugTargetProcessInfo[] processInfoArray)
         {
+            // TODO add a test to cover it
+            ErrorHandler.ThrowOnFailure(hr);
+
             if (targetsProvider is IDebugProfileLaunchTargetsProvider4 targetsProvider4)
             {
                 threadingService.ExecuteSynchronously(() => targetsProvider4.OnAfterLaunchAsync(launchOptions, activeProfile, processInfoArray));
