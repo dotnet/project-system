@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
@@ -229,6 +231,73 @@ public class LaunchProfilesDebugLaunchProviderTests
                 It.IsAny<DebugLaunchOptions>(),
                 It.IsAny<ILaunchProfile>()),
             Times.Never);
+    }
+
+    [Fact]
+    public void OnComplete_WhenHrIsErrorCode_ThrowsException()
+    {
+        // Arrange
+        var mockProjectThreadingService = IProjectThreadingServiceFactory.Create();
+        var mockTargetsProvider = Mock.Of<IDebugProfileLaunchTargetsProvider>();
+        var profile = new LaunchProfile("TestProfile", "Project");
+        var launchOptions = DebugLaunchOptions.NoDebug;
+        
+        // Create the LaunchCompleteCallback using reflection since it's a private nested class
+        var launchCompleteCallbackType = typeof(LaunchProfilesDebugLaunchProvider)
+            .GetNestedTypes(BindingFlags.NonPublic)
+            .First(t => t.Name == "LaunchCompleteCallback");
+        
+        var callback = Activator.CreateInstance(
+            launchCompleteCallbackType,
+            mockProjectThreadingService,
+            launchOptions,
+            mockTargetsProvider,
+            profile);
+        
+        // Act & Assert
+        var onCompleteMethod = launchCompleteCallbackType.GetMethod("OnComplete");
+        
+        // Test with a common error code (E_FAIL = 0x80004005)
+        const int E_FAIL = unchecked((int)0x80004005);
+        var processInfoArray = new VsDebugTargetProcessInfo[0];
+        
+        var exception = Assert.Throws<TargetInvocationException>(() => 
+            onCompleteMethod!.Invoke(callback, new object[] { E_FAIL, 0u, processInfoArray }));
+        
+        // The actual exception thrown by ErrorHandler.ThrowOnFailure should be wrapped in TargetInvocationException
+        Assert.IsType<COMException>(exception.InnerException);
+    }
+
+    [Fact]
+    public void OnComplete_WhenHrIsSuccess_DoesNotThrowException()
+    {
+        // Arrange
+        var mockProjectThreadingService = IProjectThreadingServiceFactory.Create();
+        var mockTargetsProvider = Mock.Of<IDebugProfileLaunchTargetsProvider>();
+        var profile = new LaunchProfile("TestProfile", "Project");
+        var launchOptions = DebugLaunchOptions.NoDebug;
+        
+        // Create the LaunchCompleteCallback using reflection since it's a private nested class
+        var launchCompleteCallbackType = typeof(LaunchProfilesDebugLaunchProvider)
+            .GetNestedTypes(BindingFlags.NonPublic)
+            .First(t => t.Name == "LaunchCompleteCallback");
+        
+        var callback = Activator.CreateInstance(
+            launchCompleteCallbackType,
+            mockProjectThreadingService,
+            launchOptions,
+            mockTargetsProvider,
+            profile);
+        
+        // Act & Assert
+        var onCompleteMethod = launchCompleteCallbackType.GetMethod("OnComplete");
+        
+        // Test with success code (S_OK = 0)
+        const int S_OK = 0;
+        var processInfoArray = new VsDebugTargetProcessInfo[0];
+        
+        // Should not throw an exception
+        onCompleteMethod!.Invoke(callback, new object[] { S_OK, 0u, processInfoArray });
     }
 
     private LaunchProfilesDebugLaunchProvider CreateInstance()

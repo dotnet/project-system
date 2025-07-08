@@ -42,7 +42,6 @@ internal sealed class ProjectHotReloadBuildManager(
             try
             {
                 // Step 2: Build
-                // TODO: Switch to UI thread && add a test for it
                 await threadingService.SwitchToUIThread(cancellationToken);
                 var projectVsHierarchy = (IVsHierarchy)project.Services.HostObject;
 

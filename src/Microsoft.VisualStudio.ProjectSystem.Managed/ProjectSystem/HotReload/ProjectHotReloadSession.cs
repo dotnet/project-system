@@ -88,12 +88,14 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
         HotReloadAgentFlags flags = runningUnderDebugger ? HotReloadAgentFlags.IsDebuggedProcess : HotReloadAgentFlags.None;
         var processInfo = new ManagedEditAndContinueProcessInfo();
-        string? targetFramework = null;
         bool? hotReloadAutoRestart = false;
-        var update = await _configuredProject?.Services.ProjectSubscription?.ProjectRuleSource.GetLatestVersionAsync(_configuredProject, cancellationToken: cancellationToken);
-        if (update.Value.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot configurationGeneralSnapshot))
+        string targetFramework = _configuredProject?.Services.ProjectPropertiesProvider?.GetCommonProperties() is IProjectProperties commonProperties
+            ? await commonProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty)
+            : string.Empty;
+        if (_configuredProject?.Services.ProjectSubscription?.ProjectRuleSource is IProjectValueDataSource<IProjectSubscriptionUpdate> update &&
+            await update.GetLatestVersionAsync(_configuredProject, cancellationToken: cancellationToken) is var snapshot &&
+            snapshot.Value.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot configurationGeneralSnapshot))
         {
-            targetFramework = configurationGeneralSnapshot.Properties.GetStringProperty(ConfigurationGeneral.TargetFrameworkMonikerProperty);
             hotReloadAutoRestart = configurationGeneralSnapshot.Properties.GetBoolProperty(ConfigurationGeneral.HotReloadAutoRestartProperty);
         }
 
