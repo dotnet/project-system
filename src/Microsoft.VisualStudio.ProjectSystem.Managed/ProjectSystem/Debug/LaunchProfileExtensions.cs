@@ -13,6 +13,7 @@ internal static class LaunchProfileExtensions
     public const string RemoteDebugEnabledProperty = "remoteDebugEnabled";
     public const string RemoteDebugMachineProperty = "remoteDebugMachine";
     public const string RemoteAuthenticationModeProperty = "authenticationMode";
+    public const string SkipStopAndRestartProperty = "SKIP_STOP_AND_RESTART";
 
     /// <summary>
     /// Gets whether the profile has the "Project" command name (launches the project's output).
@@ -142,6 +143,32 @@ internal static class LaunchProfileExtensions
         }
 
         return true;
+    }
+
+    public static bool IsSkipStopAndRestartEnabled(this ILaunchProfile profile)
+    {
+        if (profile.TryGetSetting(SkipStopAndRestartProperty, out object? value)
+            && value is bool b)
+        {
+            return b;
+        }
+        return false;
+    }
+
+    public static void SetSkipStopAndRestart(this ILaunchProfile profile, bool value)
+    {
+        if (profile is ILaunchProfile2 launchProfile2)
+        {
+            launchProfile2.OtherSettings.Add((SkipStopAndRestartProperty, value));
+        }
+        else if (profile is ILaunchProfile launchProfile && launchProfile.OtherSettings is not null)
+        {
+            launchProfile.OtherSettings.Add(SkipStopAndRestartProperty, value);
+        }
+        else
+        {
+            throw new ArgumentException("Profile does not support setting other settings.", nameof(profile));
+        }
     }
 
     /// <summary>

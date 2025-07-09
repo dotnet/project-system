@@ -200,6 +200,12 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     public async ValueTask RestartAsync(CancellationToken cancellationToken)
     {
         WriteToOutputWindow(Resources.HotReloadRestartInProgress, cancellationToken);
+        if (_launchProfile?.IsSkipStopAndRestartEnabled() is true)
+        {
+            DebugTrace("Skipping Stop and Restart as per launch profile settings.");
+            return;
+        }
+
         if (_launchProfile is not null && _debugLaunchOptions.HasValue && _launchProvider is not null)
         {
             await _launchProvider.LaunchWithProfileAsync(_debugLaunchOptions.Value, _launchProfile, cancellationToken);
@@ -208,6 +214,12 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
     public async ValueTask StopAsync(CancellationToken cancellationToken)
     {
+        if (_launchProfile?.IsSkipStopAndRestartEnabled() is true)
+        {
+            DebugTrace("Skipping Stop as per launch profile settings.");
+            return;
+        }
+
         WriteToOutputWindow(Resources.HotReloadStoppingApplication, cancellationToken);
 
         await _callback.StopProjectAsync(cancellationToken);

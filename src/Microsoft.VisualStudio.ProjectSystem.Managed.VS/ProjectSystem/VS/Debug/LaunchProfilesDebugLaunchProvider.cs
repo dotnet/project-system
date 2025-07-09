@@ -201,17 +201,6 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             return;
         }
 
-        if (await HotReloadShouldBeEnabledAsync(profile, launchOptions)
-            && targets.FirstOrDefault(x => x is DebugLaunchSettings) is DebugLaunchSettings consoleTargetSettings)
-        {
-            await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(
-                configuredProject: _configuredProject,
-                launchProvider: this,
-                consoleTargetSettings.Environment,
-                launchOptions,
-                profile);
-        }
-
         VsDebugTargetInfo4[] launchSettingsNative = targets.Select(GetDebuggerStruct4).ToArray();
 
         try

@@ -398,7 +398,14 @@ internal class ProjectLaunchTargetsProvider :
             settings.Options = JsonConvert.SerializeObject(debuggerLaunchOptions);
         }
 
-        if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions))
+        if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions) &&
+            _unconfiguredProjectVsServices.GetActiveConfiguredProjectExport<IProjectHotReloadLaunchProvider>() is IProjectHotReloadLaunchProvider launchProvider &&
+            await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(
+                configuredProject: configuredProject,
+                launchProvider: launchProvider,
+                settings.Environment,
+                launchOptions,
+                resolvedProfile))
         {
             // Enable XAML Hot Reload
             settings.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] = "1";
