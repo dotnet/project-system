@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file under the MIT license. See the LICENSE.md file in the project root for more information.
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
@@ -86,6 +86,73 @@ public class LaunchProfileExtensionsTests
             otherSettings: value is null ? [] : ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.RemoteDebugMachineProperty, value)));
 
         Assert.Equal(expected, data.RemoteDebugMachine());
+    }
+
+    [Theory]
+    [InlineData(false, false)]
+    [InlineData(true, true)]
+    [InlineData(null, false)]
+    public void IsSkipStopAndRestartEnabled_ILaunchProfile(bool? value, bool expected)
+    {
+        var data = new LaunchProfile(
+            name: null,
+            commandName: null,
+            otherSettings: value is null ? [] : ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.SkipStopAndRestartProperty, value.Value)));
+
+        Assert.Equal(expected, data.IsSkipStopAndRestartEnabled());
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void SetSkipStopAndRestart_WritableLaunchProfile(bool value)
+    {
+        var profile = new WritableLaunchProfile();
+
+        ((ILaunchProfile)profile).SetSkipStopAndRestart(value);
+
+        Assert.Single(profile.OtherSettings);
+        Assert.True(profile.OtherSettings.TryGetValue(LaunchProfileExtensions.SkipStopAndRestartProperty, out object? storedValue));
+        Assert.Equal(value, storedValue);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void SetSkipStopAndRestart_LaunchProfileWithOtherSettings(bool value)
+    {
+        var profile = new LaunchProfile(
+            name: "Test",
+            commandName: "Project",
+            otherSettings: ImmutableArray.Create<(string, object)>());
+
+        var writableProfile = new WritableLaunchProfile(profile);
+        
+        ((ILaunchProfile)writableProfile).SetSkipStopAndRestart(value);
+
+        Assert.Single(writableProfile.OtherSettings);
+        Assert.True(writableProfile.OtherSettings.TryGetValue(LaunchProfileExtensions.SkipStopAndRestartProperty, out object? storedValue));
+        Assert.Equal(value, storedValue);
+    }
+
+    [Fact]
+    public void SetSkipStopAndRestart_ILaunchProfile_NullOtherSettings_ThrowsArgumentException()
+    {
+        var mock = new Mock<ILaunchProfile>();
+        mock.SetupGet(lp => lp.OtherSettings).Returns(() => null);
+
+        var exception = Assert.Throws<ArgumentException>(() => mock.Object.SetSkipStopAndRestart(true));
+        Assert.Equal("Profile does not support setting other settings. (Parameter 'profile')", exception.Message);
+    }
+
+    [Fact]
+    public void SetSkipStopAndRestart_UnsupportedProfile_ThrowsArgumentException()
+    {
+        var mock = new Mock<ILaunchProfile>();
+        // Don't setup OtherSettings, so it returns null by default
+
+        var exception = Assert.Throws<ArgumentException>(() => mock.Object.SetSkipStopAndRestart(true));
+        Assert.Equal("Profile does not support setting other settings. (Parameter 'profile')", exception.Message);
     }
 
     [Fact]

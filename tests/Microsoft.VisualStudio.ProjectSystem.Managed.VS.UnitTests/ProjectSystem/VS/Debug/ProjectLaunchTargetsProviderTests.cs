@@ -722,6 +722,436 @@ public class ProjectLaunchTargetsProviderTests
             Times.Never);
     }
 
+    [Fact]
+    public async Task GetConsoleTargetForProfileAsync_WhenProjectCommandAndHotReloadEnabled_CreatesHotReloadSession()
+    {
+        // Arrange
+        var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
+        var provider = GetDebugTargetsProvider();
+
+        // Use reflection to set the hot reload dependencies
+        var hotReloadSessionManagerField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_hotReloadSessionManager", BindingFlags.NonPublic | BindingFlags.Instance);
+        hotReloadSessionManagerField?.SetValue(provider, new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager));
+
+        var debuggerSettingsField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_debuggerSettings", BindingFlags.NonPublic | BindingFlags.Instance);
+        debuggerSettingsField?.SetValue(provider, new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService));
+
+        // Set up a Project command profile with Hot Reload enabled
+        var profile = new LaunchProfile(
+            name: "TestProfile", 
+            commandName: "Project", 
+            commandLineArgs: "--test",
+            otherSettings: ImmutableArray.Create<(string, object)>(("hotReloadEnabled", true)));
+
+        var launchOptions = DebugLaunchOptions.NoDebug;
+
+        // Act
+        var result = await provider.GetConsoleTargetForProfileAsync(profile, launchOptions, validateSettings: false);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(DebugLaunchOptions.NoDebug | DebugLaunchOptions.MergeEnvironment, result.LaunchOptions);
+        
+        // Verify that the Hot Reload session was attempted to be created
+        Mock.Get(mockHotReloadSessionManager).Verify(
+            manager => manager.TryCreatePendingSessionAsync(
+                It.IsAny<ConfiguredProject>(),
+                It.IsAny<IProjectHotReloadLaunchProvider>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<DebugLaunchOptions>(),
+                It.IsAny<ILaunchProfile>()),
+            Times.Once);
+
+        // Verify Hot Reload environment variable is set
+        Assert.True(result.Environment.ContainsKey("ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"));
+        Assert.Equal("1", result.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"]);
+    }
+
+    [Fact]
+    public async Task GetConsoleTargetForProfileAsync_WhenProjectCommandAndHotReloadDisabled_DoesNotCreateHotReloadSession()
+    {
+        // Arrange
+        var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: false, enabledWhenNotDebugging: false);
+        var provider = GetDebugTargetsProvider();
+
+        // Use reflection to set the hot reload dependencies
+        var hotReloadSessionManagerField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_hotReloadSessionManager", BindingFlags.NonPublic | BindingFlags.Instance);
+        hotReloadSessionManagerField?.SetValue(provider, new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager));
+
+        var debuggerSettingsField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_debuggerSettings", BindingFlags.NonPublic | BindingFlags.Instance);
+        debuggerSettingsField?.SetValue(provider, new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService));
+
+        // Set up a Project command profile with Hot Reload disabled globally
+        var profile = new LaunchProfile(
+            name: "TestProfile", 
+            commandName: "Project", 
+            commandLineArgs: "--test",
+            otherSettings: ImmutableArray.Create<(string, object)>(("hotReloadEnabled", true))); // Profile level enabled
+
+        var launchOptions = DebugLaunchOptions.NoDebug;
+
+        // Act
+        var result = await provider.GetConsoleTargetForProfileAsync(profile, launchOptions, validateSettings: false);
+
+        // Assert
+        Assert.NotNull(result);
+        
+        // Verify that no Hot Reload session was created due to global setting
+        Mock.Get(mockHotReloadSessionManager).Verify(
+            manager => manager.TryCreatePendingSessionAsync(
+                It.IsAny<ConfiguredProject>(),
+                It.IsAny<IProjectHotReloadLaunchProvider>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<DebugLaunchOptions>(),
+                It.IsAny<ILaunchProfile>()),
+            Times.Never);
+
+        // Verify Hot Reload environment variable is not set
+        Assert.False(result.Environment.ContainsKey("ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"));
+    }
+
+    [Fact]
+    public async Task GetConsoleTargetForProfileAsync_WhenNotProjectCommand_DoesNotCreateHotReloadSession()
+    {
+        // Arrange
+        var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
+        var provider = GetDebugTargetsProvider();
+
+        // Use reflection to set the hot reload dependencies
+        var hotReloadSessionManagerField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_hotReloadSessionManager", BindingFlags.NonPublic | BindingFlags.Instance);
+        hotReloadSessionManagerField?.SetValue(provider, new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager));
+
+        var debuggerSettingsField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_debuggerSettings", BindingFlags.NonPublic | BindingFlags.Instance);
+        debuggerSettingsField?.SetValue(provider, new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService));
+
+        // Set up an Executable command profile (not Project command)
+        var profile = new LaunchProfile(
+            name: "TestProfile", 
+            commandName: null, 
+            executablePath: @"c:\test\myapp.exe", 
+            commandLineArgs: "--test");
+
+        var launchOptions = DebugLaunchOptions.NoDebug;
+
+        // Act
+        var result = await provider.GetConsoleTargetForProfileAsync(profile, launchOptions, validateSettings: false);
+
+        // Assert
+        Assert.NotNull(result);
+        
+        // Verify that no Hot Reload session was created for non-Project commands
+        Mock.Get(mockHotReloadSessionManager).Verify(
+            manager => manager.TryCreatePendingSessionAsync(
+                It.IsAny<ConfiguredProject>(),
+                It.IsAny<IProjectHotReloadLaunchProvider>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<DebugLaunchOptions>(),
+                It.IsAny<ILaunchProfile>()),
+            Times.Never);
+
+        // Verify Hot Reload environment variable is not set
+        Assert.False(result.Environment.ContainsKey("ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"));
+    }
+
+    [Fact]
+    public async Task GetConsoleTargetForProfileAsync_WhenRemoteDebuggingEnabled_DoesNotCreateHotReloadSession()
+    {
+        // Arrange
+        var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
+        var provider = GetDebugTargetsProvider();
+
+        // Use reflection to set the hot reload dependencies
+        var hotReloadSessionManagerField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_hotReloadSessionManager", BindingFlags.NonPublic | BindingFlags.Instance);
+        hotReloadSessionManagerField?.SetValue(provider, new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager));
+
+        var debuggerSettingsField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_debuggerSettings", BindingFlags.NonPublic | BindingFlags.Instance);
+        debuggerSettingsField?.SetValue(provider, new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService));
+
+        // Set up a Project command profile with remote debugging enabled
+        var profile = new LaunchProfile(
+            name: "TestProfile", 
+            commandName: "Project", 
+            commandLineArgs: "--test",
+            otherSettings: ImmutableArray.Create<(string, object)>(
+                ("hotReloadEnabled", true),
+                ("remoteDebugEnabled", true),
+                ("remoteDebugMachine", "remote-machine")));
+
+        var launchOptions = DebugLaunchOptions.NoDebug;
+
+        // Act
+        var result = await provider.GetConsoleTargetForProfileAsync(profile, launchOptions, validateSettings: false);
+
+        // Assert
+        Assert.NotNull(result);
+        
+        // Verify that no Hot Reload session was created due to remote debugging
+        Mock.Get(mockHotReloadSessionManager).Verify(
+            manager => manager.TryCreatePendingSessionAsync(
+                It.IsAny<ConfiguredProject>(),
+                It.IsAny<IProjectHotReloadLaunchProvider>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<DebugLaunchOptions>(),
+                It.IsAny<ILaunchProfile>()),
+            Times.Never);
+
+        // Verify Hot Reload environment variable is not set
+        Assert.False(result.Environment.ContainsKey("ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"));
+    }
+
+    [Fact]
+    public async Task GetConsoleTargetForProfileAsync_WhenProfileLevelHotReloadDisabled_DoesNotCreateHotReloadSession()
+    {
+        // Arrange
+        var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
+        var provider = GetDebugTargetsProvider();
+
+        // Use reflection to set the hot reload dependencies
+        var hotReloadSessionManagerField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_hotReloadSessionManager", BindingFlags.NonPublic | BindingFlags.Instance);
+        hotReloadSessionManagerField?.SetValue(provider, new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager));
+
+        var debuggerSettingsField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_debuggerSettings", BindingFlags.NonPublic | BindingFlags.Instance);
+        debuggerSettingsField?.SetValue(provider, new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService));
+
+        // Set up a Project command profile with Hot Reload disabled at profile level
+        var profile = new LaunchProfile(
+            name: "TestProfile", 
+            commandName: "Project", 
+            commandLineArgs: "--test",
+            otherSettings: ImmutableArray.Create<(string, object)>(("hotReloadEnabled", false)));
+
+        var launchOptions = DebugLaunchOptions.NoDebug;
+
+        // Act
+        var result = await provider.GetConsoleTargetForProfileAsync(profile, launchOptions, validateSettings: false);
+
+        // Assert
+        Assert.NotNull(result);
+        
+        // Verify that no Hot Reload session was created due to profile-level setting
+        Mock.Get(mockHotReloadSessionManager).Verify(
+            manager => manager.TryCreatePendingSessionAsync(
+                It.IsAny<ConfiguredProject>(),
+                It.IsAny<IProjectHotReloadLaunchProvider>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<DebugLaunchOptions>(),
+                It.IsAny<ILaunchProfile>()),
+            Times.Never);
+
+        // Verify Hot Reload environment variable is not set
+        Assert.False(result.Environment.ContainsKey("ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"));
+    }
+
+    [Fact]
+    public async Task GetConsoleTargetForProfileAsync_WhenProfilingEnabled_DoesNotCreateHotReloadSession()
+    {
+        // Arrange
+        var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
+        var provider = GetDebugTargetsProvider();
+
+        // Use reflection to set the hot reload dependencies
+        var hotReloadSessionManagerField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_hotReloadSessionManager", BindingFlags.NonPublic | BindingFlags.Instance);
+        hotReloadSessionManagerField?.SetValue(provider, new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager));
+
+        var debuggerSettingsField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_debuggerSettings", BindingFlags.NonPublic | BindingFlags.Instance);
+        debuggerSettingsField?.SetValue(provider, new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService));
+
+        // Set up a Project command profile with Hot Reload enabled
+        var profile = new LaunchProfile(
+            name: "TestProfile", 
+            commandName: "Project", 
+            commandLineArgs: "--test",
+            otherSettings: ImmutableArray.Create<(string, object)>(("hotReloadEnabled", true)));
+
+        var launchOptions = DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling;
+
+        // Act
+        var result = await provider.GetConsoleTargetForProfileAsync(profile, launchOptions, validateSettings: false);
+
+        // Assert
+        Assert.NotNull(result);
+        
+        // Verify that no Hot Reload session was created due to profiling mode
+        Mock.Get(mockHotReloadSessionManager).Verify(
+            manager => manager.TryCreatePendingSessionAsync(
+                It.IsAny<ConfiguredProject>(),
+                It.IsAny<IProjectHotReloadLaunchProvider>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<DebugLaunchOptions>(),
+                It.IsAny<ILaunchProfile>()),
+            Times.Never);
+
+        // Verify Hot Reload environment variable is not set
+        Assert.False(result.Environment.ContainsKey("ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"));
+    }
+
+    [Fact]
+    public async Task GetConsoleTargetForProfileAsync_WhenHotReloadSessionCreationFails_DoesNotSetEnvironmentVariable()
+    {
+        // Arrange
+        var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        Mock.Get(mockHotReloadSessionManager)
+            .Setup(manager => manager.TryCreatePendingSessionAsync(
+                It.IsAny<ConfiguredProject>(),
+                It.IsAny<IProjectHotReloadLaunchProvider>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<DebugLaunchOptions>(),
+                It.IsAny<ILaunchProfile>()))
+            .ReturnsAsync(false); // Session creation fails
+
+        var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
+        var provider = GetDebugTargetsProvider();
+
+        // Use reflection to set the hot reload dependencies
+        var hotReloadSessionManagerField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_hotReloadSessionManager", BindingFlags.NonPublic | BindingFlags.Instance);
+        hotReloadSessionManagerField?.SetValue(provider, new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager));
+
+        var debuggerSettingsField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_debuggerSettings", BindingFlags.NonPublic | BindingFlags.Instance);
+        debuggerSettingsField?.SetValue(provider, new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService));
+
+        // Set up a Project command profile with Hot Reload enabled
+        var profile = new LaunchProfile(
+            name: "TestProfile", 
+            commandName: "Project", 
+            commandLineArgs: "--test",
+            otherSettings: ImmutableArray.Create<(string, object)>(("hotReloadEnabled", true)));
+
+        var launchOptions = DebugLaunchOptions.NoDebug;
+
+        // Act
+        var result = await provider.GetConsoleTargetForProfileAsync(profile, launchOptions, validateSettings: false);
+
+        // Assert
+        Assert.NotNull(result);
+        
+        // Verify that Hot Reload session creation was attempted
+        Mock.Get(mockHotReloadSessionManager).Verify(
+            manager => manager.TryCreatePendingSessionAsync(
+                It.IsAny<ConfiguredProject>(),
+                It.IsAny<IProjectHotReloadLaunchProvider>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<DebugLaunchOptions>(),
+                It.IsAny<ILaunchProfile>()),
+            Times.Once);
+
+        // Verify Hot Reload environment variable is not set when session creation fails
+        Assert.False(result.Environment.ContainsKey("ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"));
+    }
+
+    [Fact]
+    public async Task GetConsoleTargetForProfileAsync_WhenDebugging_UsesCorrectHotReloadSettings()
+    {
+        // Arrange
+        var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: false);
+        var provider = GetDebugTargetsProvider();
+
+        // Use reflection to set the hot reload dependencies
+        var hotReloadSessionManagerField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_hotReloadSessionManager", BindingFlags.NonPublic | BindingFlags.Instance);
+        hotReloadSessionManagerField?.SetValue(provider, new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager));
+
+        var debuggerSettingsField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_debuggerSettings", BindingFlags.NonPublic | BindingFlags.Instance);
+        debuggerSettingsField?.SetValue(provider, new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService));
+
+        // Set up a Project command profile for debugging scenario
+        var profile = new LaunchProfile(
+            name: "TestProfile", 
+            commandName: "Project", 
+            commandLineArgs: "--test",
+            otherSettings: ImmutableArray.Create<(string, object)>(("hotReloadEnabled", true)));
+
+        var launchOptions = (DebugLaunchOptions)0; // Regular debugging (not NoDebug)
+
+        // Act
+        var result = await provider.GetConsoleTargetForProfileAsync(profile, launchOptions, validateSettings: false);
+
+        // Assert
+        Assert.NotNull(result);
+        
+        // Verify that Hot Reload session was created for debugging scenario
+        Mock.Get(mockHotReloadSessionManager).Verify(
+            manager => manager.TryCreatePendingSessionAsync(
+                It.IsAny<ConfiguredProject>(),
+                It.IsAny<IProjectHotReloadLaunchProvider>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<DebugLaunchOptions>(),
+                It.IsAny<ILaunchProfile>()),
+            Times.Once);
+
+        // Verify Hot Reload environment variable is set
+        Assert.True(result.Environment.ContainsKey("ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"));
+        Assert.Equal("1", result.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"]);
+    }
+
+    [Fact]
+    public async Task GetConsoleTargetForProfileAsync_WhenHotReloadEnabledAndLaunchProviderAvailable_PassesCorrectParameters()
+    {
+        // Arrange
+        var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
+        var provider = GetDebugTargetsProvider();
+
+        // Use reflection to set the hot reload dependencies
+        var hotReloadSessionManagerField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_hotReloadSessionManager", BindingFlags.NonPublic | BindingFlags.Instance);
+        hotReloadSessionManagerField?.SetValue(provider, new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager));
+
+        var debuggerSettingsField = typeof(ProjectLaunchTargetsProvider)
+            .GetField("_debuggerSettings", BindingFlags.NonPublic | BindingFlags.Instance);
+        debuggerSettingsField?.SetValue(provider, new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService));
+
+        // Set up a Project command profile with environment variables
+        var profile = new LaunchProfile(
+            name: "TestProfile", 
+            commandName: "Project", 
+            commandLineArgs: "--test",
+            environmentVariables: ImmutableArray.Create(("ENV_VAR1", "value1"), ("ENV_VAR2", "value2")),
+            otherSettings: ImmutableArray.Create<(string, object)>(("hotReloadEnabled", true)));
+
+        var launchOptions = DebugLaunchOptions.NoDebug;
+
+        // Act
+        var result = await provider.GetConsoleTargetForProfileAsync(profile, launchOptions, validateSettings: false);
+
+        // Assert
+        Assert.NotNull(result);
+        
+        // Verify that Hot Reload session was created with correct parameters
+        Mock.Get(mockHotReloadSessionManager).Verify(
+            manager => manager.TryCreatePendingSessionAsync(
+                It.IsAny<ConfiguredProject>(),
+                It.IsAny<IProjectHotReloadLaunchProvider>(),
+                It.Is<IDictionary<string, string>>(env => 
+                    env.ContainsKey("ENV_VAR1") && env["ENV_VAR1"] == "value1" &&
+                    env.ContainsKey("ENV_VAR2") && env["ENV_VAR2"] == "value2" &&
+                    env.ContainsKey("ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO") && env["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] == "1"),
+                launchOptions,
+                profile),
+            Times.Once);
+    }
+
     private ProjectLaunchTargetsProvider GetDebugTargetsProvider(ProjectOutputType outputType = ProjectOutputType.Console, Dictionary<string, string?>? properties = null, IVsDebugger10? debugger = null, IProjectCapabilitiesScope? scope = null)
     {
         _mockFS.Create(@"c:\test\Project\someapp.exe");
