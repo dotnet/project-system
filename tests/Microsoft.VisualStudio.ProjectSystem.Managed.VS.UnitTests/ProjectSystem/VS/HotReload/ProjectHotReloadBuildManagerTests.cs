@@ -1,6 +1,5 @@
-﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file under the MIT license. See the LICENSE.md file in the project root for more information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
@@ -77,7 +76,7 @@ public class ProjectHotReloadBuildManagerTests
         var mockProject = UnconfiguredProjectFactory.Create(hostObject: mockVsHierarchy.Object);
         var mockThreadingService = IProjectThreadingServiceFactory.Create();
         var mockVsService = IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(mockVsSolutionBuildManager.Object);
-        
+
         // Set up the solution build manager to simulate build failure
         mockVsSolutionBuildManager
             .Setup(x => x.AdviseUpdateSolutionEvents(It.IsAny<IVsUpdateSolutionEvents>(), out It.Ref<uint>.IsAny))
