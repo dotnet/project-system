@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS;
 
 internal static class IProjectHotReloadSessionManagerFactory
 {
-    public static IProjectHotReloadSessionManager Create()
+    public static IProjectHotReloadSessionManager Create(bool canCreatePendingSession = true)
     {
         var mock = new Mock<IProjectHotReloadSessionManager>();
 
@@ -17,7 +17,7 @@ internal static class IProjectHotReloadSessionManagerFactory
             It.IsAny<IDictionary<string, string>>(),
             It.IsAny<DebugLaunchOptions>(),
             It.IsAny<ILaunchProfile>()))
-            .ReturnsAsync(true);
+            .ReturnsAsync(canCreatePendingSession);
 
         mock.Setup(manager => manager.ActivateSessionAsync(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<string>()))
             .Returns(Task.CompletedTask);

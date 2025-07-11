@@ -726,18 +726,11 @@ public class ProjectLaunchTargetsProviderTests
     public async Task GetConsoleTargetForProfileAsync_WhenProjectCommandAndHotReloadEnabled_CreatesHotReloadSession()
     {
         // Arrange
-        var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        var mockHotReloadSessionManager = IProjectHotReloadSessionManagerFactory.Create();
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
-        var provider = GetDebugTargetsProvider();
-
-        // Use reflection to set the hot reload dependencies
-        var hotReloadSessionManagerField = typeof(ProjectLaunchTargetsProvider)
-            .GetField("_hotReloadSessionManager", BindingFlags.NonPublic | BindingFlags.Instance);
-        hotReloadSessionManagerField?.SetValue(provider, new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager));
-
-        var debuggerSettingsField = typeof(ProjectLaunchTargetsProvider)
-            .GetField("_debuggerSettings", BindingFlags.NonPublic | BindingFlags.Instance);
-        debuggerSettingsField?.SetValue(provider, new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService));
+        var provider = GetDebugTargetsProvider(
+            hotReloadSessionManager: mockHotReloadSessionManager,
+            hotReloadSettings: mockHotReloadOptionService);
 
         // Set up a Project command profile with Hot Reload enabled
         var profile = new LaunchProfile(
@@ -1062,18 +1055,11 @@ public class ProjectLaunchTargetsProviderTests
     public async Task GetConsoleTargetForProfileAsync_WhenDebugging_UsesCorrectHotReloadSettings()
     {
         // Arrange
-        var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        var mockHotReloadSessionManager = IProjectHotReloadSessionManagerFactory.Create();
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: false);
-        var provider = GetDebugTargetsProvider();
-
-        // Use reflection to set the hot reload dependencies
-        var hotReloadSessionManagerField = typeof(ProjectLaunchTargetsProvider)
-            .GetField("_hotReloadSessionManager", BindingFlags.NonPublic | BindingFlags.Instance);
-        hotReloadSessionManagerField?.SetValue(provider, new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager));
-
-        var debuggerSettingsField = typeof(ProjectLaunchTargetsProvider)
-            .GetField("_debuggerSettings", BindingFlags.NonPublic | BindingFlags.Instance);
-        debuggerSettingsField?.SetValue(provider, new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService));
+        var provider = GetDebugTargetsProvider(
+            hotReloadSessionManager: mockHotReloadSessionManager,
+            hotReloadSettings: mockHotReloadOptionService);
 
         // Set up a Project command profile for debugging scenario
         var profile = new LaunchProfile(
@@ -1109,18 +1095,11 @@ public class ProjectLaunchTargetsProviderTests
     public async Task GetConsoleTargetForProfileAsync_WhenHotReloadEnabledAndLaunchProviderAvailable_PassesCorrectParameters()
     {
         // Arrange
-        var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
+        var mockHotReloadSessionManager = IProjectHotReloadSessionManagerFactory.Create();
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
-        var provider = GetDebugTargetsProvider();
-
-        // Use reflection to set the hot reload dependencies
-        var hotReloadSessionManagerField = typeof(ProjectLaunchTargetsProvider)
-            .GetField("_hotReloadSessionManager", BindingFlags.NonPublic | BindingFlags.Instance);
-        hotReloadSessionManagerField?.SetValue(provider, new Lazy<IProjectHotReloadSessionManager>(() => mockHotReloadSessionManager));
-
-        var debuggerSettingsField = typeof(ProjectLaunchTargetsProvider)
-            .GetField("_debuggerSettings", BindingFlags.NonPublic | BindingFlags.Instance);
-        debuggerSettingsField?.SetValue(provider, new Lazy<IHotReloadOptionService>(() => mockHotReloadOptionService));
+        var provider = GetDebugTargetsProvider(
+            hotReloadSessionManager: mockHotReloadSessionManager,
+            hotReloadSettings: mockHotReloadOptionService);
 
         // Set up a Project command profile with environment variables
         var profile = new LaunchProfile(
@@ -1152,7 +1131,13 @@ public class ProjectLaunchTargetsProviderTests
             Times.Once);
     }
 
-    private ProjectLaunchTargetsProvider GetDebugTargetsProvider(ProjectOutputType outputType = ProjectOutputType.Console, Dictionary<string, string?>? properties = null, IVsDebugger10? debugger = null, IProjectCapabilitiesScope? scope = null)
+    private ProjectLaunchTargetsProvider GetDebugTargetsProvider(
+        ProjectOutputType outputType = ProjectOutputType.Console,
+        Dictionary<string, string?>? properties = null,
+        IVsDebugger10? debugger = null,
+        IProjectCapabilitiesScope? scope = null,
+        IProjectHotReloadSessionManager? hotReloadSessionManager = null,
+        IHotReloadOptionService? hotReloadSettings = null)
     {
         _mockFS.Create(@"c:\test\Project\someapp.exe");
         _mockFS.CreateDirectory(@"c:\test\Project");
@@ -1193,7 +1178,14 @@ public class ProjectLaunchTargetsProviderTests
             o.Capabilities == capabilitiesScope);
         var environment = IEnvironmentHelperFactory.ImplementGetEnvironmentVariable(_Path);
 
-        return CreateInstance(configuredProject: configuredProject, fileSystem: _mockFS, typeChecker: outputTypeChecker, environment: environment, debugger: debugger);
+        return CreateInstance(
+            configuredProject: configuredProject,
+            fileSystem: _mockFS,
+            typeChecker: outputTypeChecker,
+            environment: environment,
+            debugger: debugger,
+            hotReloadSettings: hotReloadSettings,
+            hotReloadSessionManager: hotReloadSessionManager);
     }
 
     private static ProjectLaunchTargetsProvider CreateInstance(
@@ -1205,7 +1197,8 @@ public class ProjectLaunchTargetsProviderTests
         IOutputTypeChecker? typeChecker = null,
         IProjectThreadingService? threadingService = null,
         IVsDebugger10? debugger = null,
-        IHotReloadOptionService? hotReloadSettings = null)
+        IHotReloadOptionService? hotReloadSettings = null,
+        IProjectHotReloadSessionManager? hotReloadSessionManager = null)
     {
         environment ??= Mock.Of<IEnvironmentHelper>();
         tokenReplacer ??= IDebugTokenReplacerFactory.Create();
@@ -1229,7 +1222,7 @@ public class ProjectLaunchTargetsProviderTests
             threadingService,
             IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger),
             remoteDebuggerAuthenticationService,
-            new Lazy<IProjectHotReloadSessionManager>(IProjectHotReloadSessionManagerFactory.Create),
+            new Lazy<IProjectHotReloadSessionManager>(() => hotReloadSessionManager ?? IProjectHotReloadSessionManagerFactory.Create()),
             new Lazy<IHotReloadOptionService>(() => hotReloadSettings ?? IHotReloadOptionServiceFactory.Create()));
     }
 
