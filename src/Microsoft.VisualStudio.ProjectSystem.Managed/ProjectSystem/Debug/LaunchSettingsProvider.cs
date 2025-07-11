@@ -873,6 +873,14 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         // even though it can change over the lifetime of the project. We should fix this and convert to using dataflow
         // see: https://github.com/dotnet/project-system/issues/2316.
 
+        if (_project.Services.ActiveConfiguredProjectProvider is IActiveConfiguredProjectProvider activeConfiguredProjectProvider &&
+            activeConfiguredProjectProvider.ActiveConfiguredProject is null)
+        {
+            // in a project system the LauchProfile is turned on through project factory, the provider can be initialized before configuration is loaded.
+            // Because _projectProperties is depending on the active configured project, it will end up with NFE failure.
+            await activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.ReceiveAsync(_project.Services.ProjectAsynchronousTasks?.UnloadCancellationToken ?? CancellationToken.None);
+        }
+
         // Default to the project directory if we're not able to get the AppDesigner folder.
         string folder = _commonProjectServices.Project.GetProjectDirectory();
 
