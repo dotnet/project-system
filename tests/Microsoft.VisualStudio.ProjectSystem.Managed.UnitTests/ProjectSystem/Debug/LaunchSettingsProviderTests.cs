@@ -22,7 +22,8 @@ public class LaunchSettingsProviderTests
 
         var projectProperties = ProjectPropertiesFactory.Create(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, appDesignerFolder);
         var activeConfigurationProjectProperties = IActiveConfiguredValueFactory.ImplementValue<ProjectProperties?>(() => projectProperties);
-        var project = UnconfiguredProjectFactory.Create(fullPath: @"c:\test\Project1\Project1.csproj");
+        var configuredProject = ConfiguredProjectFactory.Create();
+        var project = UnconfiguredProjectFactory.Create(fullPath: @"c:\test\Project1\Project1.csproj", configuredProject: configuredProject);
         var properties = ProjectPropertiesFactory.Create(project, [debuggerData]);
         var threadingService = IProjectThreadingServiceFactory.Create();
         var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, threadingService, null, properties);
