@@ -32,4 +32,9 @@ internal interface IUnconfiguredProjectCommonServices
     ///     Gets the <see cref="IProjectAccessor"/> which provides access to MSBuild evaluation and construction models for a project.
     /// </summary>
     IProjectAccessor ProjectAccessor { get; }
+
+    /// <summary>
+    /// Returns an export from the current active configured project
+    /// </summary>
+    T? GetActiveConfiguredProjectExport<T>() where T : class;
 }

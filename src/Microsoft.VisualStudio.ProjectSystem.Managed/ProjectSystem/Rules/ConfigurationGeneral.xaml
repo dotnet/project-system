@@ -366,4 +366,6 @@
                   SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+  <BoolProperty Name="HotReloadAutoRestart"
+                  Visible="False" />
 </Rule>
