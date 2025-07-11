@@ -876,7 +876,9 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         if (_project.Services.ActiveConfiguredProjectProvider is IActiveConfiguredProjectProvider activeConfiguredProjectProvider &&
             activeConfiguredProjectProvider.ActiveConfiguredProject is null)
         {
-            await activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.ReceiveAsync(_project.Services.ProjectAsynchronousTasks!.UnloadCancellationToken);
+            // in a project system the LauchProfile is turned on through project factory, the provider can be initialized before configuration is loaded.
+            // Because _projectProperties is depending on the active configured project, it will end up with NFE failure.
+            await activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.ReceiveAsync(_project.Services.ProjectAsynchronousTasks?.UnloadCancellationToken ?? CancellationToken.None);
         }
 
         // Default to the project directory if we're not able to get the AppDesigner folder.
