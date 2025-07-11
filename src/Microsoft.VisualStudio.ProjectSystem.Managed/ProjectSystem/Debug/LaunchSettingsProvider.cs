@@ -873,6 +873,12 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         // even though it can change over the lifetime of the project. We should fix this and convert to using dataflow
         // see: https://github.com/dotnet/project-system/issues/2316.
 
+        if (_project.Services.ActiveConfiguredProjectProvider is IActiveConfiguredProjectProvider activeConfiguredProjectProvider &&
+            activeConfiguredProjectProvider.ActiveConfiguredProject is null)
+        {
+            await activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.ReceiveAsync(_project.Services.ProjectAsynchronousTasks!.UnloadCancellationToken);
+        }
+
         // Default to the project directory if we're not able to get the AppDesigner folder.
         string folder = _commonProjectServices.Project.GetProjectDirectory();
 
