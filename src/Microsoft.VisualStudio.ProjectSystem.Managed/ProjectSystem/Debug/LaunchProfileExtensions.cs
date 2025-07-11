@@ -155,22 +155,6 @@ internal static class LaunchProfileExtensions
         return false;
     }
 
-    public static void SetSkipStopAndRestart(this ILaunchProfile profile, bool value)
-    {
-        if (profile is ILaunchProfile2 launchProfile2)
-        {
-            launchProfile2.OtherSettings.Add((SkipStopAndRestartProperty, value));
-        }
-        else if (profile is ILaunchProfile launchProfile && launchProfile.OtherSettings is not null)
-        {
-            launchProfile.OtherSettings.Add(SkipStopAndRestartProperty, value);
-        }
-        else
-        {
-            throw new ArgumentException("Profile does not support setting other settings.", nameof(profile));
-        }
-    }
-
     /// <summary>
     /// Enumerates the profile's environment variables, preserving order if possible.
     /// </summary>
