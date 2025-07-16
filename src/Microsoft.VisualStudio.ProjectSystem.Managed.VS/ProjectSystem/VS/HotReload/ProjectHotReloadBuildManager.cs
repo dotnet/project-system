@@ -44,6 +44,5 @@ internal sealed class ProjectHotReloadBuildManager(
 
             throw;
         }
-       
     }
 }

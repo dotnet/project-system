@@ -86,7 +86,6 @@ public class ProjectHotReloadBuildManagerTests
         Assert.False(result);
     }
 
-
     [Fact]
     public async Task BuildProjectAsync_WhenBuildCanceled_ReturnsFalse()
     {
@@ -116,7 +115,6 @@ public class ProjectHotReloadBuildManagerTests
                 It.IsAny<IVsHierarchy>(),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
-
 
         var buildManager = new ProjectHotReloadBuildManager(
             mockProject,
