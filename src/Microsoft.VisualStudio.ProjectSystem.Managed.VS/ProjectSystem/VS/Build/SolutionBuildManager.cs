@@ -174,16 +174,17 @@ internal sealed class SolutionBuildManager : OnceInitializedOnceDisposedAsync, I
             fSuppressUI: 0));
     }
 
-    public ValueTask<bool> BuildProjectAndWaitForCompletionAsync(
+    public async ValueTask<bool> BuildProjectAndWaitForCompletionAsync(
         IVsHierarchy projectHierarchy,
         CancellationToken cancellationToken = default)
     {
-        return _semaphore.ExecuteAsync(BuildProjectCoreAsync, cancellationToken);
+        return await _semaphore.ExecuteAsync(async () => await BuildProjectCoreAsync(), cancellationToken);
 
-        async ValueTask<bool> BuildProjectCoreAsync()
+        async Task<bool> BuildProjectCoreAsync()
         {
+            await InitializeAsync();
             Assumes.NotNull(_vsSolutionBuildManager2);
-            JoinableFactory.Context.VerifyIsOnMainThread();
+            await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
             using var solutionBuildCompleteListener = new SolutionBuildCompleteListener();
             await using var _ = await SubscribeSolutionEventsAsync(solutionBuildCompleteListener);
             var result = _vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(
