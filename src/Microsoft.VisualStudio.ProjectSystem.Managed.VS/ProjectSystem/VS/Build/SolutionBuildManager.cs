@@ -10,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build;
 internal sealed class SolutionBuildManager : OnceInitializedOnceDisposedAsync, ISolutionBuildManager
 {
     private readonly IVsService<SVsSolutionBuildManager, IVsSolutionBuildManager2> _vsSolutionBuildManagerService;
+    private readonly ReentrantSemaphore _semaphore;
 
     private IVsSolutionBuildManager2? _vsSolutionBuildManager2;
     private IVsSolutionBuildManager3? _vsSolutionBuildManager3;
@@ -21,6 +22,10 @@ internal sealed class SolutionBuildManager : OnceInitializedOnceDisposedAsync, I
         : base(new(joinableTaskContext))
     {
         _vsSolutionBuildManagerService = solutionBuildManagerService;
+        _semaphore = ReentrantSemaphore.Create(
+            initialCount: 1,
+            joinableTaskContext: joinableTaskContext,
+            mode: ReentrantSemaphore.ReentrancyMode.NotAllowed);
     }
 
     protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
@@ -167,5 +172,88 @@ internal sealed class SolutionBuildManager : OnceInitializedOnceDisposedAsync, I
             rgdwDeployFlags: null,
             dwFlags: dwFlags,
             fSuppressUI: 0));
+    }
+
+    public ValueTask<bool> BuildProjectAndWaitForCompletionAsync(
+        IVsHierarchy projectHierarchy,
+        CancellationToken cancellationToken = default)
+    {
+        return _semaphore.ExecuteAsync(BuildProjectCoreAsync, cancellationToken);
+
+        async ValueTask<bool> BuildProjectCoreAsync()
+        {
+            Assumes.NotNull(_vsSolutionBuildManager2);
+            JoinableFactory.Context.VerifyIsOnMainThread();
+            using var solutionBuildCompleteListener = new SolutionBuildCompleteListener();
+            await using var _ = await SubscribeSolutionEventsAsync(solutionBuildCompleteListener);
+            var result = _vsSolutionBuildManager2.StartSimpleUpdateProjectConfiguration(
+                pIVsHierarchyToBuild: projectHierarchy,
+                pIVsHierarchyDependent: null,
+                pszDependentConfigurationCanonicalName: null,
+                dwFlags: (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD,
+                dwDefQueryResults: (uint)VSSOLNBUILDQUERYRESULTS.VSSBQR_SAVEBEFOREBUILD_QUERY_YES,
+                fSuppressUI: 0);
+
+            ErrorHandler.ThrowOnFailure(result);
+
+            return await solutionBuildCompleteListener.WaitForSolutionBuildCompletedAsync(cancellationToken);
+        }
+    }
+
+    private class SolutionBuildCompleteListener() : IVsUpdateSolutionEvents, IDisposable
+    {
+        private TaskCompletionSource<bool> _buildCompletedSource = new();
+
+        public int UpdateSolution_Begin(ref int pfCancelUpdate)
+        {
+            _buildCompletedSource = new TaskCompletionSource<bool>();
+            return HResult.OK;
+        }
+
+        public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
+        {
+            _buildCompletedSource.TrySetResult(fSucceeded != 0);
+
+            return HResult.OK;
+        }
+
+        public int UpdateSolution_StartUpdate(ref int pfCancelUpdate)
+        {
+            return HResult.OK;
+        }
+
+        public int UpdateSolution_Cancel()
+        {
+            _buildCompletedSource.TrySetCanceled();
+
+            return HResult.OK;
+        }
+
+        public int OnActiveProjectCfgChange(IVsHierarchy pIVsHierarchy)
+        {
+            return HResult.OK;
+        }
+
+        public async Task<bool> WaitForSolutionBuildCompletedAsync(CancellationToken ct = default)
+        {
+            using var _ = ct.Register(() =>
+            {
+                _buildCompletedSource.TrySetCanceled();
+            });
+
+            try
+            {
+                return await _buildCompletedSource.Task;
+            }
+            catch (TaskCanceledException)
+            {
+                return false;
+            }
+        }
+
+        public void Dispose()
+        {
+            _buildCompletedSource.TrySetCanceled();
+        }
     }
 }
