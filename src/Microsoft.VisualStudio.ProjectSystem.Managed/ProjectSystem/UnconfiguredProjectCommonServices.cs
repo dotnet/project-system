@@ -50,4 +50,9 @@ internal class UnconfiguredProjectCommonServices : IUnconfiguredProjectCommonSer
     {
         get { return _projectAccessor.Value; }
     }
+
+    public T? GetActiveConfiguredProjectExport<T>() where T : class
+    {
+        return ActiveConfiguredProject.Services.ExportProvider.GetExportedValueOrDefault<T>();
+    }
 }

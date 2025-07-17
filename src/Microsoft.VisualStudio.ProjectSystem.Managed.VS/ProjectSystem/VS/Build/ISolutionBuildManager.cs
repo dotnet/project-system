@@ -29,4 +29,8 @@ internal interface ISolutionBuildManager
     IVsHierarchy[] GetProjectDependencies(IVsHierarchy hierarchy);
 
     void StartUpdateSpecificProjectConfigurations(IVsHierarchy[] hierarchy, uint[] buildFlags, uint dwFlags);
+
+    ValueTask<bool> BuildProjectAndWaitForCompletionAsync(
+       IVsHierarchy projectHierarchy,
+       CancellationToken cancellationToken = default);
 }
