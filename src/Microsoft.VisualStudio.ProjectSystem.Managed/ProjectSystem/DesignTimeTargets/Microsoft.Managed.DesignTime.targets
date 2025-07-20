@@ -139,7 +139,7 @@
     <!-- Capabilities for WPF and WinForms -->
     <ProjectCapability Include="WPF" Condition="'$(UseWPF)' == 'true'" />
     <ProjectCapability Include="WindowsForms" Condition="'$(UseWindowsForms)' == 'true'" />
-    <ProjectCapability Include="DataSourceWindow" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')" />
+    <ProjectCapability Include="DataSourceWindow" Condition="('$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')) And ('$(UseWindowsForms)' == 'true' Or '$(UseWPF)' == 'true')" />
   </ItemGroup>
 
   <!-- List of well known rule Contexts that determine which catalog the rule shows up in CPS:
