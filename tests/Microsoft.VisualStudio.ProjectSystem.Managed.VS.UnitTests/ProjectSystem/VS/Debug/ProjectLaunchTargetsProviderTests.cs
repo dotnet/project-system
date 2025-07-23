@@ -1224,7 +1224,7 @@ public class ProjectLaunchTargetsProviderTests
             remoteDebuggerAuthenticationService,
             new Lazy<IProjectHotReloadSessionManager>(() => hotReloadSessionManager ?? IProjectHotReloadSessionManagerFactory.Create()),
             new Lazy<IHotReloadOptionService>(() => hotReloadSettings ?? IHotReloadOptionServiceFactory.Create()),
-            new Lazy<IActiveConfiguredValue<IProjectHotReloadLaunchProvider>>(() => IActiveConfiguredValueFactory.ImplementValue(() => IProjectHotReloadLaunchProviderFactory.Create())));
+            IActiveConfiguredValueFactory.ImplementValue(IProjectHotReloadLaunchProviderFactory.Create));
     }
 
     /// <summary>

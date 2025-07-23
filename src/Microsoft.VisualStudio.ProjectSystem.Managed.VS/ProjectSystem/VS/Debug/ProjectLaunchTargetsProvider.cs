@@ -42,7 +42,7 @@ internal class ProjectLaunchTargetsProvider :
     private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
     private readonly Lazy<IHotReloadOptionService> _debuggerSettings;
     private readonly IOutputTypeChecker _outputTypeChecker;
-    private readonly Lazy<IActiveConfiguredValue<IProjectHotReloadLaunchProvider>> _projectHotReloadLaunchProvider;
+    private readonly IActiveConfiguredValue<IProjectHotReloadLaunchProvider> _projectHotReloadLaunchProvider;
 
     [ImportingConstructor]
     public ProjectLaunchTargetsProvider(
@@ -58,7 +58,7 @@ internal class ProjectLaunchTargetsProvider :
         IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService,
         Lazy<IProjectHotReloadSessionManager> hotReloadSessionManager,
         Lazy<IHotReloadOptionService> debuggerSettings,
-        Lazy<IActiveConfiguredValue<IProjectHotReloadLaunchProvider>> projectHotReloadLaunchProvider)
+        IActiveConfiguredValue<IProjectHotReloadLaunchProvider> projectHotReloadLaunchProvider)
     {
         _project = project;
         _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
@@ -402,7 +402,7 @@ internal class ProjectLaunchTargetsProvider :
         }
 
         if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions) &&
-            _projectHotReloadLaunchProvider.Value.Value is IProjectHotReloadLaunchProvider launchProvider &&
+            _projectHotReloadLaunchProvider.Value is IProjectHotReloadLaunchProvider launchProvider &&
             await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(
                 configuredProject: configuredProject,
                 launchProvider: launchProvider,
