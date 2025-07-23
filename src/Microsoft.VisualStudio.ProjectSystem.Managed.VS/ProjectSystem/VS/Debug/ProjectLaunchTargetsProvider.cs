@@ -42,6 +42,7 @@ internal class ProjectLaunchTargetsProvider :
     private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
     private readonly Lazy<IHotReloadOptionService> _debuggerSettings;
     private readonly IOutputTypeChecker _outputTypeChecker;
+    private readonly Lazy<IActiveConfiguredValue<IProjectHotReloadLaunchProvider>> _projectHotReloadLaunchProvider;
 
     [ImportingConstructor]
     public ProjectLaunchTargetsProvider(
@@ -56,7 +57,8 @@ internal class ProjectLaunchTargetsProvider :
         IVsUIService<SVsShellDebugger, IVsDebugger10> debugger,
         IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService,
         Lazy<IProjectHotReloadSessionManager> hotReloadSessionManager,
-        Lazy<IHotReloadOptionService> debuggerSettings)
+        Lazy<IHotReloadOptionService> debuggerSettings,
+        Lazy<IActiveConfiguredValue<IProjectHotReloadLaunchProvider>> projectHotReloadLaunchProvider)
     {
         _project = project;
         _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
@@ -70,6 +72,7 @@ internal class ProjectLaunchTargetsProvider :
         _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
         _hotReloadSessionManager = hotReloadSessionManager;
         _debuggerSettings = debuggerSettings;
+        _projectHotReloadLaunchProvider = projectHotReloadLaunchProvider;
     }
 
     private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync()
@@ -399,7 +402,7 @@ internal class ProjectLaunchTargetsProvider :
         }
 
         if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions) &&
-            _unconfiguredProjectVsServices.GetActiveConfiguredProjectExport<IProjectHotReloadLaunchProvider>() is IProjectHotReloadLaunchProvider launchProvider &&
+            _projectHotReloadLaunchProvider.Value.Value is IProjectHotReloadLaunchProvider launchProvider &&
             await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(
                 configuredProject: configuredProject,
                 launchProvider: launchProvider,

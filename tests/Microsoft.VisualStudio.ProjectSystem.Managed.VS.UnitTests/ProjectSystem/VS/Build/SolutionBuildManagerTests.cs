@@ -1,10 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
-#pragma warning disable VSSDK005
+#pragma warning disable VSSDK005  // Use the JoinableTaskContext singleton
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build;
 public class SolutionBuildManagerTests
@@ -258,6 +257,66 @@ public class SolutionBuildManagerTests
 
         // Assert
         Assert.False(result);
+    }
+
+    [Fact]
+    public async Task BuildProjectAndWaitForCompletionAsync_WhenUpdateSolutionBeginCalledAfterWaiting_CompletesCorrectly()
+    {
+        using var _ = SynchronizationContextUtil.Suppress();
+
+        // Arrange
+        var mockVsSolutionBuildManager2 = new Mock<IVsSolutionBuildManager2>();
+        mockVsSolutionBuildManager2.As<IVsSolutionBuildManager3>();
+        var mockVsService = IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(mockVsSolutionBuildManager2.Object);
+        var mockVsHierarchy = new Mock<IVsHierarchy>();
+        var joinableTaskContext = new JoinableTaskContext();
+
+        IVsUpdateSolutionEvents? capturedEventListener = null;
+
+        mockVsSolutionBuildManager2
+            .Setup(x => x.AdviseUpdateSolutionEvents(It.IsAny<IVsUpdateSolutionEvents>(), out It.Ref<uint>.IsAny))
+            .Callback((IVsUpdateSolutionEvents events, out uint cookie) =>
+            {
+                capturedEventListener = events;
+                cookie = 1;
+            })
+            .Returns(HResult.OK);
+
+        mockVsSolutionBuildManager2
+            .Setup(x => x.StartSimpleUpdateProjectConfiguration(
+                It.IsAny<IVsHierarchy>(),
+                It.IsAny<IVsHierarchy>(),
+                It.IsAny<string>(),
+                It.IsAny<uint>(),
+                It.IsAny<uint>(),
+                It.IsAny<int>()))
+            .Returns(HResult.OK);
+
+        mockVsSolutionBuildManager2
+            .Setup(x => x.UnadviseUpdateSolutionEvents(It.IsAny<uint>()))
+            .Returns(HResult.OK);
+
+        var buildManager = new SolutionBuildManager(mockVsService, joinableTaskContext);
+
+        // Act
+        var buildTask = buildManager.BuildProjectAndWaitForCompletionAsync(mockVsHierarchy.Object);
+
+        // Wait for the build to start and the event listener to be captured
+        await Task.Delay(50);
+        Assert.NotNull(capturedEventListener);
+
+        // Simulate the problematic sequence:
+        // 1. UpdateSolution_Begin is called, in real world, this could happen when user starts another build
+        // 2. UpdateSolution_Done is called (which should complete the build)
+        int pfCancelUpdate = 0;
+        capturedEventListener.UpdateSolution_Begin(ref pfCancelUpdate);
+        capturedEventListener.UpdateSolution_Done(fSucceeded: 1, fModified: 0, fCancelCommand: 0);
+
+        // The build should complete successfully despite UpdateSolution_Begin being called
+        var result = await buildTask;
+
+        // Assert
+        Assert.True(result);
     }
 }
 #pragma warning restore VSSDK005

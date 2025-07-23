@@ -53,9 +53,6 @@ internal static class IUnconfiguredProjectVsServicesFactory
             mock.SetupGet(h => h.Project).Returns(unconfiguredProjectCreator());
         }
 
-        mock.Setup(h => h.GetActiveConfiguredProjectExport<IProjectHotReloadLaunchProvider>())
-            .Returns(Mock.Of<IProjectHotReloadLaunchProvider>());
-
         return mock.Object;
     }
 }
