@@ -203,11 +203,10 @@ internal sealed class SolutionBuildManager : OnceInitializedOnceDisposedAsync, I
 
     private class SolutionBuildCompleteListener() : IVsUpdateSolutionEvents, IDisposable
     {
-        private TaskCompletionSource<bool> _buildCompletedSource = new();
+        private readonly TaskCompletionSource<bool> _buildCompletedSource = new();
 
         public int UpdateSolution_Begin(ref int pfCancelUpdate)
         {
-            _buildCompletedSource = new TaskCompletionSource<bool>();
             return HResult.OK;
         }
 

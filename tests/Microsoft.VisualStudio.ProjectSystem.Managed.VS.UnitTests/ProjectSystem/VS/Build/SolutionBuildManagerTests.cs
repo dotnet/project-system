@@ -1,10 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.ProjectSystem.VS.Build;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
-#pragma warning disable VSSDK005
+#pragma warning disable VSSDK005  // Use the JoinableTaskContext singleton
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build;
 public class SolutionBuildManagerTests
@@ -19,7 +18,7 @@ public class SolutionBuildManagerTests
         var mockVsHierarchy = new Mock<IVsHierarchy>();
         var joinableTaskContext = JoinableTaskContext.CreateNoOpContext();
 
-        IVsUpdateSolutionEvents? capturedEventListener = null;
+        var tcs = new TaskCompletionSource<IVsUpdateSolutionEvents>();
         uint capturedCookie = 1;
 
         // Setup the VS solution build manager to capture the event listener
@@ -27,7 +26,7 @@ public class SolutionBuildManagerTests
             .Setup(x => x.AdviseUpdateSolutionEvents(It.IsAny<IVsUpdateSolutionEvents>(), out It.Ref<uint>.IsAny))
             .Callback((IVsUpdateSolutionEvents events, out uint cookie) =>
             {
-                capturedEventListener = events;
+                tcs.SetResult(events);
                 cookie = capturedCookie;
             })
             .Returns(HResult.OK);
@@ -50,8 +49,8 @@ public class SolutionBuildManagerTests
         // Act
         var buildTask = buildManager.BuildProjectAndWaitForCompletionAsync(mockVsHierarchy.Object);
 
-        // Simulate build completion event after a short delay
-        await Task.Delay(50);
+        // Wait for the build to start and the event listener to be captured
+        var capturedEventListener = await tcs.Task;
         Assert.NotNull(capturedEventListener);
         capturedEventListener.UpdateSolution_Done(fSucceeded: 1, fModified: 0, fCancelCommand: 0);
         var result = await buildTask;
@@ -81,6 +80,8 @@ public class SolutionBuildManagerTests
         var joinableTaskContext = JoinableTaskContext.CreateNoOpContext();
 
         var buildStartTimes = new List<DateTime>();
+        var tcsForFirstListener = new TaskCompletionSource<IVsUpdateSolutionEvents>();
+        var tcsForSecondListener = new TaskCompletionSource<IVsUpdateSolutionEvents>();
         var eventListeners = new List<IVsUpdateSolutionEvents>();
         uint cookieCounter = 1;
 
@@ -90,6 +91,10 @@ public class SolutionBuildManagerTests
             .Callback((IVsUpdateSolutionEvents events, out uint cookie) =>
             {
                 eventListeners.Add(events);
+                if (eventListeners.Count == 1)
+                    tcsForFirstListener.SetResult(events);
+                else if (eventListeners.Count == 2)
+                    tcsForSecondListener.SetResult(events);
                 cookie = cookieCounter++;
             })
             .Returns(HResult.OK);
@@ -118,20 +123,19 @@ public class SolutionBuildManagerTests
         var buildTask1 = buildManager.BuildProjectAndWaitForCompletionAsync(mockVsHierarchy1.Object);
         var buildTask2 = buildManager.BuildProjectAndWaitForCompletionAsync(mockVsHierarchy2.Object);
 
-        // Wait for both builds to start and register their event listeners
-        await Task.Yield();
-        await Task.Delay(1000);
+        // Wait for the first build to start and register its event listener
+        var firstEventListener = await tcsForFirstListener.Task;
+        Assert.NotNull(firstEventListener);
 
         // Complete the first build
-        Assert.True(eventListeners.Count == 1);
-        eventListeners[0].UpdateSolution_Done(fSucceeded: 1, fModified: 0, fCancelCommand: 0);
+        firstEventListener.UpdateSolution_Done(fSucceeded: 1, fModified: 0, fCancelCommand: 0);
 
-        // Wait for the first build to complete and the second to start
-        await Task.Delay(100);
+        // Wait for the second build to start and register its event listener
+        var secondEventListener = await tcsForSecondListener.Task;
+        Assert.NotNull(secondEventListener);
 
         // Complete the second build
-        Assert.True(eventListeners.Count == 2);
-        eventListeners[1].UpdateSolution_Done(fSucceeded: 1, fModified: 0, fCancelCommand: 0);
+        secondEventListener.UpdateSolution_Done(fSucceeded: 1, fModified: 0, fCancelCommand: 0);
 
         var result1 = await buildTask1;
         var result2 = await buildTask2;
@@ -167,13 +171,13 @@ public class SolutionBuildManagerTests
         var mockVsHierarchy = new Mock<IVsHierarchy>();
         var joinableTaskContext = JoinableTaskContext.CreateNoOpContext();
 
-        IVsUpdateSolutionEvents? capturedEventListener = null;
+        var tcs = new TaskCompletionSource<IVsUpdateSolutionEvents>();
 
         mockVsSolutionBuildManager2
             .Setup(x => x.AdviseUpdateSolutionEvents(It.IsAny<IVsUpdateSolutionEvents>(), out It.Ref<uint>.IsAny))
             .Callback((IVsUpdateSolutionEvents events, out uint cookie) =>
             {
-                capturedEventListener = events;
+                tcs.SetResult(events);
                 cookie = 1;
             })
             .Returns(HResult.OK);
@@ -196,8 +200,8 @@ public class SolutionBuildManagerTests
         // Act
         var buildTask = buildManager.BuildProjectAndWaitForCompletionAsync(mockVsHierarchy.Object);
 
-        // Simulate build failure event
-        await Task.Delay(50);
+        // Wait for the build to start and the event listener to be captured
+        var capturedEventListener = await tcs.Task;
         Assert.NotNull(capturedEventListener);
         capturedEventListener.UpdateSolution_Done(fSucceeded: 0, fModified: 0, fCancelCommand: 0);
 
@@ -219,13 +223,13 @@ public class SolutionBuildManagerTests
         var mockVsHierarchy = new Mock<IVsHierarchy>();
         var joinableTaskContext = new JoinableTaskContext();
 
-        IVsUpdateSolutionEvents? capturedEventListener = null;
+        var tcs = new TaskCompletionSource<IVsUpdateSolutionEvents>();
 
         mockVsSolutionBuildManager2
             .Setup(x => x.AdviseUpdateSolutionEvents(It.IsAny<IVsUpdateSolutionEvents>(), out It.Ref<uint>.IsAny))
             .Callback((IVsUpdateSolutionEvents events, out uint cookie) =>
             {
-                capturedEventListener = events;
+                tcs.SetResult(events);
                 cookie = 1;
             })
             .Returns(HResult.OK);
@@ -249,8 +253,8 @@ public class SolutionBuildManagerTests
         // Act
         var buildTask = buildManager.BuildProjectAndWaitForCompletionAsync(mockVsHierarchy.Object);
 
-        // Simulate build cancellation event
-        await Task.Delay(50);
+        // Wait for the build to start and the event listener to be captured
+        var capturedEventListener = await tcs.Task;
         Assert.NotNull(capturedEventListener);
         capturedEventListener.UpdateSolution_Cancel();
 
@@ -258,6 +262,65 @@ public class SolutionBuildManagerTests
 
         // Assert
         Assert.False(result);
+    }
+
+    [Fact]
+    public async Task BuildProjectAndWaitForCompletionAsync_WhenUpdateSolutionBeginCalledAfterWaiting_CompletesCorrectly()
+    {
+        using var _ = SynchronizationContextUtil.Suppress();
+
+        // Arrange
+        var mockVsSolutionBuildManager2 = new Mock<IVsSolutionBuildManager2>();
+        mockVsSolutionBuildManager2.As<IVsSolutionBuildManager3>();
+        var mockVsService = IVsServiceFactory.Create<SVsSolutionBuildManager, IVsSolutionBuildManager2>(mockVsSolutionBuildManager2.Object);
+        var mockVsHierarchy = new Mock<IVsHierarchy>();
+        var joinableTaskContext = new JoinableTaskContext();
+        var tcs = new TaskCompletionSource<IVsUpdateSolutionEvents>();
+
+        mockVsSolutionBuildManager2
+            .Setup(x => x.AdviseUpdateSolutionEvents(It.IsAny<IVsUpdateSolutionEvents>(), out It.Ref<uint>.IsAny))
+            .Callback((IVsUpdateSolutionEvents events, out uint cookie) =>
+            {
+                tcs.SetResult(events);
+                cookie = 1;
+            })
+            .Returns(HResult.OK);
+
+        mockVsSolutionBuildManager2
+            .Setup(x => x.StartSimpleUpdateProjectConfiguration(
+                It.IsAny<IVsHierarchy>(),
+                It.IsAny<IVsHierarchy>(),
+                It.IsAny<string>(),
+                It.IsAny<uint>(),
+                It.IsAny<uint>(),
+                It.IsAny<int>()))
+            .Returns(HResult.OK);
+
+        mockVsSolutionBuildManager2
+            .Setup(x => x.UnadviseUpdateSolutionEvents(It.IsAny<uint>()))
+            .Returns(HResult.OK);
+
+        var buildManager = new SolutionBuildManager(mockVsService, joinableTaskContext);
+
+        // Act
+        var buildTask = buildManager.BuildProjectAndWaitForCompletionAsync(mockVsHierarchy.Object);
+
+        // Wait for the build to start and the event listener to be captured
+        var capturedEventListener = await tcs.Task;
+        Assert.NotNull(capturedEventListener);
+
+        // Simulate the problematic sequence:
+        // 1. UpdateSolution_Begin is called, in real world, this could happen when user starts another build
+        // 2. UpdateSolution_Done is called (which should complete the build)
+        int pfCancelUpdate = 0;
+        capturedEventListener.UpdateSolution_Begin(ref pfCancelUpdate);
+        capturedEventListener.UpdateSolution_Done(fSucceeded: 1, fModified: 0, fCancelCommand: 0);
+
+        // The build should complete successfully despite UpdateSolution_Begin being called
+        var result = await buildTask;
+
+        // Assert
+        Assert.True(result);
     }
 }
 #pragma warning restore VSSDK005

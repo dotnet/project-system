@@ -1223,7 +1223,8 @@ public class ProjectLaunchTargetsProviderTests
             IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger),
             remoteDebuggerAuthenticationService,
             new Lazy<IProjectHotReloadSessionManager>(() => hotReloadSessionManager ?? IProjectHotReloadSessionManagerFactory.Create()),
-            new Lazy<IHotReloadOptionService>(() => hotReloadSettings ?? IHotReloadOptionServiceFactory.Create()));
+            new Lazy<IHotReloadOptionService>(() => hotReloadSettings ?? IHotReloadOptionServiceFactory.Create()),
+            IActiveConfiguredValueFactory.ImplementValue(IProjectHotReloadLaunchProviderFactory.Create));
     }
 
     /// <summary>
