@@ -54,6 +54,7 @@
     <PackageVersion Include="Microsoft.VisualStudio.Interop"                                         Version="18.0.1755-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.ManagedInterfaces"                               Version="18.0.1755-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.RpcContracts"                                    Version="17.15.15-pre" />
+    <PackageVersion Include="Microsoft.VisualStudio.SDK.Analyzers"                                   Version="17.7.88" />
     <PackageVersion Include="Microsoft.VisualStudio.Settings.15.0"                                   Version="18.0.1755-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="3.12.2159" />
     <PackageVersion Include="Microsoft.VisualStudio.Shell.15.0"                                      Version="18.0.1755-preview.1" />

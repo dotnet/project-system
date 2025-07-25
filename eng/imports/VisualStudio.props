@@ -30,11 +30,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Interop" />
     <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" />
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" />
+    <PackageReference Include="Microsoft.VisualStudio.SDK.Analyzers" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Design" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Framework" />
     <PackageReference Include="Microsoft.VisualStudio.Telemetry" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" />
     <PackageReference Include="Microsoft.VisualStudio.Utilities" />
     <PackageReference Include="NuGet.VisualStudio" />
     
