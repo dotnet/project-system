@@ -42,6 +42,7 @@ internal class ProjectLaunchTargetsProvider :
     private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
     private readonly Lazy<IHotReloadOptionService> _debuggerSettings;
     private readonly IOutputTypeChecker _outputTypeChecker;
+    private readonly IActiveConfiguredValue<IProjectHotReloadLaunchProvider> _projectHotReloadLaunchProvider;
 
     [ImportingConstructor]
     public ProjectLaunchTargetsProvider(
@@ -56,7 +57,8 @@ internal class ProjectLaunchTargetsProvider :
         IVsUIService<SVsShellDebugger, IVsDebugger10> debugger,
         IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService,
         Lazy<IProjectHotReloadSessionManager> hotReloadSessionManager,
-        Lazy<IHotReloadOptionService> debuggerSettings)
+        Lazy<IHotReloadOptionService> debuggerSettings,
+        IActiveConfiguredValue<IProjectHotReloadLaunchProvider> projectHotReloadLaunchProvider)
     {
         _project = project;
         _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
@@ -70,6 +72,7 @@ internal class ProjectLaunchTargetsProvider :
         _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
         _hotReloadSessionManager = hotReloadSessionManager;
         _debuggerSettings = debuggerSettings;
+        _projectHotReloadLaunchProvider = projectHotReloadLaunchProvider;
     }
 
     private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync()
@@ -398,7 +401,14 @@ internal class ProjectLaunchTargetsProvider :
             settings.Options = JsonConvert.SerializeObject(debuggerLaunchOptions);
         }
 
-        if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions))
+        if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions) &&
+            _projectHotReloadLaunchProvider.Value is IProjectHotReloadLaunchProvider launchProvider &&
+            await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(
+                configuredProject: configuredProject,
+                launchProvider: launchProvider,
+                settings.Environment,
+                launchOptions,
+                resolvedProfile))
         {
             // Enable XAML Hot Reload
             settings.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] = "1";

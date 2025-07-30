@@ -88,6 +88,20 @@ public class LaunchProfileExtensionsTests
         Assert.Equal(expected, data.RemoteDebugMachine());
     }
 
+    [Theory]
+    [InlineData(false, false)]
+    [InlineData(true, true)]
+    [InlineData(null, false)]
+    public void IsSkipStopAndRestartEnabled_ILaunchProfile(bool? value, bool expected)
+    {
+        var data = new LaunchProfile(
+            name: null,
+            commandName: null,
+            otherSettings: value is null ? [] : ImmutableArray.Create<(string, object)>((LaunchProfileExtensions.SkipStopAndRestartProperty, value.Value)));
+
+        Assert.Equal(expected, data.IsSkipStopAndRestartEnabled());
+    }
+
     [Fact]
     public void TryGetSetting_ILaunchProfile()
     {
