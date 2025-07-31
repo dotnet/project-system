@@ -656,10 +656,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
         {
             Validate();
 
-            string? value = _projectInstance.GetProperty(name)?.EvaluatedValue;
-
-            // Return the empty string rather than null.
-            return value ?? "";
+            return _projectInstance.GetPropertyValue(name);
         }
 
         public override ImmutableArray<string> GetItemValues(string name)
