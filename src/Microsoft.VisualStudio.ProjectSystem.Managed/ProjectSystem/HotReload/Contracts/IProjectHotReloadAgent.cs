@@ -8,8 +8,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.System, Cardinality = ImportCardinality.ExactlyOne)]
 public interface IProjectHotReloadAgent
 {
+    /// <param name="runtimeVersion">Format: "Major.Minor"</param>
     IProjectHotReloadSession? CreateHotReloadSession(string id, int variant, string runtimeVersion, IProjectHotReloadSessionCallback callback);
 
+    /// <param name="runtimeVersion">Format: "Major.Minor"</param>
     IProjectHotReloadSession? CreateHotReloadSession(string id, string runtimeVersion, IProjectHotReloadSessionCallback callback);
 }
 

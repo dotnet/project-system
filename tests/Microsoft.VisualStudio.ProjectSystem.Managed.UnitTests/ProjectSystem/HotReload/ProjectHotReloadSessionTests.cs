@@ -273,7 +273,8 @@ public class ProjectHotReloadSessionTests
     }
 
     [Fact]
-    public async Task StartSessionAsync_WithNullConfiguredProject_SetsEmptyProjectInfo()
+    [Obsolete]
+    public async Task StartSessionAsync_WithNullConfiguredProject_CallsLegacyAgentStartedAsync()
     {
         // Arrange
         var hotReloadAgentManagerClient = new Mock<IHotReloadAgentManagerClient>();
@@ -289,11 +290,6 @@ public class ProjectHotReloadSessionTests
             client => client.AgentStartedAsync(
                 session,
                 HotReloadAgentFlags.None,
-                It.IsAny<ManagedEditAndContinueProcessInfo>(),
-                It.Is<RunningProjectInfo>(info =>
-                    info.ProjectInstanceId.ProjectFilePath == string.Empty &&
-                    info.ProjectInstanceId.TargetFramework == string.Empty &&
-                    info.RestartAutomatically == false),
                 It.IsAny<CancellationToken>()),
             Times.Once);
     }

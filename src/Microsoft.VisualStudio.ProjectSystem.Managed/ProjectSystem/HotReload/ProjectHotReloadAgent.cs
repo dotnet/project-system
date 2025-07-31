@@ -60,7 +60,7 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent2
         return new ProjectHotReloadSession(
             name: id,
             variant: variant,
-            runtimeVersion: runtimeVersion,
+            targetFrameworkVersion: runtimeVersion,
             hotReloadAgentManagerClient: _hotReloadAgentManagerClient,
             hotReloadOutputService: _hotReloadDiagnosticOutputService,
             deltaApplierCreator: _managedDeltaApplierCreator,

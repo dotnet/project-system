@@ -13,7 +13,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 {
     private readonly string _variant;
-    private readonly string _runtimeVersion;
+
+    /// <summary>
+    /// Major.Minor
+    /// </summary>
+    private readonly string _targetFrameworkVersion;
+
     private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
     private readonly ConfiguredProject? _configuredProject;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
@@ -28,7 +33,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     public ProjectHotReloadSession(
         string name,
         int variant,
-        string runtimeVersion,
+        string targetFrameworkVersion,
         Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadOutputService,
         Lazy<IManagedDeltaApplierCreator> deltaApplierCreator,
@@ -42,7 +47,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         _configuredProject = configuredProject;
         Name = name;
         _variant = variant.ToString();
-        _runtimeVersion = runtimeVersion;
+        _targetFrameworkVersion = targetFrameworkVersion;
         _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
         _hotReloadOutputService = hotReloadOutputService;
         _deltaApplierCreator = deltaApplierCreator;
@@ -79,6 +84,19 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         return StartSessionAsync(runningUnderDebugger: false, cancellationToken);
     }
 
+    private async ValueTask<string> GetTargetFrameworkAsync()
+    {
+        if (_configuredProject?.Services.ProjectPropertiesProvider is { } provider)
+        {
+            return await provider.GetCommonProperties().GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty);
+        }
+
+        // This is only hit when legacy version of IProjectHotReloadAgent is used.
+        // Best we can do here is to assume the TFM is netX.Y. This won't work for "netX.Y-windows", etc.
+        // HotReload is not supported for .NET Framework hence this version is always .NET version.
+        return $"net{_targetFrameworkVersion}";
+    }
+
     public async Task StartSessionAsync(bool runningUnderDebugger, CancellationToken cancellationToken)
     {
         if (_sessionActive)
@@ -87,31 +105,40 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         }
 
         HotReloadAgentFlags flags = runningUnderDebugger ? HotReloadAgentFlags.IsDebuggedProcess : HotReloadAgentFlags.None;
-        var processInfo = new ManagedEditAndContinueProcessInfo();
-        bool? hotReloadAutoRestart = false;
-        string targetFramework = _configuredProject?.Services.ProjectPropertiesProvider?.GetCommonProperties() is IProjectProperties commonProperties
-            ? await commonProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty)
-            : string.Empty;
-        if (_configuredProject?.Services.ProjectSubscription?.ProjectRuleSource is IProjectValueDataSource<IProjectSubscriptionUpdate> update &&
-            await update.GetLatestVersionAsync(_configuredProject, cancellationToken: cancellationToken) is var snapshot &&
-            snapshot.Value.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot configurationGeneralSnapshot))
+
+        if (_configuredProject is null)
         {
-            hotReloadAutoRestart = configurationGeneralSnapshot.Properties.GetBoolProperty(ConfigurationGeneral.HotReloadAutoRestartProperty);
+#pragma warning disable CS0618 // Type or member is obsolete: legacy code path for IProjectHotReloadAgent
+            await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, cancellationToken);
+#pragma warning restore CS0618
         }
-
-        RunningProjectInfo runningProjectInfo = new RunningProjectInfo
+        else
         {
-            RestartAutomatically = hotReloadAutoRestart ?? false,
-            ProjectInstanceId = new ProjectInstanceId
+            bool hotReloadAutoRestart = false;
+            string targetFramework = await GetTargetFrameworkAsync();
+
+            if (_configuredProject.Services.ProjectSubscription is { } projectSubscription &&
+                (await projectSubscription.ProjectRuleSource.GetLatestVersionAsync(_configuredProject, cancellationToken: cancellationToken))
+                    .Value.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot configurationGeneralSnapshot))
             {
-                ProjectFilePath = _configuredProject?.UnconfiguredProject.FullPath ?? string.Empty,
-                TargetFramework = targetFramework ?? string.Empty,
+                hotReloadAutoRestart = configurationGeneralSnapshot.Properties.GetBoolProperty(ConfigurationGeneral.HotReloadAutoRestartProperty) ?? false;
             }
-        };
 
-        DebugTrace($"start session for project '{_configuredProject?.UnconfiguredProject.FullPath}' with TFM '{runningProjectInfo.ProjectInstanceId.TargetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
+            var runningProjectInfo = new RunningProjectInfo
+            {
+                RestartAutomatically = hotReloadAutoRestart,
+                ProjectInstanceId = new ProjectInstanceId
+                {
+                    ProjectFilePath = _configuredProject.UnconfiguredProject.FullPath,
+                    TargetFramework = targetFramework,
+                }
+            };
 
-        await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
+            DebugTrace($"start session for project '{_configuredProject.UnconfiguredProject.FullPath}' with TFM '{targetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
+
+            var processInfo = new ManagedEditAndContinueProcessInfo();
+            await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
+        }
 
         WriteToOutputWindow(Resources.HotReloadStartSession, default);
         _sessionActive = true;
@@ -259,7 +286,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     [MemberNotNull(nameof(_deltaApplier))]
     private void EnsureDeltaApplierForSession()
     {
-        _deltaApplier ??= _callback.GetDeltaApplier() ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(_runtimeVersion);
+        _deltaApplier ??= _callback.GetDeltaApplier() ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(_targetFrameworkVersion);
 
         Assumes.NotNull(_deltaApplier);
     }
