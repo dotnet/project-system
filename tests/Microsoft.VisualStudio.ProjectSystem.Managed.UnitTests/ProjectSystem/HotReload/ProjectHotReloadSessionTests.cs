@@ -17,10 +17,9 @@ public class ProjectHotReloadSessionTests
         // Arrange
         string name = "TestSession";
         int variant = 42;
-        string runtimeVersion = "6.0";
 
         // Act
-        var session = CreateInstance(name: name, variant: variant, runtimeVersion: runtimeVersion);
+        var session = CreateInstance(name: name, variant: variant);
 
         // Assert
         Assert.Equal(name, session.Name);
@@ -629,27 +628,6 @@ public class ProjectHotReloadSessionTests
     }
 
     [Fact]
-    public async Task SupportsRestartAsync_WhenDebugLaunchOptionsIsNull_ReturnsFalse()
-    {
-        // Arrange
-        var launchProfile = new Mock<ILaunchProfile>().Object;
-        var buildManager = new Mock<IProjectHotReloadBuildManager>().Object;
-        var launchProvider = new Mock<IProjectHotReloadLaunchProvider>().Object;
-
-        var session = CreateInstance(
-            launchProfile: launchProfile,
-            debugLaunchOptions: null, // Explicitly pass null
-            buildManager: buildManager,
-            launchProvider: launchProvider);
-
-        // Act
-        bool result = await session.SupportsRestartAsync(CancellationToken.None);
-
-        // Assert
-        Assert.False(result);
-    }
-
-    [Fact]
     public async Task SupportsRestartAsync_WhenLaunchProviderIsNull_ReturnsFalse()
     {
         // Arrange
@@ -675,7 +653,6 @@ public class ProjectHotReloadSessionTests
     private static ProjectHotReloadSession CreateInstance(
         string name = "TestSession",
         int variant = 0,
-        string runtimeVersion = "6.0",
         Lazy<IHotReloadAgentManagerClient>? hotReloadAgentManagerClient = null,
         Lazy<IHotReloadDiagnosticOutputService>? hotReloadOutputService = null,
         Lazy<IManagedDeltaApplierCreator>? deltaApplierCreator = null,
@@ -683,7 +660,7 @@ public class ProjectHotReloadSessionTests
         IProjectHotReloadSessionManager? sessionManager = null,
         ConfiguredProject? configuredProject = null,
         ILaunchProfile? launchProfile = null,
-        DebugLaunchOptions? debugLaunchOptions = null,
+        DebugLaunchOptions debugLaunchOptions = default,
         IProjectHotReloadBuildManager? buildManager = null,
         IProjectHotReloadLaunchProvider? launchProvider = null)
     {
@@ -712,7 +689,6 @@ public class ProjectHotReloadSessionTests
         return new ProjectHotReloadSession(
             name,
             variant,
-            runtimeVersion,
             hotReloadAgentManagerClient,
             hotReloadOutputService,
             deltaApplierCreator,

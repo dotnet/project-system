@@ -39,7 +39,6 @@ internal class ProjectLaunchTargetsProvider :
     private readonly IProjectThreadingService _threadingService;
     private readonly IVsUIService<IVsDebugger10> _debugger;
     private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
-    private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
     private readonly Lazy<IHotReloadOptionService> _debuggerSettings;
     private readonly IOutputTypeChecker _outputTypeChecker;
     private readonly IActiveConfiguredValue<IProjectHotReloadLaunchProvider> _projectHotReloadLaunchProvider;
@@ -56,7 +55,6 @@ internal class ProjectLaunchTargetsProvider :
         IProjectThreadingService threadingService,
         IVsUIService<SVsShellDebugger, IVsDebugger10> debugger,
         IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService,
-        Lazy<IProjectHotReloadSessionManager> hotReloadSessionManager,
         Lazy<IHotReloadOptionService> debuggerSettings,
         IActiveConfiguredValue<IProjectHotReloadLaunchProvider> projectHotReloadLaunchProvider)
     {
@@ -70,14 +68,21 @@ internal class ProjectLaunchTargetsProvider :
         _threadingService = threadingService;
         _debugger = debugger;
         _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
-        _hotReloadSessionManager = hotReloadSessionManager;
         _debuggerSettings = debuggerSettings;
         _projectHotReloadLaunchProvider = projectHotReloadLaunchProvider;
     }
 
-    private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync()
+    private async ValueTask<ConfiguredProject> GetConfiguredProjectForDebugAsync()
     {
-        return _activeDebugFramework.GetConfiguredProjectForActiveFrameworkAsync();
+        var project = await _activeDebugFramework.GetConfiguredProjectForActiveFrameworkAsync();
+        Assumes.NotNull(project);
+        return project;
+    }
+
+    private async ValueTask<IProjectHotReloadSessionManager> GetActiveDebugProjectHotReloadSessionManagerAsync()
+    {
+        var activeConfiguredProject = await GetConfiguredProjectForDebugAsync();
+        return activeConfiguredProject.Services.ExportProvider.GetExportedValue<IProjectHotReloadSessionManager>();
     }
 
     /// <summary>
@@ -114,8 +119,8 @@ internal class ProjectLaunchTargetsProvider :
         await TaskScheduler.Default;
 
         bool runningUnderDebugger = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
-
-        await _hotReloadSessionManager.Value.ActivateSessionAsync((int)processInfos[0].dwProcessId, runningUnderDebugger, Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath));
+        IProjectHotReloadSessionManager hotReloadSessionManager = await GetActiveDebugProjectHotReloadSessionManagerAsync();
+        await hotReloadSessionManager.ActivateSessionAsync((int)processInfos[0].dwProcessId, runningUnderDebugger, Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath));
     }
 
     public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
@@ -125,11 +130,10 @@ internal class ProjectLaunchTargetsProvider :
             // If the profile uses the "Project" command, check that the project specifies
             // something we can run.
 
-            ConfiguredProject? configuredProject = await GetConfiguredProjectForDebugAsync();
-            Assumes.NotNull(configuredProject);
-            Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
+            ConfiguredProject activeConfiguredProject = await GetConfiguredProjectForDebugAsync();
+            Assumes.Present(activeConfiguredProject.Services.ProjectPropertiesProvider);
 
-            IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            IProjectProperties properties = activeConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
             string? runCommand = await ProjectAndExecutableLaunchHandlerHelpers.GetTargetCommandAsync(properties, _environment, _fileSystem, _outputTypeChecker, validateSettings: true);
 
@@ -229,9 +233,7 @@ internal class ProjectLaunchTargetsProvider :
 
         string? executable, arguments;
 
-        ConfiguredProject? configuredProject = await GetConfiguredProjectForDebugAsync();
-
-        Assumes.NotNull(configuredProject);
+        ConfiguredProject configuredProject = await GetConfiguredProjectForDebugAsync();
 
         // If no working directory specified in the profile, we default to output directory. If for some reason the output directory
         // is not specified, fall back to the project folder.
@@ -401,15 +403,16 @@ internal class ProjectLaunchTargetsProvider :
             settings.Options = JsonConvert.SerializeObject(debuggerLaunchOptions);
         }
 
-        if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions) &&
-            _projectHotReloadLaunchProvider.Value is IProjectHotReloadLaunchProvider launchProvider &&
-            await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(
-                configuredProject: configuredProject,
-                launchProvider: launchProvider,
+        if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions))
+        {
+            var hotReloadSessionManager = await GetActiveDebugProjectHotReloadSessionManagerAsync();
+
+            await hotReloadSessionManager.TryCreatePendingSessionAsync(
+                launchProvider: _projectHotReloadLaunchProvider.Value,
                 settings.Environment,
                 launchOptions,
-                resolvedProfile))
-        {
+                resolvedProfile);
+
             // Enable XAML Hot Reload
             settings.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] = "1";
         }

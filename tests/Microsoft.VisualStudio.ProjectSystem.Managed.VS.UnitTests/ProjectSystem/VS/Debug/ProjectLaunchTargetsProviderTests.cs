@@ -3,6 +3,7 @@
 using System.Reflection;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
@@ -714,7 +715,6 @@ public class ProjectLaunchTargetsProviderTests
         // as per current implementation (session creation happens later in LaunchProfilesDebugLaunchProvider)
         Mock.Get(mockHotReloadSessionManager).Verify(
             manager => manager.TryCreatePendingSessionAsync(
-                It.IsAny<ConfiguredProject>(),
                 It.IsAny<IProjectHotReloadLaunchProvider>(),
                 It.IsAny<IDictionary<string, string>>(),
                 It.IsAny<DebugLaunchOptions>(),
@@ -751,7 +751,6 @@ public class ProjectLaunchTargetsProviderTests
         // Verify that the Hot Reload session was attempted to be created
         Mock.Get(mockHotReloadSessionManager).Verify(
             manager => manager.TryCreatePendingSessionAsync(
-                It.IsAny<ConfiguredProject>(),
                 It.IsAny<IProjectHotReloadLaunchProvider>(),
                 It.IsAny<IDictionary<string, string>>(),
                 It.IsAny<DebugLaunchOptions>(),
@@ -798,7 +797,6 @@ public class ProjectLaunchTargetsProviderTests
         // Verify that no Hot Reload session was created due to global setting
         Mock.Get(mockHotReloadSessionManager).Verify(
             manager => manager.TryCreatePendingSessionAsync(
-                It.IsAny<ConfiguredProject>(),
                 It.IsAny<IProjectHotReloadLaunchProvider>(),
                 It.IsAny<IDictionary<string, string>>(),
                 It.IsAny<DebugLaunchOptions>(),
@@ -844,7 +842,6 @@ public class ProjectLaunchTargetsProviderTests
         // Verify that no Hot Reload session was created for non-Project commands
         Mock.Get(mockHotReloadSessionManager).Verify(
             manager => manager.TryCreatePendingSessionAsync(
-                It.IsAny<ConfiguredProject>(),
                 It.IsAny<IProjectHotReloadLaunchProvider>(),
                 It.IsAny<IDictionary<string, string>>(),
                 It.IsAny<DebugLaunchOptions>(),
@@ -893,7 +890,6 @@ public class ProjectLaunchTargetsProviderTests
         // Verify that no Hot Reload session was created due to remote debugging
         Mock.Get(mockHotReloadSessionManager).Verify(
             manager => manager.TryCreatePendingSessionAsync(
-                It.IsAny<ConfiguredProject>(),
                 It.IsAny<IProjectHotReloadLaunchProvider>(),
                 It.IsAny<IDictionary<string, string>>(),
                 It.IsAny<DebugLaunchOptions>(),
@@ -939,7 +935,6 @@ public class ProjectLaunchTargetsProviderTests
         // Verify that no Hot Reload session was created due to profile-level setting
         Mock.Get(mockHotReloadSessionManager).Verify(
             manager => manager.TryCreatePendingSessionAsync(
-                It.IsAny<ConfiguredProject>(),
                 It.IsAny<IProjectHotReloadLaunchProvider>(),
                 It.IsAny<IDictionary<string, string>>(),
                 It.IsAny<DebugLaunchOptions>(),
@@ -985,7 +980,6 @@ public class ProjectLaunchTargetsProviderTests
         // Verify that no Hot Reload session was created due to profiling mode
         Mock.Get(mockHotReloadSessionManager).Verify(
             manager => manager.TryCreatePendingSessionAsync(
-                It.IsAny<ConfiguredProject>(),
                 It.IsAny<IProjectHotReloadLaunchProvider>(),
                 It.IsAny<IDictionary<string, string>>(),
                 It.IsAny<DebugLaunchOptions>(),
@@ -1003,7 +997,6 @@ public class ProjectLaunchTargetsProviderTests
         var mockHotReloadSessionManager = Mock.Of<IProjectHotReloadSessionManager>();
         Mock.Get(mockHotReloadSessionManager)
             .Setup(manager => manager.TryCreatePendingSessionAsync(
-                It.IsAny<ConfiguredProject>(),
                 It.IsAny<IProjectHotReloadLaunchProvider>(),
                 It.IsAny<IDictionary<string, string>>(),
                 It.IsAny<DebugLaunchOptions>(),
@@ -1040,7 +1033,6 @@ public class ProjectLaunchTargetsProviderTests
         // Verify that Hot Reload session creation was attempted
         Mock.Get(mockHotReloadSessionManager).Verify(
             manager => manager.TryCreatePendingSessionAsync(
-                It.IsAny<ConfiguredProject>(),
                 It.IsAny<IProjectHotReloadLaunchProvider>(),
                 It.IsAny<IDictionary<string, string>>(),
                 It.IsAny<DebugLaunchOptions>(),
@@ -1079,7 +1071,6 @@ public class ProjectLaunchTargetsProviderTests
         // Verify that Hot Reload session was created for debugging scenario
         Mock.Get(mockHotReloadSessionManager).Verify(
             manager => manager.TryCreatePendingSessionAsync(
-                It.IsAny<ConfiguredProject>(),
                 It.IsAny<IProjectHotReloadLaunchProvider>(),
                 It.IsAny<IDictionary<string, string>>(),
                 It.IsAny<DebugLaunchOptions>(),
@@ -1120,7 +1111,6 @@ public class ProjectLaunchTargetsProviderTests
         // Verify that Hot Reload session was created with correct parameters
         Mock.Get(mockHotReloadSessionManager).Verify(
             manager => manager.TryCreatePendingSessionAsync(
-                It.IsAny<ConfiguredProject>(),
                 It.IsAny<IProjectHotReloadLaunchProvider>(),
                 It.Is<IDictionary<string, string>>(env => 
                     env.ContainsKey("ENV_VAR1") && env["ENV_VAR1"] == "value1" &&
@@ -1169,7 +1159,7 @@ public class ProjectLaunchTargetsProviderTests
 
         var configuredProjectServices = Mock.Of<ConfiguredProjectServices>(o =>
             o.ProjectPropertiesProvider == delegateProvider);
-
+        
         var capabilitiesScope = scope ?? IProjectCapabilitiesScopeFactory.Create(capabilities: []);
 
         var configuredProject = Mock.Of<ConfiguredProject>(o =>
@@ -1184,8 +1174,7 @@ public class ProjectLaunchTargetsProviderTests
             typeChecker: outputTypeChecker,
             environment: environment,
             debugger: debugger,
-            hotReloadSettings: hotReloadSettings,
-            hotReloadSessionManager: hotReloadSessionManager);
+            hotReloadSettings: hotReloadSettings);
     }
 
     private static ProjectLaunchTargetsProvider CreateInstance(
@@ -1197,8 +1186,7 @@ public class ProjectLaunchTargetsProviderTests
         IOutputTypeChecker? typeChecker = null,
         IProjectThreadingService? threadingService = null,
         IVsDebugger10? debugger = null,
-        IHotReloadOptionService? hotReloadSettings = null,
-        IProjectHotReloadSessionManager? hotReloadSessionManager = null)
+        IHotReloadOptionService? hotReloadSettings = null)
     {
         environment ??= Mock.Of<IEnvironmentHelper>();
         tokenReplacer ??= IDebugTokenReplacerFactory.Create();
@@ -1222,7 +1210,6 @@ public class ProjectLaunchTargetsProviderTests
             threadingService,
             IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger),
             remoteDebuggerAuthenticationService,
-            new Lazy<IProjectHotReloadSessionManager>(() => hotReloadSessionManager ?? IProjectHotReloadSessionManagerFactory.Create()),
             new Lazy<IHotReloadOptionService>(() => hotReloadSettings ?? IHotReloadOptionServiceFactory.Create()),
             IActiveConfiguredValueFactory.ImplementValue(IProjectHotReloadLaunchProviderFactory.Create));
     }

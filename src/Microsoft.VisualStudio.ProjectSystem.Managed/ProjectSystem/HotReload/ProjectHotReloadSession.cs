@@ -14,11 +14,6 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 {
     private readonly string _variant;
 
-    /// <summary>
-    /// Major.Minor
-    /// </summary>
-    private readonly string _targetFrameworkVersion;
-
     private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
     private readonly ConfiguredProject? _configuredProject;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
@@ -26,28 +21,27 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     private readonly IProjectHotReloadSessionCallback _callback;
     private readonly IProjectHotReloadBuildManager? _buildManager;
     private readonly ILaunchProfile? _launchProfile;
-    private readonly DebugLaunchOptions? _debugLaunchOptions;
+    private readonly DebugLaunchOptions _debugLaunchOptions;
     private readonly IProjectHotReloadLaunchProvider? _launchProvider;
     private bool _sessionActive;
     private IDeltaApplier? _deltaApplier;
+
     public ProjectHotReloadSession(
         string name,
         int variant,
-        string targetFrameworkVersion,
         Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadOutputService,
         Lazy<IManagedDeltaApplierCreator> deltaApplierCreator,
         IProjectHotReloadSessionCallback callback,
-        IProjectHotReloadBuildManager? buildManager = null,
-        IProjectHotReloadLaunchProvider? launchProvider = null,
-        ConfiguredProject? configuredProject = null,
-        ILaunchProfile? launchProfile = null,
-        DebugLaunchOptions? debugLaunchOptions = null)
+        IProjectHotReloadBuildManager? buildManager,
+        IProjectHotReloadLaunchProvider? launchProvider,
+        ConfiguredProject? configuredProject,
+        ILaunchProfile? launchProfile,
+        DebugLaunchOptions debugLaunchOptions)
     {
         _configuredProject = configuredProject;
         Name = name;
         _variant = variant.ToString();
-        _targetFrameworkVersion = targetFrameworkVersion;
         _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
         _hotReloadOutputService = hotReloadOutputService;
         _deltaApplierCreator = deltaApplierCreator;
@@ -84,19 +78,6 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         return StartSessionAsync(runningUnderDebugger: false, cancellationToken);
     }
 
-    private async ValueTask<string> GetTargetFrameworkAsync()
-    {
-        if (_configuredProject?.Services.ProjectPropertiesProvider is { } provider)
-        {
-            return await provider.GetCommonProperties().GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty);
-        }
-
-        // This is only hit when legacy version of IProjectHotReloadAgent is used.
-        // Best we can do here is to assume the TFM is netX.Y. This won't work for "netX.Y-windows", etc.
-        // HotReload is not supported for .NET Framework hence this version is always .NET version.
-        return $"net{_targetFrameworkVersion}";
-    }
-
     public async Task StartSessionAsync(bool runningUnderDebugger, CancellationToken cancellationToken)
     {
         if (_sessionActive)
@@ -114,15 +95,8 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         }
         else
         {
-            bool hotReloadAutoRestart = false;
-            string targetFramework = await GetTargetFrameworkAsync();
-
-            if (_configuredProject.Services.ProjectSubscription is { } projectSubscription &&
-                (await projectSubscription.ProjectRuleSource.GetLatestVersionAsync(_configuredProject, cancellationToken: cancellationToken))
-                    .Value.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot configurationGeneralSnapshot))
-            {
-                hotReloadAutoRestart = configurationGeneralSnapshot.Properties.GetBoolProperty(ConfigurationGeneral.HotReloadAutoRestartProperty) ?? false;
-            }
+            string targetFramework = await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty);
+            bool hotReloadAutoRestart = await _configuredProject.GetProjectPropertyBoolAsync(ConfigurationGeneral.HotReloadAutoRestartProperty);
 
             var runningProjectInfo = new RunningProjectInfo
             {
@@ -233,9 +207,9 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
             return;
         }
 
-        if (_launchProfile is not null && _debugLaunchOptions.HasValue && _launchProvider is not null)
+        if (_launchProfile is not null && _launchProvider is not null)
         {
-            await _launchProvider.LaunchWithProfileAsync(_debugLaunchOptions.Value, _launchProfile, cancellationToken);
+            await _launchProvider.LaunchWithProfileAsync(_debugLaunchOptions, _launchProfile, cancellationToken);
         }
     }
 
@@ -256,7 +230,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
     public ValueTask<bool> SupportsRestartAsync(CancellationToken cancellationToken)
     {
-        return new ValueTask<bool>(_launchProfile is not null && _debugLaunchOptions.HasValue && _launchProvider is not null && _buildManager is not null);
+        return new ValueTask<bool>(_launchProfile is not null && _launchProvider is not null && _buildManager is not null);
     }
 
     private void WriteToOutputWindow(string message, CancellationToken cancellationToken, HotReloadVerbosity verbosity = HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel errorLevel = HotReloadDiagnosticErrorLevel.Info)
@@ -286,7 +260,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     [MemberNotNull(nameof(_deltaApplier))]
     private void EnsureDeltaApplierForSession()
     {
-        _deltaApplier ??= _callback.GetDeltaApplier() ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(_targetFrameworkVersion);
+        _deltaApplier ??= _callback.GetDeltaApplier() ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(runtimeVersion: "0.0"); // the version is not used, just needs to parse
 
         Assumes.NotNull(_deltaApplier);
     }

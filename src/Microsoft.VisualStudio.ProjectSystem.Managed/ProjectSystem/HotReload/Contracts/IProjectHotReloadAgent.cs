@@ -8,10 +8,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.System, Cardinality = ImportCardinality.ExactlyOne)]
 public interface IProjectHotReloadAgent
 {
-    /// <param name="runtimeVersion">Format: "Major.Minor"</param>
     IProjectHotReloadSession? CreateHotReloadSession(string id, int variant, string runtimeVersion, IProjectHotReloadSessionCallback callback);
 
-    /// <param name="runtimeVersion">Format: "Major.Minor"</param>
     IProjectHotReloadSession? CreateHotReloadSession(string id, string runtimeVersion, IProjectHotReloadSessionCallback callback);
 }
 
@@ -21,12 +19,28 @@ public interface IProjectHotReloadAgent2 : IProjectHotReloadAgent
     IProjectHotReloadSession CreateHotReloadSession(
         string id,
         int variant,
-        string runtimeVersion,
+        string? runtimeVersion, // read from project if null
         ConfiguredProject configuredProject,
-        IProjectHotReloadLaunchProvider launchProvider,
-        IProjectHotReloadBuildManager buildManager,
+        IProjectHotReloadLaunchProvider? launchProvider, // ignored, can be null
+        IProjectHotReloadBuildManager? buildManager, // ignored, can be null
         IProjectHotReloadSessionCallback callback,
         ILaunchProfile launchProfile,
         DebugLaunchOptions debugLaunchOptions);
 }
 
+public static class IProjectHotReloadAgentExtensions
+{
+    // Once all callers switch to this extension method we can clean up the interfaces
+    public static IProjectHotReloadSession CreateHotReloadSession(
+        this IProjectHotReloadAgent agent,
+        string id,
+        int variant,
+        ConfiguredProject configuredProject,
+        IProjectHotReloadSessionCallback callback,
+        ILaunchProfile launchProfile,
+        DebugLaunchOptions debugLaunchOptions)
+    {
+        return ((IProjectHotReloadAgent2)agent).CreateHotReloadSession(
+            id, variant, runtimeVersion: null, configuredProject, launchProvider: null, buildManager: null, callback, launchProfile, debugLaunchOptions);
+    }
+}

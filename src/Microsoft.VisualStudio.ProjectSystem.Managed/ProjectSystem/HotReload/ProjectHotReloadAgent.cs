@@ -31,13 +31,14 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent2
         return new ProjectHotReloadSession(
             id,
             variant,
-            runtimeVersion,
             _hotReloadAgentManagerClient,
             _hotReloadDiagnosticOutputService,
             _managedDeltaApplierCreator,
             callback,
             buildManager: null,
             launchProvider: null,
+            launchProfile: null,
+            debugLaunchOptions: default, // ignored when launchProvider is null
             configuredProject: null);
     }
 
@@ -49,10 +50,10 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent2
     public IProjectHotReloadSession CreateHotReloadSession(
         string id,
         int variant,
-        string runtimeVersion,
+        string? runtimeVersion, // ignored
         ConfiguredProject configuredProject,
-        IProjectHotReloadLaunchProvider launchProvider,
-        IProjectHotReloadBuildManager buildManager,
+        IProjectHotReloadLaunchProvider? launchProvider, // ignored
+        IProjectHotReloadBuildManager? buildManager, // ignored
         IProjectHotReloadSessionCallback callback,
         ILaunchProfile launchProfile,
         DebugLaunchOptions debugLaunchOptions)
@@ -60,13 +61,12 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent2
         return new ProjectHotReloadSession(
             name: id,
             variant: variant,
-            targetFrameworkVersion: runtimeVersion,
             hotReloadAgentManagerClient: _hotReloadAgentManagerClient,
             hotReloadOutputService: _hotReloadDiagnosticOutputService,
             deltaApplierCreator: _managedDeltaApplierCreator,
             callback: callback,
-            buildManager: buildManager,
-            launchProvider: launchProvider,
+            buildManager: configuredProject.Services.ExportProvider.GetExportedValueOrDefault<IProjectHotReloadBuildManager>(),
+            launchProvider: configuredProject.Services.ExportProvider.GetExportedValueOrDefault<IProjectHotReloadLaunchProvider>(),
             configuredProject: configuredProject,
             launchProfile: launchProfile,
             debugLaunchOptions: debugLaunchOptions);
