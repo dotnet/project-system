@@ -1,7 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
+using Microsoft.VisualStudio.ProjectSystem.TestHooks;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem;
 
@@ -19,6 +22,11 @@ internal static class ConfiguredProjectServicesFactory
                                                    IAssemblyReferencesService? assemblyReferences = null)
     {
         var mock = new Mock<ConfiguredProjectServices>();
+
+        var exportedMocks = mock.As<IExportProviderTestHook>();
+        exportedMocks.Setup(s => s.GetExportedValue<IProjectHotReloadSessionManager>()).Returns(IProjectHotReloadSessionManagerFactory.Create());
+        exportedMocks.Setup(s => s.GetExportedValue<IProjectHotReloadLaunchProvider>()).Returns(IProjectHotReloadLaunchProviderFactory.Create());
+
         mock.Setup(c => c.PropertyPagesCatalog).Returns(propertyPagesCatalogProvider!);
         mock.Setup(c => c.AdditionalRuleDefinitions).Returns(ruleService!);
         mock.Setup(c => c.ProjectSubscription).Returns(projectSubscriptionService!);
