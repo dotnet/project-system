@@ -65,8 +65,8 @@ internal class ProjectHotReloadAgent : IProjectHotReloadAgent2
             hotReloadOutputService: _hotReloadDiagnosticOutputService,
             deltaApplierCreator: _managedDeltaApplierCreator,
             callback: callback,
-            buildManager: configuredProject.Services.ExportProvider.GetExportedValueOrDefault<IProjectHotReloadBuildManager>(),
-            launchProvider: configuredProject.Services.ExportProvider.GetExportedValueOrDefault<IProjectHotReloadLaunchProvider>(),
+            buildManager: configuredProject.GetExportedService<IProjectHotReloadBuildManager>(),
+            launchProvider: configuredProject.GetExportedService<IProjectHotReloadLaunchProvider>(),
             configuredProject: configuredProject,
             launchProfile: launchProfile,
             debugLaunchOptions: debugLaunchOptions);
