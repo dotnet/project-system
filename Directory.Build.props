@@ -44,6 +44,11 @@
     <DebugType Condition="'$(OfficialBuild)' != 'true' AND '$(CIBuild)' != 'true' AND '$(BuildingInsideVisualStudio)' == 'true'">full</DebugType>
   </PropertyGroup>
 
+  <!-- Treat warnings as errors in release builds, so they're caught during CI. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
   <!-- General -->
   <PropertyGroup>
     <!-- Variable used for executing a PowerShell command with arguments for the MSBuild/commandline environment. -->
