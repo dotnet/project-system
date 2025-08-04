@@ -47,6 +47,8 @@
   <!-- Treat warnings as errors in release builds, so they're caught during CI. -->
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Skip just this one as unfortunately there's no way to suppress the warnings about use of obsolete XamlServices in generated rule file code. -->
+    <WarningsNotAsErrors>CS0618</WarningsNotAsErrors>
   </PropertyGroup>
 
   <!-- General -->
