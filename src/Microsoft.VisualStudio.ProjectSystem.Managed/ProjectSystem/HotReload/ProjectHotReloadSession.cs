@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.Debugger.Contracts.EditAndContinue;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
@@ -13,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 {
     private readonly string _variant;
-    private readonly string _runtimeVersion;
+
     private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
     private readonly ConfiguredProject? _configuredProject;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
@@ -21,28 +20,27 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     private readonly IProjectHotReloadSessionCallback _callback;
     private readonly IProjectHotReloadBuildManager? _buildManager;
     private readonly ILaunchProfile? _launchProfile;
-    private readonly DebugLaunchOptions? _debugLaunchOptions;
+    private readonly DebugLaunchOptions _debugLaunchOptions;
     private readonly IProjectHotReloadLaunchProvider? _launchProvider;
     private bool _sessionActive;
     private IDeltaApplier? _deltaApplier;
+
     public ProjectHotReloadSession(
         string name,
         int variant,
-        string runtimeVersion,
         Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadOutputService,
         Lazy<IManagedDeltaApplierCreator> deltaApplierCreator,
         IProjectHotReloadSessionCallback callback,
-        IProjectHotReloadBuildManager? buildManager = null,
-        IProjectHotReloadLaunchProvider? launchProvider = null,
-        ConfiguredProject? configuredProject = null,
-        ILaunchProfile? launchProfile = null,
-        DebugLaunchOptions? debugLaunchOptions = null)
+        IProjectHotReloadBuildManager? buildManager,
+        IProjectHotReloadLaunchProvider? launchProvider,
+        ConfiguredProject? configuredProject,
+        ILaunchProfile? launchProfile,
+        DebugLaunchOptions debugLaunchOptions)
     {
         _configuredProject = configuredProject;
         Name = name;
         _variant = variant.ToString();
-        _runtimeVersion = runtimeVersion;
         _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
         _hotReloadOutputService = hotReloadOutputService;
         _deltaApplierCreator = deltaApplierCreator;
@@ -87,31 +85,33 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         }
 
         HotReloadAgentFlags flags = runningUnderDebugger ? HotReloadAgentFlags.IsDebuggedProcess : HotReloadAgentFlags.None;
-        var processInfo = new ManagedEditAndContinueProcessInfo();
-        bool? hotReloadAutoRestart = false;
-        string targetFramework = _configuredProject?.Services.ProjectPropertiesProvider?.GetCommonProperties() is IProjectProperties commonProperties
-            ? await commonProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty)
-            : string.Empty;
-        if (_configuredProject?.Services.ProjectSubscription?.ProjectRuleSource is IProjectValueDataSource<IProjectSubscriptionUpdate> update &&
-            await update.GetLatestVersionAsync(_configuredProject, cancellationToken: cancellationToken) is var snapshot &&
-            snapshot.Value.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot configurationGeneralSnapshot))
+
+        if (_configuredProject is null)
         {
-            hotReloadAutoRestart = configurationGeneralSnapshot.Properties.GetBoolProperty(ConfigurationGeneral.HotReloadAutoRestartProperty);
+#pragma warning disable CS0618 // Type or member is obsolete: legacy code path for IProjectHotReloadAgent
+            await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, cancellationToken);
+#pragma warning restore CS0618
         }
-
-        RunningProjectInfo runningProjectInfo = new RunningProjectInfo
+        else
         {
-            RestartAutomatically = hotReloadAutoRestart ?? false,
-            ProjectInstanceId = new ProjectInstanceId
+            string targetFramework = await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty);
+            bool hotReloadAutoRestart = await _configuredProject.GetProjectPropertyBoolAsync(ConfigurationGeneral.HotReloadAutoRestartProperty);
+
+            var runningProjectInfo = new RunningProjectInfo
             {
-                ProjectFilePath = _configuredProject?.UnconfiguredProject.FullPath ?? string.Empty,
-                TargetFramework = targetFramework ?? string.Empty,
-            }
-        };
+                RestartAutomatically = hotReloadAutoRestart,
+                ProjectInstanceId = new ProjectInstanceId
+                {
+                    ProjectFilePath = _configuredProject.UnconfiguredProject.FullPath,
+                    TargetFramework = targetFramework,
+                }
+            };
 
-        DebugTrace($"start session for project '{_configuredProject?.UnconfiguredProject.FullPath}' with TFM '{runningProjectInfo.ProjectInstanceId.TargetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
+            DebugTrace($"start session for project '{_configuredProject.UnconfiguredProject.FullPath}' with TFM '{targetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
 
-        await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
+            var processInfo = new ManagedEditAndContinueProcessInfo();
+            await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
+        }
 
         WriteToOutputWindow(Resources.HotReloadStartSession, default);
         _sessionActive = true;
@@ -206,9 +206,9 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
             return;
         }
 
-        if (_launchProfile is not null && _debugLaunchOptions.HasValue && _launchProvider is not null)
+        if (_launchProfile is not null && _launchProvider is not null)
         {
-            await _launchProvider.LaunchWithProfileAsync(_debugLaunchOptions.Value, _launchProfile, cancellationToken);
+            await _launchProvider.LaunchWithProfileAsync(_debugLaunchOptions, _launchProfile, cancellationToken);
         }
     }
 
@@ -229,7 +229,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
     public ValueTask<bool> SupportsRestartAsync(CancellationToken cancellationToken)
     {
-        return new ValueTask<bool>(_launchProfile is not null && _debugLaunchOptions.HasValue && _launchProvider is not null && _buildManager is not null);
+        return new ValueTask<bool>(_launchProfile is not null && _launchProvider is not null && _buildManager is not null);
     }
 
     private void WriteToOutputWindow(string message, CancellationToken cancellationToken, HotReloadVerbosity verbosity = HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel errorLevel = HotReloadDiagnosticErrorLevel.Info)
@@ -259,7 +259,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     [MemberNotNull(nameof(_deltaApplier))]
     private void EnsureDeltaApplierForSession()
     {
-        _deltaApplier ??= _callback.GetDeltaApplier() ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(_runtimeVersion);
+        _deltaApplier ??= _callback.GetDeltaApplier() ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(runtimeVersion: "0.0"); // the version is not used, just needs to parse
 
         Assumes.NotNull(_deltaApplier);
     }

@@ -15,7 +15,7 @@ public class ProjectHotReloadSessionManagerTests
         var capabilities = new[] { "SupportsHotReload" };
         var propertyNamesAndValues = new Dictionary<string, string?>()
         {
-            { "TargetFrameworkVersion", "v6.0" },
+            { "TargetFramework", "net6.0" },
             { "DebugSymbols", "true" },
             // Note: "Optimize" is not included here. The compilers do not optimize by default;
             // so if the property isn't set that's OK.
@@ -30,7 +30,6 @@ public class ProjectHotReloadSessionManagerTests
         var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
 
         var sessionCreated = await manager.TryCreatePendingSessionAsync(
-            activeConfiguredProject,
             launchProvider,
             environmentVariables,
             launchOptions,
@@ -58,7 +57,6 @@ public class ProjectHotReloadSessionManagerTests
         var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
 
         var sessionCreated = await manager.TryCreatePendingSessionAsync(
-            activeConfiguredProject,
             launchProvider,
             environmentVariables,
             launchOptions,
@@ -86,7 +84,6 @@ public class ProjectHotReloadSessionManagerTests
         var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
 
         var sessionCreated = await manager.TryCreatePendingSessionAsync(
-            activeConfiguredProject,
             launchProvider,
             environmentVariables,
             launchOptions,
@@ -101,7 +98,7 @@ public class ProjectHotReloadSessionManagerTests
         var capabilities = new[] { "SupportsHotReload" };
         var propertyNamesAndValues = new Dictionary<string, string?>()
         {
-            { "TargetFrameworkVersion", "v6.0" },
+            { "TargetFramework", "net6.0" },
             { "StartupHookSupport", "false" },
             { "DebugSymbols", "true" }
         };
@@ -117,7 +114,6 @@ public class ProjectHotReloadSessionManagerTests
         var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
 
         var sessionCreated = await manager.TryCreatePendingSessionAsync(
-            activeConfiguredProject,
             launchProvider,
             environmentVariables,
             launchOptions,
@@ -147,7 +143,6 @@ public class ProjectHotReloadSessionManagerTests
         var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
 
         var sessionCreated = await manager.TryCreatePendingSessionAsync(
-            activeConfiguredProject,
             launchProvider,
             environmentVariables,
             launchOptions,
@@ -174,7 +169,6 @@ public class ProjectHotReloadSessionManagerTests
         var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
 
         var sessionCreated = await manager.TryCreatePendingSessionAsync(
-            activeConfiguredProject,
             launchProvider,
             environmentVariables,
             launchOptions,
@@ -202,7 +196,6 @@ public class ProjectHotReloadSessionManagerTests
         var launchProvider = IProjectHotReloadLaunchProviderFactory.Create();
 
         var sessionCreated = await manager.TryCreatePendingSessionAsync(
-            activeConfiguredProject,
             launchProvider,
             environmentVariables,
             launchOptions,
@@ -231,15 +224,10 @@ public class ProjectHotReloadSessionManagerTests
 
     private static ProjectHotReloadSessionManager CreateHotReloadSessionManager(ConfiguredProject activeConfiguredProject, Action? outputServiceCallback = null)
     {
-        var activeDebugFrameworkServices = new IActiveDebugFrameworkServicesMock()
-            .ImplementGetConfiguredProjectForActiveFrameworkAsync(activeConfiguredProject)
-            .Object;
-
         var manager = new ProjectHotReloadSessionManager(
             project: activeConfiguredProject,
             threadingService: IProjectThreadingServiceFactory.Create(),
             projectFaultHandlerService: IProjectFaultHandlerServiceFactory.Create(),
-            activeDebugFrameworkServices: activeDebugFrameworkServices,
             hotReloadDiagnosticOutputService: new Lazy<IHotReloadDiagnosticOutputService>(() => IHotReloadDiagnosticOutputServiceFactory.Create(outputServiceCallback)),
             projectHotReloadNotificationService: new Lazy<IProjectHotReloadNotificationService>(IProjectHotReloadNotificationServiceFactory.Create),
             buildManager: IProjectHotReloadBuildManagerFactory.Create(),

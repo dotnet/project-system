@@ -138,7 +138,6 @@ public class LaunchProfilesDebugLaunchProviderTests
         // Assert - Verify no Hot Reload session was created for non-Project commands
         Mock.Get(mockHotReloadSessionManager).Verify(
             manager => manager.TryCreatePendingSessionAsync(
-                It.IsAny<ConfiguredProject>(),
                 It.IsAny<IProjectHotReloadLaunchProvider>(),
                 It.IsAny<IDictionary<string, string>>(),
                 It.IsAny<DebugLaunchOptions>(),

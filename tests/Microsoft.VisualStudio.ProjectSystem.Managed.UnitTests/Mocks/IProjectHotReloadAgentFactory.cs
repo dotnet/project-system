@@ -17,7 +17,16 @@ internal static class IProjectHotReloadAgentFactory
             session = IProjectHotReloadSessionFactory.Create();
         }
 
-        mock.Setup(agent => agent.CreateHotReloadSession(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IProjectHotReloadSessionCallback>()))
+        mock.Setup(agent => agent.CreateHotReloadSession(
+            It.IsAny<string>(),
+            It.IsAny<int>(),
+            It.IsAny<string>(),
+            It.IsAny<ConfiguredProject>(),
+            It.IsAny<IProjectHotReloadLaunchProvider>(),
+            It.IsAny<IProjectHotReloadBuildManager>(),
+            It.IsAny<IProjectHotReloadSessionCallback>(),
+            It.IsAny<ILaunchProfile>(),
+            It.IsAny<DebugLaunchOptions>()))
             .Returns(session);
 
         mock.Setup(agent => agent.CreateHotReloadSession(

@@ -12,7 +12,6 @@ internal static class IProjectHotReloadSessionManagerFactory
         var mock = new Mock<IProjectHotReloadSessionManager>();
 
         mock.Setup(static manager => manager.TryCreatePendingSessionAsync(
-            It.IsAny<ConfiguredProject>(),
             It.IsAny<IProjectHotReloadLaunchProvider>(),
             It.IsAny<IDictionary<string, string>>(),
             It.IsAny<DebugLaunchOptions>(),

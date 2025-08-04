@@ -39,10 +39,8 @@ internal class ProjectLaunchTargetsProvider :
     private readonly IProjectThreadingService _threadingService;
     private readonly IVsUIService<IVsDebugger10> _debugger;
     private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
-    private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
-    private readonly Lazy<IHotReloadOptionService> _debuggerSettings;
+    private readonly Lazy<IHotReloadOptionService> _hotReloadOptionService;
     private readonly IOutputTypeChecker _outputTypeChecker;
-    private readonly IActiveConfiguredValue<IProjectHotReloadLaunchProvider> _projectHotReloadLaunchProvider;
 
     [ImportingConstructor]
     public ProjectLaunchTargetsProvider(
@@ -56,9 +54,7 @@ internal class ProjectLaunchTargetsProvider :
         IProjectThreadingService threadingService,
         IVsUIService<SVsShellDebugger, IVsDebugger10> debugger,
         IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService,
-        Lazy<IProjectHotReloadSessionManager> hotReloadSessionManager,
-        Lazy<IHotReloadOptionService> debuggerSettings,
-        IActiveConfiguredValue<IProjectHotReloadLaunchProvider> projectHotReloadLaunchProvider)
+        Lazy<IHotReloadOptionService> hotReloadOptionService)
     {
         _project = project;
         _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
@@ -70,14 +66,17 @@ internal class ProjectLaunchTargetsProvider :
         _threadingService = threadingService;
         _debugger = debugger;
         _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
-        _hotReloadSessionManager = hotReloadSessionManager;
-        _debuggerSettings = debuggerSettings;
-        _projectHotReloadLaunchProvider = projectHotReloadLaunchProvider;
+        _hotReloadOptionService = hotReloadOptionService;
     }
 
-    private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync()
+    // internal for testing
+    internal ConfiguredProject Project => _project;
+
+    private async ValueTask<ConfiguredProject> GetConfiguredProjectForDebugAsync()
     {
-        return _activeDebugFramework.GetConfiguredProjectForActiveFrameworkAsync();
+        var project = await _activeDebugFramework.GetConfiguredProjectForActiveFrameworkAsync();
+        Assumes.NotNull(project);
+        return project;
     }
 
     /// <summary>
@@ -114,8 +113,9 @@ internal class ProjectLaunchTargetsProvider :
         await TaskScheduler.Default;
 
         bool runningUnderDebugger = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
-
-        await _hotReloadSessionManager.Value.ActivateSessionAsync((int)processInfos[0].dwProcessId, runningUnderDebugger, Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath));
+        var configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
+        var hotReloadSessionManager = configuredProjectForDebug.GetExportedService<IProjectHotReloadSessionManager>();
+        await hotReloadSessionManager.ActivateSessionAsync((int)processInfos[0].dwProcessId, runningUnderDebugger, Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath));
     }
 
     public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
@@ -125,11 +125,10 @@ internal class ProjectLaunchTargetsProvider :
             // If the profile uses the "Project" command, check that the project specifies
             // something we can run.
 
-            ConfiguredProject? configuredProject = await GetConfiguredProjectForDebugAsync();
-            Assumes.NotNull(configuredProject);
-            Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
+            ConfiguredProject activeConfiguredProject = await GetConfiguredProjectForDebugAsync();
+            Assumes.Present(activeConfiguredProject.Services.ProjectPropertiesProvider);
 
-            IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            IProjectProperties properties = activeConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
             string? runCommand = await ProjectAndExecutableLaunchHandlerHelpers.GetTargetCommandAsync(properties, _environment, _fileSystem, _outputTypeChecker, validateSettings: true);
 
@@ -229,14 +228,12 @@ internal class ProjectLaunchTargetsProvider :
 
         string? executable, arguments;
 
-        ConfiguredProject? configuredProject = await GetConfiguredProjectForDebugAsync();
-
-        Assumes.NotNull(configuredProject);
+        ConfiguredProject activeConfiguredProject = await GetConfiguredProjectForDebugAsync();
 
         // If no working directory specified in the profile, we default to output directory. If for some reason the output directory
         // is not specified, fall back to the project folder.
         string projectFolderFullPath = _project.UnconfiguredProject.GetProjectDirectory();
-        string defaultWorkingDir = await ProjectAndExecutableLaunchHandlerHelpers.GetDefaultWorkingDirectoryAsync(configuredProject, projectFolderFullPath, _fileSystem);
+        string defaultWorkingDir = await ProjectAndExecutableLaunchHandlerHelpers.GetDefaultWorkingDirectoryAsync(activeConfiguredProject, projectFolderFullPath, _fileSystem);
 
         string? commandLineArgs = resolvedProfile.CommandLineArgs is null
             ? null
@@ -247,7 +244,7 @@ internal class ProjectLaunchTargetsProvider :
         {
             // Get the executable to run, the arguments and the default working directory
             (string, string, string)? runnableProjectInfo = await ProjectAndExecutableLaunchHandlerHelpers.GetRunnableProjectInformationAsync(
-                configuredProject,
+                activeConfiguredProject,
                 _environment,
                 _fileSystem,
                 _outputTypeChecker,
@@ -338,7 +335,7 @@ internal class ProjectLaunchTargetsProvider :
         }
 
         settings.LaunchOperation = DebugLaunchOperation.CreateProcess;
-        settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync(configuredProject);
+        settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync(activeConfiguredProject);
 
         if (resolvedProfile.IsNativeDebuggingEnabled())
         {
@@ -401,17 +398,20 @@ internal class ProjectLaunchTargetsProvider :
             settings.Options = JsonConvert.SerializeObject(debuggerLaunchOptions);
         }
 
-        if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions) &&
-            _projectHotReloadLaunchProvider.Value is IProjectHotReloadLaunchProvider launchProvider &&
-            await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(
-                configuredProject: configuredProject,
-                launchProvider: launchProvider,
+        if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions))
+        {
+            var hotReloadSessionManager = activeConfiguredProject.GetExportedService<IProjectHotReloadSessionManager>();
+            var projectHotReloadLaunchProvider = activeConfiguredProject.GetExportedService<IProjectHotReloadLaunchProvider>();
+
+            if (await hotReloadSessionManager.TryCreatePendingSessionAsync(
+                launchProvider: projectHotReloadLaunchProvider,
                 settings.Environment,
                 launchOptions,
                 resolvedProfile))
-        {
-            // Enable XAML Hot Reload
-            settings.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] = "1";
+            {
+                // Enable XAML Hot Reload
+                settings.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] = "1";
+            }
         }
 
         if (settings.Environment.Count > 0)
@@ -469,7 +469,7 @@ internal class ProjectLaunchTargetsProvider :
             if (hotReloadEnabledAtProjectLevel)
             {
                 bool debugging = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
-                bool hotReloadEnabledGlobally = await _debuggerSettings.Value.IsHotReloadEnabledAsync(debugging, default);
+                bool hotReloadEnabledGlobally = await _hotReloadOptionService.Value.IsHotReloadEnabledAsync(debugging, default);
 
                 return hotReloadEnabledGlobally;
             }
