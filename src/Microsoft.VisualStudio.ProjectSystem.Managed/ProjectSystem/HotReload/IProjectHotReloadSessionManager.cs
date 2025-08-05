@@ -19,7 +19,6 @@ internal interface IProjectHotReloadSessionManager
     /// otherwise.
     /// </returns>
     Task<bool> TryCreatePendingSessionAsync(
-        ConfiguredProject configuredProject,
         IProjectHotReloadLaunchProvider launchProvider,
         IDictionary<string, string> environmentVariables,
         DebugLaunchOptions launchOptions,
