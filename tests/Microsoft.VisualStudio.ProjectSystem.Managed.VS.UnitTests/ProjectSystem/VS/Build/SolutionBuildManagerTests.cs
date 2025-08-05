@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Diagnostics;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -79,7 +80,8 @@ public class SolutionBuildManagerTests
         var mockVsHierarchy2 = new Mock<IVsHierarchy>();
         var joinableTaskContext = JoinableTaskContext.CreateNoOpContext();
 
-        var buildStartTimes = new List<DateTime>();
+        var sw = Stopwatch.StartNew();
+        var buildStartTimes = new List<TimeSpan>();
         var tcsForFirstListener = new TaskCompletionSource<IVsUpdateSolutionEvents>();
         var tcsForSecondListener = new TaskCompletionSource<IVsUpdateSolutionEvents>();
         var eventListeners = new List<IVsUpdateSolutionEvents>();
@@ -109,7 +111,7 @@ public class SolutionBuildManagerTests
                 It.IsAny<int>()))
             .Callback(() =>
             {
-                buildStartTimes.Add(DateTime.UtcNow);
+                buildStartTimes.Add(sw.Elapsed);
             })
             .Returns(HResult.OK);
 
