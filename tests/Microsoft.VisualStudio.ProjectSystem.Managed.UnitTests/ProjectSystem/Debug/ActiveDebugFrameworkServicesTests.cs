@@ -74,23 +74,25 @@ public class ActiveDebugFrameworkServicesTests
         var data = new PropertyPageData(ProjectDebugger.SchemaName, ProjectDebugger.ActiveDebugFrameworkProperty, framework);
         var data2 = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetFrameworksProperty, "net462;net461;netcoreapp1.0");
 
-        var projects = ImmutableStringDictionary<ConfiguredProject>.EmptyOrdinal
-                        .Add("net461", ConfiguredProjectFactory.Create(null, new StandardProjectConfiguration("Debug|AnyCPU|net461", Empty.PropertiesMap
-                                                                                .Add("Configuration", "Debug")
-                                                                                .Add("Platform", "AnyCPU")
-                                                                                .Add("TargetFramework", "net461"))))
-                        .Add("netcoreapp1.0", ConfiguredProjectFactory.Create(null, new StandardProjectConfiguration("Debug|AnyCPU|netcoreapp1.0", Empty.PropertiesMap
-                                                                                .Add("Configuration", "Debug")
-                                                                                .Add("Platform", "AnyCPU")
-                                                                                .Add("TargetFramework", "netcoreapp1.0"))))
-                        .Add("net462", ConfiguredProjectFactory.Create(null, new StandardProjectConfiguration("Debug|AnyCPU|net462", Empty.PropertiesMap
-                                                                                .Add("Configuration", "Debug")
-                                                                                .Add("Platform", "AnyCPU")
-                                                                                .Add("TargetFramework", "net462"))));
+        ImmutableArray<ConfiguredProject> projects =
+        [
+            ConfiguredProjectFactory.Create(null, new StandardProjectConfiguration("Debug|AnyCPU|net461", Empty.PropertiesMap
+                .Add("Configuration", "Debug")
+                .Add("Platform", "AnyCPU")
+                .Add("TargetFramework", "net461"))),
+            ConfiguredProjectFactory.Create(null, new StandardProjectConfiguration("Debug|AnyCPU|netcoreapp1.0", Empty.PropertiesMap
+                .Add("Configuration", "Debug")
+                .Add("Platform", "AnyCPU")
+                .Add("TargetFramework", "netcoreapp1.0"))),
+            ConfiguredProjectFactory.Create(null, new StandardProjectConfiguration("Debug|AnyCPU|net462", Empty.PropertiesMap
+                .Add("Configuration", "Debug")
+                .Add("Platform", "AnyCPU")
+                .Add("TargetFramework", "net462")))
+        ];
 
         var projectProperties = ProjectPropertiesFactory.Create(project, data, data2);
         var projectConfigProvider = new IActiveConfiguredProjectsProviderFactory(MockBehavior.Strict)
-                                   .ImplementGetActiveConfiguredProjectsMapAsync(projects);
+                                   .ImplementGetActiveConfiguredProjectsAsync(new ActiveConfiguredObjects<ConfiguredProject>(projects, ["TargetFramework"]));
 
         var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(projectProperties: projectProperties);
 

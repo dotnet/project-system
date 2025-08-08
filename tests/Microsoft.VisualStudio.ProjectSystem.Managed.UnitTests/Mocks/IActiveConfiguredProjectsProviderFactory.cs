@@ -13,15 +13,6 @@ internal class IActiveConfiguredProjectsProviderFactory(MockBehavior mockBehavio
         _mock.Verify();
     }
 
-    public IActiveConfiguredProjectsProviderFactory ImplementGetActiveConfiguredProjectsMapAsync(ImmutableDictionary<string, ConfiguredProject> configuredProjects)
-    {
-#pragma warning disable CS0618 // Type or member is obsolete
-        _mock.Setup(x => x.GetActiveConfiguredProjectsMapAsync())
-#pragma warning restore CS0618 // Type or member is obsolete
-                          .ReturnsAsync(configuredProjects);
-        return this;
-    }
-
     public IActiveConfiguredProjectsProviderFactory ImplementGetActiveConfiguredProjectsAsync(ActiveConfiguredObjects<ConfiguredProject> configuredProjects)
     {
         _mock.Setup(x => x.GetActiveConfiguredProjectsAsync())

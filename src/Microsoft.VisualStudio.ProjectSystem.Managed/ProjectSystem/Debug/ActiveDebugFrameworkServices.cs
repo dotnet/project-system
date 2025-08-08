@@ -53,44 +53,67 @@ internal class ActiveDebugFrameworkServices : IActiveDebugFrameworkServices
 
     public async Task<ConfiguredProject?> GetConfiguredProjectForActiveFrameworkAsync()
     {
-#pragma warning disable CS0618 // Type or member is obsolete
-        ImmutableDictionary<string, ConfiguredProject>? configProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync();
-#pragma warning restore CS0618 // Type or member is obsolete
+        ActiveConfiguredObjects<ConfiguredProject>? projects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync();
 
-        if (configProjects is null)
+        if (projects is null || projects.Objects.IsEmpty)
         {
             return null;
         }
 
-        // If there is only one we are done
-        if (configProjects.Count == 1)
+        if (projects.Objects.Length is 1)
         {
-            return configProjects.First().Value;
+            return projects.Objects[0];
         }
 
-        string? activeFramework = await GetActiveDebuggingFrameworkPropertyAsync();
+        bool isMultiTargeting = projects.Objects.All(project => project.ProjectConfiguration.IsCrossTargeting());
 
-        if (!Strings.IsNullOrWhiteSpace(activeFramework))
+        if (isMultiTargeting)
         {
-            if (configProjects.TryGetValue(activeFramework, out ConfiguredProject? configuredProject))
+            string? activeDebugFramework = await GetActiveDebuggingFrameworkPropertyAsync();
+
+            ConfiguredProject? project = FindProject(activeDebugFramework);
+
+            if (project is null)
             {
-                return configuredProject;
+                // The expected debug framework was not found, so we need to pick one.
+                // Use the first target as defined in the TargetFrameworks property. This is treated specially.
+                // We must pick the first that was defined can't just select the first one. If activeFramework is not set we must pick the first one as defined by the 
+                // targetFrameworks property. So we need the order as returned by GetProjectFrameworks()
+                if (await GetProjectFrameworksAsync() is [string firstFramework, ..])
+                {
+                    project = FindProject(firstFramework);
+                }
             }
+
+            System.Diagnostics.Debug.Assert(project is not null, "Unable to determine debug project configuration.");
+
+            return project;
         }
-
-        // We can't just select the first one. If activeFramework is not set we must pick the first one as defined by the 
-        // targetFrameworks property. So we need the order as returned by GetProjectFrameworks()
-        List<string>? frameworks = await GetProjectFrameworksAsync();
-
-        if (frameworks?.Count > 0)
+        else
         {
-            if (configProjects.TryGetValue(frameworks[0], out ConfiguredProject? configuredProject))
-            {
-                return configuredProject;
-            }
+            System.Diagnostics.Debug.Assert(projects.Objects.Length == 1, "Expected only one active configured project when not cross-targeting.");
+
+            return projects.Objects[0];
         }
 
-        // All that is left is to return the first one.
-        return configProjects.First().Value;
+        ConfiguredProject? FindProject(string? targetFramework)
+        {
+            if (Strings.IsNullOrWhiteSpace(targetFramework))
+            {
+                return null;
+            }
+
+            foreach (ConfiguredProject project in projects.Objects)
+            {
+                string tf = project.ProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
+
+                if (StringComparers.ConfigurationDimensionValues.Equals(tf, targetFramework))
+                {
+                    return project;
+                }
+            }
+
+            return null;
+        }
     }
 }
