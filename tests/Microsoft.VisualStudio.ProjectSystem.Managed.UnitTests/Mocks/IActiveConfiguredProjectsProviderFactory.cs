@@ -2,14 +2,9 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
-internal class IActiveConfiguredProjectsProviderFactory
+internal class IActiveConfiguredProjectsProviderFactory(MockBehavior mockBehavior = MockBehavior.Strict)
 {
-    private readonly Mock<IActiveConfiguredProjectsProvider> _mock;
-
-    public IActiveConfiguredProjectsProviderFactory(MockBehavior mockBehavior = MockBehavior.Strict)
-    {
-        _mock = new Mock<IActiveConfiguredProjectsProvider>(mockBehavior);
-    }
+    private readonly Mock<IActiveConfiguredProjectsProvider> _mock = new(mockBehavior);
 
     public IActiveConfiguredProjectsProvider Object => _mock.Object;
 
