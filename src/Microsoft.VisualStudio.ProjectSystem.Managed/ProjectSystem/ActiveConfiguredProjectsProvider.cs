@@ -8,8 +8,8 @@ namespace Microsoft.VisualStudio.ProjectSystem;
 [Export(typeof(IActiveConfiguredProjectsProvider))]
 internal class ActiveConfiguredProjectsProvider : IActiveConfiguredProjectsProvider
 {
-    // A project configuration is considered active if its dimensions matches the active solution configuration skipping 
-    // any ignored dimensions names (provided by IActiveConfiguredProjectsDimensionProvider instances):
+    // A project configuration is considered active if its dimensions match the active solution configuration, skipping 
+    // any ignored dimensions names (provided by IActiveConfiguredProjectsDimensionProvider instances).
     //
     // For example, given the following cross-targeting project:
     //
@@ -62,35 +62,6 @@ internal class ActiveConfiguredProjectsProvider : IActiveConfiguredProjectsProvi
 
     [ImportMany]
     public OrderPrecedenceImportCollection<IActiveConfiguredProjectsDimensionProvider> DimensionProviders { get; }
-
-    public async Task<ImmutableDictionary<string, ConfiguredProject>?> GetActiveConfiguredProjectsMapAsync()
-    {
-        ActiveConfiguredObjects<ConfiguredProject>? projects = await GetActiveConfiguredProjectsAsync();
-
-        if (projects?.Objects.IsEmpty != false)
-        {
-            return null;
-        }
-
-        var builder = PooledDictionary<string, ConfiguredProject>.GetInstance();
-
-        bool isCrossTargeting = projects.Objects.All(project => project.ProjectConfiguration.IsCrossTargeting());
-
-        if (isCrossTargeting)
-        {
-            foreach (ConfiguredProject project in projects.Objects)
-            {
-                string targetFramework = project.ProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
-                builder.Add(targetFramework, project);
-            }
-        }
-        else
-        {
-            builder.Add(string.Empty, projects.Objects[0]);
-        }
-
-        return builder.ToImmutableDictionaryAndFree();
-    }
 
     public async Task<ActiveConfiguredObjects<ConfiguredProject>?> GetActiveConfiguredProjectsAsync()
     {

@@ -2,29 +2,15 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
-internal class IActiveConfiguredProjectsProviderFactory
+internal class IActiveConfiguredProjectsProviderFactory(MockBehavior mockBehavior = MockBehavior.Strict)
 {
-    private readonly Mock<IActiveConfiguredProjectsProvider> _mock;
-
-    public IActiveConfiguredProjectsProviderFactory(MockBehavior mockBehavior = MockBehavior.Strict)
-    {
-        _mock = new Mock<IActiveConfiguredProjectsProvider>(mockBehavior);
-    }
+    private readonly Mock<IActiveConfiguredProjectsProvider> _mock = new(mockBehavior);
 
     public IActiveConfiguredProjectsProvider Object => _mock.Object;
 
     public void Verify()
     {
         _mock.Verify();
-    }
-
-    public IActiveConfiguredProjectsProviderFactory ImplementGetActiveConfiguredProjectsMapAsync(ImmutableDictionary<string, ConfiguredProject> configuredProjects)
-    {
-#pragma warning disable CS0618 // Type or member is obsolete
-        _mock.Setup(x => x.GetActiveConfiguredProjectsMapAsync())
-#pragma warning restore CS0618 // Type or member is obsolete
-                          .ReturnsAsync(configuredProjects);
-        return this;
     }
 
     public IActiveConfiguredProjectsProviderFactory ImplementGetActiveConfiguredProjectsAsync(ActiveConfiguredObjects<ConfiguredProject> configuredProjects)
