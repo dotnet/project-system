@@ -8,8 +8,8 @@ namespace Microsoft.VisualStudio.ProjectSystem;
 [Export(typeof(IActiveConfiguredProjectsProvider))]
 internal class ActiveConfiguredProjectsProvider : IActiveConfiguredProjectsProvider
 {
-    // A project configuration is considered active if its dimensions matches the active solution configuration skipping 
-    // any ignored dimensions names (provided by IActiveConfiguredProjectsDimensionProvider instances):
+    // A project configuration is considered active if its dimensions match the active solution configuration, skipping 
+    // any ignored dimensions names (provided by IActiveConfiguredProjectsDimensionProvider instances).
     //
     // For example, given the following cross-targeting project:
     //

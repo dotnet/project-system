@@ -40,14 +40,15 @@ internal class ActiveDebugFrameworkServices : IActiveDebugFrameworkServices
     public async Task SetActiveDebuggingFrameworkPropertyAsync(string activeFramework)
     {
         ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
+
         await props.ActiveDebugFramework.SetValueAsync(activeFramework);
     }
 
     public async Task<string?> GetActiveDebuggingFrameworkPropertyAsync()
     {
         ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
-        string? activeValue = await props.ActiveDebugFramework.GetValueAsync() as string;
-        return activeValue;
+
+        return await props.ActiveDebugFramework.GetValueAsync() as string;
     }
 
     public async Task<ConfiguredProject?> GetConfiguredProjectForActiveFrameworkAsync()
