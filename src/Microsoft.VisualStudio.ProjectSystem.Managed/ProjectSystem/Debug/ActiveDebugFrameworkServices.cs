@@ -21,9 +21,6 @@ internal class ActiveDebugFrameworkServices : IActiveDebugFrameworkServices
         _commonProjectServices = commonProjectServices;
     }
 
-    /// <summary>
-    /// <see cref="IActiveDebugFrameworkServices.GetProjectFrameworksAsync"/>
-    /// </summary>
     public async Task<List<string>?> GetProjectFrameworksAsync()
     {
         // It is important that we return the frameworks in the order they are specified in the project to ensure the default is set
@@ -40,18 +37,12 @@ internal class ActiveDebugFrameworkServices : IActiveDebugFrameworkServices
         return BuildUtilities.GetPropertyValues(targetFrameworks).ToList();
     }
 
-    /// <summary>
-    /// <see cref="IActiveDebugFrameworkServices.SetActiveDebuggingFrameworkPropertyAsync"/>
-    /// </summary>
     public async Task SetActiveDebuggingFrameworkPropertyAsync(string activeFramework)
     {
         ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
         await props.ActiveDebugFramework.SetValueAsync(activeFramework);
     }
 
-    /// <summary>
-    /// <see cref="IActiveDebugFrameworkServices.GetActiveDebuggingFrameworkPropertyAsync"/>
-    /// </summary>
     public async Task<string?> GetActiveDebuggingFrameworkPropertyAsync()
     {
         ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
@@ -59,9 +50,6 @@ internal class ActiveDebugFrameworkServices : IActiveDebugFrameworkServices
         return activeValue;
     }
 
-    /// <summary>
-    /// <see cref="IActiveDebugFrameworkServices.GetConfiguredProjectForActiveFrameworkAsync"/>
-    /// </summary>
     public async Task<ConfiguredProject?> GetConfiguredProjectForActiveFrameworkAsync()
     {
 #pragma warning disable CS0618 // Type or member is obsolete
