@@ -27,6 +27,7 @@ jobs:
         signType: real
         esrpSigning: true
         zipSources: false
+        signWithProd: true
       sbom:
         enabled: true
     outputParentDirectory: $(Build.SourcesDirectory)/artifacts/output
