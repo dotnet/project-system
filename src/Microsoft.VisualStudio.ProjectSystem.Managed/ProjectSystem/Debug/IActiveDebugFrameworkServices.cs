@@ -25,7 +25,7 @@ public interface IActiveDebugFrameworkServices
     Task<string?> GetActiveDebuggingFrameworkPropertyAsync();
 
     /// <summary>
-    /// Returns the configured project which represents the active framework. This is valid whether multi-targeting or not.
+    /// Returns the configured project that corresponds with the active debugging framework. This is valid whether multi-targeting or not.
     /// </summary>
     Task<ConfiguredProject?> GetConfiguredProjectForActiveFrameworkAsync();
 }
