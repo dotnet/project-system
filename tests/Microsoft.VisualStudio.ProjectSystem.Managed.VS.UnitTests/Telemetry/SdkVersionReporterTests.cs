@@ -25,7 +25,7 @@ public static class SdkVersionReporterTests
         TelemetryParameters? result = null;
 
         var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(
-            projectProperties: () => ProjectPropertiesFactory.Create(
+            projectProperties: () => ProjectPropertiesAccessFactory.Create(
                 project: UnconfiguredProjectFactory.Create(),
                 data: new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.NETCoreSdkVersionProperty, version ?? string.Empty)));
 

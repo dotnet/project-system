@@ -16,9 +16,9 @@ public class AppManifestSpecialFileProviderTests : AbstractFindByNameUnderAppDes
         return CreateInstanceWithOverrideCreateFileAsync<AppManifestSpecialFileProvider>(specialFilesManager, projectTree, properties);
     }
 
-    private ProjectProperties CreateProperties(string appManifestPropertyValue)
+    private ProjectPropertiesAccess CreateProperties(string appManifestPropertyValue)
     {
-        return ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(),
+        return ProjectPropertiesAccessFactory.Create(UnconfiguredProjectFactory.Create(),
             new PropertyPageData(
                 ConfigurationGeneralBrowseObject.SchemaName,
                 ConfigurationGeneralBrowseObject.ApplicationManifestProperty,

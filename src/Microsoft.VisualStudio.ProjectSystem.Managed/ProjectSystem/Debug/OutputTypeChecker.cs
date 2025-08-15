@@ -8,10 +8,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 [AppliesTo(ProjectCapability.DotNet)]
 internal class OutputTypeChecker : IOutputTypeChecker
 {
-    private readonly ProjectProperties _properties;
+    private readonly ProjectPropertiesAccess _properties;
 
     [ImportingConstructor]
-    public OutputTypeChecker(ProjectProperties properties)
+    public OutputTypeChecker(ProjectPropertiesAccess properties)
     {
         _properties = properties;
     }

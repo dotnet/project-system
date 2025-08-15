@@ -14,7 +14,7 @@ public class CSharpProjectConfigurationProperties : AbstractProjectConfiguration
 {
     [ImportingConstructor]
     internal CSharpProjectConfigurationProperties(
-        ProjectProperties projectProperties,
+        ProjectPropertiesAccess projectProperties,
         IProjectThreadingService threadingService)
         : base(projectProperties, threadingService)
     {

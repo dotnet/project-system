@@ -14,7 +14,7 @@ public class TargetFrameworkValueProviderTests
         var data = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetFrameworkMonikerProperty, configuredTargetFramework.FullName);
 
         var project = UnconfiguredProjectFactory.Create();
-        var properties = ProjectPropertiesFactory.Create(project, data);
+        var properties = ProjectPropertiesAccessFactory.Create(project, data);
         var delegateProvider = IProjectPropertiesProviderFactory.Create();
 
         var instancePropertiesMock = IProjectPropertiesFactory

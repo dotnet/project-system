@@ -272,14 +272,14 @@ public class AppDesignerFolderSpecialFileProviderTests
         Assert.Null(result);
     }
 
-    private static ProjectProperties CreateProperties(string appDesignerFolderName)
+    private static ProjectPropertiesAccess CreateProperties(string appDesignerFolderName)
     {
-        return ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), [
+        return ProjectPropertiesAccessFactory.Create(UnconfiguredProjectFactory.Create(), [
                 new PropertyPageData(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, appDesignerFolderName)
             ]);
     }
 
-    private static AppDesignerFolderSpecialFileProvider CreateInstance(IPhysicalProjectTree? physicalProjectTree = null, ProjectProperties? properties = null)
+    private static AppDesignerFolderSpecialFileProvider CreateInstance(IPhysicalProjectTree? physicalProjectTree = null, ProjectPropertiesAccess? properties = null)
     {
         physicalProjectTree ??= IPhysicalProjectTreeFactory.Create();
         properties ??= CreateProperties(appDesignerFolderName: "Properties");

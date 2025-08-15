@@ -59,7 +59,7 @@ internal class UnconfiguredProjectVsServices : IUnconfiguredProjectVsServices
         get { return _commonServices.ActiveConfiguredProject; }
     }
 
-    public ProjectProperties ActiveConfiguredProjectProperties
+    public ProjectPropertiesAccess ActiveConfiguredProjectProperties
     {
         get { return _commonServices.ActiveConfiguredProjectProperties; }
     }

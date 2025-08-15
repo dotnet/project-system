@@ -4,26 +4,26 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem;
 
-internal static class ProjectPropertiesFactory
+internal static class ProjectPropertiesAccessFactory
 {
-    public static ProjectProperties CreateEmpty()
+    public static ProjectPropertiesAccess CreateEmpty()
     {
         return Create(UnconfiguredProjectFactory.Create());
     }
 
-    public static ProjectProperties Create(string category, string propertyName, string? value)
+    public static ProjectPropertiesAccess Create(string category, string propertyName, string? value)
     {
         var data = new PropertyPageData(category, propertyName, value);
 
         return Create(data);
     }
 
-    public static ProjectProperties Create(params PropertyPageData[] data)
+    public static ProjectPropertiesAccess Create(params PropertyPageData[] data)
     {
         return Create(UnconfiguredProjectFactory.Create(), data);
     }
 
-    public static ProjectProperties Create(UnconfiguredProject project, params PropertyPageData[] data)
+    public static ProjectPropertiesAccess Create(UnconfiguredProject project, params PropertyPageData[] data)
     {
         var catalog = IPropertyPagesCatalogFactory.Create(data);
         var propertyPagesCatalogProvider = IPropertyPagesCatalogProviderFactory.Create(
@@ -46,6 +46,6 @@ internal static class ProjectPropertiesFactory
             o.Services == configuredProjectServices &&
             o.ProjectConfiguration == cfg);
 
-        return new ProjectProperties(configuredProject);
+        return new ProjectPropertiesAccess(configuredProject);
     }
 }
