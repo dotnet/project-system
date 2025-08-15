@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
 [AppliesTo(ProjectCapability.DotNet)]
 internal class AppManifestSpecialFileProvider : AbstractFindByNameUnderAppDesignerSpecialFileProvider
 {
-    private readonly ProjectProperties _properties;
+    private readonly ProjectPropertiesAccess _properties;
     private readonly ICreateFileFromTemplateService _templateFileCreationService;
 
     [ImportingConstructor]
@@ -19,7 +19,7 @@ internal class AppManifestSpecialFileProvider : AbstractFindByNameUnderAppDesign
         ISpecialFilesManager specialFilesManager,
         IPhysicalProjectTree projectTree,
         ICreateFileFromTemplateService templateFileCreationService,
-        ProjectProperties properties)
+        ProjectPropertiesAccess properties)
         : base("app.manifest", specialFilesManager, projectTree)
     {
         _templateFileCreationService = templateFileCreationService;

@@ -20,11 +20,11 @@ public class LaunchSettingsProviderTests
         activeProfileValue.Setup(s => s.Name).Returns(activeProfile);
         var debuggerData = new PropertyPageData(ProjectDebugger.SchemaName, ProjectDebugger.ActiveDebugProfileProperty, activeProfileValue.Object);
 
-        var projectProperties = ProjectPropertiesFactory.Create(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, appDesignerFolder);
-        var activeConfigurationProjectProperties = IActiveConfiguredValueFactory.ImplementValue<ProjectProperties?>(() => projectProperties);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, appDesignerFolder);
+        var activeConfigurationProjectProperties = IActiveConfiguredValueFactory.ImplementValue<ProjectPropertiesAccess?>(() => projectProperties);
         var configuredProject = ConfiguredProjectFactory.Create();
         var project = UnconfiguredProjectFactory.Create(fullPath: @"c:\test\Project1\Project1.csproj", configuredProject: configuredProject);
-        var properties = ProjectPropertiesFactory.Create(project, [debuggerData]);
+        var properties = ProjectPropertiesAccessFactory.Create(project, [debuggerData]);
         var threadingService = IProjectThreadingServiceFactory.Create();
         var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, threadingService, null, properties);
         var projectServices = IUnconfiguredProjectServicesFactory.Create(
@@ -1045,7 +1045,7 @@ internal class LaunchSettingsUnderTest : LaunchSettingsProvider
         IFileSystem fileSystem,
         IUnconfiguredProjectCommonServices commonProjectServices,
         IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
-        IActiveConfiguredValue<ProjectProperties?> projectProperties,
+        IActiveConfiguredValue<ProjectPropertiesAccess?> projectProperties,
         IProjectFaultHandlerService projectFaultHandler,
         IDefaultLaunchProfileProvider defaultLaunchProfileProvider,
         IFileWatcherService fileWatcherService,

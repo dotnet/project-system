@@ -7,10 +7,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties;
 [ExportInterceptingPropertyValueProvider("TargetFramework", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
 internal sealed class TargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
 {
-    private readonly ProjectProperties _properties;
+    private readonly ProjectPropertiesAccess _properties;
 
     [ImportingConstructor]
-    public TargetFrameworkValueProvider(ProjectProperties properties)
+    public TargetFrameworkValueProvider(ProjectPropertiesAccess properties)
     {
         _properties = properties;
     }

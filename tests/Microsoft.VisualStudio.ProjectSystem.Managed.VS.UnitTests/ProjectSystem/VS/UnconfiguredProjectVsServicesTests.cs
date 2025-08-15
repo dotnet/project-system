@@ -56,7 +56,7 @@ public class UnconfiguredProjectVsServicesTests
     public void Constructor_ValueAsCommonServices_SetsActiveConfiguredProjectProjectToCommonServicesActiveConfiguredProject()
     {
         var project = UnconfiguredProjectFactory.Create();
-        var projectProperties = ProjectPropertiesFactory.Create(project);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project);
         var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(configuredProject: projectProperties.ConfiguredProject);
 
         var vsServices = CreateInstance(commonServices);
@@ -68,7 +68,7 @@ public class UnconfiguredProjectVsServicesTests
     public void Constructor_ValueAsCommonServices_SetsActiveConfiguredProjectPropertiesToCommonServicesActiveConfiguredProjectProperties()
     {
         var project = UnconfiguredProjectFactory.Create();
-        var projectProperties = ProjectPropertiesFactory.Create(project);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project);
         var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(projectProperties: projectProperties);
 
         var vsServices = CreateInstance(commonServices);

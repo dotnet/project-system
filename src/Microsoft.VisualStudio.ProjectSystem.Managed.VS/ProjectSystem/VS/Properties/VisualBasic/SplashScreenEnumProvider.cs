@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic;
 [ExportDynamicEnumValuesProvider("SplashScreenEnumProvider")]
 [AppliesTo(ProjectCapability.VisualBasic)]
 [method: ImportingConstructor]
-internal sealed class SplashScreenEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject unconfiguredProject, ProjectProperties propertiesProvider) : IDynamicEnumValuesProvider
+internal sealed class SplashScreenEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject unconfiguredProject, ProjectPropertiesAccess propertiesProvider) : IDynamicEnumValuesProvider
 {
     public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
     {
@@ -32,7 +32,7 @@ internal sealed class SplashScreenEnumProvider([Import(typeof(VisualStudioWorksp
         return Task.FromResult<IDynamicEnumValuesGenerator>(new SplashScreenEnumGenerator(workspace, unconfiguredProject, propertiesProvider, includeEmptyValue, searchForEntryPointsInFormsOnly: true));
     }
 
-    private sealed class SplashScreenEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject, ProjectProperties properties, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly) : IDynamicEnumValuesGenerator
+    private sealed class SplashScreenEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject, ProjectPropertiesAccess properties, bool includeEmptyValue, bool searchForEntryPointsInFormsOnly) : IDynamicEnumValuesGenerator
     {
         public bool AllowCustomValues => false;
 

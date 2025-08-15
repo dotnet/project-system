@@ -14,10 +14,10 @@ internal class CreateFileFromTemplateService : ICreateFileFromTemplateService
 {
     private readonly IUnconfiguredProjectVsServices _projectVsServices;
     private readonly IVsUIService<DTE2> _dte;
-    private readonly ProjectProperties _properties;
+    private readonly ProjectPropertiesAccess _properties;
 
     [ImportingConstructor]
-    public CreateFileFromTemplateService(IUnconfiguredProjectVsServices projectVsServices, IVsUIService<SDTE, DTE2> dte, ProjectProperties properties)
+    public CreateFileFromTemplateService(IUnconfiguredProjectVsServices projectVsServices, IVsUIService<SDTE, DTE2> dte, ProjectPropertiesAccess properties)
     {
         _projectVsServices = projectVsServices;
         _dte = dte;

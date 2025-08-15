@@ -12,7 +12,7 @@ public class VisualBasicProjectConfigurationProperties : AbstractProjectConfigur
 {
     [ImportingConstructor]
     internal VisualBasicProjectConfigurationProperties(
-        ProjectProperties projectProperties,
+        ProjectPropertiesAccess projectProperties,
         IProjectThreadingService threadingService)
         : base(projectProperties, threadingService)
     {

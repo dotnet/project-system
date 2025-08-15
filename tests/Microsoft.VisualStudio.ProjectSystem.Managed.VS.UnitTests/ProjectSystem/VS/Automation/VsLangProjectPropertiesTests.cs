@@ -17,7 +17,7 @@ public class VSProject_VSLangProjectPropertiesTests
         var vsproject = CreateInstance(
                             Mock.Of<VSLangProj.VSProject>(),
                             threadingService: Mock.Of<IProjectThreadingService>(),
-                            projectProperties: Mock.Of<IActiveConfiguredValue<ProjectProperties>>());
+                            projectProperties: Mock.Of<IActiveConfiguredValue<ProjectPropertiesAccess>>());
         Assert.NotNull(vsproject);
     }
 
@@ -37,7 +37,7 @@ public class VSProject_VSLangProjectPropertiesTests
         var vsproject = CreateInstance(
                             innerVSProjectMock.Object,
                             threadingService: Mock.Of<IProjectThreadingService>(),
-                            projectProperties: Mock.Of<IActiveConfiguredValue<ProjectProperties>>());
+                            projectProperties: Mock.Of<IActiveConfiguredValue<ProjectPropertiesAccess>>());
         Assert.NotNull(vsproject);
         Assert.True(imports.Equals(vsproject.Imports));
         Assert.Equal(events, vsproject.Events);
@@ -66,7 +66,7 @@ public class VSProject_VSLangProjectPropertiesTests
         var vsproject = new VSProjectTestImpl(
                             innerVSProjectMock.Object,
                             threadingService: Mock.Of<IProjectThreadingService>(),
-                            projectProperties: Mock.Of<IActiveConfiguredValue<ProjectProperties>>(),
+                            projectProperties: Mock.Of<IActiveConfiguredValue<ProjectPropertiesAccess>>(),
                             project: unconfiguredProjectMock.Object,
                             buildManager: Mock.Of<BuildManager>());
 
@@ -85,7 +85,7 @@ public class VSProject_VSLangProjectPropertiesTests
         var project = UnconfiguredProjectFactory.Create();
         var data = new PropertyPageData(ConfigurationGeneralBrowseObject.SchemaName, ConfigurationGeneralBrowseObject.OutputTypeProperty, 4, setValues);
 
-        var projectProperties = ProjectPropertiesFactory.Create(project, data);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project, data);
         var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
 
         var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
@@ -102,7 +102,7 @@ public class VSProject_VSLangProjectPropertiesTests
         var project = UnconfiguredProjectFactory.Create();
         var data = new PropertyPageData(ConfigurationGeneralBrowseObject.SchemaName, ConfigurationGeneralBrowseObject.OutputTypeProperty, 1, setValues);
 
-        var projectProperties = ProjectPropertiesFactory.Create(project, data);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project, data);
         var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
 
         var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
@@ -119,7 +119,7 @@ public class VSProject_VSLangProjectPropertiesTests
         var project = UnconfiguredProjectFactory.Create();
         var data = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.AssemblyNameProperty, "Blah", setValues);
 
-        var projectProperties = ProjectPropertiesFactory.Create(project, data);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project, data);
         var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
 
         var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
@@ -136,7 +136,7 @@ public class VSProject_VSLangProjectPropertiesTests
         var project = UnconfiguredProjectFactory.Create();
         var data = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.ProjectDirProperty, "somepath");
 
-        var projectProperties = ProjectPropertiesFactory.Create(project, data);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project, data);
         var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
 
         var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
@@ -149,7 +149,7 @@ public class VSProject_VSLangProjectPropertiesTests
         var project = UnconfiguredProjectFactory.Create();
         var data = new PropertyPageData(ConfigurationGeneralBrowseObject.SchemaName, ConfigurationGeneralBrowseObject.FullPathProperty, "testvalue");
 
-        var projectProperties = ProjectPropertiesFactory.Create(project, data);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project, data);
         var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
 
         var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
@@ -162,7 +162,7 @@ public class VSProject_VSLangProjectPropertiesTests
         var vsproject = CreateInstance(
             Mock.Of<VSLangProj.VSProject>(),
             threadingService: Mock.Of<IProjectThreadingService>(),
-            projectProperties: Mock.Of<IActiveConfiguredValue<ProjectProperties>>(),
+            projectProperties: Mock.Of<IActiveConfiguredValue<ProjectPropertiesAccess>>(),
             buildManager: Mock.Of<BuildManager>());
         Assert.Null(vsproject.ExtenderCATID);
     }
@@ -170,7 +170,7 @@ public class VSProject_VSLangProjectPropertiesTests
     private static VSProject CreateInstance(
         VSLangProj.VSProject vsproject,
         IProjectThreadingService threadingService,
-        IActiveConfiguredValue<ProjectProperties> projectProperties,
+        IActiveConfiguredValue<ProjectPropertiesAccess> projectProperties,
         UnconfiguredProject? project = null,
         BuildManager? buildManager = null)
     {
@@ -184,7 +184,7 @@ public class VSProject_VSLangProjectPropertiesTests
         public VSProjectTestImpl(
             VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
-            IActiveConfiguredValue<ProjectProperties> projectProperties,
+            IActiveConfiguredValue<ProjectPropertiesAccess> projectProperties,
             UnconfiguredProject project,
             BuildManager buildManager)
             : base(vsProject, threadingService, projectProperties, project, buildManager)
