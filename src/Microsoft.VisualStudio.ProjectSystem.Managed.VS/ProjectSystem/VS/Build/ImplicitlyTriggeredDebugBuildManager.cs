@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build;
 /// </summary>
 [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
 [AppliesTo(ProjectCapability.DotNet)]
+[ProjectDynamicLoadComponent(ProjectLoadCheckpoint.ProjectBackgroundLoadCompleted)]
 internal class ImplicitlyTriggeredDebugBuildManager : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent, IVsUpdateSolutionEvents2, IVsUpdateSolutionEvents3
 {
     private readonly IStartupProjectHelper _startupProjectHelper;
