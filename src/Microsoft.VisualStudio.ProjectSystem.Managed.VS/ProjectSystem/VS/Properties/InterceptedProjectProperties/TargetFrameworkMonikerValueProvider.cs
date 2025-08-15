@@ -9,10 +9,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 internal sealed class TargetFrameworkMonikerValueProvider : InterceptingPropertyValueProviderBase
 {
     private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
-    private readonly ProjectProperties _properties;
+    private readonly ProjectPropertiesAccess _properties;
 
     [ImportingConstructor]
-    public TargetFrameworkMonikerValueProvider(IUnconfiguredProjectVsServices unconfiguredProjectVsServices, ProjectProperties properties)
+    public TargetFrameworkMonikerValueProvider(IUnconfiguredProjectVsServices unconfiguredProjectVsServices, ProjectPropertiesAccess properties)
     {
         _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
         _properties = properties;

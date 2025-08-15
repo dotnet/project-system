@@ -29,7 +29,7 @@ internal class TargetPlatformMonikersValueProvider : InterceptingPropertyValuePr
 
         foreach (ConfiguredProject configuredProject in configuredProjects.Objects)
         {
-            ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
+            ProjectPropertiesAccess projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectPropertiesAccess>();
             ConfigurationGeneral configuration = await projectProperties.GetConfigurationGeneralPropertiesAsync();
             string? currentPlatformMoniker = (string?)await configuration.TargetPlatformIdentifier.GetValueAsync();
             string? currentPlatformVersion = (string?)await configuration.TargetPlatformVersion.GetValueAsync();

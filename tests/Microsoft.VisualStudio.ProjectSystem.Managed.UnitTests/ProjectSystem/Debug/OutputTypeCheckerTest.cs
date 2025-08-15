@@ -51,7 +51,7 @@ public class OutputTypeCheckerTest
 
     private static OutputTypeChecker CreateFailedOutputTypeChecker()
     {
-        var projectProperties = ProjectPropertiesFactory.CreateEmpty();
+        var projectProperties = ProjectPropertiesAccessFactory.CreateEmpty();
 
         return new OutputTypeChecker2(projectProperties);
     }
@@ -62,12 +62,12 @@ public class OutputTypeCheckerTest
 
         var outputTypeEnum = new PageEnumValue(new EnumValue { Name = outputType });
         var data = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, outputTypeEnum);
-        var projectProperties = ProjectPropertiesFactory.Create(project, data);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project, data);
 
         return new OutputTypeChecker(projectProperties);
     }
 
-    internal class OutputTypeChecker2(ProjectProperties properties) : OutputTypeChecker(properties)
+    internal class OutputTypeChecker2(ProjectPropertiesAccess properties) : OutputTypeChecker(properties)
     {
         protected override Task<IEnumValue?> GetEvaluatedOutputTypeAsync()
         {

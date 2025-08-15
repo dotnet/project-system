@@ -85,18 +85,18 @@ public class CreateFileFromTemplateServiceTests
         return CreateInstance(null, null, null);
     }
 
-    private static CreateFileFromTemplateService CreateInstance(IUnconfiguredProjectVsServices? projectVsServices, DTE2? dte, ProjectProperties? properties)
+    private static CreateFileFromTemplateService CreateInstance(IUnconfiguredProjectVsServices? projectVsServices, DTE2? dte, ProjectPropertiesAccess? properties)
     {
         projectVsServices ??= IUnconfiguredProjectVsServicesFactory.Create();
         dte ??= DTEFactory.Create();
-        properties ??= ProjectPropertiesFactory.CreateEmpty();
+        properties ??= ProjectPropertiesAccessFactory.CreateEmpty();
 
         return new CreateFileFromTemplateService(projectVsServices, IVsUIServiceFactory.Create<SDTE, DTE2>(dte), properties);
     }
 
-    private static ProjectProperties CreateProperties()
+    private static ProjectPropertiesAccess CreateProperties()
     {
-        var properties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(),
+        var properties = ProjectPropertiesAccessFactory.Create(UnconfiguredProjectFactory.Create(),
                     new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TemplateLanguageProperty, "CSharp"));
 
         return properties;

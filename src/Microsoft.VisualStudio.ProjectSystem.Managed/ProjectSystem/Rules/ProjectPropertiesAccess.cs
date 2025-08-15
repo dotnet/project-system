@@ -12,37 +12,37 @@ namespace Microsoft.VisualStudio.ProjectSystem;
 [Export]
 [ExcludeFromCodeCoverage]
 [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-internal partial class ProjectProperties : StronglyTypedPropertyAccess
+internal partial class ProjectPropertiesAccess : StronglyTypedPropertyAccess
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ProjectProperties"/> class.
+    /// Initializes a new instance of the <see cref="ProjectPropertiesAccess"/> class.
     /// </summary>
     [ImportingConstructor]
-    public ProjectProperties([Import] ConfiguredProject configuredProject)
+    public ProjectPropertiesAccess([Import] ConfiguredProject configuredProject)
         : base(configuredProject)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ProjectProperties"/> class.
+    /// Initializes a new instance of the <see cref="ProjectPropertiesAccess"/> class.
     /// </summary>
-    public ProjectProperties(ConfiguredProject configuredProject, string file, string itemType, string itemName)
+    public ProjectPropertiesAccess(ConfiguredProject configuredProject, string file, string itemType, string itemName)
         : base(configuredProject, file, itemType, itemName)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ProjectProperties"/> class.
+    /// Initializes a new instance of the <see cref="ProjectPropertiesAccess"/> class.
     /// </summary>
-    public ProjectProperties(ConfiguredProject configuredProject, IProjectPropertiesContext projectPropertiesContext)
+    public ProjectPropertiesAccess(ConfiguredProject configuredProject, IProjectPropertiesContext projectPropertiesContext)
         : base(configuredProject, projectPropertiesContext)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ProjectProperties"/> class.
+    /// Initializes a new instance of the <see cref="ProjectPropertiesAccess"/> class.
     /// </summary>
-    public ProjectProperties(ConfiguredProject configuredProject, UnconfiguredProject project)
+    public ProjectPropertiesAccess(ConfiguredProject configuredProject, UnconfiguredProject project)
         : base(configuredProject, project)
     {
     }

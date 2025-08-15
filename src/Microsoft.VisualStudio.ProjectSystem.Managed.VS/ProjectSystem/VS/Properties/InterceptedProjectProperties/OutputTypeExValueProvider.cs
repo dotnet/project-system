@@ -29,7 +29,7 @@ internal sealed class OutputTypeExValueProvider : OutputTypeValueProviderBase
     }.ToImmutableDictionary(StringComparers.PropertyLiteralValues);
 
     [ImportingConstructor]
-    public OutputTypeExValueProvider(ProjectProperties properties)
+    public OutputTypeExValueProvider(ProjectPropertiesAccess properties)
         : base(properties)
     {
     }

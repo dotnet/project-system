@@ -7,11 +7,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 
 public abstract class AbstractProjectConfigurationProperties : ProjectConfigurationProperties3
 {
-    private readonly ProjectProperties _projectProperties;
+    private readonly ProjectPropertiesAccess _projectProperties;
     private readonly IProjectThreadingService _threadingService;
 
     internal AbstractProjectConfigurationProperties(
-        ProjectProperties projectProperties,
+        ProjectPropertiesAccess projectProperties,
         IProjectThreadingService threadingService)
     {
         Requires.NotNull(projectProperties);

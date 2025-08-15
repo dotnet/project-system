@@ -14,7 +14,7 @@ public class ActiveDebugFrameworkServicesTests
         var project = UnconfiguredProjectFactory.Create();
         var data = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetFrameworksProperty, frameworks);
 
-        var projectProperties = ProjectPropertiesFactory.Create(project, data);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project, data);
 
         var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(projectProperties: projectProperties);
 
@@ -37,7 +37,7 @@ public class ActiveDebugFrameworkServicesTests
         var project = UnconfiguredProjectFactory.Create();
         var data = new PropertyPageData(ProjectDebugger.SchemaName, ProjectDebugger.ActiveDebugFrameworkProperty, framework);
 
-        var projectProperties = ProjectPropertiesFactory.Create(project, data);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project, data);
 
         var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(projectProperties: projectProperties);
 
@@ -53,7 +53,7 @@ public class ActiveDebugFrameworkServicesTests
         var project = UnconfiguredProjectFactory.Create();
         var data = new PropertyPageData(ProjectDebugger.SchemaName, ProjectDebugger.ActiveDebugFrameworkProperty, "FrameworkOne");
 
-        var projectProperties = ProjectPropertiesFactory.Create(project, data);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project, data);
 
         var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(projectProperties: projectProperties);
 
@@ -90,7 +90,7 @@ public class ActiveDebugFrameworkServicesTests
                 .Add("TargetFramework", "net462")))
         ];
 
-        var projectProperties = ProjectPropertiesFactory.Create(project, data, data2);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project, data, data2);
         var projectConfigProvider = new IActiveConfiguredProjectsProviderFactory(MockBehavior.Strict)
                                    .ImplementGetActiveConfiguredProjectsAsync(new ActiveConfiguredObjects<ConfiguredProject>(projects, ["TargetFramework"]));
 
