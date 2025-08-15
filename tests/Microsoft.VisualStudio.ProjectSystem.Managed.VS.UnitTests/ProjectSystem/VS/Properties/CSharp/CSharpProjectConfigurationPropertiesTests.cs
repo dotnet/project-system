@@ -18,7 +18,7 @@ public class CSharpProjectConfigurationPropertiesTests
     {
         Assert.Throws<ArgumentNullException>("threadingService", () =>
         {
-            new CSharpProjectConfigurationProperties(ProjectPropertiesFactory.CreateEmpty(), null!);
+            new CSharpProjectConfigurationProperties(ProjectPropertiesAccessFactory.CreateEmpty(), null!);
         });
     }
 
@@ -29,7 +29,7 @@ public class CSharpProjectConfigurationPropertiesTests
         var project = UnconfiguredProjectFactory.Create();
         var data = new PropertyPageData(ConfiguredBrowseObject.SchemaName, ConfiguredBrowseObject.CodeAnalysisRuleSetProperty, "Blah", setValues);
 
-        var projectProperties = ProjectPropertiesFactory.Create(project, data);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project, data);
 
         var vsLangProjectProperties = CreateInstance(projectProperties, IProjectThreadingServiceFactory.Create());
         Assert.Equal("Blah", vsLangProjectProperties.CodeAnalysisRuleSet);
@@ -46,7 +46,7 @@ public class CSharpProjectConfigurationPropertiesTests
         var project = UnconfiguredProjectFactory.Create();
         var data = new PropertyPageData(ConfiguredBrowseObject.SchemaName, ConfiguredBrowseObject.LangVersionProperty, "6", setValues);
 
-        var projectProperties = ProjectPropertiesFactory.Create(project, data);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project, data);
 
         var vsLangProjectProperties = CreateInstance(projectProperties, IProjectThreadingServiceFactory.Create());
         Assert.Equal("6", vsLangProjectProperties.LanguageVersion);
@@ -63,7 +63,7 @@ public class CSharpProjectConfigurationPropertiesTests
         var project = UnconfiguredProjectFactory.Create();
         var data = new PropertyPageData(ConfiguredBrowseObject.SchemaName, ConfiguredBrowseObject.OutputPathProperty, "OldPath", setValues);
 
-        var projectProperties = ProjectPropertiesFactory.Create(project, data);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project, data);
 
         var vsLangProjectProperties = CreateInstance(projectProperties, IProjectThreadingServiceFactory.Create());
         Assert.Equal("OldPath", vsLangProjectProperties.OutputPath);
@@ -73,7 +73,7 @@ public class CSharpProjectConfigurationPropertiesTests
         Assert.Equal(setValues.Single(), testValue);
     }
 
-    private static CSharpProjectConfigurationProperties CreateInstance(ProjectProperties projectProperties, IProjectThreadingService projectThreadingService)
+    private static CSharpProjectConfigurationProperties CreateInstance(ProjectPropertiesAccess projectProperties, IProjectThreadingService projectThreadingService)
     {
         return new CSharpProjectConfigurationProperties(projectProperties, projectThreadingService);
     }

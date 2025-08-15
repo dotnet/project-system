@@ -25,7 +25,7 @@ internal class CompoundTargetFrameworkValueProvider : InterceptingPropertyValueP
     private const string TargetFrameworkProperty = ConfigurationGeneral.TargetFrameworkProperty;
     private const string SupportedOSPlatformVersionProperty = "SupportedOSPlatformVersion";
 
-    private readonly ProjectProperties _properties;
+    private readonly ProjectPropertiesAccess _properties;
     private readonly ConfiguredProject _configuredProject;
     private bool? _useWPFProperty;
     private bool? _useWindowsFormsProperty;
@@ -43,7 +43,7 @@ internal class CompoundTargetFrameworkValueProvider : InterceptingPropertyValueP
     }
 
     [ImportingConstructor]
-    public CompoundTargetFrameworkValueProvider(ProjectProperties properties)
+    public CompoundTargetFrameworkValueProvider(ProjectPropertiesAccess properties)
     {
         _properties = properties;
         _configuredProject = properties.ConfiguredProject;

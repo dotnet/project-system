@@ -30,9 +30,9 @@ internal class IUnconfiguredProjectVsServicesMock : AbstractMock<IUnconfiguredPr
         return this;
     }
 
-    public IUnconfiguredProjectVsServicesMock ImplementActiveConfiguredProjectProperties(ProjectProperties? projectProperties)
+    public IUnconfiguredProjectVsServicesMock ImplementActiveConfiguredProjectProperties(ProjectPropertiesAccess? projectProperties)
     {
-        SetupGet<ProjectProperties?>(m => m.ActiveConfiguredProjectProperties)
+        SetupGet<ProjectPropertiesAccess?>(m => m.ActiveConfiguredProjectProperties)
             .Returns(projectProperties);
 
         return this;

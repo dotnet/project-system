@@ -6,7 +6,7 @@
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <!-- The value of RuleInjectionClassName of XamlPropertyRule items defined by this project -->
-    <XamlPropertyRuleInjectionClassName>ProjectProperties</XamlPropertyRuleInjectionClassName>
+    <XamlPropertyRuleInjectionClassName>ProjectPropertiesAccess</XamlPropertyRuleInjectionClassName>
     <IsManagedProjectSystemProject>true</IsManagedProjectSystemProject>
     <TargetFrameworks>net472;$(NetCoreTargetFramework)</TargetFrameworks>
 

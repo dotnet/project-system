@@ -25,7 +25,7 @@ public class CompoundTargetFrameworkValueProviderTests
         var iProjectProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(propertiesAndValues);
 
         // New target framework properties
-        var projectProperties = ProjectPropertiesFactory.Create(
+        var projectProperties = ProjectPropertiesAccessFactory.Create(
             new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetFrameworkProperty, tf, null),
             new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetFrameworkMonikerProperty, tfm, null),
             new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetFrameworkIdentifierProperty, tfi, null),

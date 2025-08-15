@@ -9,7 +9,7 @@ public class UnconfiguredProjectCommonServicesTests
     {
         var project = UnconfiguredProjectFactory.Create();
         var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
-        var projectProperties = ProjectPropertiesFactory.Create(project);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project);
         var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties.ConfiguredProject);
         var activeConfiguredProjectProperties = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
         var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
@@ -24,7 +24,7 @@ public class UnconfiguredProjectCommonServicesTests
     {
         var project = UnconfiguredProjectFactory.Create();
         var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
-        var projectProperties = ProjectPropertiesFactory.Create(project);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project);
         var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties.ConfiguredProject);
         var activeConfiguredProjectProperties = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
         var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
@@ -39,7 +39,7 @@ public class UnconfiguredProjectCommonServicesTests
     {
         var project = UnconfiguredProjectFactory.Create();
         var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
-        var projectProperties = ProjectPropertiesFactory.Create(project);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project);
         var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties.ConfiguredProject);
         var activeConfiguredProjectProperties = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
         var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
@@ -54,7 +54,7 @@ public class UnconfiguredProjectCommonServicesTests
     {
         var project = UnconfiguredProjectFactory.Create();
         var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
-        var projectProperties = ProjectPropertiesFactory.Create(project);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project);
         var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties.ConfiguredProject);
         var activeConfiguredProjectProperties = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
         var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
@@ -69,7 +69,7 @@ public class UnconfiguredProjectCommonServicesTests
     {
         var project = UnconfiguredProjectFactory.Create();
         var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
-        var projectProperties = ProjectPropertiesFactory.Create(project);
+        var projectProperties = ProjectPropertiesAccessFactory.Create(project);
         var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties.ConfiguredProject);
         var activeConfiguredProjectProperties = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
         var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());

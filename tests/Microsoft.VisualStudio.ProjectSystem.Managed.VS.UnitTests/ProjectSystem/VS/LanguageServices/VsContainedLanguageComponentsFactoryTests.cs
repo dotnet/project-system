@@ -42,7 +42,7 @@ public class VsContainedLanguageComponentsFactoryTests
     public void GetContainedLanguageFactoryForFile_WhenLanguageServiceIdEmptyOrInvalid_ReturnE_FAIL(string languageServiceId)
     {
         var project = IVsProject_Factory.ImplementIsDocumentInProject(found: true);
-        var properties = ProjectPropertiesFactory.Create(ConfigurationGeneral.SchemaName, ConfigurationGeneral.LanguageServiceIdProperty, languageServiceId);
+        var properties = ProjectPropertiesAccessFactory.Create(ConfigurationGeneral.SchemaName, ConfigurationGeneral.LanguageServiceIdProperty, languageServiceId);
 
         var factory = CreateInstance(project, properties: properties);
 
@@ -55,7 +55,7 @@ public class VsContainedLanguageComponentsFactoryTests
     public void GetContainedLanguageFactoryForFile_WhenNoContainedLanguageFactory_ReturnE_FAIL()
     {
         var project = IVsProject_Factory.ImplementIsDocumentInProject(found: true);
-        var properties = ProjectPropertiesFactory.Create(ConfigurationGeneral.SchemaName, ConfigurationGeneral.LanguageServiceIdProperty, LanguageServiceId);
+        var properties = ProjectPropertiesAccessFactory.Create(ConfigurationGeneral.SchemaName, ConfigurationGeneral.LanguageServiceIdProperty, LanguageServiceId);
 
         var factory = CreateInstance(project, containedLanguageFactory: null!, properties: properties);
 
@@ -69,7 +69,7 @@ public class VsContainedLanguageComponentsFactoryTests
     {
         var hierarchy = IVsHierarchyFactory.Create();
         var project = IVsProject_Factory.ImplementIsDocumentInProject(found: true, itemid: 1);
-        var properties = ProjectPropertiesFactory.Create(ConfigurationGeneral.SchemaName, ConfigurationGeneral.LanguageServiceIdProperty, LanguageServiceId);
+        var properties = ProjectPropertiesAccessFactory.Create(ConfigurationGeneral.SchemaName, ConfigurationGeneral.LanguageServiceIdProperty, LanguageServiceId);
         var containedLanguageFactory = IVsContainedLanguageFactoryFactory.Create();
 
         var factory = CreateInstance(project, containedLanguageFactory: containedLanguageFactory, hierarchy: hierarchy, properties: properties);
@@ -94,7 +94,7 @@ public class VsContainedLanguageComponentsFactoryTests
         IVsProject4 project,
         IVsContainedLanguageFactory? containedLanguageFactory = null,
         IVsHierarchy? hierarchy = null,
-        ProjectProperties? properties = null,
+        ProjectPropertiesAccess? properties = null,
         IWorkspaceWriter? workspaceWriter = null)
     {
         var serviceProvider = IOleAsyncServiceProviderFactory.ImplementQueryServiceAsync(containedLanguageFactory, new Guid(LanguageServiceId));

@@ -13,10 +13,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree;
 [AppliesTo(ProjectCapability.AppDesigner)]
 internal class AppDesignerFolderRenameHandler : ProjectTreeActionHandlerBase
 {
-    private readonly IActiveConfiguredValue<ProjectProperties> _properties;
+    private readonly IActiveConfiguredValue<ProjectPropertiesAccess> _properties;
 
     [ImportingConstructor]
-    public AppDesignerFolderRenameHandler(IActiveConfiguredValue<ProjectProperties> properties)
+    public AppDesignerFolderRenameHandler(IActiveConfiguredValue<ProjectPropertiesAccess> properties)
     {
         _properties = properties;
     }

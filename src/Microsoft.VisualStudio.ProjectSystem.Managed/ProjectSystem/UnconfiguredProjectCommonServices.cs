@@ -12,11 +12,11 @@ internal class UnconfiguredProjectCommonServices : IUnconfiguredProjectCommonSer
     private readonly Lazy<IProjectThreadingService> _threadingService;
     private readonly Lazy<IProjectAccessor> _projectAccessor;
     private readonly IActiveConfiguredValue<ConfiguredProject> _activeConfiguredProject;
-    private readonly IActiveConfiguredValue<ProjectProperties> _activeConfiguredProjectProperties;
+    private readonly IActiveConfiguredValue<ProjectPropertiesAccess> _activeConfiguredProjectProperties;
 
     [ImportingConstructor]
     public UnconfiguredProjectCommonServices(UnconfiguredProject project, Lazy<IProjectThreadingService> threadingService,
-                                             IActiveConfiguredValue<ConfiguredProject> activeConfiguredProject, IActiveConfiguredValue<ProjectProperties> activeConfiguredProjectProperties,
+                                             IActiveConfiguredValue<ConfiguredProject> activeConfiguredProject, IActiveConfiguredValue<ProjectPropertiesAccess> activeConfiguredProjectProperties,
                                              Lazy<IProjectAccessor> projectAccessor)
     {
         _project = project;
@@ -41,7 +41,7 @@ internal class UnconfiguredProjectCommonServices : IUnconfiguredProjectCommonSer
         get { return _activeConfiguredProject.Value; }
     }
 
-    public ProjectProperties ActiveConfiguredProjectProperties
+    public ProjectPropertiesAccess ActiveConfiguredProjectProperties
     {
         get { return _activeConfiguredProjectProperties.Value; }
     }

@@ -14,7 +14,7 @@ public class OutputTypeValueProviderTests
     [InlineData("", "0")]
     public async Task GetEvaluatedValue(object outputTypePropertyValue, string expectedMappedValue)
     {
-        var properties = ProjectPropertiesFactory.Create(
+        var properties = ProjectPropertiesAccessFactory.Create(
             UnconfiguredProjectFactory.Create(),
             new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, outputTypePropertyValue));
         var provider = new OutputTypeValueProvider(properties);
@@ -30,7 +30,7 @@ public class OutputTypeValueProviderTests
     public async Task SetValue(string incomingValue, string expectedOutputTypeValue)
     {
         var setValues = new List<object>();
-        var properties = ProjectPropertiesFactory.Create(
+        var properties = ProjectPropertiesAccessFactory.Create(
             UnconfiguredProjectFactory.Create(),
             new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, "InitialValue", setValues));
         var provider = new OutputTypeValueProvider(properties);
@@ -45,7 +45,7 @@ public class OutputTypeValueProviderTests
     public async Task SetValue_ThrowsKeyNotFoundException(string invalidValue)
     {
         var setValues = new List<object>();
-        var properties = ProjectPropertiesFactory.Create(
+        var properties = ProjectPropertiesAccessFactory.Create(
             UnconfiguredProjectFactory.Create(),
             new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, "InitialValue", setValues));
         var provider = new OutputTypeValueProvider(properties);

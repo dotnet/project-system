@@ -6,13 +6,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties;
 
 internal abstract class OutputTypeValueProviderBase : InterceptingPropertyValueProviderBase
 {
-    private readonly ProjectProperties _properties;
+    private readonly ProjectPropertiesAccess _properties;
 
     protected abstract ImmutableDictionary<string, string> GetMap { get; }
     protected abstract ImmutableDictionary<string, string> SetMap { get; }
     protected abstract string DefaultGetValue { get; }
 
-    protected OutputTypeValueProviderBase(ProjectProperties properties)
+    protected OutputTypeValueProviderBase(ProjectPropertiesAccess properties)
     {
         _properties = properties;
     }

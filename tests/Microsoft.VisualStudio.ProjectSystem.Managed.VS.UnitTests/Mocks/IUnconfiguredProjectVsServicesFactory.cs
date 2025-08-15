@@ -14,7 +14,7 @@ internal static class IUnconfiguredProjectVsServicesFactory
     public static IUnconfiguredProjectVsServices Implement(Func<IVsHierarchy>? hierarchyCreator = null,
                                                            Func<IVsProject4>? projectCreator = null,
                                                            Func<IProjectThreadingService>? threadingServiceCreator = null,
-                                                           Func<ProjectProperties>? projectProperties = null,
+                                                           Func<ProjectPropertiesAccess>? projectProperties = null,
                                                            Func<ConfiguredProject>? configuredProjectCreator = null,
                                                            Func<UnconfiguredProject>? unconfiguredProjectCreator = null)
     {

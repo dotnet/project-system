@@ -24,9 +24,9 @@ internal interface IUnconfiguredProjectCommonServices
     ConfiguredProject ActiveConfiguredProject { get; }
 
     /// <summary>
-    ///     Gets the <see cref="ProjectProperties"/> of the currently active configured project.
+    ///     Gets the <see cref="ProjectPropertiesAccess"/> of the currently active configured project.
     /// </summary>
-    ProjectProperties ActiveConfiguredProjectProperties { get; }
+    ProjectPropertiesAccess ActiveConfiguredProjectProperties { get; }
 
     /// <summary>
     ///     Gets the <see cref="IProjectAccessor"/> which provides access to MSBuild evaluation and construction models for a project.

@@ -25,7 +25,7 @@ internal sealed class OutputTypeValueProvider : OutputTypeValueProviderBase
     }.ToImmutableDictionary(StringComparers.PropertyLiteralValues);
 
     [ImportingConstructor]
-    public OutputTypeValueProvider(ProjectProperties properties)
+    public OutputTypeValueProvider(ProjectPropertiesAccess properties)
         : base(properties)
     {
     }

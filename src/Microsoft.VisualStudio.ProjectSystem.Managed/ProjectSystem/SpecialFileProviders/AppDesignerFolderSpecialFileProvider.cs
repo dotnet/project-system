@@ -11,10 +11,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
 [AppliesTo(ProjectCapability.AppDesigner)]
 internal class AppDesignerFolderSpecialFileProvider : AbstractSpecialFileProvider, IAppDesignerFolderSpecialFileProvider
 {
-    private readonly ProjectProperties _properties;
+    private readonly ProjectPropertiesAccess _properties;
 
     [ImportingConstructor]
-    public AppDesignerFolderSpecialFileProvider(IPhysicalProjectTree projectTree, ProjectProperties properties)
+    public AppDesignerFolderSpecialFileProvider(IPhysicalProjectTree projectTree, ProjectPropertiesAccess properties)
         : base(projectTree, isFolder: true)
     {
         _properties = properties;

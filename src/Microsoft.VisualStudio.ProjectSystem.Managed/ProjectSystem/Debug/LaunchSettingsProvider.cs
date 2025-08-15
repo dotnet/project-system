@@ -55,7 +55,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     private readonly IFileWatcherService _fileWatcherService;
     private readonly IManagedProjectDiagnosticOutputService? _diagnosticOutputService;
     private readonly IActiveConfiguredProjectSubscriptionService? _projectSubscriptionService;
-    private readonly IActiveConfiguredValue<ProjectProperties?> _projectProperties;
+    private readonly IActiveConfiguredValue<ProjectPropertiesAccess?> _projectProperties;
     private readonly IProjectFaultHandlerService _projectFaultHandler;
 
     private readonly AsyncLazy<string> _launchSettingsFilePath;
@@ -78,7 +78,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         IFileSystem fileSystem,
         IUnconfiguredProjectCommonServices commonProjectServices,
         IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
-        IActiveConfiguredValue<ProjectProperties?> projectProperties,
+        IActiveConfiguredValue<ProjectPropertiesAccess?> projectProperties,
         IProjectFaultHandlerService projectFaultHandler,
         IFileWatcherService fileWatchService,
         IManagedProjectDiagnosticOutputService? diagnosticOutputService,
