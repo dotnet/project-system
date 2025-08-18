@@ -11,12 +11,20 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
+internal interface IAsyncVsLanguageServiceBuildErrorReporter
+{
+    Task ClearErrorsAsync();
+
+    Task<bool> TryReportErrorAsync(
+        string? errorMessage, string errorId, VSTASKPRIORITY taskPriority, int startLine, int startColumn, int endLine, int endColumn, string fileName);
+}
+
 /// <summary>
 /// Models a Roslyn workspace, which is tied to a project configuration slice.
 /// Subscribes to data for that slice, and populates the Roslyn workspace appropriately.
 /// Is created and disposed along with the project's configuration slice.
 /// </summary>
-internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWorkspace
+internal sealed partial class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWorkspace
 {
     internal enum WorkspaceState
     {
@@ -82,7 +90,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
 
     public string ContextId => _contextId ?? throw new InvalidOperationException("Workspace has not been initialized.");
 
-    public IVsLanguageServiceBuildErrorReporter2 ErrorReporter => (IVsLanguageServiceBuildErrorReporter2)Context;
+    public IAsyncVsLanguageServiceBuildErrorReporter ErrorReporter => Context as IAsyncVsLanguageServiceBuildErrorReporter ?? new AsyncVsLanguageServiceBuildErrorReporterWrapper((IVsLanguageServiceBuildErrorReporter2)Context);
 
     #endregion
 

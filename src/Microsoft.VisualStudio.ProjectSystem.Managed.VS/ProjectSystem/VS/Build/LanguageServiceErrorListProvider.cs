@@ -71,28 +71,15 @@ internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
         if (await _workspaceWriter.IsEnabledAsync())
         {
             handled = await _workspaceWriter.WriteAsync(workspace =>
-            {
-                try
-                {
-                    workspace.ErrorReporter.ReportError2(
-                        details.Message,
-                        details.Code,
-                        details.Priority,
-                        details.LineNumberForErrorList,
-                        details.ColumnNumberForErrorList,
-                        details.EndLineNumberForErrorList,
-                        details.EndColumnNumberForErrorList,
-                        details.GetFileFullPath(_project.FullPath));
-
-                    return TaskResult.True;
-                }
-                catch (NotImplementedException)
-                {   // Language Service doesn't handle it, typically because file
-                    // isn't in the project or because it doesn't have line/column
-                }
-
-                return TaskResult.False;
-            });
+                workspace.ErrorReporter.TryReportErrorAsync(
+                    details.Message,
+                    details.Code,
+                    details.Priority,
+                    details.LineNumberForErrorList,
+                    details.ColumnNumberForErrorList,
+                    details.EndLineNumberForErrorList,
+                    details.EndColumnNumberForErrorList,
+                    details.GetFileFullPath(_project.FullPath)));
         }
 
         return handled ? AddMessageResult.HandledAndStopProcessing : AddMessageResult.NotHandled;
@@ -108,11 +95,7 @@ internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
         if (await _workspaceWriter.IsEnabledAsync())
         {
             await _workspaceWriter.WriteAsync(workspace =>
-            {
-                workspace.ErrorReporter.ClearErrors();
-
-                return Task.CompletedTask;
-            });
+                workspace.ErrorReporter.ClearErrorsAsync());
         }
     }
 

@@ -23,5 +23,5 @@ internal interface IWorkspace
     /// <summary>
     ///     Gets the language service build error reporter object.
     /// </summary>
-    IVsLanguageServiceBuildErrorReporter2 ErrorReporter { get; }
+    IAsyncVsLanguageServiceBuildErrorReporter ErrorReporter { get; }
 }
