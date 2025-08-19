@@ -64,40 +64,40 @@
 
   <!-- Targets -->
 
-  <!-- Razor cohosting support for projects that don't use the Razor SDK -->
+<!-- Razor cohosting support for projects that don't use the Razor SDK -->
 
-  <PropertyGroup>
-    <_HasRazorOrCshtmlFiles>false</_HasRazorOrCshtmlFiles>
-  </PropertyGroup>
+  <!--
+    If there are any .razor or .cshtml files in this project we want to do three things:
+
+      1. Add a 'ContainsRazorFile' capability to the project so tooling can light up as necessary
+      2. Reference the Razor source generator
+      3. Add each .razor and .cshtml file to the project as an AdditionalFiles item so the source generator can see it
+  -->
 
   <!-- .NET Framework uses a different editor in VS -->
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework' And 'UsingMicrosoftNETSdkRazor' != 'true'">
-    <!-- Collect all Razor and CSHTML files -->
-    <_RazorOrCshtmlFiles Include="**\*.razor;**\*.cshtml" />
-  </ItemGroup>
+ <Target Name="DetectRazorOrCshtmlFiles" BeforeTargets="AssignProjectConfiguration" Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework' And '$(UsingMicrosoftNETSdkRazor)' != 'true'">
+    <ItemGroup>
+      <!-- Collect all Razor and CSHTML files -->
+      <_RazorOrCshtmlFiles Include="**\*.razor;**\*.cshtml" />
+    </ItemGroup>
 
-  <Target Name="DetectRazorOrCshtmlFiles" BeforeTargets="AssignProjectConfiguration" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' And 'UsingMicrosoftNETSdkRazor' != 'true'">
-    <PropertyGroup Condition="'@(_RazorOrCshtmlFiles)' != ''">
-      <_HasRazorOrCshtmlFiles>true</_HasRazorOrCshtmlFiles>
-    </PropertyGroup>
+    <!-- Add a capability to control initialization of Razor in the IDE -->
+    <ItemGroup Condition="'@(_RazorOrCshtmlFiles)' != ''">
+      <ProjectCapability Include="RazorWithoutSdk" />
+    </ItemGroup>
+
+    <!-- As a get out of jail card, we let users turn off anything impactful, but their IDE won't really work. -->
+    <ItemGroup Condition="'$(DisableAllRazorFilesAsAdditionalFiles)' != 'true' And '@(_RazorOrCshtmlFiles)' != ''">
+      <AdditionalFiles Include="@(_RazorOrCshtmlFiles)" Condition="'@(_RazorOrCshtmlFiles)' != ''" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(DisableAutomaticRazorSourceGeneratorReference)' != 'true' And '@(_RazorOrCshtmlFiles)' != ''">
+      <!-- Our analyzer loader will redirect DLL loads to the right place for tooling, as long as these filenames are referenced -->
+      <Analyzer Include="Microsoft.CodeAnalysis.Razor.Compiler.dll" />
+      <Analyzer Include="Microsoft.Extensions.ObjectPool.dll" />
+      <Analyzer Include="Microsoft.AspNetCore.Razor.Utilities.Shared.dll" />
+    </ItemGroup>
   </Target>
-
-  <!-- Add a capability to control initialization of Razor in the IDE -->
-  <PropertyGroup Condition="'$(_HasRazorOrCshtmlFiles)' == 'true'">
-    <ProjectCapability Include="ContainsRazorFile" />
-  </PropertyGroup>
-
-  <!-- As a get out of jail card, we let users turn off anything impactful, but their IDE won't really work. -->
-  <ItemGroup Condition="'$(DisableAllRazorFilesAsAdditionalFiles)' != 'true' And '$(_HasRazorOrCshtmlFiles)' == 'true'">
-    <AdditionalFiles Include="@(_RazorOrCshtmlFiles)" Condition="'@(_RazorOrCshtmlFiles)' != ''" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(DisableAutomaticRazorSourceGeneratorReference)' != 'true' And '$(_HasRazorOrCshtmlFiles)' == 'true'">
-    <!-- TODO: How do we work out which path to use? -->
-    <Analyzer Include="..\Microsoft.CodeAnalysis.Razor.Compiler.dll" />
-    <Analyzer Include="..\Microsoft.Extensions.ObjectPool.dll" />
-    <Analyzer Include="..\Microsoft.AspNetCore.Razor.Utilities.Shared.dll" />
-  </ItemGroup>
 
   <!--
     Backwards compatibility workaround for https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1803616/.
