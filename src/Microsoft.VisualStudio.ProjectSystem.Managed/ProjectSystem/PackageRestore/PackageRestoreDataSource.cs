@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 [Export(typeof(IPackageRestoreDataSource))]
 [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
 [AppliesTo(ProjectCapability.PackageReferences)]
+[ProjectDynamicLoadComponent(ProjectLoadCheckpoint.ProjectBackgroundLoadCompleted)]
 internal partial class PackageRestoreDataSource : ChainedProjectValueDataSourceBase<RestoreData>, IPackageRestoreDataSource, IProjectDynamicLoadComponent
 {
     // This class represents the last data source in the package restore chain, which is made up of the following:

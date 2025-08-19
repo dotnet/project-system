@@ -1,6 +1,6 @@
 <!-- Any changes to this file or format requires updates in project-system-vscode -->
 <Project>
   <PropertyGroup>
-    <CPSPackageVersion>18.0.75-pre</CPSPackageVersion>
+    <CPSPackageVersion>18.0.176-pre</CPSPackageVersion>
   </PropertyGroup>
 </Project>

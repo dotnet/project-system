@@ -12,6 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate;
 /// </summary>
 [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
 [AppliesTo(BuildUpToDateCheck.AppliesToExpression)]
+[ProjectDynamicLoadComponent(ProjectLoadCheckpoint.ProjectBackgroundLoadCompleted)]
 internal sealed class UpToDateCheckBuildEventNotifier : OnceInitializedOnceDisposedAsync, IVsUpdateSolutionEvents2, IProjectDynamicLoadComponent
 {
     private readonly IProjectService _projectService;
