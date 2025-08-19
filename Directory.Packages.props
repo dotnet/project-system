@@ -109,7 +109,7 @@
     <PackageVersion Include="Microsoft.Build"                                                        Version="17.13.0-preview-24504-04" />
 
     <!-- Hot Reload -->
-    <PackageVersion Include="Microsoft.VisualStudio.Debugger.Contracts"                              Version="18.0.0-beta.25353.1" />
+    <PackageVersion Include="Microsoft.VisualStudio.Debugger.Contracts"                              Version="18.0.0-beta.25406.2" />
     <PackageVersion Include="Microsoft.VisualStudio.HotReload.Components"                            Version="18.0.164-preview-0001" />
 
     <!-- 3rd party -->
