@@ -89,11 +89,6 @@ internal class ProjectSystemOptions : IProjectSystemOptions
         return IsFlagEnabledAsync(FeatureFlagNames.EnableBuildAccelerationByDefault, defaultValue: false, cancellationToken);
     }
 
-    public ValueTask<bool> IsLspPullDiagnosticsEnabledAsync(CancellationToken cancellationToken)
-    {
-        return IsFlagEnabledAsync(FeatureFlagNames.LspPullDiagnosticsFeatureFlagName, defaultValue: false, cancellationToken);
-    }
-
     private async ValueTask<bool> IsFlagEnabledAsync(string featureName, bool defaultValue, CancellationToken cancellationToken)
     {
         IVsFeatureFlags featureFlags = await _featureFlagsService.GetValueAsync(cancellationToken);
