@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices;
@@ -81,8 +80,6 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
     public IWorkspaceProjectContext Context => _context ?? throw new InvalidOperationException("Workspace has not been initialized.");
 
     public string ContextId => _contextId ?? throw new InvalidOperationException("Workspace has not been initialized.");
-
-    public IVsLanguageServiceBuildErrorReporter2 ErrorReporter => (IVsLanguageServiceBuildErrorReporter2)Context;
 
     #endregion
 
