@@ -10,7 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore;
 [Export(typeof(INuGetRestoreService))]
 [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
 [AppliesTo(ProjectCapability.PackageReferences)]
-[ProjectDynamicLoadComponent(ProjectLoadCheckpoint.AfterLoadInitialConfiguration)]
 internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreService, IProjectDynamicLoadComponent, IVsProjectRestoreInfoSource
 {
     private readonly UnconfiguredProject _project;

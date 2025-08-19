@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query;
 [Export(typeof(LaunchSettingsTracker))]
 [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
 [AppliesTo(ProjectCapability.LaunchProfiles)]
-[ProjectDynamicLoadComponent(ProjectLoadCheckpoint.ProjectBackgroundLoadCompleted)]
 internal class LaunchSettingsTracker : IProjectDynamicLoadComponent
 {
     /// <remarks>
