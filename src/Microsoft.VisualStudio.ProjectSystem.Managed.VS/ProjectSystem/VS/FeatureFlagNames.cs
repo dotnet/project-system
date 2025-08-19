@@ -27,9 +27,4 @@ internal static class FeatureFlagNames
     /// or out via the <c>AccelerateBuildsInVisualStudio</c> MSBuild property.
     /// </summary>
     public const string EnableBuildAccelerationByDefault = "ManagedProjectSystem.EnableBuildAccelerationByDefault";
-
-    /// <summary>
-    /// When this feature flag is enabled, build diagnostics will be published by CPS and should not be passed to Roslyn.
-    /// </summary>
-    public const string LspPullDiagnosticsFeatureFlagName = "Lsp.PullDiagnostics";
 }

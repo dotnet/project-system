@@ -65,9 +65,4 @@ internal interface IProjectSystemOptions
     ///     or out via the <c>AccelerateBuildsInVisualStudio</c> MSBuild property.
     /// </summary>
     ValueTask<bool> IsBuildAccelerationEnabledByDefaultAsync(CancellationToken cancellationToken);
-
-    /// <summary>
-    ///     Gets whether LSP pull diagnostics are enabled.
-    /// </summary>
-    ValueTask<bool> IsLspPullDiagnosticsEnabledAsync(CancellationToken cancellationToken);
 }
