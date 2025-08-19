@@ -82,11 +82,6 @@
         <target state="translated">Pliki projektu C# (*.csproj);*.csproj</target>
         <note />
       </trans-unit>
-      <trans-unit id="27">
-        <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
-        <target state="translated">Pliki projektu .NET Core 2015 (*.xproj);*.xproj</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_Enabled_Title">
         <source>Don't call MSBuild if a project appears to be up to date</source>
         <target state="translated">Nie wywołuj programu MSBuild, jeśli projekt wygląda na zaktualizowany.</target>

@@ -549,11 +549,6 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
         <target state="translated">Não mostrar novamente</target>
         <note />
       </trans-unit>
-      <trans-unit id="XprojNotSupported">
-        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.</source>
-        <target state="translated">Não há mais suporte para arquivos de projeto Xproj. Para obter detalhes sobre migração para csproj, consulte https://docs.microsoft.com/dotnet/core/migration/.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="WindowsFormEditor_DisplayName">
         <source>Form (Windows Forms) Designer</source>
         <target state="translated">Designer de Formulários (Windows Forms)</target>
