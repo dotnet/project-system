@@ -21,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
 [AppliesTo(ProjectCapability.DotNet)]
 [ExportInitialBuildRulesSubscriptions(SuggestedVisualStudioComponentId.SchemaName)]
-[ProjectDynamicLoadComponent(ProjectLoadCheckpoint.ProjectBackgroundLoadCompleted)]
 internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
 {
     private readonly UnconfiguredProject _unconfiguredProject;
