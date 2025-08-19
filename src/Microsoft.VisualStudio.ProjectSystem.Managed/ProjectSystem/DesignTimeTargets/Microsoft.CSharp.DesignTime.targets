@@ -69,7 +69,7 @@
   <!--
     If there are any .razor or .cshtml files in this project we want to do three things:
 
-      1. Add a 'ContainsRazorFile' capability to the project so tooling can light up as necessary
+      1. Add a 'RazorWithoutSdk' capability to the project so tooling can light up as necessary
       2. Reference the Razor source generator
       3. Add each .razor and .cshtml file to the project as an AdditionalFiles item so the source generator can see it
   -->
