@@ -549,11 +549,6 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
         <target state="translated">Nicht mehr anzeigen</target>
         <note />
       </trans-unit>
-      <trans-unit id="XprojNotSupported">
-        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.</source>
-        <target state="translated">XPROJ-Projektdateien werden nicht mehr unterstützt. Informationen zur Migration zu CSPROJ-Dateien finden Sie unter https://docs.microsoft.com/dotnet/core/migration/.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="WindowsFormEditor_DisplayName">
         <source>Form (Windows Forms) Designer</source>
         <target state="translated">Formular-Designer (Windows Forms)</target>

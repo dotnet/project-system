@@ -82,11 +82,6 @@
         <target state="translated">C# プロジェクト ファイル (*.csproj);*.csproj</target>
         <note />
       </trans-unit>
-      <trans-unit id="27">
-        <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
-        <target state="translated">.NET Core 2015 プロジェクト ファイル (*.xproj);*.xproj</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Setting_FastUpToDateCheck_Enabled_Title">
         <source>Don't call MSBuild if a project appears to be up to date</source>
         <target state="translated">プロジェクトが最新でない可能性がある場合、MSBuild を呼び出さないでください。</target>

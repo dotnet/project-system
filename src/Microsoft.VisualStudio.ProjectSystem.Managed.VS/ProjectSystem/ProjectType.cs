@@ -68,9 +68,4 @@ internal static class ProjectType
     ///     A <see cref="Guid"/> representing the legacy F# project type based on the Managed Package Framework (MPF).
     /// </summary>
     public static readonly Guid LegacyFSharpGuid = new(LegacyFSharp);
-
-    /// <summary>
-    ///     A <see cref="string"/> representing the deprecated C# (xproj) project type based on the Common Project System (CPS).
-    /// </summary>
-    public const string LegacyXProj = "8BB2217D-0F2D-49D1-97BC-3654ED321F3B";
 }

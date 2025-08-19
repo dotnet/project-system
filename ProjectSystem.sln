@@ -6,7 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "setup", "setup", "{AC8DB8AE-AC9F-4503-83C6-255B66C318C6}"
 	ProjectSection(SolutionItems) = preProject
 		setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\CommonFiles.swr = setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\CommonFiles.swr
-		setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\ext.xproj.swr = setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\ext.xproj.swr
 		setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj = setup\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles\Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swixproj
 	EndProjectSection
 EndProject

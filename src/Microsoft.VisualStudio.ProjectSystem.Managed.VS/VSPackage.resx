@@ -165,9 +165,6 @@
   <data name="26" xml:space="preserve">
     <value>C# Project Files (*.csproj);*.csproj</value>
   </data>
-  <data name="27" xml:space="preserve">
-    <value>.NET Core 2015 Project Files (*.xproj);*.xproj</value>
-  </data>
   <data name="Setting_FastUpToDateCheck_Enabled_Title">
     <value>Don't call MSBuild if a project appears to be up to date</value>
   </data>

@@ -549,11 +549,6 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
         <target state="translated">Znovu nezobrazovat</target>
         <note />
       </trans-unit>
-      <trans-unit id="XprojNotSupported">
-        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.</source>
-        <target state="translated">Soubory projektů xproj už nejsou podporovány. Podrobnosti o migraci na csproj viz https://docs.microsoft.com/dotnet/core/migration/.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="WindowsFormEditor_DisplayName">
         <source>Form (Windows Forms) Designer</source>
         <target state="translated">Návrhář formulářů (Windows Forms)</target>

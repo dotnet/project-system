@@ -7,8 +7,6 @@ The following are a set of rules and guidelines that we should follow as we writ
     
 - Existing projects once opened in Visual Studio 2017 and saved, can be reopened in previous versions of Visual Studio right back to Visual Studio 2010
 
-The exception the above rules are XProj-based projects which will be converted to csproj-based projects in Visual Studio 2017.
-
 ## Project Files
 - New properties and items that are used only for Visual Studio or designer purposes should not be persisted in the project file. This file should be treated as a "user" file and as such, should be readable, easily editable and understandable by the user.
 
