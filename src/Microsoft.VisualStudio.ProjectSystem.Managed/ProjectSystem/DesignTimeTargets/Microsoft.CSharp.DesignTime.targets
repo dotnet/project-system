@@ -92,10 +92,8 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(DisableAutomaticRazorSourceGeneratorReference)' != 'true' And '@(_RazorOrCshtmlFiles)' != ''">
-      <!-- Our analyzer loader will redirect DLL loads to the right place for tooling, as long as these filenames are referenced -->
+      <!-- The Razor analyzer loader will redirect DLL loads to the right place for tooling, as long as the right filename is referenced -->
       <Analyzer Include="Microsoft.CodeAnalysis.Razor.Compiler.dll" />
-      <Analyzer Include="Microsoft.Extensions.ObjectPool.dll" />
-      <Analyzer Include="Microsoft.AspNetCore.Razor.Utilities.Shared.dll" />
     </ItemGroup>
   </Target>
 
