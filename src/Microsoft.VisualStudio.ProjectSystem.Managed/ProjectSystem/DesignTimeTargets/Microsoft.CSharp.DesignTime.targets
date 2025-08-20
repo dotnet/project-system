@@ -75,7 +75,7 @@
   -->
 
   <!-- .NET Framework uses a different editor in VS -->
- <Target Name="DetectRazorOrCshtmlFiles" BeforeTargets="AssignProjectConfiguration" Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework' And '$(UsingMicrosoftNETSdkRazor)' != 'true'">
+ <Target Name="DetectRazorOrCshtmlFiles" BeforeTargets="AssignProjectConfiguration" Condition="'$(DesignTimeBuild)' == 'true' And '$(TargetFrameworkIdentifier)' != '.NETFramework' And '$(UsingMicrosoftNETSdkRazor)' != 'true'">
     <ItemGroup>
       <!-- Collect all Razor and CSHTML files -->
       <_RazorOrCshtmlFiles Include="**\*.razor;**\*.cshtml" />
