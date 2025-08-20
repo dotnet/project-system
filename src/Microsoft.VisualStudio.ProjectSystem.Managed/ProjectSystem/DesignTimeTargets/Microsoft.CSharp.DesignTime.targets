@@ -88,7 +88,7 @@
 
     <!-- As a get out of jail card, we let users turn off anything impactful, but their IDE won't really work. -->
     <ItemGroup Condition="'$(DisableAllRazorFilesAsAdditionalFiles)' != 'true' And '@(_RazorOrCshtmlFiles)' != ''">
-      <AdditionalFiles Include="@(_RazorOrCshtmlFiles)" Condition="'@(_RazorOrCshtmlFiles)' != ''" />
+      <AdditionalFiles Include="@(_RazorOrCshtmlFiles)" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(DisableAutomaticRazorSourceGeneratorReference)' != 'true' And '@(_RazorOrCshtmlFiles)' != ''">
