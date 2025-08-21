@@ -11,36 +11,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
 internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 {
-    private readonly string _variant;
+    public int Id { get; }
+    public string Name { get; }
 
     private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
-    private readonly ConfiguredProject? _configuredProject;
+    private readonly ConfiguredProject _configuredProject;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
     private readonly Lazy<IManagedDeltaApplierCreator> _deltaApplierCreator;
     private readonly IProjectHotReloadSessionCallback _callback;
-    private readonly IProjectHotReloadBuildManager? _buildManager;
-    private readonly ILaunchProfile? _launchProfile;
+    private readonly IProjectHotReloadBuildManager _buildManager;
+    private readonly ILaunchProfile _launchProfile;
     private readonly DebugLaunchOptions _debugLaunchOptions;
-    private readonly IProjectHotReloadLaunchProvider? _launchProvider;
+    private readonly IProjectHotReloadLaunchProvider _launchProvider;
+
     private bool _sessionActive;
     private IDeltaApplier? _deltaApplier;
 
     public ProjectHotReloadSession(
         string name,
-        int variant,
+        int id,
         Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadOutputService,
         Lazy<IManagedDeltaApplierCreator> deltaApplierCreator,
         IProjectHotReloadSessionCallback callback,
-        IProjectHotReloadBuildManager? buildManager,
-        IProjectHotReloadLaunchProvider? launchProvider,
-        ConfiguredProject? configuredProject,
-        ILaunchProfile? launchProfile,
+        IProjectHotReloadBuildManager buildManager,
+        IProjectHotReloadLaunchProvider launchProvider,
+        ConfiguredProject configuredProject,
+        ILaunchProfile launchProfile,
         DebugLaunchOptions debugLaunchOptions)
     {
-        _configuredProject = configuredProject;
         Name = name;
-        _variant = variant.ToString();
+        Id = id;
+
+        _configuredProject = configuredProject;
         _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
         _hotReloadOutputService = hotReloadOutputService;
         _deltaApplierCreator = deltaApplierCreator;
@@ -52,8 +55,6 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     }
 
     // IProjectHotReloadSession
-
-    public string Name { get; }
 
     public IDeltaApplier? DeltaApplier => _deltaApplier;
 
@@ -72,46 +73,39 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         return await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVars, cancellationToken);
     }
 
-    public Task StartSessionAsync(CancellationToken cancellationToken)
-    {
-        return StartSessionAsync(runningUnderDebugger: !_debugLaunchOptions.HasFlag(DebugLaunchOptions.NoDebug), cancellationToken);
-    }
+    // TODO: remove
+    public Task StartSessionAsync(bool runningUnderDebugger, CancellationToken cancellationToken)
+        => StartSessionAsync(cancellationToken);
 
-    public async Task StartSessionAsync(bool runningUnderDebugger, CancellationToken cancellationToken)
+    /// <summary>
+    /// Starts the session right after the process has been started.
+    /// </summary>
+    public async Task StartSessionAsync(CancellationToken cancellationToken)
     {
         if (_sessionActive)
         {
             throw new InvalidOperationException("Attempting to start a Hot Reload session that is already running.");
         }
 
-        HotReloadAgentFlags flags = runningUnderDebugger ? HotReloadAgentFlags.IsDebuggedProcess : HotReloadAgentFlags.None;
+        HotReloadAgentFlags flags = _debugLaunchOptions.HasFlag(DebugLaunchOptions.NoDebug) ? HotReloadAgentFlags.None : HotReloadAgentFlags.IsDebuggedProcess;
 
-        if (_configuredProject is null)
-        {
-#pragma warning disable CS0618 // Type or member is obsolete: legacy code path for IProjectHotReloadAgent
-            await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, cancellationToken);
-#pragma warning restore CS0618
-        }
-        else
-        {
-            string targetFramework = await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty);
-            bool hotReloadAutoRestart = await _configuredProject.GetProjectPropertyBoolAsync(ConfigurationGeneral.HotReloadAutoRestartProperty);
+        string targetFramework = await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty);
+        bool hotReloadAutoRestart = await _configuredProject.GetProjectPropertyBoolAsync(ConfigurationGeneral.HotReloadAutoRestartProperty);
 
-            var runningProjectInfo = new RunningProjectInfo
+        var runningProjectInfo = new RunningProjectInfo
+        {
+            RestartAutomatically = hotReloadAutoRestart,
+            ProjectInstanceId = new ProjectInstanceId
             {
-                RestartAutomatically = hotReloadAutoRestart,
-                ProjectInstanceId = new ProjectInstanceId
-                {
-                    ProjectFilePath = _configuredProject.UnconfiguredProject.FullPath,
-                    TargetFramework = targetFramework,
-                }
-            };
+                ProjectFilePath = _configuredProject.UnconfiguredProject.FullPath,
+                TargetFramework = targetFramework,
+            }
+        };
 
-            DebugTrace($"start session for project '{_configuredProject.UnconfiguredProject.FullPath}' with TFM '{targetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
+        DebugTrace($"start session for project '{_configuredProject.UnconfiguredProject.FullPath}' with TFM '{targetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
 
-            var processInfo = new ManagedEditAndContinueProcessInfo();
-            await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
-        }
+        var processInfo = new ManagedEditAndContinueProcessInfo();
+        await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
 
         WriteToOutputWindow(Resources.HotReloadStartSession, default);
         _sessionActive = true;
@@ -200,21 +194,18 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     public async ValueTask RestartAsync(CancellationToken cancellationToken)
     {
         WriteToOutputWindow(Resources.HotReloadRestartInProgress, cancellationToken);
-        if (_launchProfile?.IsSkipStopAndRestartEnabled() is true)
+        if (_launchProfile.IsSkipStopAndRestartEnabled())
         {
             DebugTrace("Skipping Stop and Restart as per launch profile settings.");
             return;
         }
 
-        if (_launchProfile is not null && _launchProvider is not null)
-        {
-            await _launchProvider.LaunchWithProfileAsync(_debugLaunchOptions, _launchProfile, cancellationToken);
-        }
+        await _launchProvider.LaunchWithProfileAsync(_debugLaunchOptions, _launchProfile, cancellationToken);
     }
 
     public async ValueTask StopAsync(CancellationToken cancellationToken)
     {
-        if (_launchProfile?.IsSkipStopAndRestartEnabled() is true)
+        if (_launchProfile.IsSkipStopAndRestartEnabled())
         {
             DebugTrace("Skipping Stop as per launch profile settings.");
             return;
@@ -228,9 +219,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     }
 
     public ValueTask<bool> SupportsRestartAsync(CancellationToken cancellationToken)
-    {
-        return new ValueTask<bool>(_launchProfile is not null && _launchProvider is not null && _buildManager is not null);
-    }
+        => new(true);
 
     private void WriteToOutputWindow(string message, CancellationToken cancellationToken, HotReloadVerbosity verbosity = HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel errorLevel = HotReloadDiagnosticErrorLevel.Info)
     {
@@ -239,7 +228,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
                 verbosity,
                 message,
                 Name,
-                _variant,
+                instanceId: (uint)Id,
                 errorLevel: errorLevel),
             cancellationToken);
     }
@@ -251,7 +240,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
                 HotReloadVerbosity.Detailed,
                 message,
                 Name,
-                _variant,
+                instanceId: (uint)Id,
                 errorLevel: HotReloadDiagnosticErrorLevel.Info),
             CancellationToken.None);
     }
@@ -286,16 +275,13 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
     public async ValueTask BuildAsync(CancellationToken cancellationToken)
     {
-        if (_buildManager is not null)
+        var isBuildSucceed = await _buildManager.BuildProjectAsync(cancellationToken);
+
+        if (!isBuildSucceed)
         {
-            var isBuildSucceed = await _buildManager.BuildProjectAsync(cancellationToken);
+            WriteToOutputWindow(Resources.HotReloadBuildFail, cancellationToken, HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel.Error);
 
-            if (!isBuildSucceed)
-            {
-                WriteToOutputWindow(Resources.HotReloadBuildFail, cancellationToken, HotReloadVerbosity.Minimal, HotReloadDiagnosticErrorLevel.Error);
-
-                throw new InvalidOperationException();
-            }
+            throw new InvalidOperationException();
         }
     }
 }

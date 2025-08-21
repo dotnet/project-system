@@ -1,28 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Runtime.CompilerServices;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.ProjectSystem.HotReload;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
+[InternalImplementationOnly]
 [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.System, Cardinality = ImportCardinality.ExactlyOne)]
 public interface IProjectHotReloadAgent
 {
-    IProjectHotReloadSession? CreateHotReloadSession(string id, int variant, string runtimeVersion, IProjectHotReloadSessionCallback callback);
-
-    IProjectHotReloadSession? CreateHotReloadSession(string id, string runtimeVersion, IProjectHotReloadSessionCallback callback);
-}
-
-[ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.System, Cardinality = ImportCardinality.ExactlyOne)]
-public interface IProjectHotReloadAgent2 : IProjectHotReloadAgent
-{
+    /// <summary>
+    /// Creates Hot Reload session.
+    /// </summary>
+    /// <param name="name">Session name used for logging.</param>
+    /// <param name="id">Unique session id used for logging.</param>
+    /// <param name="configuredProject">Associated project.</param>
+    /// <param name="callback">Used to attach custom data and behavior to the session.</param>
+    /// <param name="launchProfile">Launch profile used to launch the process.</param>
+    /// <param name="debugLaunchOptions">Debugger options used to launch the process.</param>
+    /// <returns>New session instance.</returns>
     IProjectHotReloadSession CreateHotReloadSession(
-        string id,
-        int variant,
-        string? runtimeVersion, // read from project if null
+        string name,
+        int id,
         ConfiguredProject configuredProject,
-        IProjectHotReloadLaunchProvider? launchProvider, // ignored, can be null
-        IProjectHotReloadBuildManager? buildManager, // ignored, can be null
         IProjectHotReloadSessionCallback callback,
         ILaunchProfile launchProfile,
         DebugLaunchOptions debugLaunchOptions);
@@ -40,7 +40,6 @@ public static class IProjectHotReloadAgentExtensions
         ILaunchProfile launchProfile,
         DebugLaunchOptions debugLaunchOptions)
     {
-        return ((IProjectHotReloadAgent2)agent).CreateHotReloadSession(
-            id, variant, runtimeVersion: null, configuredProject, launchProvider: null, buildManager: null, callback, launchProfile, debugLaunchOptions);
+        return agent.CreateHotReloadSession(id, variant, configuredProject, callback, launchProfile, debugLaunchOptions);
     }
 }
