@@ -74,7 +74,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
     public Task StartSessionAsync(CancellationToken cancellationToken)
     {
-        return StartSessionAsync(runningUnderDebugger: false, cancellationToken);
+        return StartSessionAsync(runningUnderDebugger: !_debugLaunchOptions.HasFlag(DebugLaunchOptions.NoDebug), cancellationToken);
     }
 
     public async Task StartSessionAsync(bool runningUnderDebugger, CancellationToken cancellationToken)
