@@ -18,7 +18,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
     private readonly IProjectFaultHandlerService _projectFaultHandlerService;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
     private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
-    private readonly IProjectHotReloadAgent2 _hotReloadAgent;
+    private readonly IProjectHotReloadAgent _hotReloadAgent;
 
     // Protect the state from concurrent access. For example, our Process.Exited event
     // handler may run on one thread while we're still setting up the session on
@@ -39,7 +39,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
         IProjectHotReloadLaunchProvider launchProvider,
         IProjectHotReloadBuildManager buildManager,
-        IProjectHotReloadAgent2 hotReloadAgent)
+        IProjectHotReloadAgent hotReloadAgent)
         : base(threadingService.JoinableTaskContext)
     {
         _configuredProject = project;
@@ -54,7 +54,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             mode: ReentrantSemaphore.ReentrancyMode.Freeform);
     }
 
-    public async Task ActivateSessionAsync(int processId, bool runningUnderDebugger, string projectName)
+    public async Task ActivateSessionAsync(int processId, string projectName)
     {
         await _semaphore.ExecuteAsync(ActivateSessionInternalAsync);
 
@@ -130,7 +130,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 }
                 else
                 {
-                    await _pendingSessionState.Session.StartSessionAsync(runningUnderDebugger, cancellationToken: default);
+                    await _pendingSessionState.Session.StartSessionAsync(cancellationToken: default);
                     _activeSessions.Add(processId, _pendingSessionState);
 
                     // Addition of the first session, puts the project in hot reload mode
@@ -160,11 +160,11 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 if (await ProjectSupportsStartupHooksAsync())
                 {
                     string name = Path.GetFileNameWithoutExtension(_unconfiguredProject.FullPath);
-                    HotReloadState state = new(this);
+                    HotReloadState state = new(this, launchOptions);
 
                     IProjectHotReloadSession projectHotReloadSession = _hotReloadAgent.CreateHotReloadSession(
-                        id: name,
-                        variant: _nextUniqueId++,
+                        name: name,
+                        id: _nextUniqueId++,
                         callback: state,
                         launchProfile: launchProfile,
                         configuredProject: _configuredProject,
@@ -365,26 +365,22 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         }
     }
 
-    private class HotReloadState : IProjectHotReloadSessionCallback2
+    private sealed class HotReloadState(
+        ProjectHotReloadSessionManager sessionManager,
+        DebugLaunchOptions launchOptions) : IProjectHotReloadSessionCallback2
     {
-        private readonly ProjectHotReloadSessionManager _sessionManager;
+        public DebugLaunchOptions LaunchOptions { get; } = launchOptions;
+        public UnconfiguredProject? Project => sessionManager._unconfiguredProject;
 
-        public Process? Process { get; set; }
         public IProjectHotReloadSession? Session { get; set; }
-
-        public UnconfiguredProject? Project => _sessionManager._unconfiguredProject;
+        public Process? Process { get; set; }
 
         [Obsolete]
         public bool SupportsRestart => throw new NotImplementedException();
 
-        public HotReloadState(ProjectHotReloadSessionManager sessionManager)
-        {
-            _sessionManager = sessionManager;
-        }
-
         internal void OnProcessExited(object sender, EventArgs e)
         {
-            _sessionManager.OnProcessExited(this);
+            sessionManager.OnProcessExited(this);
         }
 
         public Task OnAfterChangesAppliedAsync(CancellationToken cancellationToken)
@@ -394,7 +390,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
         public Task<bool> StopProjectAsync(CancellationToken cancellationToken)
         {
-            return _sessionManager.StopProjectAsync(this, cancellationToken).AsTask();
+            return sessionManager.StopProjectAsync(this, cancellationToken).AsTask();
         }
 
         public IDeltaApplier? GetDeltaApplier()

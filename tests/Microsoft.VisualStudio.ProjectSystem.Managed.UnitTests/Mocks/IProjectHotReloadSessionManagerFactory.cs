@@ -18,7 +18,7 @@ internal static class IProjectHotReloadSessionManagerFactory
             It.IsAny<ILaunchProfile>()))
             .ReturnsAsync(canCreatePendingSession);
 
-        mock.Setup(manager => manager.ActivateSessionAsync(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<string>()))
+        mock.Setup(manager => manager.ActivateSessionAsync(It.IsAny<int>(), It.IsAny<string>()))
             .Returns(Task.CompletedTask);
 
         return mock.Object;

@@ -112,10 +112,9 @@ internal class ProjectLaunchTargetsProvider :
     {
         await TaskScheduler.Default;
 
-        bool runningUnderDebugger = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
         var configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
         var hotReloadSessionManager = configuredProjectForDebug.GetExportedService<IProjectHotReloadSessionManager>();
-        await hotReloadSessionManager.ActivateSessionAsync((int)processInfos[0].dwProcessId, runningUnderDebugger, Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath));
+        await hotReloadSessionManager.ActivateSessionAsync((int)processInfos[0].dwProcessId, Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath));
     }
 
     public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)

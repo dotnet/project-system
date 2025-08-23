@@ -19,7 +19,7 @@ public class ProjectHotReloadSessionTests
         int variant = 42;
 
         // Act
-        var session = CreateInstance(name: name, variant: variant);
+        var session = CreateInstance(name: name, id: variant);
 
         // Assert
         Assert.Equal(name, session.Name);
@@ -110,7 +110,7 @@ public class ProjectHotReloadSessionTests
             configuredProject: configuredProject);
 
         // Act
-        await session.StartSessionAsync(false, CancellationToken.None);
+        await session.StartSessionAsync(CancellationToken.None);
 
         // Assert
         hotReloadAgentManagerClient.Verify(
@@ -165,7 +165,7 @@ public class ProjectHotReloadSessionTests
             .Returns(new ValueTask());
 
         // Act
-        await session.StartSessionAsync(false, CancellationToken.None);
+        await session.StartSessionAsync(CancellationToken.None);
 
         // Assert
         hotReloadAgentManagerClient.Verify(
@@ -221,7 +221,7 @@ public class ProjectHotReloadSessionTests
             configuredProject: configuredProject);
 
         // Act
-        await session.StartSessionAsync(runningUnderDebugger: false, cancellationToken);
+        await session.StartSessionAsync(cancellationToken);
 
         // Assert
         Assert.Equal(HotReloadAgentFlags.None, capturedFlags);
@@ -255,10 +255,11 @@ public class ProjectHotReloadSessionTests
 
         var session = CreateInstance(
             hotReloadAgentManagerClient: new Lazy<IHotReloadAgentManagerClient>(() => hotReloadAgentManagerClient.Object),
-            configuredProject: configuredProject);
+            configuredProject: configuredProject,
+            debugLaunchOptions: 0);
 
         // Act
-        await session.StartSessionAsync(runningUnderDebugger: true, cancellationToken);
+        await session.StartSessionAsync(cancellationToken);
 
         // Assert
         hotReloadAgentManagerClient.Verify(
@@ -272,37 +273,15 @@ public class ProjectHotReloadSessionTests
     }
 
     [Fact]
-    [Obsolete]
-    public async Task StartSessionAsync_WithNullConfiguredProject_CallsLegacyAgentStartedAsync()
-    {
-        // Arrange
-        var hotReloadAgentManagerClient = new Mock<IHotReloadAgentManagerClient>();
-        var session = CreateInstance(
-            hotReloadAgentManagerClient: new Lazy<IHotReloadAgentManagerClient>(() => hotReloadAgentManagerClient.Object),
-            configuredProject: null); // No configured project
-
-        // Act
-        await session.StartSessionAsync(false, CancellationToken.None);
-
-        // Assert
-        hotReloadAgentManagerClient.Verify(
-            client => client.AgentStartedAsync(
-                session,
-                HotReloadAgentFlags.None,
-                It.IsAny<CancellationToken>()),
-            Times.Once);
-    }
-
-    [Fact]
     public async Task StartSessionAsync_WhenAlreadyActive_ThrowsInvalidOperationException()
     {
         // Arrange
         var session = CreateInstance();
-        await session.StartSessionAsync(false, CancellationToken.None);
+        await session.StartSessionAsync(CancellationToken.None);
 
         // Act & Assert
         await Assert.ThrowsAsync<InvalidOperationException>(
-            () => session.StartSessionAsync(false, CancellationToken.None));
+            () => session.StartSessionAsync(CancellationToken.None));
     }
 
     [Fact]
@@ -316,7 +295,7 @@ public class ProjectHotReloadSessionTests
             hotReloadAgentManagerClient: new Lazy<IHotReloadAgentManagerClient>(() => hotReloadAgentManagerClient.Object),
             hotReloadOutputService: new Lazy<IHotReloadDiagnosticOutputService>(() => hotReloadOutputService.Object));
 
-        await session.StartSessionAsync(false, CancellationToken.None);
+        await session.StartSessionAsync(CancellationToken.None);
 
         // Act
         await session.StopSessionAsync(CancellationToken.None);
@@ -330,7 +309,7 @@ public class ProjectHotReloadSessionTests
 
         hotReloadOutputService.Verify(
             service => service.WriteLine(
-                It.Is<HotReloadLogMessage>(m => m.Message == Microsoft.VisualStudio.Resources.HotReloadStopSession),
+                It.Is<HotReloadLogMessage>(m => m.Message == Resources.HotReloadStopSession),
                 It.IsAny<CancellationToken>()),
             Times.Once);
     }
@@ -369,7 +348,8 @@ public class ProjectHotReloadSessionTests
             .Returns(deltaApplier.Object);
 
         var session = CreateInstance(callback: callback.Object);
-        await session.StartSessionAsync(false, CancellationToken.None);
+
+        await session.StartSessionAsync(CancellationToken.None);
 
         var updates = ImmutableArray.Create<ManagedHotReloadUpdate>();
 
@@ -427,7 +407,7 @@ public class ProjectHotReloadSessionTests
             hotReloadOutputService: new Lazy<IHotReloadDiagnosticOutputService>(() => hotReloadOutputService.Object),
             callback: callback.Object);
 
-        await session.StartSessionAsync(false, CancellationToken.None);
+        await session.StartSessionAsync(CancellationToken.None);
 
         var updates = ImmutableArray.Create<ManagedHotReloadUpdate>();
 
@@ -440,23 +420,6 @@ public class ProjectHotReloadSessionTests
                 It.Is<HotReloadLogMessage>(m => m.ErrorLevel == HotReloadDiagnosticErrorLevel.Error),
                 It.IsAny<CancellationToken>()),
             Times.Once);
-    }
-
-    [Fact]
-    public async Task GetCapabilitiesAsync_WhenNoDeltaApplier_ReturnsEmptyArray()
-    {
-        // Arrange
-        var callback = new Mock<IProjectHotReloadSessionCallback>();
-        callback.Setup(c => c.GetDeltaApplier())
-            .Returns((IDeltaApplier?)null);
-
-        var session = CreateInstance(callback: callback.Object);
-
-        // Act
-        var result = await session.GetCapabilitiesAsync(CancellationToken.None);
-
-        // Assert
-        Assert.Empty(result);
     }
 
     [Fact]
@@ -564,27 +527,6 @@ public class ProjectHotReloadSessionTests
     }
 
     [Fact]
-    public async Task SupportsRestartAsync_WhenBuildManagerIsNull_ReturnsFalse()
-    {
-        // Arrange
-        var launchProfile = new Mock<ILaunchProfile>().Object;
-        var debugLaunchOptions = DebugLaunchOptions.NoDebug;
-        var launchProvider = new Mock<IProjectHotReloadLaunchProvider>().Object;
-
-        var session = CreateInstance(
-            launchProfile: launchProfile,
-            debugLaunchOptions: debugLaunchOptions,
-            buildManager: null, // Explicitly pass null
-            launchProvider: launchProvider);
-
-        // Act
-        bool result = await session.SupportsRestartAsync(CancellationToken.None);
-
-        // Assert
-        Assert.False(result);
-    }
-
-    [Fact]
     public async Task SupportsRestartAsync_WhenAllRequiredParametersPresent_ReturnsTrue()
     {
         // Arrange
@@ -606,53 +548,11 @@ public class ProjectHotReloadSessionTests
         Assert.True(result);
     }
 
-    [Fact]
-    public async Task SupportsRestartAsync_WhenLaunchProfileIsNull_ReturnsFalse()
-    {
-        // Arrange
-        var debugLaunchOptions = DebugLaunchOptions.NoDebug;
-        var buildManager = new Mock<IProjectHotReloadBuildManager>().Object;
-        var launchProvider = new Mock<IProjectHotReloadLaunchProvider>().Object;
-
-        var session = CreateInstance(
-            launchProfile: null, // Explicitly pass null
-            debugLaunchOptions: debugLaunchOptions,
-            buildManager: buildManager,
-            launchProvider: launchProvider);
-
-        // Act
-        bool result = await session.SupportsRestartAsync(CancellationToken.None);
-
-        // Assert
-        Assert.False(result);
-    }
-
-    [Fact]
-    public async Task SupportsRestartAsync_WhenLaunchProviderIsNull_ReturnsFalse()
-    {
-        // Arrange
-        var launchProfile = new Mock<ILaunchProfile>().Object;
-        var debugLaunchOptions = DebugLaunchOptions.NoDebug;
-        var buildManager = new Mock<IProjectHotReloadBuildManager>().Object;
-
-        var session = CreateInstance(
-            launchProfile: launchProfile,
-            debugLaunchOptions: debugLaunchOptions,
-            buildManager: buildManager,
-            launchProvider: null); // Explicitly pass null
-
-        // Act
-        bool result = await session.SupportsRestartAsync(CancellationToken.None);
-
-        // Assert
-        Assert.False(result);
-    }
-
     #region Test Helpers
 
     private static ProjectHotReloadSession CreateInstance(
         string name = "TestSession",
-        int variant = 0,
+        int id = 0,
         Lazy<IHotReloadAgentManagerClient>? hotReloadAgentManagerClient = null,
         Lazy<IHotReloadDiagnosticOutputService>? hotReloadOutputService = null,
         Lazy<IManagedDeltaApplierCreator>? deltaApplierCreator = null,
@@ -660,7 +560,7 @@ public class ProjectHotReloadSessionTests
         IProjectHotReloadSessionManager? sessionManager = null,
         ConfiguredProject? configuredProject = null,
         ILaunchProfile? launchProfile = null,
-        DebugLaunchOptions debugLaunchOptions = default,
+        DebugLaunchOptions debugLaunchOptions = DebugLaunchOptions.NoDebug,
         IProjectHotReloadBuildManager? buildManager = null,
         IProjectHotReloadLaunchProvider? launchProvider = null)
     {
@@ -686,9 +586,14 @@ public class ProjectHotReloadSessionTests
             c.StopProjectAsync(It.IsAny<CancellationToken>()) == Task.FromResult(true) &&
             c.OnAfterChangesAppliedAsync(It.IsAny<CancellationToken>()) == Task.CompletedTask);
 
+        launchProfile ??= new Mock<ILaunchProfile>().Object;
+        buildManager ??= new Mock<IProjectHotReloadBuildManager>().Object;
+        launchProvider ??= new Mock<IProjectHotReloadLaunchProvider>().Object;
+        configuredProject ??= CreateConfiguredProjectWithCommonProperties();
+
         return new ProjectHotReloadSession(
             name,
-            variant,
+            id,
             hotReloadAgentManagerClient,
             hotReloadOutputService,
             deltaApplierCreator,
