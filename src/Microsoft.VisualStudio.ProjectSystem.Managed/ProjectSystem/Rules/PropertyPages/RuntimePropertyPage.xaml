@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="Runtime"
+      Description="Specifies the applications's runtime configuration properties."
+      DisplayName="Runtime"
+      PageTemplate="generic"
+      Order="150"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <Rule.Categories>
+    <Category Name="GarbageCollection"
+              DisplayName="Garbage collection"
+              Description="Garbage collection settings for the application." />
+    <Category Name="Globalization"
+              DisplayName="Globalization"
+              Description="Globalization settings for the application." />
+    <Category Name="ThreadPool"
+              DisplayName="Thread pool"
+              Description="Thread pool settings for the application." />
+    <Category Name="TieredCompilation"
+              DisplayName="Tiered compilation"
+              Description="Tiered compilation settings for the application." />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext"
+                HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  
+  <BoolProperty Name="ConcurrentGarbageCollection"
+                DisplayName="Concurrent garbage collection"
+                Description="Enable background (concurrent) garbage collection."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/background-gc"
+                Category="GarbageCollection">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "1.0")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <EnumProperty Name="ServerGarbageCollection"
+                DisplayName="Garbage collection mode"
+                Description="Configures whether the application uses workstation garbage collection or server garbage collection."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/core/run-time-config/garbage-collector#workstation-vs-server"
+                Category="GarbageCollection">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "1.0")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="true"
+               DisplayName="Server garbage collection" />
+    <EnumValue Name="false"
+               DisplayName="Workstation garbage collection" />
+  </EnumProperty>
+
+  <EnumProperty Name="RetainVMGarbageCollection"
+                DisplayName="Retain VM"
+                Description="Configures whether segments that should be deleted are put on a standby list for future use, or are released back to the operating system."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/core/run-time-config/garbage-collector#retain-vm"
+                Category="GarbageCollection">
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "1.0")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
+    <EnumValue Name="true"
+               DisplayName="Retain segments on a standby list" />
+    <EnumValue Name="false"
+               DisplayName="Release segments back to the operating system" />
+  </EnumProperty>
+
+  <BoolProperty Name="InvariantGlobalization"
+                DisplayName="Invariant mode"
+                Description="Run in globalization-invariant mode, without access to culture-specific data and behavior."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/core/run-time-config/globalization#invariant-mode"
+                Category="Globalization">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "2.0")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <BoolProperty Name="PredefinedCulturesOnly"
+                DisplayName="Predefined cultures only"
+                Description="Allow creating cultures other than the invariant culture when globalization-invariant mode is enabled."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/core/compatibility/globalization/6.0/culture-creation-invariant-mode"
+                Category="Globalization">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-evaluated-value "Runtime" "InvariantGlobalization" true)
+            (has-net-core-app-version-or-greater "6.0")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <IntProperty Name="ThreadPoolMinThreads"
+               DisplayName="Minimimum thread pool threads"
+               Description="Specifies the minimum number of threads for the worker thread pool."
+               HelpUrl="https://docs.microsoft.com/en-us/dotnet/core/run-time-config/threading#minimum-threads"
+               Category="ThreadPool">
+    <IntProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "1.0")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </IntProperty.Metadata>
+  </IntProperty>
+
+  <IntProperty Name="ThreadPoolMaxThreads"
+               DisplayName="Maximum thread pool threads"
+               Description="Specifies the maximum number of threads for the worker thread pool."
+               HelpUrl="https://docs.microsoft.com/en-us/dotnet/core/run-time-config/threading#maximum-threads"
+               Category="ThreadPool">
+    <IntProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "1.0")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </IntProperty.Metadata>
+  </IntProperty>
+
+  <BoolProperty Name="TieredCompilation"
+                DisplayName="Tiered compilation"
+                Description="Use tiered compilation in the just-in-time (JIT) compiler."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/core/run-time-config/compilation#tiered-compilation"
+                Category="TieredCompilation">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "2.1")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <BoolProperty Name="TieredCompilationQuickJit"
+                DisplayName="Quick JIT"
+                Description="Enable quick just-in-time (JIT) compilation."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/core/run-time-config/compilation#quick-jit"
+                Category="TieredCompilation">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "2.1")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <BoolProperty Name="TieredCompilationQuickJitForLoops"
+                DisplayName="Quick JIT for loops"
+                Description="Enable quick JIT for methods that contain loops."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/core/run-time-config/compilation#quick-jit-for-loops"
+                Category="TieredCompilation">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-evaluated-value "Runtime" "TieredCompilation" true)
+            (has-net-core-app-version-or-greater "2.1")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+</Rule>
