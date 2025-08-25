@@ -9,6 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Telemetry;
 /// </summary>
 [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
 [AppliesTo(ProjectCapability.DotNet)]
+[ProjectDynamicLoadComponent(ProjectLoadCheckpoint.ProjectBackgroundLoadCompleted)]
 internal class SdkVersionReporter : IProjectDynamicLoadComponent
 {
     private readonly IUnconfiguredProjectCommonServices _projectVsServices;
