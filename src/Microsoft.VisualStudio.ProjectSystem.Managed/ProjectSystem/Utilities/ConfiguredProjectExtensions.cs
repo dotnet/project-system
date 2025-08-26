@@ -6,6 +6,12 @@ namespace Microsoft.VisualStudio.ProjectSystem;
 
 internal static class ConfiguredProjectExtensions
 {
+    public static string GetProjectName(this ConfiguredProject project)
+        => GetProjectName(project.UnconfiguredProject);
+
+    public static string GetProjectName(this UnconfiguredProject project)
+        => Path.GetFileNameWithoutExtension(project.FullPath);
+
     public static async ValueTask<string> GetProjectPropertyValueAsync(this ConfiguredProject configuredProject, string propertyName)
     {
         var provider = configuredProject.Services.ProjectPropertiesProvider;

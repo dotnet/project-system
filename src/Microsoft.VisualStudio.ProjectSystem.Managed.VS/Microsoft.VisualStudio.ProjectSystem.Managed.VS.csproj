@@ -30,6 +30,7 @@
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.VS" />
     <PackageReference Include="IsExternalInit" PrivateAssets="all" />
     <PackageReference Include="Microsoft.VisualStudio.Debugger.Interop.18.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 
   <ItemGroup>
