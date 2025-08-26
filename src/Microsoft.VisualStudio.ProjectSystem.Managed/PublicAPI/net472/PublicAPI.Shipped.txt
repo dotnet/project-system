@@ -222,3 +222,6 @@ static Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgentE
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession.Id.get -> int
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent.CreateHotReloadSession(string! name, int id, Microsoft.VisualStudio.ProjectSystem.ConfiguredProject! configuredProject, Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback! callback, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! launchProfile, Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions debugLaunchOptions) -> Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionWebAssemblyCallback
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionWebAssemblyCallback.BrowserRefreshServerProvider.get -> Microsoft.VisualStudio.ProjectSystem.VS.HotReload.AbstractBrowserRefreshServerProvider!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.AbstractBrowserRefreshServerProvider

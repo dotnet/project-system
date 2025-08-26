@@ -57,9 +57,9 @@ internal class ErrorProfileDebugTargetsProvider : IDebugProfileLaunchTargetsProv
             activeProfile.OtherSettings.TryGetValue("ErrorString", out object? objErrorString) &&
             objErrorString is string errorString)
         {
-            throw new Exception(string.Format(VSResources.ErrorInProfilesFile2, Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath), errorString));
+            throw new Exception(string.Format(VSResources.ErrorInProfilesFile2, _configuredProject.GetProjectName(), errorString));
         }
 
-        throw new Exception(string.Format(VSResources.ErrorInProfilesFile, Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath)));
+        throw new Exception(string.Format(VSResources.ErrorInProfilesFile, _configuredProject.GetProjectName()));
     }
 }
