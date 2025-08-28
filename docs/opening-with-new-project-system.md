@@ -154,4 +154,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library3", "Library3.csproj
 EndProject
 ```
 
-All three of these projects will be force loaded into the new project system, regardless of the format of the project. This is helpful, for example, if you'd like to move `<TargetFramework>` property to an import.
+All three of these projects will be force loaded into the new project system, regardless of the format of the project. This is necessary only in the rare case that your project has none of the items described above.
+
+If you're using the newer `.slnx` format for your solution, you can use the `Type` attribute of the  `Project` element to achieve the same result:
+
+```xml
+<Solution>
+  <Project Path="Library1.fsproj" Type="6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705" />
+  <Project Path="Library2.vbproj" Type="778DAE3C-4631-46EA-AA77-85C1314464D9" />
+  <Project Path="Library3.csproj" Type="9A19103F-16F7-4668-BE54-9A1E7A4F7556" />
+</Solution>
+```
