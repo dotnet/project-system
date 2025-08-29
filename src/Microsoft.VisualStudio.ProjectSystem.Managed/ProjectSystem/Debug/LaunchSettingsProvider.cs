@@ -579,6 +579,8 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
 
         IFileWatcher? fileWatcher = null;
 
+        await TaskScheduler.Default;
+
         string launchSettingsToWatch = await GetLaunchSettingsFilePathAsync();
         if (launchSettingsToWatch is not null)
         {
@@ -878,7 +880,7 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         {
             // in a project system the LauchProfile is turned on through project factory, the provider can be initialized before configuration is loaded.
             // Because _projectProperties is depending on the active configured project, it will end up with NFE failure.
-            await activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.ReceiveAsync(_project.Services.ProjectAsynchronousTasks?.UnloadCancellationToken ?? CancellationToken.None);
+            await activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.ReceiveAsync(_project.Services.ProjectAsynchronousTasks?.UnloadCancellationToken ?? CancellationToken.None).ConfigureAwaitRunInline();
         }
 
         // Default to the project directory if we're not able to get the AppDesigner folder.
@@ -886,8 +888,8 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
 
         if (_projectProperties.Value is not null)
         {
-            AppDesigner appDesignerProperties = await _projectProperties.Value.GetAppDesignerPropertiesAsync();
-            if (await appDesignerProperties.FolderName.GetValueAsync() is string appDesignerFolderName)
+            AppDesigner appDesignerProperties = await _projectProperties.Value.GetAppDesignerPropertiesAsync().ConfigureAwaitRunInline();
+            if (await appDesignerProperties.FolderName.GetValueAsync().ConfigureAwaitRunInline() is string appDesignerFolderName)
             {
                 folder = Path.Combine(folder, appDesignerFolderName);
             }
