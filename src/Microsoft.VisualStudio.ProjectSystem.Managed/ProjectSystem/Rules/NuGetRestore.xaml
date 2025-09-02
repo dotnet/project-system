@@ -109,7 +109,7 @@
                   ReadOnly="True"
                   Visible="False" />
 
-  <StringProperty Name="_RestorePackagePruningDefault"
+  <StringProperty Name="RestorePackagePruningDefault"
                   ReadOnly="True"
                   Visible="False" />
 
