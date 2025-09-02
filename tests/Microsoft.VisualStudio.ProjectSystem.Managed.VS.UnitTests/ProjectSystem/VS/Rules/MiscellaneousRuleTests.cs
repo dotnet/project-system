@@ -143,6 +143,31 @@ public sealed class MiscellaneousRuleTests : XamlRuleTestBase
 
     [Theory]
     [MemberData(nameof(GetAllRules))]
+    public void PropertyNamesMustNotStartWithUnderscore(string ruleName, string fullPath, Type assemblyExporterType)
+    {
+        // Property names that start with underscores are not included in the project cache, so will experience
+        // different behaviour when populated from evaluation vs. cache data. Disallow "private" properties in rules.
+
+        XElement rule = LoadXamlRule(fullPath, out _);
+
+        foreach (var property in GetProperties(rule))
+        {
+            // <Rule>
+            //   <StringProperty Name="Foo">
+
+            string? name = property.Attribute("Name")?.Value;
+
+            if (name is ['_', ..])
+            {
+                throw new Xunit.Sdk.XunitException($"""
+                    Rule {ruleName} has property {name} whose name starts with an underscore.
+                    """);
+            }
+        }
+    }
+
+    [Theory]
+    [MemberData(nameof(GetAllRules))]
     public void RuleMustHaveAName(string ruleName, string fullPath, Type assemblyExporterType)
     {
         XElement rule = LoadXamlRule(fullPath);
