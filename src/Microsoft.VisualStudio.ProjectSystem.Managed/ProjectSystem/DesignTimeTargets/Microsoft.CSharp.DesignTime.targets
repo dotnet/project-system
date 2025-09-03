@@ -64,39 +64,6 @@
 
   <!-- Targets -->
 
-<!-- Razor cohosting support for projects that don't use the Razor SDK -->
-
-  <!--
-    If there are any .razor or .cshtml files in this project we want to do three things:
-
-      1. Add a 'RazorWithoutSdk' capability to the project so tooling can light up as necessary
-      2. Reference the Razor source generator
-      3. Add each .razor and .cshtml file to the project as an AdditionalFiles item so the source generator can see it
-  -->
-
-  <!-- .NET Framework uses a different editor in VS -->
- <Target Name="DetectRazorOrCshtmlFiles" BeforeTargets="AssignProjectConfiguration" Condition="'$(DesignTimeBuild)' == 'true' And '$(TargetFrameworkIdentifier)' != '.NETFramework' And '$(UsingMicrosoftNETSdkRazor)' != 'true'">
-    <ItemGroup>
-      <!-- Collect all Razor and CSHTML files -->
-      <_RazorOrCshtmlFiles Include="**\*.razor;**\*.cshtml" />
-    </ItemGroup>
-
-    <!-- Add a capability to control initialization of Razor in the IDE -->
-    <ItemGroup Condition="'@(_RazorOrCshtmlFiles)' != ''">
-      <ProjectCapability Include="RazorWithoutSdk" />
-    </ItemGroup>
-
-    <!-- As a get out of jail card, we let users turn off anything impactful, but their IDE won't really work. -->
-    <ItemGroup Condition="'$(DisableAllRazorFilesAsAdditionalFiles)' != 'true' And '@(_RazorOrCshtmlFiles)' != ''">
-      <AdditionalFiles Include="@(_RazorOrCshtmlFiles)" />
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(DisableAutomaticRazorSourceGeneratorReference)' != 'true' And '@(_RazorOrCshtmlFiles)' != ''">
-      <!-- The Razor analyzer loader will redirect DLL loads to the right place for tooling, as long as the right filename is referenced -->
-      <Analyzer Include="Microsoft.CodeAnalysis.Razor.Compiler.dll" />
-    </ItemGroup>
-  </Target>
-
   <!--
     Backwards compatibility workaround for https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1803616/.
     Razor is dependent on RazorSourceGenerator.razorencconfig during design-time build in order to behave correctly.
