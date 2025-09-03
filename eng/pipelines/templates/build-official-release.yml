@@ -12,7 +12,7 @@ parameters:
     type: string
   - name: VisualStudioMinimumVersion
     type: string
-    default: '17'
+    default: '18'
   
 jobs:
 - job: BuildOfficialRelease
