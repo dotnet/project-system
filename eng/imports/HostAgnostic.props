@@ -13,11 +13,6 @@
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="Microsoft.DotNet.XliffTasks"         PrivateAssets="all" />
     <PackageReference Include="Microsoft.Net.Compilers.Toolset"     PrivateAssets="all" />
-    <!--
-      The SourceLink package depends on the repo provider used.
-      https://github.com/dotnet/sourcelink#using-source-link-in-net-projects
-    -->
-    <PackageReference Include="Microsoft.SourceLink.GitHub"         PrivateAssets="all" />
     <!-- Path Property: PkgMicrosoft_VisualStudioEng_MicroBuild_Core -->
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" PrivateAssets="all" GeneratePathProperty="true" />
     <!-- Note: We require Nerdbank.GitVersioning beyond simply generating version numbers. It also produces some assembly information such as AssemblyName and PublicKeyToken into a *.ThisAssembly.cs file. -->
