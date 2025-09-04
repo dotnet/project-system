@@ -12,6 +12,7 @@
 
   <!-- The build.cmd will run the Test target on all projects. Non-test projects have no Test target. This target is overridden for test projects. -->
   <Target Name="Test" />
+  
   <!-- Workaround for https://github.com/dotnet/wpf/issues/810 -->
   <Import Project="$(_WpfTempProjectNuGetFilePathNoExt).targets" Condition="'$(_WpfTempProjectNuGetFilePathNoExt)' != '' and Exists('$(_WpfTempProjectNuGetFilePathNoExt).targets')"/>
 
