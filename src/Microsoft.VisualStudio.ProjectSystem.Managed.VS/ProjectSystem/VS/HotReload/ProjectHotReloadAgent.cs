@@ -3,9 +3,9 @@
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+using Microsoft.VisualStudio.ProjectSystem.HotReload;
 
-namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
+namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
 [Export(typeof(IProjectHotReloadAgent))]
 [method: ImportingConstructor]

@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+using IProjectCapabilitiesScopeFactory = Microsoft.VisualStudio.ProjectSystem.VS.IProjectCapabilitiesScopeFactory;
 
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
