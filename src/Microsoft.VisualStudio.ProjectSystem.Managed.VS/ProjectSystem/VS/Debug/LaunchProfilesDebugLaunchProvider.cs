@@ -138,7 +138,8 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         IProjectThreadingService threadingService,
         DebugLaunchOptions launchOptions,
         IDebugProfileLaunchTargetsProvider? targetsProvider,
-        ILaunchProfile activeProfile)
+        ILaunchProfile activeProfile,
+        IReadOnlyList<IDebugLaunchSettings> debugLaunchSettings)
         : IVsDebuggerLaunchCompletionCallback, IVsDebugProcessNotify1800
     {
         private readonly List<IVsLaunchedProcess> _launchedProcesses = new();
@@ -164,7 +165,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
 
                 if (targetsProvider4 is IDebugProfileLaunchTargetsProvider5 targetsProvider5)
                 {
-                    threadingService.ExecuteSynchronously(() => targetsProvider5.OnAfterLaunchAsync(launchOptions, activeProfile, LaunchedProcesses));
+                    threadingService.ExecuteSynchronously(() => targetsProvider5.OnAfterLaunchAsync(launchOptions, activeProfile, debugLaunchSettings, LaunchedProcesses));
                 }
             }
             else if (targetsProvider is not null)
@@ -213,7 +214,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             await targetProvider.OnBeforeLaunchAsync(launchOptions, profile);
         }
 
-        LaunchCompleteCallback callback = new(ThreadingService, launchOptions, targetProvider, profile);
+        LaunchCompleteCallback callback = new(ThreadingService, launchOptions, targetProvider, profile, targets);
 
         if (targets.Count == 0)
         {

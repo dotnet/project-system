@@ -37,5 +37,5 @@ public interface IDebugProfileLaunchTargetsProvider5 : IDebugProfileLaunchTarget
     /// <remarks>
     /// Note this will be called instead of <see cref="IDebugProfileLaunchTargetsProvider.OnAfterLaunchAsync(DebugLaunchOptions, ILaunchProfile)"/>.
     /// </remarks>
-    Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<IVsLaunchedProcess> processInfos);
+    Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<IDebugLaunchSettings> debugLaunchSettings, IReadOnlyList<IVsLaunchedProcess> processInfos);
 }

@@ -125,16 +125,22 @@ internal class ProjectLaunchTargetsProvider :
         //await hotReloadSessionManager.ActivateSessionAsync((int)processInfos[0].dwProcessId, Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath));
     }
 
-    public async Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<IVsLaunchedProcess> processInfos)
+    public async Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<IDebugLaunchSettings> debugLaunchSettings, IReadOnlyList<IVsLaunchedProcess> processInfos)
     {
+        Assumes.Equals(debugLaunchSettings.Count, processInfos.Count);
         bool debugging = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
-        if (await _hotReloadOptionService.Value.IsHotReloadEnabledAsync(debugging, CancellationToken.None) is true && processInfos is { Count: >= 1 })
+        if (await _hotReloadOptionService.Value.IsHotReloadEnabledAsync(debugging, CancellationToken.None) is true
+            && processInfos is { Count: >= 1 }
+            && await ProjectSupportsHotReloadAsync()
+            && await ProjectSupportsStartupHooksAsync())
         {
             var configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
             var projectName = Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath);
             var sessionName = $"{projectName}-{profile.Name}";
-            foreach (var launchedProcess in processInfos)
+            for(int i = 0; i != debugLaunchSettings.Count; ++i)
             {
+                var launchedProcess = processInfos[i];
+                var settings = debugLaunchSettings[i];
                 var variant = 0;
                 lock (_launchedSessions)
                 {
@@ -157,7 +163,8 @@ internal class ProjectLaunchTargetsProvider :
                     debugLaunchOptions: launchOptions,
                     callback: callBack);
 
-                await session.ApplyLaunchVariablesAsync(profile.FlattenEnvironmentVariables().ToDictionary(kv => kv.Key, kv=>kv.Value), CancellationToken.None);
+                await session.ApplyLaunchVariablesAsync(settings.Environment, CancellationToken.None);
+                await session.StartSessionAsync(CancellationToken.None);
 
                 callBack.Session = session;
 
@@ -168,6 +175,22 @@ internal class ProjectLaunchTargetsProvider :
             }
         }
     }
+
+    /// <summary>
+    /// Checks if the project meets the basic requirements to support Hot Reload. Note that there may be other, specific
+    /// settings that prevent the use of Hot Reload even if the basic requirements are met.
+    /// </summary>
+    private async ValueTask<bool> ProjectSupportsHotReloadAsync()
+        => _project.Capabilities.AppliesTo("SupportsHotReload") &&
+           await _project.GetProjectPropertyBoolAsync(ConfiguredBrowseObject.DebugSymbolsProperty) &&
+           !await _project.GetProjectPropertyBoolAsync(ConfigurationGeneral.OptimizeProperty) &&
+           await _project.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty) is not "";
+
+    /// <summary>
+    /// Returns whether or not the project supports startup hooks. These are used to start Hot Reload in the launched process.
+    /// </summary>
+    private async ValueTask<bool> ProjectSupportsStartupHooksAsync()
+        => await _project.GetProjectPropertyBoolAsync(ConfigurationGeneral.StartupHookSupportProperty, defaultValue: true);
 
     private sealed class HotReloadSessionCallback(IVsLaunchedProcess process, Action<IProjectHotReloadSession> removeSession) : IProjectHotReloadSessionCallback
     {
