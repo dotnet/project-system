@@ -114,7 +114,7 @@ internal class ProjectLaunchTargetsProvider :
 
         var configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
         var hotReloadSessionManager = configuredProjectForDebug.GetExportedService<IProjectHotReloadSessionManager>();
-        await hotReloadSessionManager.ActivateSessionAsync((int)processInfos[0].dwProcessId, Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath));
+        await hotReloadSessionManager.ActivateSessionAsync((int)processInfos[0].dwProcessId, _project.GetProjectName());
     }
 
     public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)

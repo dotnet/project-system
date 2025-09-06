@@ -212,9 +212,6 @@ csharp_preserve_single_line_blocks = true
 # Code block
 csharp_prefer_braces = false:none
 
-# Using statements
-csharp_using_directive_placement = outside_namespace:error
-
 # Modifier settings
 csharp_prefer_static_local_function = true:warning
 csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async:warning

@@ -42,7 +42,7 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
 
     private async Task<List<(string Import, string IsReadOnly)>> GetSelectedImportListAsync()
     {
-        string projectName = Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath);
+        string projectName = _configuredProject.GetProjectName();
 
         ImmutableArray<(string Value, bool IsImported)> existingImports = await GetProjectImportsAsync();
 
@@ -77,7 +77,7 @@ internal sealed class ImportedNamespacesValueProvider : InterceptingPropertyValu
             .Where(pair => bool.TryParse(pair.Value, out bool _))
             .ToDictionary(pair => pair.Name, pair => bool.Parse(pair.Value));
 
-        importsToAdd.Remove(Path.GetFileNameWithoutExtension(_configuredProject.UnconfiguredProject.FullPath));
+        importsToAdd.Remove(_configuredProject.GetProjectName());
 
         foreach ((string value, bool _) in await GetProjectImportsAsync())
         {
