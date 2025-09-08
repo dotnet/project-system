@@ -80,30 +80,3 @@ The software may collect information about you and your use of the software and 
 [MainPublish]:      https://dev.azure.com/devdiv/DevDiv/_apis/build/status/DotNet/project-system/DotNet-Project-System?branchName=main&label=main&stageName=Publish
 [MainLocalization]: https://dev.azure.com/devdiv/DevDiv/_apis/build/status/DotNet/project-system/DotNet-Project-System?branchName=main&label=main&stageName=Localization
 [MainRun]:          https://dev.azure.com/devdiv/DevDiv/_build/latest?definitionId=9675&branchName=main
-
-[1611Branch]: https://github.com/dotnet/project-system/tree/dev16.11.x
-[1611Build]:  https://dev.azure.com/devdiv/DevDiv/_apis/build/status/DotNet/project-system/DotNet-Project-System?branchName=dev16.11.x&label=dev16.11.x
-[1611Run]:    https://dev.azure.com/devdiv/DevDiv/_build/latest?definitionId=9675&branchName=dev16.11.x
-
-[170Branch]: https://github.com/dotnet/project-system/tree/dev17.0.x
-[170Build]:  https://dev.azure.com/devdiv/DevDiv/_apis/build/status/DotNet/project-system/DotNet-Project-System?branchName=dev17.0.x&label=dev17.0.x
-[170Run]:    https://dev.azure.com/devdiv/DevDiv/_build/latest?definitionId=9675&branchName=dev17.0.x
-
-[171Branch]: https://github.com/dotnet/project-system/tree/dev17.1.x
-[171Build]:  https://dev.azure.com/devdiv/DevDiv/_apis/build/status/DotNet/project-system/DotNet-Project-System?branchName=dev17.1.x&label=dev17.1.x
-[171Run]:    https://dev.azure.com/devdiv/DevDiv/_build/latest?definitionId=9675&branchName=dev17.1.x
-
-[172Branch]: https://github.com/dotnet/project-system/tree/dev17.2.x
-[172Build]:  https://dev.azure.com/devdiv/DevDiv/_apis/build/status/DotNet/project-system/DotNet-Project-System?branchName=dev17.2.x&label=dev17.2.x
-[172Run]:    https://dev.azure.com/devdiv/DevDiv/_build/latest?definitionId=9675&branchName=dev17.2.x
-
-[173Branch]: https://github.com/dotnet/project-system/tree/dev17.3.x
-[173Build]:  https://dev.azure.com/devdiv/DevDiv/_apis/build/status/DotNet/project-system/DotNet-Project-System?branchName=dev17.3.x&label=dev17.3.x
-[173Run]:    https://dev.azure.com/devdiv/DevDiv/_build/latest?definitionId=9675&branchName=dev17.3.x
-
-[174Branch]:       https://github.com/dotnet/project-system/tree/dev17.4.x
-[174Build]:        https://dev.azure.com/devdiv/DevDiv/_apis/build/status/DotNet/project-system/DotNet-Project-System?branchName=dev17.4.x&label=dev17.4.x&stageName=Build
-[174Compliance]:   https://dev.azure.com/devdiv/DevDiv/_apis/build/status/DotNet/project-system/DotNet-Project-System?branchName=dev17.4.x&label=dev17.4.x&stageName=Compliance
-[174Publish]:      https://dev.azure.com/devdiv/DevDiv/_apis/build/status/DotNet/project-system/DotNet-Project-System?branchName=dev17.4.x&label=dev17.4.x&stageName=Publish
-[174Localization]: https://dev.azure.com/devdiv/DevDiv/_apis/build/status/DotNet/project-system/DotNet-Project-System?branchName=dev17.4.x&label=dev17.4.x&stageName=Localization
-[174Run]:          https://dev.azure.com/devdiv/DevDiv/_build/latest?definitionId=9675&branchName=dev17.4.x
