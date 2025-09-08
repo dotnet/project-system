@@ -78,14 +78,6 @@ configuration:
       description: Milestone tracking - main
       triggerOnOwnActions: true
 
-    - if:
-      - payloadType: Pull_Request
-      - isAction:
-          action: Opened
-      then:
-      - addCodeFlowLink
-      description: CodeFlow
-
     # MILESTONE TRACKING PER RELEASE BRANCH
     #
     # Only for branches present in https://github.com/dotnet/project-system/branches/all
