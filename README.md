@@ -4,7 +4,7 @@
 |---------------------|:-----------------------:|:----------------------------:|:-------------------------:|:-------------------------:
 | [main][MainBranch]  | [![MainBuild]][MainRun] | [![MainCompliance]][MainRun] | [![MainPublish]][MainRun] | [![MainLocalization]][MainRun]
 
-This repository contains the .NET Project System for [Visual Studio](https://visualstudio.microsoft.com/vs/) that is written on top of the [Common Project System (CPS)](https://github.com/microsoft/VSProjectSystem) framework. This project system is used for .NET [SDK-style] (C#, F# and Visual Basic) and Shared Projects (C# and Visual Basic) project types. For a list of feature differences between the project systems, see [Feature Comparison](docs/feature-comparison.md).
+This repository contains the .NET Project System for [Visual Studio](https://visualstudio.microsoft.com/vs/) that is written on top of the [Common Project System (CPS)](https://github.com/microsoft/VSProjectSystem) framework. This project system is used for SDK-style .NET (C#, F# and Visual Basic) and Shared Projects (C# and Visual Basic) project types. For a list of feature differences between the project systems, see [Feature Comparison](docs/feature-comparison.md).
 
 The legacy C# and Visual Basic project systems (*csproj.dll* and *msvbprj.dll*) first shipped with Visual Studio .NET in 2002. They have served us well but are:
 
