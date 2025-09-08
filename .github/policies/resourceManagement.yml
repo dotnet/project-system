@@ -74,17 +74,9 @@ configuration:
           branch: main
       then:
       - addMilestone:
-          milestone: 17.15
+          milestone: 18.0
       description: Milestone tracking - main
       triggerOnOwnActions: true
-
-    - if:
-      - payloadType: Pull_Request
-      - isAction:
-          action: Opened
-      then:
-      - addCodeFlowLink
-      description: CodeFlow
 
     # MILESTONE TRACKING PER RELEASE BRANCH
     #
@@ -155,10 +147,6 @@ configuration:
           action: Closed
       - isMerged
       - or:
-        - targetsBranch:
-            branch: dev17.4-preview1
-        - targetsBranch:
-            branch: dev17.4-preview2
         - targetsBranch:
             branch: dev17.4.x
       then:
