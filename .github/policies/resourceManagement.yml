@@ -148,10 +148,6 @@ configuration:
       - isMerged
       - or:
         - targetsBranch:
-            branch: dev17.4-preview1
-        - targetsBranch:
-            branch: dev17.4-preview2
-        - targetsBranch:
             branch: dev17.4.x
       then:
       - addMilestone:
