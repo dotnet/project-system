@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Telemetry;
-using Xunit.Sdk;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
 
@@ -329,7 +328,7 @@ public class DesignTimeInputsCompilerTests : IDisposable
             var actualDLLs = _compilationResults.Count - initialCompilations;
             if (numberOfDLLsExpected != actualDLLs)
             {
-                throw new AssertActualExpectedException(numberOfDLLsExpected, actualDLLs, $"Timed out after {TestTimeoutMillisecondsDelay}ms");
+                Assert.Fail($"Timed out after {TestTimeoutMillisecondsDelay}ms. Expected number of libraries: {numberOfDLLsExpected}; actual count: {actualDLLs}");
             }
         }
     }

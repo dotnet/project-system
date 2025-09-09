@@ -8,14 +8,7 @@ namespace Xunit;
 internal static class AssertEx
 {
     public static void CollectionLength<T>(IEnumerable<T> collection, int expectedCount)
-    {
-        int actualCount = collection.Count();
-
-        if (actualCount != expectedCount)
-        {
-            throw new CollectionException(collection, expectedCount, actualCount);
-        }
-    }
+        => Assert.Equal(expectedCount, collection.Count());
 
     public static void CollectionLength(IEnumerable collection, int expectedCount)
     {

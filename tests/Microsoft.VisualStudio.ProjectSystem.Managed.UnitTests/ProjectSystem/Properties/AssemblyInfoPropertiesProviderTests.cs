@@ -70,7 +70,7 @@ public class AssemblyInfoPropertiesProviderTests
     private static TestProjectFileOrAssemblyInfoPropertiesProvider CreateProviderForProjectFileValidation(
         string code,
         string propertyName,
-        string propertyValueInProjectFile,
+        string? propertyValueInProjectFile,
         out Workspace workspace,
         Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>? interceptingProvider = null,
         Dictionary<string, string?>? additionalProps = null)
@@ -151,7 +151,7 @@ public class AssemblyInfoPropertiesProviderTests
     [InlineData("""[assembly: System.Reflection.AssemblyDescriptionAttribute(true)]""", "Description", "MyDescription", "MyDescription")]
     [InlineData("""[assembly: System.Reflection.AssemblyDescriptionAttribute("MyDescription"]""", "Description", "", "")]
     [InlineData("""[assembly: System.Reflection.AssemblyDescriptionAttribute("MyDescription"]""", "Description", null, "")]
-    public async Task ProjectFileProperties_GetEvaluatedPropertyAsync(string code, string propertyName, string propertyValueInProjectFile, string expectedValue)
+    public async Task ProjectFileProperties_GetEvaluatedPropertyAsync(string code, string propertyName, string? propertyValueInProjectFile, string expectedValue)
     {
         var provider = CreateProviderForProjectFileValidation(code, propertyName, propertyValueInProjectFile, out Workspace workspace);
         var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
@@ -278,7 +278,7 @@ public class AssemblyInfoPropertiesProviderTests
     [InlineData("""[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.0.0")]""", "Version", "2.0.0", null)]
     [InlineData("""[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.0.1-beta1")]""", "Version", "2.0.1-beta1", null)]
     [InlineData("""[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2016.2")]""", "Version", "2016.2", null)]
-    internal async Task SourceFileProperties_DefaultValues_GetEvaluatedPropertyAsync(string code, string propertyName, string expectedValue, Type interceptingProviderType)
+    internal async Task SourceFileProperties_DefaultValues_GetEvaluatedPropertyAsync(string code, string propertyName, string expectedValue, Type? interceptingProviderType)
     {
         var interceptingProvider = interceptingProviderType is not null
             ? new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>(
@@ -308,7 +308,7 @@ public class AssemblyInfoPropertiesProviderTests
     [InlineData("MyApp", "Product", null, "")]
     [InlineData("MyApp", "Product", "", "")]
     [InlineData("MyApp", "Product", "ExistingValue", "ExistingValue")]
-    internal async Task ProjectFileProperties_DefaultValues_GetEvaluatedPropertyAsync(string assemblyName, string propertyName, string existingPropertyValue, string expectedValue)
+    internal async Task ProjectFileProperties_DefaultValues_GetEvaluatedPropertyAsync(string assemblyName, string propertyName, string? existingPropertyValue, string expectedValue)
     {
         var additionalProps = new Dictionary<string, string?>() { { "AssemblyName", assemblyName } };
 
@@ -352,7 +352,7 @@ public class AssemblyInfoPropertiesProviderTests
     [InlineData("Version", "1.1.1", "1.0.0.0", "1.0.0.0", null)]
     [InlineData("Version", "1.0.0", "1.0.0.0", "1.0.0.0", null)]
     [InlineData("Version", null, "2016.2", "2016.2", null)]
-    internal async Task ProjectFileProperties_WithInterception_SetEvaluatedPropertyAsync(string propertyName, string existingPropertyValue, string propertyValueToSet, string expectedValue, Type interceptingProviderType)
+    internal async Task ProjectFileProperties_WithInterception_SetEvaluatedPropertyAsync(string propertyName, string? existingPropertyValue, string propertyValueToSet, string expectedValue, Type? interceptingProviderType)
     {
         var interceptingProvider = interceptingProviderType is not null
             ? new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata2>(

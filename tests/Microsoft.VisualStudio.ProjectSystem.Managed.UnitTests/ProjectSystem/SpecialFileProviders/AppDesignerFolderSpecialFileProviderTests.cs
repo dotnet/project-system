@@ -116,7 +116,7 @@ public class AppDesignerFolderSpecialFileProviderTests
     [InlineData(@"My Project",              @"C:\Project\My Project")]
     [InlineData(@"Folder\AppDesigner",      @"C:\Project\Folder\AppDesigner")]
     [InlineData(@"",                        null)]
-    public async Task GetFile_WhenTreeWithoutAppDesignerFolder_ReturnsDefaultAppDesignerFolder(string input, string expected)
+    public async Task GetFile_WhenTreeWithoutAppDesignerFolder_ReturnsDefaultAppDesignerFolder(string input, string? expected)
     {
         var tree = ProjectTreeParser.Parse(
             """

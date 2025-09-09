@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Xunit.Sdk;
 
 // Nullable annotations don't add a lot of value to this class, and until https://github.com/dotnet/roslyn/issues/33199 is fixed
 // MemberData doesn't work anyway
@@ -113,7 +112,7 @@ public class DesignTimeInputsFileWatcherTests
         // The timeout here is annoying, but even though our test is "smart" and waits for data, unfortunately if the code breaks the test is more likely to hang than fail
         if (await Task.WhenAny(finished.Task, Task.Delay(TestTimeoutMillisecondsDelay)) != finished.Task)
         {
-            throw new AssertActualExpectedException(fileChangeNotificationsExpected.Length, notificationCount, $"Timed out after {TestTimeoutMillisecondsDelay}ms");
+            Assert.Fail($"Timed out after {TestTimeoutMillisecondsDelay}ms. Expected notification count: {fileChangeNotificationsExpected.Length}; actual count: {notificationCount}");
         }
 
         // Observe the task in case of exceptions

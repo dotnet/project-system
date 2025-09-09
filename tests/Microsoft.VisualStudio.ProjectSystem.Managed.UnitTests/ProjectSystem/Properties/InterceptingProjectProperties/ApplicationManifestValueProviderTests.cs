@@ -11,7 +11,7 @@ public class ApplicationManifestValueProviderTests
     [InlineData("", "TRue", "NoManifest")]
     [InlineData("", "false", "DefaultManifest")]
     [InlineData("", null, "DefaultManifest")]
-    public async Task GetApplicationManifest(string appManifestPropValue, string noManifestValue, string expectedValue)
+    public async Task GetApplicationManifest(string appManifestPropValue, string? noManifestValue, string expectedValue)
     {
         var provider = new ApplicationManifestValueProvider(UnconfiguredProjectFactory.Create());
         var defaultProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue("NoWin32Manifest", noManifestValue);

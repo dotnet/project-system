@@ -36,6 +36,6 @@ public class TargetFrameworkGlobalBuildPropertyProviderTests
         var provider = new TargetFrameworkGlobalBuildPropertyProvider(projectService, configuredProject);
 
         var properties = await provider.GetGlobalPropertiesAsync(CancellationToken.None);
-        Assert.Equal(0, properties.Count);
+        Assert.Empty(properties);
     }
 }

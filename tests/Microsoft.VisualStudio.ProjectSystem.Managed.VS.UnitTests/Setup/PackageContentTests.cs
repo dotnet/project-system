@@ -2,12 +2,9 @@
 
 using System.IO.Compression;
 using Microsoft.VisualStudio.Utilities;
-using VerifyTests;
-using VerifyXunit;
 
 namespace Microsoft.VisualStudio.Setup;
 
-[UsesVerify]
 public sealed class PackageContentTests
 {
     // These files are only added as part of signing.

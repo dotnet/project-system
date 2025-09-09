@@ -490,7 +490,7 @@ public class ProjectHotReloadSessionTests
     }
 
     [Fact]
-    public void GetProjectFullPathAsync_ReturnsCorrectValue()
+    public async Task GetProjectFullPathAsync_ReturnsCorrectValue()
     {
         // Test case 1: With IProjectHotReloadSessionCallback2
         {
@@ -506,7 +506,7 @@ public class ProjectHotReloadSessionTests
             var session = CreateInstance(callback: callback.Object);
 
             // Act
-            var result = session.GetProjectFullPathAsync(CancellationToken.None).Result;
+            var result = await session.GetProjectFullPathAsync(CancellationToken.None);
 
             // Assert
             Assert.Equal("C:\\Test\\Project.csproj", result);
@@ -519,7 +519,7 @@ public class ProjectHotReloadSessionTests
             var session = CreateInstance(callback: callback.Object);
 
             // Act
-            var result = session.GetProjectFullPathAsync(CancellationToken.None).Result;
+            var result = await session.GetProjectFullPathAsync(CancellationToken.None);
 
             // Assert
             Assert.Null(result);

@@ -4,11 +4,9 @@
 #if NETCOREAPP
 
 using Microsoft.VisualStudio.Utilities;
-using VerifyXunit;
 
 namespace Microsoft.VisualStudio.Setup;
 
-[UsesVerify]
 public sealed class PackageContentTests
 {
     [Fact]

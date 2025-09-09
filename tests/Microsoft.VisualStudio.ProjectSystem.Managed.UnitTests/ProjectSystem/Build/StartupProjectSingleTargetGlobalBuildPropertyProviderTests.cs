@@ -58,7 +58,7 @@ public sealed class StartupProjectSingleTargetGlobalBuildPropertyProviderTests
 
         if (expectTargetFrameworkSet)
         {
-            Assert.Equal(expected: 1, actual: globalProperties.Count);
+            Assert.Single(globalProperties);
             Assert.Equal(expected: "myFramework1.0", actual: globalProperties[ConfigurationGeneral.TargetFrameworkProperty]);
         }
         else
