@@ -143,18 +143,6 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         : IVsDebuggerLaunchCompletionCallback, IVsDebugProcessNotify1800
     {
         private readonly List<IVsLaunchedProcess> _launchedProcesses = new();
-
-        public IReadOnlyList<IVsLaunchedProcess> LaunchedProcesses
-        {
-            get
-            {
-                lock (_launchedProcesses)
-                {
-                    return _launchedProcesses.ToArray();
-                }
-            }
-        }
-
         public void OnComplete(int hr, uint debugTargetCount, VsDebugTargetProcessInfo[] processInfoArray)
         {
             ErrorHandler.ThrowOnFailure(hr);
@@ -165,7 +153,13 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
 
                 if (targetsProvider4 is IDebugProfileLaunchTargetsProvider5 targetsProvider5)
                 {
-                    threadingService.ExecuteSynchronously(() => targetsProvider5.OnAfterLaunchAsync(launchOptions, activeProfile, debugLaunchSettings, LaunchedProcesses));
+                    IReadOnlyList<IVsLaunchedProcess> launchedProcesses;
+                    lock (_launchedProcesses)
+                    {
+                        launchedProcesses = _launchedProcesses.ToArray();
+                    }
+                    
+                    threadingService.ExecuteSynchronously(() => targetsProvider5.OnAfterLaunchAsync(launchOptions, activeProfile, debugLaunchSettings, launchedProcesses));
                 }
             }
             else if (targetsProvider is not null)
@@ -176,7 +170,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
 
         public int OnProcessLaunched(IVsLaunchedProcess pProcess)
         {
-            lock(_launchedProcesses)
+            lock (_launchedProcesses)
             {
                 _launchedProcesses.Add(pProcess);
             }
@@ -243,8 +237,10 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         finally
         {
             // Free up the memory allocated to the (mostly) managed debugger structure.
-            foreach (VsDebugTargetInfo4 nativeStruct in launchSettingsNative)
+            for (int i = 0; i!= launchSettingsNative.Length; ++i)
             {
+                VsDebugTargetInfo4 nativeStruct = launchSettingsNative[i];
+                nativeStruct.pUnknown = IntPtr.Zero;
                 FreeDebuggerStruct(nativeStruct);
             }
         }

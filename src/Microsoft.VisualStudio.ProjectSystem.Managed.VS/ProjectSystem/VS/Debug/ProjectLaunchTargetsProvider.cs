@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Newtonsoft.Json;
@@ -47,6 +48,7 @@ internal class ProjectLaunchTargetsProvider :
     private readonly IOutputTypeChecker _outputTypeChecker;
     private readonly IProjectHotReloadAgent _projectHotReloadAgent;
     private readonly List<IProjectHotReloadSession> _launchedSessions = new();
+    private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
 
     [ImportingConstructor]
     public ProjectLaunchTargetsProvider(
@@ -61,6 +63,7 @@ internal class ProjectLaunchTargetsProvider :
         IVsUIService<SVsShellDebugger, IVsDebugger10> debugger,
         IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService,
         IProjectHotReloadAgent projectHotReloadAgent,
+        Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
         Lazy<IHotReloadOptionService> hotReloadOptionService)
     {
         _project = project;
@@ -75,6 +78,7 @@ internal class ProjectLaunchTargetsProvider :
         _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
         _hotReloadOptionService = hotReloadOptionService;
         _projectHotReloadAgent = projectHotReloadAgent;
+        _projectHotReloadNotificationService = projectHotReloadNotificationService;
     }
 
     // internal for testing
@@ -137,7 +141,7 @@ internal class ProjectLaunchTargetsProvider :
             var configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
             var projectName = Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath);
             var sessionName = $"{projectName}-{profile.Name}";
-            for(int i = 0; i != debugLaunchSettings.Count; ++i)
+            for (int i = 0; i != debugLaunchSettings.Count; ++i)
             {
                 var launchedProcess = processInfos[i];
                 var settings = debugLaunchSettings[i];
@@ -152,6 +156,11 @@ internal class ProjectLaunchTargetsProvider :
                     lock (_launchedSessions)
                     {
                         _launchedSessions.Remove(session);
+
+                        if (_launchedSessions.Count == 0)
+                        {
+                            _threadingService.ExecuteSynchronously(() => _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(false));
+                        }
                     }
                 });
 
@@ -172,6 +181,8 @@ internal class ProjectLaunchTargetsProvider :
                 {
                     _launchedSessions.Add(session);
                 }
+                
+                await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(true);
             }
         }
     }
