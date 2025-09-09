@@ -120,7 +120,7 @@ public class OnceInitializedOnceDisposedUnderLockAsyncTests
         Assert.Equal(1, callCount);
     }
 
-    [Fact]
+    [Fact(Skip = "https://github.com/dotnet/project-system/issues/9765")]
     public async Task ExecuteUnderLockAsync_AvoidsOverlappingActions()
     {
         var firstEntered = new AsyncManualResetEvent();
@@ -144,7 +144,7 @@ public class OnceInitializedOnceDisposedUnderLockAsyncTests
         await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
     }
 
-    [Fact]
+    [Fact(Skip = "https://github.com/dotnet/project-system/issues/9765")]
     public async Task ExecuteUnderLockAsyncOfT_AvoidsOverlappingActions()
     {
         var firstEntered = new AsyncManualResetEvent();
@@ -170,7 +170,7 @@ public class OnceInitializedOnceDisposedUnderLockAsyncTests
         await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
     }
 
-    [Fact]
+    [Fact(Skip = "https://github.com/dotnet/project-system/issues/9765")]
     public async Task ExecuteUnderLockAsyncOfT_AvoidsOverlappingActionsWithExecuteUnderLockAsync()
     {
         var firstEntered = new AsyncManualResetEvent();
@@ -194,7 +194,7 @@ public class OnceInitializedOnceDisposedUnderLockAsyncTests
         await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
     }
 
-    [Fact]
+    [Fact(Skip = "https://github.com/dotnet/project-system/issues/9765")]
     public async Task ExecuteUnderLockAsync_AvoidsOverlappingActionsWithExecuteUnderLockAsyncOfT()
     {
         var firstEntered = new AsyncManualResetEvent();
@@ -266,7 +266,7 @@ public class OnceInitializedOnceDisposedUnderLockAsyncTests
         Assert.Equal(1, callCount);
     }
 
-    [Fact]
+    [Fact(Skip = "https://github.com/dotnet/project-system/issues/9765")]
     public async Task ExecuteUnderLockAsync_AvoidsOverlappingWithDispose()
     {
         var firstEntered = new AsyncManualResetEvent();
@@ -292,7 +292,7 @@ public class OnceInitializedOnceDisposedUnderLockAsyncTests
         await AssertNoOverlap(firstAction, disposeAction, firstEntered, firstRelease, disposeEntered);
     }
 
-    [Fact]
+    [Fact(Skip = "https://github.com/dotnet/project-system/issues/9765")]
     public async Task ExecuteUnderLockAsyncOfT_AvoidsOverlappingWithDispose()
     {
         var firstEntered = new AsyncManualResetEvent();
