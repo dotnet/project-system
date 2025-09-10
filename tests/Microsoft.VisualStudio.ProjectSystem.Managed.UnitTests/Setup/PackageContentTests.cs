@@ -10,10 +10,32 @@ namespace Microsoft.VisualStudio.Setup;
 public sealed class PackageContentTests
 {
     [Fact]
-    public Task NpmPackage()
+    public void NpmPackage()
     {
-        IEnumerable<string> files = GetNpmPackageContents();
-        return Verifier.Verify(files);
+        var actual = GetNpmPackageContents();
+        var expected = new[]
+        {
+            @"cs\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+            @"de\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+            @"es\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+            @"exports.json",
+            @"fr\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+            @"it\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+            @"ja\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+            @"ko\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+            @"Microsoft.CodeAnalysis.dll",
+            @"Microsoft.VisualStudio.ProjectSystem.Managed.dll",
+            @"Microsoft.VisualStudio.ProjectSystem.Managed.pdb",
+            @"package.json",
+            @"pl\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+            @"pt-BR\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+            @"ru\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+            @"tr\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+            @"zh-Hans\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+            @"zh-Hant\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+        };
+
+        Assert.Equal(expected, actual);
     }
 
     private static IEnumerable<string> GetNpmPackageContents()
@@ -38,7 +60,8 @@ public sealed class PackageContentTests
             "npmsrc");
 
         return Directory.EnumerateFiles(packagesDirectory, "*", SearchOption.AllDirectories)
-            .Select(pullPath => Path.GetRelativePath(packagesDirectory, pullPath));
+            .Select(pullPath => Path.GetRelativePath(packagesDirectory, pullPath))
+            .OrderBy(path => path);
     }
 }
 
