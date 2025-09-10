@@ -32,7 +32,7 @@ public class VsUIServiceTests
         });
     }
 
-    [Fact]
+    [Fact(Skip = "https://github.com/dotnet/project-system/issues/9765")]
     public async Task Value_MustBeCalledOnUIThread()
     {
         var service = CreateInstance<string, string>();

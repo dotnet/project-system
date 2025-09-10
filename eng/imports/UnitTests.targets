@@ -43,7 +43,7 @@
     <Delete Files="$(TrxTestResultsFile);$(HtmlTestResultsFile)" />
 
     <!-- xUnit writes to STDERR (test name) and STDOUT (error message, stack). STDERR gets logged as an error.  -->
-    <Exec Command='$(TestRunner) --verbosity quiet --nologo --logger "trx;logfilename=$(TrxTestResultsFile)" --logger "html;logfilename=$(HtmlTestResultsFile)" $(TargetPath)' LogStandardErrorAsError="true" IgnoreExitCode="true">
+    <Exec Command='$(TestRunner) --verbosity diagnostic --nologo --logger "trx;logfilename=$(TrxTestResultsFile)" --logger "html;logfilename=$(HtmlTestResultsFile)" --logger:console;verbosity=detailed $(TargetPath)' LogStandardErrorAsError="true" IgnoreExitCode="true">
       <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
     </Exec>
 

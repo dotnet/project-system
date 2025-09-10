@@ -71,9 +71,9 @@ public class DesignTimeAssemblyResolutionTests
     [InlineData("  ")]
     [InlineData(".NETFramework, Version=v4.5")]
     [InlineData(".NETFramework, Version=v4.5, Profile=Client")]
-    public void GetTargetFramework_WhenUnderlyingGetPropertyReturnsValue_SetsTargetFramework(string input)
+    public void GetTargetFramework_WhenUnderlyingGetPropertyReturnsValue_SetsTargetFramework(string? input)
     {
-        var hierarchy = IVsHierarchyFactory.ImplementGetProperty(input);
+        var hierarchy = IVsHierarchyFactory.ImplementGetProperty(input!);
         var resolution = CreateInstance(hierarchy);
 
         var hr = resolution.GetTargetFramework(out string? result);

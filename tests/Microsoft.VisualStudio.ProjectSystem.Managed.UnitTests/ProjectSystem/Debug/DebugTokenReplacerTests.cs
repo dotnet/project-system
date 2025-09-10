@@ -68,12 +68,14 @@ public class DebugTokenReplacerTests
     [InlineData("this is msbuild: %env3% $(msbuildProperty2) $(msbuildProperty3)",  "this is msbuild: Property6 Property2 Property3", true)]
     [InlineData(null, null, true)]
     [InlineData(" ", " ", true)]
-    public async Task ReplaceTokensInStringTests(string input, string expected, bool expandEnvVars)
+    public async Task ReplaceTokensInStringTests(string? input, string? expected, bool expandEnvVars)
     {
         var replacer = CreateInstance();
 
         // Test msbuild vars
-        string result = await replacer.ReplaceTokensInStringAsync(input, expandEnvVars);
+
+        // The API handles nulls for backward compat:
+        string result = await replacer.ReplaceTokensInStringAsync(input!, expandEnvVars);
         Assert.Equal(expected, result);
     }
 

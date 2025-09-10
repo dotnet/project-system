@@ -114,14 +114,13 @@
     <!-- Tests -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk"                                                 Version="17.5.0-preview-20221003-04" />
     <PackageVersion Include="Moq"                                                                    Version="4.16.1" />
-    <PackageVersion Include="Verify.Xunit"                                                           Version="14.2.0" />
-    <PackageVersion Include="xunit"                                                                  Version="2.4.2" />
-    <PackageVersion Include="xunit.analyzers"                                                        Version="1.0.0"/>
-    <PackageVersion Include="xunit.assert"                                                           Version="2.4.2" />
+    <PackageVersion Include="xunit"                                                                  Version="2.9.0" />
+    <PackageVersion Include="xunit.analyzers"                                                        Version="1.15.0"/>
+    <PackageVersion Include="xunit.assert"                                                           Version="2.9.0" />
     <PackageVersion Include="xunit.combinatorial"                                                    Version="1.5.25" />
-    <PackageVersion Include="xunit.extensibility.core"                                               Version="2.4.2" />
-    <PackageVersion Include="xunit.extensibility.execution"                                          Version="2.4.2" />
-    <PackageVersion Include="xunit.runner.console"                                                   Version="2.4.2" />
+    <PackageVersion Include="xunit.extensibility.core"                                               Version="2.9.0" />
+    <PackageVersion Include="xunit.extensibility.execution"                                          Version="2.9.0" />
+    <PackageVersion Include="xunit.runner.console"                                                   Version="2.9.0" />
     <PackageVersion Include="xunit.runner.visualstudio"                                              Version="2.4.5" />
 
     <!-- Integration Tests -->

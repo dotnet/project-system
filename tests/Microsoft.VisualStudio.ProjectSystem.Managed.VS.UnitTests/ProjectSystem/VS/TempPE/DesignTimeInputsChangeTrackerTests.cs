@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Xunit.Sdk;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE;
 
 public class DesignTimeInputsChangeTrackerTests : IDisposable
@@ -266,7 +264,7 @@ public class DesignTimeInputsChangeTrackerTests : IDisposable
         {
             if (_outputProduced.Count != numberOfOutputExpected)
             {
-                throw new AssertActualExpectedException(numberOfOutputExpected, _outputProduced.Count, $"Timed out after {TestTimeoutMillisecondsDelay}ms");
+                Assert.Fail($"Timed out after {TestTimeoutMillisecondsDelay}ms. Expected notification count: {numberOfOutputExpected}; actual count: {_outputProduced.Count}");
             }
         }
     }
