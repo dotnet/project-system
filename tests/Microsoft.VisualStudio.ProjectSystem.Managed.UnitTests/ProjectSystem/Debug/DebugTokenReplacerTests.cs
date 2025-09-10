@@ -73,8 +73,8 @@ public class DebugTokenReplacerTests
         var replacer = CreateInstance();
 
         // Test msbuild vars
-        
-        // TODO: fix nullable annotations: https://github.com/dotnet/project-system/issues/9762
+
+        // The API handles nulls for backward compat:
         string result = await replacer.ReplaceTokensInStringAsync(input!, expandEnvVars);
         Assert.Equal(expected, result);
     }

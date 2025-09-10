@@ -35,7 +35,7 @@ public sealed class PackageContentTests
             @"zh-Hant\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
         };
 
-        Assert.Equal(expected, actual);
+        AssertEx.SequenceEqual(expected, actual);
     }
 
     private static IEnumerable<string> GetNpmPackageContents()

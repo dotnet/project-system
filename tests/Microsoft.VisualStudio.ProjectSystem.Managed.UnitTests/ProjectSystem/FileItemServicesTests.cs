@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem;
 
 public class FileItemServicesTests
@@ -77,7 +75,7 @@ public class FileItemServicesTests
     [InlineData("C:\\Folder\\Project",                          "C:\\Folder\\Project\\Source.cs",        "Folder\\..\\..\\Source.cs",                    null)]
     [InlineData("C:\\Folder\\Project",                          "C:\\Folder\\Project\\Source.cs",        "D:\\Folder\\Source.cs",                        null)]
     [InlineData("C:\\Folder\\Project",                          "C:\\Folder\\Project\\Source.cs",        "C:\\Folder\\Project\\Source.cs",               null)]
-    public void GetLogicalFolderNames_Returns(string basePath, string fullPath, string link, params string[] expected)
+    public void GetLogicalFolderNames_Returns(string basePath, string fullPath, string? link, params string?[] expected)
     {
         var metadata = ImmutableDictionary<string, string>.Empty;
         if (link is not null)

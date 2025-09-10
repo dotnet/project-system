@@ -55,7 +55,7 @@ public sealed class PackageContentTests
             @"zh-Hant/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll",
         };
 
-        Assert.Equal(expected, actual);
+        AssertEx.SequenceEqual(expected, actual);
     }
 
     [Fact]
@@ -100,7 +100,7 @@ public sealed class PackageContentTests
             @"zh-Hant/Microsoft.VisualStudio.Editors.resources.dll",
         };
 
-        Assert.Equal(expected, actual);
+        AssertEx.SequenceEqual(expected, actual);
     }
 
     [Fact]
@@ -737,7 +737,7 @@ public sealed class PackageContentTests
             "Contents/MSBuild/Microsoft/VisualStudio/Managed/zh-Hant/SettingsPropertyPage.xaml",
         };
 
-        Assert.Equal(expected, actual);
+        AssertEx.SequenceEqual(expected, actual);
     }
 
     private static IEnumerable<string> GetPackageContents(string vsixName)
