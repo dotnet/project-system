@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Common\Test\xunit.runner.json" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsTestProject)' == 'true'" />
     <None Include="$(MSBuildThisFileDirectory)Common\Test\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsUnitTestProject)' == 'true'" />
     <None Include="$(MSBuildThisFileDirectory)Common\Integration\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsIntegrationTestProject)' == 'true'" />
   </ItemGroup>
