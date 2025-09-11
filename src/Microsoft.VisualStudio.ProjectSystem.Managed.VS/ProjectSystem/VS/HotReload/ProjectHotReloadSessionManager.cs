@@ -18,7 +18,6 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 {
     private readonly ConfiguredProject _configuredProject;
     private readonly UnconfiguredProject _unconfiguredProject;
-    private readonly IProjectFaultHandlerService _projectFaultHandlerService;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
     private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
     private readonly IProjectHotReloadAgent _hotReloadAgent;
@@ -38,7 +37,6 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
     public ProjectHotReloadSessionManager(
         ConfiguredProject project,
         IProjectThreadingService threadingService,
-        IProjectFaultHandlerService projectFaultHandlerService,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
         Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
         IProjectHotReloadLaunchProvider launchProvider,
@@ -49,7 +47,6 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         _configuredProject = project;
         _unconfiguredProject = project.UnconfiguredProject;
         _threadingService = threadingService;
-        _projectFaultHandlerService = projectFaultHandlerService;
         _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
         _projectHotReloadNotificationService = projectHotReloadNotificationService;
         _hotReloadAgent = hotReloadAgent;
@@ -59,7 +56,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             mode: ReentrantSemaphore.ReentrancyMode.Freeform);
     }
 
-    public async Task ActivateSessionAsync(int processId, string projectName)
+    public Task ActivateSessionAsync(int processId, string projectName)
     {
         throw new InvalidOperationException("This overload of ActivateSessionAsync should not be called. Use another ActiveSessionAsync instead.");
     }

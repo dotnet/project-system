@@ -15,7 +15,8 @@ public interface IDebugProfileLaunchTargetsProvider5 : IDebugProfileLaunchTarget
 {
     /// <summary>
     /// Called right after launch to allow the provider to do additional work.
-    /// This method will only be invoked when there's exactly one <see cref="IDebugLaunchSettings"/>, one <see cref="IVsLaunchedProcess"/> and one <see cref="VsDebugTargetProcessInfo"/>.
+    /// This method will only be invoked when there's exactly one <see cref="IDebugLaunchSettings"/>, one <see cref="IVsLaunchedProcess"/> and one <see cref="VsDebugTargetProcessInfo"/>
+    /// returned from debugger.
     /// </summary>
     Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IDebugLaunchSettings debugLaunchSetting, IVsLaunchedProcess vsLaunchedProcess, VsDebugTargetProcessInfo processInfo);
 }
