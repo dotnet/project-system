@@ -129,116 +129,16 @@ internal class ProjectLaunchTargetsProvider :
         //await hotReloadSessionManager.ActivateSessionAsync((int)processInfos[0].dwProcessId, Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath));
     }
 
-    public async Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<IDebugLaunchSettings> debugLaunchSettings, IReadOnlyList<IVsLaunchedProcess> processInfos)
+    public async Task OnAfterLaunchAsync(
+        DebugLaunchOptions launchOptions,
+        ILaunchProfile profile,
+        IDebugLaunchSettings debugLaunchSetting,
+        IVsLaunchedProcess vsLaunchedProcess,
+        VsDebugTargetProcessInfo processInfo)
     {
-        Assumes.Equals(debugLaunchSettings.Count, processInfos.Count);
-        bool debugging = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
-        if (await _hotReloadOptionService.Value.IsHotReloadEnabledAsync(debugging, CancellationToken.None) is true
-            && processInfos is { Count: >= 1 }
-            && await ProjectSupportsHotReloadAsync()
-            && await ProjectSupportsStartupHooksAsync())
-        {
-            var configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
-            var projectName = Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath);
-            var sessionName = $"{projectName}-{profile.Name}";
-            for (int i = 0; i != debugLaunchSettings.Count; ++i)
-            {
-                var launchedProcess = processInfos[i];
-                var settings = debugLaunchSettings[i];
-                var variant = 0;
-                lock (_launchedSessions)
-                {
-                    variant = _launchedSessions.Count;
-                }
-
-                var callBack = new HotReloadSessionCallback(launchedProcess, (IProjectHotReloadSession session) =>
-                {
-                    lock (_launchedSessions)
-                    {
-                        _launchedSessions.Remove(session);
-
-                        if (_launchedSessions.Count == 0)
-                        {
-                            _threadingService.ExecuteSynchronously(() => _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(false));
-                        }
-                    }
-                });
-
-                var session = _projectHotReloadAgent.CreateHotReloadSession(
-                    name: sessionName,
-                    id: variant,
-                    configuredProject: configuredProjectForDebug,
-                    launchProfile: profile,
-                    debugLaunchOptions: launchOptions,
-                    callback: callBack);
-
-                await session.ApplyLaunchVariablesAsync(settings.Environment, CancellationToken.None);
-                await session.StartSessionAsync(CancellationToken.None);
-
-                callBack.Session = session;
-
-                lock (_launchedSessions)
-                {
-                    _launchedSessions.Add(session);
-                }
-                
-                await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(true);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Checks if the project meets the basic requirements to support Hot Reload. Note that there may be other, specific
-    /// settings that prevent the use of Hot Reload even if the basic requirements are met.
-    /// </summary>
-    private async ValueTask<bool> ProjectSupportsHotReloadAsync()
-        => _project.Capabilities.AppliesTo("SupportsHotReload") &&
-           await _project.GetProjectPropertyBoolAsync(ConfiguredBrowseObject.DebugSymbolsProperty) &&
-           !await _project.GetProjectPropertyBoolAsync(ConfigurationGeneral.OptimizeProperty) &&
-           await _project.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty) is not "";
-
-    /// <summary>
-    /// Returns whether or not the project supports startup hooks. These are used to start Hot Reload in the launched process.
-    /// </summary>
-    private async ValueTask<bool> ProjectSupportsStartupHooksAsync()
-        => await _project.GetProjectPropertyBoolAsync(ConfigurationGeneral.StartupHookSupportProperty, defaultValue: true);
-
-    private sealed class HotReloadSessionCallback(IVsLaunchedProcess process, Action<IProjectHotReloadSession> removeSession) : IProjectHotReloadSessionCallback
-    {
-        private static readonly Task<bool> s_trueTask = Task.FromResult(true);
-        public bool SupportsRestart => Session is not null;
-
-        public IProjectHotReloadSession? Session { get; set; }
-
-        public IDeltaApplier? GetDeltaApplier()
-        {
-            return null;
-        }
-
-        public Task OnAfterChangesAppliedAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
-        {
-            return s_trueTask;
-        }
-
-        public async Task<bool> StopProjectAsync(CancellationToken cancellationToken)
-        {
-            process.Terminate(1);
-
-            if (Session is not null)
-            {
-                await Session.StopSessionAsync(cancellationToken);
-                removeSession(Session);
-
-                Session = null;
-            }
-
-            return true;
-        }
+        var configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
+        var hotReloadSessionManager = configuredProjectForDebug.GetExportedService<IProjectHotReloadSessionManager>();
+        await hotReloadSessionManager.ActivateSessionAsync(vsLaunchedProcess, processInfo);
     }
 
     public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
@@ -523,19 +423,18 @@ internal class ProjectLaunchTargetsProvider :
 
         if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions))
         {
-            settings.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] = "1";
-            //var hotReloadSessionManager = activeConfiguredProject.GetExportedService<IProjectHotReloadSessionManager>();
-            //var projectHotReloadLaunchProvider = activeConfiguredProject.GetExportedService<IProjectHotReloadLaunchProvider>();
+            var hotReloadSessionManager = activeConfiguredProject.GetExportedService<IProjectHotReloadSessionManager>();
+            var projectHotReloadLaunchProvider = activeConfiguredProject.GetExportedService<IProjectHotReloadLaunchProvider>();
 
-            //if (await hotReloadSessionManager.TryCreatePendingSessionAsync(
-            //    launchProvider: projectHotReloadLaunchProvider,
-            //    settings.Environment,
-            //    launchOptions,
-            //    resolvedProfile))
-            //{
-            //    // Enable XAML Hot Reload
-                
-            //}
+            if (await hotReloadSessionManager.TryCreatePendingSessionAsync(
+                launchProvider: projectHotReloadLaunchProvider,
+                settings.Environment,
+                launchOptions,
+                resolvedProfile))
+            {
+                // Enable XAML Hot Reload
+                settings.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] = "1";
+            }
         }
 
         if (settings.Environment.Count > 0)

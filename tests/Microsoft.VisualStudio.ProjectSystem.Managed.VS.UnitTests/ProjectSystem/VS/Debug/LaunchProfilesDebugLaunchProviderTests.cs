@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 

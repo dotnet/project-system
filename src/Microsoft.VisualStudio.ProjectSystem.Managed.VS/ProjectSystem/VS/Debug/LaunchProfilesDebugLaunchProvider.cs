@@ -151,15 +151,10 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             {
                 threadingService.ExecuteSynchronously(() => targetsProvider4.OnAfterLaunchAsync(launchOptions, activeProfile, processInfoArray));
 
-                if (targetsProvider4 is IDebugProfileLaunchTargetsProvider5 targetsProvider5)
+                if (targetsProvider4 is IDebugProfileLaunchTargetsProvider5 targetsProvider5 && debugLaunchSettings.Count == 1 && processInfoArray.Length == 1 && _launchedProcesses.Count == 1 && processInfoArray.Count() == 1)
                 {
-                    IReadOnlyList<IVsLaunchedProcess> launchedProcesses;
-                    lock (_launchedProcesses)
-                    {
-                        launchedProcesses = _launchedProcesses.ToArray();
-                    }
                     
-                    threadingService.ExecuteSynchronously(() => targetsProvider5.OnAfterLaunchAsync(launchOptions, activeProfile, debugLaunchSettings, launchedProcesses));
+                    threadingService.ExecuteSynchronously(() => targetsProvider5.OnAfterLaunchAsync(launchOptions, activeProfile, debugLaunchSettings[0], _launchedProcesses[0], processInfoArray[0]));
                 }
             }
             else if (targetsProvider is not null)
@@ -240,7 +235,6 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             for (int i = 0; i!= launchSettingsNative.Length; ++i)
             {
                 VsDebugTargetInfo4 nativeStruct = launchSettingsNative[i];
-                nativeStruct.pUnknown = IntPtr.Zero;
                 FreeDebuggerStruct(nativeStruct);
             }
         }
