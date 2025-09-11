@@ -1,9 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+using IProjectCapabilitiesScopeFactory = Microsoft.VisualStudio.ProjectSystem.VS.IProjectCapabilitiesScopeFactory;
 
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
@@ -227,7 +227,6 @@ public class ProjectHotReloadSessionManagerTests
         var manager = new ProjectHotReloadSessionManager(
             project: activeConfiguredProject,
             threadingService: IProjectThreadingServiceFactory.Create(),
-            projectFaultHandlerService: IProjectFaultHandlerServiceFactory.Create(),
             hotReloadDiagnosticOutputService: new Lazy<IHotReloadDiagnosticOutputService>(() => IHotReloadDiagnosticOutputServiceFactory.Create(outputServiceCallback)),
             projectHotReloadNotificationService: new Lazy<IProjectHotReloadNotificationService>(IProjectHotReloadNotificationServiceFactory.Create),
             buildManager: IProjectHotReloadBuildManagerFactory.Create(),

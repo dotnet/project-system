@@ -56,6 +56,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             mode: ReentrantSemaphore.ReentrancyMode.Freeform);
     }
 
+    [Obsolete("Use ActivateSessionAsync overload that takes IVsLaunchedProcess and VsDebugTargetProcessInfo")]
     public Task ActivateSessionAsync(int processId, string projectName)
     {
         throw new InvalidOperationException("This overload of ActivateSessionAsync should not be called. Use another ActiveSessionAsync instead.");

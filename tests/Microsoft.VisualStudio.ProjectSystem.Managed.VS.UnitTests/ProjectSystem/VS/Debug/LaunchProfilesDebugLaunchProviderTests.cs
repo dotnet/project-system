@@ -165,7 +165,8 @@ public class LaunchProfilesDebugLaunchProviderTests
             mockProjectThreadingService,
             launchOptions,
             mockTargetsProvider,
-            profile);
+            profile,
+            (IReadOnlyList<IDebugLaunchSettings>)[]);
         
         // Act & Assert
         var onCompleteMethod = launchCompleteCallbackType.GetMethod("OnComplete");
@@ -200,8 +201,9 @@ public class LaunchProfilesDebugLaunchProviderTests
             mockProjectThreadingService,
             launchOptions,
             mockTargetsProvider,
-            profile);
-        
+            profile,
+            (IReadOnlyList<IDebugLaunchSettings>)[]);
+
         // Act & Assert
         var onCompleteMethod = launchCompleteCallbackType.GetMethod("OnComplete");
         

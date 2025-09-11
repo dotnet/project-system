@@ -31,7 +31,11 @@ internal interface IProjectHotReloadSessionManager
     /// Activates the pending Hot Reload session and associates it with the specified
     /// process.
     /// </summary>
+    [Obsolete("Use ActivateSessionAsync overload that takes IVsLaunchedProcess and VsDebugTargetProcessInfo")]
     Task ActivateSessionAsync(int processId, string projectName);
 
+    /// <summary>
+    /// Activates the pending Hot Reload session and associates it with the specified process.
+    /// </summary>
     Task ActivateSessionAsync(IVsLaunchedProcess launchedProcess, VsDebugTargetProcessInfo vsDebugTargetProcessInfo);
 }
