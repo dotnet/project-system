@@ -4,16 +4,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Debugger.Interop;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
-using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -46,9 +43,6 @@ internal class ProjectLaunchTargetsProvider :
     private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
     private readonly Lazy<IHotReloadOptionService> _hotReloadOptionService;
     private readonly IOutputTypeChecker _outputTypeChecker;
-    private readonly IProjectHotReloadAgent _projectHotReloadAgent;
-    private readonly List<IProjectHotReloadSession> _launchedSessions = new();
-    private readonly Lazy<IProjectHotReloadNotificationService> _projectHotReloadNotificationService;
 
     [ImportingConstructor]
     public ProjectLaunchTargetsProvider(
@@ -62,8 +56,6 @@ internal class ProjectLaunchTargetsProvider :
         IProjectThreadingService threadingService,
         IVsUIService<SVsShellDebugger, IVsDebugger10> debugger,
         IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService,
-        IProjectHotReloadAgent projectHotReloadAgent,
-        Lazy<IProjectHotReloadNotificationService> projectHotReloadNotificationService,
         Lazy<IHotReloadOptionService> hotReloadOptionService)
     {
         _project = project;
@@ -77,8 +69,6 @@ internal class ProjectLaunchTargetsProvider :
         _debugger = debugger;
         _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
         _hotReloadOptionService = hotReloadOptionService;
-        _projectHotReloadAgent = projectHotReloadAgent;
-        _projectHotReloadNotificationService = projectHotReloadNotificationService;
     }
 
     // internal for testing

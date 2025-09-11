@@ -153,7 +153,6 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
 
                 if (targetsProvider4 is IDebugProfileLaunchTargetsProvider5 targetsProvider5 && debugLaunchSettings.Count == 1 && processInfoArray.Length == 1 && _launchedProcesses.Count == 1 && processInfoArray.Count() == 1)
                 {
-                    
                     threadingService.ExecuteSynchronously(() => targetsProvider5.OnAfterLaunchAsync(launchOptions, activeProfile, debugLaunchSettings[0], _launchedProcesses[0], processInfoArray[0]));
                 }
             }
@@ -232,9 +231,8 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         finally
         {
             // Free up the memory allocated to the (mostly) managed debugger structure.
-            for (int i = 0; i!= launchSettingsNative.Length; ++i)
+            foreach (VsDebugTargetInfo4 nativeStruct in launchSettingsNative)
             {
-                VsDebugTargetInfo4 nativeStruct = launchSettingsNative[i];
                 FreeDebuggerStruct(nativeStruct);
             }
         }
