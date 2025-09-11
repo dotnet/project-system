@@ -120,9 +120,9 @@ internal class ProjectLaunchTargetsProvider :
         throw new InvalidOperationException($"Wrong overload of {nameof(OnAfterLaunchAsync)} called.");
     }
 
-    public async Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos)
+    public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos)
     {
-        await TaskScheduler.Default;
+        return Task.CompletedTask;
     }
 
     public async Task OnAfterLaunchAsync(
