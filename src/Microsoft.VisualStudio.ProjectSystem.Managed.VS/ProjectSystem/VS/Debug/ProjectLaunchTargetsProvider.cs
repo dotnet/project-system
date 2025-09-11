@@ -123,10 +123,6 @@ internal class ProjectLaunchTargetsProvider :
     public async Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos)
     {
         await TaskScheduler.Default;
-
-        //var configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
-        //var hotReloadSessionManager = configuredProjectForDebug.GetExportedService<IProjectHotReloadSessionManager>();
-        //await hotReloadSessionManager.ActivateSessionAsync((int)processInfos[0].dwProcessId, Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath));
     }
 
     public async Task OnAfterLaunchAsync(

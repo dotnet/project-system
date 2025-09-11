@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.Debugger.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -27,15 +26,4 @@ public interface IDebugProfileLaunchTargetsProvider4
     /// Note this will be called instead of <see cref="IDebugProfileLaunchTargetsProvider.OnAfterLaunchAsync(DebugLaunchOptions, ILaunchProfile)"/>.
     /// </remarks>
     Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos);
-}
-
-public interface IDebugProfileLaunchTargetsProvider5 : IDebugProfileLaunchTargetsProvider4
-{
-    /// <summary>
-    /// Called right after launch to allow the provider to do additional work.
-    /// </summary>
-    /// <remarks>
-    /// Note this will be called instead of <see cref="IDebugProfileLaunchTargetsProvider.OnAfterLaunchAsync(DebugLaunchOptions, ILaunchProfile)"/>.
-    /// </remarks>
-    Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IDebugLaunchSettings debugLaunchSetting, IVsLaunchedProcess vsLaunchedProcess, VsDebugTargetProcessInfo processInfo);
 }
