@@ -20,12 +20,12 @@ public interface IDebugProfileLaunchTargetsProvider5 : IDebugProfileLaunchTarget
     /// </summary>
     /// <remarks>
     /// both <see cref="IDebugProfileLaunchTargetsProvider4.OnAfterLaunchAsync(DebugLaunchOptions, ILaunchProfile, IReadOnlyList{VsDebugTargetProcessInfo})"/>
-    /// and <see cref="IDebugProfileLaunchTargetsProvider5.OnAfterLaunchAsync(DebugLaunchOptions, ILaunchProfile, IDebugLaunchSettings, IVsLaunchedProcess, VsDebugTargetProcessInfo)"/>
+    /// and <see cref="OnAfterLaunchAsync(DebugLaunchOptions, ILaunchProfile, IDebugLaunchSettings, IVsLaunchedProcess, VsDebugTargetProcessInfo)"/>
     /// will be invoked if the provider implements <see cref="IDebugProfileLaunchTargetsProvider5"/> and there's exactly one <see cref="IDebugLaunchSettings"/>, one <see cref="IVsLaunchedProcess"/> and one <see cref="VsDebugTargetProcessInfo"/>
     /// returned from debugger.
     /// 
     /// The <see cref="IDebugProfileLaunchTargetsProvider4.OnAfterLaunchAsync(DebugLaunchOptions, ILaunchProfile, IReadOnlyList{VsDebugTargetProcessInfo})"/>
-    /// will be invoked first followed by <see cref="IDebugProfileLaunchTargetsProvider5.OnAfterLaunchAsync(DebugLaunchOptions, ILaunchProfile, IDebugLaunchSettings, IVsLaunchedProcess, VsDebugTargetProcessInfo)"/>.
+    /// will be invoked first followed by <see cref="OnAfterLaunchAsync(DebugLaunchOptions, ILaunchProfile, IDebugLaunchSettings, IVsLaunchedProcess, VsDebugTargetProcessInfo)"/>.
     /// </remarks>
     Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IDebugLaunchSettings debugLaunchSetting, IVsLaunchedProcess vsLaunchedProcess, VsDebugTargetProcessInfo processInfo);
 }
