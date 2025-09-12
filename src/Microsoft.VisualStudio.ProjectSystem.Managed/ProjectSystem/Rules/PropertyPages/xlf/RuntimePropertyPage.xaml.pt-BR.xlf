@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="../RuntimePropertyPage.xaml">
+    <body>
+      <trans-unit id="BoolProperty|ConcurrentGarbageCollection|Description">
+        <source>Enable background (concurrent) garbage collection.</source>
+        <target state="new">Enable background (concurrent) garbage collection.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ConcurrentGarbageCollection|DisplayName">
+        <source>Concurrent garbage collection</source>
+        <target state="new">Concurrent garbage collection</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|InvariantGlobalization|Description">
+        <source>Run in globalization-invariant mode, without access to culture-specific data and behavior.</source>
+        <target state="new">Run in globalization-invariant mode, without access to culture-specific data and behavior.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|InvariantGlobalization|DisplayName">
+        <source>Invariant mode</source>
+        <target state="new">Invariant mode</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PredefinedCulturesOnly|Description">
+        <source>Allow creating cultures other than the invariant culture when globalization-invariant mode is enabled.</source>
+        <target state="new">Allow creating cultures other than the invariant culture when globalization-invariant mode is enabled.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PredefinedCulturesOnly|DisplayName">
+        <source>Predefined cultures only</source>
+        <target state="new">Predefined cultures only</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TieredCompilationQuickJitForLoops|Description">
+        <source>Enable quick JIT for methods that contain loops.</source>
+        <target state="new">Enable quick JIT for methods that contain loops.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TieredCompilationQuickJitForLoops|DisplayName">
+        <source>Quick JIT for loops</source>
+        <target state="new">Quick JIT for loops</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TieredCompilationQuickJit|Description">
+        <source>Enable quick just-in-time (JIT) compilation.</source>
+        <target state="new">Enable quick just-in-time (JIT) compilation.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TieredCompilationQuickJit|DisplayName">
+        <source>Quick JIT</source>
+        <target state="new">Quick JIT</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TieredCompilation|Description">
+        <source>Use tiered compilation in the just-in-time (JIT) compiler.</source>
+        <target state="new">Use tiered compilation in the just-in-time (JIT) compiler.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TieredCompilation|DisplayName">
+        <source>Tiered compilation</source>
+        <target state="new">Tiered compilation</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|GarbageCollection|Description">
+        <source>Garbage collection settings for the application.</source>
+        <target state="new">Garbage collection settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|GarbageCollection|DisplayName">
+        <source>Garbage collection</source>
+        <target state="new">Garbage collection</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Globalization|Description">
+        <source>Globalization settings for the application.</source>
+        <target state="new">Globalization settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Globalization|DisplayName">
+        <source>Globalization</source>
+        <target state="new">Globalization</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|ThreadPool|Description">
+        <source>Thread pool settings for the application.</source>
+        <target state="new">Thread pool settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|ThreadPool|DisplayName">
+        <source>Thread pool</source>
+        <target state="new">Thread pool</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|TieredCompilation|Description">
+        <source>Tiered compilation settings for the application.</source>
+        <target state="new">Tiered compilation settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|TieredCompilation|DisplayName">
+        <source>Tiered compilation</source>
+        <target state="new">Tiered compilation</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|RetainVMGarbageCollection|Description">
+        <source>Configures whether segments that should be deleted are put on a standby list for future use, or are released back to the operating system.</source>
+        <target state="new">Configures whether segments that should be deleted are put on a standby list for future use, or are released back to the operating system.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|RetainVMGarbageCollection|DisplayName">
+        <source>Retain VM</source>
+        <target state="new">Retain VM</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ServerGarbageCollection|Description">
+        <source>Configures whether the application uses workstation garbage collection or server garbage collection.</source>
+        <target state="new">Configures whether the application uses workstation garbage collection or server garbage collection.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ServerGarbageCollection|DisplayName">
+        <source>Garbage collection mode</source>
+        <target state="new">Garbage collection mode</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RetainVMGarbageCollection.false|DisplayName">
+        <source>Release segments back to the operating system</source>
+        <target state="new">Release segments back to the operating system</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RetainVMGarbageCollection.true|DisplayName">
+        <source>Retain segments on a standby list</source>
+        <target state="new">Retain segments on a standby list</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ServerGarbageCollection.false|DisplayName">
+        <source>Workstation garbage collection</source>
+        <target state="new">Workstation garbage collection</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ServerGarbageCollection.true|DisplayName">
+        <source>Server garbage collection</source>
+        <target state="new">Server garbage collection</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|ThreadPoolMaxThreads|Description">
+        <source>Specifies the maximum number of threads for the worker thread pool.</source>
+        <target state="new">Specifies the maximum number of threads for the worker thread pool.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|ThreadPoolMaxThreads|DisplayName">
+        <source>Maximum thread pool threads</source>
+        <target state="new">Maximum thread pool threads</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|ThreadPoolMinThreads|Description">
+        <source>Specifies the minimum number of threads for the worker thread pool.</source>
+        <target state="new">Specifies the minimum number of threads for the worker thread pool.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|ThreadPoolMinThreads|DisplayName">
+        <source>Minimimum thread pool threads</source>
+        <target state="new">Minimimum thread pool threads</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Runtime|Description">
+        <source>Specifies the applications's runtime configuration properties.</source>
+        <target state="new">Specifies the applications's runtime configuration properties.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Runtime|DisplayName">
+        <source>Runtime</source>
+        <target state="new">Runtime</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
