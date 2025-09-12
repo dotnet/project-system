@@ -499,6 +499,11 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
         <target state="translated">Plik wykonywalny debugowania „{0}” określony w profilu debugowania „{1}” nie istnieje.</target>
         <note />
       </trans-unit>
+      <trans-unit id="RetargetingSDKDescription">
+        <source>Download and Install .NET SDK {0}</source>
+        <target state="new">Download and Install .NET SDK {0}</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StartupObjectNotSet">
         <source>(Not set)</source>
         <target state="translated">(Nie ustawiono)</target>

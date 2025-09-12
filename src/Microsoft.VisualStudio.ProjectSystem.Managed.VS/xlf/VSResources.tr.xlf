@@ -499,6 +499,11 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
         <target state="translated">'{1}' hata ayıklama profilinde belirtilen '{0}' hata ayıklama yürütülebilir dosyası yok.</target>
         <note />
       </trans-unit>
+      <trans-unit id="RetargetingSDKDescription">
+        <source>Download and Install .NET SDK {0}</source>
+        <target state="new">Download and Install .NET SDK {0}</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StartupObjectNotSet">
         <source>(Not set)</source>
         <target state="translated">(Ayarlanmadı)</target>

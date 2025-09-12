@@ -28,12 +28,20 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.VS" />
+    <PackageReference Include="Microsoft.Deployment.DotNet.Releases" PrivateAssets="all" />
     <PackageReference Include="IsExternalInit" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include=".releases\.releases.json" />
+    <EmbeddedResource Include=".releases\10.0.releases.json" />
+    <EmbeddedResource Include=".releases\9.0.releases.json" />
+    <EmbeddedResource Include=".releases\8.0.releases.json" />
   </ItemGroup>
 
   <ItemGroup>

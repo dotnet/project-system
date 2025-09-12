@@ -499,6 +499,11 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">'{1}' 偵錯設定檔中指定的偵錯可執行檔 '{0}' 不存在。</target>
         <note />
       </trans-unit>
+      <trans-unit id="RetargetingSDKDescription">
+        <source>Download and Install .NET SDK {0}</source>
+        <target state="new">Download and Install .NET SDK {0}</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StartupObjectNotSet">
         <source>(Not set)</source>
         <target state="translated">(未設定)</target>

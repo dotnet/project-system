@@ -66,6 +66,7 @@
     <PackageVersion Include="System.Formats.Asn1"                                                    Version="8.0.1" />
     <PackageVersion Include="Microsoft.VSDesigner"                                                   Version="18.0.1755-preview.1" />
     <PackageVersion Include="VsWebSite.Interop"                                                      Version="18.0.1755-preview.1" />
+    <PackageVersion Include="Microsoft.Deployment.DotNet.Releases"                                   Version="2.0.0-rtm.1.25064.1" />
 
     <!-- CPS -->
     <!-- Find versions at https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl -->
