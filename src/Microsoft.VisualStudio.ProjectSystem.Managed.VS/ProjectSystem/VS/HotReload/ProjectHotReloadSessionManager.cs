@@ -73,14 +73,16 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                     string name = Path.GetFileNameWithoutExtension(_unconfiguredProject.FullPath);
                     HotReloadSessionState hotReloadSessionState = new((HotReloadSessionState sessionState) =>
                     {
+                        int count;
                         lock (_activeSessionStates)
                         {
                             _activeSessionStates.Remove(sessionState);
+                            count = _activeSessionStates.Count;
+                        }
 
-                            if (_activeSessionStates.Count == 0)
-                            {
-                                _threadingService.ExecuteSynchronously(() => _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: false));
-                            }
+                        if (count == 0)
+                        {
+                            _threadingService.ExecuteSynchronously(() => _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: false));
                         }
                     }, _threadingService);
 
