@@ -28,10 +28,10 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
     // another. To ensure consistent and proper behavior we need to serialize access.
     private readonly ReentrantSemaphore _semaphore;
 
-    private readonly List<HotReloadSessionCallback> _activeSessionState = [];
-    private HotReloadSessionCallback? _pendingSession = null;
+    private readonly List<HotReloadSessionState> _activeSessionStates = [];
+    private HotReloadSessionState? _pendingSessionState = null;
     private int _nextUniqueId = 1;
-    public bool HasActiveHotReloadSessions => _activeSessionState.Count != 0;
+    public bool HasActiveHotReloadSessions => _activeSessionStates.Count != 0;
 
     [ImportingConstructor]
     public ProjectHotReloadSessionManager(
@@ -56,12 +56,6 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             mode: ReentrantSemaphore.ReentrancyMode.Freeform);
     }
 
-    [Obsolete("Use ActivateSessionAsync overload that takes IVsLaunchedProcess and VsDebugTargetProcessInfo")]
-    public Task ActivateSessionAsync(int processId, string projectName)
-    {
-        throw new InvalidOperationException("This overload of ActivateSessionAsync should not be called. Use another ActiveSessionAsync instead.");
-    }
-
     public Task<bool> TryCreatePendingSessionAsync(
         IProjectHotReloadLaunchProvider launchProvider,
         IDictionary<string, string> environmentVariables,
@@ -77,15 +71,15 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 if (await ProjectSupportsStartupHooksAsync())
                 {
                     string name = Path.GetFileNameWithoutExtension(_unconfiguredProject.FullPath);
-                    HotReloadSessionCallback state = new((HotReloadSessionCallback session) =>
+                    HotReloadSessionState hotReloadSessionState = new((HotReloadSessionState sessionState) =>
                     {
-                        lock (_activeSessionState)
+                        lock (_activeSessionStates)
                         {
-                            _activeSessionState.Remove(session);
+                            _activeSessionStates.Remove(sessionState);
 
-                            if (_activeSessionState.Count == 0)
+                            if (_activeSessionStates.Count == 0)
                             {
-                                _threadingService.ExecuteSynchronously(() => _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(false));
+                                _threadingService.ExecuteSynchronously(() => _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: false));
                             }
                         }
                     }, _threadingService);
@@ -93,15 +87,15 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                     IProjectHotReloadSession projectHotReloadSession = _hotReloadAgent.CreateHotReloadSession(
                         name: name,
                         id: _nextUniqueId++,
-                        callback: state,
+                        callback: hotReloadSessionState,
                         launchProfile: launchProfile,
                         configuredProject: _configuredProject,
                         debugLaunchOptions: launchOptions);
 
-                    state.Session = projectHotReloadSession;
+                    hotReloadSessionState.Session = projectHotReloadSession;
                     await projectHotReloadSession.ApplyLaunchVariablesAsync(environmentVariables, default);
 
-                    _pendingSession = state;
+                    _pendingSessionState = hotReloadSessionState;
 
                     return true;
                 }
@@ -123,7 +117,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 }
             }
 
-            _pendingSession = null;
+            _pendingSessionState = null;
             return false;
         }
     }
@@ -139,12 +133,12 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
         Task DisposeCoreInternalAsync()
         {
-            foreach (HotReloadSessionCallback sessionState in _activeSessionState)
+            foreach (HotReloadSessionState sessionState in _activeSessionStates)
             {
                 sessionState.Process?.Dispose();
             }
 
-            _activeSessionState.Clear();
+            _activeSessionStates.Clear();
 
             return Task.CompletedTask;
         }
@@ -178,18 +172,14 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             // Run the updates in parallel
             List<Task>? updateTasks = null;
 
-            foreach (HotReloadSessionCallback sessionState in _activeSessionState)
+            foreach (HotReloadSessionState sessionState in _activeSessionStates)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (sessionState.Session is IProjectHotReloadSessionInternal sessionInternal)
+                if (sessionState.Session is IProjectHotReloadSessionInternal { DeltaApplier: {} deltaApplier })
                 {
-                    IDeltaApplier? deltaApplier = sessionInternal.DeltaApplier;
-                    if (deltaApplier is not null)
-                    {
-                        updateTasks ??= [];
-                        updateTasks.Add(applyFunction(deltaApplier, cancellationToken));
-                    }
+                    updateTasks ??= [];
+                    updateTasks.Add(applyFunction(deltaApplier, cancellationToken));
                 }
             }
 
@@ -201,17 +191,19 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         }
     }
 
-    public async Task ActivateSessionAsync(IVsLaunchedProcess launchedProcess, VsDebugTargetProcessInfo vsDebugTargetProcessInfo)
+    public Task ActivateSessionAsync(IVsLaunchedProcess launchedProcess, VsDebugTargetProcessInfo vsDebugTargetProcessInfo)
     {
-        await _semaphore.ExecuteAsync(ActiveSessionInternalAsync);
+        Assumes.NotNull(_pendingSessionState);
 
-        async Task ActiveSessionInternalAsync()
+        return _semaphore.ExecuteAsync(ActivateSessionInternalAsync);
+
+        async Task ActivateSessionInternalAsync()
         {
-            if (_pendingSession is not null && _pendingSession.Session is IProjectHotReloadSession session)
+            if (_pendingSessionState is { Session: IProjectHotReloadSession session })
             {
                 Process process = Process.GetProcessById((int)vsDebugTargetProcessInfo.dwProcessId);
-                _pendingSession.LaunchedProcess = launchedProcess;
-                _pendingSession.Process = process;
+                _pendingSessionState.LaunchedProcess = launchedProcess;
+                _pendingSessionState.Process = process;
 
                 if (!process.HasExited)
                 {
@@ -221,24 +213,23 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                     };
                     process.EnableRaisingEvents = true;
 
-                    await _pendingSession.Session.StartSessionAsync(CancellationToken.None);
-                    lock (_activeSessionState)
+                    await _pendingSessionState.Session.StartSessionAsync(CancellationToken.None);
+                    lock (_activeSessionStates)
                     {
-                        _activeSessionState.Add(_pendingSession);
+                        _activeSessionStates.Add(_pendingSessionState);
                     }
                     await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: true);
                 }
 
-                _pendingSession = null;
+                _pendingSessionState = null;
             }
         }
     }
 
-    private sealed class HotReloadSessionCallback(
-        Action<HotReloadSessionCallback> removeSessionState,
+    private sealed class HotReloadSessionState(
+        Action<HotReloadSessionState> removeSessionState,
         IProjectThreadingService threadingService) : IProjectHotReloadSessionCallback
     {
-        private static readonly Task<bool> s_trueTask = Task.FromResult(true);
         public bool SupportsRestart => Session is not null;
 
         public IProjectHotReloadSession? Session { get; set; }
@@ -259,12 +250,12 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
         public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
         {
-            return s_trueTask;
+            return TaskResult.True;
         }
 
         public async Task<bool> StopProjectAsync(CancellationToken cancellationToken)
         {
-            if( Session is null || LaunchedProcess is null)
+            if(Session is null || LaunchedProcess is null)
             {
                 return true;
             }
@@ -272,7 +263,8 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             // need to call on UI thread
             await threadingService.SwitchToUIThread(cancellationToken);
 
-            LaunchedProcess.Terminate(1);
+            // Ignore the debug option launching flags since we're just terminating the process, not the entire debug session
+            LaunchedProcess.Terminate(ignoreLaunchFlags: 1);
 
             if (Session is not null)
             {

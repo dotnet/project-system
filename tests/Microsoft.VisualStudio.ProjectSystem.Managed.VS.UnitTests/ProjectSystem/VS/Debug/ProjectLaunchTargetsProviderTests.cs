@@ -4,11 +4,9 @@ using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
-using Microsoft.VisualStudio.ProjectSystem.TestHooks;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
@@ -1105,8 +1103,6 @@ public class ProjectLaunchTargetsProviderTests
 
         var configuredProjectServices = ConfiguredProjectServicesFactory.Create(
             projectPropertiesProvider: IProjectPropertiesProviderFactory.Create(null, commonProps: projectProperties));
-
-
 
         var capabilitiesScope = scope ?? IProjectCapabilitiesScopeFactory.Create(capabilities: []);
 
