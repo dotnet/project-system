@@ -31,11 +31,11 @@
     <PackageVersion Include="System.IO.Pipelines"                                                    Version="9.0.0" />
     <PackageVersion Include="StreamJsonRpc"                                                          Version="2.23.32-alpha" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions"                              Version="9.0.0" />
-    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Data"                                  Version="10.0.100-rc.2.25464.102"/>
-    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.PipeRpc"                               Version="10.0.100-rc.2.25464.102"/>
-    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Host"                                  Version="10.0.100-rc.2.25464.102"/>
-    <PackageVersion Include="Microsoft.DotNet.HotReload.Client"                                      Version="10.0.100-rc.2.25464.102"/>
-    <PackageVersion Include="Microsoft.DotNet.HotReload.Web.Middleware"                              Version="10.0.100-rc.2.25464.102"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Data"                                  Version="10.0.100-rc.2.25466.104"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.PipeRpc"                               Version="10.0.100-rc.2.25466.104"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Host"                                  Version="10.0.100-rc.2.25466.104"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Client"                                      Version="10.0.100-rc.2.25466.104"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Web.Middleware"                              Version="10.0.100-rc.2.25466.104"/>
 
     <!-- VS SDK -->
     <!-- https://dev.azure.com/azure-public/vside/_artifacts/feed/vssdk -->
