@@ -68,9 +68,10 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         {
             if (await ProjectSupportsHotReloadAsync())
             {
+                var projectName = _unconfiguredProject.GetProjectName();
+
                 if (await ProjectSupportsStartupHooksAsync())
                 {
-                    string name = Path.GetFileNameWithoutExtension(_unconfiguredProject.FullPath);
                     HotReloadSessionState hotReloadSessionState = new((HotReloadSessionState sessionState) =>
                     {
                         int count;
@@ -87,7 +88,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                     }, _threadingService);
 
                     IProjectHotReloadSession projectHotReloadSession = _hotReloadAgent.CreateHotReloadSession(
-                        name: name,
+                        name: projectName,
                         id: _nextUniqueId++,
                         callback: hotReloadSessionState,
                         launchProfile: launchProfile,
@@ -105,7 +106,6 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 else
                 {
                     // If startup hooks are not supported then tell the user why Hot Reload isn't available.
-                    string projectName = Path.GetFileNameWithoutExtension(_unconfiguredProject.FullPath);
 
                     WriteOutputMessage(
                         new HotReloadLogMessage(

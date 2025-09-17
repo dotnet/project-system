@@ -213,7 +213,7 @@ csharp_preserve_single_line_blocks = true
 csharp_prefer_braces = false:none
 
 # Using statements
-csharp_using_directive_placement = outside_namespace:error
+csharp_using_directive_placement = outside_namespace_ignoring_aliases:error
 
 # Modifier settings
 csharp_prefer_static_local_function = true:warning
@@ -263,7 +263,7 @@ dotnet_diagnostic.CA1055.severity = none        # Uri return values should not b
 dotnet_diagnostic.CA1056.severity = none        # Uri properties should not be strings
 dotnet_diagnostic.CA1060.severity = none        # Move P/Invokes to NativeMethods class
 dotnet_diagnostic.CA1062.severity = none        # Validate arguments of public methods
-dotnet_diagnostic.CA1063.severity = warning     # Implement IDisposable Correctly
+dotnet_diagnostic.CA1063.severity = none        # Implement IDisposable Correctly: https://github.com/dotnet/roslyn-analyzers/issues/4801
 dotnet_diagnostic.CA1064.severity = none        # Exceptions should be public
 dotnet_diagnostic.CA1065.severity = none        # Do not raise exceptions in unexpected locations
 dotnet_diagnostic.CA1066.severity = none        # Type {0} should implement IEquatable<T> because it overrides Equals

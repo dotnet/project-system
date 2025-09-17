@@ -1,11 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Versioning;
+using Microsoft.DotNet.HotReload;
 using Microsoft.VisualStudio.Debugger.Contracts.EditAndContinue;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
@@ -17,28 +20,28 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
     private readonly ConfiguredProject _configuredProject;
     private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
-    private readonly Lazy<IManagedDeltaApplierCreator> _deltaApplierCreator;
     private readonly IProjectHotReloadSessionCallback _callback;
     private readonly IProjectHotReloadBuildManager _buildManager;
     private readonly ILaunchProfile _launchProfile;
     private readonly DebugLaunchOptions _debugLaunchOptions;
+    private readonly IHotReloadDebugStateProvider _debugStateProvider;
     private readonly IProjectHotReloadLaunchProvider _launchProvider;
 
     private bool _sessionActive;
-    private IDeltaApplier? _deltaApplier;
+    private IDeltaApplier? _lazyDeltaApplier;
 
     public ProjectHotReloadSession(
         string name,
         int id,
         Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
         Lazy<IHotReloadDiagnosticOutputService> hotReloadOutputService,
-        Lazy<IManagedDeltaApplierCreator> deltaApplierCreator,
         IProjectHotReloadSessionCallback callback,
         IProjectHotReloadBuildManager buildManager,
         IProjectHotReloadLaunchProvider launchProvider,
         ConfiguredProject configuredProject,
         ILaunchProfile launchProfile,
-        DebugLaunchOptions debugLaunchOptions)
+        DebugLaunchOptions debugLaunchOptions,
+        IHotReloadDebugStateProvider debugStateProvider)
     {
         Name = name;
         Id = id;
@@ -46,17 +49,38 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         _configuredProject = configuredProject;
         _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
         _hotReloadOutputService = hotReloadOutputService;
-        _deltaApplierCreator = deltaApplierCreator;
         _callback = callback;
         _launchProfile = launchProfile;
         _buildManager = buildManager;
         _launchProvider = launchProvider;
         _debugLaunchOptions = debugLaunchOptions;
+        _debugStateProvider = debugStateProvider;
     }
 
-    // IProjectHotReloadSession
+    /// <summary>
+    /// Returns true and the path to the client agent implementation binary if the application needs the agent to be injected.
+    /// </summary>
+    private static string GetStartupHookPath(Version applicationTargetFrameworkVersion)
+    {
+        var hookTargetFramework = applicationTargetFrameworkVersion.Major >= 10 ? "net10.0" : "net6.0";
+        return GetInjectedAssemblyPath(hookTargetFramework, "Microsoft.Extensions.DotNetDeltaApplier");
+    }
 
-    public IDeltaApplier? DeltaApplier => _deltaApplier;
+    internal static string GetInjectedAssemblyPath(string targetFramework, string assemblyName)
+        => Path.Combine(Path.GetDirectoryName(typeof(DeltaApplier).Assembly.Location)!, "HotReload", targetFramework, assemblyName + ".dll");
+
+    public IDeltaApplier? DeltaApplier
+        => _lazyDeltaApplier;
+
+    [MemberNotNull(nameof(_lazyDeltaApplier))]
+    private void RequireActiveSession()
+    {
+        if (!_sessionActive)
+            throw new InvalidOperationException($"Hot Reload session has not started");
+
+        if (_lazyDeltaApplier is null)
+            throw new InvalidOperationException();
+    }
 
     public async Task ApplyChangesAsync(CancellationToken cancellationToken)
     {
@@ -66,11 +90,68 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         }
     }
 
+    private async ValueTask<IDeltaApplier> GetOrCreateDeltaApplierAsync(CancellationToken cancellationToken)
+    {
+        var applier = _lazyDeltaApplier;
+        if (applier is not null)
+        {
+            return applier;
+        }
+
+        // The callback may provide a custom delta applier (e.g. MAUIDeltaApplier)
+        applier = _callback.GetDeltaApplier();
+        if (applier is null)
+        {
+            var targetFramework = await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty);
+            var targetFrameworkMoniker = await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkMonikerProperty);
+            var targetFrameworkName = new FrameworkName(targetFrameworkMoniker);
+
+            var loggerFactory = new HotReloadLoggerFactory(
+                _hotReloadOutputService.Value,
+                projectName: Name,
+                targetFramework,
+                sessionInstanceId: Id);
+
+            var clientLogger = loggerFactory.CreateLogger("Project");
+            var agentLogger = loggerFactory.CreateLogger("Agent");
+
+            HotReloadClient client;
+            if (_callback is IProjectHotReloadSessionWebAssemblyCallback wasmCallback)
+            {
+                var hotReloadCapabilitiesStr = await _configuredProject.GetProjectPropertyValueAsync("WebAssemblyHotReloadCapabilities");
+                var hotReloadCapabilities = hotReloadCapabilitiesStr.Split([';'], StringSplitOptions.RemoveEmptyEntries).Select(static c => c.Trim()).ToImmutableArray();
+                var browserRefreshServer = wasmCallback.BrowserRefreshServerAccessor.Server;
+
+                client = new WebAssemblyHotReloadClient(clientLogger, agentLogger, browserRefreshServer, hotReloadCapabilities, targetFrameworkName.Version, suppressBrowserRequestsForTesting: false);
+            }
+            else
+            {
+                client = new DefaultHotReloadClient(clientLogger, agentLogger, GetStartupHookPath(targetFrameworkName.Version), enableStaticAssetUpdates: true);
+            }
+
+            var suppressDeltaApplication = _callback is ISuppressDeltaApplication { SuppressDeltaApplication: true };
+            applier = new DeltaApplier(client, _debugStateProvider, suppressDeltaApplication);
+        }
+
+        if (applier is IDeltaApplierInternal applierInternal)
+        {
+            // Have to switch to background thread so that we don't block UI thread reading from the pipe:
+            await TaskScheduler.Default;
+
+            await applierInternal.InitiateConnectionAsync(cancellationToken);
+        }
+
+        _lazyDeltaApplier = applier;
+        return applier;
+    }
+
+    /// <summary>
+    /// Update environment of the process to be launched.
+    /// </summary>
     public async Task<bool> ApplyLaunchVariablesAsync(IDictionary<string, string> envVars, CancellationToken cancellationToken)
     {
-        EnsureDeltaApplierForSession();
-
-        return await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVars, cancellationToken);
+        var applier = await GetOrCreateDeltaApplierAsync(cancellationToken);
+        return await applier.ApplyProcessEnvironmentVariablesAsync(envVars, cancellationToken);
     }
 
     // TODO: remove
@@ -102,50 +183,44 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
             }
         };
 
-        DebugTrace($"start session for project '{_configuredProject.UnconfiguredProject.FullPath}' with TFM '{targetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
+        DebugTrace($"Start session for project '{_configuredProject.UnconfiguredProject.FullPath}' with TFM '{targetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
 
         var processInfo = new ManagedEditAndContinueProcessInfo();
         await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
 
         WriteToOutputWindow(Resources.HotReloadStartSession, default);
+
+        if (await GetOrCreateDeltaApplierAsync(cancellationToken) is IDeltaApplierInternal applierInternal)
+        {
+            await applierInternal.InitializeApplicationAsync(cancellationToken);
+        }
+
         _sessionActive = true;
-        EnsureDeltaApplierForSession();
     }
 
     public async Task StopSessionAsync(CancellationToken cancellationToken)
     {
-        if (_sessionActive)
-        {
-            _sessionActive = false;
-            await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
+        RequireActiveSession();
 
-            WriteToOutputWindow(Resources.HotReloadStopSession, default);
-        }
+        _sessionActive = false;
+        _lazyDeltaApplier.Dispose();
+        _lazyDeltaApplier = null;
+
+        await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
+        WriteToOutputWindow(Resources.HotReloadStopSession, default);
     }
-
-    // IManagedHotReloadAgent
 
     public async ValueTask ApplyUpdatesAsync(ImmutableArray<ManagedHotReloadUpdate> updates, CancellationToken cancellationToken)
     {
-        if (!_sessionActive)
-        {
-            DebugTrace($"{nameof(ApplyUpdatesAsync)} called but the session is not active.");
-            return;
-        }
-
-        if (_deltaApplier is null)
-        {
-            DebugTrace($"{nameof(ApplyUpdatesAsync)} called but we have no delta applier.");
-            return;
-        }
+        RequireActiveSession();
 
         try
         {
             WriteToOutputWindow(Resources.HotReloadSendingUpdates, cancellationToken, HotReloadVerbosity.Detailed);
 
-            ApplyResult result = await _deltaApplier.ApplyUpdatesAsync(updates, cancellationToken);
+            ApplyResult result = await _lazyDeltaApplier.ApplyUpdatesAsync(updates, cancellationToken);
 
-            if (result is ApplyResult.Success or ApplyResult.SuccessRefreshUI)
+            if (result is ApplyResult.Success)
             {
                 WriteToOutputWindow(Resources.HotReloadApplyUpdatesSuccessful, cancellationToken, HotReloadVerbosity.Detailed);
 
@@ -155,25 +230,30 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception e) when (LogAndPropagate(e, cancellationToken))
         {
-            WriteToOutputWindow(
-                string.Format(Resources.HotReloadApplyUpdatesFailure, $"{ex.GetType()}: {ex.Message}"),
-                cancellationToken,
-                errorLevel: HotReloadDiagnosticErrorLevel.Error);
-            throw;
+            // unreachable
         }
     }
 
-    public async ValueTask<ImmutableArray<string>> GetCapabilitiesAsync(CancellationToken cancellationToken)
+    private bool LogAndPropagate(Exception e, CancellationToken cancellationToken)
     {
-        // Delegate to the delta applier for the session
-        if (_deltaApplier is not null)
+        if (e is not OperationCanceledException)
         {
-            return await _deltaApplier.GetCapabilitiesAsync(cancellationToken);
+            WriteToOutputWindow(
+                string.Format(Resources.HotReloadApplyUpdatesFailure, $"{e.GetType()}: {e.Message}"),
+                cancellationToken,
+                errorLevel: HotReloadDiagnosticErrorLevel.Error);
         }
 
-        return [];
+        return false;
+    }
+
+    public ValueTask<ImmutableArray<string>> GetCapabilitiesAsync(CancellationToken cancellationToken)
+    {
+        RequireActiveSession();
+
+        return _lazyDeltaApplier.GetCapabilitiesAsync(cancellationToken);
     }
 
     public ValueTask ReportDiagnosticsAsync(ImmutableArray<ManagedHotReloadDiagnostic> diagnostics, CancellationToken cancellationToken)
@@ -243,14 +323,6 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
                 instanceId: (uint)Id,
                 errorLevel: HotReloadDiagnosticErrorLevel.Info),
             CancellationToken.None);
-    }
-
-    [MemberNotNull(nameof(_deltaApplier))]
-    private void EnsureDeltaApplierForSession()
-    {
-        _deltaApplier ??= _callback.GetDeltaApplier() ?? _deltaApplierCreator.Value.CreateManagedDeltaApplier(runtimeVersion: "0.0"); // the version is not used, just needs to parse
-
-        Assumes.NotNull(_deltaApplier);
     }
 
     public ValueTask<int?> GetTargetLocalProcessIdAsync(CancellationToken cancellationToken)

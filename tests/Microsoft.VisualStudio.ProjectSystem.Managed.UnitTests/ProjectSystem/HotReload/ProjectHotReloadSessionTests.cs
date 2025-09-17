@@ -325,7 +325,7 @@ public class ProjectHotReloadSessionTests
         // Session is not started/active
 
         // Act
-        await session.StopSessionAsync(CancellationToken.None);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => session.StopSessionAsync(CancellationToken.None));
 
         // Assert
         hotReloadAgentManagerClient.Verify(
@@ -381,7 +381,7 @@ public class ProjectHotReloadSessionTests
         var updates = ImmutableArray.Create<ManagedHotReloadUpdate>();
 
         // Act
-        await session.ApplyUpdatesAsync(updates, CancellationToken.None);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => session.ApplyUpdatesAsync(updates, CancellationToken.None).AsTask());
 
         // Assert
         deltaApplier.Verify(
@@ -555,16 +555,16 @@ public class ProjectHotReloadSessionTests
         int id = 0,
         Lazy<IHotReloadAgentManagerClient>? hotReloadAgentManagerClient = null,
         Lazy<IHotReloadDiagnosticOutputService>? hotReloadOutputService = null,
-        Lazy<IManagedDeltaApplierCreator>? deltaApplierCreator = null,
         IProjectHotReloadSessionCallback? callback = null,
         ConfiguredProject? configuredProject = null,
         ILaunchProfile? launchProfile = null,
         DebugLaunchOptions debugLaunchOptions = DebugLaunchOptions.NoDebug,
         IProjectHotReloadBuildManager? buildManager = null,
-        IProjectHotReloadLaunchProvider? launchProvider = null)
+        IProjectHotReloadLaunchProvider? launchProvider = null,
+        IHotReloadDebugStateProvider? debugStateProvider = null)
     {
-        hotReloadAgentManagerClient ??= new Lazy<IHotReloadAgentManagerClient>(() => Mock.Of<IHotReloadAgentManagerClient>());
-        hotReloadOutputService ??= new Lazy<IHotReloadDiagnosticOutputService>(() => Mock.Of<IHotReloadDiagnosticOutputService>());
+        hotReloadAgentManagerClient ??= new(Mock.Of<IHotReloadAgentManagerClient>);
+        hotReloadOutputService ??= new(Mock.Of<IHotReloadDiagnosticOutputService>);
 
         var mockDeltaApplier = new Mock<IDeltaApplier>();
         mockDeltaApplier.Setup(d => d.ApplyProcessEnvironmentVariablesAsync(It.IsAny<IDictionary<string, string>>(), It.IsAny<CancellationToken>()))
@@ -574,16 +574,13 @@ public class ProjectHotReloadSessionTests
         mockDeltaApplier.Setup(d => d.GetCapabilitiesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync([]);
 
-        var mockDeltaApplierCreator = new Mock<IManagedDeltaApplierCreator>();
-        mockDeltaApplierCreator.Setup(c => c.CreateManagedDeltaApplier(It.IsAny<string>()))
-            .Returns(mockDeltaApplier.Object);
-
-        deltaApplierCreator ??= new Lazy<IManagedDeltaApplierCreator>(() => mockDeltaApplierCreator.Object);
-
         callback ??= Mock.Of<IProjectHotReloadSessionCallback>(c =>
             c.GetDeltaApplier() == mockDeltaApplier.Object &&
             c.StopProjectAsync(It.IsAny<CancellationToken>()) == Task.FromResult(true) &&
             c.OnAfterChangesAppliedAsync(It.IsAny<CancellationToken>()) == Task.CompletedTask);
+
+        debugStateProvider ??= Mock.Of<IHotReloadDebugStateProvider>(c =>
+            c.IsSuspendedAsync(It.IsAny<CancellationToken>()) == new ValueTask<bool>(false));
 
         launchProfile ??= new Mock<ILaunchProfile>().Object;
         buildManager ??= new Mock<IProjectHotReloadBuildManager>().Object;
@@ -595,13 +592,13 @@ public class ProjectHotReloadSessionTests
             id,
             hotReloadAgentManagerClient,
             hotReloadOutputService,
-            deltaApplierCreator,
             callback,
             buildManager,
             launchProvider,
             configuredProject,
             launchProfile,
-            debugLaunchOptions);
+            debugLaunchOptions,
+            debugStateProvider);
     }
 
     private static ConfiguredProject CreateConfiguredProjectWithCommonProperties(string targetFramework = "net6.0", string projectPath = "C:\\Test\\Project.csproj")
