@@ -85,10 +85,10 @@ internal sealed class VisualStudioBrowserRefreshServer(
     {
         var httpListener = new HttpListener();
 
-        httpListener.Prefixes.Add($"https://localhost:{sslPort}/{projectName}/");
+        httpListener.Prefixes.Add($"http://localhost:{port}/{projectName}/");
         if (sslPort >= 0)
         {
-            httpListener.Prefixes.Add($"http://localhost:{port}/{projectName}/");
+            httpListener.Prefixes.Add($"https://localhost:{sslPort}/{projectName}/");
         }
 
         return httpListener;

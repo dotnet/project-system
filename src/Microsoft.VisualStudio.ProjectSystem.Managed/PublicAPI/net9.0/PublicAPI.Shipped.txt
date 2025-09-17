@@ -217,7 +217,7 @@ Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession.Id.ge
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent.CreateHotReloadSession(string name, int id, Microsoft.VisualStudio.ProjectSystem.ConfiguredProject configuredProject, Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback callback, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile launchProfile, Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions debugLaunchOptions) -> Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionWebAssemblyCallback
-Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionWebAssemblyCallback.BrowserRefreshServerProvider.get -> Microsoft.VisualStudio.ProjectSystem.VS.HotReload.AbstractBrowserRefreshServerAccessor
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionWebAssemblyCallback.BrowserRefreshServerAccessor.get -> Microsoft.VisualStudio.ProjectSystem.VS.HotReload.AbstractBrowserRefreshServerAccessor
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.AbstractBrowserRefreshServerAccessor
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.AbstractBrowserRefreshServerAccessor.ConfigureLaunchEnvironment(System.Collections.Generic.IDictionary<string, string> builder, bool enableHotReload) -> void
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.AbstractBrowserRefreshServerAccessor.Dispose() -> void

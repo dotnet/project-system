@@ -33,7 +33,7 @@ internal sealed class DeltaApplier(HotReloadClient client, IHotReloadDebugStateP
 
     public async ValueTask InitializeApplicationAsync(CancellationToken cancellationToken)
     {
-        var _ = await client.GetUpdateCapabilitiesAsync(cancellationToken);
+        _ = await client.GetUpdateCapabilitiesAsync(cancellationToken);
 
         // TODO: apply initial updates?
         // https://devdiv.visualstudio.com/DevDiv/_workitems/edit/2571676

@@ -71,6 +71,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.NpmPack" PrivateAssets="all" />
   </ItemGroup>
 
+  <!--
+    Assemblies that facilitate Hot Reload within the application process.
+    When updating TFMs here also update ProjectHotReloadSession.GetStartupHookPath and VisualStudioBrowserRefreshServer.MiddlewareTargetFramework.
+  -->
   <ItemGroup>
     <Content Include="$(PkgMicrosoft_DotNet_HotReload_Web_Middleware)\lib\net6.0\Microsoft.AspNetCore.Watch.BrowserRefresh.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
