@@ -76,7 +76,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                         int count;
                         lock (_activeSessionStates)
                         {
-                            _activeSessionStates.Remove(sessionState);
+                            Assumes.True(_activeSessionStates.Remove(sessionState), "Cannot remove unknown hot reload session.");
                             count = _activeSessionStates.Count;
                         }
 
@@ -97,6 +97,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                     hotReloadSessionState.Session = projectHotReloadSession;
                     await projectHotReloadSession.ApplyLaunchVariablesAsync(environmentVariables, default);
 
+                    Assumes.True(_pendingSessionState is null, "Attempt to overwrite unprocessed pending hot reload sessions state.");
                     _pendingSessionState = hotReloadSessionState;
 
                     return true;
@@ -114,8 +115,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                             null,
                             HotReloadDiagnosticOutputService.GetProcessId(),
                             HotReloadDiagnosticErrorLevel.Warning
-                        ),
-                        default);
+                        ));
                 }
             }
 
@@ -146,7 +146,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         }
     }
 
-    private void WriteOutputMessage(HotReloadLogMessage hotReloadLogMessage, CancellationToken cancellationToken) => _hotReloadDiagnosticOutputService.Value.WriteLine(hotReloadLogMessage, cancellationToken);
+    private void WriteOutputMessage(HotReloadLogMessage hotReloadLogMessage, CancellationToken cancellationToken = default) => _hotReloadDiagnosticOutputService.Value.WriteLine(hotReloadLogMessage, cancellationToken);
 
     /// <summary>
     /// Checks if the project meets the basic requirements to support Hot Reload. Note that there may be other, specific
@@ -195,7 +195,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
     public Task ActivateSessionAsync(IVsLaunchedProcess launchedProcess, VsDebugTargetProcessInfo vsDebugTargetProcessInfo)
     {
-        Assumes.NotNull(_pendingSessionState);
+        Assumes.True(_pendingSessionState is not null, "No pending hot reload session to activate.");
 
         return _semaphore.ExecuteAsync(ActivateSessionInternalAsync);
 

@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 /// <summary>
 /// Implementations of <see cref="IDebugProfileLaunchTargetsProvider"/> may optionally
 /// implement this version of this interface to get access to <see cref="IVsLaunchedProcess"/>
-/// in order to temrinate the process while ignoring existing debug option flags.
+/// in order to terminate the process while ignoring existing debug option flags.
 /// </summary>
 public interface IDebugProfileLaunchTargetsProvider5 : IDebugProfileLaunchTargetsProvider4
 {
