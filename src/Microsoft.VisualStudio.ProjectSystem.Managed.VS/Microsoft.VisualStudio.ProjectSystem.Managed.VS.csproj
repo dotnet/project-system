@@ -29,6 +29,7 @@
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.VS" />
     <PackageReference Include="IsExternalInit" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Debugger.Interop.18.0" />
   </ItemGroup>
 
   <ItemGroup>

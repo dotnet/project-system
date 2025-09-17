@@ -4,8 +4,9 @@ using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.TestHooks;
+using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
-namespace Microsoft.VisualStudio.ProjectSystem;
+namespace Microsoft.VisualStudio.ProjectSystem.VS;
 
 internal static class ConfiguredProjectServicesFactory
 {
@@ -23,6 +24,7 @@ internal static class ConfiguredProjectServicesFactory
         var mock = new Mock<ConfiguredProjectServices>();
 
         var exportedMocks = mock.As<IExportProviderTestHook>();
+        exportedMocks.Setup(s => s.GetExportedValue<IProjectHotReloadSessionManager>()).Returns(IProjectHotReloadSessionManagerFactory.Create());
         exportedMocks.Setup(s => s.GetExportedValue<IProjectHotReloadLaunchProvider>()).Returns(IProjectHotReloadLaunchProviderFactory.Create());
 
         mock.Setup(c => c.PropertyPagesCatalog).Returns(propertyPagesCatalogProvider!);

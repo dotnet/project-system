@@ -557,7 +557,6 @@ public class ProjectHotReloadSessionTests
         Lazy<IHotReloadDiagnosticOutputService>? hotReloadOutputService = null,
         Lazy<IManagedDeltaApplierCreator>? deltaApplierCreator = null,
         IProjectHotReloadSessionCallback? callback = null,
-        IProjectHotReloadSessionManager? sessionManager = null,
         ConfiguredProject? configuredProject = null,
         ILaunchProfile? launchProfile = null,
         DebugLaunchOptions debugLaunchOptions = DebugLaunchOptions.NoDebug,
