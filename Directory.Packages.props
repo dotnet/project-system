@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <MicrosoftDotNetHotReloadPackageVersion>10.0.100-rc.2.25466.104</MicrosoftDotNetHotReloadPackageVersion>
+    <MicrosoftDotNetHotReloadPackageVersion>10.0.100-rc.2.25468.104</MicrosoftDotNetHotReloadPackageVersion>
   </PropertyGroup>
 
   <!--

@@ -227,5 +227,3 @@ Microsoft.VisualStudio.ProjectSystem.VS.HotReload.AbstractBrowserRefreshServerAc
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.AbstractBrowserRefreshServerAccessor.SendWaitMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.AbstractBrowserRefreshServerAccessor.StartServerAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.AbstractBrowserRefreshServerAccessor.UpdateStaticAssetsAsync(System.Collections.Generic.IEnumerable<string> relativeUrls, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.VS.HotReload.ISuppressDeltaApplication
-Microsoft.VisualStudio.ProjectSystem.VS.HotReload.ISuppressDeltaApplication.SuppressDeltaApplication.get -> bool
