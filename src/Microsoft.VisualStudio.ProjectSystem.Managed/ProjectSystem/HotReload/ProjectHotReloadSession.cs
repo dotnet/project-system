@@ -129,8 +129,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
                 client = new DefaultHotReloadClient(clientLogger, agentLogger, GetStartupHookPath(targetFrameworkName.Version), enableStaticAssetUpdates: true);
             }
 
-            var suppressDeltaApplication = _callback is ISuppressDeltaApplication { SuppressDeltaApplication: true };
-            applier = new DeltaApplier(client, _debugStateProvider, suppressDeltaApplication);
+            applier = new DeltaApplier(client, _debugStateProvider);
         }
 
         if (applier is IDeltaApplierInternal applierInternal)

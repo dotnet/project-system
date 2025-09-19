@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
-internal sealed class DeltaApplier(HotReloadClient client, IHotReloadDebugStateProvider debugStateProvider, bool suppressDeltaApplication) : IDeltaApplierInternal, IStaticAssetApplier
+internal sealed class DeltaApplier(HotReloadClient client, IHotReloadDebugStateProvider debugStateProvider) : IDeltaApplierInternal, IStaticAssetApplier
 {
     public void Dispose()
     {
@@ -48,9 +48,9 @@ internal sealed class DeltaApplier(HotReloadClient client, IHotReloadDebugStateP
         var managedCodeUpdates = ImmutableArray.CreateRange(updates,
             update => new HotReloadManagedCodeUpdate(
                 update.Module,
-                suppressDeltaApplication ? [] : update.MetadataDelta,
-                suppressDeltaApplication ? [] : update.ILDelta,
-                suppressDeltaApplication ? [] : update.PdbDelta,
+                update.MetadataDelta,
+                update.ILDelta,
+                update.PdbDelta,
                 update.UpdatedTypes,
                 update.RequiredCapabilities));
 
