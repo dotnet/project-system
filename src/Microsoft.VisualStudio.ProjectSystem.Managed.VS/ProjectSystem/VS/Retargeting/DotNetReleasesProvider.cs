@@ -2,6 +2,7 @@
 
 using System.Reflection;
 using Microsoft.Deployment.DotNet.Releases;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using NuGet;
@@ -64,9 +65,8 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
                         {
                             _ = await GetProductCollectionAsync(Path.Combine(AppDataPath, RetargtingAppDataFolder, ReleasesFileName), forceLocalFile: false);
                         }
-                        catch (Exception)
+                        catch
                         {
-                            // TODO: Log
                         }
                     });
                 }
@@ -142,11 +142,38 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
 
         if (sdkVersion is not null)
         {
-            // Try to find the requested SDK version
-            var requested = products.FirstOrDefault(p => p.ProductVersion.Equals(sdkVersion, StringComparison.OrdinalIgnoreCase));
-            if (requested is not null && !requested.IsSupported)
+            // Parse the major/minor version from the passed SDK version to find matching product
+            if (SemanticVersion.TryParse(sdkVersion, out var parsedSdkVersion))
             {
-                return requested.ProductVersion;
+                // Find the product that matches the major/minor version of the SDK
+                var matchingProduct = products.FirstOrDefault(p => 
+                {
+                    if (SemanticVersion.TryParse(p.ProductVersion, out var productVersion))
+                    {
+                        return productVersion.Version.Major == parsedSdkVersion.Version.Major && 
+                               productVersion.Version.Minor == parsedSdkVersion.Version.Minor;
+                    }
+
+                    return false;
+                });
+
+                if (matchingProduct is not null && matchingProduct.IsSupported)
+                {
+                    try
+                    {
+                        string? supportedSdkVersion = await GetLatestSupportedSdkVersionAsync(sdkVersion, includePreview, matchingProduct);
+
+                        if (supportedSdkVersion is not null)
+                        {
+                            return supportedSdkVersion;
+                        }   
+                    }
+                    catch (Exception)
+                    {
+                        // If we fail to get releases, fall back to returning the original version
+                        return sdkVersion;
+                    }
+                }
             }
         }
 
@@ -158,6 +185,44 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
                 (includePreview || p.SupportPhase != SupportPhase.GoLive))
             .OrderByDescending(p => SemanticVersion.TryParse(p.ProductVersion, out var v) ? v : new SemanticVersion(new Version(0, 0, 0)));
 
-        return filtered.FirstOrDefault()?.ProductVersion;
+        var latestProduct = filtered.FirstOrDefault();
+
+        if (latestProduct is not null)
+        {
+            string? supportedSdkVersion = await GetLatestSupportedSdkVersionAsync(sdkVersion, includePreview, latestProduct);
+
+            if (supportedSdkVersion is not null)
+            {
+                return supportedSdkVersion;
+            }
+        }
+
+        return null;
+
+        static async Task<string?> GetLatestSupportedSdkVersionAsync(string? currentVersion, bool includePreview, Product matchingProduct)
+        {
+            var releases = await matchingProduct.GetReleasesAsync();
+
+            // Find the latest SDK version from the releases that is not preview/go-live
+            var latestSdk = releases
+                .Where(r => r.Sdks?.Any() is true &&
+                           (includePreview || (matchingProduct.SupportPhase != SupportPhase.Preview && matchingProduct.SupportPhase != SupportPhase.GoLive)))
+                .SelectMany(r => r.Sdks)
+                .OrderByDescending(sdk => sdk.Version)
+                .FirstOrDefault();
+
+            if (latestSdk is not null)
+            {
+                if (currentVersion is not null 
+                    && string.Equals(currentVersion, latestSdk.Version.ToString(), StringComparison.OrdinalIgnoreCase))
+                {
+                    return currentVersion;
+                }
+
+                return latestSdk.DisplayVersion.ToString();
+            }
+
+            return null;
+        }
     }
 }
