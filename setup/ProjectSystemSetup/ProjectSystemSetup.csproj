@@ -41,7 +41,7 @@
       <Name>%(Filename)</Name>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
       <Ngen>true</Ngen>
-      <NgenPriority>1</NgenPriority>
+      <NgenPriority>2</NgenPriority>
     </ProjectReference>
   </ItemGroup>
 
