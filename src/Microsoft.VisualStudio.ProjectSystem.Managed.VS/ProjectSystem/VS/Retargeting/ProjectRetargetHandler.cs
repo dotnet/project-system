@@ -3,26 +3,36 @@
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Text.Json;
+using IFileSystem = Microsoft.VisualStudio.IO.IFileSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 
 [Export(typeof(IProjectRetargetHandler))]
 [AppliesTo(ProjectCapability.DotNet)]
 [Order(Order.Default)]
-internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler
+internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, IDisposable
 {
     private readonly UnconfiguredProject _unconfiguredProject;
     private readonly IDotNetReleasesProvider _releasesProvider;
-    private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _projectRetargetingService; 
+    private readonly IFileSystem _fileSystem;
+    private readonly IProjectThreadingService _projectThreadingService;
+    private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _projectRetargetingService;
+
+    private Guid _currentSdkDescriptionId = Guid.Empty;
+    private Guid _sdkRetargetId = Guid.Empty;
 
     [ImportingConstructor]
     public ProjectRetargetHandler(
         UnconfiguredProject unconfiguredProject,
         IDotNetReleasesProvider releasesProvider,
+        IFileSystem fileSystem,
+        IProjectThreadingService projectThreadingService,
         IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> projectRetargetingService)
     {
         _unconfiguredProject = unconfiguredProject;
         _releasesProvider = releasesProvider;
+        _fileSystem = fileSystem;
+        _projectThreadingService = projectThreadingService;
         _projectRetargetingService = projectRetargetingService;
     }
 
@@ -38,7 +48,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler
 
     public Task<IImmutableList<string>> GetAffectedFilesAsync(IProjectTargetChange projectTargetChange)
     {
-        // this is not called by the current retargeting flow, so we can return an empty list.
+        // empty file list, as we are only providing guidance.
         return Task.FromResult<IImmutableList<string>>(ImmutableList<string>.Empty);
     }
 
@@ -57,15 +67,6 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler
             return null;
         }
 
-        // see sample impl:
-        // https://devdiv.visualstudio.com/DevDiv/_git/VS?path=/src/env/vscore/package/Solutions/ProjectSystems/StubHierarchy.cs&version=GBdev/chzuluag/newIPARefactor&_a=contents
-
-        // prototype implementation - in the future we will determine the actual target change
-        //return GetPrototypeTargetChange(retargetingService);
-
-        // real implementation - determine if retarget is needed, and if so, register the targets
-        // after we don't need the prototype or workaround code, refactor this.
-        // it is factored like this to be able to switch between the two implementations easily
         return await GetTargetChangeAsync(retargetingService);
     }
 
@@ -80,53 +81,58 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler
             return null;
         }
 
-        // register the current and retarget versions, note there is a bug in the current implementation
-        // ultimately we will need to just set retarget. Right now, we need to register two
-        // targets, we want to create two distinct ones, as the bug workaround requires different guids
-        var currentSDKDescription = RetargetSDKDescription.Create(retargetVersion); // this won't be needed
-        var retargetDescription = RetargetSDKDescription.Create(retargetVersion);
+        if (_currentSdkDescriptionId == Guid.Empty)
+        {
+            // register the current and retarget versions, note there is a bug in the current implementation
+            // ultimately we will need to just set retarget. Right now, we need to register two
+            // targets, we want to create two distinct ones, as the bug workaround requires different guids
 
-        retargetingService.RegisterProjectTarget(currentSDKDescription);  // this wont be needed.
-        retargetingService.RegisterProjectTarget(retargetDescription);
+            var currentSDKDescription = RetargetSDKDescription.Create(retargetVersion); // this won't be needed
+            retargetingService.RegisterProjectTarget(currentSDKDescription);  // this wont be needed.
+            _currentSdkDescriptionId = currentSDKDescription.TargetId;
+        }
+
+        if (_sdkRetargetId == Guid.Empty)
+        {
+            var retargetSDKDescription = RetargetSDKDescription.Create(retargetVersion); // this won't be needed
+            retargetingService.RegisterProjectTarget(retargetSDKDescription);  // this wont be needed.
+            _sdkRetargetId = retargetSDKDescription.TargetId;
+        }
 
         return new TargetChange()
         {
-            NewTargetId = currentSDKDescription.TargetId, // this is for workaround only
+            NewTargetId = _currentSdkDescriptionId, // this is for workaround only
             //NewTargetId = Guid.Empty, // this is what we want ultimately
-            CurrentTargetId = retargetDescription.TargetId
+            CurrentTargetId = _sdkRetargetId
         };
     }
-        
-    //private static TargetChange GetPrototypeTargetChange(IVsTrackProjectRetargeting2 retargetingService)
-    //{
 
-    //    var currentSDKDescription = RetargetSDKDescription.Create("8.0.402");
-    //    var retargetDescription = RetargetSDKDescription.Create("8.0.402");
-
-    //    retargetingService.RegisterProjectTarget(currentSDKDescription);
-    //    retargetingService.RegisterProjectTarget(retargetDescription);
-
-    //    // consistent with current sample above, we set the current to the retarget, and new to empty
-    //    // since we arent really doing a retarget, just providing guidance
-    //    return new TargetChange()
-    //    {
-    //        NewTargetId = currentSDKDescription.TargetId,
-    //        //NewTargetId = Guid.Empty,
-    //        CurrentTargetId = retargetDescription.TargetId
-    //    };
-    //}
-
-    private async Task<string?> GetSdkVersionForProjectAsync()
+    private string? FindGlobalJsonPath(string startingDirectory)
     {
-        // TODO: implement a more robust way to get the SDK version for the project
-
-        // 1. Look for global.json in project or parent directories
-        var projectPath = _unconfiguredProject.FullPath;
-        var dir = Path.GetDirectoryName(projectPath);
+        var dir = startingDirectory;
         while (!string.IsNullOrEmpty(dir))
         {
             var globalJsonPath = Path.Combine(dir, "global.json");
-            if (File.Exists(globalJsonPath))
+            if (_fileSystem.FileExists(globalJsonPath))
+            {
+                return globalJsonPath;
+            }
+            dir = Path.GetDirectoryName(dir);
+        }
+
+        return null;
+    }
+
+    private async Task<string?> GetSdkVersionForProjectAsync()
+    {
+        // 1. Look for global.json in project or parent directories
+        var projectPath = _unconfiguredProject.FullPath;
+        var projectDirectory = Path.GetDirectoryName(projectPath);
+        
+        if (!string.IsNullOrEmpty(projectDirectory))
+        {
+            string? globalJsonPath = FindGlobalJsonPath(projectDirectory);
+            if (globalJsonPath is not null)
             {
                 try
                 {
@@ -138,10 +144,10 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler
                         return versionProp.GetString();
                     }
                 }
-                catch { /* ignore parse errors */ }
-                break;
+                catch /* ignore errors */
+                {
+                }
             }
-            dir = Path.GetDirectoryName(dir);
         }
 
         // 2. Fallback: use `dotnet --version` to get the default SDK
@@ -166,6 +172,30 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler
         catch
         {
             return null;
+        }
+    }
+
+    public void Dispose()
+    {
+        if (_currentSdkDescriptionId != Guid.Empty || _sdkRetargetId != Guid.Empty)
+        {
+            _projectThreadingService.JoinableTaskFactory.Run(async () =>
+            {
+                var retargetingService = await _projectRetargetingService.GetValueOrNullAsync();
+                if (retargetingService is not null)
+                {
+                    if (_currentSdkDescriptionId != Guid.Empty)
+                    {
+                        retargetingService.UnregisterProjectTarget(_currentSdkDescriptionId);
+                        _currentSdkDescriptionId = Guid.Empty;
+                    }
+                    if (_sdkRetargetId != Guid.Empty)
+                    {
+                        retargetingService.UnregisterProjectTarget(_sdkRetargetId);
+                        _sdkRetargetId = Guid.Empty;
+                    }
+                }
+            });
         }
     }
 }
