@@ -55,11 +55,16 @@
     </Compile>
   </ItemGroup>
 
-  <!-- Excludes the localized .xaml files from the VSIX which are added from the GetCopyToOutputDirectoryItems output group. Only the localized .dlls are needed in the VSIX. -->
-  <!-- For additional info, see: https://github.com/dotnet/project-system/issues/6612 -->
-  <Target Name="ExcludeLocalizedXamlFilesFromVSIX" AfterTargets="GetVsixSourceItems">
+  <Target Name="PostProcessVsixSourceItems" AfterTargets="GetVsixSourceItems">
     <ItemGroup>
+      <!-- Excludes the localized .xaml files from the VSIX which are added from the GetCopyToOutputDirectoryItems output group. Only the localized .dlls are needed in the VSIX. -->
+      <!-- For additional info, see: https://github.com/dotnet/project-system/issues/6612 -->
       <VSIXSourceItem Remove="$(ArtifactsObjDir)$(_ManagedProjectName)\$(TargetFramework)\$(_ManagedProjectName).xlf\**\*.xaml" />
+
+      <VSIXSourceItem Update="@(VSIXSourceItem)"
+                      Condition="'%(VSIXSourceItem.FileName)' == 'Microsoft.Extensions.DotNetDeltaApplier' or '%(VSIXSourceItem.FileName)' == 'Microsoft.AspNetCore.Watch.BrowserRefresh'">
+        <Ngen>false</Ngen>
+      </VSIXSourceItem>
     </ItemGroup>
   </Target>
 
