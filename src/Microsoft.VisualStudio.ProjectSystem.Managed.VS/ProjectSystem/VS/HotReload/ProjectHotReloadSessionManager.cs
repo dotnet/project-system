@@ -98,7 +98,6 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                     hotReloadSessionState.Session = projectHotReloadSession;
                     await projectHotReloadSession.ApplyLaunchVariablesAsync(environmentVariables, default);
 
-                    Assumes.True(_pendingSessionState is null, "Attempt to overwrite unprocessed pending hot reload sessions state.");
                     _pendingSessionState = hotReloadSessionState;
 
                     return true;
