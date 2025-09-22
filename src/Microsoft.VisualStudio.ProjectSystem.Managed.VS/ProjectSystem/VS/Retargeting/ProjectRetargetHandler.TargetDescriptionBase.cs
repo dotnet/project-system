@@ -54,9 +54,23 @@ internal partial class ProjectRetargetHandler
                 case (uint)__VSPTDPROPID.VSPTDPROPID_ProjectUnloadUntilRetargetedTaskPriority:
                     return (uint)__RETARGET_TASK_PRIORITY.RTP_High;
 
+                case (uint)__VSPTDPROPIDPrivate.VSPTDPROPID_SupportsNewUI:
+                    return true;
+
                 default:
                     return null!;
             }
+        }
+
+        /// <summary>
+        /// Private definition for a properties in a IVsProjectTargetDescription
+        /// Extends the properties specified in __VSPTDPROPID
+        /// </summary>
+#pragma warning disable IDE1006 // Naming Styles
+        public enum __VSPTDPROPIDPrivate
+#pragma warning restore IDE1006 // Naming Styles
+        {
+            VSPTDPROPID_SupportsNewUI = 1001
         }
     }
 }
