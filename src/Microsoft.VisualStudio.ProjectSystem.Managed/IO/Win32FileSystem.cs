@@ -69,6 +69,12 @@ internal class Win32FileSystem : IFileSystem
         await writer.WriteAsync(content);
     }
 
+    public async Task CreateFromStreamAsync(string path, Stream content)
+    {
+        using var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read, bufferSize: 4096, useAsync: true);
+        await content.CopyToAsync(stream);
+    }
+
     public DateTime GetLastFileWriteTimeOrMinValueUtc(string path)
     {
         if (TryGetLastFileWriteTimeUtc(path, out DateTime? result))

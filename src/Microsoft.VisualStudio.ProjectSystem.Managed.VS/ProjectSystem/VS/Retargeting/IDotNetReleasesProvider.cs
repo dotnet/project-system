@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.Deployment.DotNet.Releases;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 
 /// <summary>
@@ -16,8 +18,8 @@ internal interface IDotNetReleasesProvider
     /// <returns>
     /// A task that represents the asynchronous operation. The task result contains the supported or latest SDK version as a string, or null if no suitable version is found.
     /// </returns>
-    Task<string?> GetSupportedOrLatestSdkVersionAsync(
-        string? sdkVersion,
+    Task<ReleaseVersion?> GetSupportedOrLatestSdkVersionAsync(
+        ReleaseVersion? sdkVersion,
         bool includePreview = false,
         CancellationToken cancellationToken = default);
 }

@@ -42,6 +42,9 @@
     <EmbeddedResource Include=".releases\10.0.releases.json" />
     <EmbeddedResource Include=".releases\9.0.releases.json" />
     <EmbeddedResource Include=".releases\8.0.releases.json" />
+    <EmbeddedResource Include=".releases\7.0.releases.json" />
+    <EmbeddedResource Include=".releases\6.0.releases.json" />
+    <EmbeddedResource Include=".releases\5.0.releases.json" />
   </ItemGroup>
 
   <ItemGroup>

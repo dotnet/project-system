@@ -4,9 +4,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 
 internal partial class ProjectRetargetHandler
 {
-    internal class TargetChange() : IProjectTargetChange
+    internal class TargetChange : IProjectTargetChange
     {
-       public Guid NewTargetId { get; init; }
+        public Guid NewTargetId { get; init; }
 
         public Guid CurrentTargetId { get; init; }
 

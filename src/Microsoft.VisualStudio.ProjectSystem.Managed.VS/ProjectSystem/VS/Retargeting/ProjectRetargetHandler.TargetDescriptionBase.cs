@@ -27,13 +27,13 @@ internal partial class ProjectRetargetHandler
             _nextStepGuidanceLink = guidanceLink;
         }
 
-        public Guid TargetId { get; private set; }
+        public Guid TargetId { get; }
 
-        public string DisplayName { get; private set; }
+        public string DisplayName { get; }
 
-        public uint Order { get; private set; }
+        public uint Order { get; }
 
-        public bool Supported { get; private set; }
+        public bool Supported { get; }
 
         public object GetProperty(uint prop)
         {

@@ -151,6 +151,30 @@ internal class IFileSystemMock : IFileSystem
         return Task.CompletedTask;
     }
 
+    public async Task CreateFromStreamAsync(string path, Stream content)
+    {
+        string stringContent = string.Empty;
+        using (var reader = new StreamReader(content))
+        { 
+            stringContent = await reader.ReadToEndAsync();
+        }
+
+        if (Files.TryGetValue(path, out FileData data))
+        {
+            // This makes sure each write to the file increases the timestamp
+            data.FileContents = stringContent;
+            data.SetLastWriteTime();
+        }
+        else
+        {
+            Files[path] = new FileData
+            {
+                FileContents = stringContent,
+                LastWriteTimeUtc = DateTime.UtcNow
+            };
+        }
+    }
+
     public DateTime GetLastFileWriteTimeOrMinValueUtc(string path)
     {
         if (TryGetLastFileWriteTimeUtc(path, out DateTime? result))
