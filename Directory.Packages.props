@@ -5,6 +5,7 @@
 
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <MicrosoftDotNetHotReloadPackageVersion>10.0.100-rc.2.25468.104</MicrosoftDotNetHotReloadPackageVersion>
   </PropertyGroup>
 
   <!--
@@ -30,6 +31,12 @@
     <PackageVersion Include="Nerdbank.Streams"                                                       Version="2.12.87" />
     <PackageVersion Include="System.IO.Pipelines"                                                    Version="9.0.0" />
     <PackageVersion Include="StreamJsonRpc"                                                          Version="2.23.32-alpha" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions"                              Version="9.0.0" />
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Data"                                  Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.PipeRpc"                               Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Host"                                  Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Client"                                      Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Web.Middleware"                              Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
 
     <!-- VS SDK -->
     <!-- https://dev.azure.com/azure-public/vside/_artifacts/feed/vssdk -->
@@ -66,6 +73,7 @@
     <PackageVersion Include="System.Formats.Asn1"                                                    Version="8.0.1" />
     <PackageVersion Include="Microsoft.VSDesigner"                                                   Version="18.0.1755-preview.1" />
     <PackageVersion Include="VsWebSite.Interop"                                                      Version="18.0.1755-preview.1" />
+    <PackageVersion Include="Microsoft.VisualStudio.Debugger.Interop.18.0"                          Version="18.0.1755-preview.1" />
     <PackageVersion Include="Microsoft.Deployment.DotNet.Releases"                                   Version="2.0.0-rtm.1.25064.1" />
 
     <!-- CPS -->

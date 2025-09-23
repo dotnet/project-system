@@ -24,5 +24,5 @@ internal class GenerateNuGetPackageTopLevelBuildMenuCommand : AbstractGenerateNu
     protected override bool ShouldHandle(IProjectTree node) => true;
 
     protected override string GetCommandText()
-        => string.Format(VSResources.PackSelectedProjectCommand, Path.GetFileNameWithoutExtension(Project.FullPath));
+        => string.Format(VSResources.PackSelectedProjectCommand, Project.GetProjectName());
 }

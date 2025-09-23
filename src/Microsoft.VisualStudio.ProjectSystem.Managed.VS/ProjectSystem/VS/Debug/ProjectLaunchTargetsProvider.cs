@@ -2,14 +2,15 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.Debugger.Interop;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -28,7 +29,8 @@ internal class ProjectLaunchTargetsProvider :
     IDebugProfileLaunchTargetsProvider,
     IDebugProfileLaunchTargetsProvider2,
     IDebugProfileLaunchTargetsProvider3,
-    IDebugProfileLaunchTargetsProvider4
+    IDebugProfileLaunchTargetsProvider4,
+    IDebugProfileLaunchTargetsProvider5
 {
     private readonly ConfiguredProject _project;
     private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
@@ -108,13 +110,21 @@ internal class ProjectLaunchTargetsProvider :
         throw new InvalidOperationException($"Wrong overload of {nameof(OnAfterLaunchAsync)} called.");
     }
 
-    public async Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos)
+    public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos)
     {
-        await TaskScheduler.Default;
+        return Task.CompletedTask;
+    }
 
+    public async Task OnAfterLaunchAsync(
+        DebugLaunchOptions launchOptions,
+        ILaunchProfile profile,
+        IDebugLaunchSettings debugLaunchSetting,
+        IVsLaunchedProcess vsLaunchedProcess,
+        VsDebugTargetProcessInfo processInfo)
+    {
         var configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
         var hotReloadSessionManager = configuredProjectForDebug.GetExportedService<IProjectHotReloadSessionManager>();
-        await hotReloadSessionManager.ActivateSessionAsync((int)processInfos[0].dwProcessId, Path.GetFileNameWithoutExtension(_project.UnconfiguredProject.FullPath));
+        await hotReloadSessionManager.ActivateSessionAsync(vsLaunchedProcess, processInfo);
     }
 
     public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)

@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.Debugger.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
@@ -137,9 +138,11 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         IProjectThreadingService threadingService,
         DebugLaunchOptions launchOptions,
         IDebugProfileLaunchTargetsProvider? targetsProvider,
-        ILaunchProfile activeProfile)
-        : IVsDebuggerLaunchCompletionCallback
+        ILaunchProfile activeProfile,
+        IReadOnlyList<IDebugLaunchSettings> debugLaunchSettings)
+        : IVsDebuggerLaunchCompletionCallback, IVsDebugProcessNotify1800
     {
+        private readonly List<IVsLaunchedProcess> _launchedProcesses = new();
         public void OnComplete(int hr, uint debugTargetCount, VsDebugTargetProcessInfo[] processInfoArray)
         {
             ErrorHandler.ThrowOnFailure(hr);
@@ -147,11 +150,38 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             if (targetsProvider is IDebugProfileLaunchTargetsProvider4 targetsProvider4)
             {
                 threadingService.ExecuteSynchronously(() => targetsProvider4.OnAfterLaunchAsync(launchOptions, activeProfile, processInfoArray));
+
+                IVsLaunchedProcess? vsLaunchedProcess = null;
+                lock (_launchedProcesses)
+                {
+                    if (_launchedProcesses.Count == 1)
+                    {
+                        vsLaunchedProcess = _launchedProcesses[0];
+                    }
+                }
+
+                if (targetsProvider4 is IDebugProfileLaunchTargetsProvider5 targetsProvider5 &&
+                    debugLaunchSettings.Count == 1 &&
+                    processInfoArray.Length == 1 &&
+                    vsLaunchedProcess is not null)
+                {
+                    threadingService.ExecuteSynchronously(() => targetsProvider5.OnAfterLaunchAsync(launchOptions, activeProfile, debugLaunchSettings[0], vsLaunchedProcess, processInfoArray[0]));
+                }
             }
             else if (targetsProvider is not null)
             {
                 threadingService.ExecuteSynchronously(() => targetsProvider.OnAfterLaunchAsync(launchOptions, activeProfile));
             }
+        }
+
+        public int OnProcessLaunched(IVsLaunchedProcess pProcess)
+        {
+            lock (_launchedProcesses)
+            {
+                _launchedProcesses.Add(pProcess);
+            }
+
+            return HResult.OK;
         }
     }
 
@@ -184,7 +214,7 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             await targetProvider.OnBeforeLaunchAsync(launchOptions, profile);
         }
 
-        LaunchCompleteCallback callback = new(ThreadingService, launchOptions, targetProvider, profile);
+        LaunchCompleteCallback callback = new(ThreadingService, launchOptions, targetProvider, profile, targets);
 
         if (targets.Count == 0)
         {
@@ -192,7 +222,14 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
             return;
         }
 
-        VsDebugTargetInfo4[] launchSettingsNative = targets.Select(GetDebuggerStruct4).ToArray();
+        VsDebugTargetInfo4[] launchSettingsNative = targets.Select(target =>
+        {
+            VsDebugTargetInfo4 nativeTarget = GetDebuggerStruct4(target);
+
+            nativeTarget.pUnknown = callback;
+
+            return nativeTarget;
+        }).ToArray();
 
         try
         {

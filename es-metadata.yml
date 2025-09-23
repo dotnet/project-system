@@ -1,0 +1,8 @@
+schemaVersion: 0.0.1
+isProduction: true
+accountableOwners:
+  service: 43c3f84f-9bc6-4743-8a21-e46aebb93fc4
+routing:
+  defaultAreaPath:
+    org: devdiv
+    path: DevDiv\NET Tools\Project

@@ -48,6 +48,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.DotNet.HotReload.Agent.Data" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.DotNet.HotReload.Agent.PipeRpc" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.DotNet.HotReload.Agent.Host" PrivateAssets="all" ExcludeAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="Microsoft.DotNet.HotReload.Client" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.DotNet.HotReload.Web.Middleware" PrivateAssets="all" ExcludeAssets="all" GeneratePathProperty="true" />
+
     <!-- Needed to break assembly conflict on StreamJsonRpc between microsoft.visualstudio.projectsystem.query and microsoft.visualstudio.languageservices -->
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
     <!-- Path property: PkgMicrosoft_CodeAnalysis_Common -->
@@ -62,6 +69,31 @@
     <!-- Package for creating an NPM package during build. -->
     <!-- See: https://dev.azure.com/devdiv/DevDiv/_git/vs-green?path=/components&anchor=packaging-components -->
     <PackageReference Include="Microsoft.VisualStudio.Internal.MicroBuild.NpmPack" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!--
+    Assemblies that facilitate Hot Reload within the application process.
+    When updating TFMs here also update ProjectHotReloadSession.GetStartupHookPath and VisualStudioBrowserRefreshServer.MiddlewareTargetFramework.
+  -->
+  <ItemGroup>
+    <Content Include="$(PkgMicrosoft_DotNet_HotReload_Web_Middleware)\lib\net6.0\Microsoft.AspNetCore.Watch.BrowserRefresh.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+      <TargetPath>HotReload\net6.0\Microsoft.AspNetCore.Watch.BrowserRefresh.dll</TargetPath>
+      <Pack>false</Pack>
+    </Content>
+    <Content Include="$(PkgMicrosoft_DotNet_HotReload_Agent_Host)\lib\net6.0\Microsoft.Extensions.DotNetDeltaApplier.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+      <TargetPath>HotReload\net6.0\Microsoft.Extensions.DotNetDeltaApplier.dll</TargetPath>
+      <Pack>false</Pack>
+    </Content>
+    <Content Include="$(PkgMicrosoft_DotNet_HotReload_Agent_Host)\lib\net10.0\Microsoft.Extensions.DotNetDeltaApplier.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+      <TargetPath>HotReload\net10.0\Microsoft.Extensions.DotNetDeltaApplier.dll</TargetPath>
+      <Pack>false</Pack>
+    </Content>
   </ItemGroup>
 
   <!-- Dependencies -->
@@ -713,5 +745,11 @@
       </Content>
     </ItemGroup>
   </Target>
+
+  <ItemGroup>
+    <Compile Update="@(Compile)">
+      <Link Condition="'%(NuGetPackageId)' != ''">External\%(NuGetPackageId)\%(Link)</Link>
+    </Compile>
+  </ItemGroup>
 
 </Project>

@@ -1,8 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Debugger.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.HotReload;
+using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
+namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
 /// <summary>
 /// Tracks and manages the pending and active Hot Reload sessions for the project.
@@ -25,8 +28,7 @@ internal interface IProjectHotReloadSessionManager
         ILaunchProfile launchProfile);
 
     /// <summary>
-    /// Activates the pending Hot Reload session and associates it with the specified
-    /// process.
+    /// Activates the pending Hot Reload session and associates it with the specified process.
     /// </summary>
-    Task ActivateSessionAsync(int processId, string projectName);
+    Task ActivateSessionAsync(IVsLaunchedProcess launchedProcess, VsDebugTargetProcessInfo vsDebugTargetProcessInfo);
 }

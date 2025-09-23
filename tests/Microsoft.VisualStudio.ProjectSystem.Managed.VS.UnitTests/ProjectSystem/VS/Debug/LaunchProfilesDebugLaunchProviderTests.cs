@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
@@ -164,7 +165,8 @@ public class LaunchProfilesDebugLaunchProviderTests
             mockProjectThreadingService,
             launchOptions,
             mockTargetsProvider,
-            profile);
+            profile,
+            (IReadOnlyList<IDebugLaunchSettings>)[]);
         
         // Act & Assert
         var onCompleteMethod = launchCompleteCallbackType.GetMethod("OnComplete");
@@ -199,8 +201,9 @@ public class LaunchProfilesDebugLaunchProviderTests
             mockProjectThreadingService,
             launchOptions,
             mockTargetsProvider,
-            profile);
-        
+            profile,
+            (IReadOnlyList<IDebugLaunchSettings>)[]);
+
         // Act & Assert
         var onCompleteMethod = launchCompleteCallbackType.GetMethod("OnComplete");
         
