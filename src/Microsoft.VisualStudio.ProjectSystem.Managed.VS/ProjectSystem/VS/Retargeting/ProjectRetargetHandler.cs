@@ -38,14 +38,14 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
         _projectRetargetingService = projectRetargetingService;
     }
 
-    public async Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
+    public Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
     {
         if ((options & RetargetCheckOptions.ProjectRetarget) == 0 && (options & RetargetCheckOptions.SolutionRetarget) == 0)
         {
-            return null;
+            return TaskResult.Null<IProjectTargetChange>();
         }
 
-        return await GetTargetChangeAndRegisterTargetsAsync();
+        return GetTargetChangeAndRegisterTargetsAsync();
     }
 
     public Task<IImmutableList<string>> GetAffectedFilesAsync(IProjectTargetChange projectTargetChange)
