@@ -31,7 +31,6 @@ internal interface IFileSystem
     Task<string> ReadAllTextAsync(string path);
     Stream OpenTextStream(string path);
     Task WriteAllTextAsync(string path, string content);
-    Task CreateFromStreamAsync(string path, Stream content);
 
     /// <summary>
     ///     Return the date and time, in coordinated universal time (UTC), that the specified file or directory was last written to,
