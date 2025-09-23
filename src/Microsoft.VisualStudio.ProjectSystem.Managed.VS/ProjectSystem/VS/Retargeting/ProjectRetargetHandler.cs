@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, IDisposable
 {
     private readonly UnconfiguredProject _unconfiguredProject;
-    private readonly IDotNetReleasesProvider _releasesProvider;
+    private readonly Lazy<IDotNetReleasesProvider> _releasesProvider;
     private readonly IFileSystem _fileSystem;
     private readonly IProjectThreadingService _projectThreadingService;
     private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _projectRetargetingService;
@@ -26,7 +26,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
     [ImportingConstructor]
     public ProjectRetargetHandler(
         UnconfiguredProject unconfiguredProject,
-        IDotNetReleasesProvider releasesProvider,
+        Lazy<IDotNetReleasesProvider> releasesProvider,
         IFileSystem fileSystem,
         IProjectThreadingService projectThreadingService,
         IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> projectRetargetingService)
@@ -81,7 +81,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
             return null;
         }
 
-        ReleaseVersion? retargetVersion = await _releasesProvider.GetSupportedOrLatestSdkVersionAsync(sdkVersion, includePreview: true);
+        ReleaseVersion? retargetVersion = await _releasesProvider.Value.GetSupportedOrLatestSdkVersionAsync(sdkVersion, includePreview: true);
 
         if (retargetVersion is null || sdkVersion == retargetVersion)
         {
