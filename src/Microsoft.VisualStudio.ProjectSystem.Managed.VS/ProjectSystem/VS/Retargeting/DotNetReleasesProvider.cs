@@ -13,7 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 [Export(typeof(IDotNetReleasesProvider))]
 internal class DotNetReleasesProvider : IDotNetReleasesProvider
 {
-    private const string ReleasesResourceFormat = "Microsoft.VisualStudio..releases.{0}";
     private const string RetargtingAppDataFolder = "ProjectSystem.Retargeting";
     private const string ReleasesFileName = ".releases.json";
     private readonly AsyncLazy<ProductCollection?> _product;
@@ -96,17 +95,12 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
         if (!_fileSystem.FileExists(path) || overwriteIfExists)
         {
             Assembly assembly = GetType().Assembly;
+            string cachedFile = Path.Combine(Path.GetDirectoryName(assembly.Location), ".releases", resource);
 
-            Stream resourceStream = assembly.GetManifestResourceStream(string.Format(ReleasesResourceFormat, resource));
-
-            if (resourceStream is not null)
+            if (_fileSystem.FileExists(cachedFile))
             {
-                using (resourceStream)
-                {
-                    string templateEngineHostRoot = Path.GetDirectoryName(path);
-                    _fileSystem.CreateDirectory(templateEngineHostRoot);
-                    await _fileSystem.CreateFromStreamAsync(path, resourceStream);
-                }
+                _fileSystem.CreateDirectory(Path.GetDirectoryName(path));
+                _fileSystem.CopyFile(cachedFile, path, overwriteIfExists);
             }
         }
     }
