@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Build" />
+    <PackageReference Include="Microsoft.Deployment.DotNet.Releases" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

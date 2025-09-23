@@ -28,7 +28,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.VS" />
-    <PackageReference Include="Microsoft.Deployment.DotNet.Releases"/>
+    <PackageReference Include="Microsoft.Deployment.DotNet.Releases" PrivateAssets="all" />
     <PackageReference Include="IsExternalInit" PrivateAssets="all" />
     <PackageReference Include="Microsoft.VisualStudio.Debugger.Interop.18.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
