@@ -499,6 +499,11 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">'{1}' 디버그 프로필에 지정된 디버그 실행 파일 '{0}'이(가) 없습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="RetargetingSDKDescription">
+        <source>Download and Install .NET SDK {0}</source>
+        <target state="new">Download and Install .NET SDK {0}</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StartupObjectNotSet">
         <source>(Not set)</source>
         <target state="translated">(설정되지 않음)</target>

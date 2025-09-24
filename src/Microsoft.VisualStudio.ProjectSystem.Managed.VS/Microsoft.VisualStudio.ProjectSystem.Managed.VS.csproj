@@ -28,6 +28,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.VS" />
+    <PackageReference Include="Microsoft.Deployment.DotNet.Releases" PrivateAssets="all" />
     <PackageReference Include="IsExternalInit" PrivateAssets="all" />
     <PackageReference Include="Microsoft.VisualStudio.Debugger.Interop.18.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
@@ -36,6 +37,16 @@
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include=".releases\.releases.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include=".releases\10.0.releases.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include=".releases\9.0.releases.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include=".releases\8.0.releases.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include=".releases\7.0.releases.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include=".releases\6.0.releases.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include=".releases\5.0.releases.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
@@ -108,7 +119,6 @@
   <ItemGroup>
     <Folder Include="WPF" />
   </ItemGroup>
-
   <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\VS\Rules\BuildAccelerationIncompatiblePackage.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

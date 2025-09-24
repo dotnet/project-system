@@ -526,4 +526,7 @@ In order to debug this project, add an executable project to this solution which
     <value>An error occurred during a design-time build. Some features may not work correctly. See the Error List for details.</value>
     <comment>"Error List" is the title of the Visual Studio tool window that error messages are listed in.</comment>
   </data>
+  <data name="RetargetingSDKDescription" xml:space="preserve">
+    <value>Download and Install .NET SDK {0}</value>
+  </data>
 </root>

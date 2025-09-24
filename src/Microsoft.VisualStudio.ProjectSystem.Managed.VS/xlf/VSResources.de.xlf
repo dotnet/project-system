@@ -499,6 +499,11 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
         <target state="translated">Die im Debugprofil "{1}" angegebene ausführbare Debugdatei "{0}" ist nicht vorhanden.</target>
         <note />
       </trans-unit>
+      <trans-unit id="RetargetingSDKDescription">
+        <source>Download and Install .NET SDK {0}</source>
+        <target state="new">Download and Install .NET SDK {0}</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StartupObjectNotSet">
         <source>(Not set)</source>
         <target state="translated">(Nicht festgelegt)</target>

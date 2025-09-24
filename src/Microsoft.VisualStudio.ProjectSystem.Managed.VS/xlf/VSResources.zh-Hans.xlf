@@ -499,6 +499,11 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">“{1}”调试配置文件中指定的调试可执行文件“{0}”不存在。</target>
         <note />
       </trans-unit>
+      <trans-unit id="RetargetingSDKDescription">
+        <source>Download and Install .NET SDK {0}</source>
+        <target state="new">Download and Install .NET SDK {0}</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StartupObjectNotSet">
         <source>(Not set)</source>
         <target state="translated">(未设置)</target>

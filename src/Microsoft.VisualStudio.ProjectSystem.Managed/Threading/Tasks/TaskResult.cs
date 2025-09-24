@@ -53,4 +53,14 @@ internal static class TaskResult
     {
         public static readonly Task<IEnumerable<T>> Instance = Task.FromResult(Enumerable.Empty<T>());
     }
+
+    /// <summary>
+    ///     Returns a <see cref="Task{TResult}"/> whose value is an empty immutable list of type <typeparamref name="T" />.
+    /// </summary>
+    public static Task<IImmutableList<T>> EmptyImmutableList<T>() => EmptyImmutableListTaskResult<T>.Instance;
+
+    private static class EmptyImmutableListTaskResult<T>
+    {
+        public static readonly Task<IImmutableList<T>> Instance = Task.FromResult<IImmutableList<T>>(ImmutableList<T>.Empty);
+    }
 }

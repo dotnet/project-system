@@ -1017,6 +1017,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download and Install .NET SDK {0}.
+        /// </summary>
+        internal static string RetargetingSDKDescription {
+            get {
+                return ResourceManager.GetString("RetargetingSDKDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to (Not set).
         /// </summary>
         internal static string StartupObjectNotSet {

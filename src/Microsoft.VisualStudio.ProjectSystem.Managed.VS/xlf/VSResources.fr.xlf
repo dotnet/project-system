@@ -499,6 +499,11 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
         <target state="translated">L'exécutable de débogage '{0}' spécifié dans le profil de débogage '{1}' n'existe pas.</target>
         <note />
       </trans-unit>
+      <trans-unit id="RetargetingSDKDescription">
+        <source>Download and Install .NET SDK {0}</source>
+        <target state="new">Download and Install .NET SDK {0}</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StartupObjectNotSet">
         <source>(Not set)</source>
         <target state="translated">(Non défini)</target>

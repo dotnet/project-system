@@ -499,6 +499,11 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
         <target state="translated">Laděný spustitelný soubor {0} zadaný v ladicím profilu {1} neexistuje.</target>
         <note />
       </trans-unit>
+      <trans-unit id="RetargetingSDKDescription">
+        <source>Download and Install .NET SDK {0}</source>
+        <target state="new">Download and Install .NET SDK {0}</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StartupObjectNotSet">
         <source>(Not set)</source>
         <target state="translated">(Nenastaveno)</target>
