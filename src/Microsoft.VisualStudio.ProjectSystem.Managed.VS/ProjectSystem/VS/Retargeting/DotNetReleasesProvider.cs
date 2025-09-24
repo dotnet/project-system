@@ -90,7 +90,7 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
         }
     }
 
-    private async Task CreateDefaultFileIfNotExistAsync(string path, string resource, bool overwriteIfExists = false)
+    private Task CreateDefaultFileIfNotExistAsync(string path, string resource, bool overwriteIfExists = false)
     {
         if (!_fileSystem.FileExists(path) || overwriteIfExists)
         {
@@ -103,6 +103,8 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
                 _fileSystem.CopyFile(cachedFile, path, overwriteIfExists);
             }
         }
+
+        return Task.CompletedTask;
     }
 
     private async Task<ProductCollection?> GetProductCollectionAsync(CancellationToken cancellationToken)
