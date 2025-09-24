@@ -173,37 +173,37 @@ public sealed class PackageContentTests
         // Update these values when product evolution legitimately changes file sizes.
         var expectedSizes = new Dictionary<string, long>
         {
-            // Core assemblies
-            [@"Microsoft.VisualStudio.AppDesigner.dll"] = 800_000, // ~800KB baseline
-            [@"Microsoft.VisualStudio.Editors.dll"] = 1_500_000, // ~1.5MB baseline
+            // Core assemblies - updated with actual build sizes
+            [@"Microsoft.VisualStudio.AppDesigner.dll"] = 370_000, // ~370KB actual baseline
+            [@"Microsoft.VisualStudio.Editors.dll"] = 2_000_000, // ~2MB actual baseline
 
-            // Resource assemblies - should be relatively small and consistent
-            [@"cs/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000, // ~30KB baseline
-            [@"cs/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000, // ~50KB baseline
-            [@"de/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
-            [@"de/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
-            [@"es/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
-            [@"es/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
-            [@"fr/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
-            [@"fr/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
-            [@"it/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
-            [@"it/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
-            [@"ja/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
-            [@"ja/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
-            [@"ko/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
-            [@"ko/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
-            [@"pl/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
-            [@"pl/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
-            [@"pt-BR/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
-            [@"pt-BR/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
-            [@"ru/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
-            [@"ru/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
-            [@"tr/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
-            [@"tr/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
-            [@"zh-Hans/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
-            [@"zh-Hans/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
-            [@"zh-Hant/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
-            [@"zh-Hant/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
+            // Resource assemblies - satellite assemblies are much larger due to localized strings
+            [@"cs/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 43_000, // ~43KB actual baseline
+            [@"cs/Microsoft.VisualStudio.Editors.resources.dll"] = 950_000, // ~950KB actual baseline
+            [@"de/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 43_000,
+            [@"de/Microsoft.VisualStudio.Editors.resources.dll"] = 955_000,
+            [@"es/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 43_000,
+            [@"es/Microsoft.VisualStudio.Editors.resources.dll"] = 956_000,
+            [@"fr/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 43_000,
+            [@"fr/Microsoft.VisualStudio.Editors.resources.dll"] = 957_000,
+            [@"it/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 43_000,
+            [@"it/Microsoft.VisualStudio.Editors.resources.dll"] = 955_000,
+            [@"ja/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 44_000, // Slightly larger for Japanese
+            [@"ja/Microsoft.VisualStudio.Editors.resources.dll"] = 962_000,
+            [@"ko/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 44_000, // Slightly larger for Korean
+            [@"ko/Microsoft.VisualStudio.Editors.resources.dll"] = 956_000,
+            [@"pl/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 43_000,
+            [@"pl/Microsoft.VisualStudio.Editors.resources.dll"] = 955_000,
+            [@"pt-BR/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 43_000,
+            [@"pt-BR/Microsoft.VisualStudio.Editors.resources.dll"] = 955_000,
+            [@"ru/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 43_000,
+            [@"ru/Microsoft.VisualStudio.Editors.resources.dll"] = 955_000,
+            [@"tr/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 43_000,
+            [@"tr/Microsoft.VisualStudio.Editors.resources.dll"] = 955_000,
+            [@"zh-Hans/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 43_000,
+            [@"zh-Hans/Microsoft.VisualStudio.Editors.resources.dll"] = 955_000,
+            [@"zh-Hant/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 43_000,
+            [@"zh-Hant/Microsoft.VisualStudio.Editors.resources.dll"] = 955_000,
 
             // Configuration files - should be relatively small
             [@"[Content_Types].xml"] = 5_000, // ~5KB
