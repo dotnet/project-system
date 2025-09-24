@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Linq;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using System.Collections.Concurrent;
+using Microsoft.VisualStudio.Shell.Interop;
 using IFileSystem = Microsoft.VisualStudio.IO.IFileSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
@@ -13,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 [Export(typeof(IDotNetReleasesProvider))]
 internal class DotNetReleasesProvider : IDotNetReleasesProvider
 {
-    private const string RetargtingAppDataFolder = "ProjectSystem.Retargeting";
+    private const string RetargetingAppDataFolder = "ProjectSystem.Retargeting";
     private const string ReleasesFileName = ".releases.json";
     private readonly AsyncLazy<ProductCollection?> _product;
 
@@ -24,8 +25,8 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
     private readonly IFileSystem _fileSystem;
     private readonly IProjectThreadingService _projectThreadingService;
 
-    private readonly ConcurrentDictionary<string, JoinableTask> _releaseUpdateTasksByProductVersion = new();
-    private readonly ConcurrentDictionary<string, IReadOnlyCollection<ProductRelease>> _productReleasesByProductVersion = new();
+    private readonly ConcurrentDictionary<string, JoinableTask> _releaseUpdateTasksByProductVersion = new(StringComparer.OrdinalIgnoreCase);
+    private readonly ConcurrentDictionary<string, IReadOnlyCollection<ProductRelease>> _productReleasesByProductVersion = new(StringComparer.OrdinalIgnoreCase);
 
     [ImportingConstructor]
     public DotNetReleasesProvider(
@@ -39,7 +40,7 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
         _product = new AsyncLazy<ProductCollection?>(
             async () =>
             {
-                string resourcesFileName = Path.Combine(AppDataPath, RetargtingAppDataFolder, ReleasesFileName);
+                string resourcesFileName = Path.Combine(AppDataPath, RetargetingAppDataFolder, ReleasesFileName);
 
                 // force the local file first, then download the latest without awaiting.
                 ProductCollection? productCollection = await GetProductCollectionAsync(resourcesFileName, forceLocalFile: _localOnly);
@@ -65,7 +66,10 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
 
     private string GetAppDataPath()
     {
-        _vsShell.Value.GetProperty((int)__VSSPROPID4.VSSPROPID_LocalAppDataDir, out object pObj);
+        HResult.Verify(
+            _vsShell.Value.GetProperty((int)__VSSPROPID4.VSSPROPID_LocalAppDataDir, out object pObj),
+            $"Error getting local appdata dir in {typeof(DotNetReleasesProvider)}.");
+
         if (pObj is string path)
         {
             return path;
@@ -148,7 +152,7 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
 
     private async Task<ReleaseVersion?> GetLatestSupportedSdkVersionAsync(ReleaseVersion? currentVersion, bool includePreview, Product matchingProduct)
     {
-        string resourceFileName = Path.Combine(AppDataPath, RetargtingAppDataFolder, $"{matchingProduct.ProductVersion}{ReleasesFileName}");
+        string resourceFileName = Path.Combine(AppDataPath, RetargetingAppDataFolder, $"{matchingProduct.ProductVersion}{ReleasesFileName}");
 
         JoinableTask? updateTask = null;
 
@@ -183,7 +187,7 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
         }
 
         // Find the latest SDK version from the releases that is not preview/go-live
-        SdkReleaseComponent ? latestSdk = releases
+        SdkReleaseComponent? latestSdk = releases
             .Where(r => r.Sdks?.Any() is true &&
                        (includePreview || (matchingProduct.SupportPhase != SupportPhase.Preview && matchingProduct.SupportPhase != SupportPhase.GoLive)))
             .SelectMany(r => r.Sdks)

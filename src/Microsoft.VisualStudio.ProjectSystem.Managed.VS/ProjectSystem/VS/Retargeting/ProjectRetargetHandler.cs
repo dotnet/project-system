@@ -40,7 +40,9 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
 
     public Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
     {
-        if ((options & RetargetCheckOptions.ProjectRetarget) == 0 && (options & RetargetCheckOptions.SolutionRetarget) == 0)
+        if ((options & RetargetCheckOptions.ProjectRetarget) == 0
+            && (options & RetargetCheckOptions.SolutionRetarget) == 0
+            && (options & RetargetCheckOptions.ProjectLoad) == 0)
         {
             return TaskResult.Null<IProjectTargetChange>();
         }
