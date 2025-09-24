@@ -62,6 +62,64 @@ public sealed class PackageContentTests
     }
 
     [Fact]
+    public void ProjectSystemFileSizes()
+    {
+        var actual = GetPackageFileSizes("ProjectSystem.vsix");
+
+        // Expected file sizes in bytes. These serve as baselines to catch unexpected size increases or decreases.
+        // Update these values when product evolution legitimately changes file sizes.
+        var expectedSizes = new Dictionary<string, long>
+        {
+            // Core assemblies - these are the largest files that we most care about tracking
+            [@"Microsoft.VisualStudio.ProjectSystem.Managed.dll"] = 2_500_000, // ~2.5MB baseline, allow some variance
+            [@"Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll"] = 500_000, // ~0.5MB baseline, allow some variance
+            
+            // Resource assemblies - should be relatively small and consistent
+            [@"cs/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll"] = 50_000, // ~50KB baseline
+            [@"cs/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"] = 20_000, // ~20KB baseline
+            [@"de/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll"] = 50_000,
+            [@"de/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"] = 20_000,
+            [@"es/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll"] = 50_000,
+            [@"es/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"] = 20_000,
+            [@"fr/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll"] = 50_000,
+            [@"fr/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"] = 20_000,
+            [@"it/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll"] = 50_000,
+            [@"it/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"] = 20_000,
+            [@"ja/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll"] = 50_000,
+            [@"ja/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"] = 20_000,
+            [@"ko/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll"] = 50_000,
+            [@"ko/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"] = 20_000,
+            [@"pl/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll"] = 50_000,
+            [@"pl/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"] = 20_000,
+            [@"pt-BR/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll"] = 50_000,
+            [@"pt-BR/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"] = 20_000,
+            [@"ru/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll"] = 50_000,
+            [@"ru/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"] = 20_000,
+            [@"tr/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll"] = 50_000,
+            [@"tr/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"] = 20_000,
+            [@"zh-Hans/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll"] = 50_000,
+            [@"zh-Hans/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"] = 20_000,
+            [@"zh-Hant/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll"] = 50_000,
+            [@"zh-Hant/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"] = 20_000,
+
+            // Hot reload dependencies - somewhat larger as they contain additional functionality
+            [@"HotReload/net10.0/Microsoft.Extensions.DotNetDeltaApplier.dll"] = 100_000, // ~100KB
+            [@"HotReload/net6.0/Microsoft.AspNetCore.Watch.BrowserRefresh.dll"] = 50_000, // ~50KB
+            [@"HotReload/net6.0/Microsoft.Extensions.DotNetDeltaApplier.dll"] = 100_000, // ~100KB
+
+            // Configuration files - should be relatively small
+            [@"[Content_Types].xml"] = 5_000, // ~5KB
+            [@"catalog.json"] = 10_000, // ~10KB
+            [@"extension.vsixmanifest"] = 10_000, // ~10KB
+            [@"Microsoft.VisualStudio.ProjectSystem.Managed.VS.pkgdef"] = 5_000, // ~5KB
+            [@"ProjectSelectors.pkgdef"] = 5_000, // ~5KB
+            [@"ProjectSystem.pkgdef"] = 5_000, // ~5KB
+        };
+
+        ValidateFileSizes(actual, expectedSizes, "ProjectSystem.vsix");
+    }
+
+    [Fact]
     public void VisualStudioEditorsSetup()
     {
         var actual = GetPackageContents("VisualStudioEditorsSetup.vsix");
@@ -104,6 +162,58 @@ public sealed class PackageContentTests
         };
 
         AssertEx.SequenceEqual(expected, actual);
+    }
+
+    [Fact]
+    public void VisualStudioEditorsSetupFileSizes()
+    {
+        var actual = GetPackageFileSizes("VisualStudioEditorsSetup.vsix");
+
+        // Expected file sizes in bytes. These serve as baselines to catch unexpected size increases or decreases.
+        // Update these values when product evolution legitimately changes file sizes.
+        var expectedSizes = new Dictionary<string, long>
+        {
+            // Core assemblies
+            [@"Microsoft.VisualStudio.AppDesigner.dll"] = 800_000, // ~800KB baseline
+            [@"Microsoft.VisualStudio.Editors.dll"] = 1_500_000, // ~1.5MB baseline
+
+            // Resource assemblies - should be relatively small and consistent
+            [@"cs/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000, // ~30KB baseline
+            [@"cs/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000, // ~50KB baseline
+            [@"de/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
+            [@"de/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
+            [@"es/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
+            [@"es/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
+            [@"fr/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
+            [@"fr/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
+            [@"it/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
+            [@"it/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
+            [@"ja/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
+            [@"ja/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
+            [@"ko/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
+            [@"ko/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
+            [@"pl/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
+            [@"pl/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
+            [@"pt-BR/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
+            [@"pt-BR/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
+            [@"ru/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
+            [@"ru/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
+            [@"tr/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
+            [@"tr/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
+            [@"zh-Hans/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
+            [@"zh-Hans/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
+            [@"zh-Hant/Microsoft.VisualStudio.AppDesigner.resources.dll"] = 30_000,
+            [@"zh-Hant/Microsoft.VisualStudio.Editors.resources.dll"] = 50_000,
+
+            // Configuration files - should be relatively small
+            [@"[Content_Types].xml"] = 5_000, // ~5KB
+            [@"catalog.json"] = 10_000, // ~10KB
+            [@"extension.vsixmanifest"] = 10_000, // ~10KB
+            [@"Microsoft.VisualStudio.Editors.pkgdef"] = 5_000, // ~5KB
+            [@"VisualStudioEditorsSetup.pkgdef"] = 5_000, // ~5KB
+        };
+
+        ValidateFileSizes(actual, expectedSizes, "VisualStudioEditorsSetup.vsix");
     }
 
     [Fact]
@@ -743,6 +853,40 @@ public sealed class PackageContentTests
         AssertEx.SequenceEqual(expected, actual);
     }
 
+    [Fact]
+    public void CommonFilesFileSizes()
+    {
+        var actual = GetPackageFileSizes("Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix");
+
+        // Expected file sizes in bytes. These serve as baselines to catch unexpected size increases or decreases.
+        // Update these values when product evolution legitimately changes file sizes.
+        var expectedSizes = new Dictionary<string, long>
+        {
+            // XAML files - these should be relatively small, consistent UI definition files
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/AdditionalFiles.xaml"] = 5_000, // ~5KB baseline
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/AnalyzerReference.xaml"] = 5_000,
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/ApplicationPropertyPage.CSharp.xaml"] = 10_000, // ~10KB baseline
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/ApplicationPropertyPage.VisualBasic.xaml"] = 10_000,
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/ApplicationPropertyPage.xaml"] = 10_000,
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/AssemblyReference.xaml"] = 5_000,
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/BuildPropertyPage.CSharp.xaml"] = 8_000, // ~8KB baseline
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/BuildPropertyPage.FSharp.xaml"] = 8_000,
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/BuildPropertyPage.VisualBasic.xaml"] = 8_000,
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/BuildPropertyPage.xaml"] = 8_000,
+
+            // MSBuild targets files - should be small
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/Microsoft.CSharp.DesignTime.targets"] = 15_000, // ~15KB baseline
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/Microsoft.FSharp.DesignTime.targets"] = 15_000,
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/Microsoft.Managed.DesignTime.targets"] = 20_000, // ~20KB baseline
+            ["Contents/MSBuild/Microsoft/VisualStudio/Managed/Microsoft.VisualBasic.DesignTime.targets"] = 15_000,
+
+            // Configuration file
+            ["[Content_Types].xml"] = 5_000, // ~5KB
+        };
+
+        ValidateFileSizes(actual, expectedSizes, "Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix");
+    }
+
     private static IEnumerable<string> GetPackageContents(string vsixName)
     {
         var rootPath = RepoUtil.FindRepoRootPath();
@@ -774,5 +918,88 @@ public sealed class PackageContentTests
                            !path.Contains(Rels) &&
                            !path.Contains("manifest.json"))
             .OrderBy(fn => fn);
+    }
+
+    private static Dictionary<string, long> GetPackageFileSizes(string vsixName)
+    {
+        var rootPath = RepoUtil.FindRepoRootPath();
+
+#if DEBUG
+        var config = "Debug";
+#elif RELEASE
+        var config = "Release";
+#else
+#error Unexpected configuration
+#endif
+
+        var vsixPath = Path.Combine(
+            rootPath,
+            "artifacts",
+            config,
+            "VSSetup",
+            "Insertion",
+            vsixName);
+
+        using var archive = ZipFile.OpenRead(vsixPath);
+
+        return archive.Entries
+            .Where(entry => !entry.FullName.Contains(DigitalSignature) &&
+                           !entry.FullName.Contains(SettingsRegistrationFileSuffix) &&
+                           !entry.FullName.Contains(Rels) &&
+                           !entry.FullName.Contains("manifest.json"))
+            .ToDictionary(entry => entry.FullName, entry => entry.Length);
+    }
+
+    private static void ValidateFileSizes(Dictionary<string, long> actualSizes, Dictionary<string, long> expectedSizes, string vsixName)
+    {
+        // Tolerance for size variations (20% by default, which is reasonable for compiled code)
+        const double tolerancePercentage = 0.20;
+        
+        var errors = new List<string>();
+
+        foreach (var (fileName, expectedSize) in expectedSizes)
+        {
+            if (!actualSizes.TryGetValue(fileName, out long actualSize))
+            {
+                errors.Add($"File '{fileName}' not found in {vsixName}");
+                continue;
+            }
+
+            var tolerance = (long)(expectedSize * tolerancePercentage);
+            var minSize = expectedSize - tolerance;
+            var maxSize = expectedSize + tolerance;
+
+            if (actualSize < minSize)
+            {
+                errors.Add($"File '{fileName}' in {vsixName} is smaller than expected. Expected: ~{expectedSize:N0} bytes (min: {minSize:N0}), Actual: {actualSize:N0} bytes. This might indicate missing functionality or data.");
+            }
+            else if (actualSize > maxSize)
+            {
+                errors.Add($"File '{fileName}' in {vsixName} is larger than expected. Expected: ~{expectedSize:N0} bytes (max: {maxSize:N0}), Actual: {actualSize:N0} bytes. This might indicate added code or dependencies that should be reviewed.");
+            }
+        }
+
+        // Also check for any files in the actual VSIX that aren't in our baseline (but only for key files)
+        var unexpectedLargeFiles = actualSizes
+            .Where(kvp => !expectedSizes.ContainsKey(kvp.Key) && kvp.Value > 100_000) // Only flag files > 100KB
+            .Where(kvp => kvp.Key.EndsWith(".dll") || kvp.Key.EndsWith(".exe") || kvp.Key.EndsWith(".targets")) // Only key file types
+            .ToList();
+
+        foreach (var (fileName, size) in unexpectedLargeFiles)
+        {
+            errors.Add($"Unexpected large file '{fileName}' in {vsixName} ({size:N0} bytes). Consider adding it to the baseline if this is expected.");
+        }
+
+        if (errors.Count > 0)
+        {
+            var errorMessage = $"File size validation failed for {vsixName}:\n" + string.Join("\n", errors);
+            errorMessage += "\n\nTo fix this:\n";
+            errorMessage += "1. If the size changes are expected due to product evolution, update the expected sizes in the test.\n";
+            errorMessage += "2. If the size changes are unexpected, investigate what caused the increase/decrease.\n";
+            errorMessage += "3. For large increases, consider if new dependencies or code are necessary.\n";
+            errorMessage += "4. For large decreases, verify no functionality was accidentally removed.";
+            
+            throw new Xunit.Sdk.XunitException(errorMessage);
+        }
     }
 }
