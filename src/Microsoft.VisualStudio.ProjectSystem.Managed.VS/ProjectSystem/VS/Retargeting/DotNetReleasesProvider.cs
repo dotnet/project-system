@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.Linq;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using System.Collections.Concurrent;
-using Microsoft.VisualStudio.Shell.Interop;
 using IFileSystem = Microsoft.VisualStudio.IO.IFileSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
