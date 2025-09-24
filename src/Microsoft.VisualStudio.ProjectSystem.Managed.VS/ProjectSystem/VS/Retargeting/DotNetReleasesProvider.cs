@@ -115,8 +115,8 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
         return await _product.GetValueAsync(cancellationToken);
     }
 
-    public async Task<ReleaseVersion?> GetSupportedOrLatestSdkVersionAsync(
-        ReleaseVersion? sdkVersion,
+    public async Task<string?> GetSupportedOrLatestSdkVersionAsync(
+        string? sdkVersion,
         bool includePreview = false,
         CancellationToken cancellationToken = default)
     {
@@ -129,19 +129,22 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
 
         if (sdkVersion is not null)
         {
-            // Find the product that matches the major/minor version of the SDK
-            Product matchingProduct = products.FirstOrDefault( p => p.LatestSdkVersion.Major == sdkVersion.Major &&
-                p.LatestSdkVersion.Minor == sdkVersion.Minor && p.LatestSdkVersion.IsLaterThan(sdkVersion));
-
-            if (matchingProduct is not null)
+            if (ReleaseVersion.TryParse(sdkVersion, out ReleaseVersion parsedSdkVersion))
             {
-                try
+                // Find the product that matches the major/minor version of the SDK
+                Product matchingProduct = products.FirstOrDefault(p => p.LatestSdkVersion.Major == parsedSdkVersion.Major &&
+                    p.LatestSdkVersion.Minor == parsedSdkVersion.Minor && p.LatestSdkVersion.IsLaterThan(sdkVersion));
+
+                if (matchingProduct is not null)
                 {
-                    return await GetLatestSupportedSdkVersionAsync(sdkVersion, includePreview, matchingProduct);
-                }
-                catch
-                {
-                    // we can just fall through and return null here
+                    try
+                    {
+                        return await GetLatestSupportedSdkVersionAsync(parsedSdkVersion, includePreview, matchingProduct);
+                    }
+                    catch
+                    {
+                        // we can just fall through and return null here
+                    }
                 }
             }
         }
@@ -149,7 +152,7 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
         return null;
     }
 
-    private async Task<ReleaseVersion?> GetLatestSupportedSdkVersionAsync(ReleaseVersion? currentVersion, bool includePreview, Product matchingProduct)
+    private async Task<string?> GetLatestSupportedSdkVersionAsync(ReleaseVersion? currentVersion, bool includePreview, Product matchingProduct)
     {
         string resourceFileName = Path.Combine(AppDataPath, RetargetingAppDataFolder, $"{matchingProduct.ProductVersion}{ReleasesFileName}");
 
@@ -197,15 +200,15 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
             if (currentVersion is not null
                 && string.Equals(currentVersion.ToString(), latestSdk.Version.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                return currentVersion;
+                return currentVersion.ToString();
             }
 
-            return ReleaseVersion.Parse(latestSdk.DisplayVersion.ToString());
+            return latestSdk.DisplayVersion.ToString();
         }
 
         return null;
     }
-    
+
     private async Task<IReadOnlyCollection<ProductRelease>?> GetReleasesAsync(Product product, string resourceFileName, string version, bool forceLocalFile = false, CancellationToken cancellationToken = default)
     {
         try

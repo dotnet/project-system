@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Text.Json;
-using Microsoft.Deployment.DotNet.Releases;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -76,14 +75,14 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
 
     private async Task<TargetChange?> GetTargetChangeAsync(IVsTrackProjectRetargeting2 retargetingService)
     {
-        ReleaseVersion? sdkVersion = await GetSdkVersionForProjectAsync();
+        string? sdkVersion = await GetSdkVersionForProjectAsync();
 
         if (sdkVersion is null)
         {
             return null;
         }
 
-        ReleaseVersion? retargetVersion = await _releasesProvider.Value.GetSupportedOrLatestSdkVersionAsync(sdkVersion, includePreview: true);
+        string? retargetVersion = await _releasesProvider.Value.GetSupportedOrLatestSdkVersionAsync(sdkVersion, includePreview: true);
 
         if (retargetVersion is null || sdkVersion == retargetVersion)
         {
@@ -132,7 +131,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
         return null;
     }
 
-    private async Task<ReleaseVersion?> GetSdkVersionForProjectAsync()
+    private async Task<string?> GetSdkVersionForProjectAsync()
     {
         string projectDirectory = _unconfiguredProject.GetProjectDirectory();
 
@@ -148,12 +147,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
                     if (doc.RootElement.TryGetProperty("sdk", out JsonElement sdkProp) &&
                         sdkProp.TryGetProperty("version", out JsonElement versionProp))
                     {
-                        if (ReleaseVersion.TryParse(versionProp.GetString(), out ReleaseVersion parsedVersions))
-                        {
-                            return parsedVersions;
-                        }
-
-                        return null;
+                        return versionProp.GetString();
                     }
                 }
                 catch /* ignore errors */
