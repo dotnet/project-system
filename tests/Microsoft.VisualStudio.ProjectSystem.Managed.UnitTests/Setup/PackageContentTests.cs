@@ -44,7 +44,6 @@ public sealed class PackageContentTests
     [Fact]
     public void NpmPackageFileSizes()
     {
-        var actualFiles = GetNpmPackageContents().ToList();
         var actualFileSizes = GetNpmPackageFileSizes();
 
         // Expected file sizes in bytes. These serve as baselines to catch unexpected size increases or decreases.
