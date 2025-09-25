@@ -199,19 +199,24 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
     public async Task StopSessionAsync(CancellationToken cancellationToken)
     {
-        RequireActiveSession();
+        if (_sessionActive && _lazyDeltaApplier is not null)
+        {
+            _sessionActive = false;
+            _lazyDeltaApplier.Dispose();
+            _lazyDeltaApplier = null;
 
-        _sessionActive = false;
-        _lazyDeltaApplier.Dispose();
-        _lazyDeltaApplier = null;
-
-        await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
-        WriteToOutputWindow(Resources.HotReloadStopSession, default);
+            await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
+            WriteToOutputWindow(Resources.HotReloadStopSession, default);
+        }
     }
 
     public async ValueTask ApplyUpdatesAsync(ImmutableArray<ManagedHotReloadUpdate> updates, CancellationToken cancellationToken)
     {
-        RequireActiveSession();
+        if (_sessionActive is false || _lazyDeltaApplier is null)
+        {
+            DebugTrace($"{nameof(ApplyUpdatesAsync)} called but the session is not active.");
+            return;
+        }
 
         try
         {
@@ -248,11 +253,15 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         return false;
     }
 
-    public ValueTask<ImmutableArray<string>> GetCapabilitiesAsync(CancellationToken cancellationToken)
+    public async ValueTask<ImmutableArray<string>> GetCapabilitiesAsync(CancellationToken cancellationToken)
     {
-        RequireActiveSession();
+        // Delegate to the delta applier for the session
+        if (_lazyDeltaApplier is not null)
+        {
+            return await _lazyDeltaApplier.GetCapabilitiesAsync(cancellationToken);
+        }
 
-        return _lazyDeltaApplier.GetCapabilitiesAsync(cancellationToken);
+        return [];
     }
 
     public ValueTask ReportDiagnosticsAsync(ImmutableArray<ManagedHotReloadDiagnostic> diagnostics, CancellationToken cancellationToken)
