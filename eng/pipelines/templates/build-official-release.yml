@@ -194,7 +194,7 @@ jobs:
     inputs:
       bootstrapperCoreVersion: latest
       vsMajorVersion: ${{ parameters.VisualStudioMinimumVersion }}
-      channelName: int.main
+      channelName: int.d18.0
       manifests: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/VSSetup/Insertion/SetupManifest.vsman
       # Outputting to the Insertion folder allows the bootstrapper to be published to the Products drop, along with our insertion files.
       # The merged .vsman (OverlaidInstallerManifest.vsman) created by the bootstrapper assumes the bootstrapper will be output to the same drop (Products) as the insertion files.
