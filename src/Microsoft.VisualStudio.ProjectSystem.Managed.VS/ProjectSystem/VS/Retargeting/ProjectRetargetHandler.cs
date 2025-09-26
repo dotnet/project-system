@@ -18,6 +18,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
     private readonly IFileSystem _fileSystem;
     private readonly IProjectThreadingService _projectThreadingService;
     private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _projectRetargetingService;
+    private readonly IVsService<SVsSolution, IVsSolution> _solutionService;
 
     private Guid _currentSdkDescriptionId = Guid.Empty;
     private Guid _sdkRetargetId = Guid.Empty;
@@ -28,13 +29,15 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
         Lazy<IDotNetReleasesProvider> releasesProvider,
         IFileSystem fileSystem,
         IProjectThreadingService projectThreadingService,
-        IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> projectRetargetingService)
+        IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> projectRetargetingService,
+        IVsService<SVsSolution, IVsSolution> solutionService)
     {
         _unconfiguredProject = unconfiguredProject;
         _releasesProvider = releasesProvider;
         _fileSystem = fileSystem;
         _projectThreadingService = projectThreadingService;
         _projectRetargetingService = projectRetargetingService;
+        _solutionService = solutionService;
     }
 
     public Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
@@ -133,11 +136,12 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
 
     private async Task<string?> GetSdkVersionForProjectAsync()
     {
-        string projectDirectory = _unconfiguredProject.GetProjectDirectory();
+        // Get the solution directory instead of the project directory
+        string? solutionDirectory = await GetSolutionDirectoryAsync();
 
-        if (!string.IsNullOrEmpty(projectDirectory))
+        if (!string.IsNullOrEmpty(solutionDirectory))
         {
-            string? globalJsonPath = FindGlobalJsonPath(projectDirectory);
+            string? globalJsonPath = FindGlobalJsonPath(solutionDirectory!);
             if (globalJsonPath is not null)
             {
                 try
@@ -153,6 +157,23 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
                 catch /* ignore errors */
                 {
                 }
+            }
+        }
+
+        return null;
+    }
+
+    private async Task<string?> GetSolutionDirectoryAsync()
+    {
+        IVsSolution? solution = await _solutionService.GetValueOrNullAsync();
+
+        if (solution is not null)
+        {
+            // Get solution information
+            int hr = solution.GetSolutionInfo(out string solutionDirectory, out string _, out string _);
+            if (hr == HResult.OK && !string.IsNullOrEmpty(solutionDirectory))
+            {
+                return solutionDirectory;
             }
         }
 
