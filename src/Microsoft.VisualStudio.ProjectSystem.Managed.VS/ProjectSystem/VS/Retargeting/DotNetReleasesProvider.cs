@@ -133,7 +133,7 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
             {
                 // Find the product that matches the major/minor version of the SDK
                 Product matchingProduct = products.FirstOrDefault(p => p.LatestSdkVersion.Major == parsedSdkVersion.Major &&
-                    p.LatestSdkVersion.Minor == parsedSdkVersion.Minor && p.LatestSdkVersion.IsLaterThan(sdkVersion));
+                    p.LatestSdkVersion.Minor == parsedSdkVersion.Minor && p.LatestSdkVersion.IsLaterThan(parsedSdkVersion));
 
                 if (matchingProduct is not null)
                 {
