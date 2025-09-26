@@ -133,7 +133,6 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
 
     private async Task<string?> GetSdkVersionForProjectAsync()
     {
-        // Get the solution directory instead of the project directory
         string? solutionDirectory = await GetSolutionDirectoryAsync();
 
         if (!string.IsNullOrEmpty(solutionDirectory))
@@ -166,7 +165,6 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
 
         if (solution is not null)
         {
-            // Get solution information
             int hr = solution.GetSolutionInfo(out string solutionDirectory, out string _, out string _);
             if (hr == HResult.OK && !string.IsNullOrEmpty(solutionDirectory))
             {
