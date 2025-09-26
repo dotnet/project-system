@@ -13,7 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 [Order(Order.Default)]
 internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, IDisposable
 {
-    private readonly UnconfiguredProject _unconfiguredProject;
     private readonly Lazy<IDotNetReleasesProvider> _releasesProvider;
     private readonly IFileSystem _fileSystem;
     private readonly IProjectThreadingService _projectThreadingService;
@@ -25,14 +24,12 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
 
     [ImportingConstructor]
     public ProjectRetargetHandler(
-        UnconfiguredProject unconfiguredProject,
         Lazy<IDotNetReleasesProvider> releasesProvider,
         IFileSystem fileSystem,
         IProjectThreadingService projectThreadingService,
         IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> projectRetargetingService,
         IVsService<SVsSolution, IVsSolution> solutionService)
     {
-        _unconfiguredProject = unconfiguredProject;
         _releasesProvider = releasesProvider;
         _fileSystem = fileSystem;
         _projectThreadingService = projectThreadingService;
