@@ -325,7 +325,7 @@ public class ProjectHotReloadSessionTests
         // Session is not started/active
 
         // Act
-        await Assert.ThrowsAsync<InvalidOperationException>(() => session.StopSessionAsync(CancellationToken.None));
+        await session.StopSessionAsync(CancellationToken.None);
 
         // Assert
         hotReloadAgentManagerClient.Verify(
@@ -381,7 +381,7 @@ public class ProjectHotReloadSessionTests
         var updates = ImmutableArray.Create<ManagedHotReloadUpdate>();
 
         // Act
-        await Assert.ThrowsAsync<InvalidOperationException>(() => session.ApplyUpdatesAsync(updates, CancellationToken.None).AsTask());
+        await session.ApplyUpdatesAsync(updates, CancellationToken.None);
 
         // Assert
         deltaApplier.Verify(

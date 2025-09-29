@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Versioning;
 using Microsoft.DotNet.HotReload;
 using Microsoft.VisualStudio.Debugger.Contracts.EditAndContinue;
@@ -71,16 +70,6 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
     public IDeltaApplier? DeltaApplier
         => _lazyDeltaApplier;
-
-    [MemberNotNull(nameof(_lazyDeltaApplier))]
-    private void RequireActiveSession()
-    {
-        if (!_sessionActive)
-            throw new InvalidOperationException($"Hot Reload session has not started");
-
-        if (_lazyDeltaApplier is null)
-            throw new InvalidOperationException();
-    }
 
     public async Task ApplyChangesAsync(CancellationToken cancellationToken)
     {
@@ -199,19 +188,29 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
     public async Task StopSessionAsync(CancellationToken cancellationToken)
     {
-        RequireActiveSession();
+        if (_sessionActive && _lazyDeltaApplier is not null)
+        {
+            _sessionActive = false;
+            _lazyDeltaApplier.Dispose();
+            _lazyDeltaApplier = null;
 
-        _sessionActive = false;
-        _lazyDeltaApplier.Dispose();
-        _lazyDeltaApplier = null;
-
-        await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
-        WriteToOutputWindow(Resources.HotReloadStopSession, default);
+            await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
+            WriteToOutputWindow(Resources.HotReloadStopSession, default);
+        }
     }
 
     public async ValueTask ApplyUpdatesAsync(ImmutableArray<ManagedHotReloadUpdate> updates, CancellationToken cancellationToken)
     {
-        RequireActiveSession();
+        // A stricter check for session active could be done here, like raise an exception when not active session or no delta applier
+        // But sometimes debugger would call ApplyUpdatesAsync even when there is not active session
+        // e.g. when user restarts on rude edits
+        // We need to talk to debugger team to see if we can avoid such calls in the future
+        // https://devdiv.visualstudio.com/DevDiv/_workitems/edit/2581474
+        if (_sessionActive is false || _lazyDeltaApplier is null)
+        {
+            DebugTrace($"{nameof(ApplyUpdatesAsync)} called but the session is not active.");
+            return;
+        }
 
         try
         {
@@ -248,11 +247,15 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         return false;
     }
 
-    public ValueTask<ImmutableArray<string>> GetCapabilitiesAsync(CancellationToken cancellationToken)
+    public async ValueTask<ImmutableArray<string>> GetCapabilitiesAsync(CancellationToken cancellationToken)
     {
-        RequireActiveSession();
+        // Delegate to the delta applier for the session
+        if (_lazyDeltaApplier is not null)
+        {
+            return await _lazyDeltaApplier.GetCapabilitiesAsync(cancellationToken);
+        }
 
-        return _lazyDeltaApplier.GetCapabilitiesAsync(cancellationToken);
+        return [];
     }
 
     public ValueTask ReportDiagnosticsAsync(ImmutableArray<ManagedHotReloadDiagnostic> diagnostics, CancellationToken cancellationToken)
