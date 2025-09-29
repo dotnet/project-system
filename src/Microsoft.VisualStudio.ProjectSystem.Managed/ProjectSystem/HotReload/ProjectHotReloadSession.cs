@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Versioning;
 using Microsoft.DotNet.HotReload;
 using Microsoft.VisualStudio.Debugger.Contracts.EditAndContinue;
