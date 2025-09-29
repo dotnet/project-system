@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.RpcContracts.Commands;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
