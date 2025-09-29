@@ -72,16 +72,6 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     public IDeltaApplier? DeltaApplier
         => _lazyDeltaApplier;
 
-    [MemberNotNull(nameof(_lazyDeltaApplier))]
-    private void RequireActiveSession()
-    {
-        if (!_sessionActive)
-            throw new InvalidOperationException($"Hot Reload session has not started");
-
-        if (_lazyDeltaApplier is null)
-            throw new InvalidOperationException();
-    }
-
     public async Task ApplyChangesAsync(CancellationToken cancellationToken)
     {
         if (_sessionActive)

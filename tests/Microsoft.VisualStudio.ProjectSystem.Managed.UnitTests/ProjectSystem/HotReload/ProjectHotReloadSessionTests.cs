@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.RpcContracts.Commands;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
@@ -325,7 +326,7 @@ public class ProjectHotReloadSessionTests
         // Session is not started/active
 
         // Act
-        await Assert.ThrowsAsync<InvalidOperationException>(() => session.StopSessionAsync(CancellationToken.None));
+        await session.StopSessionAsync(CancellationToken.None);
 
         // Assert
         hotReloadAgentManagerClient.Verify(
@@ -381,7 +382,7 @@ public class ProjectHotReloadSessionTests
         var updates = ImmutableArray.Create<ManagedHotReloadUpdate>();
 
         // Act
-        await Assert.ThrowsAsync<InvalidOperationException>(() => session.ApplyUpdatesAsync(updates, CancellationToken.None).AsTask());
+        await session.ApplyUpdatesAsync(updates, CancellationToken.None);
 
         // Assert
         deltaApplier.Verify(
