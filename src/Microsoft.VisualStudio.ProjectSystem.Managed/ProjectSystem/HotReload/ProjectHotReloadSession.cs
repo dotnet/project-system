@@ -202,6 +202,11 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
     public async ValueTask ApplyUpdatesAsync(ImmutableArray<ManagedHotReloadUpdate> updates, CancellationToken cancellationToken)
     {
+        // A stricter check for session active could be done here, like raise an exception when not active session or no delta applier
+        // But sometimes debugger would call ApplyUpdatesAsync even when there is not active session
+        // e.g. when user restarts on rude edits
+        // We need to talk to debugger team to see if we can avoid such calls in the future
+        // https://devdiv.visualstudio.com/DevDiv/_workitems/edit/2581474
         if (_sessionActive is false || _lazyDeltaApplier is null)
         {
             DebugTrace($"{nameof(ApplyUpdatesAsync)} called but the session is not active.");
