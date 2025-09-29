@@ -501,7 +501,7 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
       </trans-unit>
       <trans-unit id="RetargetingSDKDescription">
         <source>Download and Install .NET SDK {0}</source>
-        <target state="new">Download and Install .NET SDK {0}</target>
+        <target state="translated">.NET SDK {0} herunterladen und installieren</target>
         <note />
       </trans-unit>
       <trans-unit id="StartupObjectNotSet">

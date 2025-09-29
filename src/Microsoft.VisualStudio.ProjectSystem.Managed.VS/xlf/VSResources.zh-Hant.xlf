@@ -501,7 +501,7 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="RetargetingSDKDescription">
         <source>Download and Install .NET SDK {0}</source>
-        <target state="new">Download and Install .NET SDK {0}</target>
+        <target state="translated">下載並安裝 .NET SDK {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="StartupObjectNotSet">

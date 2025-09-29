@@ -501,7 +501,7 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
       </trans-unit>
       <trans-unit id="RetargetingSDKDescription">
         <source>Download and Install .NET SDK {0}</source>
-        <target state="new">Download and Install .NET SDK {0}</target>
+        <target state="translated">.NET SDK'yı {0} indirin ve yükleyin</target>
         <note />
       </trans-unit>
       <trans-unit id="StartupObjectNotSet">

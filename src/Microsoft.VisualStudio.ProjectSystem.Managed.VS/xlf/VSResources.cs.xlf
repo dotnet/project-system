@@ -501,7 +501,7 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
       </trans-unit>
       <trans-unit id="RetargetingSDKDescription">
         <source>Download and Install .NET SDK {0}</source>
-        <target state="new">Download and Install .NET SDK {0}</target>
+        <target state="translated">Stáhněte a nainstalujte si .NET SDK {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="StartupObjectNotSet">
