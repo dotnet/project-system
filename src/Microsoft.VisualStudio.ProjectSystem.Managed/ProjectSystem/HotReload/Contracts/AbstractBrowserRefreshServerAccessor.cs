@@ -4,7 +4,7 @@ using Microsoft.DotNet.HotReload;
 
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
-public abstract class AbstractBrowserRefreshServerAccessor : IBrowserRefreshServerAccessor
+public abstract class AbstractBrowserRefreshServerAccessor : IDisposable
 {
     private protected AbstractBrowserRefreshServerAccessor()
     {

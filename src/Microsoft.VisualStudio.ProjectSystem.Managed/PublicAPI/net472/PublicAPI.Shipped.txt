@@ -224,16 +224,17 @@ Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent.CreateHotReloadSession(string! name, int id, Microsoft.VisualStudio.ProjectSystem.ConfiguredProject! configuredProject, Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback! callback, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! launchProfile, Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions debugLaunchOptions) -> Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession!
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionWebAssemblyCallback
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionWebAssemblyCallback.BrowserRefreshServerAccessor.get -> Microsoft.VisualStudio.ProjectSystem.VS.HotReload.AbstractBrowserRefreshServerAccessor!
+Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor
+Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.ConfigureLaunchEnvironment(System.Collections.Generic.IDictionary<string!, string!>! builder, bool enableHotReload) -> void
+Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.Dispose() -> void
+Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.RefreshBrowserAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.SendPingMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.SendReloadMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.SendWaitMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.StartServerAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.UpdateStaticAssetsAsync(System.Collections.Generic.IEnumerable<string!>! relativeUrls, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 Microsoft.VisualStudio.ProjectSystem.HotReload.ICssHotReloadService
 Microsoft.VisualStudio.ProjectSystem.HotReload.ICssHotReloadService.ApplyUpdatesAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<Microsoft.VisualStudio.Debugger.Contracts.HotReload.HotReloadResult>
 Microsoft.VisualStudio.ProjectSystem.HotReload.ICssHotReloadService.CssHotReloadEnabled.get -> bool
 Microsoft.VisualStudio.ProjectSystem.HotReload.ICssHotReloadService.CssHotReloadEnabled.set -> void
 Microsoft.VisualStudio.ProjectSystem.HotReload.ICssHotReloadService.GetScopedCSSFilenameForProject() -> string!
-Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshServerAccessor
-Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshServerAccessor.ConfigureLaunchEnvironment(System.Collections.Generic.IDictionary<string!, string!>! builder, bool enableHotReload) -> void
-Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshServerAccessor.RefreshBrowserAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshServerAccessor.SendPingMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshServerAccessor.SendReloadMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshServerAccessor.SendWaitMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshServerAccessor.StartServerAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshServerAccessor.UpdateStaticAssetsAsync(System.Collections.Generic.IEnumerable<string!>! relativeUrls, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
