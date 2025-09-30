@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.HotReload;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Web;
 
-internal sealed class VisualStudioBrowserRefreshServerAccessor(
+public sealed class VisualStudioBrowserRefreshServerAccessor(
     ILogger logger,
     ILoggerFactory loggerFactory,
     string projectName,

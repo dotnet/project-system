@@ -219,7 +219,7 @@ Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadAgent.CreateH
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionWebAssemblyCallback
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionWebAssemblyCallback.BrowserRefreshServerAccessor.get -> Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor
 Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor
-Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.ConfigureLaunchEnvironment(System.Collections.Generic.IDictionary<string!, string!>! builder, bool enableHotReload) -> void
+Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.ConfigureLaunchEnvironment(System.Collections.Generic.IDictionary<string, string> builder, bool enableHotReload) -> void
 Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.Dispose() -> void
 Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.RefreshBrowserAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.SendPingMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
