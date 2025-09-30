@@ -428,7 +428,7 @@ Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.Quer
 override Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.Equals(object! obj) -> bool
 override Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.GetHashCode() -> int
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext.ProjectFile -> Microsoft.VisualStudio.ProjectSystem.VS.Query.QueryProjectPropertiesContext!
-Microsoft.VisualStudio.ProjectSystem.VS.Web.VisualStudioBrowserRefreshServerAccessor
-Microsoft.VisualStudio.ProjectSystem.VS.Web.VisualStudioBrowserRefreshServerAccessor.VisualStudioBrowserRefreshServerAccessor(Microsoft.Extensions.Logging.ILogger! logger, Microsoft.Extensions.Logging.ILoggerFactory! loggerFactory, string! projectName, int port, int sslPort, string! virtualDirectory) -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider5
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider5.OnAfterLaunchAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! profile, Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugLaunchSettings! debugLaunchSetting, Microsoft.VisualStudio.Debugger.Interop.IVsLaunchedProcess! vsLaunchedProcess, Microsoft.VisualStudio.Shell.Interop.VsDebugTargetProcessInfo processInfo) -> System.Threading.Tasks.Task!
+Microsoft.VisualStudio.ProjectSystem.VS.Web.VisualStudioBrowserRefreshServerAccessor
+Microsoft.VisualStudio.ProjectSystem.VS.Web.VisualStudioBrowserRefreshServerAccessor.VisualStudioBrowserRefreshServerAccessor(Microsoft.Extensions.Logging.ILogger! logger, Microsoft.Extensions.Logging.ILoggerFactory! loggerFactory, string! projectName, int port, int sslPort, string! virtualDirectory) -> void

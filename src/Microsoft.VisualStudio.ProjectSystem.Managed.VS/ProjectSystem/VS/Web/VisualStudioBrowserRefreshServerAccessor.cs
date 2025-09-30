@@ -3,7 +3,6 @@
 using Microsoft.DotNet.HotReload;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
-using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Web;
 
