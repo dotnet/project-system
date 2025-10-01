@@ -7,6 +7,7 @@ jobs:
   variables:
     BuildConfiguration: ${{ parameters.BuildConfiguration }}
     ArtifactName: ${{ parameters.ArtifactName }}
+    VisualStudioMinimumVersion: ${{ parameters.VisualStudioMinimumVersion }}
   steps:
 
   ###################################################################################################################################################################
@@ -42,6 +43,13 @@ jobs:
   # YAML reference: https://docs.microsoft.com/azure/devops/pipelines/tasks/package/nuget-authenticate?view=azure-devops
   - task: NuGetAuthenticate@1
     displayName: Authenticate NuGet
+
+  # Sets the VisualStudioMinimumVersion variable for the job.
+  # https://docs.microsoft.com/azure/devops/pipelines/process/set-variables-scripts?view=azure-devops&tabs=powershell#set-variable-properties
+  - powershell: Write-Host "##vso[task.setvariable variable=VisualStudioMinimumVersion;isoutput=true]$(VisualStudioMinimumVersion)"
+    displayName: Set VisualStudioMinimumVersion Variable
+    # Name is required to reference the variables created within this build step in other stages.
+    name: SetVisualStudioMinimumVersionVariable
 
   # Runs the full build of the projects in the repository. See Build.proj for details.
   - script:  $(Build.SourcesDirectory)/build.cmd /v:normal /p:Configuration=$(BuildConfiguration) /p:CIBuild=true

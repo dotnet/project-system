@@ -36,6 +36,8 @@ variables:
   # Opt out of automatically injecting Codesign Validation into the pipeline.
   # See: https://aka.ms/gdn-injection
   runCodesignValidationInjection: false
+  # Set the minimum visual studio version. This overrides the version in version.json for the build toolset.
+  MinVisualStudioVersion: '17.0'
 
 ###################################################################################################################################################################
 # STAGES
@@ -49,7 +51,9 @@ stages:
     parameters:
       BuildConfiguration: Debug
       ArtifactName: '$(Build.BuildNumber)-Debug'
+      VisualStudioMinimumVersion: $(MinVisualStudioVersion)
   - template: templates/build-pull-request.yml
     parameters:
       BuildConfiguration: Release
       ArtifactName: '$(Build.BuildNumber)'
+      VisualStudioMinimumVersion: $(MinVisualStudioVersion)
