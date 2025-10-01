@@ -47,6 +47,21 @@ configuration:
       description: Email cleanser
 
     - if:
+      - payloadType: Issue_Comment
+      - commentContains:
+          pattern: '^/backport to '
+          isRegex: True
+      - isAction:
+          action: Created
+      - activitySenderHasPermissions:
+          permissions:
+            - Write
+            - Admin
+      then:
+      - backportPullRequest
+      description: Backport PR to release branch when /backport command is used
+
+    - if:
       - payloadType: Pull_Request
       then:
       - labelSync:
