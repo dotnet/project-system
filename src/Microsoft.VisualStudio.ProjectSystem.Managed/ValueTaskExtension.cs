@@ -3,15 +3,9 @@
 
 namespace System.Threading.Tasks;
 
-internal static partial class RoslynValueTaskExtensions
+internal static partial class ValueTaskExtensions
 {
-#if NET // binary compatibility
-    public static ValueTask<T> FromResult<T>(T result)
-        => ValueTask.FromResult(result);
-
-    public static ValueTask CompletedTask
-        => ValueTask.CompletedTask;
-#else
+#if !NET
     extension(ValueTask)
     {
         public static ValueTask<T> FromResult<T>(T result)
