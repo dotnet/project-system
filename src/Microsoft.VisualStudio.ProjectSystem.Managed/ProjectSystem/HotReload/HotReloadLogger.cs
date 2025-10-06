@@ -10,7 +10,8 @@ using LogLevel = Extensions.Logging.LogLevel;
 internal sealed class HotReloadLogger(IHotReloadDiagnosticOutputService service, string projectName, string variant, int sessionInstanceId, string categoryName) : ILogger
 {
     public bool IsEnabled(LogLevel logLevel)
-        => true;
+        // Do not enable Trace level logging as it affects the application output
+        => logLevel >= LogLevel.Debug;
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
