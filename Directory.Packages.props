@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <MicrosoftDotNetHotReloadPackageVersion>10.0.100-rc.2.25468.104</MicrosoftDotNetHotReloadPackageVersion>
+    <MicrosoftDotNetHotReloadPackageVersion>10.0.100-rc.2.25502.106</MicrosoftDotNetHotReloadPackageVersion>
   </PropertyGroup>
 
   <!--
@@ -34,9 +34,9 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions"                              Version="9.0.0" />
     <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Data"                                  Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
     <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.PipeRpc"                               Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
-    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Host"                                  Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Host"                                  Version="10.0.100-rc.2.25468.104"/>
     <PackageVersion Include="Microsoft.DotNet.HotReload.Client"                                      Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
-    <PackageVersion Include="Microsoft.DotNet.HotReload.Web.Middleware"                              Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Web.Middleware"                              Version="10.0.100-rc.2.25468.104"/>
 
     <!-- VS SDK -->
     <!-- https://dev.azure.com/azure-public/vside/_artifacts/feed/vssdk -->
