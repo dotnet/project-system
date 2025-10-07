@@ -8,22 +8,6 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 
 If you want to submit a feature or a substantial code contribution, please discuss it first with the the team by [filing an issue](https://github.com/dotnet/project-system/issues/new), making sure it follows our [Roadmap](docs/repo/roadmap.md).
 
-## Backporting Changes
-
-To backport a merged pull request to a release branch, add a comment to the PR with the following format:
-
-```
-/backport to <branch-name>
-```
-
-For example, to backport to the `dev17.13.x` branch:
-
-```
-/backport to dev17.13.x
-```
-
-The backport action will automatically create a new PR targeting the specified branch. This command is only available to users with Write or Admin permissions on the repository. Available release branches include `dev17.13.x`, `dev17.9.x`, `dev17.8.x`, `dev17.7.x`, `dev17.4.x`, and `dev16.11.x`.
-
 For additional information, see the following:
 
 - [Getting Started](docs/repo/getting-started.md)
