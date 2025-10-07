@@ -27,4 +27,9 @@ internal static class FeatureFlagNames
     /// or out via the <c>AccelerateBuildsInVisualStudio</c> MSBuild property.
     /// </summary>
     public const string EnableBuildAccelerationByDefault = "ManagedProjectSystem.EnableBuildAccelerationByDefault";
+
+    /// <summary>
+    /// Enables new WASM debugger.
+    /// </summary>
+    public const string EnableCorDebugWebAssemblyDebugger = "Debugger.NewMonoDebugEngine";
 }

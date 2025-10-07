@@ -140,7 +140,10 @@ public class ProjectHotReloadSessionTests
         const string expectedProjectPath = "C:\\Test\\Project.csproj";
         const string expectedTf = "net6.0";
 
-        var configuredProject = CreateConfiguredProjectWithCommonProperties(expectedTf, expectedProjectPath);
+        var configuredProject = CreateConfiguredProjectWithCommonProperties(
+            projectPath: expectedProjectPath,
+            targetFrameworkIdentifier: ".NETCoreApp",
+            targetFrameworkVersion: "6.0");
 
         var session = CreateInstance(
             hotReloadAgentManagerClient: new Lazy<IHotReloadAgentManagerClient>(() => hotReloadAgentManagerClient.Object),
@@ -193,7 +196,11 @@ public class ProjectHotReloadSessionTests
     {
         // Arrange
         var hotReloadAgentManagerClient = new Mock<IHotReloadAgentManagerClient>();
-        var configuredProject = CreateConfiguredProjectWithCommonProperties("net6.0", "C:\\Test\\Project.csproj");
+        var configuredProject = CreateConfiguredProjectWithCommonProperties(
+            "C:\\Test\\Project.csproj",
+            targetFrameworkIdentifier: ".NETCoreApp",
+            targetFrameworkVersion: "6.0");
+
         var cancellationToken = CancellationToken.None;
 
         RunningProjectInfo capturedProjectInfo = default;
@@ -245,18 +252,36 @@ public class ProjectHotReloadSessionTests
             Times.Once);
     }
 
-    [Fact]
-    public async Task StartSessionAsync_WithDebugger_SetsCorrectFlags()
+    [Theory]
+    // not debugging:
+    [InlineData(false, true, false, "6.0", HotReloadAgentFlags.None)]
+    [InlineData(false, true, true, "6.0", HotReloadAgentFlags.None)]
+    // debugging non-wasm project:
+    [InlineData(true, false, false, "6.0", HotReloadAgentFlags.IsDebuggedProcess)]
+    // debugging wasm project using legacy debugger:
+    [InlineData(true, true, false, "6.0", HotReloadAgentFlags.None)]
+    [InlineData(true, true, true, "6.0", HotReloadAgentFlags.None)]
+    [InlineData(true, true, true, "7.0", HotReloadAgentFlags.None)]
+    [InlineData(true, true, true, "8.0", HotReloadAgentFlags.None)]
+    // debugging wasm project using new debugger:
+    [InlineData(true, true, true, "9.0", HotReloadAgentFlags.IsDebuggedProcess)]
+    [InlineData(true, true, true, "10.0", HotReloadAgentFlags.IsDebuggedProcess)]
+    public async Task StartSessionAsync_WithDebugger_SetsCorrectFlags(bool isDebugging, bool isWasmProject, bool isWasmCorDebugEnabled, string targetFrameworkVersion, HotReloadAgentFlags expectedFlags)
     {
         // Arrange
         var hotReloadAgentManagerClient = new Mock<IHotReloadAgentManagerClient>();
-        var configuredProject = CreateConfiguredProjectWithCommonProperties();
+        var configuredProject = CreateConfiguredProjectWithCommonProperties(
+            targetFrameworkIdentifier: ".NETCoreApp",
+            targetFrameworkVersion: targetFrameworkVersion);
+
         var cancellationToken = CancellationToken.None;
 
         var session = CreateInstance(
             hotReloadAgentManagerClient: new Lazy<IHotReloadAgentManagerClient>(() => hotReloadAgentManagerClient.Object),
             configuredProject: configuredProject,
-            debugLaunchOptions: 0);
+            debugLaunchOptions: isDebugging ? 0 : DebugLaunchOptions.NoDebug,
+            projectSystemOptions: IProjectSystemOptionsFactory.ImplementIsCorDebugWebAssemblyDebuggerEnabledAsync(isWasmCorDebugEnabled),
+            callback: isWasmProject ? IProjectHotReloadSessionWebAssemblyCallbackFactory.Create() : null);
 
         // Act
         await session.StartSessionAsync(cancellationToken);
@@ -265,7 +290,7 @@ public class ProjectHotReloadSessionTests
         hotReloadAgentManagerClient.Verify(
             client => client.AgentStartedAsync(
                 session,
-                HotReloadAgentFlags.IsDebuggedProcess,
+                expectedFlags,
                 It.IsAny<ManagedEditAndContinueProcessInfo>(),
                 It.IsAny<RunningProjectInfo>(),
                 cancellationToken),
@@ -561,7 +586,8 @@ public class ProjectHotReloadSessionTests
         DebugLaunchOptions debugLaunchOptions = DebugLaunchOptions.NoDebug,
         IProjectHotReloadBuildManager? buildManager = null,
         IProjectHotReloadLaunchProvider? launchProvider = null,
-        IHotReloadDebugStateProvider? debugStateProvider = null)
+        IHotReloadDebugStateProvider? debugStateProvider = null,
+        IProjectSystemOptions? projectSystemOptions = null)
     {
         hotReloadAgentManagerClient ??= new(Mock.Of<IHotReloadAgentManagerClient>);
         hotReloadOutputService ??= new(Mock.Of<IHotReloadDiagnosticOutputService>);
@@ -586,6 +612,7 @@ public class ProjectHotReloadSessionTests
         buildManager ??= new Mock<IProjectHotReloadBuildManager>().Object;
         launchProvider ??= new Mock<IProjectHotReloadLaunchProvider>().Object;
         configuredProject ??= CreateConfiguredProjectWithCommonProperties();
+        projectSystemOptions ??= new Mock<IProjectSystemOptions>().Object;
 
         return new ProjectHotReloadSession(
             name,
@@ -598,14 +625,35 @@ public class ProjectHotReloadSessionTests
             configuredProject,
             launchProfile,
             debugLaunchOptions,
+            projectSystemOptions,
             debugStateProvider);
     }
 
-    private static ConfiguredProject CreateConfiguredProjectWithCommonProperties(string targetFramework = "net6.0", string projectPath = "C:\\Test\\Project.csproj")
+    private static ConfiguredProject CreateConfiguredProjectWithCommonProperties(
+        string projectPath = "C:\\Test\\Project.csproj",
+        string targetFrameworkIdentifier = ".NETCoreApp",
+        string targetFrameworkVersion = "6.0",
+        string webAssemblyHotReloadCapabilities = "Baseline")
     {
+        var targetFramework = targetFrameworkIdentifier switch
+        {
+            ".NETCoreApp" => "net" + targetFrameworkVersion,
+            ".NETFramework" => "net" + targetFrameworkVersion.Replace(".", ""),
+            ".NETStandard" => "netstandard" + targetFrameworkVersion,
+            _ => throw new ArgumentException()
+        };
+
+        var targetFrameworkMoniker = $"{targetFrameworkIdentifier}, Version=v{targetFrameworkVersion}";
+
         var commonProperties = new Mock<IProjectProperties>();
         commonProperties.Setup(p => p.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty))
             .ReturnsAsync(targetFramework);
+
+        commonProperties.Setup(p => p.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkMonikerProperty))
+            .ReturnsAsync(targetFrameworkMoniker);
+
+        commonProperties.Setup(p => p.GetEvaluatedPropertyValueAsync("WebAssemblyHotReloadCapabilities"))
+            .ReturnsAsync(webAssemblyHotReloadCapabilities);
 
         var projectPropertiesProvider = new Mock<IProjectPropertiesProvider>();
         projectPropertiesProvider.Setup(p => p.GetCommonProperties())

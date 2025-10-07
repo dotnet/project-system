@@ -23,6 +23,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     private readonly IProjectHotReloadBuildManager _buildManager;
     private readonly ILaunchProfile _launchProfile;
     private readonly DebugLaunchOptions _debugLaunchOptions;
+    private readonly IProjectSystemOptions _projectSystemOptions;
     private readonly IHotReloadDebugStateProvider _debugStateProvider;
     private readonly IProjectHotReloadLaunchProvider _launchProvider;
 
@@ -40,6 +41,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         ConfiguredProject configuredProject,
         ILaunchProfile launchProfile,
         DebugLaunchOptions debugLaunchOptions,
+        IProjectSystemOptions projectSystemOptions,
         IHotReloadDebugStateProvider debugStateProvider)
     {
         Name = name;
@@ -53,6 +55,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         _buildManager = buildManager;
         _launchProvider = launchProvider;
         _debugLaunchOptions = debugLaunchOptions;
+        _projectSystemOptions = projectSystemOptions;
         _debugStateProvider = debugStateProvider;
     }
 
@@ -156,8 +159,6 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
             throw new InvalidOperationException("Attempting to start a Hot Reload session that is already running.");
         }
 
-        HotReloadAgentFlags flags = _debugLaunchOptions.HasFlag(DebugLaunchOptions.NoDebug) ? HotReloadAgentFlags.None : HotReloadAgentFlags.IsDebuggedProcess;
-
         string targetFramework = await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty);
         bool hotReloadAutoRestart = await _configuredProject.GetProjectPropertyBoolAsync(ConfigurationGeneral.HotReloadAutoRestartProperty);
 
@@ -174,6 +175,14 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         DebugTrace($"Start session for project '{_configuredProject.UnconfiguredProject.FullPath}' with TFM '{targetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
 
         var processInfo = new ManagedEditAndContinueProcessInfo();
+
+        // If the debugger uses ICorDebug, the debugger is responsible for applying deltas to the process and the Hot Reload client receives empty deltas.
+        // Otherwise, the Hot Reload client is responsible for applying deltas and needs to receive them from the debugger.
+        // This is controlled by IsDebuggedProcess flag.
+        var flags = _debugLaunchOptions.HasFlag(DebugLaunchOptions.NoDebug) || await UsingLegacyWebAssemblyDebugEngineAsync(cancellationToken)
+            ? HotReloadAgentFlags.None
+            : HotReloadAgentFlags.IsDebuggedProcess;
+
         await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
 
         WriteToOutputWindow(Resources.HotReloadStartSession, default);
@@ -184,6 +193,31 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         }
 
         _sessionActive = true;
+    }
+
+    private async ValueTask<bool> UsingLegacyWebAssemblyDebugEngineAsync(CancellationToken cancellationToken)
+    {
+        if (_callback is not IProjectHotReloadSessionWebAssemblyCallback)
+        {
+            // not a WASM app:
+            return false;
+        }
+
+        if (await _projectSystemOptions.IsCorDebugWebAssemblyDebuggerEnabledAsync(cancellationToken) &&
+            await IsCorDebugWebAssemblyDebuggerSupportedByProjectAsync())
+        {
+            // using new debugger:
+            return false;
+        }
+
+        // using old debugger:
+        return true;
+
+        async ValueTask<bool> IsCorDebugWebAssemblyDebuggerSupportedByProjectAsync()
+        {
+            var targetFrameworkMoniker = await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkMonikerProperty);
+            return new FrameworkName(targetFrameworkMoniker).Version.Major >= 9;
+        }
     }
 
     public async Task StopSessionAsync(CancellationToken cancellationToken)
