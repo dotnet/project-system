@@ -44,4 +44,13 @@ internal static class IProjectSystemOptionsFactory
 
         return mock.Object;
     }
+
+    public static IProjectSystemOptions ImplementIsCorDebugWebAssemblyDebuggerEnabledAsync(bool value)
+    {
+        var mock = new Mock<IProjectSystemOptions>();
+        mock.Setup(o => o.IsCorDebugWebAssemblyDebuggerEnabledAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(value);
+
+        return mock.Object;
+    }
 }
