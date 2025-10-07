@@ -212,12 +212,12 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
         // using old debugger:
         return true;
-    }
 
-    private async ValueTask<bool> IsCorDebugWebAssemblyDebuggerSupportedByProjectAsync()
-    {
-        var targetFrameworkMoniker = await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkMonikerProperty);
-        return new FrameworkName(targetFrameworkMoniker).Version.Major >= 9;
+        async ValueTask<bool> IsCorDebugWebAssemblyDebuggerSupportedByProjectAsync()
+        {
+            var targetFrameworkMoniker = await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkMonikerProperty);
+            return new FrameworkName(targetFrameworkMoniker).Version.Major >= 9;
+        }
     }
 
     public async Task StopSessionAsync(CancellationToken cancellationToken)

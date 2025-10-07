@@ -140,7 +140,10 @@ public class ProjectHotReloadSessionTests
         const string expectedProjectPath = "C:\\Test\\Project.csproj";
         const string expectedTf = "net6.0";
 
-        var configuredProject = CreateConfiguredProjectWithCommonProperties(expectedTf, expectedProjectPath);
+        var configuredProject = CreateConfiguredProjectWithCommonProperties(
+            projectPath: expectedProjectPath,
+            targetFrameworkIdentifier: ".NETCoreApp",
+            targetFrameworkVersion: "6.0");
 
         var session = CreateInstance(
             hotReloadAgentManagerClient: new Lazy<IHotReloadAgentManagerClient>(() => hotReloadAgentManagerClient.Object),
