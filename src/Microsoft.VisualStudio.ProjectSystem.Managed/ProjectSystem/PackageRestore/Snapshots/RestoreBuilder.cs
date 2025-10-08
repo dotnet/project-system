@@ -18,41 +18,38 @@ internal static class RestoreBuilder
     public static ProjectRestoreInfo ToProjectRestoreInfo(IImmutableDictionary<string, IProjectRuleSnapshot> update)
     {
         IImmutableDictionary<string, string> properties = update.GetSnapshotOrEmpty(NuGetRestore.SchemaName).Properties;
-        IProjectRuleSnapshot frameworkReferences = update.GetSnapshotOrEmpty(CollectedFrameworkReference.SchemaName);
-        IProjectRuleSnapshot packageDownloads = update.GetSnapshotOrEmpty(CollectedPackageDownload.SchemaName);
-        IProjectRuleSnapshot projectReferences = update.GetSnapshotOrEmpty(EvaluatedProjectReference.SchemaName);
-        IProjectRuleSnapshot packageReferences = update.GetSnapshotOrEmpty(CollectedPackageReference.SchemaName);
-        IProjectRuleSnapshot packageVersions = update.GetSnapshotOrEmpty(CollectedPackageVersion.SchemaName);
-        IProjectRuleSnapshot nuGetAuditSuppress = update.GetSnapshotOrEmpty(CollectedNuGetAuditSuppressions.SchemaName);
-        IProjectRuleSnapshot prunePackageReferences = update.GetSnapshotOrEmpty(CollectedPrunePackageReference.SchemaName);
-        IProjectRuleSnapshot toolReferences = update.GetSnapshotOrEmpty(DotNetCliToolReference.SchemaName);
 
         // For certain project types such as UWP, "TargetFrameworkMoniker" != the moniker that restore uses
         string targetMoniker = properties.GetPropertyOrEmpty(NuGetRestore.NuGetTargetMonikerProperty);
         if (targetMoniker.Length == 0)
             targetMoniker = properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworkMonikerProperty);
 
-        TargetFrameworkInfo frameworkInfo = new TargetFrameworkInfo(
+        TargetFrameworkInfo frameworkInfo = new(
             targetMoniker,
-            ToReferenceItems(frameworkReferences.Items),
-            ToReferenceItems(packageDownloads.Items),
-            ToReferenceItems(projectReferences.Items),
-            ToReferenceItems(packageReferences.Items),
-            ToReferenceItems(packageVersions.Items),
-            ToReferenceItems(nuGetAuditSuppress.Items),
-            ToReferenceItems(prunePackageReferences.Items),
-            properties);
+            frameworkReferences: GetReferenceItems(CollectedFrameworkReference.SchemaName),
+            packageDownloads: GetReferenceItems(CollectedPackageDownload.SchemaName),
+            projectReferences: GetReferenceItems(EvaluatedProjectReference.SchemaName),
+            packageReferences: GetReferenceItems(CollectedPackageReference.SchemaName),
+            centralPackageVersions: GetReferenceItems(CollectedPackageVersion.SchemaName),
+            nuGetAuditSuppress: GetReferenceItems(CollectedNuGetAuditSuppressions.SchemaName),
+            prunePackageReferences: GetReferenceItems(CollectedPrunePackageReference.SchemaName),
+            properties: properties);
 
         return new ProjectRestoreInfo(
-            properties.GetPropertyOrEmpty(NuGetRestore.MSBuildProjectExtensionsPathProperty),
-            properties.GetPropertyOrEmpty(NuGetRestore.ProjectAssetsFileProperty),
-            properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworksProperty),
-            EmptyTargetFrameworks.Add(frameworkInfo),
-            ToReferenceItems(toolReferences.Items));
+            msbuildProjectExtensionsPath: properties.GetPropertyOrEmpty(NuGetRestore.MSBuildProjectExtensionsPathProperty),
+            projectAssetsFilePath: properties.GetPropertyOrEmpty(NuGetRestore.ProjectAssetsFileProperty),
+            originalTargetFrameworks: properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworksProperty),
+            targetFrameworks: [frameworkInfo],
+            toolReferences: GetReferenceItems(DotNetCliToolReference.SchemaName));
 
-        static ImmutableArray<ReferenceItem> ToReferenceItems(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
+        ImmutableArray<ReferenceItem> GetReferenceItems(string schemaName)
         {
-            return items.ToImmutableArray(static (name, metadata) => new ReferenceItem(name, metadata));
+            if (!update.TryGetValue(schemaName, out IProjectRuleSnapshot? result))
+            {
+                return [];
+            }
+
+            return result.Items.ToImmutableArray(static (name, metadata) => new ReferenceItem(name, metadata));
         }
     }
 }
