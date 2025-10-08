@@ -1,30 +1,49 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.VisualStudio.Text;
+
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 
 /// <summary>
-///     A complete set of restore data for a project.
+/// A complete set of restore data for a project.
 /// </summary>
-internal class ProjectRestoreInfo
+internal sealed class ProjectRestoreInfo(
+    string msbuildProjectExtensionsPath,
+    string projectAssetsFilePath,
+    string originalTargetFrameworks,
+    ImmutableArray<TargetFrameworkInfo> targetFrameworks,
+    ImmutableArray<ReferenceItem> toolReferences)
+    : IRestoreState<ProjectRestoreInfo>
 {
-    // If additional fields/properties are added to this class, please update RestoreHasher
+    // IMPORTANT: If additional state is added, update AddToHash and DescribeChanges below.
 
-    public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string projectAssetsFilePath, string originalTargetFrameworks, ImmutableArray<TargetFrameworkInfo> targetFrameworks, ImmutableArray<ReferenceItem> toolReferences)
+    public string MSBuildProjectExtensionsPath { get; } = msbuildProjectExtensionsPath;
+
+    public string ProjectAssetsFilePath { get; } = projectAssetsFilePath;
+
+    public string OriginalTargetFrameworks { get; } = originalTargetFrameworks;
+
+    public ImmutableArray<TargetFrameworkInfo> TargetFrameworks { get; } = targetFrameworks;
+
+    public ImmutableArray<ReferenceItem> ToolReferences { get; } = toolReferences;
+
+    public void AddToHash(IncrementalHasher hasher)
     {
-        MSBuildProjectExtensionsPath = msbuildProjectExtensionsPath;
-        ProjectAssetsFilePath = projectAssetsFilePath;
-        OriginalTargetFrameworks = originalTargetFrameworks;
-        TargetFrameworks = targetFrameworks;
-        ToolReferences = toolReferences;
+        hasher.AppendProperty(nameof(ProjectAssetsFilePath),        ProjectAssetsFilePath);
+        hasher.AppendProperty(nameof(MSBuildProjectExtensionsPath), MSBuildProjectExtensionsPath);
+        hasher.AppendProperty(nameof(OriginalTargetFrameworks),     OriginalTargetFrameworks);
+
+        hasher.AppendArray(TargetFrameworks);
+        hasher.AppendArray(ToolReferences);
     }
 
-    public string MSBuildProjectExtensionsPath { get; }
+    public void DescribeChanges(RestoreStateComparisonBuilder builder, ProjectRestoreInfo after)
+    {
+        builder.CompareString(MSBuildProjectExtensionsPath, after.MSBuildProjectExtensionsPath, nameof(MSBuildProjectExtensionsPath));
+        builder.CompareString(ProjectAssetsFilePath, after.ProjectAssetsFilePath, nameof(ProjectAssetsFilePath));
+        builder.CompareString(OriginalTargetFrameworks, after.OriginalTargetFrameworks, nameof(OriginalTargetFrameworks));
 
-    public string ProjectAssetsFilePath { get; }
-
-    public string OriginalTargetFrameworks { get; }
-
-    public ImmutableArray<TargetFrameworkInfo> TargetFrameworks { get; }
-
-    public ImmutableArray<ReferenceItem> ToolReferences { get; }
+        builder.CompareArray(TargetFrameworks, after.TargetFrameworks, nameof(TargetFrameworks));
+        builder.CompareArray(ToolReferences, after.ToolReferences, nameof(ToolReferences));
+    }
 }
