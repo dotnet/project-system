@@ -5,12 +5,12 @@ using System.Diagnostics;
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 
 /// <summary>
-///     Represents a single package, tool or project reference.
+/// Represents a reference item involved in package restore, with its associated metadata.
 /// </summary>
 [DebuggerDisplay("Name = {Name}")]
 internal class ReferenceItem
 {
-    // If additional fields/properties are added to this class, please update RestoreHasher
+    // If additional state is added to this class, please update RestoreHasher
 
     public ReferenceItem(string name, IImmutableDictionary<string, string> properties)
     {
@@ -20,7 +20,13 @@ internal class ReferenceItem
         Properties = properties;
     }
 
+    /// <summary>
+    /// Gets the name (item spec) of the reference.
+    /// </summary>
     public string Name { get; }
 
+    /// <summary>
+    /// Gets the name/value pair metadata associated with the reference.
+    /// </summary>
     public IImmutableDictionary<string, string> Properties { get; }
 }
