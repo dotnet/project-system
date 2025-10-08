@@ -65,4 +65,9 @@ internal interface IProjectSystemOptions
     ///     or out via the <c>AccelerateBuildsInVisualStudio</c> MSBuild property.
     /// </summary>
     ValueTask<bool> IsBuildAccelerationEnabledByDefaultAsync(CancellationToken cancellationToken);
+
+    /// <summary>
+    ///     True if the WASM debugger engine uses ICorDebug.
+    /// </summary>
+    ValueTask<bool> IsCorDebugWebAssemblyDebuggerEnabledAsync(CancellationToken cancellationToken);
 }

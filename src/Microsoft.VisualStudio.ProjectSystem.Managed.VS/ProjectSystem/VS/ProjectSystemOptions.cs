@@ -89,6 +89,9 @@ internal class ProjectSystemOptions : IProjectSystemOptions
         return IsFlagEnabledAsync(FeatureFlagNames.EnableBuildAccelerationByDefault, defaultValue: false, cancellationToken);
     }
 
+    public ValueTask<bool> IsCorDebugWebAssemblyDebuggerEnabledAsync(CancellationToken cancellationToken)
+        => IsFlagEnabledAsync(FeatureFlagNames.EnableCorDebugWebAssemblyDebugger, defaultValue: false, cancellationToken);
+
     private async ValueTask<bool> IsFlagEnabledAsync(string featureName, bool defaultValue, CancellationToken cancellationToken)
     {
         IVsFeatureFlags featureFlags = await _featureFlagsService.GetValueAsync(cancellationToken);
