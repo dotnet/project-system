@@ -2,6 +2,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.Debugger.Contracts;
 using Microsoft.VisualStudio.Debugger.Interop;
 using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
@@ -110,9 +111,11 @@ internal class ProjectLaunchTargetsProvider :
         throw new InvalidOperationException($"Wrong overload of {nameof(OnAfterLaunchAsync)} called.");
     }
 
-    public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos)
+    public async Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos)
     {
-        return Task.CompletedTask;
+        var configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
+        var hotReloadSessionManager = configuredProjectForDebug.GetExportedService<IProjectHotReloadSessionManager>();
+        await hotReloadSessionManager.ActivateSessionAsync(null, processInfos[0]);
     }
 
     public async Task OnAfterLaunchAsync(
