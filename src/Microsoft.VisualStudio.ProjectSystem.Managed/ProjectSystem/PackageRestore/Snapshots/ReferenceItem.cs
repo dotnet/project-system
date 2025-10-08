@@ -9,27 +9,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 /// Represents a reference item involved in package restore, with its associated metadata.
 /// </summary>
 [DebuggerDisplay("Name = {Name}")]
-internal sealed class ReferenceItem : IRestoreState<ReferenceItem>
+internal sealed class ReferenceItem(
+    string name,
+    IImmutableDictionary<string, string> metadata)
+    : IRestoreState<ReferenceItem>
 {
-    // If additional state is added to this class, please update RestoreHasher
-
-    public ReferenceItem(string name, IImmutableDictionary<string, string> metadata)
-    {
-        Requires.NotNullOrEmpty(name);
-
-        Name = name;
-        Metadata = metadata;
-    }
+    // IMPORTANT: If additional state is added, update AddToHash and DescribeChanges below.
 
     /// <summary>
     /// Gets the name (item spec) of the reference.
     /// </summary>
-    public string Name { get; }
+    public string Name { get; } = name;
 
     /// <summary>
     /// Gets the name/value pair metadata associated with the reference.
     /// </summary>
-    public IImmutableDictionary<string, string> Metadata { get; }
+    public IImmutableDictionary<string, string> Metadata { get; } = metadata;
 
     public void AddToHash(IncrementalHasher hasher)
     {
