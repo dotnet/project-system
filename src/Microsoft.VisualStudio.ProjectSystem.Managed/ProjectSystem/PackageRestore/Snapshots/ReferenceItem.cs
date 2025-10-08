@@ -12,12 +12,12 @@ internal sealed class ReferenceItem
 {
     // If additional state is added to this class, please update RestoreHasher
 
-    public ReferenceItem(string name, IImmutableDictionary<string, string> properties)
+    public ReferenceItem(string name, IImmutableDictionary<string, string> metadata)
     {
         Requires.NotNullOrEmpty(name);
 
         Name = name;
-        Properties = properties;
+        Metadata = metadata;
     }
 
     /// <summary>
@@ -28,5 +28,5 @@ internal sealed class ReferenceItem
     /// <summary>
     /// Gets the name/value pair metadata associated with the reference.
     /// </summary>
-    public IImmutableDictionary<string, string> Properties { get; }
+    public IImmutableDictionary<string, string> Metadata { get; }
 }

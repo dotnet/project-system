@@ -52,7 +52,7 @@ internal static class RestoreHasher
 
     private static void AppendReferenceProperties(this IncrementalHasher hasher, ReferenceItem reference)
     {
-        foreach ((string key, string value) in reference.Properties)
+        foreach ((string key, string value) in reference.Metadata)
         {
             hasher.AppendProperty(key, value);
         }
