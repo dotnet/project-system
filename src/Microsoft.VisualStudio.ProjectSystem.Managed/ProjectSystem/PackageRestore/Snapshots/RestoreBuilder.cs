@@ -9,9 +9,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 /// </summary>
 internal static class RestoreBuilder
 {
-    public static readonly ImmutableArray<TargetFrameworkInfo> EmptyTargetFrameworks = [];
-    public static readonly ImmutableArray<ReferenceItem> EmptyReferences = [];
-
     /// <summary>
     ///     Converts an immutable dictionary of rule snapshot data into an <see cref="ProjectRestoreInfo"/> instance.
     /// </summary>
