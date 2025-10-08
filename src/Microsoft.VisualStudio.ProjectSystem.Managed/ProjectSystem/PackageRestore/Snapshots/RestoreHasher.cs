@@ -28,7 +28,7 @@ internal static class RestoreHasher
             hasher.AppendReferences(framework.NuGetAuditSuppress);
         }
 
-        AppendReferences(hasher, restoreInfo.ToolReferences);
+        hasher.AppendReferences(restoreInfo.ToolReferences);
 
         return hasher.GetHashAndReset();
     }
@@ -37,7 +37,7 @@ internal static class RestoreHasher
     {
         foreach ((string key, string value) in framework.Properties)
         {
-            AppendProperty(hasher, key, value);
+            hasher.AppendProperty(key, value);
         }
     }
 
@@ -45,8 +45,8 @@ internal static class RestoreHasher
     {
         foreach (ReferenceItem reference in references)
         {
-            AppendProperty(hasher, nameof(reference.Name), reference.Name);
-            AppendReferenceProperties(hasher, reference);
+            hasher.AppendProperty(nameof(reference.Name), reference.Name);
+            hasher.AppendReferenceProperties(reference);
         }
     }
 
@@ -54,7 +54,7 @@ internal static class RestoreHasher
     {
         foreach ((string key, string value) in reference.Properties)
         {
-            AppendProperty(hasher, key, value);
+            hasher.AppendProperty(key, value);
         }
     }
 
