@@ -192,15 +192,15 @@ public class RestoreBuilderTests
 
         var toolReference1 = references.FirstOrDefault(r => r.Name == "ToolReference1");
         Assert.NotNull(toolReference1);
-        AssertContainsProperty("Version", "1.0.0.0", toolReference1.Properties);
+        AssertContainsProperty("Version", "1.0.0.0", toolReference1.Metadata);
 
         var toolReference2 = references.FirstOrDefault(r => r.Name == "ToolReference2");
         Assert.NotNull(toolReference2);
-        AssertContainsProperty("Version", "2.0.0.0", toolReference2.Properties);
+        AssertContainsProperty("Version", "2.0.0.0", toolReference2.Metadata);
 
         var toolReference3 = references.FirstOrDefault(r => r.Name == "ToolReference3");
         Assert.NotNull(toolReference3);
-        AssertContainsProperty("Name", "Value", toolReference3.Properties);
+        AssertContainsProperty("Name", "Value", toolReference3.Metadata);
     }
 
     [Fact]
@@ -234,15 +234,15 @@ public class RestoreBuilderTests
 
         var packageReference1 = references.FirstOrDefault(r => r.Name == "PackageReference1");
         Assert.NotNull(packageReference1);
-        AssertContainsProperty("Version", "1.0.0.0", packageReference1.Properties);
+        AssertContainsProperty("Version", "1.0.0.0", packageReference1.Metadata);
 
         var packageReference2 = references.FirstOrDefault(r => r.Name == "PackageReference2");
         Assert.NotNull(packageReference2);
-        AssertContainsProperty("Version", "2.0.0.0", packageReference2.Properties);
+        AssertContainsProperty("Version", "2.0.0.0", packageReference2.Metadata);
 
         var packageReference3 = references.FirstOrDefault(r => r.Name == "PackageReference3");
         Assert.NotNull(packageReference3);
-        AssertContainsProperty("Name", "Value", packageReference3.Properties);
+        AssertContainsProperty("Name", "Value", packageReference3.Metadata);
     }
 
     [Fact]
@@ -276,17 +276,17 @@ public class RestoreBuilderTests
 
         var reference1 = versions.FirstOrDefault(r => r.Name == "Newtonsoft.Json");
         Assert.NotNull(reference1);
-        AssertContainsProperty("Version", "1.0", reference1.Properties);
+        AssertContainsProperty("Version", "1.0", reference1.Metadata);
 
         var reference2 = versions.FirstOrDefault(r => r.Name == "System.IO");
         Assert.NotNull(reference2);
-        AssertContainsProperty("Version", "2.0", reference2.Properties);
+        AssertContainsProperty("Version", "2.0", reference2.Metadata);
 
         var reference3 = versions.FirstOrDefault(r => r.Name == "Microsoft.Extensions");
         Assert.NotNull(reference3);
         Assert.Equal("Microsoft.Extensions", reference3.Name);
 
-        AssertContainsProperty("Version", "3.0", reference3.Properties);
+        AssertContainsProperty("Version", "3.0", reference3.Metadata);
     }
 
     [Fact]
@@ -344,17 +344,17 @@ public class RestoreBuilderTests
 
         var reference1 = prunePackageReferences.FirstOrDefault(r => r.Name == "Newtonsoft.Json");
         Assert.NotNull(reference1);
-        AssertContainsProperty("Version", "1.0", reference1.Properties);
+        AssertContainsProperty("Version", "1.0", reference1.Metadata);
 
         var reference2 = prunePackageReferences.FirstOrDefault(r => r.Name == "System.IO");
         Assert.NotNull(reference2);
-        AssertContainsProperty("Version", "2.0", reference2.Properties);
+        AssertContainsProperty("Version", "2.0", reference2.Metadata);
 
         var reference3 = prunePackageReferences.FirstOrDefault(r => r.Name == "Microsoft.Extensions");
         Assert.NotNull(reference3);
         Assert.Equal("Microsoft.Extensions", reference3.Name);
 
-        AssertContainsProperty("Version", "3.0", reference3.Properties);
+        AssertContainsProperty("Version", "3.0", reference3.Metadata);
     }
 
     [Fact]
@@ -389,16 +389,16 @@ public class RestoreBuilderTests
 
         var reference1 = references.FirstOrDefault(p => p.Name == "..\\Project\\Project1.csproj");
         Assert.NotNull(reference1);
-        AssertContainsProperty("ProjectFileFullPath", "C:\\Solution\\Project\\Project1.csproj", reference1.Properties);
+        AssertContainsProperty("ProjectFileFullPath", "C:\\Solution\\Project\\Project1.csproj", reference1.Metadata);
 
         var reference2 = references.FirstOrDefault(p => p.Name == "..\\Project\\Project2.csproj");
         Assert.NotNull(reference2);
-        AssertContainsProperty("ProjectFileFullPath", "C:\\Solution\\Project\\Project2.csproj", reference2.Properties);
+        AssertContainsProperty("ProjectFileFullPath", "C:\\Solution\\Project\\Project2.csproj", reference2.Metadata);
 
         var reference3 = references.FirstOrDefault(p => p.Name == "..\\Project\\Project3.csproj");
         Assert.NotNull(reference3);
-        AssertContainsProperty("ProjectFileFullPath", "C:\\Solution\\Project\\Project3.csproj", reference3.Properties);
-        AssertContainsProperty("MetadataName", "MetadataValue", reference3.Properties);
+        AssertContainsProperty("ProjectFileFullPath", "C:\\Solution\\Project\\Project3.csproj", reference3.Metadata);
+        AssertContainsProperty("MetadataName", "MetadataValue", reference3.Metadata);
     }
 
     [Fact]
@@ -428,11 +428,11 @@ public class RestoreBuilderTests
 
         var reference1 = references.FirstOrDefault(r => r.Name == "WindowsForms");
         Assert.NotNull(reference1);
-        Assert.Empty(reference1.Properties);
+        Assert.Empty(reference1.Metadata);
 
         var reference2 = references.FirstOrDefault(r => r.Name == "WPF");
         Assert.NotNull(reference2);
-        AssertContainsProperty("PrivateAssets", "all", reference2.Properties);
+        AssertContainsProperty("PrivateAssets", "all", reference2.Metadata);
     }
 
     [Fact]
@@ -463,11 +463,11 @@ public class RestoreBuilderTests
 
         var download1 = downloads.FirstOrDefault(d => d.Name == "NuGet.Common");
         Assert.NotNull(download1);
-        AssertContainsProperty("Version", "[4.0.0];[5.0.0]", download1.Properties);
+        AssertContainsProperty("Version", "[4.0.0];[5.0.0]", download1.Metadata);
 
         var download2 = downloads.FirstOrDefault(d => d.Name == "NuGet.Frameworks");
         Assert.NotNull(download2);
-        AssertContainsProperty("Version", "[4.9.4]", download2.Properties);
+        AssertContainsProperty("Version", "[4.9.4]", download2.Metadata);
     }
 
     private static void AssertContainsProperty(string name, string value, IImmutableDictionary<string, string> properties)

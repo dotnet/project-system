@@ -15,5 +15,5 @@ internal class VsReferenceItem(ReferenceItem referenceItem) : IVsReferenceItem2
 {
     public string Name => referenceItem.Name;
 
-    public IReadOnlyDictionary<string, string>? Metadata => referenceItem.Properties;
+    public IReadOnlyDictionary<string, string>? Metadata => referenceItem.Metadata;
 }

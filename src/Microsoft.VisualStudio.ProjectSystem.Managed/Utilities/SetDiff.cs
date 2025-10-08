@@ -15,6 +15,8 @@ internal sealed class SetDiff<T> where T : notnull
 
     public Part Added => new(_dic, FlagAfter);
 
+    public bool HasChange => _dic.Count is not 0;
+
     public SetDiff(IEnumerable<T> before, IEnumerable<T> after, IEqualityComparer<T>? equalityComparer = null)
     {
         Requires.NotNull(before);
@@ -22,7 +24,7 @@ internal sealed class SetDiff<T> where T : notnull
 
         equalityComparer ??= EqualityComparer<T>.Default;
 
-        var dic = new Dictionary<T, byte>(equalityComparer);
+        Dictionary<T, byte> dic = new(equalityComparer);
 
         foreach (T item in before)
         {
@@ -40,42 +42,24 @@ internal sealed class SetDiff<T> where T : notnull
         _dic = dic;
     }
 
-    public readonly struct Part : IEnumerable<T>
+    public readonly struct Part(Dictionary<T, byte> dic, byte flag) : IEnumerable<T>
     {
-        private readonly Dictionary<T, byte> _dic;
-        private readonly byte _flag;
-
-        public Part(Dictionary<T, byte> dic, byte flag)
-        {
-            _dic = dic;
-            _flag = flag;
-        }
-
-        public PartEnumerator GetEnumerator() => new(_dic, _flag);
+        public PartEnumerator GetEnumerator() => new(dic, flag);
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
 
-        public struct PartEnumerator : IEnumerator<T>
+        public struct PartEnumerator(Dictionary<T, byte> dic, byte flag) : IEnumerator<T>
         {
-            private readonly byte _flag;
-
             // IMPORTANT cannot be readonly
-            private Dictionary<T, byte>.Enumerator _enumerator;
-
-            public PartEnumerator(Dictionary<T, byte> dic, byte flag)
-            {
-                _flag = flag;
-                _enumerator = dic.GetEnumerator();
-                Current = default!;
-            }
+            private Dictionary<T, byte>.Enumerator _enumerator = dic.GetEnumerator();
 
             public bool MoveNext()
             {
                 while (_enumerator.MoveNext())
                 {
-                    if (_enumerator.Current.Value == _flag)
+                    if (_enumerator.Current.Value == flag)
                     {
                         Current = _enumerator.Current.Key;
                         return true;
@@ -85,13 +69,13 @@ internal sealed class SetDiff<T> where T : notnull
                 return false;
             }
 
-            public T Current { get; private set; }
+            public T Current { get; private set; } = default!;
 
-            object IEnumerator.Current => Current!;
+            readonly object IEnumerator.Current => Current!;
 
-            void IEnumerator.Reset() => throw new NotSupportedException();
+            readonly void IEnumerator.Reset() => throw new NotSupportedException();
 
-            void IDisposable.Dispose() { }
+            readonly void IDisposable.Dispose() { }
         }
     }
 }

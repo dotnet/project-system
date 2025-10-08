@@ -6,8 +6,11 @@ internal static class ProjectRestoreInfoFactory
 {
     public static ProjectRestoreInfo Create(string? msbuildProjectExtensionsPath = null)
     {
-        return new ProjectRestoreInfo(msbuildProjectExtensionsPath ?? string.Empty, string.Empty, string.Empty,
-                                      RestoreBuilder.EmptyTargetFrameworks,
-                                      RestoreBuilder.EmptyReferences);
+        return new ProjectRestoreInfo(
+            msbuildProjectExtensionsPath: msbuildProjectExtensionsPath ?? "",
+            projectAssetsFilePath: "",
+            originalTargetFrameworks: "",
+            targetFrameworks: [],
+            toolReferences: []);
     }
 }

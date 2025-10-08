@@ -86,7 +86,7 @@ internal static class RestoreLogger
 
         foreach (ReferenceItem reference in references)
         {
-            IEnumerable<string> properties = reference.Properties.Select(prop => $"{prop.Key}:{prop.Value}");
+            IEnumerable<string> properties = reference.Metadata.Select(prop => $"{prop.Key}:{prop.Value}");
 
             logger.WriteLine($"{reference.Name} -- ({string.Join(" | ", properties)})");
         }

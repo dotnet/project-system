@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 
@@ -8,46 +9,67 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 ///     Represents the restore data for a single target framework in <see cref="UnconfiguredProject"/>.
 /// </summary>
 [DebuggerDisplay("TargetFrameworkMoniker = {TargetFrameworkMoniker}")]
-internal class TargetFrameworkInfo
+internal sealed class TargetFrameworkInfo(
+    string targetFrameworkMoniker,
+    ImmutableArray<ReferenceItem> frameworkReferences,
+    ImmutableArray<ReferenceItem> packageDownloads,
+    ImmutableArray<ReferenceItem> projectReferences,
+    ImmutableArray<ReferenceItem> packageReferences,
+    ImmutableArray<ReferenceItem> centralPackageVersions,
+    ImmutableArray<ReferenceItem> nuGetAuditSuppress,
+    ImmutableArray<ReferenceItem> prunePackageReferences,
+    IImmutableDictionary<string, string> properties) : IRestoreState<TargetFrameworkInfo>
 {
-    // If additional fields/properties are added to this class, please update RestoreHasher
-    public TargetFrameworkInfo(
-        string targetFrameworkMoniker,
-        ImmutableArray<ReferenceItem> frameworkReferences,
-        ImmutableArray<ReferenceItem> packageDownloads,
-        ImmutableArray<ReferenceItem> projectReferences,
-        ImmutableArray<ReferenceItem> packageReferences,
-        ImmutableArray<ReferenceItem> centralPackageVersions,
-        ImmutableArray<ReferenceItem> nuGetAuditSuppress,
-        ImmutableArray<ReferenceItem> prunePackageReferences,
-        IImmutableDictionary<string, string> properties)
+    // IMPORTANT: If additional state is added, update AddToHash and DescribeChanges below.
+
+    public string TargetFrameworkMoniker { get; } = targetFrameworkMoniker;
+
+    public ImmutableArray<ReferenceItem> FrameworkReferences { get; } = frameworkReferences;
+
+    public ImmutableArray<ReferenceItem> PackageDownloads { get; } = packageDownloads;
+
+    public ImmutableArray<ReferenceItem> PackageReferences { get; } = packageReferences;
+
+    public ImmutableArray<ReferenceItem> ProjectReferences { get; } = projectReferences;
+
+    public ImmutableArray<ReferenceItem> CentralPackageVersions { get; } = centralPackageVersions;
+
+    public ImmutableArray<ReferenceItem> NuGetAuditSuppress { get; } = nuGetAuditSuppress;
+
+    public ImmutableArray<ReferenceItem> PrunePackageReferences { get; } = prunePackageReferences;
+
+    public IImmutableDictionary<string, string> Properties { get; } = properties;
+
+    public void AddToHash(IncrementalHasher hasher)
     {
-        TargetFrameworkMoniker = targetFrameworkMoniker;
-        FrameworkReferences = frameworkReferences;
-        PackageDownloads = packageDownloads;
-        ProjectReferences = projectReferences;
-        PackageReferences = packageReferences;
-        CentralPackageVersions = centralPackageVersions;
-        NuGetAuditSuppress = nuGetAuditSuppress;
-        PrunePackageReferences = prunePackageReferences;
-        Properties = properties;
+        hasher.AppendProperty(nameof(TargetFrameworkMoniker), TargetFrameworkMoniker);
+
+        foreach ((string key, string value) in Properties)
+        {
+            hasher.AppendProperty(key, value);
+        }
+
+        hasher.AppendArray(ProjectReferences);
+        hasher.AppendArray(PackageReferences);
+        hasher.AppendArray(FrameworkReferences);
+        hasher.AppendArray(PackageDownloads);
+        hasher.AppendArray(CentralPackageVersions);
+        hasher.AppendArray(NuGetAuditSuppress);
     }
 
-    public string TargetFrameworkMoniker { get; }
+    public void DescribeChanges(RestoreStateComparisonBuilder builder, TargetFrameworkInfo after)
+    {
+        builder.PushScope(TargetFrameworkMoniker);
 
-    public ImmutableArray<ReferenceItem> FrameworkReferences { get; }
+        builder.CompareDictionary(Properties, after.Properties, nameof(Properties));
 
-    public ImmutableArray<ReferenceItem> PackageDownloads { get; }
+        builder.CompareArray(ProjectReferences, after.ProjectReferences, nameof(ProjectReferences));
+        builder.CompareArray(PackageReferences, after.PackageReferences, nameof(PackageReferences));
+        builder.CompareArray(FrameworkReferences, after.FrameworkReferences, nameof(FrameworkReferences));
+        builder.CompareArray(PackageDownloads, after.PackageDownloads, nameof(PackageDownloads));
+        builder.CompareArray(CentralPackageVersions, after.CentralPackageVersions, nameof(CentralPackageVersions));
+        builder.CompareArray(NuGetAuditSuppress, after.NuGetAuditSuppress, nameof(NuGetAuditSuppress));
 
-    public ImmutableArray<ReferenceItem> PackageReferences { get; }
-
-    public ImmutableArray<ReferenceItem> ProjectReferences { get; }
-
-    public ImmutableArray<ReferenceItem> CentralPackageVersions { get; }
-
-    public ImmutableArray<ReferenceItem> NuGetAuditSuppress { get; }
-
-    public ImmutableArray<ReferenceItem> PrunePackageReferences { get; }
-
-    public IImmutableDictionary<string, string> Properties { get; }
+        builder.PopScope();
+    }
 }

@@ -3,6 +3,7 @@
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.ProjectSystem.Telemetry;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 
@@ -58,6 +59,7 @@ internal partial class PackageRestoreDataSource : ChainedProjectValueDataSourceB
     private readonly IManagedProjectDiagnosticOutputService _logger;
     private readonly INuGetRestoreService _nuGetRestoreService;
     private Hash? _lastHash;
+    private ProjectRestoreInfo? _lastRestoreInfo;
     private bool _enabled;
     private bool _wasSourceBlockContinuationSet;
 
@@ -109,10 +111,7 @@ internal partial class PackageRestoreDataSource : ChainedProjectValueDataSourceB
 
         RestoreData restoreData = CreateRestoreData(e.Value.RestoreInfo, succeeded);
 
-        return new[]
-        {
-            new ProjectVersionedValue<RestoreData>(restoreData, e.DataSourceVersions)
-        };
+        return [new ProjectVersionedValue<RestoreData>(restoreData, e.DataSourceVersions)];
     }
 
     private async Task<bool> RestoreCoreAsync(PackageRestoreUnconfiguredInput value)
@@ -125,21 +124,42 @@ internal partial class PackageRestoreDataSource : ChainedProjectValueDataSourceB
 
         // Restore service always does work regardless of whether the value we pass 
         // them to actually contains changes, only nominate if there are any.
-        Hash hash = RestoreHasher.CalculateHash(restoreInfo);
+        Hash hash = CalculateHash();
 
         if (await _cycleDetector.IsCycleDetectedAsync(hash, value.ActiveConfiguration, token))
         {
             _lastHash = hash;
+            _lastRestoreInfo = restoreInfo;
             return false;
         }
 
         if (_lastHash?.Equals(hash) == true)
         {
             await _nuGetRestoreService.UpdateWithoutNominationAsync(value.ConfiguredInputs);
+            _lastRestoreInfo = restoreInfo;
             return true;
         }
 
         _lastHash = hash;
+
+        if (DotNetProjectSystemEventSource.Instance.IsEnabled())
+        {
+            string changes;
+            if (_lastRestoreInfo is null)
+            {
+                changes = "Initial restore.";
+            }
+            else
+            {
+                RestoreStateComparisonBuilder builder = new();
+                _lastRestoreInfo.DescribeChanges(builder, restoreInfo);
+                changes = builder.ToString();
+            }
+
+            DotNetProjectSystemEventSource.Instance.NominateForRestore(projectFilePath: _project.FullPath, changes: changes);
+        }
+
+        _lastRestoreInfo = restoreInfo;
 
         JoinableTask<bool> joinableTask = JoinableFactory.RunAsync(() =>
         {
@@ -152,6 +172,13 @@ internal partial class PackageRestoreDataSource : ChainedProjectValueDataSourceB
             registerFaultHandler: true);
 
         return await joinableTask;
+
+        Hash CalculateHash()
+        {
+            using var hasher = new IncrementalHasher();
+            restoreInfo.AddToHash(hasher);
+            return hasher.GetHashAndReset();
+        }
     }
 
     private async Task<bool> NominateForRestoreAsync(ProjectRestoreInfo restoreInfo, IReadOnlyCollection<PackageRestoreConfiguredInput> versions, CancellationToken cancellationToken)

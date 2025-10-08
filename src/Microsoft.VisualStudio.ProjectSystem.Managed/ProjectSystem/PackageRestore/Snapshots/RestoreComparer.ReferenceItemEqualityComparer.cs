@@ -14,7 +14,7 @@ internal static partial class RestoreComparer
             if (!StringComparers.ItemNames.Equals(x.Name, y.Name))
                 return false;
 
-            if (!PropertiesAreEqual(x.Properties, y.Properties))
+            if (!PropertiesAreEqual(x.Metadata, y.Metadata))
                 return false;
 
             return true;
