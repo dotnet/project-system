@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
 /// Represents a reference item involved in package restore, with its associated metadata.
 /// </summary>
 [DebuggerDisplay("Name = {Name}")]
-internal class ReferenceItem
+internal sealed class ReferenceItem
 {
     // If additional state is added to this class, please update RestoreHasher
 
