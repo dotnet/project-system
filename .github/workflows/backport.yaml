@@ -15,5 +15,7 @@ jobs:
     with:
         pr_description_template: |
           Backport of #%source_pr_number% to %target_branch%
+          
+          Requested in: %source_pr_url%#issuecomment-%trigger_comment_id%
 
           /cc %cc_users%
