@@ -33,7 +33,7 @@ internal interface IProjectHotReloadSessionManager
     /// When the session is terminated, the <paramref name="launchedProcess"/> will be used to terminate the process if it is not null.
     /// Otherwise, the PID from <paramref name="vsDebugTargetProcessInfo"/> will be used to terminate the process.
     /// </summary>
-    /// <param name="launchedProcess"/>if not null, it will be used to terminate the process.</param>
+    /// <param name="launchedProcess">if not null, it will be used to terminate the process.</param>
     /// <param name="vsDebugTargetProcessInfo">The process information of the launched process.</param>
     Task ActivateSessionAsync(IVsLaunchedProcess? launchedProcess, VsDebugTargetProcessInfo vsDebugTargetProcessInfo);
 }
