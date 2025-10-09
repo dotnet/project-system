@@ -238,12 +238,12 @@ Microsoft.VisualStudio.ProjectSystem.HotReload.ICssHotReloadService.ApplyUpdates
 Microsoft.VisualStudio.ProjectSystem.HotReload.ICssHotReloadService.CssHotReloadEnabled.get -> bool
 Microsoft.VisualStudio.ProjectSystem.HotReload.ICssHotReloadService.CssHotReloadEnabled.set -> void
 Microsoft.VisualStudio.ProjectSystem.HotReload.ICssHotReloadService.GetScopedCSSFilenameForProject() -> string!
-Microsoft.VisualStudio.ProjectSystem.HotReload.Contracts.IBrowserRefreshService
-Microsoft.VisualStudio.ProjectSystem.HotReload.Contracts.IBrowserRefreshService.BrowserLinkInjected.get -> bool
-Microsoft.VisualStudio.ProjectSystem.HotReload.Contracts.IBrowserRefreshService.ConfigureLaunchEnvironmentAsync(System.Collections.Generic.IDictionary<string!, string!>! builder, bool enableHotReload, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.HotReload.Contracts.IBrowserRefreshService.RefreshBrowserAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.HotReload.Contracts.IBrowserRefreshService.SendPingMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.HotReload.Contracts.IBrowserRefreshService.SendReloadMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.HotReload.Contracts.IBrowserRefreshService.SendWaitMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.HotReload.Contracts.IBrowserRefreshService.StartServerAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.HotReload.Contracts.IBrowserRefreshService.UpdateStaticAssetsAsync(System.Collections.Generic.IEnumerable<string!>! assetUrls, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService
+Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.BrowserLinkInjected.get -> bool
+Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.ConfigureLaunchEnvironmentAsync(System.Collections.Generic.IDictionary<string!, string!>! builder, bool enableHotReload, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.RefreshBrowserAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.SendPingMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.SendReloadMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.SendWaitMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.StartServerAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.UpdateStaticAssetsAsync(System.Collections.Generic.IEnumerable<string!>! assetUrls, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
