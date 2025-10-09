@@ -6,6 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.HotReload.Contracts;
 /// Implements a web socket server which allows connections from js code injected in the response stream by asp.net core middleware. This
 /// enables sending a refresh command to the browser when code changes.
 /// </summary>
+[ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.System, Cardinality = ImportCardinality.ExactlyOne)]
 public interface IBrowserRefreshService
 {
     /// <summary>

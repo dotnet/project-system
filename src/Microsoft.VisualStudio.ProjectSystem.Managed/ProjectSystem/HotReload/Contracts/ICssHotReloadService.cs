@@ -3,6 +3,7 @@
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
+[ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.System, Cardinality = ImportCardinality.ExactlyOne)]
 public interface ICssHotReloadService
 {
     /// <summary>
