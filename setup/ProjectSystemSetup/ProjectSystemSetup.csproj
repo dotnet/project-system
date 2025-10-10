@@ -55,6 +55,8 @@
     </Compile>
   </ItemGroup>
 
+  <Import Project="..\..\src\HotReloadRuntimeDependencies.props"/>
+
   <Target Name="PostProcessVsixSourceItems" AfterTargets="GetVsixSourceItems">
     <ItemGroup>
       <!-- Excludes the localized .xaml files from the VSIX which are added from the GetCopyToOutputDirectoryItems output group. Only the localized .dlls are needed in the VSIX. -->
