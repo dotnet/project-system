@@ -61,7 +61,7 @@ internal sealed class VisualStudioBrowserRefreshServer(
 
                         _ = OnBrowserConnected(webSocketContext.WebSocket, webSocketContext.SecWebSocketProtocols.FirstOrDefault());
                     }
-                    catch (Exception e) when (e is not (OperationCanceledException or ObjectDisposedException))
+                    catch (Exception e)
                     {
                         Logger.LogError("Accepting web socket exception: {Message}", e.Message);
 
@@ -70,13 +70,13 @@ internal sealed class VisualStudioBrowserRefreshServer(
                     }
                 }
             }
-            catch (Exception e) when (e is OperationCanceledException or ObjectDisposedException)
+            catch (OperationCanceledException)
             {
-                // expected during shutdown
+                // nop
             }
             catch (Exception e)
             {
-                Logger.LogError("Unexpected HttpListener exception: {Message}", e.Message);
+                Logger.LogError("HttpListener exception: {Message}", e.Message);
             }
         }
     }
