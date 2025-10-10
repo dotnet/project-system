@@ -23,6 +23,8 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Compile Include="..\Common\GlobalAssemblyInfo.vb" />
+
     <Compile Include="..\Common\ManagedCodeMarkers.vb">
       <Link>ManagedCodeMarkers.vb</Link>
     </Compile>

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!--
+      This assembly may be loaded .NET 6.0+ web server.
+      When updating the TFM also update minimal supported version in VisualStudioBrowserRefreshServer.
+    -->
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.DotNet.HotReload.Web.Middleware" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Remove="@(Using)"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="@(Compile)">
+      <Link Condition="'%(NuGetPackageId)' != ''">%(NuGetPackageId)\%(Link)</Link>
+    </Compile>
+  </ItemGroup>
+</Project>
