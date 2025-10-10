@@ -149,9 +149,8 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
 
             if (targetsProvider is IDebugProfileLaunchTargetsProvider4 targetsProvider4)
             {
-                threadingService.ExecuteSynchronously(() => targetsProvider4.OnAfterLaunchAsync(launchOptions, activeProfile, processInfoArray));
-
                 IVsLaunchedProcess? vsLaunchedProcess = null;
+
                 lock (_launchedProcesses)
                 {
                     if (_launchedProcesses.Count == 1)
@@ -166,6 +165,10 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
                     vsLaunchedProcess is not null)
                 {
                     threadingService.ExecuteSynchronously(() => targetsProvider5.OnAfterLaunchAsync(launchOptions, activeProfile, debugLaunchSettings[0], vsLaunchedProcess, processInfoArray[0]));
+                }
+                else
+                {
+                    threadingService.ExecuteSynchronously(() => targetsProvider4.OnAfterLaunchAsync(launchOptions, activeProfile, processInfoArray));
                 }
             }
             else if (targetsProvider is not null)

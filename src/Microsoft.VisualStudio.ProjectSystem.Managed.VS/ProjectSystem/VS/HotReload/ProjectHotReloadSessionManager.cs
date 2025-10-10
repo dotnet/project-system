@@ -192,7 +192,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         }
     }
 
-    public Task ActivateSessionAsync(IVsLaunchedProcess launchedProcess, VsDebugTargetProcessInfo vsDebugTargetProcessInfo)
+    public Task ActivateSessionAsync(IVsLaunchedProcess? launchedProcess, VsDebugTargetProcessInfo vsDebugTargetProcessInfo)
     {
         Assumes.True(_pendingSessionState is not null, "No pending hot reload session to activate.");
 
@@ -261,11 +261,34 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 return true;
             }
 
-            // need to call on UI thread
-            await threadingService.SwitchToUIThread(cancellationToken);
+            // prefer to terminate launched process first if we have it
+            if (LaunchedProcess is not null)
+            {
+                // need to call on UI thread
+                await threadingService.SwitchToUIThread(cancellationToken);
 
-            // Ignore the debug option launching flags since we're just terminating the process, not the entire debug session
-            LaunchedProcess.Terminate(ignoreLaunchFlags: 1);
+                // Ignore the debug option launching flags since we're just terminating the process, not the entire debug session
+                LaunchedProcess.Terminate(ignoreLaunchFlags: 1);
+            }
+            else
+            {
+                // stop the process by killing it
+                try
+                {
+                    if (Process is not null && !Process.HasExited)
+                    {
+                        // First try to close the process nicely and if that doesn't work kill it.
+                        if (!Process.CloseMainWindow())
+                        {
+                            Process.Kill();
+                        }
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    // Process has already exited.
+                }
+            }
 
             if (Session is not null)
             {
