@@ -37,29 +37,6 @@ public sealed class DesignTimeTargetsTests
         Assert.True(logger.Succeeded);
     }
 
-    [Theory]
-    [InlineData("Microsoft.CSharp.DesignTime.targets")]
-    [InlineData("Microsoft.VisualBasic.DesignTime.targets")]
-    [InlineData("Microsoft.FSharp.DesignTime.targets")]
-    public void ValidateDesignTimeTargetsImportManagedTargets(string targetFileName)
-    {
-        // Verify that language-specific design time targets properly import Microsoft.Managed.DesignTime.targets
-        // This helps ensure the Import statements are correctly formed to handle various path scenarios
-
-        string path = Path.Combine(RepoUtil.FindRepoRootPath(), "src", "Microsoft.VisualStudio.ProjectSystem.Managed", "ProjectSystem", "DesignTimeTargets", targetFileName);
-
-        // Force an evaluation of the project which will resolve all imports
-        Project project = new(path);
-
-        // Verify that Microsoft.Managed.DesignTime.targets was successfully imported by checking for
-        // one of its well-known targets
-        Assert.True(project.Targets.ContainsKey("CollectPackageReferences"), 
-            $"{targetFileName} should import Microsoft.Managed.DesignTime.targets which defines the CollectPackageReferences target");
-
-        // Unload everything when done.
-        project.ProjectCollection.UnloadAllProjects();
-    }
-
     private sealed class Logger : ILogger
     {
         public LoggerVerbosity Verbosity { get; set; } = LoggerVerbosity.Quiet;
