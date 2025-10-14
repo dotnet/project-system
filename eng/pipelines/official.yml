@@ -89,11 +89,11 @@ parameters:
 - name: CreateVSInsertion
   displayName: Create VS Insertion PR
   type: boolean
-  default: false
+  default: true
 - name: InsertionVSBranch
   displayName: VS Insertion Branch Name
   type: string
-  default: main
+  default: rel/d18.0
 - name: CreateVSGreenInsertion
   displayName: Create vs-green Insertion PR
   type: boolean
