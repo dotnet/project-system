@@ -22,9 +22,6 @@ public abstract class AbstractBrowserRefreshServerAccessor : IDisposable
     public ValueTask RefreshBrowserAsync(CancellationToken cancellationToken)
         => Server.RefreshBrowserAsync(cancellationToken);
 
-    public ValueTask SendPingMessageAsync(CancellationToken cancellationToken)
-        => Server.SendPingMessageAsync(cancellationToken);
-
     public ValueTask SendReloadMessageAsync(CancellationToken cancellationToken)
         => Server.SendReloadMessageAsync(cancellationToken);
 

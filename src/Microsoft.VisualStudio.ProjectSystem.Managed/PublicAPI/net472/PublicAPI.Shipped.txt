@@ -228,7 +228,6 @@ Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAcces
 Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.ConfigureLaunchEnvironment(System.Collections.Generic.IDictionary<string!, string!>! builder, bool enableHotReload) -> void
 Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.Dispose() -> void
 Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.RefreshBrowserAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.SendPingMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.SendReloadMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.SendWaitMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 Microsoft.VisualStudio.ProjectSystem.HotReload.AbstractBrowserRefreshServerAccessor.StartServerAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
@@ -242,7 +241,6 @@ Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService
 Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.BrowserLinkInjected.get -> bool
 Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.ConfigureLaunchEnvironmentAsync(System.Collections.Generic.IDictionary<string!, string!>! builder, bool enableHotReload, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.RefreshBrowserAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
-Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.SendPingMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.SendReloadMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.SendWaitMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.StartServerAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
