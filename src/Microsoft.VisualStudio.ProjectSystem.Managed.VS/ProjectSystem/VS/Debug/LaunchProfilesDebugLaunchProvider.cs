@@ -24,17 +24,20 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     private readonly ILaunchSettingsProvider _launchSettingsProvider;
     private IDebugProfileLaunchTargetsProvider? _lastLaunchProvider;
     private readonly IProjectThreadingService _threadingService;
+    private readonly IProjectFaultHandlerService _projectFaultHandlerService;
 
     [ImportingConstructor]
     public LaunchProfilesDebugLaunchProvider(
         ConfiguredProject configuredProject,
         ILaunchSettingsProvider launchSettingsProvider,
         IVsService<IVsDebuggerLaunchAsync> vsDebuggerService,
+        IProjectFaultHandlerService projectFaultHandlerService,
         [Import(AllowDefault = true)] IProjectThreadingService? threadingService = null)
         : base(configuredProject)
     {
         _launchSettingsProvider = launchSettingsProvider;
         _vsDebuggerService = vsDebuggerService;
+        _projectFaultHandlerService = projectFaultHandlerService;
         _threadingService = threadingService ?? ThreadingService;
 
         LaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(projectCapabilityCheckProvider: configuredProject.UnconfiguredProject);
@@ -135,11 +138,12 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
     }
 
     private sealed class LaunchCompleteCallback(
-        IProjectThreadingService threadingService,
         DebugLaunchOptions launchOptions,
         IDebugProfileLaunchTargetsProvider? targetsProvider,
         ILaunchProfile activeProfile,
-        IReadOnlyList<IDebugLaunchSettings> debugLaunchSettings)
+        IReadOnlyList<IDebugLaunchSettings> debugLaunchSettings,
+        IProjectFaultHandlerService projectFaultHandlerService,
+        UnconfiguredProject? unconfiguredProject)
         : IVsDebuggerLaunchCompletionCallback, IVsDebugProcessNotify1800
     {
         private readonly List<IVsLaunchedProcess> _launchedProcesses = new();
@@ -164,16 +168,22 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
                     processInfoArray.Length == 1 &&
                     vsLaunchedProcess is not null)
                 {
-                    threadingService.ExecuteSynchronously(() => targetsProvider5.OnAfterLaunchAsync(launchOptions, activeProfile, debugLaunchSettings[0], vsLaunchedProcess, processInfoArray[0]));
+                    projectFaultHandlerService.Forget(
+                        targetsProvider5.OnAfterLaunchAsync(launchOptions, activeProfile, debugLaunchSettings[0], vsLaunchedProcess, processInfoArray[0]),
+                        unconfiguredProject);
                 }
                 else
                 {
-                    threadingService.ExecuteSynchronously(() => targetsProvider4.OnAfterLaunchAsync(launchOptions, activeProfile, processInfoArray));
+                    projectFaultHandlerService.Forget(
+                        targetsProvider4.OnAfterLaunchAsync(launchOptions, activeProfile, processInfoArray),
+                        unconfiguredProject);
                 }
             }
             else if (targetsProvider is not null)
             {
-                threadingService.ExecuteSynchronously(() => targetsProvider.OnAfterLaunchAsync(launchOptions, activeProfile));
+                projectFaultHandlerService.Forget(
+                    targetsProvider.OnAfterLaunchAsync(launchOptions, activeProfile),
+                    unconfiguredProject);
             }
         }
 
@@ -216,8 +226,8 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
         {
             await targetProvider.OnBeforeLaunchAsync(launchOptions, profile);
         }
-
-        LaunchCompleteCallback callback = new(ThreadingService, launchOptions, targetProvider, profile, targets);
+        
+        LaunchCompleteCallback callback = new(launchOptions, targetProvider, profile, targets, _projectFaultHandlerService, ConfiguredProject?.UnconfiguredProject);
 
         if (targets.Count == 0)
         {
@@ -240,7 +250,6 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
 
             // The debugger needs to be called on the UI thread
             await _threadingService.SwitchToUIThread(cancellationToken);
-
             shellDebugger.LaunchDebugTargetsAsync((uint)launchSettingsNative.Length, launchSettingsNative, callback);
         }
         finally
