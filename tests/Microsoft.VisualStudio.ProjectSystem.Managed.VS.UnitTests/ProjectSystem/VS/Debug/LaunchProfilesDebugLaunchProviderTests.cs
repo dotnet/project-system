@@ -113,11 +113,13 @@ public class LaunchProfilesDebugLaunchProviderTests
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create();
         var mockVsDebuggerService = Mock.Of<IVsDebuggerLaunchAsync>();
         var mockProjectThreadingService = IProjectThreadingServiceFactory.Create();
+        var mockProjectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
 
         var provider = new LaunchProfilesDebugLaunchProvider(
             _configuredProjectMoq.Object,
             _launchSettingsProviderMoq.Object,
             IVsServiceFactory.Create(mockVsDebuggerService),
+            mockProjectFaultHandlerService,
             mockProjectThreadingService);
 
         provider.LaunchTargetsProviders.Add(_mockWebProvider.Object); // Use web provider instead
@@ -150,8 +152,9 @@ public class LaunchProfilesDebugLaunchProviderTests
     public void OnComplete_WhenHrIsErrorCode_ThrowsException()
     {
         // Arrange
-        var mockProjectThreadingService = IProjectThreadingServiceFactory.Create();
         var mockTargetsProvider = Mock.Of<IDebugProfileLaunchTargetsProvider>();
+        var mockProjectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
+        var mockUnconfiguredProject = UnconfiguredProjectFactory.Create();
         var profile = new LaunchProfile("TestProfile", "Project");
         var launchOptions = DebugLaunchOptions.NoDebug;
         
@@ -162,11 +165,12 @@ public class LaunchProfilesDebugLaunchProviderTests
         
         var callback = Activator.CreateInstance(
             launchCompleteCallbackType,
-            mockProjectThreadingService,
             launchOptions,
             mockTargetsProvider,
             profile,
-            (IReadOnlyList<IDebugLaunchSettings>)[]);
+            (IReadOnlyList<IDebugLaunchSettings>)[],
+            mockProjectFaultHandlerService,
+            mockUnconfiguredProject);
         
         // Act & Assert
         var onCompleteMethod = launchCompleteCallbackType.GetMethod("OnComplete");
@@ -186,8 +190,9 @@ public class LaunchProfilesDebugLaunchProviderTests
     public void OnComplete_WhenHrIsSuccess_DoesNotThrowException()
     {
         // Arrange
-        var mockProjectThreadingService = IProjectThreadingServiceFactory.Create();
         var mockTargetsProvider = Mock.Of<IDebugProfileLaunchTargetsProvider>();
+        var mockProjectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
+        var mockUnconfiguredProject = UnconfiguredProjectFactory.Create();
         var profile = new LaunchProfile("TestProfile", "Project");
         var launchOptions = DebugLaunchOptions.NoDebug;
         
@@ -198,11 +203,12 @@ public class LaunchProfilesDebugLaunchProviderTests
         
         var callback = Activator.CreateInstance(
             launchCompleteCallbackType,
-            mockProjectThreadingService,
             launchOptions,
             mockTargetsProvider,
             profile,
-            (IReadOnlyList<IDebugLaunchSettings>)[]);
+            (IReadOnlyList<IDebugLaunchSettings>)[],
+            mockProjectFaultHandlerService,
+            mockUnconfiguredProject);
 
         // Act & Assert
         var onCompleteMethod = launchCompleteCallbackType.GetMethod("OnComplete");
@@ -217,7 +223,7 @@ public class LaunchProfilesDebugLaunchProviderTests
 
     private LaunchProfilesDebugLaunchProvider CreateInstance()
     {
-        var provider = new LaunchProfilesDebugLaunchProvider(_configuredProjectMoq.Object, _launchSettingsProviderMoq.Object, vsDebuggerService: null!);
+        var provider = new LaunchProfilesDebugLaunchProvider(_configuredProjectMoq.Object, _launchSettingsProviderMoq.Object, vsDebuggerService: null!, projectFaultHandlerService: null!);
 
         provider.LaunchTargetsProviders.Add(_mockWebProvider.Object);
         provider.LaunchTargetsProviders.Add(_mockDockerProvider.Object);
