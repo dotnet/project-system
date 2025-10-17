@@ -19,7 +19,6 @@ public interface IBrowserRefreshService
     /// It is safe to call this multiple times.
     /// </summary>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     ValueTask StartServerAsync(CancellationToken cancellationToken);
 
     /// <summary>
@@ -35,17 +34,9 @@ public interface IBrowserRefreshService
     ValueTask RefreshBrowserAsync(CancellationToken cancellationToken);
 
     /// <summary>
-    /// Sends a ping message to all connected browsers.
-    /// It will throw InvalidOperationException if the browser refresh server is not started.
-    /// </summary>
-    /// <param name="cancellationToken"></param>
-    ValueTask SendPingMessageAsync(CancellationToken cancellationToken);
-
-    /// <summary>
     /// Sends a reload message to all connected browsers.
     /// It will throw InvalidOperationException if the browser refresh server is not started.
     /// </summary>
-    /// <returns></returns>
     ValueTask SendReloadMessageAsync(CancellationToken cancellationToken);
 
     /// <summary>
