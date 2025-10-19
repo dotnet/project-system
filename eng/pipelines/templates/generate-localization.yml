@@ -23,9 +23,8 @@ jobs:
   - task: UseDotNet@2
     displayName: Install .NET Runtime
     inputs:
-      packageType: runtime
-      # This should match the target in OneLocBuildSetup.csproj.
-      version: 9.0.x
+      includePreviewVersions: true
+      version: 10.x
 
   # Creates the LocProject.json and perform some necessary file copying and renaming.
   - task: DotNetCoreCLI@2

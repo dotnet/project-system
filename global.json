@@ -1,0 +1,6 @@
+{
+  "sdk": {
+    // necessary for VS to find pre-release SDKs
+    "allowPrerelease": true
+  }
+}

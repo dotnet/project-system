@@ -50,27 +50,11 @@
 
     <Exec Command="dotnet --info" WorkingDirectory="$(ArtifactsDir)" />
 
-    <!-- Due to bug https://github.com/dotnet/sdk/issues/47008 we cannot pass paths that contain drive letters to "dotnet sln add".
-         We do some contortion here to make the paths relative, and run them from the root directory. This code is a big ugly because
-         there's no Path.GetRelativePath on .NET Framework. -->
-    <PropertyGroup>
-      <DriveRootPath>$([System.IO.Path]::GetPathRoot('$(ArtifactsDir)'))</DriveRootPath>
-      <ArtifactsDirRelative>$([System.String]::Copy('$(ArtifactsDir)').Substring(3))</ArtifactsDirRelative>
-    </PropertyGroup>
-
     <!-- Create the solution. Use 'force' to override existing. -->
-    <Exec Command="dotnet new sln -n $(MSBuildProjectName) -o $(ArtifactsDir) --force" WorkingDirectory="$(DriveRootPath)" />
-
-    <!-- Strip the drive letter and backslash, e.g. D:\ => -->
-    <ItemGroup>
-      <BuildProjectWithRel Include="@(BuildProject)">
-        <!-- Trim the first three characters: D:\ -->
-        <RelPath>$([System.String]::Copy('%(BuildProject.FullPath)').Substring(3))</RelPath>
-      </BuildProjectWithRel>
-    </ItemGroup>
+    <Exec Command="dotnet new sln -n $(MSBuildProjectName) -o $(ArtifactsDir) -f sln --force" WorkingDirectory="$(DriveRootPath)" />
 
     <!-- Add each BuildProject to the solution. -->
-    <Exec Command="dotnet sln &quot;$(ArtifactsDirRelative)/$(MSBuildProjectName).sln&quot; add &quot;%(BuildProjectWithRel.RelPath)&quot;" WorkingDirectory="$(DriveRootPath)" />
+    <Exec Command="dotnet sln &quot;$(ArtifactsDir)$(MSBuildProjectName).sln&quot; add &quot;%(BuildProject.FullPath)&quot;" />
 
     <!-- Build the solution. -->
     <MSBuild Projects="$(ArtifactsDir)$(MSBuildProjectName).sln" Targets="@(BuildTarget)" BuildInParallel="true" Condition="'@(BuildTarget)' != ''" />
