@@ -51,7 +51,7 @@
     <Exec Command="dotnet --info" WorkingDirectory="$(ArtifactsDir)" />
 
     <!-- Create the solution. Use 'force' to override existing. -->
-    <Exec Command="dotnet new sln -n $(MSBuildProjectName) -o $(ArtifactsDir) --force" WorkingDirectory="$(DriveRootPath)" />
+    <Exec Command="dotnet new sln -n $(MSBuildProjectName) -o $(ArtifactsDir) -f sln --force" WorkingDirectory="$(DriveRootPath)" />
 
     <!-- Add each BuildProject to the solution. -->
     <Exec Command="dotnet sln &quot;$(ArtifactsDir)$(MSBuildProjectName).sln&quot; add &quot;%(BuildProject.FullPath)&quot;" />
