@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <MicrosoftDotNetHotReloadPackageVersion>10.0.100-rc.2.25468.104</MicrosoftDotNetHotReloadPackageVersion>
+    <MicrosoftDotNetHotReloadPackageVersion>10.0.100-rtm.25518.102</MicrosoftDotNetHotReloadPackageVersion>
   </PropertyGroup>
 
   <!--
@@ -32,6 +32,7 @@
     <PackageVersion Include="System.IO.Pipelines"                                                    Version="9.0.0" />
     <PackageVersion Include="StreamJsonRpc"                                                          Version="2.23.32-alpha" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions"                              Version="9.0.0" />
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent"                                       Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
     <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Data"                                  Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
     <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.PipeRpc"                               Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
     <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Host"                                  Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>

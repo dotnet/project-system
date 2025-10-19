@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!--
+      This assembly may be loaded .NET 6.0+ web server.
+      When updating the TFM also update minimal supported version in VisualStudioBrowserRefreshServer.
+    -->
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="WebSocketScriptInjection.js" />
+    <EmbeddedResource Include="BlazorHotReload.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Remove="@(Using)"/>
+    <Using Include="System"/>
+    <Using Include="System.Collections.Generic"/>
+    <Using Include="System.IO"/>
+    <Using Include="System.Linq"/>
+    <Using Include="System.Text"/>
+    <Using Include="System.Threading"/>
+    <Using Include="System.Threading.Tasks"/>
+    <Using Include="System.Runtime.InteropServices"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="@(Compile)">
+      <Link Condition="'%(NuGetPackageId)' != ''">%(NuGetPackageId)\%(Link)</Link>
+    </Compile>
+  </ItemGroup>
+</Project>

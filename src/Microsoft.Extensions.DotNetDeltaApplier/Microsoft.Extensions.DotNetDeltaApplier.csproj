@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!--
+      dotnet-watch may inject this assembly to .NET 6.0+ app.
+
+      When updating these also update ProjectHotReloadSession.
+    -->
+    <TargetFrameworks>net6.0;net10.0</TargetFrameworks>
+
+    <!-- Suppress warning: Microsoft.Bcl.AsyncInterfaces 9.0.0 doesn't support net6.0 and has not been tested with it. -->
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.DotNet.HotReload.Agent" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.DotNet.HotReload.Agent.Data" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.DotNet.HotReload.Agent.PipeRpc" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Remove="@(Using)"/>
+    <Using Include="System"/>
+    <Using Include="System.IO"/>
+    <Using Include="System.Linq"/>
+    <Using Include="System.Threading"/>
+    <Using Include="System.Threading.Tasks"/>
+    <Using Include="System.Runtime.InteropServices"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="@(Compile)">
+      <Link Condition="'%(NuGetPackageId)' != ''">%(NuGetPackageId)\%(Link)</Link>
+    </Compile>
+  </ItemGroup>
+</Project>
