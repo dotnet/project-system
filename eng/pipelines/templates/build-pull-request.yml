@@ -31,10 +31,18 @@ jobs:
 
   # Ensure the .NET runtime needed by our unit tests is installed.
   - task: UseDotNet@2
-    displayName: Install .NET Runtime
+    displayName: Install .NET 10.x Runtime
     inputs:
       includePreviewVersions: true
       version: 10.x
+
+  # Ensure the .NET runtime needed by our unit tests is installed.
+  - task: UseDotNet@2
+    displayName: Install .NET 9.0.x Runtime
+    inputs:
+      packageType: runtime
+      # This should match the target of our unit test projects.
+      version: 9.0.x
 
   # Allows for accessing the internal AzDO feed (vs-impl-internal) for project restore via Azure Artifacts Credential Provider.
   # See: https://github.com/microsoft/artifacts-credprovider#automatic-usage
