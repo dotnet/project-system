@@ -5,6 +5,10 @@
       When updating the TFM also update minimal supported version in VisualStudioBrowserRefreshServer.
     -->
     <TargetFramework>net6.0</TargetFramework>
+
+    <!-- Workaround issues with Pdb2Pdb conversion: the assembly does not load to any VS process -->
+    <DebugType>embedded</DebugType>
+    <PublishWindowsPdb>false</PublishWindowsPdb>
   </PropertyGroup>
 
   <ItemGroup>

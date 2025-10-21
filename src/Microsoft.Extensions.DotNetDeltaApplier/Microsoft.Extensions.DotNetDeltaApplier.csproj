@@ -9,6 +9,10 @@
 
     <!-- Suppress warning: Microsoft.Bcl.AsyncInterfaces 9.0.0 doesn't support net6.0 and has not been tested with it. -->
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+
+    <!-- Workaround issues with Pdb2Pdb conversion: the assembly does not load to any VS process -->
+    <DebugType>embedded</DebugType>
+    <PublishWindowsPdb>false</PublishWindowsPdb>
   </PropertyGroup>
 
   <ItemGroup>
