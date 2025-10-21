@@ -18,6 +18,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
     private readonly IProjectThreadingService _projectThreadingService;
     private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _projectRetargetingService;
     private readonly IVsService<SVsSolution, IVsSolution> _solutionService;
+    private readonly ISdkInstallationService _sdkInstallationService;
 
     private Guid _currentSdkDescriptionId = Guid.Empty;
     private Guid _sdkRetargetId = Guid.Empty;
@@ -28,13 +29,15 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
         IFileSystem fileSystem,
         IProjectThreadingService projectThreadingService,
         IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> projectRetargetingService,
-        IVsService<SVsSolution, IVsSolution> solutionService)
+        IVsService<SVsSolution, IVsSolution> solutionService,
+        ISdkInstallationService sdkInstallationService)
     {
         _releasesProvider = releasesProvider;
         _fileSystem = fileSystem;
         _projectThreadingService = projectThreadingService;
         _projectRetargetingService = projectRetargetingService;
         _solutionService = solutionService;
+        _sdkInstallationService = sdkInstallationService;
     }
 
     public Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
@@ -85,6 +88,12 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
         string? retargetVersion = await _releasesProvider.Value.GetSupportedOrLatestSdkVersionAsync(sdkVersion, includePreview: true);
 
         if (retargetVersion is null || sdkVersion == retargetVersion)
+        {
+            return null;
+        }
+
+        // Check if the retarget is already installed globally
+        if (await _sdkInstallationService.IsSdkInstalledAsync(retargetVersion))
         {
             return null;
         }
@@ -142,7 +151,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
             {
                 try
                 {
-                    using Stream stream = File.OpenRead(globalJsonPath);
+                    using Stream stream = _fileSystem.OpenTextStream(globalJsonPath);
                     using JsonDocument doc = await JsonDocument.ParseAsync(stream);
                     if (doc.RootElement.TryGetProperty("sdk", out JsonElement sdkProp) &&
                         sdkProp.TryGetProperty("version", out JsonElement versionProp))
