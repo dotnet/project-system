@@ -194,7 +194,11 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
     public Task ActivateSessionAsync(IVsLaunchedProcess? launchedProcess, VsDebugTargetProcessInfo vsDebugTargetProcessInfo)
     {
-        Assumes.True(_pendingSessionState is not null, "No pending hot reload session to activate.");
+        // If there's no pending session to activate, return early instead of throwing
+        if (_pendingSessionState is null)
+        {
+            return Task.CompletedTask;
+        }
 
         return _semaphore.ExecuteAsync(ActivateSessionInternalAsync);
 
