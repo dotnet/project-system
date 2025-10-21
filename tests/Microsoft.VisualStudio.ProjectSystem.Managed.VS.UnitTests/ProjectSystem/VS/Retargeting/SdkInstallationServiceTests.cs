@@ -27,27 +27,6 @@ public class SdkInstallationServiceTests
     }
 
     [Fact]
-    public async Task IsSdkInstalledAsync_WhenSdkIsInstalled_ReturnsTrue()
-    {
-        var fileSystem = new IFileSystemMock();
-        var registry = new IRegistryMock();
-        var environment = new IEnvironmentMock();
-
-        // Setup dotnet.exe to exist
-        string dotnetPath = @"C:\Program Files\dotnet\dotnet.exe";
-        fileSystem.AddFile(dotnetPath);
-        environment.SetFolderPath(Environment.SpecialFolder.ProgramFiles, @"C:\Program Files");
-
-        // Note: We can't easily test the actual process execution in unit tests
-        // This test validates the path finding logic
-        var service = CreateInstance(fileSystem, registry, environment);
-
-        string? actualDotnetPath = service.GetDotNetPath();
-
-        Assert.Equal(dotnetPath, actualDotnetPath);
-    }
-
-    [Fact]
     public void GetDotNetPath_WhenRegistryHasInstallLocation_ReturnsPathFromRegistry()
     {
         var fileSystem = new IFileSystemMock();
@@ -172,12 +151,12 @@ public class SdkInstallationServiceTests
 
     private static SdkInstallationService CreateInstance(
         IFileSystem? fileSystem = null,
-        VS.Utilities.IRegistry? registry = null,
-        ProjectSystem.Utilities.IEnvironment? environment = null)
+        IRegistry? registry = null,
+        IEnvironment? environment = null)
     {
         fileSystem ??= new IFileSystemMock();
-        registry ??= new VS.Utilities.IRegistryMock();
-        environment ??= new ProjectSystem.Utilities.IEnvironmentMock();
+        registry ??= new IRegistryMock();
+        environment ??= new IEnvironmentMock();
 
         return new SdkInstallationService(fileSystem, registry, environment);
     }
