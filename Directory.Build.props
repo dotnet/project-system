@@ -60,7 +60,9 @@
     <ForceGenerationOfBindingRedirects>true</ForceGenerationOfBindingRedirects>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-    <NoWarn>$(NoWarn);NU5125</NoWarn>
+    <!-- Workaround for warings: 'PackageReference ... will not be pruned'. TODO: remove -->
+    <NoWarn>$(NoWarn);NU1510</NoWarn>
+    <NoWarn>$(NoWarn);NU5125;</NoWarn>
     <!-- Sets deterministic compilation (/deterministic compiler flag) -->
     <Deterministic>true</Deterministic>
     <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
