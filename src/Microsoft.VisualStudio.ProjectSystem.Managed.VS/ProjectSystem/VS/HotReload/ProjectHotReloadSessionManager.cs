@@ -257,8 +257,9 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
         public async Task<bool> StopProjectAsync(CancellationToken cancellationToken)
         {
-            if(Session is null || LaunchedProcess is null)
+            if (Session is null || (LaunchedProcess is null && Process is null))
             {
+                // if session is null, or there's no active process asscociated with this session, early return
                 return true;
             }
 
