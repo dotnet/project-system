@@ -112,9 +112,14 @@ internal class ProjectLaunchTargetsProvider :
 
     public async Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos)
     {
-        var configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
-        var hotReloadSessionManager = configuredProjectForDebug.GetExportedService<IProjectHotReloadSessionManager>();
-        await hotReloadSessionManager.ActivateSessionAsync(null, processInfos[0]);
+        ConfiguredProject project = await GetConfiguredProjectForDebugAsync();
+
+        IProjectHotReloadSessionManager? hotReloadSessionManager = project.GetExportedServiceOrDefault<IProjectHotReloadSessionManager>();
+
+        if (hotReloadSessionManager is not null)
+        {
+            await hotReloadSessionManager.ActivateSessionAsync(null, processInfos[0]);
+        }
     }
 
     public async Task OnAfterLaunchAsync(
@@ -124,9 +129,14 @@ internal class ProjectLaunchTargetsProvider :
         IVsLaunchedProcess vsLaunchedProcess,
         VsDebugTargetProcessInfo processInfo)
     {
-        var configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
-        var hotReloadSessionManager = configuredProjectForDebug.GetExportedService<IProjectHotReloadSessionManager>();
-        await hotReloadSessionManager.ActivateSessionAsync(vsLaunchedProcess, processInfo);
+        ConfiguredProject project = await GetConfiguredProjectForDebugAsync();
+
+        IProjectHotReloadSessionManager? hotReloadSessionManager = project.GetExportedServiceOrDefault<IProjectHotReloadSessionManager>();
+
+        if (hotReloadSessionManager is not null)
+        {
+            await hotReloadSessionManager.ActivateSessionAsync(vsLaunchedProcess, processInfo);
+        }
     }
 
     public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
@@ -409,10 +419,12 @@ internal class ProjectLaunchTargetsProvider :
             settings.Options = JsonConvert.SerializeObject(debuggerLaunchOptions);
         }
 
-        if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions))
+        if (await HotReloadShouldBeEnabledAsync(activeConfiguredProject, resolvedProfile, launchOptions))
         {
-            var hotReloadSessionManager = activeConfiguredProject.GetExportedService<IProjectHotReloadSessionManager>();
-            var projectHotReloadLaunchProvider = activeConfiguredProject.GetExportedService<IProjectHotReloadLaunchProvider>();
+            // We've already checked for the hot reload capability, so this must be non-null.
+            IProjectHotReloadSessionManager hotReloadSessionManager = activeConfiguredProject.GetExportedService<IProjectHotReloadSessionManager>();
+
+            IProjectHotReloadLaunchProvider projectHotReloadLaunchProvider = activeConfiguredProject.GetExportedService<IProjectHotReloadLaunchProvider>();
 
             if (await hotReloadSessionManager.TryCreatePendingSessionAsync(
                 launchProvider: projectHotReloadLaunchProvider,
@@ -470,8 +482,14 @@ internal class ProjectLaunchTargetsProvider :
             return (options & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug;
         }
 
-        async Task<bool> HotReloadShouldBeEnabledAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions)
+        async ValueTask<bool> HotReloadShouldBeEnabledAsync(ConfiguredProject project, ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions)
         {
+            if (!project.Capabilities.AppliesTo(ProjectCapability.SupportsHotReload))
+            {
+                // The project does not support hot reload.
+                return false;
+            }
+
             bool hotReloadEnabledAtProjectLevel = resolvedProfile.IsRunProjectCommand()
                 && resolvedProfile.IsHotReloadEnabled()
                 && !resolvedProfile.IsRemoteDebugEnabled()
