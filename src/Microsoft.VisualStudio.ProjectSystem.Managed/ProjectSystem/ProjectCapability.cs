@@ -33,6 +33,7 @@ internal static class ProjectCapability
     public const string DotNetLanguageService = DotNet + " & " + LanguageService;
     public const string UseProjectEvaluationCache = ProjectCapabilities.UseProjectEvaluationCache;
     public const string SingleTargetBuildForStartupProjects = nameof(SingleTargetBuildForStartupProjects);
+    public const string SupportsHotReload = nameof(SupportsHotReload);
     public const string ProjectPropertyInterception = nameof(ProjectPropertyInterception);
     public const string WindowsForms = nameof(WindowsForms);
     public const string WPF = nameof(WPF);
