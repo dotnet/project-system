@@ -54,4 +54,37 @@ public class RegistryServiceTests
             Assert.NotEmpty(result);
         }
     }
+
+    [Fact]
+    public void GetValueNames_WhenKeyDoesNotExist_ReturnsEmptyArray()
+    {
+        var service = new RegistryService();
+
+        string[] result = service.GetValueNames(
+            RegistryHive.LocalMachine,
+            RegistryView.Registry32,
+            @"SOFTWARE\NonExistent\Key\Path");
+
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public void GetValueNames_WhenKeyExists_ReturnsValueNames()
+    {
+        var service = new RegistryService();
+
+        // Try to read value names from a well-known registry key
+        string[] result = service.GetValueNames(
+            RegistryHive.LocalMachine,
+            RegistryView.Registry32,
+            @"SOFTWARE\Microsoft\Windows\CurrentVersion");
+
+        // On a Windows machine, this key should have at least some values
+        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+        {
+            Assert.NotEmpty(result);
+            // Should contain common values like "ProgramFilesDir"
+            Assert.Contains("ProgramFilesDir", result);
+        }
+    }
 }

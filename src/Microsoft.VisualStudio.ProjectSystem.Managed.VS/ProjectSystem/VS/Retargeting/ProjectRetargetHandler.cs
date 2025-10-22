@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Text.Json;
+using Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -18,7 +19,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
     private readonly IProjectThreadingService _projectThreadingService;
     private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _projectRetargetingService;
     private readonly IVsService<SVsSolution, IVsSolution> _solutionService;
-    private readonly ISdkInstallationService _sdkInstallationService;
+    private readonly IDotNetEnvironment _dotnetEnvironment;
 
     private Guid _currentSdkDescriptionId = Guid.Empty;
     private Guid _sdkRetargetId = Guid.Empty;
@@ -30,14 +31,14 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
         IProjectThreadingService projectThreadingService,
         IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> projectRetargetingService,
         IVsService<SVsSolution, IVsSolution> solutionService,
-        ISdkInstallationService sdkInstallationService)
+        IDotNetEnvironment dotnetEnvironment)
     {
         _releasesProvider = releasesProvider;
         _fileSystem = fileSystem;
         _projectThreadingService = projectThreadingService;
         _projectRetargetingService = projectRetargetingService;
         _solutionService = solutionService;
-        _sdkInstallationService = sdkInstallationService;
+        _dotnetEnvironment = dotnetEnvironment;
     }
 
     public Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
@@ -93,7 +94,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
         }
 
         // Check if the retarget is already installed globally
-        if (await _sdkInstallationService.IsSdkInstalledAsync(retargetVersion))
+        if (await _dotnetEnvironment.IsSdkInstalledAsync(retargetVersion))
         {
             return null;
         }

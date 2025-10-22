@@ -21,4 +21,15 @@ internal interface IRegistry
     /// The registry key value as a string if found; otherwise, <see langword="null"/>.
     /// </returns>
     string? GetValue(RegistryHive hive, RegistryView view, string subKeyPath, string valueName);
+
+    /// <summary>
+    /// Gets the names of all values under the specified registry key.
+    /// </summary>
+    /// <param name="hive">The registry hive to open (e.g., LocalMachine, CurrentUser).</param>
+    /// <param name="view">The registry view to use (e.g., Registry32, Registry64).</param>
+    /// <param name="subKeyPath">The path to the subkey to open.</param>
+    /// <returns>
+    /// An array of value names if the key exists; otherwise, an empty array.
+    /// </returns>
+    string[] GetValueNames(RegistryHive hive, RegistryView view, string subKeyPath);
 }

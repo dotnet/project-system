@@ -13,25 +13,27 @@ internal class RegistryService : IRegistry
     /// <inheritdoc/>
     public string? GetValue(RegistryHive hive, RegistryView view, string subKeyPath, string valueName)
     {
+        using RegistryKey? subKey = OpenSubKey(hive, view, subKeyPath);
+        return subKey?.GetValue(valueName) as string;
+    }
+
+    /// <inheritdoc/>
+    public string[] GetValueNames(RegistryHive hive, RegistryView view, string subKeyPath)
+    {
+        using RegistryKey? subKey = OpenSubKey(hive, view, subKeyPath);
+        return subKey?.GetValueNames() ?? [];
+    }
+
+    private static RegistryKey? OpenSubKey(RegistryHive hive, RegistryView view, string subKeyPath)
+    {
         try
         {
-            using RegistryKey? baseKey = RegistryKey.OpenBaseKey(hive, view);
-            if (baseKey is null)
-            {
-                return null;
-            }
-
-            using RegistryKey? subKey = baseKey.OpenSubKey(subKeyPath);
-            if (subKey is null)
-            {
-                return null;
-            }
-
-            return subKey.GetValue(valueName) as string;
+            using RegistryKey baseKey = RegistryKey.OpenBaseKey(hive, view);
+            return baseKey.OpenSubKey(subKeyPath);
         }
-        catch
+        catch (Exception ex) when (ex.IsCatchable())
         {
-            // Return null on any registry access error
+            // Return null on catchable registry access errors
             return null;
         }
     }

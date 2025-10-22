@@ -1,12 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 
 public class ProjectRetargetHandlerTests
 {
+    private const string GlobalJsonWithSdk = """
+        {
+          "sdk": {
+            "version": "8.0.100"
+          }
+        }
+        """;
+
     [Fact]
     public async Task CheckForRetargetAsync_WhenNoValidOptions_ReturnsNull()
     {
@@ -65,7 +74,7 @@ public class ProjectRetargetHandlerTests
 
         // Create global.json with sdk version
         string globalJsonPath = @"C:\Solution\global.json";
-        await fileSystem.WriteAllTextAsync(globalJsonPath, @"{""sdk"":{""version"":""8.0.100""}}");
+        await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
             p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>(null));
@@ -87,7 +96,7 @@ public class ProjectRetargetHandlerTests
         var solution = CreateSolutionWithDirectory(@"C:\Solution");
 
         string globalJsonPath = @"C:\Solution\global.json";
-        await fileSystem.WriteAllTextAsync(globalJsonPath, @"{""sdk"":{""version"":""8.0.100""}}");
+        await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         // Releases provider returns same version
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
@@ -110,20 +119,20 @@ public class ProjectRetargetHandlerTests
         var solution = CreateSolutionWithDirectory(@"C:\Solution");
 
         string globalJsonPath = @"C:\Solution\global.json";
-        await fileSystem.WriteAllTextAsync(globalJsonPath, @"{""sdk"":{""version"":""8.0.100""}}");
+        await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
             p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
 
         // SDK is already installed
-        var sdkInstallationService = Mock.Of<ISdkInstallationService>(
+        var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
             s => s.IsSdkInstalledAsync("8.0.200") == Task.FromResult(true));
 
         var handler = CreateInstance(
             fileSystem: fileSystem,
             solution: solution,
             releasesProvider: releasesProvider,
-            sdkInstallationService: sdkInstallationService);
+            dotnetEnvironment: dotnetEnvironment);
 
         var result = await handler.CheckForRetargetAsync(RetargetCheckOptions.ProjectLoad);
 
@@ -137,13 +146,13 @@ public class ProjectRetargetHandlerTests
         var solution = CreateSolutionWithDirectory(@"C:\Solution");
 
         string globalJsonPath = @"C:\Solution\global.json";
-        await fileSystem.WriteAllTextAsync(globalJsonPath, @"{""sdk"":{""version"":""8.0.100""}}");
+        await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
             p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
 
         // SDK is NOT installed
-        var sdkInstallationService = Mock.Of<ISdkInstallationService>(
+        var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
             s => s.IsSdkInstalledAsync("8.0.200") == Task.FromResult(false));
 
         var retargetingService = new Mock<IVsTrackProjectRetargeting2>();
@@ -154,7 +163,7 @@ public class ProjectRetargetHandlerTests
             fileSystem: fileSystem,
             solution: solution,
             releasesProvider: releasesProvider,
-            sdkInstallationService: sdkInstallationService,
+            dotnetEnvironment: dotnetEnvironment,
             trackProjectRetargeting: retargetingService.Object);
 
         var result = await handler.CheckForRetargetAsync(RetargetCheckOptions.ProjectLoad);
@@ -174,12 +183,12 @@ public class ProjectRetargetHandlerTests
         var solution = CreateSolutionWithDirectory(@"C:\Solution");
 
         string globalJsonPath = @"C:\Solution\global.json";
-        await fileSystem.WriteAllTextAsync(globalJsonPath, @"{""sdk"":{""version"":""8.0.100""}}");
+        await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
             p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
 
-        var sdkInstallationService = Mock.Of<ISdkInstallationService>(
+        var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
             s => s.IsSdkInstalledAsync("8.0.200") == Task.FromResult(false));
 
         var retargetingService = new Mock<IVsTrackProjectRetargeting2>();
@@ -190,7 +199,7 @@ public class ProjectRetargetHandlerTests
             fileSystem: fileSystem,
             solution: solution,
             releasesProvider: releasesProvider,
-            sdkInstallationService: sdkInstallationService,
+            dotnetEnvironment: dotnetEnvironment,
             trackProjectRetargeting: retargetingService.Object);
 
         var result = await handler.CheckForRetargetAsync(options);
@@ -207,12 +216,12 @@ public class ProjectRetargetHandlerTests
 
         // Create global.json in parent directory
         string globalJsonPath = @"C:\Solution\global.json";
-        await fileSystem.WriteAllTextAsync(globalJsonPath, @"{""sdk"":{""version"":""8.0.100""}}");
+        await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
             p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
 
-        var sdkInstallationService = Mock.Of<ISdkInstallationService>(
+        var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
             s => s.IsSdkInstalledAsync("8.0.200") == Task.FromResult(false));
 
         var retargetingService = new Mock<IVsTrackProjectRetargeting2>();
@@ -223,7 +232,7 @@ public class ProjectRetargetHandlerTests
             fileSystem: fileSystem,
             solution: solution,
             releasesProvider: releasesProvider,
-            sdkInstallationService: sdkInstallationService,
+            dotnetEnvironment: dotnetEnvironment,
             trackProjectRetargeting: retargetingService.Object);
 
         var result = await handler.CheckForRetargetAsync(RetargetCheckOptions.ProjectLoad);
@@ -238,12 +247,12 @@ public class ProjectRetargetHandlerTests
         var solution = CreateSolutionWithDirectory(@"C:\Solution");
 
         string globalJsonPath = @"C:\Solution\global.json";
-        await fileSystem.WriteAllTextAsync(globalJsonPath, @"{""sdk"":{""version"":""8.0.100""}}");
+        await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
             p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
 
-        var sdkInstallationService = Mock.Of<ISdkInstallationService>(
+        var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
             s => s.IsSdkInstalledAsync("8.0.200") == Task.FromResult(false));
 
         var retargetingService = new Mock<IVsTrackProjectRetargeting2>();
@@ -254,7 +263,7 @@ public class ProjectRetargetHandlerTests
             fileSystem: fileSystem,
             solution: solution,
             releasesProvider: releasesProvider,
-            sdkInstallationService: sdkInstallationService,
+            dotnetEnvironment: dotnetEnvironment,
             trackProjectRetargeting: retargetingService.Object);
 
         var result = await handler.CheckForRetargetAsync(RetargetCheckOptions.ProjectLoad);
@@ -302,12 +311,12 @@ public class ProjectRetargetHandlerTests
         var solution = CreateSolutionWithDirectory(@"C:\Solution");
 
         string globalJsonPath = @"C:\Solution\global.json";
-        await fileSystem.WriteAllTextAsync(globalJsonPath, @"{""sdk"":{""version"":""8.0.100""}}");
+        await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
             p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
 
-        var sdkInstallationService = Mock.Of<ISdkInstallationService>(
+        var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
             s => s.IsSdkInstalledAsync("8.0.200") == Task.FromResult(false));
 
         var retargetingService = new Mock<IVsTrackProjectRetargeting2>();
@@ -320,7 +329,7 @@ public class ProjectRetargetHandlerTests
             fileSystem: fileSystem,
             solution: solution,
             releasesProvider: releasesProvider,
-            sdkInstallationService: sdkInstallationService,
+            dotnetEnvironment: dotnetEnvironment,
             trackProjectRetargeting: retargetingService.Object);
 
         // Register targets
@@ -357,7 +366,7 @@ public class ProjectRetargetHandlerTests
         var solution = CreateSolutionWithDirectory(@"C:\Solution");
 
         string globalJsonPath = @"C:\Solution\global.json";
-        await fileSystem.WriteAllTextAsync(globalJsonPath, @"{""sdk"":{""version"":""8.0.100""}}");
+        await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var mockReleasesProvider = new Mock<IDotNetReleasesProvider>();
         mockReleasesProvider
@@ -389,7 +398,7 @@ public class ProjectRetargetHandlerTests
         IProjectThreadingService? threadingService = null,
         IVsTrackProjectRetargeting2? trackProjectRetargeting = null,
         IVsSolution? solution = null,
-        ISdkInstallationService? sdkInstallationService = null)
+        IDotNetEnvironment? dotnetEnvironment = null)
     {
         releasesProvider ??= Mock.Of<IDotNetReleasesProvider>();
         fileSystem ??= new IFileSystemMock();
@@ -398,7 +407,7 @@ public class ProjectRetargetHandlerTests
         var retargetingService = IVsServiceFactory.Create<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2>(trackProjectRetargeting);
         var solutionService = IVsServiceFactory.Create<SVsSolution, IVsSolution>(solution);
 
-        sdkInstallationService ??= Mock.Of<ISdkInstallationService>();
+        dotnetEnvironment ??= Mock.Of<IDotNetEnvironment>();
 
         return new ProjectRetargetHandler(
             new Lazy<IDotNetReleasesProvider>(() => releasesProvider),
@@ -406,7 +415,7 @@ public class ProjectRetargetHandlerTests
             threadingService,
             retargetingService,
             solutionService,
-            sdkInstallationService);
+            dotnetEnvironment);
     }
 
     private static IVsSolution CreateSolutionWithDirectory(string directory)
