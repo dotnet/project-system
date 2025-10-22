@@ -25,7 +25,9 @@ internal static class ConfiguredProjectServicesFactory
 
         var exportedMocks = mock.As<IExportProviderTestHook>();
         exportedMocks.Setup(s => s.GetExportedValue<IProjectHotReloadSessionManager>()).Returns(IProjectHotReloadSessionManagerFactory.Create());
+        exportedMocks.Setup(s => s.GetExportedValueOrDefault<IProjectHotReloadSessionManager>()).Returns(IProjectHotReloadSessionManagerFactory.Create());
         exportedMocks.Setup(s => s.GetExportedValue<IProjectHotReloadLaunchProvider>()).Returns(IProjectHotReloadLaunchProviderFactory.Create());
+        exportedMocks.Setup(s => s.GetExportedValueOrDefault<IProjectHotReloadLaunchProvider>()).Returns(IProjectHotReloadLaunchProviderFactory.Create());
 
         mock.Setup(c => c.PropertyPagesCatalog).Returns(propertyPagesCatalogProvider!);
         mock.Setup(c => c.AdditionalRuleDefinitions).Returns(ruleService!);

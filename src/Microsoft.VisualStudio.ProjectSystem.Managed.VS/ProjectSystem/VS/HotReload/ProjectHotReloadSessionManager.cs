@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
 [Export(typeof(IProjectHotReloadSessionManager))]
 [Export(typeof(IProjectHotReloadUpdateApplier))]
+[AppliesTo(ProjectCapability.SupportsHotReload)]
 internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager, IProjectHotReloadUpdateApplier
 {
     private readonly ConfiguredProject _configuredProject;
