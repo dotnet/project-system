@@ -29,4 +29,9 @@ internal static class ConfiguredProjectExtensions
         => configuredProject.Services is IExportProviderTestHook testExportProvider
             ? testExportProvider.GetExportedValue<T>()
             : configuredProject.Services.ExportProvider.GetExportedValue<T>();
+
+    public static T? GetExportedServiceOrDefault<T>(this ConfiguredProject configuredProject)
+        => configuredProject.Services is IExportProviderTestHook testExportProvider
+            ? testExportProvider.GetExportedValueOrDefault<T>()
+            : configuredProject.Services.ExportProvider.GetExportedValueOrDefault<T>();
 }
