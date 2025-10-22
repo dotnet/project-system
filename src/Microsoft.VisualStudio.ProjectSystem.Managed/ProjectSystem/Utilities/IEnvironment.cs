@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Runtime.InteropServices;
+
 namespace Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 /// <summary>
@@ -12,6 +14,11 @@ internal interface IEnvironment
     /// Gets a value indicating whether the current operating system is a 64-bit operating system.
     /// </summary>
     bool Is64BitOperatingSystem { get; }
+
+    /// <summary>
+    /// Gets the process architecture for the currently running process.
+    /// </summary>
+    Architecture ProcessArchitecture { get; }
 
     /// <summary>
     /// Gets the path to the system special folder that is identified by the specified enumeration.
