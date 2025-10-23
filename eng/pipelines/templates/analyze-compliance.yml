@@ -35,10 +35,11 @@ steps:
       isLargeApp: true
       verbosityLevel: minimal
       preserveTempFiles: true
+      azureSubscription: 'VSEng-APIScanSC'
     # APIScan requires an Azure Identity to run. That is provided via an Azure service principal.
     # - https://microsoft.sharepoint.com/teams/apiscan/APIScan%20User%20Wiki/authentication_using_AAD_identities.aspx
     # - https://microsoft.sharepoint.com/teams/apiscan/Lists/Contacts%20%20System%20Account%20and%20Wrappers/AllItems.aspx?skipSignal=true
     # This value is provided from the DotNet-Project-System variable group, defined in the stage variables.
     env:
-      AzureServicesAuthConnectionString: runAs=App;AppId=$(ApiScanClientId)
+      AzureServicesAuthConnectionString: RunAs=App;AppId=d318cba7-db4d-4fb3-99e1-01879cb74e91;TenantId=72f988bf-86f1-41af-91ab-2d7cd011db47;ServiceConnectionId=93e24264-c5e6-4681-8175-ec8a41668480;
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
