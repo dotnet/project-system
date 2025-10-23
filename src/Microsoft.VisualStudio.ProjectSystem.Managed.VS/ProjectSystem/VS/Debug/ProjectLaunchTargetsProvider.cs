@@ -115,8 +115,8 @@ internal class ProjectLaunchTargetsProvider :
         ConfiguredProject project = await GetConfiguredProjectForDebugAsync();
 
         IProjectHotReloadSessionManager? hotReloadSessionManager = project.GetExportedServiceOrDefault<IProjectHotReloadSessionManager>();
-
-        if (hotReloadSessionManager is not null)
+        bool isDebugging = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
+        if (hotReloadSessionManager is not null && await _hotReloadOptionService.Value.IsHotReloadEnabledAsync(isDebugging, default) is true)
         {
             await hotReloadSessionManager.ActivateSessionAsync(null, processInfos[0]);
         }
@@ -132,8 +132,8 @@ internal class ProjectLaunchTargetsProvider :
         ConfiguredProject project = await GetConfiguredProjectForDebugAsync();
 
         IProjectHotReloadSessionManager? hotReloadSessionManager = project.GetExportedServiceOrDefault<IProjectHotReloadSessionManager>();
-
-        if (hotReloadSessionManager is not null)
+        bool isDebugging = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
+        if (hotReloadSessionManager is not null && await _hotReloadOptionService.Value.IsHotReloadEnabledAsync(isDebugging, default) is true)
         {
             await hotReloadSessionManager.ActivateSessionAsync(vsLaunchedProcess, processInfo);
         }
