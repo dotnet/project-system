@@ -94,7 +94,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
         }
 
         // Check if the retarget is already installed globally
-        if (await _dotnetEnvironment.IsSdkInstalledAsync(retargetVersion))
+        if (_dotnetEnvironment.IsSdkInstalled(retargetVersion))
         {
             return null;
         }

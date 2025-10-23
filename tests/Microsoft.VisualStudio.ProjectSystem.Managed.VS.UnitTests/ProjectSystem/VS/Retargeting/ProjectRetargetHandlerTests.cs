@@ -126,7 +126,7 @@ public class ProjectRetargetHandlerTests
 
         // SDK is already installed
         var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
-            s => s.IsSdkInstalledAsync("8.0.200") == Task.FromResult(true));
+            s => s.IsSdkInstalled("8.0.200") == true);
 
         var handler = CreateInstance(
             fileSystem: fileSystem,
@@ -153,7 +153,7 @@ public class ProjectRetargetHandlerTests
 
         // SDK is NOT installed
         var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
-            s => s.IsSdkInstalledAsync("8.0.200") == Task.FromResult(false));
+            s => s.IsSdkInstalled("8.0.200") == false);
 
         var retargetingService = new Mock<IVsTrackProjectRetargeting2>();
         retargetingService.Setup(r => r.RegisterProjectTarget(It.IsAny<IVsProjectTargetDescription>()))
@@ -189,7 +189,7 @@ public class ProjectRetargetHandlerTests
             p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
 
         var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
-            s => s.IsSdkInstalledAsync("8.0.200") == Task.FromResult(false));
+            s => s.IsSdkInstalled("8.0.200") == false);
 
         var retargetingService = new Mock<IVsTrackProjectRetargeting2>();
         retargetingService.Setup(r => r.RegisterProjectTarget(It.IsAny<IVsProjectTargetDescription>()))
@@ -222,7 +222,7 @@ public class ProjectRetargetHandlerTests
             p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
 
         var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
-            s => s.IsSdkInstalledAsync("8.0.200") == Task.FromResult(false));
+            s => s.IsSdkInstalled("8.0.200") == false);
 
         var retargetingService = new Mock<IVsTrackProjectRetargeting2>();
         retargetingService.Setup(r => r.RegisterProjectTarget(It.IsAny<IVsProjectTargetDescription>()))
@@ -253,7 +253,7 @@ public class ProjectRetargetHandlerTests
             p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
 
         var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
-            s => s.IsSdkInstalledAsync("8.0.200") == Task.FromResult(false));
+            s => s.IsSdkInstalled("8.0.200") == false);
 
         var retargetingService = new Mock<IVsTrackProjectRetargeting2>();
         retargetingService.Setup(r => r.RegisterProjectTarget(It.IsAny<IVsProjectTargetDescription>()))
@@ -317,7 +317,7 @@ public class ProjectRetargetHandlerTests
             p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
 
         var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
-            s => s.IsSdkInstalledAsync("8.0.200") == Task.FromResult(false));
+            s => s.IsSdkInstalled("8.0.200") == false);
 
         var retargetingService = new Mock<IVsTrackProjectRetargeting2>();
         retargetingService.Setup(r => r.RegisterProjectTarget(It.IsAny<IVsProjectTargetDescription>()))
