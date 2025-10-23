@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.Debugger.UI.Interfaces.HotReload;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -1120,7 +1119,7 @@ public class ProjectLaunchTargetsProviderTests
             o.UnconfiguredProject == project &&
             o.Services == configuredProjectServices &&
             o.Capabilities == capabilitiesScope);
-        var environment = IEnvironmentHelperFactory.ImplementGetEnvironmentVariable(_Path);
+        var environment = new IEnvironmentMock().ImplementGetEnvironmentVariable(_Path).Object;
 
         return CreateInstance(
             configuredProject: configuredProject,
@@ -1135,14 +1134,14 @@ public class ProjectLaunchTargetsProviderTests
         ConfiguredProject? configuredProject = null,
         IDebugTokenReplacer? tokenReplacer = null,
         IFileSystem? fileSystem = null,
-        IEnvironmentHelper? environment = null,
+        IEnvironment? environment = null,
         IActiveDebugFrameworkServices? activeDebugFramework = null,
         IOutputTypeChecker? typeChecker = null,
         IProjectThreadingService? threadingService = null,
         IVsDebugger10? debugger = null,
         IHotReloadOptionService? hotReloadSettings = null)
     {
-        environment ??= Mock.Of<IEnvironmentHelper>();
+        environment ??= new IEnvironmentMock().Object;
         tokenReplacer ??= IDebugTokenReplacerFactory.Create();
         activeDebugFramework ??= IActiveDebugFrameworkServicesFactory.ImplementGetConfiguredProjectForActiveFrameworkAsync(configuredProject);
         threadingService ??= IProjectThreadingServiceFactory.Create();
