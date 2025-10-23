@@ -36,7 +36,7 @@ jobs:
       - output: pipelineArtifact
         displayName: Publish Build Artifacts
         targetPath: $(Build.SourcesDirectory)/artifacts/output
-        artifactName: $(Build.BuildNumber)
+        artifactName: $(Build.BuildNumber)-$(System.JobAttempt)
         condition: succeededOrFailed()
       - output: pipelineArtifact
         displayName: Publish Staging Artifacts
@@ -260,9 +260,10 @@ jobs:
     displayName: Copy Staging Artifact Filter
     condition: succeededOrFailed()
     
-    # This output folder is used for 1ES code signing validation
+    # This output folder is used for 1ES code signing validation, as well as publishing binlog, so it should always be run.
   - task: CopyFiles@2
     displayName: Copy necessary files to output folder
+    condition: succeededOrFailed()
     inputs:
       SourceFolder: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)
       TargetFolder: $(Build.SourcesDirectory)/artifacts/output
