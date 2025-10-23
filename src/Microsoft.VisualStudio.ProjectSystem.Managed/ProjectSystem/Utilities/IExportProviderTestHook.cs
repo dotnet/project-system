@@ -8,4 +8,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.TestHooks;
 internal interface IExportProviderTestHook
 {
     T GetExportedValue<T>();
+
+    T? GetExportedValueOrDefault<T>();
 }

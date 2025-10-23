@@ -720,7 +720,7 @@ public class ProjectLaunchTargetsProviderTests
     public async Task GetConsoleTargetForProfileAsync_WhenProjectCommandAndHotReloadEnabled_CreatesHotReloadSession()
     {
         // Arrange
-        var provider = GetDebugTargetsProvider();
+        var provider = GetDebugTargetsProvider(capabilities: [ProjectCapability.SupportsHotReload]);
 
         // Set up a Project command profile with Hot Reload enabled
         var profile = new LaunchProfile(
@@ -759,7 +759,9 @@ public class ProjectLaunchTargetsProviderTests
     {
         // Arrange
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: false, enabledWhenNotDebugging: false);
-        var provider = GetDebugTargetsProvider(hotReloadOptionService: mockHotReloadOptionService);
+        var provider = GetDebugTargetsProvider(
+            hotReloadOptionService: mockHotReloadOptionService,
+            capabilities: [ProjectCapability.SupportsHotReload]);
 
         // Set up a Project command profile with Hot Reload disabled globally
         var profile = new LaunchProfile(
@@ -797,7 +799,8 @@ public class ProjectLaunchTargetsProviderTests
         // Arrange
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
         var provider = GetDebugTargetsProvider(
-            hotReloadOptionService: mockHotReloadOptionService);
+            hotReloadOptionService: mockHotReloadOptionService,
+            capabilities: [ProjectCapability.SupportsHotReload]);
 
         // Set up an Executable command profile (not Project command)
         var profile = new LaunchProfile(
@@ -835,7 +838,8 @@ public class ProjectLaunchTargetsProviderTests
         // Arrange
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
         var provider = GetDebugTargetsProvider(
-            hotReloadOptionService: mockHotReloadOptionService);
+            hotReloadOptionService: mockHotReloadOptionService,
+            capabilities: [ProjectCapability.SupportsHotReload]);
 
         // Set up a Project command profile with remote debugging enabled
         var profile = new LaunchProfile(
@@ -876,7 +880,8 @@ public class ProjectLaunchTargetsProviderTests
         // Arrange
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
         var provider = GetDebugTargetsProvider(
-            hotReloadOptionService: mockHotReloadOptionService);
+            hotReloadOptionService: mockHotReloadOptionService,
+            capabilities: [ProjectCapability.SupportsHotReload]);
 
         // Set up a Project command profile with Hot Reload disabled at profile level
         var profile = new LaunchProfile(
@@ -914,7 +919,8 @@ public class ProjectLaunchTargetsProviderTests
         // Arrange
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
         var provider = GetDebugTargetsProvider(
-            hotReloadOptionService: mockHotReloadOptionService);
+            hotReloadOptionService: mockHotReloadOptionService,
+            capabilities: [ProjectCapability.SupportsHotReload]);
 
         // Set up a Project command profile with Hot Reload enabled
         var profile = new LaunchProfile(
@@ -952,7 +958,8 @@ public class ProjectLaunchTargetsProviderTests
         // Arrange
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
         var provider = GetDebugTargetsProvider(
-            hotReloadOptionService: mockHotReloadOptionService);
+            hotReloadOptionService: mockHotReloadOptionService,
+            capabilities: [ProjectCapability.SupportsHotReload]);
 
         var mockHotReloadSessionManager = provider.Project.GetExportedService<IProjectHotReloadSessionManager>();
         Mock.Get(mockHotReloadSessionManager)
@@ -997,7 +1004,8 @@ public class ProjectLaunchTargetsProviderTests
         // Arrange
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: false);
         var provider = GetDebugTargetsProvider(
-            hotReloadOptionService: mockHotReloadOptionService);
+            hotReloadOptionService: mockHotReloadOptionService,
+            capabilities: [ProjectCapability.SupportsHotReload]);
 
         // Set up a Project command profile for debugging scenario
         var profile = new LaunchProfile(
@@ -1035,7 +1043,8 @@ public class ProjectLaunchTargetsProviderTests
         // Arrange
         var mockHotReloadOptionService = IHotReloadOptionServiceFactory.Create(enabledWhenDebugging: true, enabledWhenNotDebugging: true);
         var provider = GetDebugTargetsProvider(
-            hotReloadOptionService: mockHotReloadOptionService);
+            hotReloadOptionService: mockHotReloadOptionService,
+            capabilities: [ProjectCapability.SupportsHotReload]);
 
         // Set up a Project command profile with environment variables
         var profile = new LaunchProfile(
@@ -1073,7 +1082,8 @@ public class ProjectLaunchTargetsProviderTests
         Dictionary<string, string?>? properties = null,
         IVsDebugger10? debugger = null,
         IProjectCapabilitiesScope? scope = null,
-        IHotReloadOptionService? hotReloadOptionService = null)
+        IHotReloadOptionService? hotReloadOptionService = null,
+        IEnumerable<string>? capabilities = null)
     {
         _mockFS.Create(@"c:\test\Project\someapp.exe");
         _mockFS.CreateDirectory(@"c:\test\Project");
@@ -1104,7 +1114,7 @@ public class ProjectLaunchTargetsProviderTests
         var configuredProjectServices = ConfiguredProjectServicesFactory.Create(
             projectPropertiesProvider: IProjectPropertiesProviderFactory.Create(null, commonProps: projectProperties));
 
-        var capabilitiesScope = scope ?? IProjectCapabilitiesScopeFactory.Create(capabilities: []);
+        var capabilitiesScope = scope ?? IProjectCapabilitiesScopeFactory.Create(capabilities);
 
         var configuredProject = Mock.Of<ConfiguredProject>(o =>
             o.UnconfiguredProject == project &&

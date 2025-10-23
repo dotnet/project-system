@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 
 [Export(typeof(IProjectHotReloadSessionManager))]
 [Export(typeof(IProjectHotReloadUpdateApplier))]
+[AppliesTo(ProjectCapability.SupportsHotReload)]
 internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager, IProjectHotReloadUpdateApplier
 {
     private readonly ConfiguredProject _configuredProject;
@@ -152,7 +153,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
     /// settings that prevent the use of Hot Reload even if the basic requirements are met.
     /// </summary>
     private async ValueTask<bool> ProjectSupportsHotReloadAsync()
-        => _configuredProject.Capabilities.AppliesTo("SupportsHotReload") &&
+        => _configuredProject.Capabilities.AppliesTo(ProjectCapability.SupportsHotReload) &&
            await _configuredProject.GetProjectPropertyBoolAsync(ConfiguredBrowseObject.DebugSymbolsProperty) &&
            !await _configuredProject.GetProjectPropertyBoolAsync(ConfigurationGeneral.OptimizeProperty) &&
            await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty) is not "";
