@@ -16,7 +16,7 @@ internal interface IDotNetEnvironment
     /// A task that represents the asynchronous operation. The task result contains 
     /// <see langword="true"/> if the SDK version is installed; otherwise, <see langword="false"/>.
     /// </returns>
-    Task<bool> IsSdkInstalledAsync(string sdkVersion);
+    bool IsSdkInstalled(string sdkVersion);
 
     /// <summary>
     /// Gets the path to the dotnet.exe executable.
@@ -35,6 +35,6 @@ internal interface IDotNetEnvironment
     /// If results could not be determined, <see langword="null"/> is returned.
     /// </remarks>
     /// <param name="architecture">The runtime architecture to report results for.</param>
-    /// <returns>An array of runtime versions, or <see langword="null"/> if results could not be determined.</returns>
+    /// <returns>An array of runtime versions, or <see langword="null"/> if results could not be determined or no runtimes were found.</returns>
     string[]? GetInstalledRuntimeVersions(System.Runtime.InteropServices.Architecture architecture);
 }

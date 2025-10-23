@@ -1,17 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Runtime.InteropServices;
-using Microsoft.Win32;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.Win32;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 
 public class DotNetEnvironmentTests
 {
     [Fact]
-    public async Task IsSdkInstalledAsync_WhenSdkNotInRegistry_ReturnsFalse()
+    public void IsSdkInstalled_WhenSdkNotInRegistry_ReturnsFalse()
     {
         var fileSystem = new IFileSystemMock();
         var registry = new IRegistryMock();
@@ -19,13 +18,13 @@ public class DotNetEnvironmentTests
 
         var service = CreateInstance(fileSystem, registry, environment);
 
-        bool result = await service.IsSdkInstalledAsync("8.0.100");
+        bool result = service.IsSdkInstalled("8.0.100");
 
         Assert.False(result);
     }
 
     [Fact]
-    public async Task IsSdkInstalledAsync_WhenSdkIsInRegistry_ReturnsTrue()
+    public void IsSdkInstalled_WhenSdkIsInRegistry_ReturnsTrue()
     {
         var fileSystem = new IFileSystemMock();
         var registry = new IRegistryMock();
@@ -48,13 +47,13 @@ public class DotNetEnvironmentTests
 
         var service = CreateInstance(fileSystem, registry, environment);
 
-        bool result = await service.IsSdkInstalledAsync("8.0.100");
+        bool result = service.IsSdkInstalled("8.0.100");
 
         Assert.True(result);
     }
 
     [Fact]
-    public async Task IsSdkInstalledAsync_WithDifferentVersion_ReturnsFalse()
+    public void IsSdkInstalled_WithDifferentVersion_ReturnsFalse()
     {
         var fileSystem = new IFileSystemMock();
         var registry = new IRegistryMock();
@@ -70,7 +69,7 @@ public class DotNetEnvironmentTests
 
         var service = CreateInstance(fileSystem, registry, environment);
 
-        bool result = await service.IsSdkInstalledAsync("8.0.100");
+        bool result = service.IsSdkInstalled("8.0.100");
 
         Assert.False(result);
     }
@@ -80,7 +79,7 @@ public class DotNetEnvironmentTests
     [InlineData(Architecture.X86, "x86")]
     [InlineData(Architecture.Arm64, "arm64")]
     [InlineData(Architecture.Arm, "arm")]
-    public async Task IsSdkInstalledAsync_UsesCorrectArchitecture(Architecture architecture, string expectedArch)
+    public void IsSdkInstalled_UsesCorrectArchitecture(Architecture architecture, string expectedArch)
     {
         var fileSystem = new IFileSystemMock();
         var registry = new IRegistryMock();
@@ -98,7 +97,7 @@ public class DotNetEnvironmentTests
 
         var service = CreateInstance(fileSystem, registry, environment);
 
-        bool result = await service.IsSdkInstalledAsync("8.0.100");
+        bool result = service.IsSdkInstalled("8.0.100");
 
         Assert.True(result);
     }

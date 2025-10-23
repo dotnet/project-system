@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Runtime.InteropServices;
-using IEnvironment = Microsoft.VisualStudio.ProjectSystem.Utilities.IEnvironment;
 using IFileSystem = Microsoft.VisualStudio.IO.IFileSystem;
 using IRegistry = Microsoft.VisualStudio.ProjectSystem.VS.Utilities.IRegistry;
 
@@ -26,7 +25,7 @@ internal class DotNetEnvironment : IDotNetEnvironment
     }
 
     /// <inheritdoc/>
-    public Task<bool> IsSdkInstalledAsync(string sdkVersion)
+    public bool IsSdkInstalled(string sdkVersion)
     {
         try
         {
@@ -44,16 +43,16 @@ internal class DotNetEnvironment : IDotNetEnvironment
             {
                 if (string.Equals(installedVersion, sdkVersion, StringComparison.OrdinalIgnoreCase))
                 {
-                    return Task.FromResult(true);
+                    return true;
                 }
             }
 
-            return Task.FromResult(false);
+            return false;
         }
         catch
         {
             // If we fail to check, assume the SDK is not installed
-            return Task.FromResult(false);
+            return false;
         }
     }
 
@@ -80,12 +79,15 @@ internal class DotNetEnvironment : IDotNetEnvironment
         }
 
         // Fallback to Program Files
-        string programFiles = _environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-        string dotnetPath = Path.Combine(programFiles, "dotnet", "dotnet.exe");
-        
-        if (_fileSystem.FileExists(dotnetPath))
+        string? programFiles = _environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+        if (programFiles is not null)
         {
-            return dotnetPath;
+            string dotnetPath = Path.Combine(programFiles, "dotnet", "dotnet.exe");
+
+            if (_fileSystem.FileExists(dotnetPath))
+            {
+                return dotnetPath;
+            }
         }
 
         return null;
@@ -104,7 +106,6 @@ internal class DotNetEnvironment : IDotNetEnvironment
             Win32.RegistryView.Registry32,
             registryKey);
 
-        // Return null if no values found (consistent with original implementation)
         return valueNames.Length == 0 ? null : valueNames;
     }
 

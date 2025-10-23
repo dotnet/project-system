@@ -11,11 +11,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities;
 internal class EnvironmentService : IEnvironment
 {
     /// <inheritdoc/>
-    public bool Is64BitOperatingSystem => Environment.Is64BitOperatingSystem;
-
-    /// <inheritdoc/>
     public Architecture ProcessArchitecture => RuntimeInformation.ProcessArchitecture;
 
     /// <inheritdoc/>
-    public string GetFolderPath(Environment.SpecialFolder folder) => Environment.GetFolderPath(folder);
+    public string? GetFolderPath(Environment.SpecialFolder folder)
+    {
+        string path = Environment.GetFolderPath(folder);
+        return string.IsNullOrEmpty(path) ? null : path;    
+    }
+
+    /// <inheritdoc/>
+    public string? GetEnvironmentVariable(string name)
+    {
+        return Environment.GetEnvironmentVariable(name);
+    }
+
+    /// <inheritdoc/>
+    public string ExpandEnvironmentVariables(string name)
+    {
+        if (name.IndexOf('%') == -1)
+        {
+            // There cannot be any environment variables in this string.
+            // Avoid several allocations in the .NET Framework's implementation
+            // of Environment.ExpandEnvironmentVariables.
+            return name;
+        }
+
+        return Environment.ExpandEnvironmentVariables(name);
+    }
 }
