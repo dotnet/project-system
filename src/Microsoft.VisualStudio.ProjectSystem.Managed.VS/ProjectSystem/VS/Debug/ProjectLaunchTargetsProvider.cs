@@ -8,7 +8,6 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.HotReload;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
 using Newtonsoft.Json;
@@ -36,7 +35,7 @@ internal class ProjectLaunchTargetsProvider :
     private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
     private readonly IDebugTokenReplacer _tokenReplacer;
     private readonly IFileSystem _fileSystem;
-    private readonly IEnvironmentHelper _environment;
+    private readonly IEnvironment _environment;
     private readonly IActiveDebugFrameworkServices _activeDebugFramework;
     private readonly IProjectThreadingService _threadingService;
     private readonly IVsUIService<IVsDebugger10> _debugger;
@@ -50,7 +49,7 @@ internal class ProjectLaunchTargetsProvider :
         ConfiguredProject project,
         IDebugTokenReplacer tokenReplacer,
         IFileSystem fileSystem,
-        IEnvironmentHelper environment,
+        IEnvironment environment,
         IActiveDebugFrameworkServices activeDebugFramework,
         IOutputTypeChecker outputTypeChecker,
         IProjectThreadingService threadingService,

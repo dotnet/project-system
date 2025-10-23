@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -69,9 +68,9 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
     ///   Searches the path variable for the first match of <paramref name="exeToSearchFor"/>. Returns <see langword="null"/>
     ///   if not found.
     /// </summary>
-    public static string? GetFullPathOfExeFromEnvironmentPath(string exeToSearchFor, IEnvironmentHelper environmentHelper, IFileSystem fileSystem)
+    public static string? GetFullPathOfExeFromEnvironmentPath(string exeToSearchFor, IEnvironment environment, IFileSystem fileSystem)
     {
-        string? pathEnv = environmentHelper.GetEnvironmentVariable("Path");
+        string? pathEnv = environment.GetEnvironmentVariable("Path");
 
         if (Strings.IsNullOrEmpty(pathEnv))
         {
@@ -118,7 +117,7 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
     ///     </item>
     ///   </list>
     /// </returns>
-    public static async Task<string?> GetRunCommandAsync(IProjectProperties properties, IEnvironmentHelper environment, IFileSystem fileSystem)
+    public static async Task<string?> GetRunCommandAsync(IProjectProperties properties, IEnvironment environment, IFileSystem fileSystem)
     {
         string runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand");
 
@@ -153,7 +152,7 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
     /// </summary>
     public static async Task<string?> GetTargetCommandAsync(
         IProjectProperties properties,
-        IEnvironmentHelper environment,
+        IEnvironment environment,
         IFileSystem fileSystem,
         IOutputTypeChecker outputTypeChecker,
         bool validateSettings)
@@ -189,7 +188,7 @@ internal static class ProjectAndExecutableLaunchHandlerHelpers
     /// </returns>
     public static async Task<(string ExeToRun, string Arguments, string WorkingDirectory)?> GetRunnableProjectInformationAsync(
         ConfiguredProject project,
-        IEnvironmentHelper environment,
+        IEnvironment environment,
         IFileSystem fileSystem,
         IOutputTypeChecker outputTypeChecker,
         bool validateSettings)
