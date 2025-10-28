@@ -2,7 +2,6 @@
 
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
@@ -93,7 +92,7 @@ public class ProjectAndExecutableLaunchHandlerHelpersTests
         var exeFullPath = @"C:\ExeName.exe";
         var path = @"C:\Windows\System32;C:\";
         var fileSystem = new IFileSystemMock();
-        var environment = IEnvironmentHelperFactory.ImplementGetEnvironmentVariable(path);
+        var environment = new IEnvironmentMock().ImplementGetEnvironmentVariable(path).Object;
 
         // Act
         fileSystem.AddFile(exeFullPath);
@@ -110,7 +109,7 @@ public class ProjectAndExecutableLaunchHandlerHelpersTests
         var exeName = "ExeName.exe";
         var path = @"C:\Windows\System32;C:\";
         var fileSystem = new IFileSystemMock();
-        var environment = IEnvironmentHelperFactory.ImplementGetEnvironmentVariable(path);
+        var environment = new IEnvironmentMock().ImplementGetEnvironmentVariable(path).Object;
 
         // Act
         var fullPathOfExeFromEnvironmentPath = ProjectAndExecutableLaunchHandlerHelpers.GetFullPathOfExeFromEnvironmentPath(exeName, environment, fileSystem);

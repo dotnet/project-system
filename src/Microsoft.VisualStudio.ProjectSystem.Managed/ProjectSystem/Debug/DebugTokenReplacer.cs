@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Text.RegularExpressions;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
@@ -12,14 +11,14 @@ internal sealed class DebugTokenReplacer : IDebugTokenReplacer
     // Regular expression string to extract $(sometoken) elements from a string
     private static readonly Regex s_matchTokenRegex = new(@"\$\((?<token>[^\)]+)\)", RegexOptions.IgnoreCase);
 
-    private readonly IEnvironmentHelper _environmentHelper;
+    private readonly IEnvironment _environment;
     private readonly IActiveDebugFrameworkServices _activeDebugFrameworkService;
     private readonly IProjectAccessor _projectAccessor;
 
     [ImportingConstructor]
-    public DebugTokenReplacer(IEnvironmentHelper environmentHelper, IActiveDebugFrameworkServices activeDebugFrameworkService, IProjectAccessor projectAccessor)
+    public DebugTokenReplacer(IEnvironment environment, IActiveDebugFrameworkServices activeDebugFrameworkService, IProjectAccessor projectAccessor)
     {
-        _environmentHelper = environmentHelper;
+        _environment = environment;
         _activeDebugFrameworkService = activeDebugFrameworkService;
         _projectAccessor = projectAccessor;
     }
@@ -37,7 +36,7 @@ internal sealed class DebugTokenReplacer : IDebugTokenReplacer
             return Task.FromResult(rawString);
 
         string expandedString = expandEnvironmentVars
-            ? _environmentHelper.ExpandEnvironmentVariables(rawString)
+            ? _environment.ExpandEnvironmentVariables(rawString)
             : rawString;
 
         if (!s_matchTokenRegex.IsMatch(expandedString))
