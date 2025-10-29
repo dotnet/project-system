@@ -29,7 +29,7 @@ internal class DotNetEnvironment : IDotNetEnvironment
     {
         try
         {
-            string archSubKey = GetArchitectureSubKey(_environment.ProcessArchitecture);
+            string archSubKey = _environment.ProcessArchitecture.GetArchitectureString();
             string registryKey = $@"SOFTWARE\dotnet\Setup\InstalledVersions\{archSubKey}\sdk";
 
             // Get all value names from the sdk subkey
@@ -60,7 +60,7 @@ internal class DotNetEnvironment : IDotNetEnvironment
     public string? GetDotNetHostPath()
     {
         // First check the registry
-        string archSubKey = GetArchitectureSubKey(_environment.ProcessArchitecture);
+        string archSubKey = _environment.ProcessArchitecture.GetArchitectureString();
         string registryKey = $@"SOFTWARE\dotnet\Setup\InstalledVersions\{archSubKey}";
 
         string? installLocation = _registry.GetValue(
@@ -98,7 +98,7 @@ internal class DotNetEnvironment : IDotNetEnvironment
     {
         // https://github.com/dotnet/designs/blob/96d2ddad13dcb795ff2c5c6a051753363bdfcf7d/accepted/2020/install-locations.md#globally-registered-install-location-new
 
-        string archSubKey = GetArchitectureSubKey(architecture);
+        string archSubKey = _environment.ProcessArchitecture.GetArchitectureString();
         string registryKey = $@"SOFTWARE\dotnet\Setup\InstalledVersions\{archSubKey}\sharedfx\Microsoft.NETCore.App";
 
         string[] valueNames = _registry.GetValueNames(
@@ -107,17 +107,5 @@ internal class DotNetEnvironment : IDotNetEnvironment
             registryKey);
 
         return valueNames.Length == 0 ? null : valueNames;
-    }
-
-    private static string GetArchitectureSubKey(Architecture architecture)
-    {
-        return architecture switch
-        {
-            Architecture.X86 => "x86",
-            Architecture.X64 => "x64",
-            Architecture.Arm => "arm",
-            Architecture.Arm64 => "arm64",
-            _ => architecture.ToString().ToLower()
-        };
     }
 }

@@ -102,22 +102,20 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
             return null;
         }
 
-        string architecture = _environment.ProcessArchitecture.ToString().ToLowerInvariant();
-
         if (_currentSdkDescriptionId == Guid.Empty)
         {
             // register the current and retarget versions, note there is a bug in the current implementation
             // ultimately we will need to just set retarget. Right now, we need to register two
             // targets, we want to create two distinct ones, as the bug workaround requires different guids
 
-            IVsProjectTargetDescription currentSdkDescription = RetargetSDKDescription.Create(retargetVersion.ToString(), architecture); // this won't be needed
+            IVsProjectTargetDescription currentSdkDescription = RetargetSDKDescription.Create(retargetVersion.ToString(), _environment.ProcessArchitecture); // this won't be needed
             retargetingService.RegisterProjectTarget(currentSdkDescription);  // this wont be needed.
             _currentSdkDescriptionId = currentSdkDescription.TargetId;
         }
 
         if (_sdkRetargetId == Guid.Empty)
         {
-            IVsProjectTargetDescription retargetSdkDescription = RetargetSDKDescription.Create(retargetVersion.ToString(), architecture);
+            IVsProjectTargetDescription retargetSdkDescription = RetargetSDKDescription.Create(retargetVersion.ToString(), _environment.ProcessArchitecture);
             retargetingService.RegisterProjectTarget(retargetSdkDescription);
             _sdkRetargetId = retargetSdkDescription.TargetId;
         }
