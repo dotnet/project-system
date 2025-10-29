@@ -19,6 +19,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
     private readonly IProjectThreadingService _projectThreadingService;
     private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _projectRetargetingService;
     private readonly IVsService<SVsSolution, IVsSolution> _solutionService;
+    private readonly IEnvironment _environment;
     private readonly IDotNetEnvironment _dotnetEnvironment;
 
     private Guid _currentSdkDescriptionId = Guid.Empty;
@@ -31,6 +32,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
         IProjectThreadingService projectThreadingService,
         IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> projectRetargetingService,
         IVsService<SVsSolution, IVsSolution> solutionService,
+        IEnvironment environment,
         IDotNetEnvironment dotnetEnvironment)
     {
         _releasesProvider = releasesProvider;
@@ -38,6 +40,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
         _projectThreadingService = projectThreadingService;
         _projectRetargetingService = projectRetargetingService;
         _solutionService = solutionService;
+        _environment = environment;
         _dotnetEnvironment = dotnetEnvironment;
     }
 
@@ -99,21 +102,23 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
             return null;
         }
 
+        string architecture = _environment.ProcessArchitecture.ToString().ToLowerInvariant();
+
         if (_currentSdkDescriptionId == Guid.Empty)
         {
             // register the current and retarget versions, note there is a bug in the current implementation
             // ultimately we will need to just set retarget. Right now, we need to register two
             // targets, we want to create two distinct ones, as the bug workaround requires different guids
 
-            IVsProjectTargetDescription currentSdkDescription = RetargetSDKDescription.Create(retargetVersion.ToString()); // this won't be needed
+            IVsProjectTargetDescription currentSdkDescription = RetargetSDKDescription.Create(retargetVersion.ToString(), architecture); // this won't be needed
             retargetingService.RegisterProjectTarget(currentSdkDescription);  // this wont be needed.
             _currentSdkDescriptionId = currentSdkDescription.TargetId;
         }
 
         if (_sdkRetargetId == Guid.Empty)
         {
-            IVsProjectTargetDescription retargetSdkDescription = RetargetSDKDescription.Create(retargetVersion.ToString()); // this won't be needed
-            retargetingService.RegisterProjectTarget(retargetSdkDescription);  // this wont be needed.
+            IVsProjectTargetDescription retargetSdkDescription = RetargetSDKDescription.Create(retargetVersion.ToString(), architecture);
+            retargetingService.RegisterProjectTarget(retargetSdkDescription);
             _sdkRetargetId = retargetSdkDescription.TargetId;
         }
 

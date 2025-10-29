@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -240,8 +241,11 @@ public class ProjectRetargetHandlerTests
         Assert.NotNull(result);
     }
 
-    [Fact]
-    public async Task CheckForRetargetAsync_RegistersTargetDescriptions()
+    [Theory]
+    [InlineData("arm64")]
+    [InlineData("x86")]
+    [InlineData("x64")]
+    public async Task CheckForRetargetAsync_RegistersTargetDescriptions(string arch)
     {
         var fileSystem = new IFileSystemMock();
         var solution = CreateSolutionWithDirectory(@"C:\Solution");
@@ -255,8 +259,14 @@ public class ProjectRetargetHandlerTests
         var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
             s => s.IsSdkInstalled("8.0.200") == false);
 
+        var environment = new IEnvironmentMock();
+        environment.ProcessArchitecture = (Architecture)Enum.Parse(typeof(Architecture), arch, ignoreCase: true);
+
+        IVsProjectTargetDescription? capturedDescription = null;
+
         var retargetingService = new Mock<IVsTrackProjectRetargeting2>();
         retargetingService.Setup(r => r.RegisterProjectTarget(It.IsAny<IVsProjectTargetDescription>()))
+            .Callback<IVsProjectTargetDescription>(desc => capturedDescription ??= desc) // capture the first call, as thats where the link is
             .Returns(HResult.OK);
 
         var handler = CreateInstance(
@@ -264,13 +274,20 @@ public class ProjectRetargetHandlerTests
             solution: solution,
             releasesProvider: releasesProvider,
             dotnetEnvironment: dotnetEnvironment,
+            environment: environment.Object,
             trackProjectRetargeting: retargetingService.Object);
 
         var result = await handler.CheckForRetargetAsync(RetargetCheckOptions.ProjectLoad);
 
         Assert.NotNull(result);
+        Assert.NotNull(capturedDescription);
+        var guidanceLink = capturedDescription.GetProperty((uint)__VSPTDPROPID.VSPTDPROPID_ProjectRetargetingGuidanceLink) as string;
+        Assert.NotNull(guidanceLink);
+
         // Verify RegisterProjectTarget was called twice (workaround for bug)
         retargetingService.Verify(r => r.RegisterProjectTarget(It.IsAny<IVsProjectTargetDescription>()), Times.Exactly(2));
+        // verify that we have the correct architecture in the link
+        Assert.Contains(arch, guidanceLink!, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
@@ -398,11 +415,13 @@ public class ProjectRetargetHandlerTests
         IProjectThreadingService? threadingService = null,
         IVsTrackProjectRetargeting2? trackProjectRetargeting = null,
         IVsSolution? solution = null,
+        IEnvironment? environment = null,
         IDotNetEnvironment? dotnetEnvironment = null)
     {
         releasesProvider ??= Mock.Of<IDotNetReleasesProvider>();
         fileSystem ??= new IFileSystemMock();
         threadingService ??= IProjectThreadingServiceFactory.Create();
+        environment ??= Mock.Of<IEnvironment>();
 
         var retargetingService = IVsServiceFactory.Create<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2>(trackProjectRetargeting);
         var solutionService = IVsServiceFactory.Create<SVsSolution, IVsSolution>(solution);
@@ -415,6 +434,7 @@ public class ProjectRetargetHandlerTests
             threadingService,
             retargetingService,
             solutionService,
+            environment,
             dotnetEnvironment);
     }
 
