@@ -2,7 +2,7 @@
 <Project>
 
   <Import Project="eng\imports\StrongName.targets" />
-  <Import Project="eng\imports\SymStore.targets" Condition="'$(CIBuild)' == 'true'"/>
+  <Import Project="eng\imports\SymStore.targets" Condition="'$(CIBuild)' == 'true' and '$(PublishWindowsPdb)' != 'false'"/>
   <!-- VSSDK is needed in projects generating VSIX packages or pkgdef files. -->
   <!-- Manually importing the .targets here allows SDK-style VS Extension projects to build properly. -->
   <!-- See: https://github.com/dotnet/msbuild/issues/2393#issuecomment-1126563335 -->
