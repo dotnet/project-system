@@ -50,6 +50,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\Common\GlobalAssemblyInfo.cs" />
+
     <Compile Update="ProjectSystem\VS\LanguageServices\CSharp\CSharpCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -1,0 +1,37 @@
+<Project>
+  <!--
+    Assemblies that facilitate Hot Reload within the application process.
+    When updating TFMs here also update ProjectHotReloadSession.GetStartupHookPath and VisualStudioBrowserRefreshServer.MiddlewareTargetFramework.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)Microsoft.AspNetCore.Watch.BrowserRefresh\Microsoft.AspNetCore.Watch.BrowserRefresh.csproj">
+      <OutputItemType>Content</OutputItemType>
+      <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <UndefineProperties>TargetFramework;TargetFrameworks</UndefineProperties>
+      <VSIXSubPath>HotReload\net6.0</VSIXSubPath>
+      <TargetPath>HotReload\net6.0\Microsoft.AspNetCore.Watch.BrowserRefresh.dll</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ProjectReference>
+
+    <ProjectReference Include="$(MSBuildThisFileDirectory)Microsoft.Extensions.DotNetDeltaApplier\Microsoft.Extensions.DotNetDeltaApplier.csproj">
+      <OutputItemType>Content</OutputItemType>
+      <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <SetTargetFramework>TargetFramework=net10.0</SetTargetFramework>
+      <VSIXSubPath>HotReload\net10.0</VSIXSubPath>
+      <TargetPath>HotReload\net10.0\Microsoft.Extensions.DotNetDeltaApplier.dll</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ProjectReference>
+
+    <ProjectReference Include="$(MSBuildThisFileDirectory)Microsoft.Extensions.DotNetDeltaApplier\Microsoft.Extensions.DotNetDeltaApplier.csproj">
+      <OutputItemType>Content</OutputItemType>
+      <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <SetTargetFramework>TargetFramework=net6.0</SetTargetFramework>
+      <VSIXSubPath>HotReload\net6.0</VSIXSubPath>
+      <TargetPath>HotReload\net6.0\Microsoft.Extensions.DotNetDeltaApplier.dll</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
