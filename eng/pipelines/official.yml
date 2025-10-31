@@ -127,7 +127,10 @@ extends:
       credscan:
         enabled: true
       policheck:
-        enabled: true  
+        enabled: true
+      binskim:
+        enabled: true
+        preReleaseVersion: '4.4.6'
       codeSignValidation:
         additionalTargetsGlobPattern: -|$(Build.SourcesDirectory)\artifacts\output\VSSetup\Insertion\bootstrapper\**
     pool:
