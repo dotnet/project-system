@@ -18,7 +18,6 @@
     <!-- Note: We require Nerdbank.GitVersioning beyond simply generating version numbers. It also produces some assembly information such as AssemblyName and PublicKeyToken into a *.ThisAssembly.cs file. -->
     <PackageReference Include="Nerdbank.GitVersioning"              PrivateAssets="all" />
     <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="all" />
-    <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="all" />
 
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />
