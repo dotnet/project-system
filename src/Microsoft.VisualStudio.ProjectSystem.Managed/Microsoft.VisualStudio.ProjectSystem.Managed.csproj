@@ -58,7 +58,6 @@
     <!-- Path property: PkgMicrosoft_CodeAnalysis_Common -->
     <!-- The path is needed so we can copy the runtime assembly into the NPM package. -->
     <PackageReference Include="Microsoft.CodeAnalysis.Common" GeneratePathProperty="true" />
-    <PackageReference Include="System.Formats.Asn1" />
     <PackageReference Include="Microsoft.VisualStudio.Debugger.Contracts" />
     <PackageReference Include="Microsoft.VisualStudio.HotReload.Components" />
   </ItemGroup>
