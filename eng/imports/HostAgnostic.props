@@ -26,10 +26,8 @@
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.XamlTypes" Condition="'$(TargetFramework)' == '$(NetCoreTargetFramework)'" />
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
-    <PackageReference Include="System.Threading.Tasks.Dataflow" />
     
     <PackageReference Include="Microsoft.IO.Redist" Condition="'$(TargetFramework)' == 'net472'" />
-    <PackageReference Include="System.Text.Json" />
 
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
@@ -38,7 +36,6 @@
     <PackageReference Include="MessagePack" />
 
     <!-- Roslyn -->
-    <PackageReference Include="Microsoft.CSharp" />
     <PackageReference Include="Microsoft.CodeAnalysis" />
 
     <!-- Needed to tie-break a potentially misspecified dependency somewhere -->

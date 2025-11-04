@@ -29,7 +29,6 @@
     <PackageVersion Include="Microsoft.VisualStudioEng.MicroBuild.Core"                              Version="1.0.0" />
     <PackageVersion Include="Nerdbank.GitVersioning"                                                 Version="3.6.79-alpha" />
     <PackageVersion Include="Nerdbank.Streams"                                                       Version="2.12.87" />
-    <PackageVersion Include="System.IO.Pipelines"                                                    Version="9.0.0" />
     <PackageVersion Include="StreamJsonRpc"                                                          Version="2.23.32-alpha" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions"                              Version="9.0.0" />
     <PackageVersion Include="Microsoft.DotNet.HotReload.Agent"                                       Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
@@ -73,8 +72,6 @@
     <PackageVersion Include="Microsoft.VisualStudio.Validation"                                      Version="17.8.8" />
     <PackageVersion Include="Microsoft.VisualStudio.XmlEditor"                                       Version="17.13.0-preview-1-35408-014" />
     <PackageVersion Include="Microsoft.VSSDK.BuildTools"                                             Version="18.0.136-preview1" />
-    <PackageVersion Include="System.Threading.Tasks.Dataflow"                                        Version="9.0.0" />
-    <PackageVersion Include="System.Formats.Asn1"                                                    Version="8.0.1" />
     <PackageVersion Include="Microsoft.VSDesigner"                                                   Version="18.0.1755-preview.1" />
     <PackageVersion Include="VsWebSite.Interop"                                                      Version="18.0.1755-preview.1" />
 
@@ -91,7 +88,6 @@
     <!-- Roslyn -->
     <PackageVersion Include="Microsoft.CodeAnalysis"                                                 Version="5.0.0-1.25321.102" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Common"                                          Version="5.0.0-1.25321.102" />
-    <PackageVersion Include="Microsoft.CSharp"                                                       Version="4.7.0" />
     <PackageVersion Include="Microsoft.Net.Compilers.Toolset"                                        Version="5.0.0-1.25321.102" />
     <PackageVersion Include="Microsoft.VisualStudio.LanguageServices"                                Version="5.0.0-1.25321.102" />
 
@@ -107,8 +103,6 @@
 
     <!-- Framework packages -->
     <PackageVersion Include="Microsoft.IO.Redist"                                                    Version="6.1.0" />
-    <!-- Pin version to avoid CVE in System.Text.Json 8.0.4 -->
-    <PackageVersion Include="System.Text.Json"                                                       Version="9.0.0" />
 
     <!-- MSBuild (for tests only) -->
     <PackageVersion Include="Microsoft.Build"                                                        Version="17.13.0-preview-24504-04" />

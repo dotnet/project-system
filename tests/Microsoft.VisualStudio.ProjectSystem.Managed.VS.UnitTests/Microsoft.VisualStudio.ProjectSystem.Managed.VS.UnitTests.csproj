@@ -18,8 +18,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Build" />
     <PackageReference Include="Microsoft.Deployment.DotNet.Releases" PrivateAssets="all" />
-    <!-- for unit testing System.Text.Json Parsing in retarget handler-->
-    <PackageReference Update="System.IO.Pipelines" ExcludeAssets="none" />
   </ItemGroup>
 
 </Project>
