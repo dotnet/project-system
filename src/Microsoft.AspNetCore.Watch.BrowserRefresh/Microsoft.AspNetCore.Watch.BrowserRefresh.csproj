@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <!--
       This assembly may be loaded .NET 6.0+ web server.
@@ -28,5 +28,9 @@
     <Compile Update="@(Compile)">
       <Link Condition="'%(NuGetPackageId)' != ''">%(NuGetPackageId)\%(Link)</Link>
     </Compile>
+    <EmbeddedResource Update="@(EmbeddedResource)">
+      <Link Condition="'%(NuGetPackageId)' != ''">%(NuGetPackageId)\%(Link)</Link>
+      <LogicalName>%(FileName)%(Extension)</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
