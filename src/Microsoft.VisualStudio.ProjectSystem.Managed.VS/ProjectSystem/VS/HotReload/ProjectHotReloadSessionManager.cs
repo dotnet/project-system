@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics;
-using System.Xml.Linq;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.Debugger.Interop;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
@@ -219,6 +218,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 }
 
                 CancellationTokenSource cts = new CancellationTokenSource();
+                process.EnableRaisingEvents = true;
                 process.Exited += (sender, e) =>
                 {
                     DebugTrace("Process exited");
@@ -227,7 +227,6 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
                 if (!process.HasExited)
                 {
-                    process.EnableRaisingEvents = true;
                     await _pendingSessionState.Session.StartSessionAsync(cts.Token);
                     if (cts.IsCancellationRequested)
                     {

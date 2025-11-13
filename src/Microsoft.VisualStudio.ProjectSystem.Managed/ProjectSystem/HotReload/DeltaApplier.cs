@@ -3,6 +3,7 @@
 using Microsoft.DotNet.HotReload;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
@@ -36,10 +37,7 @@ internal sealed class DeltaApplier(HotReloadClient client, IHotReloadDebugStateP
         // Not all clients respond correctly to cancellation tokens.
         // For example, `DefaultHotreloadClient.GetUpdateCapabilitiesAsync(ct)`doesn't listen to the passed ct.
         // Since DefaultHotreloadClient is defined in a source package, it can't be modified directly from project-system.
-        // Work around this by creating a TaskCompletionSource that completes when the token is cancelled.
-        TaskCompletionSource tcs = new TaskCompletionSource();
-        cancellationToken.Register(() => tcs.TrySetResult());
-        _ = Task.WaitAny(client.GetUpdateCapabilitiesAsync(cancellationToken), tcs.Task);
+        await client.GetUpdateCapabilitiesAsync(cancellationToken).WithCancellation(cancellationToken);
 
         // TODO: apply initial updates?
         // https://devdiv.visualstudio.com/DevDiv/_workitems/edit/2571676
