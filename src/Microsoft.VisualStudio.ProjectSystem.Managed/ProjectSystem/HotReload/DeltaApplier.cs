@@ -33,6 +33,9 @@ internal sealed class DeltaApplier(HotReloadClient client, IHotReloadDebugStateP
 
     public async ValueTask InitializeApplicationAsync(CancellationToken cancellationToken)
     {
+        // Not all clients respond correctly to cancellation tokens.
+        // For example, `DefaultHotreloadClient.GetUpdateCapabilitiesAsync(ct)`doesn't listen to the passed ct.
+        // Work around this by creating a TaskCompletionSource that completes when the token is cancelled.
         TaskCompletionSource tcs = new TaskCompletionSource();
         cancellationToken.Register(() => tcs.TrySetResult());
         _ = Task.WaitAny(client.GetUpdateCapabilitiesAsync(cancellationToken), tcs.Task);
