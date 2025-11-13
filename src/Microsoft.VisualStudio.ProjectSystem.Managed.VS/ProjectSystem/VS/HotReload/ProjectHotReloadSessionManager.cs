@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics;
+using System.Xml.Linq;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Microsoft.VisualStudio.Debugger.Interop;
 using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
@@ -201,24 +202,54 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         {
             if (_pendingSessionState is { Session: IProjectHotReloadSession session })
             {
-                Process process = Process.GetProcessById((int)vsDebugTargetProcessInfo.dwProcessId);
-                _pendingSessionState.LaunchedProcess = launchedProcess;
-                _pendingSessionState.Process = process;
+                Process? process = null;
+                try
+                {
+                    _pendingSessionState.LaunchedProcess = launchedProcess;
+                    process = Process.GetProcessById((int)vsDebugTargetProcessInfo.dwProcessId);
+                    _pendingSessionState.Process = process;
+                }
+                catch (ArgumentException)
+                {
+                    // process might have been exited in some cases.
+                    // in that case, we early return without starting hotreload session
+                    // one way to mimic this is to hit control + C as fast as you can once hit F5/Control + F5
+                    _pendingSessionState = null;
+                    return;
+                }
+
+                CancellationTokenSource cts = new CancellationTokenSource();
+                process.Exited += (sender, e) =>
+                {
+                    DebugTrace("Process exited");
+                    cts.Cancel();
+                };
 
                 if (!process.HasExited)
                 {
-                    process.Exited += (sender, e) =>
-                    {
-                        _threadingService.ExecuteSynchronously(() => session.StopSessionAsync(CancellationToken.None));
-                    };
                     process.EnableRaisingEvents = true;
-
-                    await _pendingSessionState.Session.StartSessionAsync(CancellationToken.None);
-                    lock (_activeSessionStates)
+                    await _pendingSessionState.Session.StartSessionAsync(cts.Token);
+                    if (cts.IsCancellationRequested)
                     {
-                        _activeSessionStates.Add(_pendingSessionState);
+                        // Process exited before we could start the session
+                        DebugTrace("Hot Reload session not started because process exited.");
+                        _pendingSessionState = null;
+                        return;
                     }
-                    await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: true);
+                    else
+                    {
+                        DebugTrace("Hot Reload session started.");
+                        cts.Token.Register(() =>
+                        {
+                            DebugTrace("Cancellation requested, stopping session.");
+                            _threadingService.RunAndForget(() => session.StopSessionAsync(default), _unconfiguredProject);
+                        });
+                        lock (_activeSessionStates)
+                        {
+                            _activeSessionStates.Add(_pendingSessionState);
+                        }
+                        await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: true);
+                    }
                 }
 
                 _pendingSessionState = null;
@@ -300,5 +331,19 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
             return true;
         }
+    }
+
+    private void DebugTrace(string message)
+    {
+#if DEBUG
+        var projectName = _unconfiguredProject.GetProjectName();
+        _hotReloadDiagnosticOutputService.Value.WriteLine(
+            new HotReloadLogMessage(
+                HotReloadVerbosity.Detailed,
+                message,
+                projectName,
+                errorLevel: HotReloadDiagnosticErrorLevel.Info),
+            CancellationToken.None);
+#endif
     }
 }

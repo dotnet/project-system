@@ -185,7 +185,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
         await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
 
-        WriteToOutputWindow(Resources.HotReloadStartSession, default);
+        WriteToOutputWindow(Resources.HotReloadStartSession, cancellationToken);
 
         if (await GetOrCreateDeltaApplierAsync(cancellationToken) is IDeltaApplierInternal applierInternal)
         {
