@@ -35,6 +35,7 @@ internal sealed class DeltaApplier(HotReloadClient client, IHotReloadDebugStateP
     {
         // Not all clients respond correctly to cancellation tokens.
         // For example, `DefaultHotreloadClient.GetUpdateCapabilitiesAsync(ct)`doesn't listen to the passed ct.
+        // Since DefaultHotreloadClient is defined in a source package, it can't be modified directly from project-system.
         // Work around this by creating a TaskCompletionSource that completes when the token is cancelled.
         TaskCompletionSource tcs = new TaskCompletionSource();
         cancellationToken.Register(() => tcs.TrySetResult());
