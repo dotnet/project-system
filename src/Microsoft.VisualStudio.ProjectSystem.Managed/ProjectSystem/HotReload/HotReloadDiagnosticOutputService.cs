@@ -22,9 +22,4 @@ internal class HotReloadDiagnosticOutputService : IHotReloadDiagnosticOutputServ
     {
         _threadingService.RunAndForget(() => _hotReloadLogger.LogAsync(hotReloadLogMessage, cancellationToken).AsTask(), unconfiguredProject: null);
     }
-
-    public static uint GetProcessId(Process? process = null)
-    {
-        return (uint)(process?.Id ?? 0);
-    }
 }

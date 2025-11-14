@@ -73,20 +73,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
                 if (await ProjectSupportsStartupHooksAsync())
                 {
-                    HotReloadSessionState hotReloadSessionState = new((HotReloadSessionState sessionState) =>
-                    {
-                        int count;
-                        lock (_activeSessionStates)
-                        {
-                            Assumes.True(_activeSessionStates.Remove(sessionState), "Cannot remove unknown hot reload session.");
-                            count = _activeSessionStates.Count;
-                        }
-
-                        if (count == 0)
-                        {
-                            _threadingService.ExecuteSynchronously(() => _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: false));
-                        }
-                    }, _threadingService);
+                    HotReloadSessionState hotReloadSessionState = new(RemoveSessionState, _threadingService);
 
                     IProjectHotReloadSession projectHotReloadSession = _hotReloadAgent.CreateHotReloadSession(
                         name: projectName,
@@ -97,7 +84,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                         debugLaunchOptions: launchOptions);
 
                     hotReloadSessionState.Session = projectHotReloadSession;
-                    await projectHotReloadSession.ApplyLaunchVariablesAsync(environmentVariables, default);
+                    await projectHotReloadSession.ApplyLaunchVariablesAsync(environmentVariables, hotReloadSessionState.CancellationToken);
 
                     _pendingSessionState = hotReloadSessionState;
 
@@ -106,14 +93,13 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 else
                 {
                     // If startup hooks are not supported then tell the user why Hot Reload isn't available.
-
                     WriteOutputMessage(
                         new HotReloadLogMessage(
                             HotReloadVerbosity.Minimal,
                             Resources.ProjectHotReloadSessionManager_StartupHooksDisabled,
                             projectName,
                             null,
-                            HotReloadDiagnosticOutputService.GetProcessId(),
+                            0,
                             HotReloadDiagnosticErrorLevel.Warning
                         ));
                 }
@@ -122,6 +108,26 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             _pendingSessionState = null;
             return false;
         }
+    }
+
+    private void RemoveSessionState(HotReloadSessionState sessionState)
+    {
+        _threadingService.RunAndForget(async () =>
+        {
+            await sessionState.Session.StopSessionAsync(sessionState.CancellationToken);
+
+            int count;
+            lock (_activeSessionStates)
+            {
+                Assumes.True(_activeSessionStates.Remove(sessionState));
+                count = _activeSessionStates.Count;
+            }
+
+            if (count == 0)
+            {
+                await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: false);
+            }
+        }, _unconfiguredProject);
     }
 
     protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
@@ -135,12 +141,15 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
         Task DisposeCoreInternalAsync()
         {
-            foreach (HotReloadSessionState sessionState in _activeSessionStates)
+            lock (_activeSessionStates)
             {
-                sessionState.Process?.Dispose();
-            }
+                foreach (HotReloadSessionState sessionState in _activeSessionStates)
+                {
+                    sessionState.Dispose();
+                }
 
-            _activeSessionStates.Clear();
+                _activeSessionStates.Clear();
+            }
 
             return Task.CompletedTask;
         }
@@ -178,7 +187,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (sessionState.Session is IProjectHotReloadSessionInternal { DeltaApplier: {} deltaApplier })
+                if (sessionState.Session is IProjectHotReloadSessionInternal { DeltaApplier: { } deltaApplier })
                 {
                     updateTasks ??= [];
                     updateTasks.Add(applyFunction(deltaApplier, cancellationToken));
@@ -199,74 +208,94 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
         async Task ActivateSessionInternalAsync()
         {
-            if (_pendingSessionState is { Session: IProjectHotReloadSession session })
+            HotReloadSessionState? sessionState = _pendingSessionState;
+
+            // _pendingSessionState can be null if project doesn't support Hot Reload. i.e doesn't have SupportsHotReload capability
+            if (sessionState is null)
             {
-                Process? process = null;
+                return;
+            }
+
+            _pendingSessionState = null;
+
+            DebugTrace("Hot Reload session started.");
+            lock (_activeSessionStates)
+            {
+                _activeSessionStates.Add(sessionState);
+            }
+
+            Process? process = null;
+            try
+            {
+                sessionState.DebuggerProcess = launchedProcess;
+                process = Process.GetProcessById((int)vsDebugTargetProcessInfo.dwProcessId);
+                sessionState.Process = process;
+            }
+            catch (ArgumentException)
+            {
+                // process might have been exited in some cases.
+                // in that case, we early return without starting hotreload session
+                // one way to mimic this is to hit control + C as fast as you can once hit F5/Control + F5
+                sessionState.Dispose();
+                return;
+            }
+
+            process.EnableRaisingEvents = true;
+            process.Exited += (sender, e) =>
+            {
+                DebugTrace("Process exited");
+                sessionState.Dispose();
+            };
+
+            if (process.HasExited)
+            {
+                DebugTrace("Process exited");
+                sessionState.Dispose();
+            }
+            else
+            {
                 try
                 {
-                    _pendingSessionState.LaunchedProcess = launchedProcess;
-                    process = Process.GetProcessById((int)vsDebugTargetProcessInfo.dwProcessId);
-                    _pendingSessionState.Process = process;
+                    await sessionState.Session.StartSessionAsync(sessionState.CancellationToken);
+                    await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: true);
                 }
-                catch (ArgumentException)
+                catch (OperationCanceledException)
                 {
-                    // process might have been exited in some cases.
-                    // in that case, we early return without starting hotreload session
-                    // one way to mimic this is to hit control + C as fast as you can once hit F5/Control + F5
-                    _pendingSessionState = null;
-                    return;
+                    await sessionState.Session.StopSessionAsync(default);
+                    sessionState.Dispose();
                 }
-
-                CancellationTokenSource cts = new CancellationTokenSource();
-                process.EnableRaisingEvents = true;
-                process.Exited += (sender, e) =>
-                {
-                    DebugTrace("Process exited");
-                    cts.Cancel();
-                };
-
-                if (!process.HasExited)
-                {
-                    await _pendingSessionState.Session.StartSessionAsync(cts.Token);
-                    if (cts.IsCancellationRequested)
-                    {
-                        // Process exited before we could start the session
-                        DebugTrace("Hot Reload session not started because process exited.");
-                        _pendingSessionState = null;
-                        return;
-                    }
-                    else
-                    {
-                        DebugTrace("Hot Reload session started.");
-                        cts.Token.Register(() =>
-                        {
-                            DebugTrace("Cancellation requested, stopping session.");
-                            _threadingService.RunAndForget(() => session.StopSessionAsync(default), _unconfiguredProject);
-                        });
-                        lock (_activeSessionStates)
-                        {
-                            _activeSessionStates.Add(_pendingSessionState);
-                        }
-                        await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: true);
-                    }
-                }
-
-                _pendingSessionState = null;
             }
         }
     }
 
-    private sealed class HotReloadSessionState(
-        Action<HotReloadSessionState> removeSessionState,
-        IProjectThreadingService threadingService) : IProjectHotReloadSessionCallback
+    private sealed class HotReloadSessionState : IProjectHotReloadSessionCallback, IDisposable
     {
+        private int _disposed = 0;
+
+        private readonly CancellationTokenSource _cancellationTokenSource = new();
+        private readonly Action<HotReloadSessionState> _removeSessionState;
+        private readonly IProjectThreadingService _threadingService;
+
+        public HotReloadSessionState(
+            Action<HotReloadSessionState> removeSessionState,
+            IProjectThreadingService threadingService)
+        {
+            _removeSessionState = removeSessionState;
+            _threadingService = threadingService;
+
+            CancellationToken = _cancellationTokenSource.Token;
+        }
+
+        public CancellationToken CancellationToken { get; }
+
+        [Obsolete]
         public bool SupportsRestart => Session is not null;
 
-        public IProjectHotReloadSession? Session { get; set; }
+        public IProjectHotReloadSession Session { get => field ?? throw Assumes.NotReachable(); set; }
 
         public Process? Process { get; set; }
 
-        public IVsLaunchedProcess? LaunchedProcess { get; set; }
+        public IVsLaunchedProcess? DebuggerProcess { get; set; }
 
         public IDeltaApplier? GetDeltaApplier()
         {
@@ -278,6 +307,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             return Task.CompletedTask;
         }
 
+        [Obsolete]
         public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
         {
             return TaskResult.True;
@@ -285,27 +315,20 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
         public async Task<bool> StopProjectAsync(CancellationToken cancellationToken)
         {
-            if (Session is null || (LaunchedProcess is null && Process is null))
-            {
-                // if session is null, or there's no active process asscociated with this session, early return
-                return true;
-            }
-
-            // prefer to terminate launched process first if we have it
-            if (LaunchedProcess is not null)
+            if (DebuggerProcess is not null)
             {
                 // need to call on UI thread
-                await threadingService.SwitchToUIThread(cancellationToken);
+                await _threadingService.SwitchToUIThread(cancellationToken);
 
                 // Ignore the debug option launching flags since we're just terminating the process, not the entire debug session
-                LaunchedProcess.Terminate(ignoreLaunchFlags: 1);
+                DebuggerProcess.Terminate(ignoreLaunchFlags: 1);
             }
-            else
+            else if (Process is not null)
             {
                 // stop the process by killing it
                 try
                 {
-                    if (Process is not null && !Process.HasExited)
+                    if (!Process.HasExited)
                     {
                         // First try to close the process nicely and if that doesn't work kill it.
                         if (!Process.CloseMainWindow())
@@ -319,16 +342,30 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                     // Process has already exited.
                 }
             }
-
-            if (Session is not null)
+            else
             {
-                await Session.StopSessionAsync(cancellationToken);
-                removeSessionState(this);
-
-                Session = null;
+                return true;
             }
 
+            Dispose();
+            await Session.StopSessionAsync(cancellationToken);
+
             return true;
+        }
+
+        public void Dispose()
+        {
+            if (Interlocked.Exchange(ref _disposed, 1) == 1)
+            {
+                return;
+            }
+
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
+
+            Process?.Dispose();
+
+            _removeSessionState(this);
         }
     }
 
