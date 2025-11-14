@@ -587,7 +587,8 @@ public class ProjectHotReloadSessionTests
         IProjectHotReloadBuildManager? buildManager = null,
         IProjectHotReloadLaunchProvider? launchProvider = null,
         IHotReloadDebugStateProvider? debugStateProvider = null,
-        IProjectSystemOptions? projectSystemOptions = null)
+        IProjectSystemOptions? projectSystemOptions = null,
+        IProjectThreadingService? projectThreadingService = null)
     {
         hotReloadAgentManagerClient ??= new(Mock.Of<IHotReloadAgentManagerClient>);
         hotReloadOutputService ??= new(Mock.Of<IHotReloadDiagnosticOutputService>);
@@ -613,6 +614,7 @@ public class ProjectHotReloadSessionTests
         launchProvider ??= new Mock<IProjectHotReloadLaunchProvider>().Object;
         configuredProject ??= CreateConfiguredProjectWithCommonProperties();
         projectSystemOptions ??= new Mock<IProjectSystemOptions>().Object;
+        projectThreadingService ??= IProjectThreadingServiceFactory.Create();
 
         return new ProjectHotReloadSession(
             name,
@@ -626,6 +628,7 @@ public class ProjectHotReloadSessionTests
             launchProfile,
             debugLaunchOptions,
             projectSystemOptions,
+            projectThreadingService,
             debugStateProvider);
     }
 
