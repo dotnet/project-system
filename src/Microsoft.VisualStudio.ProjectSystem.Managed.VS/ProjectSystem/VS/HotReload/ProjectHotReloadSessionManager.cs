@@ -320,25 +320,50 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
         public async Task<bool> StopProjectAsync(CancellationToken cancellationToken)
         {
-            if (DebuggerProcess is not null)
+            if (DebuggerProcess is not null && Process is not null)
             {
-                // need to call on UI thread
+                // We have both DebuggerProcess and Process, they point to the same process. But DebuggerProcess provides a nicer way to terminate process
+                // without affecting the entire debug session.
+                // So we prefer to use DebuggerProcess to terminate the process first.
+                
+                // Terminate DebuggerProcess need to call on UI thread
                 await _threadingService.SwitchToUIThread(cancellationToken);
 
                 // Ignore the debug option launching flags since we're just terminating the process, not the entire debug session
                 DebuggerProcess.Terminate(ignoreLaunchFlags: 1);
+
+                // When DebuggerProcess.Terminate(ignoreLaunchFlags: 1) return, the process might not be terminated
+                // So we first terminate the process nicely,
+                // Then wait for the process to exit. If the process doesn't exit within 500ms, kill it using traditional way.
+                if (!Process.WaitForExit(500))
+                {
+                    TerminateProcess(Process);
+                }
             }
             else if (Process is not null)
             {
-                // stop the process by killing it
+                TerminateProcess(Process);
+            }
+            else
+            {
+                // Nothing to stop
+                return true;
+            }
+
+            Dispose();
+
+            return true;
+
+            static void TerminateProcess(Process process)
+            {
                 try
                 {
-                    if (!Process.HasExited)
+                    if (!process.HasExited)
                     {
                         // First try to close the process nicely and if that doesn't work kill it.
-                        if (!Process.CloseMainWindow())
+                        if (!process.CloseMainWindow())
                         {
-                            Process.Kill();
+                            process.Kill();
                         }
                     }
                 }
@@ -347,14 +372,6 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                     // Process has already exited.
                 }
             }
-            else
-            {
-                return true;
-            }
-
-            Dispose();
-
-            return true;
         }
 
         public void Dispose()
@@ -367,8 +384,6 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource.Dispose();
 
-            // Wait a short time for the process to exit gracefully.
-            Process?.WaitForExit(500);
             Process?.Dispose();
 
             _removeSessionState(this);
