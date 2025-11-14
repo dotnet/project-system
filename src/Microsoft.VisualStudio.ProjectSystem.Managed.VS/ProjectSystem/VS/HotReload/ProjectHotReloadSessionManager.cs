@@ -325,34 +325,33 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 // We have both DebuggerProcess and Process, they point to the same process. But DebuggerProcess provides a nicer way to terminate process
                 // without affecting the entire debug session.
                 // So we prefer to use DebuggerProcess to terminate the process first.
-                
-                // Terminate DebuggerProcess need to call on UI thread
-                await _threadingService.SwitchToUIThread(cancellationToken);
 
-                // Ignore the debug option launching flags since we're just terminating the process, not the entire debug session
-                DebuggerProcess.Terminate(ignoreLaunchFlags: 1);
+                await TerminateProcessGracefullyAsync();
 
                 // When DebuggerProcess.Terminate(ignoreLaunchFlags: 1) return, the process might not be terminated
                 // So we first terminate the process nicely,
                 // Then wait for the process to exit. If the process doesn't exit within 500ms, kill it using traditional way.
-                if (!Process.WaitForExit(500))
-                {
-                    TerminateProcess(Process);
-                }
+                await Process.WaitForExitAsync(default).WithTimeout(TimeSpan.FromMilliseconds(500));
             }
-            else if (Process is not null)
+
+            if (Process is not null)
             {
                 TerminateProcess(Process);
-            }
-            else
-            {
-                // Nothing to stop
-                return true;
             }
 
             Dispose();
 
             return true;
+
+            async Task TerminateProcessGracefullyAsync()
+            {
+                // Terminate DebuggerProcess need to call on UI thread
+                await _threadingService.SwitchToUIThread(CancellationToken.None);
+
+                // Ignore the debug option launching flags since we're just terminating the process, not the entire debug session
+                // TODO consider if we can use the return value of Terminate here to control whether we need to subsequently kill the process
+                DebuggerProcess.Terminate(ignoreLaunchFlags: 1);
+            }
 
             static void TerminateProcess(Process process)
             {
