@@ -114,7 +114,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
     {
         _threadingService.RunAndForget(async () =>
         {
-            await sessionState.Session.StopSessionAsync(sessionState.CancellationToken);
+            DebugTrace("Disposing Hot Reload session.");
 
             int count;
             lock (_activeSessionStates)
@@ -145,7 +145,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             {
                 foreach (HotReloadSessionState sessionState in _activeSessionStates)
                 {
-                    sessionState.Dispose();
+                    DisposeSessionStateAndStopSession(sessionState);
                 }
 
                 _activeSessionStates.Clear();
@@ -236,7 +236,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 // process might have been exited in some cases.
                 // in that case, we early return without starting hotreload session
                 // one way to mimic this is to hit control + C as fast as you can once hit F5/Control + F5
-                sessionState.Dispose();
+                DisposeSessionStateAndStopSession(sessionState);
                 return;
             }
 
@@ -244,13 +244,13 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             process.Exited += (sender, e) =>
             {
                 DebugTrace("Process exited");
-                sessionState.Dispose();
+                DisposeSessionStateAndStopSession(sessionState);
             };
 
             if (process.HasExited)
             {
                 DebugTrace("Process exited");
-                sessionState.Dispose();
+                DisposeSessionStateAndStopSession(sessionState);
             }
             else
             {
@@ -261,11 +261,20 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 }
                 catch (OperationCanceledException)
                 {
-                    await sessionState.Session.StopSessionAsync(default);
-                    sessionState.Dispose();
+                    DisposeSessionStateAndStopSession(sessionState);
                 }
             }
         }
+    }
+
+    private void DisposeSessionStateAndStopSession(HotReloadSessionState sessionState)
+    {
+        sessionState.Dispose();
+
+        // In some occasions, StopSessionAsync might be invoked before StartSessionAsync
+        // For example, if the process exits quickly after launch
+        // So we call StopSessionAsync unconditionally to ensure the session is stopped properly
+        _threadingService.ExecuteSynchronously(() => sessionState.Session.StopSessionAsync(CancellationToken.None));
     }
 
     private sealed class HotReloadSessionState : IProjectHotReloadSessionCallback, IDisposable
@@ -282,7 +291,6 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         {
             _removeSessionState = removeSessionState;
             _threadingService = threadingService;
-
             CancellationToken = _cancellationTokenSource.Token;
         }
 
@@ -348,7 +356,6 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             }
 
             Dispose();
-            await Session.StopSessionAsync(cancellationToken);
 
             return true;
         }
