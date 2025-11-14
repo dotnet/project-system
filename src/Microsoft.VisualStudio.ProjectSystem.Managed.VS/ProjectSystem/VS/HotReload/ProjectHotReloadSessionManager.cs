@@ -389,9 +389,9 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         }
     }
 
-    private void DebugTrace(string message)
+    [Conditional("DEBUG")]
+    private static void DebugTrace(string message)
     {
-#if DEBUG
         var projectName = _unconfiguredProject.GetProjectName();
         _hotReloadDiagnosticOutputService.Value.WriteLine(
             new HotReloadLogMessage(
@@ -400,6 +400,5 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 projectName,
                 errorLevel: HotReloadDiagnosticErrorLevel.Info),
             CancellationToken.None);
-#endif
     }
 }
