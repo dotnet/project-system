@@ -59,6 +59,9 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         _debugLaunchOptions = debugLaunchOptions;
         _projectSystemOptions = projectSystemOptions;
         _debugStateProvider = debugStateProvider;
+
+        // We use a semaphore to prevent race conditions between StartSessionAsync and StopSessionAsync
+        // where StopSessionAsync can be called before, during or after StartSessionAsync.
         _semaphore = ReentrantSemaphore.Create(
             initialCount: 1,
             joinableTaskContext: threadingService.JoinableTaskContext.Context,
