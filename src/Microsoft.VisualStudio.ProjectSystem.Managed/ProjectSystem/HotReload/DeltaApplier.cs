@@ -37,11 +37,11 @@ internal sealed class DeltaApplier(HotReloadClient client, IHotReloadDebugStateP
         // Not all clients respond correctly to cancellation tokens.
         // For example, `DefaultHotreloadClient.GetUpdateCapabilitiesAsync(ct)`doesn't listen to the passed ct.
         // Since DefaultHotreloadClient is defined in a source package, it can't be modified directly from project-system.
+        // Tracking issue: https://github.com/dotnet/sdk/issues/51749
         await client.GetUpdateCapabilitiesAsync(cancellationToken).WithCancellation(cancellationToken);
 
         // TODO: apply initial updates?
         // https://devdiv.visualstudio.com/DevDiv/_workitems/edit/2571676
-
         await client.InitialUpdatesAppliedAsync(cancellationToken);
     }
 
