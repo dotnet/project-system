@@ -390,7 +390,7 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
     }
 
     [Conditional("DEBUG")]
-    private static void DebugTrace(string message)
+    private void DebugTrace(string message)
     {
         var projectName = _unconfiguredProject.GetProjectName();
         _hotReloadDiagnosticOutputService.Value.WriteLine(
