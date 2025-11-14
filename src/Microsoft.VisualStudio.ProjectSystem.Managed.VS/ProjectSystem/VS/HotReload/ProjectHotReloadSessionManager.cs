@@ -208,15 +208,12 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
         async Task ActivateSessionInternalAsync()
         {
-            HotReloadSessionState? sessionState = _pendingSessionState;
-
             // _pendingSessionState can be null if project doesn't support Hot Reload. i.e doesn't have SupportsHotReload capability
+            HotReloadSessionState? sessionState = Interlocked.Exchange(ref _pendingSessionState, null);
             if (sessionState is null)
             {
                 return;
             }
-
-            _pendingSessionState = null;
 
             DebugTrace("Hot Reload session started.");
             lock (_activeSessionStates)
