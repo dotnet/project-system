@@ -25,6 +25,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     private readonly DebugLaunchOptions _debugLaunchOptions;
     private readonly IHotReloadDebugStateProvider _debugStateProvider;
     private readonly IProjectHotReloadLaunchProvider _launchProvider;
+    private readonly ReentrantSemaphore _semaphore;
 
     private bool _sessionActive;
     private IDeltaApplier? _lazyDeltaApplier;
@@ -40,6 +41,8 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         ConfiguredProject configuredProject,
         ILaunchProfile launchProfile,
         DebugLaunchOptions debugLaunchOptions,
+        IProjectSystemOptions projectSystemOptions,
+        IProjectThreadingService threadingService,
         IHotReloadDebugStateProvider debugStateProvider)
     {
         Name = name;
@@ -54,6 +57,13 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         _launchProvider = launchProvider;
         _debugLaunchOptions = debugLaunchOptions;
         _debugStateProvider = debugStateProvider;
+
+        // We use a semaphore to prevent race conditions between StartSessionAsync and StopSessionAsync
+        // where StopSessionAsync can be called before, during or after StartSessionAsync.
+        _semaphore = ReentrantSemaphore.Create(
+            initialCount: 1,
+            joinableTaskContext: threadingService.JoinableTaskContext.Context,
+            mode: ReentrantSemaphore.ReentrancyMode.Freeform);
     }
 
     /// <summary>
@@ -151,51 +161,65 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     /// </summary>
     public async Task StartSessionAsync(CancellationToken cancellationToken)
     {
-        if (_sessionActive)
+        await _semaphore.ExecuteAsync(StartSessionInternalAsync, cancellationToken);
+        async Task StartSessionInternalAsync()
         {
-            throw new InvalidOperationException("Attempting to start a Hot Reload session that is already running.");
-        }
-
-        HotReloadAgentFlags flags = _debugLaunchOptions.HasFlag(DebugLaunchOptions.NoDebug) ? HotReloadAgentFlags.None : HotReloadAgentFlags.IsDebuggedProcess;
-
-        string targetFramework = await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty);
-        bool hotReloadAutoRestart = await _configuredProject.GetProjectPropertyBoolAsync(ConfigurationGeneral.HotReloadAutoRestartProperty);
-
-        var runningProjectInfo = new RunningProjectInfo
-        {
-            RestartAutomatically = hotReloadAutoRestart,
-            ProjectInstanceId = new ProjectInstanceId
+            if (_sessionActive)
             {
-                ProjectFilePath = _configuredProject.UnconfiguredProject.FullPath,
-                TargetFramework = targetFramework,
+                throw new InvalidOperationException("Attempting to start a Hot Reload session that is already running.");
             }
-        };
 
-        DebugTrace($"Start session for project '{_configuredProject.UnconfiguredProject.FullPath}' with TFM '{targetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
+            string targetFramework = await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty);
+            bool hotReloadAutoRestart = await _configuredProject.GetProjectPropertyBoolAsync(ConfigurationGeneral.HotReloadAutoRestartProperty);
 
-        var processInfo = new ManagedEditAndContinueProcessInfo();
-        await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
+            var runningProjectInfo = new RunningProjectInfo
+            {
+                RestartAutomatically = hotReloadAutoRestart,
+                ProjectInstanceId = new ProjectInstanceId
+                {
+                    ProjectFilePath = _configuredProject.UnconfiguredProject.FullPath,
+                    TargetFramework = targetFramework,
+                }
+            };
 
-        WriteToOutputWindow(Resources.HotReloadStartSession, default);
+            DebugTrace($"Start session for project '{_configuredProject.UnconfiguredProject.FullPath}' with TFM '{targetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
 
-        if (await GetOrCreateDeltaApplierAsync(cancellationToken) is IDeltaApplierInternal applierInternal)
-        {
-            await applierInternal.InitializeApplicationAsync(cancellationToken);
+            var processInfo = new ManagedEditAndContinueProcessInfo();
+
+            // If the debugger uses ICorDebug, the debugger is responsible for applying deltas to the process and the Hot Reload client receives empty deltas.
+            // Otherwise, the Hot Reload client is responsible for applying deltas and needs to receive them from the debugger.
+            // This is controlled by IsDebuggedProcess flag.
+            var flags = _debugLaunchOptions.HasFlag(DebugLaunchOptions.NoDebug) || await UsingLegacyWebAssemblyDebugEngineAsync(cancellationToken)
+                ? HotReloadAgentFlags.None
+                : HotReloadAgentFlags.IsDebuggedProcess;
+
+            if (await GetOrCreateDeltaApplierAsync(cancellationToken) is IDeltaApplierInternal applierInternal)
+            {
+                await applierInternal.InitializeApplicationAsync(cancellationToken);
+            }
+
+            await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
+
+            WriteToOutputWindow(Resources.HotReloadStartSession, cancellationToken);
+
+            _sessionActive = true;
         }
-
-        _sessionActive = true;
     }
 
     public async Task StopSessionAsync(CancellationToken cancellationToken)
     {
-        if (_sessionActive && _lazyDeltaApplier is not null)
+        await _semaphore.ExecuteAsync(StopSessionInternalAsync, cancellationToken);
+        async Task StopSessionInternalAsync()
         {
-            _sessionActive = false;
-            _lazyDeltaApplier.Dispose();
-            _lazyDeltaApplier = null;
+            if (_sessionActive && _lazyDeltaApplier is not null)
+            {
+                _sessionActive = false;
+                _lazyDeltaApplier.Dispose();
+                _lazyDeltaApplier = null;
 
-            await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
-            WriteToOutputWindow(Resources.HotReloadStopSession, default);
+                await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
+                WriteToOutputWindow(Resources.HotReloadStopSession, default);
+            }
         }
     }
 
