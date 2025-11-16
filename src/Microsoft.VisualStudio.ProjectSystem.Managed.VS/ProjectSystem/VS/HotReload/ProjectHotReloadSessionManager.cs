@@ -325,7 +325,6 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 // We have both DebuggerProcess and Process, they point to the same process. But DebuggerProcess provides a nicer way to terminate process
                 // without affecting the entire debug session.
                 // So we prefer to use DebuggerProcess to terminate the process first.
-
                 await TerminateProcessGracefullyAsync();
 
                 // When DebuggerProcess.Terminate(ignoreLaunchFlags: 1) return, the process might not be terminated

@@ -169,6 +169,11 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
                 throw new InvalidOperationException("Attempting to start a Hot Reload session that is already running.");
             }
 
+            // If the debugger uses ICorDebug, the debugger is responsible for applying deltas to the process and the Hot Reload client receives empty deltas.
+            // Otherwise, the Hot Reload client is responsible for applying deltas and needs to receive them from the debugger.
+            // This is controlled by IsDebuggedProcess flag.
+            HotReloadAgentFlags flags = _debugLaunchOptions.HasFlag(DebugLaunchOptions.NoDebug) ? HotReloadAgentFlags.None : HotReloadAgentFlags.IsDebuggedProcess;
+
             string targetFramework = await _configuredProject.GetProjectPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty);
             bool hotReloadAutoRestart = await _configuredProject.GetProjectPropertyBoolAsync(ConfigurationGeneral.HotReloadAutoRestartProperty);
 
@@ -185,13 +190,6 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
             DebugTrace($"Start session for project '{_configuredProject.UnconfiguredProject.FullPath}' with TFM '{targetFramework}' and HotReloadRestart {runningProjectInfo.RestartAutomatically}");
 
             var processInfo = new ManagedEditAndContinueProcessInfo();
-
-            // If the debugger uses ICorDebug, the debugger is responsible for applying deltas to the process and the Hot Reload client receives empty deltas.
-            // Otherwise, the Hot Reload client is responsible for applying deltas and needs to receive them from the debugger.
-            // This is controlled by IsDebuggedProcess flag.
-            var flags = _debugLaunchOptions.HasFlag(DebugLaunchOptions.NoDebug) || await UsingLegacyWebAssemblyDebugEngineAsync(cancellationToken)
-                ? HotReloadAgentFlags.None
-                : HotReloadAgentFlags.IsDebuggedProcess;
 
             if (await GetOrCreateDeltaApplierAsync(cancellationToken) is IDeltaApplierInternal applierInternal)
             {
