@@ -11,6 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 internal sealed class ProjectHotReloadAgent(
     Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
     Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService,
+    IProjectSystemOptions projectSystemOptions,
+    IProjectThreadingService threadingService,
     [Import(AllowDefault = true)] IHotReloadDebugStateProvider? debugStateProvider) // allow default until VS Code is updated: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/2571211
         : IProjectHotReloadAgent 
 {
@@ -33,6 +35,8 @@ internal sealed class ProjectHotReloadAgent(
             configuredProject: configuredProject,
             launchProfile: launchProfile,
             debugLaunchOptions: debugLaunchOptions,
+            projectSystemOptions,
+            threadingService,
             debugStateProvider ?? DefaultDebugStateProvider.Instance);
     }
 
