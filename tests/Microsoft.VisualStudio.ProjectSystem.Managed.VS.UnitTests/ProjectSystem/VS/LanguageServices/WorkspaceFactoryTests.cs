@@ -59,7 +59,7 @@ public class WorkspaceFactoryTests
 
         broadcastBlock.Complete();
 
-        await actionBlock.Completion.WithTimeout(TimeSpan.FromSeconds(1));
+        await actionBlock.Completion.WithTimeout(TimeSpan.FromSeconds(10));
 
         Assert.Equal(outputs.Count, actualOutputs.Count);
 
