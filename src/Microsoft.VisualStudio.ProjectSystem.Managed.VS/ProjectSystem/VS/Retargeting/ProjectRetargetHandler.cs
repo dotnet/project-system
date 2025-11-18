@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Text.Json;
+using Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -18,6 +19,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
     private readonly IProjectThreadingService _projectThreadingService;
     private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _projectRetargetingService;
     private readonly IVsService<SVsSolution, IVsSolution> _solutionService;
+    private readonly IDotNetEnvironment _dotnetEnvironment;
 
     private Guid _currentSdkDescriptionId = Guid.Empty;
     private Guid _sdkRetargetId = Guid.Empty;
@@ -28,13 +30,15 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
         IFileSystem fileSystem,
         IProjectThreadingService projectThreadingService,
         IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> projectRetargetingService,
-        IVsService<SVsSolution, IVsSolution> solutionService)
+        IVsService<SVsSolution, IVsSolution> solutionService,
+        IDotNetEnvironment dotnetEnvironment)
     {
         _releasesProvider = releasesProvider;
         _fileSystem = fileSystem;
         _projectThreadingService = projectThreadingService;
         _projectRetargetingService = projectRetargetingService;
         _solutionService = solutionService;
+        _dotnetEnvironment = dotnetEnvironment;
     }
 
     public Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
@@ -85,6 +89,12 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
         string? retargetVersion = await _releasesProvider.Value.GetSupportedOrLatestSdkVersionAsync(sdkVersion, includePreview: true);
 
         if (retargetVersion is null || sdkVersion == retargetVersion)
+        {
+            return null;
+        }
+
+        // Check if the retarget is already installed globally
+        if (_dotnetEnvironment.IsSdkInstalled(retargetVersion))
         {
             return null;
         }
@@ -142,7 +152,7 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
             {
                 try
                 {
-                    using Stream stream = File.OpenRead(globalJsonPath);
+                    using Stream stream = _fileSystem.OpenTextStream(globalJsonPath);
                     using JsonDocument doc = await JsonDocument.ParseAsync(stream);
                     if (doc.RootElement.TryGetProperty("sdk", out JsonElement sdkProp) &&
                         sdkProp.TryGetProperty("version", out JsonElement versionProp))

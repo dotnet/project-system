@@ -1,7 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
 public class DebugTokenReplacerTests
@@ -13,12 +11,12 @@ public class DebugTokenReplacerTests
         { "%env3%", "$(msbuildProperty6)" }
     };
 
-    private readonly Mock<IEnvironmentHelper> _envHelper;
+    private readonly IEnvironmentMock _environmentMock;
 
     public DebugTokenReplacerTests()
     {
-        _envHelper = new Mock<IEnvironmentHelper>();
-        _envHelper.Setup(x => x.ExpandEnvironmentVariables(It.IsAny<string>())).Returns<string>((str) =>
+        _environmentMock = new IEnvironmentMock();
+        _environmentMock.ImplementExpandEnvironmentVariables((str) =>
         {
             foreach ((string key, string value) in _envVars)
             {
@@ -81,7 +79,7 @@ public class DebugTokenReplacerTests
 
     private DebugTokenReplacer CreateInstance()
     {
-        var environmentHelper = _envHelper.Object;
+        var environmentHelper = _environmentMock.Object;
 
         var activeDebugFramework = new Mock<IActiveDebugFrameworkServices>();
         activeDebugFramework.Setup(s => s.GetConfiguredProjectForActiveFrameworkAsync())

@@ -43,6 +43,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         IVsService<SVsSetupCompositionService, IVsSetupCompositionService> vsSetupCompositionService,
         ISolutionService solutionService,
         IProjectFaultHandlerService projectFaultHandlerService,
+        IDotNetEnvironment dotnetEnvironment,
         JoinableTaskContext joinableTaskContext)
         : base(new(joinableTaskContext))
     {
@@ -51,9 +52,9 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         _solutionService = solutionService;
         _projectFaultHandlerService = projectFaultHandlerService;
 
-        _installedRuntimeComponentIds = new Lazy<HashSet<string>?>(FindInstalledRuntimeComponentIds);
+        _installedRuntimeComponentIds = new Lazy<HashSet<string>?>(() => FindInstalledRuntimeComponentIds(dotnetEnvironment));
 
-        static HashSet<string>? FindInstalledRuntimeComponentIds()
+        static HashSet<string>? FindInstalledRuntimeComponentIds(IDotNetEnvironment dotnetEnvironment)
         {
             // Workaround for https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1460328
             // VS Setup doesn't know about runtimes installed outside of VS. Deep detection is not suggested for performance reasons.
@@ -66,7 +67,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
             // TODO consider the architecture of the project itself
             Architecture architecture = RuntimeInformation.ProcessArchitecture;
 
-            string[]? runtimeVersions = NetCoreRuntimeVersionsRegistryReader.ReadRuntimeVersionsInstalledInLocalMachine(architecture);
+            string[]? runtimeVersions = dotnetEnvironment.GetInstalledRuntimeVersions(architecture);
 
             if (runtimeVersions is null)
             {
