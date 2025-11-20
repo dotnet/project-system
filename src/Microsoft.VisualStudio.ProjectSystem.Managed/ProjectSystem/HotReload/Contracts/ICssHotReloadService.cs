@@ -24,5 +24,10 @@ public interface ICssHotReloadService : IDisposable
 [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.System, Cardinality = ImportCardinality.ExactlyOne)]
 public interface ICssHotReloadServiceFactory
 {
-    ICssHotReloadService CreateCssHotReloadService();
+    /// <summary>
+    /// Creates an instance of <see cref="ICssHotReloadService"/>.
+    /// The caller is responsible for disposing the instance.
+    /// </summary>
+    /// <returns></returns>
+    ICssHotReloadService Create();
 }
