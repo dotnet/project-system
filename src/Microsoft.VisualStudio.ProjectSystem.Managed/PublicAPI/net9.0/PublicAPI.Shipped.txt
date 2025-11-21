@@ -239,3 +239,5 @@ Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.SendReload
 Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.SendWaitMessageAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.StartServerAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
 Microsoft.VisualStudio.ProjectSystem.HotReload.IBrowserRefreshService.UpdateStaticAssetsAsync(System.Collections.Generic.IEnumerable<string> assetUrls, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+Microsoft.VisualStudio.ProjectSystem.HotReload.ICssHotReloadServiceFactory
+Microsoft.VisualStudio.ProjectSystem.HotReload.ICssHotReloadServiceFactory.Create() -> Microsoft.VisualStudio.ProjectSystem.HotReload.ICssHotReloadService

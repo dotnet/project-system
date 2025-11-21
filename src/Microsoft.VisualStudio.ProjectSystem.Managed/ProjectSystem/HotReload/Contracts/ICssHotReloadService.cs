@@ -3,8 +3,7 @@
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 namespace Microsoft.VisualStudio.ProjectSystem.HotReload;
 
-[ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.System, Cardinality = ImportCardinality.ExactlyOne)]
-public interface ICssHotReloadService
+public interface ICssHotReloadService : IDisposable
 {
     /// <summary>
     /// Returns the name of this projects scoped css filename.
@@ -16,7 +15,19 @@ public interface ICssHotReloadService
     /// should be disabled. This property defaults to true. Set to false if the capability supporting this feature
     /// is removed.
     /// </summary>
+    [Obsolete("ICssHotReloadService should always been enabled in its lifetime.")]
     bool CssHotReloadEnabled { get; set; }
 
     ValueTask<HotReloadResult> ApplyUpdatesAsync(CancellationToken cancellationToken);
+}
+
+[ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.System, Cardinality = ImportCardinality.ExactlyOne)]
+public interface ICssHotReloadServiceFactory
+{
+    /// <summary>
+    /// Creates an instance of <see cref="ICssHotReloadService"/>.
+    /// The caller is responsible for disposing the instance.
+    /// </summary>
+    /// <returns></returns>
+    ICssHotReloadService Create();
 }
