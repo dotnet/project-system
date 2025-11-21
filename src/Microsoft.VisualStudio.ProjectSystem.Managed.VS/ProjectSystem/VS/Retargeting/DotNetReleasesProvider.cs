@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 [Export(typeof(IDotNetReleasesProvider))]
 internal class DotNetReleasesProvider : IDotNetReleasesProvider
 {
-    private const string RetargetingAppDataFolder = "ProjectSystem.Retargeting";
+    private const string RetargetingAppDataFolder = @"ProjectSystem\Retargeting";
     private const string ReleasesFileName = ".releases.json";
 
     private readonly AsyncLazy<ProductCollection?> _productCollection;
