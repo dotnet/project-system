@@ -16,7 +16,7 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
 
     private readonly AsyncLazy<ProductCollection?> _productCollection;
     private readonly AsyncLazy<string> _appDataPath;
-    private readonly IVsUIService<SVsShell, IVsShell> _vsShell;
+    private readonly IVsUIService<IVsShell> _vsShell;
     private readonly IProjectThreadingService _projectThreadingService;
 
     private ImmutableDictionary<string, AsyncLazy<IReadOnlyCollection<ProductRelease>>> _productReleasesByProductVersion = ImmutableStringDictionary<AsyncLazy<IReadOnlyCollection<ProductRelease>>>.EmptyOrdinal;
@@ -80,7 +80,7 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
             return null;
         }
 
-        if (ReleaseVersion.TryParse(sdkVersion, out ReleaseVersion parsedSdkVersion))
+        if (ReleaseVersion.TryParse(sdkVersion, out ReleaseVersion? parsedSdkVersion))
         {
             // Find the product that matches the major/minor version of the SDK
             Product? matchingProduct = products.FirstOrDefault(
@@ -103,7 +103,7 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
 
         return null;
 
-        async Task<string?> GetLatestSupportedSdkVersionAsync(ReleaseVersion? currentVersion, Product matchingProduct)
+        async Task<string?> GetLatestSupportedSdkVersionAsync(ReleaseVersion currentVersion, Product matchingProduct)
         {
             if (matchingProduct.SupportPhase is SupportPhase.Active or SupportPhase.Maintenance or SupportPhase.EOL)
             {
@@ -130,9 +130,9 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
                     _projectThreadingService.JoinableTaskFactory),
                 factoryArgument: matchingProduct);
 
-            var releases = await lazy.GetValueAsync(cancellationToken);
+            IReadOnlyCollection<ProductRelease> releases = await lazy.GetValueAsync(cancellationToken);
 
-            // Find the latest SDK version
+            // Find the latest SDK version.
             SdkReleaseComponent? latestSdk = releases
                 .SelectMany(r => r.Sdks)
                 .MaxByOrDefault(sdk => sdk.Version);
