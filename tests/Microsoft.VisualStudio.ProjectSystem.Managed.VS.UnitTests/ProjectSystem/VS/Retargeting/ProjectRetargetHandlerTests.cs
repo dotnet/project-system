@@ -101,7 +101,7 @@ public class ProjectRetargetHandlerTests
 
         // Releases provider returns same version
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
-            p => p.GetNewerSupportedSdkVersionAsync("8.0.100", default) == Task.FromResult<string?>("8.0.100"));
+            p => p.GetNewerSupportedSdkVersionAsync("8.0.100", default) == Task.FromResult<string?>(null));
 
         var handler = CreateInstance(
             fileSystem: fileSystem,
@@ -412,7 +412,6 @@ public class ProjectRetargetHandlerTests
     private static ProjectRetargetHandler CreateInstance(
         IDotNetReleasesProvider? releasesProvider = null,
         IFileSystem? fileSystem = null,
-        IProjectThreadingService? threadingService = null,
         IVsTrackProjectRetargeting2? trackProjectRetargeting = null,
         ISolutionService? solution = null,
         IEnvironment? environment = null,
@@ -420,8 +419,8 @@ public class ProjectRetargetHandlerTests
     {
         releasesProvider ??= Mock.Of<IDotNetReleasesProvider>();
         fileSystem ??= new IFileSystemMock();
-        threadingService ??= IProjectThreadingServiceFactory.Create();
         environment ??= Mock.Of<IEnvironment>();
+        trackProjectRetargeting ??= Mock.Of<IVsTrackProjectRetargeting2>();
 
         var retargetingService = IVsServiceFactory.Create<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2>(trackProjectRetargeting);
         var solutionService = solution ?? ISolutionServiceFactory.Create();
@@ -429,9 +428,9 @@ public class ProjectRetargetHandlerTests
         dotnetEnvironment ??= Mock.Of<IDotNetEnvironment>();
 
         return new ProjectRetargetHandler(
+            null!,
             releasesProvider,
             fileSystem,
-            threadingService,
             retargetingService,
             solutionService,
             environment,
