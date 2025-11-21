@@ -121,17 +121,16 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
             AsyncLazy<IReadOnlyCollection<ProductRelease>> lazy = ImmutableInterlocked.GetOrAdd(
                 ref _productReleasesByProductVersion,
                 key: matchingProduct.ProductVersion,
-                valueFactory: (key, arg) => new AsyncLazy<IReadOnlyCollection<ProductRelease>>(
+                valueFactory: key => new AsyncLazy<IReadOnlyCollection<ProductRelease>>(
                     async () =>
                     {
                         string appDataPath = await _appDataPath.GetValueAsync();
 
                         string resourceFileName = Path.Combine(appDataPath, RetargetingAppDataFolder, $"{key}{ReleasesFileName}");
 
-                        return await GetReleasesAsync(arg, resourceFileName, key) ?? [];
+                        return await GetReleasesAsync(matchingProduct, resourceFileName, key) ?? [];
                     },
-                    _projectThreadingService.JoinableTaskFactory),
-                factoryArgument: matchingProduct);
+                    _projectThreadingService.JoinableTaskFactory));
 
             IReadOnlyCollection<ProductRelease> releases = await lazy.GetValueAsync(cancellationToken);
 
