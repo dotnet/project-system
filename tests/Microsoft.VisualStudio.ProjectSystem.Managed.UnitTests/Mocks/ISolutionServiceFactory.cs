@@ -9,7 +9,7 @@ internal static class ISolutionServiceFactory
         var mock = new Mock<ISolutionService>();
 
         mock.Setup(m => m.LoadedInHost)
-            .Returns(Task.CompletedTask);
+            .Returns(() => new Task(() => { }));
 
         mock.Setup(m => m.GetSolutionDirectoryAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(solutionDirectory);
