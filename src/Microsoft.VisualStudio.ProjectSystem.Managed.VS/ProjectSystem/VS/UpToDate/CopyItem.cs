@@ -69,7 +69,12 @@ internal readonly struct CopyItem
                 return BuildUpToDateCheck.CopyType.PreserveNewest;
             }
 
-            throw Assumes.Fail($"CopyToOutputDirectory should be Always or PreserveNewest, not {value}");
+            if (string.Equals(value, CopyToOutputDirectoryItem.CopyToOutputDirectoryValues.IfDifferent, StringComparisons.PropertyLiteralValues))
+            {
+                return BuildUpToDateCheck.CopyType.IfDifferent;
+            }
+
+            throw Assumes.Fail($"CopyToOutputDirectory should be Always, PreserveNewest or IfDifferent, not {value}");
         }
     }
 

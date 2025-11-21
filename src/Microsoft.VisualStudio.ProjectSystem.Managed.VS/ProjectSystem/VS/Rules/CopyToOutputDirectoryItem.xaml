@@ -16,6 +16,7 @@
     <EnumValue Name="Never" />
     <EnumValue Name="Always" />
     <EnumValue Name="PreserveNewest" />
+    <EnumValue Name="IfDifferent" />
   </EnumProperty>
 
   <BoolProperty Name="BuildAccelerationOnly"
