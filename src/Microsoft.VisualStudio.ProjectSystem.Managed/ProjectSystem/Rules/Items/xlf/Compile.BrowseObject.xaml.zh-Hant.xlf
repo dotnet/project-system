@@ -32,6 +32,11 @@
         <target state="translated">指定是否要將原始程式檔複製到輸出目錄。</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.IfDifferent|DisplayName">
+        <source>Copy if different</source>
+        <target state="new">Copy if different</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
         <source>Do not copy</source>
         <target state="translated">不要複製</target>

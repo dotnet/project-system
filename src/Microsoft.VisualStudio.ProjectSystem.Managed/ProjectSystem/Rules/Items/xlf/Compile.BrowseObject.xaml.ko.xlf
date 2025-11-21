@@ -32,6 +32,11 @@
         <target state="translated">소스 파일을 출력 디렉터리로 복사할 것인지 여부를 지정합니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.IfDifferent|DisplayName">
+        <source>Copy if different</source>
+        <target state="new">Copy if different</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
         <source>Do not copy</source>
         <target state="translated">복사 안 함</target>

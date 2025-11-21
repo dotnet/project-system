@@ -32,6 +32,11 @@
         <target state="translated">Especifica se o arquivo fonte deve ser copiado no diretório de saída.</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.IfDifferent|DisplayName">
+        <source>Copy if different</source>
+        <target state="new">Copy if different</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
         <source>Do not copy</source>
         <target state="translated">Não copiar</target>
