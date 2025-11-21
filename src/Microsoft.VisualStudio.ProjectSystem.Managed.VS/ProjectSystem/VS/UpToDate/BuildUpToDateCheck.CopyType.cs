@@ -10,6 +10,7 @@ internal sealed partial class BuildUpToDateCheck
     internal enum CopyType
     {
         PreserveNewest,
+        IfDifferent,
         Always
     }
 }

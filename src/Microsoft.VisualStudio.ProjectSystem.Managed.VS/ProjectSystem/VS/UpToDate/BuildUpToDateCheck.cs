@@ -797,6 +797,7 @@ internal sealed partial class BuildUpToDateCheck
                 switch (copyType)
                 {
                     case CopyType.Always:
+                    case CopyType.IfDifferent:
                     {
                         // We have already validated the presence of these files, so we don't expect these to return
                         // false. If one of them does, the corresponding size would be zero, so we would schedule a build.
