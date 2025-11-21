@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using IFileSystem = Microsoft.VisualStudio.IO.IFileSystem;
+using Path = Microsoft.IO.Path;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 
@@ -112,14 +113,17 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
 
     private string? FindGlobalJsonPath(string startingDirectory)
     {
-        string dir = startingDirectory;
+        string? dir = startingDirectory;
+
         while (!string.IsNullOrEmpty(dir))
         {
-            string globalJsonPath = Path.Combine(dir, "global.json");
+            string globalJsonPath = Path.Join(dir, "global.json");
+
             if (_fileSystem.FileExists(globalJsonPath))
             {
                 return globalJsonPath;
             }
+
             dir = Path.GetDirectoryName(dir);
         }
 
