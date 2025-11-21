@@ -4,14 +4,23 @@ namespace Microsoft.VisualStudio.ProjectSystem;
 
 internal static class ISolutionServiceFactory
 {
-    public static ISolutionService Create()
+    public static ISolutionService Create(string? solutionDirectory = null)
     {
-        return ImplementSolutionLoadedInHost(() => new Task(() => { }));
+        var mock = new Mock<ISolutionService>();
+
+        mock.Setup(m => m.LoadedInHost)
+            .Returns(Task.CompletedTask);
+
+        mock.Setup(m => m.GetSolutionDirectoryAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(solutionDirectory);
+
+        return mock.Object;
     }
 
     public static ISolutionService ImplementSolutionLoadedInHost(Func<Task> action)
     {
         var mock = new Mock<ISolutionService>();
+
         mock.Setup(m => m.LoadedInHost)
             .Returns(action);
 
