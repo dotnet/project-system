@@ -40,16 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include=".releases\.releases.json" CopyToOutputDirectory="PreserveNewest" />
-    <None Include=".releases\10.0.releases.json" CopyToOutputDirectory="PreserveNewest" />
-    <None Include=".releases\9.0.releases.json" CopyToOutputDirectory="PreserveNewest" />
-    <None Include=".releases\8.0.releases.json" CopyToOutputDirectory="PreserveNewest" />
-    <None Include=".releases\7.0.releases.json" CopyToOutputDirectory="PreserveNewest" />
-    <None Include=".releases\6.0.releases.json" CopyToOutputDirectory="PreserveNewest" />
-    <None Include=".releases\5.0.releases.json" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="ProjectSystem\VS\LanguageServices\CSharp\CSharpCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -66,17 +66,28 @@ internal class NavigateToProjectCommand : AbstractSingleNodeProjectCommand
 
     private async Task NavigateToAsync(IProjectTree node)
     {
-        string? browsePath = await DependencyServices.GetBrowsePathAsync(_project, node);
-        if (browsePath is null)
-            return;
-
         await _threadingService.SwitchToUIThread();
 
-        // Find the hierarchy based on the project file, and then select it
-        var hierarchy = (IVsUIHierarchy?)_projectServices.GetHierarchyByProjectName(browsePath);
-        if (hierarchy is null || !_solutionExplorer.IsAvailable)
+        if (!_solutionExplorer.IsAvailable)
             return;
 
+        // Find the hierarchy based on the project file
+        var hierarchy = (IVsUIHierarchy?)_projectServices.GetHierarchyByProjectName(_project.FullPath);
+
+        if (hierarchy is null)
+        {
+            string? browsePath = await DependencyServices.GetBrowsePathAsync(_project, node);
+            if (browsePath is null)
+                return;
+
+            // Find the hierarchy based on the browse path
+            hierarchy = (IVsUIHierarchy?)_projectServices.GetHierarchyByProjectName(browsePath);
+        }
+
+        if (hierarchy is null)
+            return;
+
+        // Select the project node in the tree
         _ = _solutionExplorer.Select(hierarchy, HierarchyId.Root);
     }
 }

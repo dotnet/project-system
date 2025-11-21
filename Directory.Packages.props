@@ -41,6 +41,7 @@
     <!-- VS SDK -->
     <!-- https://dev.azure.com/azure-public/vside/_artifacts/feed/vssdk -->
     <PackageVersion Include="EnvDTE"                                                                 Version="18.0.1755-preview.1" />
+    <PackageVersion Include="Microsoft.Deployment.DotNet.Releases"                                   Version="2.0.0-rtm.1.25064.1" />
     <PackageVersion Include="Microsoft.Internal.VisualStudio.Interop"                                Version="18.0.1755-preview.1" />
     <PackageVersion Include="Microsoft.ServiceHub.Framework"                                         Version="4.9.11-beta" />
     <PackageVersion Include="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.14.116" />
@@ -49,6 +50,7 @@
     <PackageVersion Include="Microsoft.VisualStudio.Data.Services"                                   Version="18.0.1755-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.DataDesign.Common"                               Version="18.0.1755-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.DataTools.Interop"                               Version="18.0.1755-preview.1" />
+    <PackageVersion Include="Microsoft.VisualStudio.Debugger.Interop.18.0"                           Version="18.0.1755-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Designer.Interfaces"                             Version="18.0.1755-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Editor"                                          Version="18.0.300-preview" />
     <PackageVersion Include="Microsoft.VisualStudio.ImageCatalog"                                    Version="18.0.1755-preview.1" />
@@ -73,8 +75,6 @@
     <PackageVersion Include="System.Formats.Asn1"                                                    Version="8.0.1" />
     <PackageVersion Include="Microsoft.VSDesigner"                                                   Version="18.0.1755-preview.1" />
     <PackageVersion Include="VsWebSite.Interop"                                                      Version="18.0.1755-preview.1" />
-    <PackageVersion Include="Microsoft.VisualStudio.Debugger.Interop.18.0"                          Version="18.0.1755-preview.1" />
-    <PackageVersion Include="Microsoft.Deployment.DotNet.Releases"                                   Version="2.0.0-rtm.1.25064.1" />
 
     <!-- CPS -->
     <!-- Find versions at https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl -->

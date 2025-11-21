@@ -78,7 +78,7 @@ public class ProjectRetargetHandlerTests
         await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
-            p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>(null));
+            p => p.GetNewerSupportedSdkVersionAsync("8.0.100", default) == Task.FromResult<string?>(null));
 
         var handler = CreateInstance(
             fileSystem: fileSystem,
@@ -101,7 +101,7 @@ public class ProjectRetargetHandlerTests
 
         // Releases provider returns same version
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
-            p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.100"));
+            p => p.GetNewerSupportedSdkVersionAsync("8.0.100", default) == Task.FromResult<string?>(null));
 
         var handler = CreateInstance(
             fileSystem: fileSystem,
@@ -123,7 +123,7 @@ public class ProjectRetargetHandlerTests
         await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
-            p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
+            p => p.GetNewerSupportedSdkVersionAsync("8.0.100", default) == Task.FromResult<string?>("8.0.200"));
 
         // SDK is already installed
         var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
@@ -150,7 +150,7 @@ public class ProjectRetargetHandlerTests
         await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
-            p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
+            p => p.GetNewerSupportedSdkVersionAsync("8.0.100", default) == Task.FromResult<string?>("8.0.200"));
 
         // SDK is NOT installed
         var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
@@ -187,7 +187,7 @@ public class ProjectRetargetHandlerTests
         await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
-            p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
+            p => p.GetNewerSupportedSdkVersionAsync("8.0.100", default) == Task.FromResult<string?>("8.0.200"));
 
         var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
             s => s.IsSdkInstalled("8.0.200") == false);
@@ -220,7 +220,7 @@ public class ProjectRetargetHandlerTests
         await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
-            p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
+            p => p.GetNewerSupportedSdkVersionAsync("8.0.100", default) == Task.FromResult<string?>("8.0.200"));
 
         var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
             s => s.IsSdkInstalled("8.0.200") == false);
@@ -254,7 +254,7 @@ public class ProjectRetargetHandlerTests
         await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
-            p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
+            p => p.GetNewerSupportedSdkVersionAsync("8.0.100", default) == Task.FromResult<string?>("8.0.200"));
 
         var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
             s => s.IsSdkInstalled("8.0.200") == false);
@@ -331,7 +331,7 @@ public class ProjectRetargetHandlerTests
         await fileSystem.WriteAllTextAsync(globalJsonPath, GlobalJsonWithSdk);
 
         var releasesProvider = Mock.Of<IDotNetReleasesProvider>(
-            p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default) == Task.FromResult<string?>("8.0.200"));
+            p => p.GetNewerSupportedSdkVersionAsync("8.0.100", default) == Task.FromResult<string?>("8.0.200"));
 
         var dotnetEnvironment = Mock.Of<IDotNetEnvironment>(
             s => s.IsSdkInstalled("8.0.200") == false);
@@ -387,7 +387,7 @@ public class ProjectRetargetHandlerTests
 
         var mockReleasesProvider = new Mock<IDotNetReleasesProvider>();
         mockReleasesProvider
-            .Setup(p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default))
+            .Setup(p => p.GetNewerSupportedSdkVersionAsync("8.0.100", default))
             .ReturnsAsync((string?)null);
 
         var retargetingService = new Mock<IVsTrackProjectRetargeting2>();
@@ -405,48 +405,40 @@ public class ProjectRetargetHandlerTests
         
         // Verify the method was called with includePreview: true
         mockReleasesProvider.Verify(
-            p => p.GetSupportedOrLatestSdkVersionAsync("8.0.100", true, default),
+            p => p.GetNewerSupportedSdkVersionAsync("8.0.100", default),
             Times.Once);
     }
 
     private static ProjectRetargetHandler CreateInstance(
         IDotNetReleasesProvider? releasesProvider = null,
         IFileSystem? fileSystem = null,
-        IProjectThreadingService? threadingService = null,
         IVsTrackProjectRetargeting2? trackProjectRetargeting = null,
-        IVsSolution? solution = null,
+        ISolutionService? solution = null,
         IEnvironment? environment = null,
         IDotNetEnvironment? dotnetEnvironment = null)
     {
         releasesProvider ??= Mock.Of<IDotNetReleasesProvider>();
         fileSystem ??= new IFileSystemMock();
-        threadingService ??= IProjectThreadingServiceFactory.Create();
         environment ??= Mock.Of<IEnvironment>();
+        trackProjectRetargeting ??= Mock.Of<IVsTrackProjectRetargeting2>();
 
         var retargetingService = IVsServiceFactory.Create<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2>(trackProjectRetargeting);
-        var solutionService = IVsServiceFactory.Create<SVsSolution, IVsSolution>(solution);
+        var solutionService = solution ?? ISolutionServiceFactory.Create();
 
         dotnetEnvironment ??= Mock.Of<IDotNetEnvironment>();
 
         return new ProjectRetargetHandler(
-            new Lazy<IDotNetReleasesProvider>(() => releasesProvider),
+            null!,
+            releasesProvider,
             fileSystem,
-            threadingService,
             retargetingService,
             solutionService,
             environment,
             dotnetEnvironment);
     }
 
-    private static IVsSolution CreateSolutionWithDirectory(string directory)
+    private static ISolutionService CreateSolutionWithDirectory(string solutionDirectory)
     {
-        return IVsSolutionFactory.CreateWithSolutionDirectory(
-            (out string solutionDirectory, out string solutionFile, out string userSettings) =>
-            {
-                solutionDirectory = directory;
-                solutionFile = Path.Combine(directory, "Solution.sln");
-                userSettings = string.Empty;
-                return HResult.OK;
-            });
+        return ISolutionServiceFactory.Create(solutionDirectory: solutionDirectory);
     }
 }
