@@ -31,6 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\Common\GlobalAssemblyInfo.vb" />
+
     <EmbeddedResource Update="AddImportsDialogs\AddImports.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
