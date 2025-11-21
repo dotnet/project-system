@@ -105,7 +105,17 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
 
         async Task<string?> GetLatestSupportedSdkVersionAsync(ReleaseVersion? currentVersion, Product matchingProduct)
         {
-            var lazy = ImmutableInterlocked.GetOrAdd(
+            if (matchingProduct.SupportPhase is SupportPhase.Active or SupportPhase.Maintenance or SupportPhase.EOL)
+            {
+                // For these support phases, we can use the SDK version defined directly on the product
+                // and avoid downloading the lengthy release data for that particular version.
+                return matchingProduct.LatestSdkVersion.ToString();
+            }
+
+            // TODO in future we want EOL phase to recommend the user move to the highest supported active SDK version.
+            // Should this suggest only LTS or also STS?
+
+            AsyncLazy<IReadOnlyCollection<ProductRelease>> lazy = ImmutableInterlocked.GetOrAdd(
                 ref _productReleasesByProductVersion,
                 key: matchingProduct.ProductVersion,
                 valueFactory: (key, arg) => new AsyncLazy<IReadOnlyCollection<ProductRelease>>(
