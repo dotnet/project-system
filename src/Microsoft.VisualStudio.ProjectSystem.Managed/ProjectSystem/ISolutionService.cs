@@ -37,7 +37,14 @@ internal interface ISolutionService
     ///     Creates a new subscription for solution events that will call back via <paramref name="eventListener" />.
     /// </summary>
     /// <param name="eventListener">The callback for events.</param>
-    /// <param name="cancellationToken">A token whose cancellation marks lost interest in the result of this task.</param>
+    /// <param name="cancellationToken">A token whose cancellation marks lost interest in the result of this operation.</param>
     /// <returns>An object that unsubscribes when disposed.</returns>
     Task<IAsyncDisposable> SubscribeAsync(IVsSolutionEvents eventListener, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets the directory of the current solution.
+    /// </summary>
+    /// <param name="cancellationToken">A token whose cancellation marks lost interest in the result of this operation.</param>
+    /// <returns>The directory of the current solution, or <see langword="null"/> if it cannot be determined.</returns>
+    Task<string?> GetSolutionDirectoryAsync(CancellationToken cancellationToken = default);
 }

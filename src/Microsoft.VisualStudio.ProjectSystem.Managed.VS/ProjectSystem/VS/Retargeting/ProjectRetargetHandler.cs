@@ -14,11 +14,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 [Order(Order.Default)]
 internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, IDisposable
 {
-    private readonly Lazy<IDotNetReleasesProvider> _releasesProvider;
+    private readonly IDotNetReleasesProvider _releasesProvider;
     private readonly IFileSystem _fileSystem;
     private readonly IProjectThreadingService _projectThreadingService;
-    private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _projectRetargetingService;
-    private readonly IVsService<SVsSolution, IVsSolution> _solutionService;
+    private readonly IVsService<IVsTrackProjectRetargeting2> _projectRetargetingService;
+    private readonly ISolutionService _solutionService;
     private readonly IEnvironment _environment;
     private readonly IDotNetEnvironment _dotnetEnvironment;
 
@@ -27,11 +27,11 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
 
     [ImportingConstructor]
     public ProjectRetargetHandler(
-        Lazy<IDotNetReleasesProvider> releasesProvider,
+        IDotNetReleasesProvider releasesProvider,
         IFileSystem fileSystem,
         IProjectThreadingService projectThreadingService,
         IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> projectRetargetingService,
-        IVsService<SVsSolution, IVsSolution> solutionService,
+        ISolutionService solutionService,
         IEnvironment environment,
         IDotNetEnvironment dotnetEnvironment)
     {
@@ -46,9 +46,9 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
 
     public Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
     {
-        if ((options & RetargetCheckOptions.ProjectRetarget) == 0
-            && (options & RetargetCheckOptions.SolutionRetarget) == 0
-            && (options & RetargetCheckOptions.ProjectLoad) == 0)
+        RetargetCheckOptions flags = RetargetCheckOptions.ProjectRetarget | RetargetCheckOptions.SolutionRetarget | RetargetCheckOptions.ProjectLoad;
+
+        if ((options & flags) == 0)
         {
             return TaskResult.Null<IProjectTargetChange>();
         }
@@ -77,21 +77,16 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
             return null;
         }
 
-        return await GetTargetChangeAsync(retargetingService);
-    }
-
-    private async Task<TargetChange?> GetTargetChangeAsync(IVsTrackProjectRetargeting2 retargetingService)
-    {
-        string? sdkVersion = await GetSdkVersionForProjectAsync();
+        string? sdkVersion = await GetSdkVersionForSolutionAsync();
 
         if (sdkVersion is null)
         {
             return null;
         }
 
-        string? retargetVersion = await _releasesProvider.Value.GetSupportedOrLatestSdkVersionAsync(sdkVersion, includePreview: true);
+        string? retargetVersion = await _releasesProvider.GetNewerSupportedSdkVersionAsync(sdkVersion);
 
-        if (retargetVersion is null || sdkVersion == retargetVersion)
+        if (retargetVersion is null)
         {
             return null;
         }
@@ -108,14 +103,14 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
             // ultimately we will need to just set retarget. Right now, we need to register two
             // targets, we want to create two distinct ones, as the bug workaround requires different guids
 
-            IVsProjectTargetDescription currentSdkDescription = RetargetSDKDescription.Create(retargetVersion.ToString(), _environment.ProcessArchitecture); // this won't be needed
+            IVsProjectTargetDescription currentSdkDescription = RetargetSDKDescription.Create(retargetVersion, _environment.ProcessArchitecture); // this won't be needed
             retargetingService.RegisterProjectTarget(currentSdkDescription);  // this wont be needed.
             _currentSdkDescriptionId = currentSdkDescription.TargetId;
         }
 
         if (_sdkRetargetId == Guid.Empty)
         {
-            IVsProjectTargetDescription retargetSdkDescription = RetargetSDKDescription.Create(retargetVersion.ToString(), _environment.ProcessArchitecture);
+            IVsProjectTargetDescription retargetSdkDescription = RetargetSDKDescription.Create(retargetVersion, _environment.ProcessArchitecture);
             retargetingService.RegisterProjectTarget(retargetSdkDescription);
             _sdkRetargetId = retargetSdkDescription.TargetId;
         }
@@ -144,13 +139,13 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
         return null;
     }
 
-    private async Task<string?> GetSdkVersionForProjectAsync()
+    private async Task<string?> GetSdkVersionForSolutionAsync()
     {
-        string? solutionDirectory = await GetSolutionDirectoryAsync();
+        string? solutionDirectory = await _solutionService.GetSolutionDirectoryAsync();
 
-        if (!string.IsNullOrEmpty(solutionDirectory))
+        if (!Strings.IsNullOrEmpty(solutionDirectory))
         {
-            string? globalJsonPath = FindGlobalJsonPath(solutionDirectory!);
+            string? globalJsonPath = FindGlobalJsonPath(solutionDirectory);
             if (globalJsonPath is not null)
             {
                 try
@@ -163,25 +158,9 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
                         return versionProp.GetString();
                     }
                 }
-                catch /* ignore errors */
+                catch (Exception ex) when (ex.IsCatchable())
                 {
                 }
-            }
-        }
-
-        return null;
-    }
-
-    private async Task<string?> GetSolutionDirectoryAsync()
-    {
-        IVsSolution? solution = await _solutionService.GetValueOrNullAsync();
-
-        if (solution is not null)
-        {
-            int hr = solution.GetSolutionInfo(out string solutionDirectory, out string _, out string _);
-            if (hr == HResult.OK && !string.IsNullOrEmpty(solutionDirectory))
-            {
-                return solutionDirectory;
             }
         }
 
