@@ -19,13 +19,6 @@ public sealed class PackageContentTests
 
         var expected = new[]
         {
-            @".releases/.releases.json",
-            @".releases/10.0.releases.json",
-            @".releases/5.0.releases.json",
-            @".releases/6.0.releases.json",
-            @".releases/7.0.releases.json",
-            @".releases/8.0.releases.json",
-            @".releases/9.0.releases.json",
             @"[Content_Types].xml",
             @"catalog.json",
             @"cs/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
