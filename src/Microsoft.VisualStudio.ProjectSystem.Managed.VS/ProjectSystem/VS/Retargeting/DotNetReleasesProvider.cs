@@ -4,7 +4,6 @@ using Microsoft.Deployment.DotNet.Releases;
 using Microsoft.VisualStudio.Linq;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
-using IFileSystem = Microsoft.VisualStudio.IO.IFileSystem;
 using Path = Microsoft.IO.Path;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
@@ -18,7 +17,6 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
     private readonly AsyncLazy<ProductCollection?> _productCollection;
     private readonly AsyncLazy<string> _appDataPath;
     private readonly IVsUIService<SVsShell, IVsShell> _vsShell;
-    private readonly IFileSystem _fileSystem;
     private readonly IProjectThreadingService _projectThreadingService;
 
     private ImmutableDictionary<string, AsyncLazy<IReadOnlyCollection<ProductRelease>>> _productReleasesByProductVersion = ImmutableStringDictionary<AsyncLazy<IReadOnlyCollection<ProductRelease>>>.EmptyOrdinal;
@@ -26,12 +24,10 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
     [ImportingConstructor]
     public DotNetReleasesProvider(
         IVsUIService<SVsShell, IVsShell> vsShell,
-        IFileSystem fileSystem,
         IProjectThreadingService projectThreadingService)
     {
         _vsShell = vsShell;
         _projectThreadingService = projectThreadingService;
-        _fileSystem = fileSystem;
 
         _appDataPath = new AsyncLazy<string>(
             async () =>
@@ -63,8 +59,6 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
 
                 try
                 {
-                    CreateDefaultFileIfNotExist(resourcesFileName, ReleasesFileName);
-
                     return await ProductCollection.GetFromFileAsync(resourcesFileName, downloadLatest: true);
                 }
                 catch (Exception ex) when (ex.IsCatchable())
@@ -74,21 +68,6 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
                 }
             },
             _projectThreadingService.JoinableTaskFactory);
-    }
-
-    private void CreateDefaultFileIfNotExist(string destinationPath, string fileName)
-    {
-        if (!_fileSystem.FileExists(destinationPath))
-        {
-            // e.g. %LocalAppData%\Microsoft\VisualStudio\18.0_721820d7Exp\Extensions\Microsoft\C#, Visual Basic and F# project systems\99.0.0.0\.releases\.releases.json
-            string sourceFile = Path.Join(Path.GetDirectoryName(GetType().Assembly.Location), ".releases", fileName);
-
-            if (_fileSystem.FileExists(sourceFile))
-            {
-                _fileSystem.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
-                _fileSystem.CopyFile(sourceFile, destinationPath, overwrite: false);
-            }
-        }
     }
 
     public async Task<string?> GetNewerSupportedSdkVersionAsync(string sdkVersion, CancellationToken cancellationToken = default)
@@ -165,8 +144,6 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
         {
             try
             {
-                CreateDefaultFileIfNotExist(resourceFileName, $"{version}{ReleasesFileName}");
-
                 return await product.GetReleasesAsync(resourceFileName, downloadLatest: true);
             }
             catch (Exception ex) when (ex.IsCatchable())
