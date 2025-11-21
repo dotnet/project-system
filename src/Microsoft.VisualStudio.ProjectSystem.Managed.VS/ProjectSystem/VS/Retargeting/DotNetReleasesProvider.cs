@@ -57,6 +57,9 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
 
                 string resourcesFileName = Path.Join(appDataPath, RetargetingAppDataFolder, ReleasesFileName);
 
+                // NOTE this is doing network and disk IO on the main thread, but the retargeting APIs are
+                // called on the main thread so it's not clear what we can do about this.
+
                 try
                 {
                     return await ProductCollection.GetFromFileAsync(resourcesFileName, downloadLatest: true);
