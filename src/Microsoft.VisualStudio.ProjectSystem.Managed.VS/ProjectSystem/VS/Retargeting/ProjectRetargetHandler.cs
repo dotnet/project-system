@@ -16,10 +16,10 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
 {
     private readonly IDotNetReleasesProvider _releasesProvider;
     private readonly IFileSystem _fileSystem;
-    private readonly IProjectThreadingService _projectThreadingService;
     private readonly IVsService<IVsTrackProjectRetargeting2> _projectRetargetingService;
     private readonly ISolutionService _solutionService;
 
+    private IVsTrackProjectRetargeting2? _projectRetargeting;
     private Guid _currentSdkDescriptionId = Guid.Empty;
     private Guid _sdkRetargetId = Guid.Empty;
 
@@ -27,13 +27,11 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
     public ProjectRetargetHandler(
         IDotNetReleasesProvider releasesProvider,
         IFileSystem fileSystem,
-        IProjectThreadingService projectThreadingService,
         IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> projectRetargetingService,
         ISolutionService solutionService)
     {
         _releasesProvider = releasesProvider;
         _fileSystem = fileSystem;
-        _projectThreadingService = projectThreadingService;
         _projectRetargetingService = projectRetargetingService;
         _solutionService = solutionService;
     }
@@ -64,13 +62,6 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
 
     private async Task<IProjectTargetChange?> GetTargetChangeAndRegisterTargetsAsync()
     {
-        IVsTrackProjectRetargeting2? retargetingService = await _projectRetargetingService.GetValueOrNullAsync();
-
-        if (retargetingService is null)
-        {
-            return null;
-        }
-
         string? sdkVersion = await GetSdkVersionForSolutionAsync();
 
         if (sdkVersion is null)
@@ -85,6 +76,8 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
             return null;
         }
 
+        _projectRetargeting ??= await _projectRetargetingService.GetValueAsync();
+
         if (_currentSdkDescriptionId == Guid.Empty)
         {
             // register the current and retarget versions, note there is a bug in the current implementation
@@ -92,14 +85,14 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
             // targets, we want to create two distinct ones, as the bug workaround requires different guids
 
             IVsProjectTargetDescription currentSdkDescription = RetargetSDKDescription.Create(retargetVersion); // this won't be needed
-            retargetingService.RegisterProjectTarget(currentSdkDescription);  // this wont be needed.
+            _projectRetargeting.RegisterProjectTarget(currentSdkDescription);  // this wont be needed.
             _currentSdkDescriptionId = currentSdkDescription.TargetId;
         }
 
         if (_sdkRetargetId == Guid.Empty)
         {
             IVsProjectTargetDescription retargetSdkDescription = RetargetSDKDescription.Create(retargetVersion); // this won't be needed
-            retargetingService.RegisterProjectTarget(retargetSdkDescription);  // this wont be needed.
+            _projectRetargeting.RegisterProjectTarget(retargetSdkDescription);  // this wont be needed.
             _sdkRetargetId = retargetSdkDescription.TargetId;
         }
 
@@ -162,20 +155,18 @@ internal sealed partial class ProjectRetargetHandler : IProjectRetargetHandler, 
     {
         if (_currentSdkDescriptionId != Guid.Empty || _sdkRetargetId != Guid.Empty)
         {
-            _projectThreadingService.JoinableTaskFactory.Run(async () =>
+            Assumes.NotNull(_projectRetargeting);
+
+            if (_currentSdkDescriptionId != Guid.Empty)
             {
-                IVsTrackProjectRetargeting2? retargetingService = await _projectRetargetingService.GetValueOrNullAsync();
-                if (_currentSdkDescriptionId != Guid.Empty)
-                {
-                    retargetingService?.UnregisterProjectTarget(_currentSdkDescriptionId);
-                    _currentSdkDescriptionId = Guid.Empty;
-                }
-                if (_sdkRetargetId != Guid.Empty)
-                {
-                    retargetingService?.UnregisterProjectTarget(_sdkRetargetId);
-                    _sdkRetargetId = Guid.Empty;
-                }
-            });
+                _projectRetargeting.UnregisterProjectTarget(_currentSdkDescriptionId);
+                _currentSdkDescriptionId = Guid.Empty;
+            }
+            if (_sdkRetargetId != Guid.Empty)
+            {
+                _projectRetargeting.UnregisterProjectTarget(_sdkRetargetId);
+                _sdkRetargetId = Guid.Empty;
+            }
         }
     }
 }

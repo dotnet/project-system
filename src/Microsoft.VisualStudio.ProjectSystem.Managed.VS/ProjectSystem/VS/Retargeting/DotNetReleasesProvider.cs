@@ -61,7 +61,7 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
                 {
                     return await ProductCollection.GetFromFileAsync(resourcesFileName, downloadLatest: true);
                 }
-                catch (Exception ex) when (ex.IsCatchable())
+                catch
                 {
                     // If we fail to load the product collection, return null
                     return null;
@@ -94,7 +94,7 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
                 {
                     return await GetLatestSupportedSdkVersionAsync(parsedSdkVersion, matchingProduct);
                 }
-                catch (Exception ex) when (ex.IsCatchable())
+                catch
                 {
                     // we can just fall through and return null here
                 }
@@ -156,7 +156,7 @@ internal class DotNetReleasesProvider : IDotNetReleasesProvider
             {
                 return await product.GetReleasesAsync(resourceFileName, downloadLatest: true);
             }
-            catch (Exception ex) when (ex.IsCatchable())
+            catch
             {
                 // if we fail to load the releases, return null
                 return null;
