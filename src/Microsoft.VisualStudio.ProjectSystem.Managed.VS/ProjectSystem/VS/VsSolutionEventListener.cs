@@ -53,6 +53,22 @@ internal class VsSolutionEventListener : OnceInitializedOnceDisposedAsync, IVsSo
         return new Subscription(solution, JoinableFactory, cookie);
     }
 
+    public async Task<string?> GetSolutionDirectoryAsync(CancellationToken cancellationToken)
+    {
+        await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
+
+        IVsSolution solution = _solution.Value;
+
+        int hr = solution.GetSolutionInfo(out string solutionDirectory, out _, out _);
+
+        if (hr == HResult.OK && !string.IsNullOrEmpty(solutionDirectory))
+        {
+            return solutionDirectory;
+        }
+
+        return null;
+    }
+
     private sealed class Subscription : IAsyncDisposable
     {
         private readonly IVsSolution _solution;

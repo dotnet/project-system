@@ -18,7 +18,7 @@ internal partial class ProjectRetargetHandler
             supported: true,
             description: string.Format(VSResources.RetargetingSDKDescription, sdkVersion),
             canRetarget: true, // this means we want to show this option in the retarget dialog
-            guidanceLink: $"https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-{sdkVersion}-windows-x64-installer")
+            guidanceLink: $"https://dotnet.microsoft.com/download/dotnet/thank-you/sdk-{sdkVersion}-windows-x64-installer")
         {
         }
     }
