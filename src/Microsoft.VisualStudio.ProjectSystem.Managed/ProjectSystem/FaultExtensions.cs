@@ -12,13 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem;
 /// </summary>
 internal static class FaultExtensions
 {
-    private static readonly ErrorReportSettings s_defaultReportSettings = new(
-        eventName: "VisualStudioNonFatalErrors2",
-        component: "ManagedProjectSystem",
-        reportType: ErrorReportType.Critical,
-        submitFlags: ErrorReportSubmitFlags.OutOfProcess | ErrorReportSubmitFlags.NoCloseUI,
-        submitUIOptions: ImmutableDictionary.Create<ErrorReportUIType, string>());
-
     /// <summary>
     ///     Reports the specified fault.
     /// </summary>
@@ -42,7 +35,7 @@ internal static class FaultExtensions
     {
         Requires.NotNull(faultHandlerService);
 
-        return faultHandlerService.HandleFaultAsync(ex, s_defaultReportSettings, severity, project);
+        return faultHandlerService.HandleFaultAsync(ex, severity: severity, project: project);
     }
 
     /// <summary>
@@ -69,7 +62,7 @@ internal static class FaultExtensions
     {
         Requires.NotNull(faultHandlerService);
 
-        faultHandlerService.RegisterFaultHandler(task, s_defaultReportSettings, severity, project);
+        faultHandlerService.RegisterFaultHandler(task, severity: severity, project: project);
     }
 
     /// <summary>
@@ -96,7 +89,7 @@ internal static class FaultExtensions
     {
         Requires.NotNull(faultHandlerService);
 
-        faultHandlerService.RegisterFaultHandler(task, s_defaultReportSettings, severity, project);
+        faultHandlerService.RegisterFaultHandler(task, severity: severity, project: project);
     }
 
     /// <summary>
@@ -133,7 +126,7 @@ internal static class FaultExtensions
             options &= ~ForkOptions.CancelOnUnload;
         }
 
-        threadingService.Fork(asyncAction, factory: null, unconfiguredProject: unconfiguredProject, watsonReportSettings: s_defaultReportSettings, faultSeverity: severity, options: options);
+        threadingService.Fork(asyncAction, factory: null, unconfiguredProject: unconfiguredProject, faultSeverity: severity, options: options);
     }
 
     /// <summary>
@@ -170,7 +163,7 @@ internal static class FaultExtensions
             options &= ~ForkOptions.CancelOnUnload;
         }
 
-        threadingService.Fork(asyncAction, factory: null, configuredProject: configuredProject, watsonReportSettings: s_defaultReportSettings, faultSeverity: severity, options: options);
+        threadingService.Fork(asyncAction, factory: null, configuredProject: configuredProject, faultSeverity: severity, options: options);
     }
 
     /// <summary>
