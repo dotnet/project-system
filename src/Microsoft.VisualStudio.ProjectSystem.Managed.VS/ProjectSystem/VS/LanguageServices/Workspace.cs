@@ -304,7 +304,7 @@ internal sealed class Workspace : OnceInitializedOnceDisposedUnderLockAsync, IWo
             {
                 _state = WorkspaceState.Failed;
 
-                await _faultHandlerService.ReportFaultAsync(ex, _unconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+                await _faultHandlerService.HandleFaultAsync(ex, project: _unconfiguredProject, severity: ProjectFaultSeverity.LimitedFunctionality);
 
                 _context?.Dispose();
 

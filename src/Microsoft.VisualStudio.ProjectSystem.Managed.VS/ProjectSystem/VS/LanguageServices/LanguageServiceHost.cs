@@ -162,7 +162,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
                 _firstPrimaryWorkspaceSet.TrySetException(ex);
 
                 // Report the exception as an NFE that limits the functionality of the project.
-                _ = _projectFaultHandler.ReportFaultAsync(ex, _unconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+                _ = _projectFaultHandler.HandleFaultAsync(ex, project: _unconfiguredProject, severity: ProjectFaultSeverity.LimitedFunctionality);
             },
             CancellationToken.None,
             TaskContinuationOptions.OnlyOnFaulted,

@@ -13,32 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem;
 internal static class FaultExtensions
 {
     /// <summary>
-    ///     Reports the specified fault.
-    /// </summary>
-    /// <param name="faultHandlerService">
-    ///     The <see cref="IProjectFaultHostHandler"/> that should handle the fault.
-    /// </param>
-    /// <param name="ex">
-    ///     Exception containing the fault information.
-    ///  </param>
-    /// <param name="severity">
-    ///     The severity of the failure.
-    /// </param>
-    /// <param name="project">
-    ///     The project related to the failure, if applicable. Can be <see langword="null"/>.
-    /// </param>
-    public static Task ReportFaultAsync(
-        this IProjectFaultHandlerService faultHandlerService,
-        Exception ex,
-        UnconfiguredProject? project,
-        ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
-    {
-        Requires.NotNull(faultHandlerService);
-
-        return faultHandlerService.HandleFaultAsync(ex, severity: severity, project: project);
-    }
-
-    /// <summary>
     ///     Attaches error handling to a task so that if it throws an unhandled exception,
     ///     the error will be reported to the user.
     /// </summary>
@@ -219,7 +193,7 @@ internal static class FaultExtensions
                 dataSourceException = ex;
             }
 
-            return faultHandlerService.ReportFaultAsync(dataSourceException, project, severity);
+            return faultHandlerService.HandleFaultAsync(dataSourceException, project: project, severity: severity);
         },
         CancellationToken.None,
         TaskContinuationOptions.OnlyOnFaulted,
