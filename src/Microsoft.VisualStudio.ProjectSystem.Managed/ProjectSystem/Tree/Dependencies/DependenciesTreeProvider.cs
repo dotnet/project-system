@@ -138,7 +138,7 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
                 },
                 registerFaultHandler: true);
 
-            UnconfiguredProject.Services.FaultHandler.Forget(task.Task, UnconfiguredProject);
+            UnconfiguredProject.Services.FaultHandler.RegisterFaultHandler(task.Task, project: UnconfiguredProject);
         }
 
         return;

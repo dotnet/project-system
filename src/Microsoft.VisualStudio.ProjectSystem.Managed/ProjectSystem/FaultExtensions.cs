@@ -13,60 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem;
 internal static class FaultExtensions
 {
     /// <summary>
-    ///     Attaches error handling to a task so that if it throws an unhandled exception,
-    ///     the error will be reported to the user.
-    /// </summary>
-    /// <param name="faultHandlerService">
-    ///     The <see cref="IProjectFaultHostHandler"/> that should handle the fault.
-    /// </param>
-    /// <param name="task">
-    ///     The task to attach error handling to.
-    /// </param>
-    /// <param name="project">
-    ///     The project related to the failure, if applicable. Can be <see langword="null"/>.
-    /// </param>
-    /// <param name="severity">
-    ///     The severity of the failure.
-    /// </param>
-    public static void Forget(
-        this IProjectFaultHandlerService faultHandlerService,
-        Task task,
-        UnconfiguredProject? project,
-        ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
-    {
-        Requires.NotNull(faultHandlerService);
-
-        faultHandlerService.RegisterFaultHandler(task, severity: severity, project: project);
-    }
-
-    /// <summary>
-    ///     Attaches error handling to a task so that if it throws an unhandled exception,
-    ///     the error will be reported to the user.
-    /// </summary>
-    /// <param name="faultHandlerService">
-    ///     The <see cref="IProjectFaultHostHandler"/> that should handle the fault.
-    /// </param>
-    /// <param name="task">
-    ///     The task to attach error handling to.
-    /// </param>
-    /// <param name="project">
-    ///     The project related to the failure, if applicable. Can be <see langword="null"/>.
-    /// </param>
-    /// <param name="severity">
-    ///     The severity of the failure.
-    /// </param>
-    public static void Forget<TResult>(
-        this IProjectFaultHandlerService faultHandlerService,
-        Task<TResult> task,
-        UnconfiguredProject? project,
-        ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
-    {
-        Requires.NotNull(faultHandlerService);
-
-        faultHandlerService.RegisterFaultHandler(task, severity: severity, project: project);
-    }
-
-    /// <summary>
     ///      Executes the specified delegate in a safe fire-and-forget manner, prevent the project from
     ///      closing until it has completed.
     /// </summary>
@@ -225,6 +171,6 @@ internal static class FaultExtensions
         Task task = RegisterFaultHandlerAsync(faultHandlerService, block, project, severity);
 
         // We don't actually care about the result of reporting the fault if one occurs
-        faultHandlerService.Forget(task, project);
+        faultHandlerService.RegisterFaultHandler(task, project: project);
     }
 }

@@ -57,7 +57,7 @@ internal sealed class SetupComponentProvider : OnceInitializedOnceDisposedAsync,
         // Don't block on initialization here. It doesn't need to complete before we continue here,
         // and initialization will wait on some features of the project to become available, which would
         // cause a deadlock if we waited here. We file this so any exception is reported as an NFE.
-        _projectFaultHandlerService.Forget(task, _unconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+        _projectFaultHandlerService.RegisterFaultHandler(task, project: _unconfiguredProject, severity: ProjectFaultSeverity.LimitedFunctionality);
 
         return Task.CompletedTask;
     }

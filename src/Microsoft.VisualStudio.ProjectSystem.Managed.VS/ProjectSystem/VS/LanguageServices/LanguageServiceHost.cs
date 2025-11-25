@@ -360,7 +360,7 @@ internal sealed class LanguageServiceHost : OnceInitializedOnceDisposedAsync, IP
 
             // While we want make sure it's loaded before PrioritizedProjectLoadedInHost,
             // we don't want to block project factory completion on its load, so fire and forget.
-            _projectFaultHandler.Forget(result, _unconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+            _projectFaultHandler.RegisterFaultHandler(result, project: _unconfiguredProject, severity: ProjectFaultSeverity.LimitedFunctionality);
         }
     }
 

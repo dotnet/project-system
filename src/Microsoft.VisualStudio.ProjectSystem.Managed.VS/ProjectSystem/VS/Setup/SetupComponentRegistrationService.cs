@@ -204,7 +204,7 @@ internal sealed class SetupComponentRegistrationService : OnceInitializedOnceDis
         {
             Task task = _missingComponentRegistrationService.RegisterMissingComponentsAsync(missingComponentsByProjectGuid, cancellationToken: default);
 
-            _projectFaultHandlerService.Forget(task, project: null, ProjectFaultSeverity.Recoverable);
+            _projectFaultHandlerService.RegisterFaultHandler(task);
         }
 
         return;

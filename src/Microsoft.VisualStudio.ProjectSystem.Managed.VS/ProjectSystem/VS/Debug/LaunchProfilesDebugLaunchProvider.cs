@@ -168,22 +168,22 @@ internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDep
                     processInfoArray.Length == 1 &&
                     vsLaunchedProcess is not null)
                 {
-                    projectFaultHandlerService.Forget(
+                    projectFaultHandlerService.RegisterFaultHandler(
                         targetsProvider5.OnAfterLaunchAsync(launchOptions, activeProfile, debugLaunchSettings[0], vsLaunchedProcess, processInfoArray[0]),
-                        unconfiguredProject);
+                        project: unconfiguredProject);
                 }
                 else
                 {
-                    projectFaultHandlerService.Forget(
+                    projectFaultHandlerService.RegisterFaultHandler(
                         targetsProvider4.OnAfterLaunchAsync(launchOptions, activeProfile, processInfoArray),
-                        unconfiguredProject);
+                        project: unconfiguredProject);
                 }
             }
             else if (targetsProvider is not null)
             {
-                projectFaultHandlerService.Forget(
+                projectFaultHandlerService.RegisterFaultHandler(
                     targetsProvider.OnAfterLaunchAsync(launchOptions, activeProfile),
-                    unconfiguredProject);
+                    project: unconfiguredProject);
             }
         }
 

@@ -110,7 +110,7 @@ internal sealed class UpToDateCheckBuildEventNotifier : OnceInitializedOnceDispo
                     }
                 });
 
-                _faultHandlerService.Forget(task.Task, unconfiguredProject);
+                _faultHandlerService.RegisterFaultHandler(task.Task, project: unconfiguredProject);
             }
         }
 
