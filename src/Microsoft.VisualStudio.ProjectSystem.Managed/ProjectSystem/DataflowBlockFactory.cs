@@ -48,6 +48,6 @@ internal static class DataflowBlockFactory
         Task faultTask = faultHandlerService.RegisterFaultHandlerAsync(block, project, severity);
 
         // We don't actually care about the result of reporting the fault if one occurs
-        faultHandlerService.Forget(faultTask, project);
+        faultHandlerService.RegisterFaultHandler(faultTask, project: project);
     }
 }

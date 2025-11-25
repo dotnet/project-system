@@ -232,6 +232,6 @@ internal class NuGetRestoreService : OnceInitializedOnceDisposed, INuGetRestoreS
         });
 #pragma warning restore RS0030 // Do not used banned APIs
 
-        _faultHandlerService.Forget(registerRestoreInfoSourceTask, _project, ProjectFaultSeverity.Recoverable);
+        _faultHandlerService.RegisterFaultHandler(registerRestoreInfoSourceTask, project: _project);
     }
 }

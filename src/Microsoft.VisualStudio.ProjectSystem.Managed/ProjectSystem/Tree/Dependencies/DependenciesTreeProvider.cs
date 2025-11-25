@@ -138,7 +138,7 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
                 },
                 registerFaultHandler: true);
 
-            UnconfiguredProject.Services.FaultHandler.Forget(task.Task, UnconfiguredProject);
+            UnconfiguredProject.Services.FaultHandler.RegisterFaultHandler(task.Task, project: UnconfiguredProject);
         }
 
         return;
@@ -179,7 +179,7 @@ internal sealed partial class DependenciesTreeProvider : ProjectTreeProviderBase
                     {
                         // We do not expect any exception when we call SubmitTreeUpdateAsync, but we don't want to leak an exception here.
                         // Because it will fault the dataflow block which stops further tree updates.
-                        _ = ProjectFaultHandlerService.ReportFaultAsync(ex, UnconfiguredProject);
+                        _ = ProjectFaultHandlerService.HandleFaultAsync(ex, project: UnconfiguredProject);
                     }
                 },
                 UnconfiguredProjectAsynchronousTasksService.UnloadCancellationToken);

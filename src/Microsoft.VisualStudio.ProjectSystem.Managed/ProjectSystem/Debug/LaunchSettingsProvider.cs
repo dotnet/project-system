@@ -233,9 +233,9 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         // establish the file watcher. We don't need wait this, because files can be changed in the system anyway, so blocking our process
         // doesn't provide real benefit. It is of course possible that the file is changed before the watcher is established. To eliminate this
         // gap, we can recheck file after the watcher is established. I will skip this for now.
-        _project.Services.FaultHandler.Forget(
+        _project.Services.FaultHandler.RegisterFaultHandler(
             _launchSettingFileWatcher.GetValueAsync(),
-            _project,
+            project: _project,
             severity: ProjectFaultSeverity.LimitedFunctionality);
     }
 
@@ -606,9 +606,9 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     {
         if (disposing)
         {
-            _project.Services.FaultHandler.Forget(
+            _project.Services.FaultHandler.RegisterFaultHandler(
                 _launchSettingFileWatcher.DisposeValueAsync(),
-                _project,
+                project: _project,
                 severity: ProjectFaultSeverity.Recoverable);
 
             FileChangeScheduler?.Dispose();
@@ -935,6 +935,6 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     public void OnFilesChanged(IReadOnlyCollection<(string FilePath, FileWatchChangeKinds FileWatchChangeKinds)> changes)
     {
         _diagnosticOutputService?.WriteLine(string.Join(Environment.NewLine, changes.Select(change => $"File changed: {change.FilePath} ({change.FileWatchChangeKinds})")));
-        _projectFaultHandler.Forget(HandleLaunchSettingsFileChangedAsync(), _project);
+        _projectFaultHandler.RegisterFaultHandler(HandleLaunchSettingsFileChangedAsync(), project: _project);
     }
 }
