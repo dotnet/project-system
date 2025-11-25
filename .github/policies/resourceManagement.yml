@@ -74,7 +74,7 @@ configuration:
           branch: main
       then:
       - addMilestone:
-          milestone: 18.1
+          milestone: 18.3
       description: Milestone tracking - main
       triggerOnOwnActions: true
 
@@ -168,4 +168,5 @@ configuration:
 
 onFailure: 
 onSuccess:
+
 
