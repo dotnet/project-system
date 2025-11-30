@@ -39,6 +39,8 @@
                DisplayName="Copy always" />
     <EnumValue Name="PreserveNewest"
                DisplayName="Copy if newer" />
+    <EnumValue Name="IfDifferent"
+               DisplayName="Copy if different" />
   </EnumProperty>
 
   <StringProperty Name="CustomTool"
