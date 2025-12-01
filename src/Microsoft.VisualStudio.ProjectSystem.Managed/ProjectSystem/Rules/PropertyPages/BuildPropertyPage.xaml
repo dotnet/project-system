@@ -61,6 +61,7 @@
           <NameValuePair Name="AllowsCustomStrings" Value="True" />
           <NameValuePair Name="ShouldDisplayEvaluatedPreview" Value="True" />
           <NameValuePair Name="SingleValueConfigurationCommandEnabled" Value="False" />
+          <NameValuePair Name="MultiValueSplitRegex" Value=";" />
         </ValueEditor.Metadata>
       </ValueEditor>
     </StringProperty.ValueEditors>
