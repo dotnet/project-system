@@ -8,15 +8,15 @@ Imports System.Runtime.InteropServices
 Imports System.Text.RegularExpressions
 Imports System.Threading
 Imports System.Windows.Forms
-
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.VisualBasic
 Imports Microsoft.VisualStudio.ComponentModelHost
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.LanguageServices
-Imports Microsoft.VisualStudio.Utilities
+Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.VisualStudio.WCFReference.Interop
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
@@ -550,9 +550,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     ' We need to find the project that matches by project file path
                     If project.FilePath IsNot Nothing AndAlso String.Compare(project.FilePath, DTEProject.FullName, ignoreCase:=True) = 0 Then
-                        Dim compilationTask = project.GetCompilationAsync(cancellationTokenSource.Token)
-                        compilationTask.Wait(cancellationTokenSource.Token)
-                        Dim compilation = compilationTask.Result
+                        Dim compilation = ThreadHelper.JoinableTaskFactory.Run(
+                            Async Function()
+                                Return Await project.GetCompilationAsync(cancellationTokenSource.Token)
+                            End Function)
 
                         Dim namespaceNames As New List(Of String)
                         Dim namespacesToProcess As New Stack(Of INamespaceSymbol)
