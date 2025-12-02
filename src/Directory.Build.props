@@ -12,9 +12,4 @@
     <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\Common\GlobalAssemblyInfo.cs" Condition="'$(Language)' == 'C#'" />
-    <Compile Include="..\Common\GlobalAssemblyInfo.vb" Condition="'$(Language)' == 'VB'" />
-  </ItemGroup>
-
 </Project>
