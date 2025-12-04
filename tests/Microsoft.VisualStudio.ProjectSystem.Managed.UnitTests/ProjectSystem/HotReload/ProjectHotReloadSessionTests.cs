@@ -26,6 +26,7 @@ public class ProjectHotReloadSessionTests
     }
 
     [Fact]
+    [Obsolete]
     public async Task ApplyChangesAsync_WhenSessionActive_CallsHotReloadAgentManagerClient()
     {
         // Arrange
@@ -48,6 +49,7 @@ public class ProjectHotReloadSessionTests
     }
 
     [Fact]
+    [Obsolete]
     public async Task ApplyChangesAsync_WhenSessionNotActive_DoesNotCallHotReloadAgentManagerClient()
     {
         // Arrange

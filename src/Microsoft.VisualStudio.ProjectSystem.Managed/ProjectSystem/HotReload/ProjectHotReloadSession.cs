@@ -83,6 +83,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
     public IDeltaApplier? DeltaApplier
         => _lazyDeltaApplier;
 
+    [Obsolete]
     public async Task ApplyChangesAsync(CancellationToken cancellationToken)
     {
         if (_sessionActive)

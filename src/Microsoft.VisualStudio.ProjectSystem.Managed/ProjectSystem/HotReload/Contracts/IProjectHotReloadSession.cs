@@ -42,6 +42,7 @@ public interface IProjectHotReloadSession
     /// <summary>
     /// Applies any pending changes to the Hot Reload session.
     /// </summary>
+    [Obsolete]
     Task ApplyChangesAsync(CancellationToken cancellationToken);
 
     /// <summary>
