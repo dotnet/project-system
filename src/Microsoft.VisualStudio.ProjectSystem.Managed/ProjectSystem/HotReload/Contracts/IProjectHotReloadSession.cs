@@ -24,14 +24,15 @@ public interface IProjectHotReloadSession
     /// <summary>
     /// Starts the Hot Reload Session.
     /// </summary>
+    /// <param name="cancellationToken">A token indicating if the operation has been cancelled.</param>
     Task StartSessionAsync(CancellationToken cancellationToken);
 
-    // TODO: Obsolete this overload
     /// <summary>
     /// Starts the Hot Reload Session.
     /// </summary>
     /// <param name="runningUnderDebugger">Unused</param>
     /// <param name="cancellationToken">A token indicating if the operation has been cancelled.</param>
+    [Obsolete($"Use the overload that takes a {nameof(CancellationToken)} instead.")]
     Task StartSessionAsync(bool runningUnderDebugger, CancellationToken cancellationToken);
 
     /// <summary>
@@ -42,6 +43,7 @@ public interface IProjectHotReloadSession
     /// <summary>
     /// Applies any pending changes to the Hot Reload session.
     /// </summary>
+    [Obsolete]
     Task ApplyChangesAsync(CancellationToken cancellationToken);
 
     /// <summary>
