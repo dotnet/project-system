@@ -155,7 +155,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         return await applier.ApplyProcessEnvironmentVariablesAsync(envVars, cancellationToken);
     }
 
-    // TODO: remove
+    [Obsolete($"Use the overload that takes a {nameof(CancellationToken)} instead.")]
     public Task StartSessionAsync(bool runningUnderDebugger, CancellationToken cancellationToken)
         => StartSessionAsync(cancellationToken);
 
