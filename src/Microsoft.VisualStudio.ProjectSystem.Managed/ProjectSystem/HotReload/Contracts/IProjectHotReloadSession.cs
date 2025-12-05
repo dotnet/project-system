@@ -24,6 +24,7 @@ public interface IProjectHotReloadSession
     /// <summary>
     /// Starts the Hot Reload Session.
     /// </summary>
+    /// <param name="cancellationToken">A token indicating if the operation has been cancelled.</param>
     Task StartSessionAsync(CancellationToken cancellationToken);
 
     // TODO: Obsolete this overload
