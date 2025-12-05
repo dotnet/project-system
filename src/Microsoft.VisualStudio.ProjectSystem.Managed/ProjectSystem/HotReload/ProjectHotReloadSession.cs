@@ -202,7 +202,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
             await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
 
-            WriteToOutputWindow(Resources.HotReloadStartSession, cancellationToken);
+            WriteToOutputWindow(Resources.HotReloadStartSession, default);
 
             _sessionActive = true;
         }
@@ -238,16 +238,16 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
         await _semaphore.ExecuteAsync(StopSessionInternalAsync, cancellationToken);
         async Task StopSessionInternalAsync()
         {
-            Assumes.True(_sessionActive, "Attempting to stop a Hot Reload session that is not running.");
-            Assumes.True(_lazyDeltaApplier is not null, "Delta applier is null when stopping an active Hot Reload session.");
+            if (_sessionActive && _lazyDeltaApplier is not null)
+            {
+                _sessionActive = false;
 
-            _sessionActive = false;
+                _lazyDeltaApplier.Dispose();
+                _lazyDeltaApplier = null;
 
-            _lazyDeltaApplier.Dispose();
-            _lazyDeltaApplier = null;
-
-            await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
-            WriteToOutputWindow(Resources.HotReloadStopSession, default);
+                await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
+                WriteToOutputWindow(Resources.HotReloadStopSession, default);
+            }
         }
     }
 

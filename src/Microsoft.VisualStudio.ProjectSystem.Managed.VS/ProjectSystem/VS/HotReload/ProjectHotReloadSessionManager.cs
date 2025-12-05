@@ -235,29 +235,32 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 return;
             }
 
-            process.EnableRaisingEvents = true;
-            process.Exited += (sender, e) =>
+            try
             {
-                DebugTrace("Process exited");
-                _threadingService.ExecuteSynchronously(async () => await sessionState.DisposeAsync());
-            };
-
-            if (process.HasExited)
+                process.Exited += (sender, e) =>
+                {
+                    DebugTrace("Process exited");
+                    _threadingService.ExecuteSynchronously(async () => await sessionState.DisposeAsync());
+                };
+                // If process exit before EnableRaisingEvents to true
+                // An InvalidOperationException will be thrown
+                process.EnableRaisingEvents = true;
+                // At this stage, the process will be running, and it's exit event would be captured. by the exit handler
+                // Because
+                // - we register the exit event before starting the session
+                // - we set EnableRaisingEvents to true, which performs as a safeguard against missing the exit event if the process exits quickly before we register the event.
+                await sessionState.Session.StartSessionAsync(sessionState.CancellationToken);
+                await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: true);
+            }
+            catch (OperationCanceledException)
             {
-                DebugTrace("Process exited");
+                // This can happen if CancellationToken is cancelled while starting the session.
                 await sessionState.DisposeAsync();
             }
-            else
+            catch (InvalidOperationException)
             {
-                try
-                {
-                    await sessionState.Session.StartSessionAsync(sessionState.CancellationToken);
-                    await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: true);
-                }
-                catch (OperationCanceledException)
-                {
-                    await sessionState.DisposeAsync();
-                }
+                // This can happen if we set EnableRaisingEvents to true after the process has already exited.
+                await sessionState.DisposeAsync();
             }
         }
     }
@@ -362,20 +365,18 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                     }
                 }
 
+                // Warning
+                // Always cancel the CancellationTokenSource ahead of StopSessionAsync
+                _cancellationTokenSource.Cancel();
+                _cancellationTokenSource.Dispose();
+                Process?.Dispose();
+
                 // In some occasions, StopSessionAsync might be invoked before StartSessionAsync
                 // For example, if the process exits quickly after launch
                 // So we call StopSessionAsync unconditionally to ensure the session is stopped properly
                 await Session.StopSessionAsync(CancellationToken.None);
 
-                _cancellationTokenSource.Cancel();
-                _cancellationTokenSource.Dispose();
-
-                Process?.Dispose();
-
                 _removeSessionState(this);
-
-                // TODO can we do this?
-                _semaphore.Dispose();
 
                 return;
 
