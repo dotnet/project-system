@@ -139,19 +139,15 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
     {
         return _semaphore.ExecuteAsync(DisposeCoreInternalAsync);
 
-        Task DisposeCoreInternalAsync()
+        async Task DisposeCoreInternalAsync()
         {
+            List<Task> disposeTasks;
             lock (_activeSessionStates)
             {
-                foreach (HotReloadSessionState sessionState in _activeSessionStates)
-                {
-                    DisposeSessionStateAndStopSession(sessionState);
-                }
-
-                _activeSessionStates.Clear();
+                disposeTasks = _activeSessionStates.Select(session => session.DisposeAsync().AsTask()).ToList();
             }
 
-            return Task.CompletedTask;
+            await Task.WhenAll(disposeTasks);
         }
     }
 
@@ -210,8 +206,10 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
         {
             // _pendingSessionState can be null if project doesn't support Hot Reload. i.e doesn't have SupportsHotReload capability
             HotReloadSessionState? sessionState = Interlocked.Exchange(ref _pendingSessionState, null);
+
             if (sessionState is null)
             {
+                DebugTrace("No pending session to start. Maybe the project doesn't support Hot Reload.");
                 return;
             }
 
@@ -233,54 +231,48 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
                 // process might have been exited in some cases.
                 // in that case, we early return without starting hotreload session
                 // one way to mimic this is to hit control + C as fast as you can once hit F5/Control + F5
-                DisposeSessionStateAndStopSession(sessionState);
+                await sessionState.DisposeAsync();
                 return;
             }
 
-            process.EnableRaisingEvents = true;
-            process.Exited += (sender, e) =>
+            try
             {
-                DebugTrace("Process exited");
-                DisposeSessionStateAndStopSession(sessionState);
-            };
-
-            if (process.HasExited)
-            {
-                DebugTrace("Process exited");
-                DisposeSessionStateAndStopSession(sessionState);
+                process.Exited += (sender, e) =>
+                {
+                    DebugTrace("Process exited");
+                    _threadingService.ExecuteSynchronously(async () => await sessionState.DisposeAsync());
+                };
+                // If process exit before EnableRaisingEvents to true
+                // An InvalidOperationException will be thrown
+                process.EnableRaisingEvents = true;
+                // At this stage, the process will be running, and it's exit event would be captured. by the exit handler
+                // Because
+                // - we register the exit event before starting the session
+                // - we set EnableRaisingEvents to true, which performs as a safeguard against missing the exit event if the process exits quickly before we register the event.
+                await sessionState.Session.StartSessionAsync(sessionState.CancellationToken);
+                await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: true);
             }
-            else
+            catch (OperationCanceledException)
             {
-                try
-                {
-                    await sessionState.Session.StartSessionAsync(sessionState.CancellationToken);
-                    await _projectHotReloadNotificationService.Value.SetHotReloadStateAsync(isInHotReload: true);
-                }
-                catch (OperationCanceledException)
-                {
-                    DisposeSessionStateAndStopSession(sessionState);
-                }
+                // This can happen if CancellationToken is cancelled while starting the session.
+                await sessionState.DisposeAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                // This can happen if we set EnableRaisingEvents to true after the process has already exited.
+                await sessionState.DisposeAsync();
             }
         }
     }
 
-    private void DisposeSessionStateAndStopSession(HotReloadSessionState sessionState)
+    private sealed class HotReloadSessionState : IProjectHotReloadSessionCallback, IAsyncDisposable
     {
-        sessionState.Dispose();
-
-        // In some occasions, StopSessionAsync might be invoked before StartSessionAsync
-        // For example, if the process exits quickly after launch
-        // So we call StopSessionAsync unconditionally to ensure the session is stopped properly
-        _threadingService.ExecuteSynchronously(() => sessionState.Session.StopSessionAsync(CancellationToken.None));
-    }
-
-    private sealed class HotReloadSessionState : IProjectHotReloadSessionCallback, IDisposable
-    {
-        private int _disposed = 0;
-
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private readonly Action<HotReloadSessionState> _removeSessionState;
         private readonly IProjectThreadingService _threadingService;
+        private readonly ReentrantSemaphore _semaphore;
+
+        private int _isClosed = 0;
 
         public HotReloadSessionState(
             Action<HotReloadSessionState> removeSessionState,
@@ -289,6 +281,11 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
             _removeSessionState = removeSessionState;
             _threadingService = threadingService;
             CancellationToken = _cancellationTokenSource.Token;
+
+            _semaphore = ReentrantSemaphore.Create(
+                initialCount: 1,
+                joinableTaskContext: threadingService.JoinableTaskContext.Context,
+                mode: ReentrantSemaphore.ReentrancyMode.NotAllowed);
         }
 
         public CancellationToken CancellationToken { get; }
@@ -320,72 +317,94 @@ internal sealed class ProjectHotReloadSessionManager : OnceInitializedOnceDispos
 
         public async Task<bool> StopProjectAsync(CancellationToken cancellationToken)
         {
-            if (DebuggerProcess is not null && Process is not null)
-            {
-                // We have both DebuggerProcess and Process, they point to the same process. But DebuggerProcess provides a nicer way to terminate process
-                // without affecting the entire debug session.
-                // So we prefer to use DebuggerProcess to terminate the process first.
-
-                await TerminateProcessGracefullyAsync();
-
-                // When DebuggerProcess.Terminate(ignoreLaunchFlags: 1) return, the process might not be terminated
-                // So we first terminate the process nicely,
-                // Then wait for the process to exit. If the process doesn't exit within 500ms, kill it using traditional way.
-                await Process.WaitForExitAsync(default).WithTimeout(TimeSpan.FromMilliseconds(500));
-            }
-
-            if (Process is not null)
-            {
-                TerminateProcess(Process);
-            }
-
-            Dispose();
+            await CloseSessionAsync(stopProcess: true);
 
             return true;
+        }
 
-            async Task TerminateProcessGracefullyAsync()
+        public async ValueTask DisposeAsync()
+        {
+            await CloseSessionAsync(stopProcess: false);
+        }
+
+        private async Task CloseSessionAsync(bool stopProcess)
+        {
+            await _semaphore.ExecuteAsync(async () =>
             {
-                // Terminate DebuggerProcess need to call on UI thread
-                await _threadingService.SwitchToUIThread(CancellationToken.None);
-
-                // Ignore the debug option launching flags since we're just terminating the process, not the entire debug session
-                // TODO consider if we can use the return value of Terminate here to control whether we need to subsequently kill the process
-                DebuggerProcess.Terminate(ignoreLaunchFlags: 1);
-            }
-
-            static void TerminateProcess(Process process)
-            {
-                try
+                if (Interlocked.Exchange(ref _isClosed, 1) == 1)
                 {
-                    if (!process.HasExited)
+                    // Ensure we only close the session once.
+                    // Note that if multiple calls arrive with different stopProcess values, only the first will be honored.
+                    // That is ok in the context of how the session is cleaned up today.
+                    return;
+                }
+
+                // Disable the exit event handler from disposing the process during our explicit shutdown sequence.
+                // We will handle that ourselves here once we're ready.
+                Process?.EnableRaisingEvents = false;
+
+                if (stopProcess)
+                {
+                    if (DebuggerProcess is not null && Process is not null)
                     {
-                        // First try to close the process nicely and if that doesn't work kill it.
-                        if (!process.CloseMainWindow())
+                        // We have both DebuggerProcess and Process, they point to the same process. But DebuggerProcess provides a nicer way to terminate process
+                        // without affecting the entire debug session.
+                        // So we prefer to use DebuggerProcess to terminate the process first.
+
+                        await TerminateProcessGracefullyAsync();
+
+                        // When DebuggerProcess.Terminate(ignoreLaunchFlags: 1) return, the process might not be terminated
+                        // So we first terminate the process nicely,
+                        // Then wait for the process to exit. If the process doesn't exit within 500ms, kill it using traditional way.
+                        await Process.WaitForExitAsync(default).WithTimeout(TimeSpan.FromMilliseconds(500));
+                    }
+
+                    if (Process is not null)
+                    {
+                        TerminateProcess(Process);
+                    }
+                }
+
+                // Warning
+                // Always cancel the CancellationTokenSource ahead of StopSessionAsync
+                _cancellationTokenSource.Cancel();
+                _cancellationTokenSource.Dispose();
+                Process?.Dispose();
+
+                // In some occasions, StopSessionAsync might be invoked before StartSessionAsync
+                // For example, if the process exits quickly after launch
+                // So we call StopSessionAsync unconditionally to ensure the session is stopped properly
+                await Session.StopSessionAsync(CancellationToken.None);
+
+                _removeSessionState(this);
+
+                return;
+
+                async Task TerminateProcessGracefullyAsync()
+                {
+                    // Terminate DebuggerProcess need to call on UI thread
+                    await _threadingService.SwitchToUIThread(CancellationToken.None);
+
+                    // Ignore the debug option launching flags since we're just terminating the process, not the entire debug session
+                    // TODO consider if we can use the return value of Terminate here to control whether we need to subsequently kill the process
+                    DebuggerProcess.Terminate(ignoreLaunchFlags: 1);
+                }
+
+                static void TerminateProcess(Process process)
+                {
+                    try
+                    {
+                        if (!process.HasExited)
                         {
                             process.Kill();
                         }
                     }
+                    catch (InvalidOperationException)
+                    {
+                        // Process has already exited.
+                    }
                 }
-                catch (InvalidOperationException)
-                {
-                    // Process has already exited.
-                }
-            }
-        }
-
-        public void Dispose()
-        {
-            if (Interlocked.Exchange(ref _disposed, 1) == 1)
-            {
-                return;
-            }
-
-            _cancellationTokenSource.Cancel();
-            _cancellationTokenSource.Dispose();
-
-            Process?.Dispose();
-
-            _removeSessionState(this);
+            });
         }
     }
 

@@ -203,7 +203,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
 
             await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, processInfo, runningProjectInfo, cancellationToken);
 
-            WriteToOutputWindow(Resources.HotReloadStartSession, cancellationToken);
+            WriteToOutputWindow(Resources.HotReloadStartSession, default);
 
             _sessionActive = true;
         }
@@ -242,6 +242,7 @@ internal sealed class ProjectHotReloadSession : IProjectHotReloadSessionInternal
             if (_sessionActive && _lazyDeltaApplier is not null)
             {
                 _sessionActive = false;
+
                 _lazyDeltaApplier.Dispose();
                 _lazyDeltaApplier = null;
 
