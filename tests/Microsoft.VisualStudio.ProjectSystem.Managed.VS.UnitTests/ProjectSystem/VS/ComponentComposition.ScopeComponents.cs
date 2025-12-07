@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 #pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable VSMEF003 // Exported type not implemented by exporting class
 
 using ImportAttribute = System.Composition.ImportAttribute;
 using ExportAttribute = System.Composition.ExportAttribute;
@@ -19,7 +20,7 @@ internal partial class ComponentComposition
     {
         [Import]
         [SharingBoundary(ExportContractNames.Scopes.ProjectService)]
-        private System.Composition.ExportFactory<IProjectService>? ProjectServiceFactory { get; set; }
+        private System.Composition.ExportFactory<IProjectService> ProjectServiceFactory { get; set; } = null!;
     }
 
     [Export(typeof(IProjectService))]
@@ -28,7 +29,7 @@ internal partial class ComponentComposition
     {
         [Import]
         [SharingBoundary(ExportContractNames.Scopes.UnconfiguredProject)]
-        private ExportFactory<UnconfiguredProject>? UnconfiguredProjectFactory { get; set; }
+        private ExportFactory<UnconfiguredProject> UnconfiguredProjectFactory { get; set; } = null!;
     }
 
     [Export(typeof(UnconfiguredProject))]
@@ -37,7 +38,7 @@ internal partial class ComponentComposition
     {
         [Import]
         [SharingBoundary(ExportContractNames.Scopes.ConfiguredProject)]
-        private ExportFactory<ConfiguredProject>? ConfiguredProjectFactory { get; set; }
+        private ExportFactory<ConfiguredProject> ConfiguredProjectFactory { get; set; } = null!;
     }
 
     [Export(typeof(ConfiguredProject))]

@@ -46,6 +46,7 @@
     <PackageVersion Include="Microsoft.ServiceHub.Framework"                                         Version="4.9.11-beta" />
     <PackageVersion Include="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.14.116" />
     <PackageVersion Include="Microsoft.VisualStudio.Composition"                                     Version="17.13.50" />
+    <PackageVersion Include="Microsoft.VisualStudio.Composition.Analyzers"                           Version="18.3.29-preview" />
     <PackageVersion Include="Microsoft.VisualStudio.Data.Core"                                       Version="18.0.1755-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Data.Services"                                   Version="18.0.1755-preview.1" />
     <PackageVersion Include="Microsoft.VisualStudio.DataDesign.Common"                               Version="18.0.1755-preview.1" />
