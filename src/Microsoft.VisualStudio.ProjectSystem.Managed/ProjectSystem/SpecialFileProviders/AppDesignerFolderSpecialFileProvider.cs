@@ -40,7 +40,7 @@ internal class AppDesignerFolderSpecialFileProvider : AbstractSpecialFileProvide
             return null;
 
         string? folderName = await GetDefaultAppDesignerFolderNameAsync();
-        if (string.IsNullOrEmpty(folderName))
+        if (Strings.IsNullOrEmpty(folderName))
             return null; // Developer has set the AppDesigner path to empty
 
         return Path.Combine(projectPath, folderName);

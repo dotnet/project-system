@@ -4,7 +4,6 @@ using Microsoft.Deployment.DotNet.Releases;
 using Microsoft.VisualStudio.Linq;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
-using Path = Microsoft.IO.Path;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 

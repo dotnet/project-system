@@ -169,7 +169,7 @@ internal sealed partial class BuildUpToDateCheck
                             if (destinationInfo is null)
                             {
                                 // Ensure the destination directory actually exists on disk
-                                _fileSystem.CreateDirectory(Path.GetDirectoryName(destination));
+                                _fileSystem.CreateDirectory(Path.GetDirectoryName(destination)!);
                             }
 
                             // TODO add retry logic in case of failed copies? MSBuild does this with CopyRetryCount and CopyRetryDelayMilliseconds

@@ -78,13 +78,14 @@ internal partial class RenamerProjectTreeActionHandler : ProjectTreeActionHandle
         Requires.NotNullOrEmpty(value);
 
         string? oldFilePath = node.FilePath;
-        string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
+        string? oldName = Path.GetFileNameWithoutExtension(oldFilePath);
         string newFileWithExtension = value;
         CodeAnalysis.Project? project = GetCurrentProject();
 
         await CpsFileRenameAsync(context, node, value);
 
-        if (project is null ||
+        if (oldName is null ||
+            project is null ||
             await IsAutomationFunctionAsync() ||
             node.IsFolder ||
             _vsOnlineServices.ConnectedToVSOnline ||

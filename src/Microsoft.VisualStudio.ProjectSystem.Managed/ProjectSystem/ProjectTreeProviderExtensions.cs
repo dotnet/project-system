@@ -40,7 +40,12 @@ internal static class ProjectTreeProviderExtensions
 
         string? projectFilePath = provider.GetPath(target.Root);
 
-        string rootPath = Path.GetDirectoryName(projectFilePath);
+        string? rootPath = Path.GetDirectoryName(projectFilePath);
+
+        if (rootPath is null)
+        {
+            return null;
+        }
 
         return Path.Combine(rootPath, relativePath);
     }

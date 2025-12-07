@@ -24,7 +24,13 @@ internal class TreeItemOrderPropertyProvider : IProjectTreePropertiesProvider
 
     private static string[] GetPathFolders(string path)
     {
-        return GetPathComponents(Path.GetDirectoryName(path));
+        string? evaluatedInclude = Path.GetDirectoryName(path);
+        if (evaluatedInclude is null)
+        {
+            return [];
+        }
+
+        return GetPathComponents(evaluatedInclude);
     }
 
     /// <summary>
