@@ -111,7 +111,7 @@ parameters:
 - name: VisualStudioMinimumVersion
   displayName: Visual Studio Minimum Version
   type: string
-  default: '18'
+  default: '17'
 
 ###################################################################################################################################################################
 # STAGES
