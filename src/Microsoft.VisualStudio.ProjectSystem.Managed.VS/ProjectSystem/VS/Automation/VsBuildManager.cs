@@ -38,7 +38,7 @@ internal class VSBuildManager : ConnectionPointContainer,
 
     // This has to be a property import to prevent a circular dependency as the bridge imports this class in order to fire events
     [Import]
-    internal Lazy<IDesignTimeInputsBuildManagerBridge, IAppliesToMetadataView>? DesignTimeInputsBuildManagerBridge { get; private set; }
+    internal Lazy<IDesignTimeInputsBuildManagerBridge, IAppliesToMetadataView> DesignTimeInputsBuildManagerBridge { get; private set; } = null!;
 
     /// <summary>
     /// Occurs when a design time output moniker is deleted.
@@ -72,7 +72,7 @@ internal class VSBuildManager : ConnectionPointContainer,
     {
         get
         {
-            if (DesignTimeInputsBuildManagerBridge?.AppliesTo(_unconfiguredProjectServices.Project.Capabilities) == true)
+            if (DesignTimeInputsBuildManagerBridge.AppliesTo(_unconfiguredProjectServices.Project.Capabilities))
             {
                 IDesignTimeInputsBuildManagerBridge bridge = DesignTimeInputsBuildManagerBridge.Value;
 
@@ -91,7 +91,7 @@ internal class VSBuildManager : ConnectionPointContainer,
     /// </summary>
     public string BuildDesignTimeOutput(string bstrOutputMoniker)
     {
-        if (DesignTimeInputsBuildManagerBridge?.AppliesTo(_unconfiguredProjectServices.Project.Capabilities) == true)
+        if (DesignTimeInputsBuildManagerBridge.AppliesTo(_unconfiguredProjectServices.Project.Capabilities))
         {
             IDesignTimeInputsBuildManagerBridge bridge = DesignTimeInputsBuildManagerBridge.Value;
 
