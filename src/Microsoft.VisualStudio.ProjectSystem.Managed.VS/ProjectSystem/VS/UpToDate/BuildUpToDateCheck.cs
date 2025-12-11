@@ -722,7 +722,7 @@ internal sealed partial class BuildUpToDateCheck
     {
         ITimestampCache timestampCache = solutionBuildContext.CopyItemTimestamps;
 
-        string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
+        string outputFullPath = Path.Combine(state.MSBuildProjectDirectory!, state.OutputRelativeOrFullPath!);
 
         Log.Scope? scope1 = null;
 
@@ -1074,7 +1074,7 @@ internal sealed partial class BuildUpToDateCheck
 
                     var configuredFileSystemOperations = new ConfiguredFileSystemOperationAggregator(fileSystemOperations, isBuildAccelerationEnabled, copyInfo.TargetsWithoutReferenceAssemblies);
 
-                    string outputFullPath = Path.Combine(implicitState.MSBuildProjectDirectory, implicitState.OutputRelativeOrFullPath);
+                    string outputFullPath = Path.Combine(implicitState.MSBuildProjectDirectory!, implicitState.OutputRelativeOrFullPath!);
 
                     copyItemPaths.UnionWith(implicitState.ProjectCopyData.CopyItems.Select(copyItem => Path.Combine(outputFullPath, copyItem.RelativeTargetPath)));
 

@@ -17,10 +17,10 @@ internal static class RepoUtil
         if (_root is null)
         {
             // Start with this DLL's location
-            string path = typeof(RepoUtil).Assembly.Location;
+            string? path = typeof(RepoUtil).Assembly.Location;
 
             // Walk up the tree until we find the 'artifacts' folder
-            while (!Path.GetFileName(path).Equals("artifacts", StringComparisons.Paths))
+            while (Path.GetFileName(path)?.Equals("artifacts", StringComparisons.Paths) is false)
             {
                 path = Path.GetDirectoryName(path);
             }
@@ -28,6 +28,8 @@ internal static class RepoUtil
             // Go up one more level
             _root = Path.GetDirectoryName(path);
         }
+
+        Assumes.NotNull(_root);
 
         return _root;
     }

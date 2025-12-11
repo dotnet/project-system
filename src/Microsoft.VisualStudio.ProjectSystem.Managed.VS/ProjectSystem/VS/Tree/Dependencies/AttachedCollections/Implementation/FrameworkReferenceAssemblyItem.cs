@@ -41,7 +41,7 @@ internal sealed class FrameworkReferenceAssemblyItem : RelatableItemBase, IObjec
     string? IObjectBrowserItem.AssemblyPath => GetAssemblyPath();
 
     private string? GetAssemblyPath() => Path is not null
-        ? System.IO.Path.GetFullPath(System.IO.Path.Combine(Framework.Path, Path))
+        ? Microsoft.IO.Path.GetFullPath(Microsoft.IO.Path.Combine(Framework.Path, Path))
         : null;
 
     private sealed class BrowseObject(FrameworkReferenceAssemblyItem item) : LocalizableProperties

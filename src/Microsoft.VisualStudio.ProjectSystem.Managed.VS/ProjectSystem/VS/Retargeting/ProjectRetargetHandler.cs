@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using IFileSystem = Microsoft.VisualStudio.IO.IFileSystem;
-using Path = Microsoft.IO.Path;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 

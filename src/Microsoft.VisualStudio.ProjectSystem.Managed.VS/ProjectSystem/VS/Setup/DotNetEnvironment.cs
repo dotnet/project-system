@@ -69,7 +69,7 @@ internal class DotNetEnvironment : IDotNetEnvironment
             registryKey,
             "InstallLocation");
 
-        if (!string.IsNullOrEmpty(installLocation))
+        if (!Strings.IsNullOrEmpty(installLocation))
         {
             string dotnetExePath = Path.Combine(installLocation, "dotnet.exe");
             if (_fileSystem.FileExists(dotnetExePath))

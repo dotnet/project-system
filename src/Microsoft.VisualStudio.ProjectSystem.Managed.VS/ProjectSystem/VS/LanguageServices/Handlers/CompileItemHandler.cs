@@ -43,7 +43,7 @@ internal class CompileItemHandler(UnconfiguredProject project) : AbstractEvaluat
 
     protected override void AddToContext(IWorkspaceProjectContext context, string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IManagedProjectDiagnosticOutputService logger)
     {
-        string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(Project.FullPath), fullPath, metadata);
+        string[]? folderNames = FileItemServices.GetLogicalFolderNames(Path.GetDirectoryName(Project.FullPath)!, fullPath, metadata);
 
         logger.WriteLine("Adding source file '{0}'", fullPath);
         context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);

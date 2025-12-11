@@ -143,6 +143,10 @@
     <Using Include="Microsoft.VisualStudio.Composition.ImportCardinality" Alias="ImportCardinality" />
     <!-- Prevent accidental use of Microsoft.VisualStudio.Threading.IAsyncDisposable -->
     <Using Include="System.IAsyncDisposable" Alias="IAsyncDisposable" />
+    <!-- Enforce use of Microsoft.IO -->
+    <Using Include="Microsoft.IO.Path" Alias="Path" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'" />
+    <Using Include="Microsoft.IO.Directory" Alias="Directory" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'" />
+    <Using Include="Microsoft.IO.SearchOption" Alias="SearchOption" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'" />
   </ItemGroup>
 
   <Import Project="eng\imports\LanguageSettings.props" />

@@ -11,7 +11,6 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Threading;
 // Debug collides with Microsoft.VisualStudio.ProjectSystem.VS.Debug
 using DiagDebug = System.Diagnostics.Debug;
-using Path = System.IO.Path;
 using static Microsoft.CodeAnalysis.Rename.Renamer;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename;
@@ -75,7 +74,13 @@ internal class FileMoveNotificationListener : IFileMoveNotificationListener
             }
 
             // Get the relative folder path from the project to the destination.
-            string destinationFolderPath = Path.GetDirectoryName(_unconfiguredProject.MakeRelative(itemToMove.Destination));
+            string? destinationFolderPath = Path.GetDirectoryName(_unconfiguredProject.MakeRelative(itemToMove.Destination));
+
+            if ( (destinationFolderPath is null))
+            {
+                continue;
+            }
+
             string[] destinationFolders = destinationFolderPath.Split(Delimiter.Path, StringSplitOptions.RemoveEmptyEntries);
 
             // Since this rename only moves the location of the file to another directory, it will use the SyncNamespaceDocumentAction in Roslyn as the rename action within this set.

@@ -68,7 +68,7 @@ internal class ProjectTreeProvider : IProjectTreeProvider
         if (target.IsRoot())
             return string.Empty;
 
-        return Path.Combine(GetAddNewItemDirectory(target.Parent!), target.Caption);
+        return Path.Combine(GetAddNewItemDirectory(target.Parent!)!, target.Caption);
     }
 
     public string? GetPath(IProjectTree node)

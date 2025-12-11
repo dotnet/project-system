@@ -35,12 +35,20 @@ internal class CreateFileFromTemplateService : ICreateFileFromTemplateService
         Requires.NotNull(templateFile);
         Requires.NotNullOrEmpty(path);
 
-        string directoryName = Path.GetDirectoryName(path);
         string fileName = Path.GetFileName(path);
+        string? directoryName = Path.GetDirectoryName(path);
+
+        if (directoryName is null)
+        {
+            return false;
+        }
 
         string? templateLanguage = await GetTemplateLanguageAsync();
+
         if (string.IsNullOrEmpty(templateLanguage))
+        {
             return false;
+        }
 
         await _projectVsServices.ThreadingService.SwitchToUIThread();
 

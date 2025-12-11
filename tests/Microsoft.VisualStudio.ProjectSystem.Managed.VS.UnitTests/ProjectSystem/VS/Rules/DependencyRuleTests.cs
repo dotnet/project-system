@@ -273,7 +273,7 @@ public sealed class DependencyRuleTests : XamlRuleTestBase
         {
             string unresolvedName = Path.GetFileNameWithoutExtension(unresolvedPath);
             string resolvedName = "Resolved" + unresolvedName;
-            string resolvedPath = Path.Combine(Path.GetDirectoryName(unresolvedPath), resolvedName + ".xaml");
+            string resolvedPath = Path.Combine(Path.GetDirectoryName(unresolvedPath)!, resolvedName + ".xaml");
 
             Assert.Contains(resolvedPath, resolvedPaths);
 

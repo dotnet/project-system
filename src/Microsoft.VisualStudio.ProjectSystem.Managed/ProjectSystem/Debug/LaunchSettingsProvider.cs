@@ -563,7 +563,9 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     {
         string fileName = await GetLaunchSettingsFilePathAsync();
 
-        string parentPath = Path.GetDirectoryName(fileName);
+        string? parentPath = Path.GetDirectoryName(fileName);
+
+        Assumes.NotNull(parentPath);
 
         _fileSystem.CreateDirectory(parentPath);
     }

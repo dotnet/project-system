@@ -24,7 +24,7 @@ public abstract class XamlRuleTestBase
 
         foreach ((string basePath, Type assemblyExporterType) in projects)
         {
-            string path = string.IsNullOrEmpty(suffix) ? basePath : Path.Combine(basePath, suffix);
+            string path = Strings.IsNullOrEmpty(suffix) ? basePath : Path.Combine(basePath, suffix);
 
             if (Directory.Exists(path))
             {
