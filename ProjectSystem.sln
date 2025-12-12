@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31514.227
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11114.144 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "setup", "setup", "{AC8DB8AE-AC9F-4503-83C6-255B66C318C6}"
 	ProjectSection(SolutionItems) = preProject
@@ -81,6 +81,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{2BEDB9
 		src\Common\BannedSymbols.txt = src\Common\BannedSymbols.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AspNetCore.Watch.BrowserRefresh", "src\Microsoft.AspNetCore.Watch.BrowserRefresh\Microsoft.AspNetCore.Watch.BrowserRefresh.csproj", "{C45E9403-8251-B5D1-CF02-6E8367F7218E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Extensions.DotNetDeltaApplier", "src\Microsoft.Extensions.DotNetDeltaApplier\Microsoft.Extensions.DotNetDeltaApplier.csproj", "{51C57440-D5AB-889E-510A-CF81B0DA5333}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -142,6 +146,14 @@ Global
 		{A0B3F2BD-C92A-4037-A9F0-4EC484267E75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0B3F2BD-C92A-4037-A9F0-4EC484267E75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0B3F2BD-C92A-4037-A9F0-4EC484267E75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C45E9403-8251-B5D1-CF02-6E8367F7218E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C45E9403-8251-B5D1-CF02-6E8367F7218E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C45E9403-8251-B5D1-CF02-6E8367F7218E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C45E9403-8251-B5D1-CF02-6E8367F7218E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51C57440-D5AB-889E-510A-CF81B0DA5333}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51C57440-D5AB-889E-510A-CF81B0DA5333}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51C57440-D5AB-889E-510A-CF81B0DA5333}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51C57440-D5AB-889E-510A-CF81B0DA5333}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -162,6 +174,8 @@ Global
 		{02578366-DFA9-4827-93F7-08E2AE5CE6A4} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 		{A0B3F2BD-C92A-4037-A9F0-4EC484267E75} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 		{2BEDB95B-AAC2-4F6D-92EA-61F07E77887E} = {1FF0293B-6808-4BB1-8370-1FE222986654}
+		{C45E9403-8251-B5D1-CF02-6E8367F7218E} = {1FF0293B-6808-4BB1-8370-1FE222986654}
+		{51C57440-D5AB-889E-510A-CF81B0DA5333} = {1FF0293B-6808-4BB1-8370-1FE222986654}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B652C28-D1FD-4885-A0CA-4704C54E78E7}

@@ -18,7 +18,6 @@
     <!-- Note: We require Nerdbank.GitVersioning beyond simply generating version numbers. It also produces some assembly information such as AssemblyName and PublicKeyToken into a *.ThisAssembly.cs file. -->
     <PackageReference Include="Nerdbank.GitVersioning"              PrivateAssets="all" />
     <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="all" />
-    <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="all" />
 
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />
@@ -26,10 +25,8 @@
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.XamlTypes" Condition="'$(TargetFramework)' == '$(NetCoreTargetFramework)'" />
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
-    <PackageReference Include="System.Threading.Tasks.Dataflow" />
     
     <PackageReference Include="Microsoft.IO.Redist" Condition="'$(TargetFramework)' == 'net472'" />
-    <PackageReference Include="System.Text.Json" />
 
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
@@ -38,7 +35,6 @@
     <PackageReference Include="MessagePack" />
 
     <!-- Roslyn -->
-    <PackageReference Include="Microsoft.CSharp" />
     <PackageReference Include="Microsoft.CodeAnalysis" />
 
     <!-- Needed to tie-break a potentially misspecified dependency somewhere -->
