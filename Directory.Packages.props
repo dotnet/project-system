@@ -5,7 +5,10 @@
 
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <MicrosoftDotNetHotReloadPackageVersion>10.0.100-rc.2.25468.104</MicrosoftDotNetHotReloadPackageVersion>
+    <!-- Agent.Data, Agent.PipeRpc, and Client use rtm prerelease version -->
+    <MicrosoftDotNetHotReloadPackageVersionInternal>10.0.100-rtm.25530.102</MicrosoftDotNetHotReloadPackageVersionInternal>
+    <!-- Agent.Host and Web.Middleware use release version -->
+    <MicrosoftDotNetHotReloadPackageVersion>10.0.100</MicrosoftDotNetHotReloadPackageVersion>
   </PropertyGroup>
 
   <!--
@@ -32,10 +35,10 @@
     <PackageVersion Include="System.IO.Pipelines"                                                    Version="9.0.0" />
     <PackageVersion Include="StreamJsonRpc"                                                          Version="2.23.32-alpha" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions"                              Version="9.0.0" />
-    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Data"                                  Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
-    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.PipeRpc"                               Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Data"                                  Version="$(MicrosoftDotNetHotReloadPackageVersionInternal)"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.PipeRpc"                               Version="$(MicrosoftDotNetHotReloadPackageVersionInternal)"/>
     <PackageVersion Include="Microsoft.DotNet.HotReload.Agent.Host"                                  Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
-    <PackageVersion Include="Microsoft.DotNet.HotReload.Client"                                      Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
+    <PackageVersion Include="Microsoft.DotNet.HotReload.Client"                                      Version="$(MicrosoftDotNetHotReloadPackageVersionInternal)"/>
     <PackageVersion Include="Microsoft.DotNet.HotReload.Web.Middleware"                              Version="$(MicrosoftDotNetHotReloadPackageVersion)"/>
 
     <!-- VS SDK -->
