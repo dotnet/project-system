@@ -3,8 +3,13 @@
   <file datatype="xml" source-language="en" target-language="cs" original="../Menus.vsct">
     <body>
       <trans-unit id="cmdidNavigateToProject|ButtonText">
-        <source>N&amp;avigate to Project</source>
-        <target state="translated">&amp;Přejít na projekt</target>
+        <source>N&amp;avigate To Project</source>
+        <target state="needs-review-translation">&amp;Přejít na projekt</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidNavigateToProject|CommandName">
+        <source>Navigate To Project</source>
+        <target state="new">Navigate To Project</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidProjectDebugger|ButtonText">
@@ -23,13 +28,13 @@
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|CommandName">
-        <source>GenerateNuGetPackageProjectContextMenu</source>
-        <target state="translated">GenerateNuGetPackageProjectContextMenu</target>
+        <source>Pack</source>
+        <target state="needs-review-translation">GenerateNuGetPackageProjectContextMenu</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ButtonText">
-        <source>&amp;Pack selection</source>
-        <target state="translated">&amp;Zabalit výběr</target>
+        <source>&amp;Pack Selection</source>
+        <target state="needs-review-translation">&amp;Zabalit výběr</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ToolTipText">
@@ -38,8 +43,8 @@
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|CommandName">
-        <source>GenerateNuGetPackageTopLevelBuild</source>
-        <target state="translated">GenerateNuGetPackageTopLevelBuild</target>
+        <source>Pack Selection</source>
+        <target state="needs-review-translation">GenerateNuGetPackageTopLevelBuild</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugTargetMenuDebugFrameworkMenu|ButtonText">
@@ -63,8 +68,8 @@
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemAbove|CommandName">
-        <source>AddNewItemAbove</source>
-        <target state="translated">AddNewItemAbove</target>
+        <source>Add New Item (Below)</source>
+        <target state="needs-review-translation">AddNewItemAbove</target>
         <note />
       </trans-unit>
       <trans-unit id="AddBelowMenu|ButtonText">
@@ -78,8 +83,8 @@
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemAbove|CommandName">
-        <source>AddExistingItemAbove</source>
-        <target state="translated">AddExistingItemAbove</target>
+        <source>Add Existing Item (Above)</source>
+        <target state="needs-review-translation">AddExistingItemAbove</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemBelow|ButtonText">
@@ -88,8 +93,8 @@
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemBelow|CommandName">
-        <source>AddNewItemBelow</source>
-        <target state="translated">AddNewItemBelow</target>
+        <source>Add New Item (Below)</source>
+        <target state="needs-review-translation">AddNewItemBelow</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemBelow|ButtonText">
@@ -98,8 +103,8 @@
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemBelow|CommandName">
-        <source>AddExistingItemBelow</source>
-        <target state="translated">AddExistingItemBelow</target>
+        <source>Add Existing Item (Below)</source>
+        <target state="needs-review-translation">AddExistingItemBelow</target>
         <note />
       </trans-unit>
     </body>

@@ -121,7 +121,7 @@
         <CommandFlag>DefaultDisabled</CommandFlag>
         <Strings>
           <ButtonText>&amp;Add New Item...</ButtonText>
-          <CommandName>AddNewItemAbove</CommandName>
+          <CommandName>Add New Item (Below)</CommandName>
         </Strings>
       </Button>
 
@@ -134,7 +134,7 @@
         <CommandFlag>DefaultDisabled</CommandFlag>
         <Strings>
           <ButtonText>&amp;Add Existing Item...</ButtonText>
-          <CommandName>AddExistingItemAbove</CommandName>
+          <CommandName>Add Existing Item (Above)</CommandName>
         </Strings>
       </Button>
 
@@ -147,7 +147,7 @@
         <CommandFlag>DefaultDisabled</CommandFlag>
         <Strings>
           <ButtonText>&amp;Add New Item...</ButtonText>
-          <CommandName>AddNewItemBelow</CommandName>
+          <CommandName>Add New Item (Below)</CommandName>
         </Strings>
       </Button>
 
@@ -160,7 +160,7 @@
         <CommandFlag>DefaultDisabled</CommandFlag>
         <Strings>
           <ButtonText>&amp;Add Existing Item...</ButtonText>
-          <CommandName>AddExistingItemBelow</CommandName>
+          <CommandName>Add Existing Item (Below)</CommandName>
         </Strings>
       </Button>
       
@@ -173,7 +173,7 @@
         <Strings>
           <ButtonText>&amp;Pack</ButtonText>
           <ToolTipText>Generate NuGet Package</ToolTipText>
-          <CommandName>GenerateNuGetPackageProjectContextMenu</CommandName>
+          <CommandName>Pack</CommandName>
         </Strings>
       </Button>
 
@@ -184,9 +184,9 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DefaultDisabled</CommandFlag>
         <Strings>
-          <ButtonText>&amp;Pack selection</ButtonText>
+          <ButtonText>&amp;Pack Selection</ButtonText>
           <ToolTipText>Generate NuGet Package for selected project</ToolTipText>
-          <CommandName>GenerateNuGetPackageTopLevelBuild</CommandName>
+          <CommandName>Pack Selection</CommandName>
         </Strings>
       </Button>
       
@@ -196,7 +196,8 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DefaultDisabled</CommandFlag>
         <Strings>
-          <ButtonText>N&amp;avigate to Project</ButtonText>
+          <ButtonText>N&amp;avigate To Project</ButtonText>
+          <CommandName>Navigate To Project</CommandName>
         </Strings>
       </Button>
 
