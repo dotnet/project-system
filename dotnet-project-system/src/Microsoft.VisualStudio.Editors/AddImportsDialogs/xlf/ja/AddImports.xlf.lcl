@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LCX SchemaVersion="6.0" Name="D:\a\_work\1\s\dotnet-project-system\src\Microsoft.VisualStudio.Editors\AddImportsDialogs\xlf\AddImports.xlf" PsrId="308" SrcCul="en-US" xmlns="http://schemas.microsoft.com/locstudio/2006/6/lcx" TgtCul="ja-JP">
+  <OwnedComments>
+    <Cmt Name="Dev" />
+    <Cmt Name="LcxAdmin" />
+    <Cmt Name="Rccx" />
+  </OwnedComments>
+  <Item ItemId=";Xliff file" ItemType="0" PsrId="308" Leaf="false">
+    <Disp Icon="Expand" Expand="true" Disp="true" LocTbl="false" />
+    <Item ItemId=";Xliff Resources" ItemType="0" PsrId="308" Leaf="false">
+      <Disp Icon="Str" Disp="true" LocTbl="false" />
+      <Item ItemId=";AddImportsExtensionMethodsMainFormatString" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Importing '{0}' would change the meaning of other code in your file, including calls to extension methods. Click OK to correct '{1}' by changing it to '{2}' ]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";AddImportsMainTextFormatString" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Importing '{0}' would change the meaning of other identifiers in this file. To correct '{1}' and preserve the meaning of other identifiers, choose one of the following options:]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+        <Cmts>
+          <Cmt Name="Dev"><![CDATA[Defines the replacement string for use in the main label of the Add Imports collision dialog.;]]></Cmt>
+        </Cmts>
+      </Item>
+      <Item ItemId=";ImportsAnywaysFormatString" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[&Import '{0}' and qualify the affected identifiers.]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+        <Cmts>
+          <Cmt Name="Dev"><![CDATA[Defines the replacement string for use in "Imports Anyways" option of the add imports collision dialog.]D;]A;      This text will be formated as richtext.]D;]A;      ]D;]A;      See the comments for AddImportsMainTextFormatString for more details about the richt text formating codes]D;]A;      contained in this resource.]D;]A;]D;]A;      Also, the "&" is used to define the mnemonic  character for the radio button associated]D;]A;      with the label this text will be inserted into.;]]></Cmt>
+        </Cmts>
+      </Item>
+      <Item ItemId=";QualifyCurrentLineFormatString" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[&Do not import '{0}', but change '{1}' to '{2}'.]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+        <Cmts>
+          <Cmt Name="Dev"><![CDATA[Defines the replacement string for use in the "Qualify Current Line" option of the Add Imports collision dialog. ]D;]A;      This text will be formated as richtext. ]D;]A;      ]D;]A;      See the comments for AddImportsMainTextFormatString for more details about the richt text formating codes]D;]A;      contained in this resource.]D;]A;]D;]A;]D;]A;      Also, the "&" is used to define the mnemonic  character for the radio button associated]D;]A;      with the label this text will be inserted into.;]]></Cmt>
+        </Cmts>
+      </Item>
+    </Item>
+  </Item>
+<Settings Name="@vsLocTools@\default.lss" Type="Lss" /></LCX>
