@@ -54,4 +54,9 @@ internal interface IFileSystem
     bool DirectoryExists(string path);
     void CreateDirectory(string path);
     string GetFullPath(string path);
+
+    /// <summary>
+    /// Gets whether <paramref name="path"/> is a file that refers to a reparse point.
+    /// </summary>
+    bool IsReparsePoint(string path);
 }

@@ -150,4 +150,25 @@ internal class Win32FileSystem : IFileSystem
     {
         return Path.GetFullPath(path);
     }
+
+    public bool IsReparsePoint(string path)
+    {
+        try
+        {
+            FileAttributes attributes = File.GetAttributes(path);
+            if ((attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint)
+                return true;
+        }
+        catch (IOException)
+        {
+        }
+        catch (UnauthorizedAccessException)
+        {
+        }
+        catch (NotSupportedException)
+        {
+        }
+
+        return false;
+    }
 }

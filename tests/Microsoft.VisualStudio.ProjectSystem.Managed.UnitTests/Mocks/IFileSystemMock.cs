@@ -17,6 +17,7 @@ internal class IFileSystemMock : IFileSystem
     {
         public string? FileContents;
         public DateTime LastWriteTimeUtc = DateTime.MaxValue;
+        public FileAttributes Attributes = FileAttributes.Normal;
 
         public void SetLastWriteTime()
         {
@@ -102,6 +103,16 @@ internal class IFileSystemMock : IFileSystem
         }
 
         return Path.GetFullPath(path);
+    }
+
+    public bool IsReparsePoint(string path)
+    {
+        if (Files.TryGetValue(path, out FileData data))
+        {
+            return (data.Attributes & FileAttributes.ReparsePoint) != 0;
+        }
+
+        return false;
     }
 
     public void RemoveFile(string path)
