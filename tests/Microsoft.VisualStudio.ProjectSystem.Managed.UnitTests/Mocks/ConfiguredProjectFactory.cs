@@ -6,11 +6,15 @@ internal static class ConfiguredProjectFactory
 {
     public static ConfiguredProject Create(IProjectCapabilitiesScope? capabilities = null, ProjectConfiguration? projectConfiguration = null, ConfiguredProjectServices? services = null, UnconfiguredProject? unconfiguredProject = null)
     {
-        var mock = new Mock<ConfiguredProject>();
+        var mock2 = new Mock<ConfiguredProject2>();
+        mock2.Setup(c => c.EnsureProjectEvaluatedAsync()).Returns(Task.CompletedTask);
+
+        var mock = mock2.As<ConfiguredProject>();
         mock.Setup(c => c.Capabilities).Returns(capabilities!);
         mock.Setup(c => c.ProjectConfiguration).Returns(projectConfiguration!);
         mock.Setup(c => c.Services).Returns(services!);
         mock.SetupGet(c => c.UnconfiguredProject).Returns(unconfiguredProject ?? UnconfiguredProjectFactory.Create());
+        
         return mock.Object;
     }
 
