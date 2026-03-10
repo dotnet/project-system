@@ -1,3 +1,9 @@
+> [!IMPORTANT]
+> **This repository is no longer being actively maintained.**
+> 
+> This repo is preserved for historical reference. Issues and pull requests are not being monitored.
+> 
+> For questions about the .NET Project System in Visual Studio, please use [Visual Studio Developer Community](https://developercommunity.visualstudio.com/).
 # The .NET Project System for Visual Studio
 
 | Release             | Build                   | Compliance                   | Publish                   | Localization
