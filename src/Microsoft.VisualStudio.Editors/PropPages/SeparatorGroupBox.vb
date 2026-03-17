@@ -34,7 +34,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim linePoint1 = New Point(CInt(stringSize.Width) + LabelToLineDistance, lineY)
                 Dim linePoint2 = New Point(ClientRectangle.Right, lineY)
 
-                Using pen As New Pen(SystemColors.ControlDark, SystemInformation.BorderSize.Height)
+                ' Use a lighter pen color to match CPS's subtle separator line
+                Dim lineColor = Color.FromArgb(80, SystemColors.ControlDark)
+                Using pen As New Pen(lineColor, 1)
                     e.Graphics.DrawLine(pen, linePoint1, linePoint2)
                 End Using
             End Using

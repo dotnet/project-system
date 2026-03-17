@@ -79,16 +79,23 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' matching the CPS project properties designer pattern.
             RestructureGeneralSection()
             RestructureErrorsAndWarningsSection()
+            RestructureTreatWarningsSection()
             RestructureOutputSection()
 
             ' Add padding to the overarching layout
-            overarchingTableLayoutPanel.Padding = New Padding(8, 4, 8, 4)
+            overarchingTableLayoutPanel.Padding = New Padding(12, 4, 12, 4)
 
-            ' Increase group box internal padding
+            ' Increase group box internal padding and add top margin for section separation
             For Each gb As SeparatorGroupBox In {generalGroupBox, errorsAndWarningsGroupBox,
                                                   treatWarningsAsErrorsGroupBox, outputGroupBox}
-                gb.Padding = New Padding(0, 12, 0, 8)
+                gb.Padding = New Padding(0, 16, 0, 8)
             Next
+
+            ' Add vertical spacing between group boxes in the overarching panel
+            generalGroupBox.Margin = New Padding(0, 0, 0, 8)
+            errorsAndWarningsGroupBox.Margin = New Padding(0, 0, 0, 8)
+            treatWarningsAsErrorsGroupBox.Margin = New Padding(0, 0, 0, 8)
+            outputGroupBox.Margin = New Padding(0, 0, 0, 8)
         End Sub
 
         ''' <summary>
@@ -109,10 +116,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             lblPlatformTarget.Font = New Drawing.Font(lblPlatformTarget.Font, Drawing.FontStyle.Bold)
             lblNullable.Font = New Drawing.Font(lblNullable.Font, Drawing.FontStyle.Bold)
 
-            ' Make textbox and combobox full width
+            ' Make textbox full width, comboboxes CPS-sized
             txtConditionalCompilationSymbols.Anchor = AnchorStyles.Left Or AnchorStyles.Right
-            cboPlatformTarget.Anchor = AnchorStyles.Left Or AnchorStyles.Right
-            cboNullable.Anchor = AnchorStyles.Left Or AnchorStyles.Right
 
             ' Create CPS-style description labels (gray subtext)
             Dim descCondComp = CreateDescriptionLabel("Specifies symbols on which to perform conditional compilation.")
@@ -135,11 +140,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             descNullable.Margin = New Padding(0, 0, 0, 2)
             cboNullable.Margin = New Padding(0, 0, 0, 4)
 
-            ' Align checkboxes flush left (no indentation) with tighter spacing
+            ' Align checkboxes flush left with tighter spacing
+            ' CPS BoolPropertyValueTemplate uses bold label text inside checkbox
             For Each chk As CheckBox In {chkDefineDebug, chkDefineTrace, chkPrefer32Bit,
                                           chkPreferNativeArm64, chkAllowUnsafeCode, chkOptimizeCode}
-                chk.Margin = New Padding(0, 2, 0, 2)
+                chk.Margin = New Padding(0, 4, 0, 4)
+                chk.Font = New Drawing.Font(chk.Font, Drawing.FontStyle.Bold)
             Next
+
+            ' CPS ComboBox: MinWidth=300, Left-aligned (not full-width stretching)
+            cboPlatformTarget.Anchor = AnchorStyles.Left
+            cboPlatformTarget.MinimumSize = New Drawing.Size(300, 0)
+            cboNullable.Anchor = AnchorStyles.Left
+            cboNullable.MinimumSize = New Drawing.Size(300, 0)
 
             Dim row = 0
             generalTableLayoutPanel.Controls.Add(lblConditionalCompilationSymbols, 0, row) : row += 1
@@ -191,8 +204,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             lblWarningLevel.Font = New Drawing.Font(lblWarningLevel.Font, Drawing.FontStyle.Bold)
             lblSupressWarnings.Font = New Drawing.Font(lblSupressWarnings.Font, Drawing.FontStyle.Bold)
 
-            ' Full width controls
-            cboWarningLevel.Anchor = AnchorStyles.Left Or AnchorStyles.Right
+            ' CPS ComboBox: MinWidth=300, Left-aligned
+            cboWarningLevel.Anchor = AnchorStyles.Left
+            cboWarningLevel.MinimumSize = New Drawing.Size(300, 0)
             txtSupressWarnings.Anchor = AnchorStyles.Left Or AnchorStyles.Right
 
             ' Description labels
@@ -223,6 +237,44 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         ''' <summary>
+        ''' Rebuilds the Treat Warnings as Errors section with CPS-like styling.
+        ''' </summary>
+        Private Sub RestructureTreatWarningsSection()
+            treatWarningsAsErrorsTableLayoutPanel.SuspendLayout()
+            treatWarningsAsErrorsTableLayoutPanel.Controls.Clear()
+            treatWarningsAsErrorsTableLayoutPanel.ColumnStyles.Clear()
+            treatWarningsAsErrorsTableLayoutPanel.RowStyles.Clear()
+
+            ' Two columns: radio/textbox content + spacer
+            treatWarningsAsErrorsTableLayoutPanel.ColumnCount = 2
+            treatWarningsAsErrorsTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.AutoSize))
+            treatWarningsAsErrorsTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0F))
+
+            ' Full width for specific warnings textbox
+            txtSpecificWarnings.Anchor = AnchorStyles.Left Or AnchorStyles.Right
+
+            treatWarningsAsErrorsTableLayoutPanel.RowCount = 4
+            For i = 0 To 3
+                treatWarningsAsErrorsTableLayoutPanel.RowStyles.Add(New RowStyle(SizeType.AutoSize))
+            Next
+
+            ' Tighter spacing for radio buttons
+            rbWarningNone.Margin = New Padding(0, 4, 0, 2)
+            rbWarningAll.Margin = New Padding(0, 2, 0, 2)
+            rbWarningSpecific.Margin = New Padding(0, 2, 0, 2)
+            txtSpecificWarnings.Margin = New Padding(4, 2, 0, 4)
+
+            treatWarningsAsErrorsTableLayoutPanel.Controls.Add(rbWarningNone, 0, 0)
+            treatWarningsAsErrorsTableLayoutPanel.SetColumnSpan(rbWarningNone, 2)
+            treatWarningsAsErrorsTableLayoutPanel.Controls.Add(rbWarningAll, 0, 1)
+            treatWarningsAsErrorsTableLayoutPanel.SetColumnSpan(rbWarningAll, 2)
+            treatWarningsAsErrorsTableLayoutPanel.Controls.Add(rbWarningSpecific, 0, 2)
+            treatWarningsAsErrorsTableLayoutPanel.Controls.Add(txtSpecificWarnings, 1, 2)
+
+            treatWarningsAsErrorsTableLayoutPanel.ResumeLayout(True)
+        End Sub
+
+        ''' <summary>
         ''' Rebuilds the Output section with labels above controls.
         ''' </summary>
         Private Sub RestructureOutputSection()
@@ -240,38 +292,44 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             lblOutputPath.Font = New Drawing.Font(lblOutputPath.Font, Drawing.FontStyle.Bold)
             lblSGenOption.Font = New Drawing.Font(lblSGenOption.Font, Drawing.FontStyle.Bold)
 
-            ' Full width controls
+            ' Full width text controls, CPS-style left-aligned combobox
             txtOutputPath.Anchor = AnchorStyles.Left Or AnchorStyles.Right
             txtXMLDocumentationFile.Anchor = AnchorStyles.Left Or AnchorStyles.Right
-            cboSGenOption.Anchor = AnchorStyles.Left Or AnchorStyles.Right
+            cboSGenOption.Anchor = AnchorStyles.Left
+            cboSGenOption.MinimumSize = New Drawing.Size(300, 0)
 
-            ' Row 0: Output path label
-            ' Row 1: Output path textbox + browse button
-            ' Row 2: XML doc file checkbox
-            ' Row 3: XML doc file textbox
-            ' Row 4: Register for COM
-            ' Row 5: Generate serialization assembly label
-            ' Row 6: Generate serialization assembly combobox
-            ' Row 7: Advanced button
-            outputTableLayoutPanel.RowCount = 8
-            For i = 0 To 7
+            ' Description labels
+            Dim descOutputPath = CreateDescriptionLabel("The directory where the build output is placed.")
+            Dim descSGenOption = CreateDescriptionLabel("Controls whether serialization assemblies are generated.")
+
+            outputTableLayoutPanel.RowCount = 10
+            For i = 0 To 9
                 outputTableLayoutPanel.RowStyles.Add(New RowStyle(SizeType.AutoSize))
             Next
 
-            lblOutputPath.Margin = New Padding(0, 8, 0, 2)
+            lblOutputPath.Margin = New Padding(0, 8, 0, 0)
+            descOutputPath.Margin = New Padding(0, 0, 0, 2)
             txtOutputPath.Margin = New Padding(0, 0, 0, 4)
-            lblSGenOption.Margin = New Padding(0, 8, 0, 2)
+            chkXMLDocumentationFile.Margin = New Padding(0, 4, 0, 2)
+            txtXMLDocumentationFile.Margin = New Padding(0, 0, 0, 4)
+            chkRegisterForCOM.Margin = New Padding(0, 4, 0, 4)
+            lblSGenOption.Margin = New Padding(0, 8, 0, 0)
+            descSGenOption.Margin = New Padding(0, 0, 0, 2)
             cboSGenOption.Margin = New Padding(0, 0, 0, 4)
+            btnAdvanced.Margin = New Padding(0, 8, 0, 4)
 
-            outputTableLayoutPanel.Controls.Add(lblOutputPath, 0, 0)
-            outputTableLayoutPanel.Controls.Add(txtOutputPath, 0, 1)
-            outputTableLayoutPanel.Controls.Add(btnOutputPathBrowse, 1, 1)
-            outputTableLayoutPanel.Controls.Add(chkXMLDocumentationFile, 0, 2)
-            outputTableLayoutPanel.Controls.Add(txtXMLDocumentationFile, 0, 3)
-            outputTableLayoutPanel.Controls.Add(chkRegisterForCOM, 0, 4)
-            outputTableLayoutPanel.Controls.Add(lblSGenOption, 0, 5)
-            outputTableLayoutPanel.Controls.Add(cboSGenOption, 0, 6)
-            outputTableLayoutPanel.Controls.Add(btnAdvanced, 1, 7)
+            Dim row = 0
+            outputTableLayoutPanel.Controls.Add(lblOutputPath, 0, row) : row += 1
+            outputTableLayoutPanel.Controls.Add(descOutputPath, 0, row) : row += 1
+            outputTableLayoutPanel.Controls.Add(txtOutputPath, 0, row)
+            outputTableLayoutPanel.Controls.Add(btnOutputPathBrowse, 1, row) : row += 1
+            outputTableLayoutPanel.Controls.Add(chkXMLDocumentationFile, 0, row) : row += 1
+            outputTableLayoutPanel.Controls.Add(txtXMLDocumentationFile, 0, row) : row += 1
+            outputTableLayoutPanel.Controls.Add(chkRegisterForCOM, 0, row) : row += 1
+            outputTableLayoutPanel.Controls.Add(lblSGenOption, 0, row) : row += 1
+            outputTableLayoutPanel.Controls.Add(descSGenOption, 0, row) : row += 1
+            outputTableLayoutPanel.Controls.Add(cboSGenOption, 0, row) : row += 1
+            outputTableLayoutPanel.Controls.Add(btnAdvanced, 1, row)
 
             outputTableLayoutPanel.ResumeLayout(True)
         End Sub
