@@ -81,6 +81,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' Prevent auto-resize that propagates to the hosting panel
             AutoSize = False
 
+            ' Set page BackColor to match VS dark theme so no light bleeds through
+            Dim bgColor = Microsoft.VisualStudio.PlatformUI.VSColorTheme.GetThemedColor(
+                Microsoft.VisualStudio.PlatformUI.EnvironmentColors.ToolWindowBackgroundColorKey)
+            BackColor = Drawing.Color.FromArgb(bgColor.A, bgColor.R, bgColor.G, bgColor.B)
+
             ' Create WPF control and ElementHost
             _wpfControl = New BuildPropPageWpfControl()
             _elementHost = New System.Windows.Forms.Integration.ElementHost() With {
@@ -88,8 +93,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 .Child = _wpfControl
             }
 
-            ' Add ElementHost on top of everything (don't hide anything —
-            ' just overlay, so the measured size stays unchanged)
+            ' Add ElementHost on top of everything
             Controls.Add(_elementHost)
             _elementHost.BringToFront()
 
@@ -103,6 +107,49 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                                           btnAdvanced.PerformClick()
                                                       End Sub
         End Sub
+
+        ''' <summary>
+        ''' Hides the Configuration/Platform dropdown panel in the PropPageDesignerView.
+        ''' CPS doesn't show per-page config bars — config is selected at the toolbar level.
+        ''' </summary>
+        ''' <remarks>
+        ''' The PropPageDesignerView is not in our WinForms Parent chain because
+        ''' the page is hosted inside a VsWindowFrame (native window boundary).
+        ''' We use Win32 GetParent to cross that boundary and find the
+        ''' ConfigurationPanel control by name.
+        ''' </remarks>
+        <System.Runtime.InteropServices.DllImport("user32.dll", SetLastError:=True)>
+        Private Shared Function GetParent(hWnd As IntPtr) As IntPtr
+        End Function
+
+        Private Sub HideConfigurationPanel()
+            Try
+                Dim hwnd = Handle
+                ' Walk up Win32 parent chain to cross VsWindowFrame boundary
+                While hwnd <> IntPtr.Zero
+                    Dim ctrl = Control.FromHandle(hwnd)
+                    If ctrl IsNot Nothing Then
+                        Dim configPanel = FindControlByName(ctrl, "ConfigurationPanel")
+                        If configPanel IsNot Nothing Then
+                            configPanel.Visible = False
+                            Exit While
+                        End If
+                    End If
+                    hwnd = GetParent(hwnd)
+                End While
+            Catch
+                ' Non-critical — config panel stays visible if we can't find it
+            End Try
+        End Sub
+
+        Private Shared Function FindControlByName(parent As Control, name As String) As Control
+            For Each child As Control In parent.Controls
+                If child.Name = name Then Return child
+                Dim found = FindControlByName(child, name)
+                If found IsNot Nothing Then Return found
+            Next
+            Return Nothing
+        End Function
 
         ''' <summary>
         ''' CPS designer labels don't use trailing colons. Strip them for consistency.
@@ -496,6 +543,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             RefreshEnabledStatusForPrefer32Bit(chkPrefer32Bit)
             RefreshEnabledStatusForPreferNativeArm64(chkPreferNativeArm64)
             RefreshVisibleStatusForNullable()
+
+            ' Hide the Configuration/Platform bar (CPS doesn't show it per-page)
+            HideConfigurationPanel()
 
             ' Sync WinForms control state → WPF visual controls
             SyncWpfFromWinForms()

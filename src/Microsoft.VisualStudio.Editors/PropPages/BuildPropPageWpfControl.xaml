@@ -68,12 +68,15 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False"
                   Padding="16,0,16,16">
-        <StackPanel Orientation="Vertical" MaxWidth="700" HorizontalAlignment="Left">
+        <StackPanel Orientation="Vertical" MaxWidth="800" HorizontalAlignment="Left">
+
+            <!-- Page title (matches CPS "Build" heading) -->
+            <TextBlock Text="Build" FontSize="24" FontWeight="Light" Margin="0,8,0,12"/>
 
             <!-- ============================================ -->
             <!-- GENERAL -->
             <!-- ============================================ -->
-            <TextBlock Text="General" Style="{StaticResource CategoryHeaderStyle}" Margin="0,8,0,4"/>
+            <TextBlock Text="General" Style="{StaticResource CategoryHeaderStyle}" Margin="0,4,0,4"/>
             <Separator Style="{StaticResource CategorySeparatorStyle}"/>
 
             <!-- Conditional compilation symbols -->

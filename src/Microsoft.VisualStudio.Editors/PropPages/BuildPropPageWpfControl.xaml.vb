@@ -164,19 +164,22 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             BindRadioButton(rbWarningSpecific, wfRbSpecific)
 
             ' --- Visibility sync for conditional controls ---
-            SyncVisibility(chkPrefer32Bit, wfChkPrefer32)
-            SyncVisibility(chkPreferNativeArm64, wfChkPreferArm64)
+            ' Use Enabled state (not Visible) because the WinForms controls
+            ' are behind the ElementHost overlay and always report Visible=True,
+            ' but their Enabled state reflects whether the feature is supported.
+            SyncEnabledToVisibility(chkPrefer32Bit, wfChkPrefer32)
+            SyncEnabledToVisibility(chkPreferNativeArm64, wfChkPreferArm64)
 
-            ' Hide Nullable section if WinForms control is hidden
-            If Not wfLblNullable.Visible Then
+            ' Hide Nullable section if WinForms label has no items
+            ' (HiddenIfMissingPropertyControlData hides via Visible=False on the
+            ' label, but since the label's parent panel is behind our overlay,
+            ' we check the combo's item count instead)
+            If wfCboNullable.Items.Count = 0 Then
                 lblNullable.Visibility = System.Windows.Visibility.Collapsed
                 cboNullable.Visibility = System.Windows.Visibility.Collapsed
-            End If
-
-            ' Hide SGen section if hidden
-            If Not wfLblSGen.Visible Then
-                lblSGenOption.Visibility = System.Windows.Visibility.Collapsed
-                cboSGenOption.Visibility = System.Windows.Visibility.Collapsed
+            Else
+                lblNullable.Visibility = System.Windows.Visibility.Visible
+                cboNullable.Visibility = System.Windows.Visibility.Visible
             End If
 
             ' Pull initial state from WinForms → WPF
@@ -337,6 +340,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Shared Sub SyncVisibility(wpfElement As System.Windows.UIElement, wfControl As WinForms.Control)
             wpfElement.Visibility = If(wfControl.Visible, System.Windows.Visibility.Visible, System.Windows.Visibility.Collapsed)
+        End Sub
+
+        Private Shared Sub SyncEnabledToVisibility(wpfElement As System.Windows.UIElement, wfControl As WinForms.Control)
+            ' Show checkbox if control is enabled (feature is supported for this project type)
+            wpfElement.Visibility = If(wfControl.Enabled, System.Windows.Visibility.Visible, System.Windows.Visibility.Collapsed)
         End Sub
 
 #End Region
