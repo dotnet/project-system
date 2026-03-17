@@ -114,45 +114,65 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             cboPlatformTarget.Anchor = AnchorStyles.Left Or AnchorStyles.Right
             cboNullable.Anchor = AnchorStyles.Left Or AnchorStyles.Right
 
-            ' Row 0: Conditional compilation symbols label
-            ' Row 1: Conditional compilation symbols textbox
-            ' Row 2: Define DEBUG
-            ' Row 3: Define TRACE
-            ' Row 4: Platform target label
-            ' Row 5: Platform target combobox
-            ' Row 6: Nullable label
-            ' Row 7: Nullable combobox
-            ' Row 8: Prefer 32-bit
-            ' Row 9: Prefer native ARM64
-            ' Row 10: Allow unsafe code
-            ' Row 11: Optimize code
-            generalTableLayoutPanel.RowCount = 12
-            For i = 0 To 11
+            ' Create CPS-style description labels (gray subtext)
+            Dim descCondComp = CreateDescriptionLabel("Specifies symbols on which to perform conditional compilation.")
+            Dim descPlatform = CreateDescriptionLabel("Specifies the processor to be targeted by the output file.")
+            Dim descNullable = CreateDescriptionLabel("Specifies the nullable context for the project.")
+
+            ' Row layout with description labels between header and control
+            generalTableLayoutPanel.RowCount = 15
+            For i = 0 To 14
                 generalTableLayoutPanel.RowStyles.Add(New RowStyle(SizeType.AutoSize))
             Next
 
-            lblConditionalCompilationSymbols.Margin = New Padding(0, 8, 0, 2)
+            lblConditionalCompilationSymbols.Margin = New Padding(0, 8, 0, 0)
+            descCondComp.Margin = New Padding(0, 0, 0, 2)
             txtConditionalCompilationSymbols.Margin = New Padding(0, 0, 0, 4)
-            lblPlatformTarget.Margin = New Padding(0, 8, 0, 2)
+            lblPlatformTarget.Margin = New Padding(0, 8, 0, 0)
+            descPlatform.Margin = New Padding(0, 0, 0, 2)
             cboPlatformTarget.Margin = New Padding(0, 0, 0, 4)
-            lblNullable.Margin = New Padding(0, 8, 0, 2)
+            lblNullable.Margin = New Padding(0, 8, 0, 0)
+            descNullable.Margin = New Padding(0, 0, 0, 2)
             cboNullable.Margin = New Padding(0, 0, 0, 4)
 
-            generalTableLayoutPanel.Controls.Add(lblConditionalCompilationSymbols, 0, 0)
-            generalTableLayoutPanel.Controls.Add(txtConditionalCompilationSymbols, 0, 1)
-            generalTableLayoutPanel.Controls.Add(chkDefineDebug, 0, 2)
-            generalTableLayoutPanel.Controls.Add(chkDefineTrace, 0, 3)
-            generalTableLayoutPanel.Controls.Add(lblPlatformTarget, 0, 4)
-            generalTableLayoutPanel.Controls.Add(cboPlatformTarget, 0, 5)
-            generalTableLayoutPanel.Controls.Add(lblNullable, 0, 6)
-            generalTableLayoutPanel.Controls.Add(cboNullable, 0, 7)
-            generalTableLayoutPanel.Controls.Add(chkPrefer32Bit, 0, 8)
-            generalTableLayoutPanel.Controls.Add(chkPreferNativeArm64, 0, 9)
-            generalTableLayoutPanel.Controls.Add(chkAllowUnsafeCode, 0, 10)
-            generalTableLayoutPanel.Controls.Add(chkOptimizeCode, 0, 11)
+            ' Align checkboxes flush left (no indentation) with tighter spacing
+            For Each chk As CheckBox In {chkDefineDebug, chkDefineTrace, chkPrefer32Bit,
+                                          chkPreferNativeArm64, chkAllowUnsafeCode, chkOptimizeCode}
+                chk.Margin = New Padding(0, 2, 0, 2)
+            Next
+
+            Dim row = 0
+            generalTableLayoutPanel.Controls.Add(lblConditionalCompilationSymbols, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(descCondComp, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(txtConditionalCompilationSymbols, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(chkDefineDebug, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(chkDefineTrace, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(lblPlatformTarget, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(descPlatform, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(cboPlatformTarget, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(lblNullable, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(descNullable, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(cboNullable, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(chkPrefer32Bit, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(chkPreferNativeArm64, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(chkAllowUnsafeCode, 0, row) : row += 1
+            generalTableLayoutPanel.Controls.Add(chkOptimizeCode, 0, row)
 
             generalTableLayoutPanel.ResumeLayout(True)
         End Sub
+
+        ''' <summary>
+        ''' Creates a gray description label matching CPS designer style.
+        ''' </summary>
+        Private Function CreateDescriptionLabel(text As String) As Label
+            Dim lbl = New Label()
+            lbl.Text = text
+            lbl.ForeColor = Drawing.SystemColors.GrayText
+            lbl.AutoSize = True
+            lbl.Anchor = AnchorStyles.Left Or AnchorStyles.Right
+            lbl.MaximumSize = New Drawing.Size(600, 0)
+            Return lbl
+        End Function
 
         ''' <summary>
         ''' Rebuilds the Errors and Warnings section with labels above controls.
@@ -175,24 +195,29 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             cboWarningLevel.Anchor = AnchorStyles.Left Or AnchorStyles.Right
             txtSupressWarnings.Anchor = AnchorStyles.Left Or AnchorStyles.Right
 
-            ' Row 0: Warning level label
-            ' Row 1: Warning level combobox
-            ' Row 2: Suppress warnings label
-            ' Row 3: Suppress warnings textbox
-            errorsAndWarningsTableLayoutPanel.RowCount = 4
-            For i = 0 To 3
+            ' Description labels
+            Dim descWarningLevel = CreateDescriptionLabel("Sets the level for which warnings the compiler reports.")
+            Dim descSuppressWarnings = CreateDescriptionLabel("Suppresses the compiler's ability to generate specific warnings.")
+
+            errorsAndWarningsTableLayoutPanel.RowCount = 6
+            For i = 0 To 5
                 errorsAndWarningsTableLayoutPanel.RowStyles.Add(New RowStyle(SizeType.AutoSize))
             Next
 
-            lblWarningLevel.Margin = New Padding(0, 8, 0, 2)
+            lblWarningLevel.Margin = New Padding(0, 8, 0, 0)
+            descWarningLevel.Margin = New Padding(0, 0, 0, 2)
             cboWarningLevel.Margin = New Padding(0, 0, 0, 4)
-            lblSupressWarnings.Margin = New Padding(0, 8, 0, 2)
+            lblSupressWarnings.Margin = New Padding(0, 8, 0, 0)
+            descSuppressWarnings.Margin = New Padding(0, 0, 0, 2)
             txtSupressWarnings.Margin = New Padding(0, 0, 0, 4)
 
-            errorsAndWarningsTableLayoutPanel.Controls.Add(lblWarningLevel, 0, 0)
-            errorsAndWarningsTableLayoutPanel.Controls.Add(cboWarningLevel, 0, 1)
-            errorsAndWarningsTableLayoutPanel.Controls.Add(lblSupressWarnings, 0, 2)
-            errorsAndWarningsTableLayoutPanel.Controls.Add(txtSupressWarnings, 0, 3)
+            Dim row = 0
+            errorsAndWarningsTableLayoutPanel.Controls.Add(lblWarningLevel, 0, row) : row += 1
+            errorsAndWarningsTableLayoutPanel.Controls.Add(descWarningLevel, 0, row) : row += 1
+            errorsAndWarningsTableLayoutPanel.Controls.Add(cboWarningLevel, 0, row) : row += 1
+            errorsAndWarningsTableLayoutPanel.Controls.Add(lblSupressWarnings, 0, row) : row += 1
+            errorsAndWarningsTableLayoutPanel.Controls.Add(descSuppressWarnings, 0, row) : row += 1
+            errorsAndWarningsTableLayoutPanel.Controls.Add(txtSupressWarnings, 0, row)
 
             errorsAndWarningsTableLayoutPanel.ResumeLayout(True)
         End Sub
