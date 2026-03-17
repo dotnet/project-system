@@ -231,6 +231,9 @@
     <Compile Update="OptionPages\GeneralOptionPageControl.xaml.vb">
       <DependentUpon>GeneralOptionPageControl.xaml</DependentUpon>
     </Compile>
+    <Compile Update="PropPages\BuildPropPageWpfControl.xaml.vb">
+      <DependentUpon>BuildPropPageWpfControl.xaml</DependentUpon>
+    </Compile>
     <Compile Update="OptionPages\GeneralOptionPageResources.Designer.vb">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -554,6 +557,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="PropPages\BuildPropPageWpfControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
@@ -582,6 +589,7 @@
   <!-- See: https://github.com/dotnet/sourcelink/issues/492 -->
   <Target Name="CopyDependentUponXamlFiles" BeforeTargets="CoreCompile">
     <Copy SourceFiles="OptionPages\GeneralOptionPageControl.xaml" DestinationFiles="$(IntermediateOutputPath)\OptionPages\OptionPages\GeneralOptionPageControl.xaml" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="PropPages\BuildPropPageWpfControl.xaml" DestinationFiles="$(IntermediateOutputPath)\PropPages\PropPages\BuildPropPageWpfControl.xaml" SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

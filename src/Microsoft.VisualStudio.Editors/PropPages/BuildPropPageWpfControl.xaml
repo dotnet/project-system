@@ -1,0 +1,184 @@
+﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<UserControl x:ClassModifier="Friend"
+             x:Class="Microsoft.VisualStudio.Editors.PropertyPages.BuildPropPageWpfControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+             Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}">
+
+    <UserControl.Resources>
+        <!-- Category header style matching CPS designer -->
+        <Style x:Key="CategoryHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,16,0,4"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+        </Style>
+
+        <!-- Separator line below category headers -->
+        <Style x:Key="CategorySeparatorStyle" TargetType="Separator">
+            <Setter Property="Margin" Value="0,4,0,12"/>
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
+        </Style>
+
+        <!-- Property label style (above the control) -->
+        <Style x:Key="PropertyLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,8,0,4"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+        </Style>
+
+        <!-- Description text style -->
+        <Style x:Key="PropertyDescriptionStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <!-- Shared TextBox style -->
+        <Style x:Key="PropertyTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="MinHeight" Value="26"/>
+        </Style>
+
+        <!-- Shared ComboBox style -->
+        <Style x:Key="PropertyComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="MinHeight" Value="26"/>
+            <Setter Property="MinWidth" Value="200"/>
+        </Style>
+
+        <!-- Shared CheckBox style (CPS uses description text next to checkbox) -->
+        <Style x:Key="PropertyCheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="Margin" Value="0,8,0,4"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Shared RadioButton style -->
+        <Style x:Key="PropertyRadioButtonStyle" TargetType="RadioButton">
+            <Setter Property="Margin" Value="0,4,0,4"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False"
+                  Padding="16,0,16,16">
+        <StackPanel Orientation="Vertical" MaxWidth="700" HorizontalAlignment="Left">
+
+            <!-- ============================================ -->
+            <!-- GENERAL -->
+            <!-- ============================================ -->
+            <TextBlock Text="General" Style="{StaticResource CategoryHeaderStyle}" Margin="0,8,0,4"/>
+            <Separator Style="{StaticResource CategorySeparatorStyle}"/>
+
+            <!-- Conditional compilation symbols -->
+            <TextBlock Text="Conditional compilation symbols" Style="{StaticResource PropertyLabelStyle}"/>
+            <TextBlock Text="Specifies symbols on which to perform conditional compilation."
+                       Style="{StaticResource PropertyDescriptionStyle}"/>
+            <TextBox x:Name="txtConditionalCompilationSymbols" Style="{StaticResource PropertyTextBoxStyle}"/>
+
+            <!-- Define DEBUG constant -->
+            <CheckBox x:Name="chkDefineDebug" Content="Define DEBUG constant"
+                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+
+            <!-- Define TRACE constant -->
+            <CheckBox x:Name="chkDefineTrace" Content="Define TRACE constant"
+                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+
+            <!-- Platform target -->
+            <TextBlock Text="Platform target" Style="{StaticResource PropertyLabelStyle}"/>
+            <TextBlock Text="Specifies the processor to be targeted by the output file."
+                       Style="{StaticResource PropertyDescriptionStyle}"/>
+            <ComboBox x:Name="cboPlatformTarget" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
+
+            <!-- Nullable -->
+            <TextBlock x:Name="lblNullable" Text="Nullable" Style="{StaticResource PropertyLabelStyle}"/>
+            <ComboBox x:Name="cboNullable" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
+
+            <!-- Prefer 32-bit -->
+            <CheckBox x:Name="chkPrefer32Bit" Content="Prefer 32-bit"
+                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+
+            <!-- Prefer native ARM64 -->
+            <CheckBox x:Name="chkPreferNativeArm64" Content="Prefer native ARM64"
+                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+
+            <!-- Allow unsafe code -->
+            <CheckBox x:Name="chkAllowUnsafeCode" Content="Allow unsafe code"
+                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+
+            <!-- Optimize code -->
+            <CheckBox x:Name="chkOptimizeCode" Content="Optimize code"
+                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+
+            <!-- ============================================ -->
+            <!-- ERRORS AND WARNINGS -->
+            <!-- ============================================ -->
+            <TextBlock Text="Errors and warnings" Style="{StaticResource CategoryHeaderStyle}"/>
+            <Separator Style="{StaticResource CategorySeparatorStyle}"/>
+
+            <!-- Warning level -->
+            <TextBlock Text="Warning level" Style="{StaticResource PropertyLabelStyle}"/>
+            <ComboBox x:Name="cboWarningLevel" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
+
+            <!-- Suppress specific warnings -->
+            <TextBlock Text="Suppress specific warnings" Style="{StaticResource PropertyLabelStyle}"/>
+            <TextBox x:Name="txtSupressWarnings" Style="{StaticResource PropertyTextBoxStyle}"/>
+
+            <!-- ============================================ -->
+            <!-- TREAT WARNINGS AS ERRORS -->
+            <!-- ============================================ -->
+            <TextBlock Text="Treat warnings as errors" Style="{StaticResource CategoryHeaderStyle}"/>
+            <Separator Style="{StaticResource CategorySeparatorStyle}"/>
+
+            <!-- Warning treatment radio buttons -->
+            <RadioButton x:Name="rbWarningNone" Content="None"
+                         Style="{StaticResource PropertyRadioButtonStyle}"/>
+            <RadioButton x:Name="rbWarningAll" Content="All"
+                         Style="{StaticResource PropertyRadioButtonStyle}"/>
+            <RadioButton x:Name="rbWarningSpecific" Content="Specific warnings"
+                         Style="{StaticResource PropertyRadioButtonStyle}"/>
+
+            <!-- Specific warnings text -->
+            <TextBox x:Name="txtSpecificWarnings" Style="{StaticResource PropertyTextBoxStyle}" Margin="24,0,0,4"/>
+
+            <!-- ============================================ -->
+            <!-- OUTPUT -->
+            <!-- ============================================ -->
+            <TextBlock Text="Output" Style="{StaticResource CategoryHeaderStyle}"/>
+            <Separator Style="{StaticResource CategorySeparatorStyle}"/>
+
+            <!-- Output path -->
+            <TextBlock Text="Output path" Style="{StaticResource PropertyLabelStyle}"/>
+            <DockPanel Margin="0,0,0,4">
+                <Button x:Name="btnOutputPathBrowse" Content="Browse..." DockPanel.Dock="Right"
+                        Padding="12,4" Margin="8,0,0,0"/>
+                <TextBox x:Name="txtOutputPath" Style="{StaticResource PropertyTextBoxStyle}" Margin="0"/>
+            </DockPanel>
+
+            <!-- XML documentation file -->
+            <CheckBox x:Name="chkXMLDocumentationFile" Content="XML documentation file"
+                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+            <TextBox x:Name="txtXMLDocumentationFile" Style="{StaticResource PropertyTextBoxStyle}" Margin="24,0,0,4"/>
+
+            <!-- Register for COM interop -->
+            <CheckBox x:Name="chkRegisterForCOM" Content="Register for COM interop"
+                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+
+            <!-- Generate serialization assembly -->
+            <TextBlock x:Name="lblSGenOption" Text="Generate serialization assembly" Style="{StaticResource PropertyLabelStyle}"/>
+            <ComboBox x:Name="cboSGenOption" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
+
+            <!-- Advanced button -->
+            <Button x:Name="btnAdvanced" Content="Advanced..." Padding="12,6" Margin="0,12,0,8"
+                    HorizontalAlignment="Right"/>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

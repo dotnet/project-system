@@ -52,6 +52,36 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 New ComboItem("enable", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildSettings_Nullable_Enable),
                 New ComboItem("warnings", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildSettings_Nullable_Warnings),
                 New ComboItem("annotations", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildSettings_Nullable_Annotations)})
+
+            ApplyCpsDesignerStyling()
+        End Sub
+
+        ''' <summary>
+        ''' Applies visual styling adjustments to make the Build property page 
+        ''' visually closer to the CPS project properties designer.
+        ''' </summary>
+        Private Sub ApplyCpsDesignerStyling()
+            ' Increase row spacing in table layout panels for more breathing room
+            For Each tlp As TableLayoutPanel In {generalTableLayoutPanel, errorsAndWarningsTableLayoutPanel,
+                                                  treatWarningsAsErrorsTableLayoutPanel, outputTableLayoutPanel}
+                tlp.Padding = New Padding(4, 4, 4, 4)
+
+                ' Add extra margin to each row for CPS-like spacing
+                For Each ctrl As Control In tlp.Controls
+                    Dim currentMargin = ctrl.Margin
+                    ctrl.Margin = New Padding(currentMargin.Left, currentMargin.Top + 2,
+                                              currentMargin.Right, currentMargin.Bottom + 2)
+                Next
+            Next
+
+            ' Add padding to the overarching layout
+            overarchingTableLayoutPanel.Padding = New Padding(8, 4, 8, 4)
+
+            ' Increase group box internal padding for CPS-like whitespace
+            For Each gb As SeparatorGroupBox In {generalGroupBox, errorsAndWarningsGroupBox,
+                                                  treatWarningsAsErrorsGroupBox, outputGroupBox}
+                gb.Padding = New Padding(0, 8, 0, 8)
+            Next
         End Sub
 
         Public Enum TreatWarningsSetting
