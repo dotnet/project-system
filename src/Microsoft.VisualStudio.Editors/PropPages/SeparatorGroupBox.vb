@@ -19,7 +19,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const LabelToLineDistance As Integer = 8
         Private Const HeaderFontSizeIncrease As Single = 3.0F
         Private Const TopPadding As Integer = 4
-        Private Const BottomPadding As Integer = 8
 
         Public Sub New()
         End Sub
