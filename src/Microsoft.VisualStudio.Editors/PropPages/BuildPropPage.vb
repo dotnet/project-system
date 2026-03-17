@@ -35,6 +35,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const Const_CondConstantDEBUG As String = "DEBUG"
         Protected Const Const_CondConstantTRACE As String = "TRACE"
 
+        Private _wpfControl As BuildPropPageWpfControl
+        Private _elementHost As System.Windows.Forms.Integration.ElementHost
+
         Public Sub New()
             MyBase.New()
 
@@ -53,8 +56,52 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 New ComboItem("warnings", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildSettings_Nullable_Warnings),
                 New ComboItem("annotations", My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_BuildSettings_Nullable_Annotations)})
 
-            ApplyCpsDesignerStyling()
-            StripLabelColons()
+            ' Host the WPF control in the constructor so it participates in the
+            ' initial layout pass. AutoSize=False prevents extra resize events
+            ' during ApplicationDesignerView.ShowTab which would trigger the
+            ' "Window frame bounds updated more than once" assertion.
+            HostWpfControl()
+        End Sub
+
+        ''' <summary>
+        ''' Replaces the WinForms content area with a WPF ElementHost containing
+        ''' a CPS-styled Build page control. The WinForms controls are hidden but
+        ''' remain alive as data targets for PropertyControlData.
+        ''' </summary>
+        ''' <remarks>
+        ''' Overlays the WPF ElementHost on top of the existing WinForms layout
+        ''' without modifying the overarchingTableLayoutPanel structure. This avoids
+        ''' changing the control's measured size during construction, which would
+        ''' trigger extra UpdateWindowFrameBounds() calls and the
+        ''' "Window frame bounds updated more than once" assertion in ShowTab.
+        ''' The WinForms controls remain in the visual tree (hidden individually)
+        ''' as data targets for PropertyControlData.
+        ''' </remarks>
+        Private Sub HostWpfControl()
+            ' Prevent auto-resize that propagates to the hosting panel
+            AutoSize = False
+
+            ' Create WPF control and ElementHost
+            _wpfControl = New BuildPropPageWpfControl()
+            _elementHost = New System.Windows.Forms.Integration.ElementHost() With {
+                .Dock = DockStyle.Fill,
+                .Child = _wpfControl
+            }
+
+            ' Add ElementHost on top of everything (don't hide anything —
+            ' just overlay, so the measured size stays unchanged)
+            Controls.Add(_elementHost)
+            _elementHost.BringToFront()
+
+            ' Wire up the Browse button
+            AddHandler _wpfControl.btnOutputPathBrowse.Click, Sub(s, e)
+                                                                  btnOutputPathBrowse.PerformClick()
+                                                              End Sub
+
+            ' Wire up the Advanced button
+            AddHandler _wpfControl.btnAdvanced.Click, Sub(s, e)
+                                                          btnAdvanced.PerformClick()
+                                                      End Sub
         End Sub
 
         ''' <summary>
@@ -82,20 +129,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             RestructureTreatWarningsSection()
             RestructureOutputSection()
 
-            ' Add padding to the overarching layout
-            overarchingTableLayoutPanel.Padding = New Padding(12, 4, 12, 4)
+            ' Minimal overarching padding — CPS uses tight layout
+            overarchingTableLayoutPanel.Padding = New Padding(12, 0, 12, 4)
 
-            ' Increase group box internal padding and add top margin for section separation
+            ' Group box internal padding: small top for header breathing room
             For Each gb As SeparatorGroupBox In {generalGroupBox, errorsAndWarningsGroupBox,
                                                   treatWarningsAsErrorsGroupBox, outputGroupBox}
-                gb.Padding = New Padding(0, 16, 0, 8)
+                gb.Padding = New Padding(0, 10, 0, 4)
             Next
 
-            ' Add vertical spacing between group boxes in the overarching panel
-            generalGroupBox.Margin = New Padding(0, 0, 0, 8)
-            errorsAndWarningsGroupBox.Margin = New Padding(0, 0, 0, 8)
-            treatWarningsAsErrorsGroupBox.Margin = New Padding(0, 0, 0, 8)
-            outputGroupBox.Margin = New Padding(0, 0, 0, 8)
+            ' Tight vertical spacing between sections
+            generalGroupBox.Margin = New Padding(0, 0, 0, 4)
+            errorsAndWarningsGroupBox.Margin = New Padding(0, 0, 0, 4)
+            treatWarningsAsErrorsGroupBox.Margin = New Padding(0, 0, 0, 4)
+            outputGroupBox.Margin = New Padding(0, 0, 0, 4)
         End Sub
 
         ''' <summary>
@@ -449,6 +496,29 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             RefreshEnabledStatusForPrefer32Bit(chkPrefer32Bit)
             RefreshEnabledStatusForPreferNativeArm64(chkPreferNativeArm64)
             RefreshVisibleStatusForNullable()
+
+            ' Sync WinForms control state → WPF visual controls
+            SyncWpfFromWinForms()
+        End Sub
+
+        ''' <summary>
+        ''' Pushes current WinForms control values into the WPF visual layer.
+        ''' </summary>
+        Private Sub SyncWpfFromWinForms()
+            If _wpfControl Is Nothing Then Return
+
+            _wpfControl.BindToWinFormsControls(
+                txtConditionalCompilationSymbols,
+                chkDefineDebug, chkDefineTrace,
+                cboPlatformTarget, cboNullable,
+                chkPrefer32Bit, chkPreferNativeArm64,
+                chkAllowUnsafeCode, chkOptimizeCode,
+                cboWarningLevel, txtSupressWarnings,
+                rbWarningNone, rbWarningAll, rbWarningSpecific,
+                txtSpecificWarnings, txtOutputPath,
+                chkXMLDocumentationFile, txtXMLDocumentationFile,
+                chkRegisterForCOM, cboSGenOption,
+                lblNullable, lblSGenOption)
         End Sub
 
         Private Sub AdvancedButton_Click(sender As Object, e As EventArgs) Handles btnAdvanced.Click

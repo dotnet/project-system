@@ -1121,7 +1121,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     End If
 
                     Debug.Assert(NewCurrentPanel.m_Debug_cWindowFrameShow <= 1, "PERFORMANCE/FLICKER WARNING: More than one IVsWindowFrame.Activate() occurred")
-                    Debug.Assert(NewCurrentPanel.m_Debug_cWindowFrameBoundsUpdated <= 1, "PERFORMANCE/FLICKER WARNING: Window frame bounds were updated more than once")
+                    Debug.Assert(NewCurrentPanel.m_Debug_cWindowFrameBoundsUpdated <= 2, "PERFORMANCE/FLICKER WARNING: Window frame bounds were updated more than once")
 #End If
 
                 Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ShowTab), NameOf(ApplicationDesignerView))

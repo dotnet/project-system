@@ -5,37 +5,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d"
-             Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
-             Foreground="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}">
+             mc:Ignorable="d">
 
     <UserControl.Resources>
-        <!-- Category header style matching CPS designer -->
+        <!-- Colors are applied programmatically via ApplyVsThemeColors() to support
+             dark/light/high-contrast themes. These styles use {x:Null} brushes as
+             placeholders; the code-behind sets them at runtime using VSColorTheme. -->
+
+        <!-- Category header style matching CPS designer (133% font, SemiBold) -->
         <Style x:Key="CategoryHeaderStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Margin" Value="0,16,0,4"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
         </Style>
 
         <!-- Separator line below category headers -->
         <Style x:Key="CategorySeparatorStyle" TargetType="Separator">
             <Setter Property="Margin" Value="0,4,0,12"/>
-            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
         </Style>
 
-        <!-- Property label style (above the control) -->
+        <!-- Property label style (bold, above the control — matches CPS PropertyTemplates) -->
         <Style x:Key="PropertyLabelStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Margin" Value="0,8,0,4"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,8,0,2"/>
         </Style>
 
-        <!-- Description text style -->
+        <!-- Description text style (gray subtext — CPS uses SupportTextBrushKey) -->
         <Style x:Key="PropertyDescriptionStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="11"/>
             <Setter Property="Margin" Value="0,0,0,4"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
 
@@ -46,17 +43,19 @@
             <Setter Property="MinHeight" Value="26"/>
         </Style>
 
-        <!-- Shared ComboBox style -->
+        <!-- Shared ComboBox style (CPS: MinWidth=300, Left-aligned) -->
         <Style x:Key="PropertyComboBoxStyle" TargetType="ComboBox">
             <Setter Property="Margin" Value="0,0,0,4"/>
             <Setter Property="Padding" Value="6,4"/>
             <Setter Property="MinHeight" Value="26"/>
-            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="MinWidth" Value="300"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
 
-        <!-- Shared CheckBox style (CPS uses description text next to checkbox) -->
+        <!-- Shared CheckBox style (CPS BoolPropertyValueTemplate: bold content) -->
         <Style x:Key="PropertyCheckBoxStyle" TargetType="CheckBox">
-            <Setter Property="Margin" Value="0,8,0,4"/>
+            <Setter Property="Margin" Value="0,6,0,2"/>
+            <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
