@@ -164,16 +164,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             BindRadioButton(rbWarningSpecific, wfRbSpecific)
 
             ' --- Visibility sync for conditional controls ---
-            ' Use Enabled state (not Visible) because the WinForms controls
-            ' are behind the ElementHost overlay and always report Visible=True,
-            ' but their Enabled state reflects whether the feature is supported.
-            SyncEnabledToVisibility(chkPrefer32Bit, wfChkPrefer32)
-            SyncEnabledToVisibility(chkPreferNativeArm64, wfChkPreferArm64)
+            ' Mirror Enabled state to WPF IsEnabled (keep visible, but grayed out
+            ' when feature is not supported for this project type)
+            chkPrefer32Bit.IsEnabled = wfChkPrefer32.Enabled
+            chkPreferNativeArm64.IsEnabled = wfChkPreferArm64.Enabled
 
-            ' Hide Nullable section if WinForms label has no items
-            ' (HiddenIfMissingPropertyControlData hides via Visible=False on the
-            ' label, but since the label's parent panel is behind our overlay,
-            ' we check the combo's item count instead)
+            ' Hide Nullable section if no items (HiddenIfMissingPropertyControlData)
             If wfCboNullable.Items.Count = 0 Then
                 lblNullable.Visibility = System.Windows.Visibility.Collapsed
                 cboNullable.Visibility = System.Windows.Visibility.Collapsed

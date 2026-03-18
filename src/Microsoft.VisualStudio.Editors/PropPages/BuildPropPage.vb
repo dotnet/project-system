@@ -80,6 +80,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub HostWpfControl()
             ' Prevent auto-resize that propagates to the hosting panel
             AutoSize = False
+            ' Fill the hosting area (page's default size from .resx is only 592x550)
+            Dock = DockStyle.Fill
 
             ' Set page BackColor to match VS dark theme so no light bleeds through
             Dim bgColor = Microsoft.VisualStudio.PlatformUI.VSColorTheme.GetThemedColor(
