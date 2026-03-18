@@ -153,6 +153,53 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
+        <!-- Dark vertical scrollbar. Only overrides Vertical orientation.
+             Uses Track with transparent RepeatButtons and themed Thumb. -->
+        <Style x:Key="{x:Type ScrollBar}" TargetType="ScrollBar">
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Vertical">
+                    <Setter Property="Width" Value="14"/>
+                    <Setter Property="MinWidth" Value="14"/>
+                    <Setter Property="Background" Value="#2D2D30"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ScrollBar">
+                                <Grid Background="#2D2D30">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <RepeatButton Grid.Row="0" Command="ScrollBar.LineUpCommand"
+                                                  Height="14" Opacity="0" Focusable="False"/>
+                                    <Track x:Name="PART_Track" Grid.Row="1" IsDirectionReversed="True">
+                                        <Track.DecreaseRepeatButton>
+                                            <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False"/>
+                                        </Track.DecreaseRepeatButton>
+                                        <Track.IncreaseRepeatButton>
+                                            <RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False"/>
+                                        </Track.IncreaseRepeatButton>
+                                        <Track.Thumb>
+                                            <Thumb>
+                                                <Thumb.Template>
+                                                    <ControlTemplate TargetType="Thumb">
+                                                        <Border Background="#686868" CornerRadius="3"
+                                                                Margin="3,0,3,0" MinHeight="20"/>
+                                                    </ControlTemplate>
+                                                </Thumb.Template>
+                                            </Thumb>
+                                        </Track.Thumb>
+                                    </Track>
+                                    <RepeatButton Grid.Row="2" Command="ScrollBar.LineDownCommand"
+                                                  Height="14" Opacity="0" Focusable="False"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
 
     <DockPanel LastChildFill="True">
