@@ -88,6 +88,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Microsoft.VisualStudio.PlatformUI.EnvironmentColors.ToolWindowBackgroundColorKey)
             BackColor = Drawing.Color.FromArgb(bgColor.A, bgColor.R, bgColor.G, bgColor.B)
 
+            ' Remove the WinForms layout panel from dock competition so the ElementHost
+            ' gets the full page area. The WinForms controls remain alive (hidden) as
+            ' data targets for PropertyControlData binding.
+            overarchingTableLayoutPanel.Dock = DockStyle.None
+            overarchingTableLayoutPanel.Size = New Drawing.Size(0, 0)
+            overarchingTableLayoutPanel.Visible = False
+
             ' Create WPF control and ElementHost
             _wpfControl = New BuildPropPageWpfControl()
             _elementHost = New System.Windows.Forms.Integration.ElementHost() With {

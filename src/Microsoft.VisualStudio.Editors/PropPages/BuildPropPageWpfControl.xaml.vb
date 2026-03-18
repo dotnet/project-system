@@ -45,18 +45,43 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim inputBg = VSColorTheme.GetThemedColor(EnvironmentColors.ComboBoxBackgroundColorKey)
             Dim inputFg = VSColorTheme.GetThemedColor(EnvironmentColors.ComboBoxTextColorKey)
             Dim inputBorder = VSColorTheme.GetThemedColor(EnvironmentColors.ComboBoxBorderColorKey)
+            Dim buttonBg = VSColorTheme.GetThemedColor(EnvironmentColors.SystemButtonFaceColorKey)
+            Dim buttonFg = VSColorTheme.GetThemedColor(EnvironmentColors.SystemButtonTextColorKey)
 
             Dim wpfBg = ToWpfBrush(bgColor)
             Dim wpfFg = ToWpfBrush(fgColor)
             Dim wpfGray = ToWpfBrush(grayColor)
+            Dim wpfInputBg = ToWpfBrush(inputBg)
+            Dim wpfInputFg = ToWpfBrush(inputFg)
+            Dim wpfInputBorder = ToWpfBrush(inputBorder)
 
             Background = wpfBg
             Foreground = wpfFg
 
+            ' Override SystemColors resource keys so that default WPF control templates
+            ' (ComboBox, ScrollBar, etc.) pick up VS theme colors instead of Windows system colors.
+            Resources(System.Windows.SystemColors.WindowBrushKey) = wpfInputBg
+            Resources(System.Windows.SystemColors.WindowTextBrushKey) = wpfInputFg
+            Resources(System.Windows.SystemColors.ControlBrushKey) = wpfBg
+            Resources(System.Windows.SystemColors.ControlTextBrushKey) = wpfFg
+            Resources(System.Windows.SystemColors.HighlightBrushKey) = ToWpfBrush(
+                VSColorTheme.GetThemedColor(EnvironmentColors.ComboBoxMouseOverBackgroundMiddle1ColorKey))
+            Resources(System.Windows.SystemColors.HighlightTextBrushKey) = wpfInputFg
+            Resources(System.Windows.SystemColors.GrayTextBrushKey) = wpfGray
+            Resources(System.Windows.SystemColors.ActiveBorderBrushKey) = wpfInputBorder
+
             ' Apply to all styled elements recursively
             ApplyColorsRecursive(Me, wpfFg, wpfGray, wpfBg,
-                                 ToWpfBrush(inputBg), ToWpfBrush(inputFg), ToWpfBrush(inputBorder),
-                                 ToWpfBrush(separatorColor))
+                                 wpfInputBg, wpfInputFg, wpfInputBorder,
+                                 ToWpfBrush(separatorColor),
+                                 ToWpfBrush(buttonBg), ToWpfBrush(buttonFg))
+
+            ' Store a brush for the active nav item highlight (used by UpdateActiveNavItem)
+            Dim navHighlight = VSColorTheme.GetThemedColor(EnvironmentColors.ToolWindowTabSelectedTabColorKey)
+            Resources("NavActiveBrush") = ToWpfBrush(navHighlight)
+
+            ' Update nav item highlighting
+            UpdateActiveNavItem()
         End Sub
 
         Private Shared Function ToWpfBrush(color As System.Drawing.Color) As SolidColorBrush
@@ -67,14 +92,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                          fgBrush As SolidColorBrush, grayBrush As SolidColorBrush,
                                          bgBrush As SolidColorBrush, inputBg As SolidColorBrush,
                                          inputFg As SolidColorBrush, inputBorder As SolidColorBrush,
-                                         separatorBrush As SolidColorBrush)
+                                         separatorBrush As SolidColorBrush,
+                                         buttonBg As SolidColorBrush, buttonFg As SolidColorBrush)
             Dim count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent)
             For i = 0 To count - 1
                 Dim child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i)
 
                 If TypeOf child Is System.Windows.Controls.TextBlock Then
                     Dim tb = DirectCast(child, System.Windows.Controls.TextBlock)
-                    ' Description labels use the PropertyDescriptionStyle (identified by resource lookup)
                     Dim descStyle = TryCast(TryFindResource("PropertyDescriptionStyle"), System.Windows.Style)
                     If tb.Style IsNot Nothing AndAlso descStyle IsNot Nothing AndAlso tb.Style Is descStyle Then
                         tb.Foreground = grayBrush
@@ -88,22 +113,35 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     tb.Foreground = inputFg
                     tb.BorderBrush = inputBorder
 
+                ElseIf TypeOf child Is System.Windows.Controls.ComboBox Then
+                    Dim cbo = DirectCast(child, System.Windows.Controls.ComboBox)
+                    cbo.Background = inputBg
+                    cbo.Foreground = inputFg
+                    cbo.BorderBrush = inputBorder
+
                 ElseIf TypeOf child Is System.Windows.Controls.CheckBox Then
                     DirectCast(child, System.Windows.Controls.CheckBox).Foreground = fgBrush
 
                 ElseIf TypeOf child Is System.Windows.Controls.RadioButton Then
                     DirectCast(child, System.Windows.Controls.RadioButton).Foreground = fgBrush
 
-                ElseIf TypeOf child Is System.Windows.Controls.Separator Then
-                    DirectCast(child, System.Windows.Controls.Separator).Background = separatorBrush
+                ElseIf TypeOf child Is System.Windows.Controls.Border Then
+                    Dim bdr = DirectCast(child, System.Windows.Controls.Border)
+                    ' Only style separator borders (identified by having CategorySeparatorStyle)
+                    Dim sepStyle = TryCast(TryFindResource("CategorySeparatorStyle"), System.Windows.Style)
+                    If bdr.Style IsNot Nothing AndAlso sepStyle IsNot Nothing AndAlso bdr.Style Is sepStyle Then
+                        bdr.Background = separatorBrush
+                    End If
 
                 ElseIf TypeOf child Is System.Windows.Controls.Button Then
                     Dim btn = DirectCast(child, System.Windows.Controls.Button)
-                    btn.Foreground = fgBrush
+                    btn.Background = buttonBg
+                    btn.Foreground = buttonFg
                     btn.BorderBrush = inputBorder
                 End If
 
-                ApplyColorsRecursive(child, fgBrush, grayBrush, bgBrush, inputBg, inputFg, inputBorder, separatorBrush)
+                ApplyColorsRecursive(child, fgBrush, grayBrush, bgBrush, inputBg, inputFg, inputBorder,
+                                     separatorBrush, buttonBg, buttonFg)
             Next
         End Sub
 
@@ -341,6 +379,61 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Shared Sub SyncEnabledToVisibility(wpfElement As System.Windows.UIElement, wfControl As WinForms.Control)
             ' Show checkbox if control is enabled (feature is supported for this project type)
             wpfElement.Visibility = If(wfControl.Enabled, System.Windows.Visibility.Visible, System.Windows.Visibility.Collapsed)
+        End Sub
+
+#End Region
+
+#Region "Section navigation"
+
+        ''' <summary>
+        ''' Handles click on a nav item to scroll to the corresponding section.
+        ''' </summary>
+        Private Sub NavItem_Click(sender As Object, e As System.Windows.Input.MouseButtonEventArgs)
+            Dim tb = TryCast(sender, System.Windows.Controls.TextBlock)
+            If tb Is Nothing Then Return
+
+            Dim sectionName = TryCast(tb.Tag, String)
+            If String.IsNullOrEmpty(sectionName) Then Return
+
+            Dim section = TryCast(FindName(sectionName), System.Windows.FrameworkElement)
+            If section IsNot Nothing Then
+                section.BringIntoView()
+            End If
+        End Sub
+
+        ''' <summary>
+        ''' Updates the active nav item highlight as the user scrolls.
+        ''' </summary>
+        Private Sub ContentScrollViewer_ScrollChanged(sender As Object, e As System.Windows.Controls.ScrollChangedEventArgs)
+            UpdateActiveNavItem()
+        End Sub
+
+        Private Sub UpdateActiveNavItem()
+            ' Find which section is closest to the top of the viewport
+            Dim sections() As System.Windows.FrameworkElement = {sectionGeneral, sectionErrorsAndWarnings, sectionTreatWarnings, sectionOutput}
+            Dim navItems() As System.Windows.Controls.TextBlock = {navGeneral, navErrorsAndWarnings, navTreatWarnings, navOutput}
+
+            Dim activeBrush = TryCast(TryFindResource("NavActiveBrush"), System.Windows.Media.SolidColorBrush)
+            Dim transparentBrush = System.Windows.Media.Brushes.Transparent
+
+            Dim activeIndex = 0
+            For i = 0 To sections.Length - 1
+                Dim transform = sections(i).TransformToAncestor(contentScrollViewer)
+                Dim point = transform.Transform(New System.Windows.Point(0, 0))
+                If point.Y <= 20 Then
+                    activeIndex = i
+                End If
+            Next
+
+            For i = 0 To navItems.Length - 1
+                If i = activeIndex Then
+                    navItems(i).SetValue(System.Windows.Controls.TextBlock.BackgroundProperty, activeBrush)
+                    navItems(i).FontWeight = System.Windows.FontWeights.SemiBold
+                Else
+                    navItems(i).SetValue(System.Windows.Controls.TextBlock.BackgroundProperty, transparentBrush)
+                    navItems(i).FontWeight = System.Windows.FontWeights.Normal
+                End If
+            Next
         End Sub
 
 #End Region

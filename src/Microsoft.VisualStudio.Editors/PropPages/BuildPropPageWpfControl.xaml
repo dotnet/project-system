@@ -19,9 +19,11 @@
             <Setter Property="Margin" Value="0,16,0,4"/>
         </Style>
 
-        <!-- Separator line below category headers -->
-        <Style x:Key="CategorySeparatorStyle" TargetType="Separator">
+        <!-- Separator line below category headers (Border gives better visibility than Separator) -->
+        <Style x:Key="CategorySeparatorStyle" TargetType="Border">
+            <Setter Property="Height" Value="1"/>
             <Setter Property="Margin" Value="0,4,0,12"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
 
         <!-- Property label style (bold, above the control — matches CPS PropertyTemplates) -->
@@ -43,13 +45,103 @@
             <Setter Property="MinHeight" Value="26"/>
         </Style>
 
-        <!-- Shared ComboBox style (CPS: MinWidth=300, Left-aligned) -->
+        <!-- Shared ComboBox style with custom template for dark theme support.
+             The default WPF ComboBox template uses ButtonChrome which ignores
+             Background/Foreground bindings. This template respects them. -->
         <Style x:Key="PropertyComboBoxStyle" TargetType="ComboBox">
             <Setter Property="Margin" Value="0,0,0,4"/>
             <Setter Property="Padding" Value="6,4"/>
             <Setter Property="MinHeight" Value="26"/>
             <Setter Property="MinWidth" Value="300"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="ToggleButton"
+                                          Focusable="False"
+                                          ClickMode="Press"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="Border"
+                                                Background="{Binding Background, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                BorderThickness="1"
+                                                CornerRadius="1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="20"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Border Grid.Column="1" BorderThickness="1,0,0,0"
+                                                        BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ComboBox}}">
+                                                    <Path x:Name="Arrow" Data="M 0 0 L 4 4 L 8 0 Z"
+                                                          Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter x:Name="ContentSite"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                                              Margin="8,4,24,4"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              IsHitTestVisible="False"/>
+                            <Popup x:Name="Popup"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   Placement="Bottom"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid x:Name="DropDown"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                      SnapsToDevicePixels="True">
+                                    <Border x:Name="DropDownBorder"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="1"/>
+                                    <ScrollViewer SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Padding" Value="6,4"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ComboBoxItem">
+                                    <Border x:Name="Bd"
+                                            Background="Transparent"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsHighlighted" Value="True">
+                                            <Setter TargetName="Bd" Property="Background"
+                                                    Value="{Binding Background, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
+                                            <Setter TargetName="Bd" Property="Opacity" Value="0.8"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Shared CheckBox style (CPS BoolPropertyValueTemplate: bold content) -->
@@ -66,121 +158,162 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False"
-                  Padding="16,0,16,16">
-        <StackPanel Orientation="Vertical" MaxWidth="800" HorizontalAlignment="Left">
+    <DockPanel LastChildFill="True">
 
-            <!-- Page title (matches CPS "Build" heading) -->
-            <TextBlock Text="Build" FontSize="24" FontWeight="Light" Margin="0,8,0,12"/>
+        <!-- ============================================ -->
+        <!-- LEFT NAV: Section navigation (matches CPS) -->
+        <!-- ============================================ -->
+        <Border DockPanel.Dock="Left" Width="180" Margin="0,12,0,0" Padding="0,0,8,0"
+                x:Name="navBorder">
+            <StackPanel x:Name="navPanel" VerticalAlignment="Top">
+                <TextBlock x:Name="navGeneral" Text="General" Cursor="Hand"
+                           Foreground="White"
+                           Margin="4,2,4,2" Padding="8,4" FontSize="13"
+                           MouseLeftButtonDown="NavItem_Click" Tag="sectionGeneral"/>
+                <TextBlock x:Name="navErrorsAndWarnings" Text="Errors and warnings" Cursor="Hand"
+                           Foreground="White"
+                           Margin="4,2,4,2" Padding="8,4" FontSize="13"
+                           MouseLeftButtonDown="NavItem_Click" Tag="sectionErrorsAndWarnings"/>
+                <TextBlock x:Name="navTreatWarnings" Text="Treat warnings as errors" Cursor="Hand"
+                           Foreground="White"
+                           Margin="4,2,4,2" Padding="8,4" FontSize="13"
+                           MouseLeftButtonDown="NavItem_Click" Tag="sectionTreatWarnings"/>
+                <TextBlock x:Name="navOutput" Text="Output" Cursor="Hand"
+                           Foreground="White"
+                           Margin="4,2,4,2" Padding="8,4" FontSize="13"
+                           MouseLeftButtonDown="NavItem_Click" Tag="sectionOutput"/>
+            </StackPanel>
+        </Border>
 
-            <!-- ============================================ -->
-            <!-- GENERAL -->
-            <!-- ============================================ -->
-            <TextBlock Text="General" Style="{StaticResource CategoryHeaderStyle}" Margin="0,4,0,4"/>
-            <Separator Style="{StaticResource CategorySeparatorStyle}"/>
+        <!-- ============================================ -->
+        <!-- RIGHT: Scrollable content area -->
+        <!-- ============================================ -->
+        <ScrollViewer x:Name="contentScrollViewer"
+                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                      Focusable="False" Padding="16,0,16,16"
+                      ScrollChanged="ContentScrollViewer_ScrollChanged">
+            <StackPanel Orientation="Vertical" MaxWidth="800" HorizontalAlignment="Left">
 
-            <!-- Conditional compilation symbols -->
-            <TextBlock Text="Conditional compilation symbols" Style="{StaticResource PropertyLabelStyle}"/>
-            <TextBlock Text="Specifies symbols on which to perform conditional compilation."
-                       Style="{StaticResource PropertyDescriptionStyle}"/>
-            <TextBox x:Name="txtConditionalCompilationSymbols" Style="{StaticResource PropertyTextBoxStyle}"/>
+                <!-- Page title (matches CPS "Build" heading) -->
+                <TextBlock Text="Build" FontSize="24" FontWeight="Light" Margin="0,8,0,4"/>
+                <Border Style="{StaticResource CategorySeparatorStyle}" Margin="0,4,0,16"/>
 
-            <!-- Define DEBUG constant -->
-            <CheckBox x:Name="chkDefineDebug" Content="Define DEBUG constant"
-                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+                <!-- ============================================ -->
+                <!-- GENERAL -->
+                <!-- ============================================ -->
+                <StackPanel x:Name="sectionGeneral">
+                    <TextBlock Text="General" Style="{StaticResource CategoryHeaderStyle}" Margin="0,0,0,4"/>
 
-            <!-- Define TRACE constant -->
-            <CheckBox x:Name="chkDefineTrace" Content="Define TRACE constant"
-                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+                    <!-- Conditional compilation symbols -->
+                    <TextBlock Text="Conditional compilation symbols" Style="{StaticResource PropertyLabelStyle}"/>
+                    <TextBlock Text="Specifies symbols on which to perform conditional compilation."
+                               Style="{StaticResource PropertyDescriptionStyle}"/>
+                    <TextBox x:Name="txtConditionalCompilationSymbols" Style="{StaticResource PropertyTextBoxStyle}"/>
 
-            <!-- Platform target -->
-            <TextBlock Text="Platform target" Style="{StaticResource PropertyLabelStyle}"/>
-            <TextBlock Text="Specifies the processor to be targeted by the output file."
-                       Style="{StaticResource PropertyDescriptionStyle}"/>
-            <ComboBox x:Name="cboPlatformTarget" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
+                    <!-- Define DEBUG constant -->
+                    <CheckBox x:Name="chkDefineDebug" Content="Define DEBUG constant"
+                              Style="{StaticResource PropertyCheckBoxStyle}"/>
 
-            <!-- Nullable -->
-            <TextBlock x:Name="lblNullable" Text="Nullable" Style="{StaticResource PropertyLabelStyle}"/>
-            <ComboBox x:Name="cboNullable" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
+                    <!-- Define TRACE constant -->
+                    <CheckBox x:Name="chkDefineTrace" Content="Define TRACE constant"
+                              Style="{StaticResource PropertyCheckBoxStyle}"/>
 
-            <!-- Prefer 32-bit -->
-            <CheckBox x:Name="chkPrefer32Bit" Content="Prefer 32-bit"
-                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+                    <!-- Platform target -->
+                    <TextBlock Text="Platform target" Style="{StaticResource PropertyLabelStyle}"/>
+                    <TextBlock Text="Specifies the processor to be targeted by the output file."
+                               Style="{StaticResource PropertyDescriptionStyle}"/>
+                    <ComboBox x:Name="cboPlatformTarget" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
 
-            <!-- Prefer native ARM64 -->
-            <CheckBox x:Name="chkPreferNativeArm64" Content="Prefer native ARM64"
-                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+                    <!-- Nullable -->
+                    <TextBlock x:Name="lblNullable" Text="Nullable" Style="{StaticResource PropertyLabelStyle}"/>
+                    <ComboBox x:Name="cboNullable" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
 
-            <!-- Allow unsafe code -->
-            <CheckBox x:Name="chkAllowUnsafeCode" Content="Allow unsafe code"
-                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+                    <!-- Prefer 32-bit -->
+                    <CheckBox x:Name="chkPrefer32Bit" Content="Prefer 32-bit"
+                              Style="{StaticResource PropertyCheckBoxStyle}"/>
 
-            <!-- Optimize code -->
-            <CheckBox x:Name="chkOptimizeCode" Content="Optimize code"
-                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+                    <!-- Prefer native ARM64 -->
+                    <CheckBox x:Name="chkPreferNativeArm64" Content="Prefer native ARM64"
+                              Style="{StaticResource PropertyCheckBoxStyle}"/>
 
-            <!-- ============================================ -->
-            <!-- ERRORS AND WARNINGS -->
-            <!-- ============================================ -->
-            <TextBlock Text="Errors and warnings" Style="{StaticResource CategoryHeaderStyle}"/>
-            <Separator Style="{StaticResource CategorySeparatorStyle}"/>
+                    <!-- Allow unsafe code -->
+                    <CheckBox x:Name="chkAllowUnsafeCode" Content="Allow unsafe code"
+                              Style="{StaticResource PropertyCheckBoxStyle}"/>
 
-            <!-- Warning level -->
-            <TextBlock Text="Warning level" Style="{StaticResource PropertyLabelStyle}"/>
-            <ComboBox x:Name="cboWarningLevel" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
+                    <!-- Optimize code -->
+                    <CheckBox x:Name="chkOptimizeCode" Content="Optimize code"
+                              Style="{StaticResource PropertyCheckBoxStyle}"/>
+                </StackPanel>
 
-            <!-- Suppress specific warnings -->
-            <TextBlock Text="Suppress specific warnings" Style="{StaticResource PropertyLabelStyle}"/>
-            <TextBox x:Name="txtSupressWarnings" Style="{StaticResource PropertyTextBoxStyle}"/>
+                <!-- ============================================ -->
+                <!-- ERRORS AND WARNINGS -->
+                <!-- ============================================ -->
+                <StackPanel x:Name="sectionErrorsAndWarnings">
+                    <TextBlock Text="Errors and warnings" Style="{StaticResource CategoryHeaderStyle}"/>
 
-            <!-- ============================================ -->
-            <!-- TREAT WARNINGS AS ERRORS -->
-            <!-- ============================================ -->
-            <TextBlock Text="Treat warnings as errors" Style="{StaticResource CategoryHeaderStyle}"/>
-            <Separator Style="{StaticResource CategorySeparatorStyle}"/>
+                    <!-- Warning level -->
+                    <TextBlock Text="Warning level" Style="{StaticResource PropertyLabelStyle}"/>
+                    <ComboBox x:Name="cboWarningLevel" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
 
-            <!-- Warning treatment radio buttons -->
-            <RadioButton x:Name="rbWarningNone" Content="None"
-                         Style="{StaticResource PropertyRadioButtonStyle}"/>
-            <RadioButton x:Name="rbWarningAll" Content="All"
-                         Style="{StaticResource PropertyRadioButtonStyle}"/>
-            <RadioButton x:Name="rbWarningSpecific" Content="Specific warnings"
-                         Style="{StaticResource PropertyRadioButtonStyle}"/>
+                    <!-- Suppress specific warnings -->
+                    <TextBlock Text="Suppress specific warnings" Style="{StaticResource PropertyLabelStyle}"/>
+                    <TextBox x:Name="txtSupressWarnings" Style="{StaticResource PropertyTextBoxStyle}"/>
+                </StackPanel>
 
-            <!-- Specific warnings text -->
-            <TextBox x:Name="txtSpecificWarnings" Style="{StaticResource PropertyTextBoxStyle}" Margin="24,0,0,4"/>
+                <!-- ============================================ -->
+                <!-- TREAT WARNINGS AS ERRORS -->
+                <!-- ============================================ -->
+                <StackPanel x:Name="sectionTreatWarnings">
+                    <TextBlock Text="Treat warnings as errors" Style="{StaticResource CategoryHeaderStyle}"/>
 
-            <!-- ============================================ -->
-            <!-- OUTPUT -->
-            <!-- ============================================ -->
-            <TextBlock Text="Output" Style="{StaticResource CategoryHeaderStyle}"/>
-            <Separator Style="{StaticResource CategorySeparatorStyle}"/>
+                    <!-- Warning treatment radio buttons -->
+                    <RadioButton x:Name="rbWarningNone" Content="None"
+                                 Style="{StaticResource PropertyRadioButtonStyle}"/>
+                    <RadioButton x:Name="rbWarningAll" Content="All"
+                                 Style="{StaticResource PropertyRadioButtonStyle}"/>
+                    <RadioButton x:Name="rbWarningSpecific" Content="Specific warnings"
+                                 Style="{StaticResource PropertyRadioButtonStyle}"/>
 
-            <!-- Output path -->
-            <TextBlock Text="Output path" Style="{StaticResource PropertyLabelStyle}"/>
-            <DockPanel Margin="0,0,0,4">
-                <Button x:Name="btnOutputPathBrowse" Content="Browse..." DockPanel.Dock="Right"
-                        Padding="12,4" Margin="8,0,0,0"/>
-                <TextBox x:Name="txtOutputPath" Style="{StaticResource PropertyTextBoxStyle}" Margin="0"/>
-            </DockPanel>
+                    <!-- Specific warnings text -->
+                    <TextBox x:Name="txtSpecificWarnings" Style="{StaticResource PropertyTextBoxStyle}" Margin="24,0,0,4"/>
+                </StackPanel>
 
-            <!-- XML documentation file -->
-            <CheckBox x:Name="chkXMLDocumentationFile" Content="XML documentation file"
-                      Style="{StaticResource PropertyCheckBoxStyle}"/>
-            <TextBox x:Name="txtXMLDocumentationFile" Style="{StaticResource PropertyTextBoxStyle}" Margin="24,0,0,4"/>
+                <!-- ============================================ -->
+                <!-- OUTPUT -->
+                <!-- ============================================ -->
+                <StackPanel x:Name="sectionOutput">
+                    <TextBlock Text="Output" Style="{StaticResource CategoryHeaderStyle}"/>
 
-            <!-- Register for COM interop -->
-            <CheckBox x:Name="chkRegisterForCOM" Content="Register for COM interop"
-                      Style="{StaticResource PropertyCheckBoxStyle}"/>
+                    <!-- Output path -->
+                    <TextBlock Text="Output path" Style="{StaticResource PropertyLabelStyle}"/>
+                    <DockPanel Margin="0,0,0,4">
+                        <Button x:Name="btnOutputPathBrowse" Content="Browse..." DockPanel.Dock="Right"
+                                Padding="12,4" Margin="8,0,0,0"/>
+                        <TextBox x:Name="txtOutputPath" Style="{StaticResource PropertyTextBoxStyle}" Margin="0"/>
+                    </DockPanel>
 
-            <!-- Generate serialization assembly -->
-            <TextBlock x:Name="lblSGenOption" Text="Generate serialization assembly" Style="{StaticResource PropertyLabelStyle}"/>
-            <ComboBox x:Name="cboSGenOption" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
+                    <!-- XML documentation file -->
+                    <CheckBox x:Name="chkXMLDocumentationFile" Content="XML documentation file"
+                              Style="{StaticResource PropertyCheckBoxStyle}"/>
+                    <TextBox x:Name="txtXMLDocumentationFile" Style="{StaticResource PropertyTextBoxStyle}" Margin="24,0,0,4"/>
 
-            <!-- Advanced button -->
-            <Button x:Name="btnAdvanced" Content="Advanced..." Padding="12,6" Margin="0,12,0,8"
-                    HorizontalAlignment="Right"/>
+                    <!-- Register for COM interop -->
+                    <CheckBox x:Name="chkRegisterForCOM" Content="Register for COM interop"
+                              Style="{StaticResource PropertyCheckBoxStyle}"/>
 
-        </StackPanel>
-    </ScrollViewer>
+                    <!-- Generate serialization assembly -->
+                    <TextBlock x:Name="lblSGenOption" Text="Generate serialization assembly" Style="{StaticResource PropertyLabelStyle}"/>
+                    <ComboBox x:Name="cboSGenOption" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
+
+                    <!-- Advanced button -->
+                    <Button x:Name="btnAdvanced" Content="Advanced..." Padding="12,6" Margin="0,12,0,8"
+                            HorizontalAlignment="Left"/>
+                </StackPanel>
+
+                <!-- Bottom spacer -->
+                <Border Height="20"/>
+
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>
