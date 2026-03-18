@@ -32,8 +32,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                    ' XAML Width/HorizontalAlignment attributes are ignored in
                                    ' ElementHost context. Set programmatically after layout.
                                    ConstrainComboBoxWidths()
-                                   ' Theme the scrollbar programmatically (XAML styles don't apply)
-                                   ThemeScrollBar()
                                    ' Wire scroll tracking in code-behind (XAML ScrollChanged
                                    ' doesn't fire reliably in ElementHost context)
                                    AddHandler contentScrollViewer.ScrollChanged,
