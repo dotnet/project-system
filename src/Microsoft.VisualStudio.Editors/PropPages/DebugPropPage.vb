@@ -42,6 +42,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub HostWpfControl()
             ' Prevent auto-resize that propagates to the hosting panel
             AutoSize = False
+            ' Clear MaximumSize constraint from .resx (540,0) so the page fills its parent
+            MaximumSize = New Drawing.Size(0, 0)
             ' Fill the hosting area
             Dock = DockStyle.Fill
 
