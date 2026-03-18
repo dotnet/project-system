@@ -430,16 +430,26 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim navItems() As System.Windows.Controls.TextBlock = {navGeneral, navErrorsAndWarnings, navTreatWarnings, navOutput}
 
             Dim activeBrush = TryCast(TryFindResource("NavActiveBrush"), System.Windows.Media.SolidColorBrush)
+            If activeBrush Is Nothing Then
+                activeBrush = New System.Windows.Media.SolidColorBrush(
+                    System.Windows.Media.Color.FromArgb(60, 100, 100, 255))
+            End If
             Dim transparentBrush = System.Windows.Media.Brushes.Transparent
 
             Dim activeIndex = 0
-            For i = 0 To sections.Length - 1
-                Dim transform = sections(i).TransformToAncestor(contentScrollViewer)
-                Dim point = transform.Transform(New System.Windows.Point(0, 0))
-                If point.Y <= 20 Then
-                    activeIndex = i
-                End If
-            Next
+            Try
+                Dim scrollOffset = contentScrollViewer.VerticalOffset
+                For i = 0 To sections.Length - 1
+                    ' Use TransformToVisual instead of TransformToAncestor (more reliable in ElementHost)
+                    Dim transform = sections(i).TransformToVisual(contentScrollViewer)
+                    Dim point = transform.Transform(New System.Windows.Point(0, 0))
+                    If point.Y <= 40 Then
+                        activeIndex = i
+                    End If
+                Next
+            Catch
+                ' Non-critical — keep current activeIndex
+            End Try
 
             For i = 0 To navItems.Length - 1
                 If i = activeIndex Then
