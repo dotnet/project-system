@@ -29,6 +29,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' Defer theme color application until the visual tree is built
             AddHandler Loaded, Sub(s, e)
                                    ApplyVsThemeColors()
+                                   ' XAML Width/HorizontalAlignment attributes are ignored in
+                                   ' ElementHost context. Set programmatically after layout.
+                                   ConstrainComboBoxWidths()
                                    ' Wire scroll tracking in code-behind (XAML ScrollChanged
                                    ' doesn't fire reliably in ElementHost context)
                                    AddHandler contentScrollViewer.ScrollChanged,
@@ -38,6 +41,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                            Sub() UpdateActiveNavItem())
                                End Sub
             AddHandler VSColorTheme.ThemeChanged, Sub(e) Dispatcher.Invoke(Sub() ApplyVsThemeColors())
+        End Sub
+
+        ''' <summary>
+        ''' Sets ComboBox parent Border width programmatically.
+        ''' XAML Width attributes are ignored when hosted in ElementHost.
+        ''' </summary>
+        Private Sub ConstrainComboBoxWidths()
+            For Each cbo In {cboPlatformTarget, cboNullable, cboWarningLevel, cboSGenOption}
+                Dim parent = TryCast(cbo.Parent, System.Windows.Controls.Border)
+                If parent IsNot Nothing Then
+                    parent.Width = 300
+                    parent.HorizontalAlignment = System.Windows.HorizontalAlignment.Left
+                End If
+            Next
         End Sub
 
         ''' <summary>

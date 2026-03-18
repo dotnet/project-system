@@ -45,101 +45,13 @@
             <Setter Property="MinHeight" Value="26"/>
         </Style>
 
-        <!-- Shared ComboBox style with custom template for dark theme support.
-             Width is constrained via Border wrapper on each ComboBox instance. -->
+        <!-- Shared ComboBox style. Dark theme applied programmatically via
+             ApplyColorsRecursive + SystemColors overrides. Width constrained
+             via Border wrapper (XAML Width ignored in ElementHost context). -->
         <Style x:Key="PropertyComboBoxStyle" TargetType="ComboBox">
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Padding" Value="6,4"/>
             <Setter Property="MinHeight" Value="26"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ComboBox">
-                        <Grid>
-                            <ToggleButton Focusable="False" ClickMode="Press"
-                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
-                                <ToggleButton.Template>
-                                    <ControlTemplate TargetType="ToggleButton">
-                                        <Border Background="{Binding Background, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                BorderThickness="1" CornerRadius="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition Width="20"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Border Grid.Column="1" BorderThickness="1,0,0,0"
-                                                        BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ComboBox}}">
-                                                    <Path Data="M 0 0 L 4 4 L 8 0 Z"
-                                                          Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                </Border>
-                                            </Grid>
-                                        </Border>
-                                    </ControlTemplate>
-                                </ToggleButton.Template>
-                            </ToggleButton>
-                            <ContentPresenter Content="{TemplateBinding SelectionBoxItem}"
-                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                              ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
-                                              Margin="8,4,24,4" HorizontalAlignment="Left"
-                                              VerticalAlignment="Center" IsHitTestVisible="False">
-                                <ContentPresenter.Resources>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground"
-                                                Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
-                                    </Style>
-                                </ContentPresenter.Resources>
-                            </ContentPresenter>
-                            <Popup IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom"
-                                   AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
-                                <Border MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
-                                        MaxHeight="{TemplateBinding MaxDropDownHeight}"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1"
-                                        SnapsToDevicePixels="True">
-                                    <ScrollViewer SnapsToDevicePixels="True">
-                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
-                                    </ScrollViewer>
-                                </Border>
-                            </Popup>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="ItemContainerStyle">
-                <Setter.Value>
-                    <Style TargetType="ComboBoxItem">
-                        <Setter Property="Padding" Value="6,4"/>
-                        <Setter Property="Foreground"
-                                Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ComboBoxItem">
-                                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                                            Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter>
-                                            <ContentPresenter.Resources>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Foreground"
-                                                            Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBoxItem}}"/>
-                                                </Style>
-                                            </ContentPresenter.Resources>
-                                        </ContentPresenter>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsHighlighted" Value="True">
-                                            <Setter TargetName="Bd" Property="Background" Value="#3F3F46"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Setter.Value>
-            </Setter>
         </Style>
 
         <!-- Shared CheckBox style (CPS BoolPropertyValueTemplate: bold content) -->
@@ -155,43 +67,6 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
-        <!-- Dark-themed ScrollBar: replaces the default Aero Chrome-based template
-             which ignores SystemColors overrides. Uses simple Track with transparent buttons. -->
-        <Style TargetType="ScrollBar">
-            <Style.Triggers>
-                <Trigger Property="Orientation" Value="Vertical">
-                    <Setter Property="Width" Value="10"/>
-                    <Setter Property="MinWidth" Value="10"/>
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ScrollBar">
-                                <Track x:Name="PART_Track" IsDirectionReversed="True">
-                                    <Track.DecreaseRepeatButton>
-                                        <RepeatButton Command="ScrollBar.PageUpCommand"
-                                                      Opacity="0" Focusable="False"/>
-                                    </Track.DecreaseRepeatButton>
-                                    <Track.IncreaseRepeatButton>
-                                        <RepeatButton Command="ScrollBar.PageDownCommand"
-                                                      Opacity="0" Focusable="False"/>
-                                    </Track.IncreaseRepeatButton>
-                                    <Track.Thumb>
-                                        <Thumb>
-                                            <Thumb.Template>
-                                                <ControlTemplate TargetType="Thumb">
-                                                    <Border Background="#666666" CornerRadius="4"
-                                                            Margin="2,0,2,0" MinHeight="20"/>
-                                                </ControlTemplate>
-                                            </Thumb.Template>
-                                        </Thumb>
-                                    </Track.Thumb>
-                                </Track>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
     </UserControl.Resources>
 
     <DockPanel LastChildFill="True">
@@ -225,8 +100,54 @@
         <!-- RIGHT: Scrollable content area -->
         <!-- ============================================ -->
         <ScrollViewer x:Name="contentScrollViewer"
-                      VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                       Focusable="False" Padding="16,0,16,16">
+            <ScrollViewer.Resources>
+                <!-- Dark scrollbar applied directly to ScrollViewer's scope -->
+                <Style TargetType="{x:Type ScrollBar}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Width" Value="12"/>
+                    <Setter Property="MinWidth" Value="12"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ScrollBar}">
+                                <Border Background="#2D2D30">
+                                    <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                        <Track.DecreaseRepeatButton>
+                                            <RepeatButton Command="ScrollBar.PageUpCommand">
+                                                <RepeatButton.Template>
+                                                    <ControlTemplate TargetType="RepeatButton">
+                                                        <Border Background="Transparent"/>
+                                                    </ControlTemplate>
+                                                </RepeatButton.Template>
+                                            </RepeatButton>
+                                        </Track.DecreaseRepeatButton>
+                                        <Track.IncreaseRepeatButton>
+                                            <RepeatButton Command="ScrollBar.PageDownCommand">
+                                                <RepeatButton.Template>
+                                                    <ControlTemplate TargetType="RepeatButton">
+                                                        <Border Background="Transparent"/>
+                                                    </ControlTemplate>
+                                                </RepeatButton.Template>
+                                            </RepeatButton>
+                                        </Track.IncreaseRepeatButton>
+                                        <Track.Thumb>
+                                            <Thumb>
+                                                <Thumb.Template>
+                                                    <ControlTemplate TargetType="Thumb">
+                                                        <Border Background="#686868" CornerRadius="5"
+                                                                Margin="2,0,2,0" MinHeight="20"/>
+                                                    </ControlTemplate>
+                                                </Thumb.Template>
+                                            </Thumb>
+                                        </Track.Thumb>
+                                    </Track>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ScrollViewer.Resources>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="16,0,16,0">
 
                 <!-- Page title (matches CPS "Build" heading — large, light weight) -->
@@ -257,13 +178,13 @@
                     <TextBlock Text="Platform target" Style="{StaticResource PropertyLabelStyle}"/>
                     <TextBlock Text="Specifies the processor to be targeted by the output file."
                                Style="{StaticResource PropertyDescriptionStyle}"/>
-                    <Border Width="300" HorizontalAlignment="Left" Margin="0,0,0,4"><ComboBox x:Name="cboPlatformTarget" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/></Border>
+                    <Border Width="300" HorizontalAlignment="Left" Margin="0,0,0,4" ClipToBounds="True"><ComboBox x:Name="cboPlatformTarget" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/></Border>
 
                     <!-- Nullable -->
                     <TextBlock x:Name="lblNullable" Text="Nullable" Style="{StaticResource PropertyLabelStyle}"/>
                     <TextBlock Text="Specifies the project-wide C# nullable context."
                                Style="{StaticResource PropertyDescriptionStyle}"/>
-                    <Border Width="300" HorizontalAlignment="Left" Margin="0,0,0,4"><ComboBox x:Name="cboNullable" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/></Border>
+                    <Border Width="300" HorizontalAlignment="Left" Margin="0,0,0,4" ClipToBounds="True"><ComboBox x:Name="cboNullable" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/></Border>
 
                     <!-- Prefer 32-bit -->
                     <CheckBox x:Name="chkPrefer32Bit" Content="Prefer 32-bit"
@@ -290,7 +211,7 @@
 
                     <!-- Warning level -->
                     <TextBlock Text="Warning level" Style="{StaticResource PropertyLabelStyle}"/>
-                    <Border Width="300" HorizontalAlignment="Left" Margin="0,0,0,4"><ComboBox x:Name="cboWarningLevel" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/></Border>
+                    <Border Width="300" HorizontalAlignment="Left" Margin="0,0,0,4" ClipToBounds="True"><ComboBox x:Name="cboWarningLevel" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/></Border>
 
                     <!-- Suppress specific warnings -->
                     <TextBlock Text="Suppress specific warnings" Style="{StaticResource PropertyLabelStyle}"/>
@@ -340,7 +261,7 @@
 
                     <!-- Generate serialization assembly -->
                     <TextBlock x:Name="lblSGenOption" Text="Generate serialization assembly" Style="{StaticResource PropertyLabelStyle}"/>
-                    <Border Width="300" HorizontalAlignment="Left" Margin="0,0,0,4"><ComboBox x:Name="cboSGenOption" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/></Border>
+                    <Border Width="300" HorizontalAlignment="Left" Margin="0,0,0,4" ClipToBounds="True"><ComboBox x:Name="cboSGenOption" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/></Border>
 
                     <!-- Advanced button -->
                     <Button x:Name="btnAdvanced" Content="Advanced..." Padding="12,6" Margin="0,12,0,8"
@@ -354,6 +275,9 @@
         </ScrollViewer>
     </DockPanel>
 </UserControl>
+
+
+
 
 
 
