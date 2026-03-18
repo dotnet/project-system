@@ -409,7 +409,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Dim section = TryCast(FindName(sectionName), System.Windows.FrameworkElement)
             If section IsNot Nothing Then
-                section.BringIntoView()
+                ' BringIntoView doesn't work reliably in ElementHost context.
+                ' Calculate the section's vertical offset and scroll directly.
+                Dim transform = section.TransformToAncestor(contentScrollViewer)
+                Dim point = transform.Transform(New System.Windows.Point(0, 0))
+                contentScrollViewer.ScrollToVerticalOffset(contentScrollViewer.VerticalOffset + point.Y - 10)
             End If
         End Sub
 
