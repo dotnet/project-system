@@ -69,6 +69,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Resources(System.Windows.SystemColors.HighlightTextBrushKey) = wpfInputFg
             Resources(System.Windows.SystemColors.GrayTextBrushKey) = wpfGray
             Resources(System.Windows.SystemColors.ActiveBorderBrushKey) = wpfInputBorder
+            ' ScrollBar theming — prevent white scrollbar track/thumb
+            Resources(System.Windows.SystemColors.ScrollBarBrushKey) = wpfBg
+            Resources(System.Windows.SystemColors.ControlDarkBrushKey) = wpfInputBorder
+            Resources(System.Windows.SystemColors.ControlLightBrushKey) = wpfBg
+            Resources(System.Windows.SystemColors.ControlDarkDarkBrushKey) = wpfInputBorder
 
             ' Apply to all styled elements recursively
             ApplyColorsRecursive(Me, wpfFg, wpfGray, wpfBg,
