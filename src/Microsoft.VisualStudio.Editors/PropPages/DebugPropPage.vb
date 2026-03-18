@@ -13,6 +13,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits PropPageUserControlBase
 
         Private _controlGroup As Control()()
+        Private _wpfControl As DebugPropPageWpfControl
+        Private _elementHost As System.Windows.Forms.Integration.ElementHost
 
         Public Sub New()
             MyBase.New()
@@ -24,7 +26,108 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Opt out of page scaling since we're using AutoScaleMode
             PageRequiresScaling = False
+
+            ' Host the WPF control in the constructor so it participates in the
+            ' initial layout pass. AutoSize=False prevents extra resize events
+            ' during ApplicationDesignerView.ShowTab which would trigger the
+            ' "Window frame bounds updated more than once" assertion.
+            HostWpfControl()
         End Sub
+
+        ''' <summary>
+        ''' Replaces the WinForms content area with a WPF ElementHost containing
+        ''' a CPS-styled Debug page control. The WinForms controls are hidden but
+        ''' remain alive as data targets for PropertyControlData.
+        ''' </summary>
+        Private Sub HostWpfControl()
+            ' Prevent auto-resize that propagates to the hosting panel
+            AutoSize = False
+            ' Fill the hosting area
+            Dock = DockStyle.Fill
+
+            ' Set page BackColor to match VS dark theme so no light bleeds through
+            Dim bgColor = Microsoft.VisualStudio.PlatformUI.VSColorTheme.GetThemedColor(
+                Microsoft.VisualStudio.PlatformUI.EnvironmentColors.ToolWindowBackgroundColorKey)
+            BackColor = Drawing.Color.FromArgb(bgColor.A, bgColor.R, bgColor.G, bgColor.B)
+
+            ' Remove the WinForms layout panel from dock competition so the ElementHost
+            ' gets the full page area. The WinForms controls remain alive (hidden) as
+            ' data targets for PropertyControlData binding.
+            overarchingTableLayoutPanel.Dock = DockStyle.None
+            overarchingTableLayoutPanel.Size = New Drawing.Size(0, 0)
+            overarchingTableLayoutPanel.Visible = False
+
+            ' Create WPF control and ElementHost
+            _wpfControl = New DebugPropPageWpfControl()
+            _elementHost = New System.Windows.Forms.Integration.ElementHost() With {
+                .Dock = DockStyle.Fill,
+                .Child = _wpfControl
+            }
+
+            ' Add ElementHost on top of everything
+            Controls.Add(_elementHost)
+            _elementHost.BringToFront()
+
+            ' Wire up the Browse buttons
+            AddHandler _wpfControl.btnStartProgramBrowse.Click, Sub(s, e)
+                                                                    StartProgramBrowse.PerformClick()
+                                                                End Sub
+
+            AddHandler _wpfControl.btnWorkingDirBrowse.Click, Sub(s, e)
+                                                                  StartWorkingDirectoryBrowse.PerformClick()
+                                                              End Sub
+        End Sub
+
+        ''' <summary>
+        ''' Hides the Configuration/Platform dropdown panel in the PropPageDesignerView.
+        ''' CPS doesn't show per-page config bars — config is selected at the toolbar level.
+        ''' </summary>
+        <System.Runtime.InteropServices.DllImport("user32.dll", SetLastError:=True)>
+        Private Shared Function GetParent(hWnd As IntPtr) As IntPtr
+        End Function
+
+        Private Sub HideConfigurationPanel()
+            Dim bgColor2 = Microsoft.VisualStudio.PlatformUI.VSColorTheme.GetThemedColor(
+                Microsoft.VisualStudio.PlatformUI.EnvironmentColors.ToolWindowBackgroundColorKey)
+            Dim themeBg = Drawing.Color.FromArgb(bgColor2.A, bgColor2.R, bgColor2.G, bgColor2.B)
+
+            Try
+                Dim hwnd = Handle
+                ' Walk up Win32 parent chain to cross VsWindowFrame boundary
+                While hwnd <> IntPtr.Zero
+                    Dim ctrl = Control.FromHandle(hwnd)
+                    If ctrl IsNot Nothing Then
+                        ' Theme every managed control we encounter going UP the chain
+                        ctrl.BackColor = themeBg
+
+                        Dim configPanel = FindControlByName(ctrl, "ConfigurationPanel")
+                        If configPanel IsNot Nothing Then
+                            configPanel.Visible = False
+
+                            ' Also theme all sibling panels in the PropPageDesignerView
+                            For Each child As Control In ctrl.Controls
+                                If TypeOf child Is Panel OrElse TypeOf child Is UserControl Then
+                                    child.BackColor = themeBg
+                                End If
+                            Next
+                            Exit While
+                        End If
+                    End If
+                    hwnd = GetParent(hwnd)
+                End While
+            Catch
+                ' Non-critical — config panel stays visible if we can't find it
+            End Try
+        End Sub
+
+        Private Shared Function FindControlByName(parent As Control, name As String) As Control
+            For Each child As Control In parent.Controls
+                If child.Name = name Then Return child
+                Dim found = FindControlByName(child, name)
+                If found IsNot Nothing Then Return found
+            Next
+            Return Nothing
+        End Function
 
 #Region "Class MultilineTextBoxRejectsEnter"
 
@@ -268,12 +371,25 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
             End If
 
-            'We want the page to grow as needed.  However, we can't use AutoSize, because
-            '  if the container window is made too small to show all the controls, we need
-            '  the property page to *not* shrink past that point, otherwise we won't get
-            '  a horizontal scrollbar.
-            'So we fix the width at the width that the page naturally wants to be.
-            Size = GetPreferredSize(Drawing.Size.Empty)
+            ' Hide the Configuration/Platform bar (CPS doesn't show it per-page)
+            HideConfigurationPanel()
+
+            ' Sync WinForms control state → WPF visual controls
+            SyncWpfFromWinForms()
+        End Sub
+
+        ''' <summary>
+        ''' Pushes current WinForms control values into the WPF visual layer.
+        ''' </summary>
+        Private Sub SyncWpfFromWinForms()
+            If _wpfControl Is Nothing Then Return
+
+            _wpfControl.BindToWinFormsControls(
+                rbStartProject, rbStartProgram, rbStartURL,
+                StartProgram, StartURL, StartArguments,
+                StartWorkingDirectory, RemoteDebugEnabled,
+                RemoteDebugMachine, AuthenticationMode,
+                EnableUnmanagedDebugging, EnableSQLServerDebugging)
         End Sub
 
         Private Sub rbStartAction_CheckedChanged(sender As Object, e As EventArgs) Handles rbStartProgram.CheckedChanged, rbStartProject.CheckedChanged, rbStartURL.CheckedChanged
