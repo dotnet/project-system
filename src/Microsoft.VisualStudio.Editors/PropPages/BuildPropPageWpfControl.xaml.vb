@@ -196,6 +196,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             BindComboBox(cboWarningLevel, wfCboWarningLevel)
             BindComboBox(cboSGenOption, wfCboSGen)
 
+            ' Force ComboBox width constraints (XAML Width/MaxWidth properties are
+            ' ignored when a custom ControlTemplate is used in ElementHost context)
+            For Each cbo In {cboPlatformTarget, cboNullable, cboWarningLevel, cboSGenOption}
+                cbo.MaxWidth = 300
+                cbo.HorizontalAlignment = System.Windows.HorizontalAlignment.Left
+            Next
+
             ' --- RadioButton sync ---
             BindRadioButton(rbWarningNone, wfRbNone)
             BindRadioButton(rbWarningAll, wfRbAll)
