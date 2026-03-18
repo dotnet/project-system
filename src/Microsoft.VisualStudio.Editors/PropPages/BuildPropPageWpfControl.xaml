@@ -58,7 +58,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
-                        <Grid>
+                        <Grid HorizontalAlignment="Left" Width="{TemplateBinding Width}">
                             <ToggleButton x:Name="ToggleButton"
                                           Focusable="False"
                                           ClickMode="Press"
@@ -222,13 +222,17 @@
                     <TextBlock Text="Platform target" Style="{StaticResource PropertyLabelStyle}"/>
                     <TextBlock Text="Specifies the processor to be targeted by the output file."
                                Style="{StaticResource PropertyDescriptionStyle}"/>
-                    <ComboBox x:Name="cboPlatformTarget" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox x:Name="cboPlatformTarget" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False" Width="300"/>
+                    </StackPanel>
 
                     <!-- Nullable -->
                     <TextBlock x:Name="lblNullable" Text="Nullable" Style="{StaticResource PropertyLabelStyle}"/>
                     <TextBlock Text="Specifies the project-wide C# nullable context."
                                Style="{StaticResource PropertyDescriptionStyle}"/>
-                    <ComboBox x:Name="cboNullable" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox x:Name="cboNullable" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False" Width="300"/>
+                    </StackPanel>
 
                     <!-- Prefer 32-bit -->
                     <CheckBox x:Name="chkPrefer32Bit" Content="Prefer 32-bit"
@@ -255,7 +259,9 @@
 
                     <!-- Warning level -->
                     <TextBlock Text="Warning level" Style="{StaticResource PropertyLabelStyle}"/>
-                    <ComboBox x:Name="cboWarningLevel" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox x:Name="cboWarningLevel" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False" Width="300"/>
+                    </StackPanel>
 
                     <!-- Suppress specific warnings -->
                     <TextBlock Text="Suppress specific warnings" Style="{StaticResource PropertyLabelStyle}"/>
@@ -305,7 +311,9 @@
 
                     <!-- Generate serialization assembly -->
                     <TextBlock x:Name="lblSGenOption" Text="Generate serialization assembly" Style="{StaticResource PropertyLabelStyle}"/>
-                    <ComboBox x:Name="cboSGenOption" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox x:Name="cboSGenOption" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False" Width="300"/>
+                    </StackPanel>
 
                     <!-- Advanced button -->
                     <Button x:Name="btnAdvanced" Content="Advanced..." Padding="12,6" Margin="0,12,0,8"
