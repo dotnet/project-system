@@ -225,7 +225,7 @@
         <!-- RIGHT: Scrollable content area -->
         <!-- ============================================ -->
         <ScrollViewer x:Name="contentScrollViewer"
-                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled"
                       Focusable="False" Padding="16,0,16,16">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="16,0,16,0">
 
