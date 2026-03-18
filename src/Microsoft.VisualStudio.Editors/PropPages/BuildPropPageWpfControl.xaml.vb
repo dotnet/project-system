@@ -32,6 +32,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                    ' XAML Width/HorizontalAlignment attributes are ignored in
                                    ' ElementHost context. Set programmatically after layout.
                                    ConstrainComboBoxWidths()
+                                   ' Theme the scrollbar programmatically (XAML styles don't apply)
+                                   ThemeScrollBar()
                                    ' Wire scroll tracking in code-behind (XAML ScrollChanged
                                    ' doesn't fire reliably in ElementHost context)
                                    AddHandler contentScrollViewer.ScrollChanged,
@@ -54,6 +56,55 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     parent.Width = 300
                     parent.HorizontalAlignment = System.Windows.HorizontalAlignment.Left
                 End If
+            Next
+        End Sub
+
+        ''' <summary>
+        ''' Themes the ScrollViewer's scrollbar by walking the visual tree.
+        ''' XAML styles don't apply to ScrollBar in ElementHost context.
+        ''' </summary>
+        Private Sub ThemeScrollBar()
+            Try
+                Dim bgColor = VSColorTheme.GetThemedColor(EnvironmentColors.ToolWindowBackgroundColorKey)
+                Dim darkBg = ToWpfBrush(bgColor)
+                Dim thumbBrush = New SolidColorBrush(System.Windows.Media.Color.FromRgb(104, 104, 104))
+                ThemeScrollBarRecursive(contentScrollViewer, darkBg, thumbBrush)
+            Catch
+            End Try
+        End Sub
+
+        Private Sub ThemeScrollBarRecursive(parent As System.Windows.DependencyObject,
+                                            bgBrush As SolidColorBrush, thumbBrush As SolidColorBrush)
+            Dim count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent)
+            For i = 0 To count - 1
+                Dim child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i)
+                If TypeOf child Is System.Windows.Controls.Primitives.ScrollBar Then
+                    Dim sb = DirectCast(child, System.Windows.Controls.Primitives.ScrollBar)
+                    sb.Background = bgBrush
+                    sb.Foreground = thumbBrush
+                    ThemeScrollBarParts(sb, bgBrush, thumbBrush)
+                Else
+                    ThemeScrollBarRecursive(child, bgBrush, thumbBrush)
+                End If
+            Next
+        End Sub
+
+        Private Sub ThemeScrollBarParts(parent As System.Windows.DependencyObject,
+                                        bgBrush As SolidColorBrush, thumbBrush As SolidColorBrush)
+            Dim count = System.Windows.Media.VisualTreeHelper.GetChildrenCount(parent)
+            For i = 0 To count - 1
+                Dim child = System.Windows.Media.VisualTreeHelper.GetChild(parent, i)
+                If TypeOf child Is System.Windows.Controls.Primitives.Track Then
+                    Dim track = DirectCast(child, System.Windows.Controls.Primitives.Track)
+                    If track.Thumb IsNot Nothing Then
+                        track.Thumb.Background = thumbBrush
+                    End If
+                ElseIf TypeOf child Is System.Windows.Controls.Border Then
+                    DirectCast(child, System.Windows.Controls.Border).Background = bgBrush
+                ElseIf TypeOf child Is System.Windows.Controls.Primitives.RepeatButton Then
+                    DirectCast(child, System.Windows.Controls.Primitives.RepeatButton).Background = bgBrush
+                End If
+                ThemeScrollBarParts(child, bgBrush, thumbBrush)
             Next
         End Sub
 
@@ -151,10 +202,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     cbo.BorderBrush = inputBorder
 
                 ElseIf TypeOf child Is System.Windows.Controls.CheckBox Then
-                    DirectCast(child, System.Windows.Controls.CheckBox).Foreground = fgBrush
+                    Dim chk = DirectCast(child, System.Windows.Controls.CheckBox)
+                    chk.Foreground = If(chk.IsEnabled, fgBrush, grayBrush)
 
                 ElseIf TypeOf child Is System.Windows.Controls.RadioButton Then
-                    DirectCast(child, System.Windows.Controls.RadioButton).Foreground = fgBrush
+                    Dim rb = DirectCast(child, System.Windows.Controls.RadioButton)
+                    rb.Foreground = If(rb.IsEnabled, fgBrush, grayBrush)
 
                 ElseIf TypeOf child Is System.Windows.Controls.Border Then
                     Dim bdr = DirectCast(child, System.Windows.Controls.Border)
