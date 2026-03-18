@@ -237,6 +237,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' when feature is not supported for this project type)
             chkPrefer32Bit.IsEnabled = wfChkPrefer32.Enabled
             chkPreferNativeArm64.IsEnabled = wfChkPreferArm64.Enabled
+            chkRegisterForCOM.IsEnabled = wfChkRegCom.Enabled
+
+            ' Keep in sync when WinForms Enabled changes (e.g., on config switch)
+            AddHandler wfChkPrefer32.EnabledChanged, Sub(s, e) chkPrefer32Bit.IsEnabled = wfChkPrefer32.Enabled
+            AddHandler wfChkPreferArm64.EnabledChanged, Sub(s, e) chkPreferNativeArm64.IsEnabled = wfChkPreferArm64.Enabled
+            AddHandler wfChkRegCom.EnabledChanged, Sub(s, e) chkRegisterForCOM.IsEnabled = wfChkRegCom.Enabled
 
             ' Hide Nullable section if no items (HiddenIfMissingPropertyControlData)
             If wfCboNullable.Items.Count = 0 Then
@@ -428,11 +434,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Dim section = TryCast(FindName(sectionName), System.Windows.FrameworkElement)
             If section IsNot Nothing Then
-                ' BringIntoView doesn't work reliably in ElementHost context.
-                ' Calculate the section's vertical offset and scroll directly.
-                Dim transform = section.TransformToAncestor(contentScrollViewer)
-                Dim point = transform.Transform(New System.Windows.Point(0, 0))
-                contentScrollViewer.ScrollToVerticalOffset(contentScrollViewer.VerticalOffset + point.Y - 10)
+                ' Use TransformToVisual (TransformToAncestor doesn't work in ElementHost)
+                Try
+                    Dim transform = section.TransformToVisual(contentScrollViewer)
+                    Dim point = transform.Transform(New System.Windows.Point(0, 0))
+                    contentScrollViewer.ScrollToVerticalOffset(contentScrollViewer.VerticalOffset + point.Y - 10)
+                Catch
+                    ' Fallback: try BringIntoView
+                    section.BringIntoView()
+                End Try
             End If
         End Sub
 

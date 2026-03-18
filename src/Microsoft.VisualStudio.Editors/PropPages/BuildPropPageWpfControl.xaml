@@ -45,13 +45,99 @@
             <Setter Property="MinHeight" Value="26"/>
         </Style>
 
-        <!-- Shared ComboBox style. Dark theme applied programmatically via
-             ApplyColorsRecursive + SystemColors overrides. Width constrained
-             via Border wrapper (XAML Width ignored in ElementHost context). -->
+        <!-- Shared ComboBox style with custom dark template. ClipToBounds on each
+             instance prevents the template from rendering beyond Border wrapper. -->
         <Style x:Key="PropertyComboBoxStyle" TargetType="ComboBox">
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Padding" Value="6,4"/>
             <Setter Property="MinHeight" Value="26"/>
+            <Setter Property="ClipToBounds" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Focusable="False" ClickMode="Press"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="{Binding Background, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                BorderThickness="1" CornerRadius="1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="20"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Border Grid.Column="1" BorderThickness="1,0,0,0"
+                                                        BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ComboBox}}">
+                                                    <Path Data="M 0 0 L 4 4 L 8 0 Z"
+                                                          Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                                              Margin="8,4,24,4" HorizontalAlignment="Left"
+                                              VerticalAlignment="Center" IsHitTestVisible="False">
+                                <ContentPresenter.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground"
+                                                Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
+                                    </Style>
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
+                            <Popup IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom"
+                                   AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                                <Border MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1"
+                                        SnapsToDevicePixels="True">
+                                    <ScrollViewer SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Padding" Value="6,4"/>
+                        <Setter Property="Foreground"
+                                Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ComboBoxItem">
+                                    <Border x:Name="Bd" Background="Transparent"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter>
+                                            <ContentPresenter.Resources>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground"
+                                                            Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBoxItem}}"/>
+                                                </Style>
+                                            </ContentPresenter.Resources>
+                                        </ContentPresenter>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsHighlighted" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="#3F3F46"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Shared CheckBox style (CPS BoolPropertyValueTemplate: bold content) -->
@@ -253,7 +339,7 @@
                     <!-- XML documentation file -->
                     <CheckBox x:Name="chkXMLDocumentationFile" Content="XML documentation file"
                               Style="{StaticResource PropertyCheckBoxStyle}"/>
-                    <TextBox x:Name="txtXMLDocumentationFile" Style="{StaticResource PropertyTextBoxStyle}" Margin="24,0,100,4"/>
+                    <TextBox x:Name="txtXMLDocumentationFile" Style="{StaticResource PropertyTextBoxStyle}" Margin="24,0,0,4"/>
 
                     <!-- Register for COM interop -->
                     <CheckBox x:Name="chkRegisterForCOM" Content="Register for COM interop"
