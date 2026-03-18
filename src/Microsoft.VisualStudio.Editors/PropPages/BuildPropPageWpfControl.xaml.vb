@@ -27,7 +27,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Sub New()
             InitializeComponent()
             ' Defer theme color application until the visual tree is built
-            AddHandler Loaded, Sub(s, e) ApplyVsThemeColors()
+            AddHandler Loaded, Sub(s, e)
+                                   ApplyVsThemeColors()
+                                   ' Wire scroll tracking in code-behind (XAML ScrollChanged
+                                   ' doesn't fire reliably in ElementHost context)
+                                   AddHandler contentScrollViewer.ScrollChanged,
+                                       Sub(s2, e2) UpdateActiveNavItem()
+                                   AddHandler contentScrollViewer.PreviewMouseWheel,
+                                       Sub(s2, e2) Dispatcher.BeginInvoke(
+                                           Sub() UpdateActiveNavItem())
+                               End Sub
             AddHandler VSColorTheme.ThemeChanged, Sub(e) Dispatcher.Invoke(Sub() ApplyVsThemeColors())
         End Sub
 
@@ -200,13 +209,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             BindComboBox(cboNullable, wfCboNullable)
             BindComboBox(cboWarningLevel, wfCboWarningLevel)
             BindComboBox(cboSGenOption, wfCboSGen)
-
-            ' Force ComboBox width constraints (XAML Width/MaxWidth properties are
-            ' ignored when a custom ControlTemplate is used in ElementHost context)
-            For Each cbo In {cboPlatformTarget, cboNullable, cboWarningLevel, cboSGenOption}
-                cbo.MaxWidth = 300
-                cbo.HorizontalAlignment = System.Windows.HorizontalAlignment.Left
-            Next
 
             ' --- RadioButton sync ---
             BindRadioButton(rbWarningNone, wfRbNone)
@@ -415,13 +417,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim point = transform.Transform(New System.Windows.Point(0, 0))
                 contentScrollViewer.ScrollToVerticalOffset(contentScrollViewer.VerticalOffset + point.Y - 10)
             End If
-        End Sub
-
-        ''' <summary>
-        ''' Updates the active nav item highlight as the user scrolls.
-        ''' </summary>
-        Private Sub ContentScrollViewer_ScrollChanged(sender As Object, e As System.Windows.Controls.ScrollChangedEventArgs)
-            UpdateActiveNavItem()
         End Sub
 
         Private Sub UpdateActiveNavItem()

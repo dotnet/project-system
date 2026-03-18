@@ -220,8 +220,7 @@
         <!-- ============================================ -->
         <ScrollViewer x:Name="contentScrollViewer"
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
-                      Focusable="False" Padding="16,0,16,16"
-                      ScrollChanged="ContentScrollViewer_ScrollChanged">
+                      Focusable="False" Padding="16,0,16,16">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="16,0,16,0">
 
                 <!-- Page title (matches CPS "Build" heading — large, light weight) -->
