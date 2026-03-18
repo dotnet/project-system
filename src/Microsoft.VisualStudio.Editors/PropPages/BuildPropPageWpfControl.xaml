@@ -12,24 +12,24 @@
              dark/light/high-contrast themes. These styles use {x:Null} brushes as
              placeholders; the code-behind sets them at runtime using VSColorTheme. -->
 
-        <!-- Category header style matching CPS designer (133% font, SemiBold) -->
+        <!-- Category header style matching CPS designer (~20px, SemiBold, more spacing) -->
         <Style x:Key="CategoryHeaderStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Margin" Value="0,16,0,4"/>
+            <Setter Property="Margin" Value="0,24,0,12"/>
         </Style>
 
-        <!-- Separator line below category headers (Border gives better visibility than Separator) -->
-        <Style x:Key="CategorySeparatorStyle" TargetType="Border">
+        <!-- Separator line below page title only (CPS uses a thin line under "Build") -->
+        <Style x:Key="TitleSeparatorStyle" TargetType="Border">
             <Setter Property="Height" Value="1"/>
-            <Setter Property="Margin" Value="0,4,0,12"/>
+            <Setter Property="Margin" Value="0,4,0,8"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
 
         <!-- Property label style (bold, above the control — matches CPS PropertyTemplates) -->
         <Style x:Key="PropertyLabelStyle" TargetType="TextBlock">
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Margin" Value="0,8,0,2"/>
+            <Setter Property="Margin" Value="0,16,0,2"/>
         </Style>
 
         <!-- Description text style (gray subtext — CPS uses SupportTextBrushKey) -->
@@ -194,15 +194,15 @@
                       ScrollChanged="ContentScrollViewer_ScrollChanged">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="16,0,16,0">
 
-                <!-- Page title (matches CPS "Build" heading) -->
-                <TextBlock Text="Build" FontSize="24" FontWeight="Light" Margin="0,8,0,4"/>
-                <Border Style="{StaticResource CategorySeparatorStyle}" Margin="0,4,0,16"/>
+                <!-- Page title (matches CPS "Build" heading — large, light weight) -->
+                <TextBlock Text="Build" FontSize="28" FontWeight="Light" Margin="0,12,0,4"/>
+                <Border Style="{StaticResource TitleSeparatorStyle}"/>
 
                 <!-- ============================================ -->
                 <!-- GENERAL -->
                 <!-- ============================================ -->
                 <StackPanel x:Name="sectionGeneral">
-                    <TextBlock Text="General" Style="{StaticResource CategoryHeaderStyle}" Margin="0,0,0,4"/>
+                    <TextBlock Text="General" Style="{StaticResource CategoryHeaderStyle}" Margin="0,8,0,8"/>
 
                     <!-- Conditional compilation symbols -->
                     <TextBlock Text="Conditional compilation symbols" Style="{StaticResource PropertyLabelStyle}"/>
@@ -226,6 +226,8 @@
 
                     <!-- Nullable -->
                     <TextBlock x:Name="lblNullable" Text="Nullable" Style="{StaticResource PropertyLabelStyle}"/>
+                    <TextBlock Text="Specifies the project-wide C# nullable context."
+                               Style="{StaticResource PropertyDescriptionStyle}"/>
                     <ComboBox x:Name="cboNullable" Style="{StaticResource PropertyComboBoxStyle}" IsEditable="False"/>
 
                     <!-- Prefer 32-bit -->

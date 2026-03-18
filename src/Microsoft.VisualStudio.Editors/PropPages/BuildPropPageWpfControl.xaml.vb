@@ -127,8 +127,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 ElseIf TypeOf child Is System.Windows.Controls.Border Then
                     Dim bdr = DirectCast(child, System.Windows.Controls.Border)
-                    ' Only style separator borders (identified by having CategorySeparatorStyle)
-                    Dim sepStyle = TryCast(TryFindResource("CategorySeparatorStyle"), System.Windows.Style)
+                    ' Only style separator borders (identified by resource lookup)
+                    Dim sepStyle = TryCast(TryFindResource("TitleSeparatorStyle"), System.Windows.Style)
                     If bdr.Style IsNot Nothing AndAlso sepStyle IsNot Nothing AndAlso bdr.Style Is sepStyle Then
                         bdr.Background = separatorBrush
                     End If
@@ -274,10 +274,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 SyncComboItems(cboNullable, wfCboNullable)
                 SyncComboItems(cboSGenOption, wfCboSGen)
 
-                ' Sync visibility
-                SyncVisibility(chkPrefer32Bit, wfChkPrefer32)
-                SyncVisibility(chkPreferNativeArm64, wfChkPreferArm64)
-                SyncVisibility(chkRegisterForCOM, wfChkRegCom)
+                ' Note: Do NOT call SyncVisibility here — the WinForms parent
+                ' (overarchingTableLayoutPanel) is hidden, which makes all WinForms
+                ' controls report Visible=False. Enabled state is synced separately
+                ' in BindToWinFormsControls via IsEnabled property.
             Finally
                 _isSyncing = False
             End Try
