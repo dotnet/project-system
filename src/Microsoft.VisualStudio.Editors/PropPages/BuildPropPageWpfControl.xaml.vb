@@ -26,19 +26,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Public Sub New()
             InitializeComponent()
-            ' Defer theme color application until the visual tree is built
             AddHandler Loaded, Sub(s, e)
                                    ApplyVsThemeColors()
-                                   ' XAML Width/HorizontalAlignment attributes are ignored in
-                                   ' ElementHost context. Set programmatically after layout.
                                    ConstrainComboBoxWidths()
-                                   ' Wire scroll tracking in code-behind (XAML ScrollChanged
-                                   ' doesn't fire reliably in ElementHost context)
-                                   AddHandler contentScrollViewer.ScrollChanged,
-                                       Sub(s2, e2) UpdateActiveNavItem()
-                                   AddHandler contentScrollViewer.PreviewMouseWheel,
-                                       Sub(s2, e2) Dispatcher.BeginInvoke(
-                                           Sub() UpdateActiveNavItem())
+                                   ' Poll-based nav sync (ScrollChanged/PreviewMouseWheel
+                                   ' don't fire reliably in ElementHost context)
+                                   Dim navTimer As New System.Windows.Threading.DispatcherTimer()
+                                   navTimer.Interval = TimeSpan.FromMilliseconds(300)
+                                   AddHandler navTimer.Tick, Sub(s2, e2) UpdateActiveNavItem()
+                                   navTimer.Start()
                                End Sub
             AddHandler VSColorTheme.ThemeChanged, Sub(e) Dispatcher.Invoke(Sub() ApplyVsThemeColors())
         End Sub
@@ -310,6 +306,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 wfCboWarningLevel, wfTxtSuppressWarnings, wfRbNone, wfRbAll, wfRbSpecific,
                 wfTxtSpecificWarnings, wfTxtOutputPath, wfChkXmlDoc, wfTxtXmlDoc,
                 wfChkRegCom, wfCboSGen)
+
+            ' Re-apply theme colors AFTER binding so disabled checkboxes get gray text
+            ApplyVsThemeColors()
         End Sub
 
         ''' <summary>
