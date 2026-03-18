@@ -156,30 +156,36 @@
         </Style>
 
         <!-- Dark-themed ScrollBar: replaces the default Aero Chrome-based template
-             which ignores SystemColors overrides. Uses simple Border+Track. -->
+             which ignores SystemColors overrides. Uses simple Track with transparent buttons. -->
         <Style TargetType="ScrollBar">
             <Style.Triggers>
                 <Trigger Property="Orientation" Value="Vertical">
                     <Setter Property="Width" Value="10"/>
                     <Setter Property="MinWidth" Value="10"/>
+                    <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ScrollBar">
-                                <Grid>
-                                    <Border Background="Transparent" Opacity="0.3"/>
-                                    <Track x:Name="PART_Track" IsDirectionReversed="True">
-                                        <Track.Thumb>
-                                            <Thumb>
-                                                <Thumb.Template>
-                                                    <ControlTemplate TargetType="Thumb">
-                                                        <Border Background="#555555" CornerRadius="4"
-                                                                Margin="2,0,2,0"/>
-                                                    </ControlTemplate>
-                                                </Thumb.Template>
-                                            </Thumb>
-                                        </Track.Thumb>
-                                    </Track>
-                                </Grid>
+                                <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton Command="ScrollBar.PageUpCommand"
+                                                      Opacity="0" Focusable="False"/>
+                                    </Track.DecreaseRepeatButton>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton Command="ScrollBar.PageDownCommand"
+                                                      Opacity="0" Focusable="False"/>
+                                    </Track.IncreaseRepeatButton>
+                                    <Track.Thumb>
+                                        <Thumb>
+                                            <Thumb.Template>
+                                                <ControlTemplate TargetType="Thumb">
+                                                    <Border Background="#666666" CornerRadius="4"
+                                                            Margin="2,0,2,0" MinHeight="20"/>
+                                                </ControlTemplate>
+                                            </Thumb.Template>
+                                        </Thumb>
+                                    </Track.Thumb>
+                                </Track>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -326,7 +332,7 @@
                     <!-- XML documentation file -->
                     <CheckBox x:Name="chkXMLDocumentationFile" Content="XML documentation file"
                               Style="{StaticResource PropertyCheckBoxStyle}"/>
-                    <TextBox x:Name="txtXMLDocumentationFile" Style="{StaticResource PropertyTextBoxStyle}" Margin="24,0,0,4"/>
+                    <TextBox x:Name="txtXMLDocumentationFile" Style="{StaticResource PropertyTextBoxStyle}" Margin="24,0,100,4"/>
 
                     <!-- Register for COM interop -->
                     <CheckBox x:Name="chkRegisterForCOM" Content="Register for COM interop"
