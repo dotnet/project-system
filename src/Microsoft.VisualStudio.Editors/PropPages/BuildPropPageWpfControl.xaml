@@ -163,7 +163,7 @@
         <!-- ============================================ -->
         <!-- LEFT NAV: Section navigation (matches CPS) -->
         <!-- ============================================ -->
-        <Border DockPanel.Dock="Left" Width="180" Margin="0,12,0,0" Padding="0,0,8,0"
+        <Border DockPanel.Dock="Left" Width="160" Margin="0,12,0,0" Padding="0,0,8,0"
                 x:Name="navBorder">
             <StackPanel x:Name="navPanel" VerticalAlignment="Top">
                 <TextBlock x:Name="navGeneral" Text="General" Cursor="Hand"
@@ -192,7 +192,7 @@
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                       Focusable="False" Padding="16,0,16,16"
                       ScrollChanged="ContentScrollViewer_ScrollChanged">
-            <StackPanel Orientation="Vertical" MaxWidth="800" HorizontalAlignment="Left">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="16,0,16,0">
 
                 <!-- Page title (matches CPS "Build" heading) -->
                 <TextBlock Text="Build" FontSize="24" FontWeight="Light" Margin="0,8,0,4"/>
