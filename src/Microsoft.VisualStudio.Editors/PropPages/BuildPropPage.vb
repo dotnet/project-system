@@ -132,15 +132,29 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Sub HideConfigurationPanel()
+            Dim bgColor = Microsoft.VisualStudio.PlatformUI.VSColorTheme.GetThemedColor(
+                Microsoft.VisualStudio.PlatformUI.EnvironmentColors.ToolWindowBackgroundColorKey)
+            Dim themeBg = Drawing.Color.FromArgb(bgColor.A, bgColor.R, bgColor.G, bgColor.B)
+
             Try
                 Dim hwnd = Handle
                 ' Walk up Win32 parent chain to cross VsWindowFrame boundary
                 While hwnd <> IntPtr.Zero
                     Dim ctrl = Control.FromHandle(hwnd)
                     If ctrl IsNot Nothing Then
+                        ' Theme every managed control we encounter going UP the chain
+                        ctrl.BackColor = themeBg
+
                         Dim configPanel = FindControlByName(ctrl, "ConfigurationPanel")
                         If configPanel IsNot Nothing Then
                             configPanel.Visible = False
+
+                            ' Also theme all sibling panels in the PropPageDesignerView
+                            For Each child As Control In ctrl.Controls
+                                If TypeOf child Is Panel OrElse TypeOf child Is UserControl Then
+                                    child.BackColor = themeBg
+                                End If
+                            Next
                             Exit While
                         End If
                     End If
