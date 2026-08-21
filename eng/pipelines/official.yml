@@ -161,13 +161,6 @@ extends:
       displayName: Localization
       # [] clears the dependency on the previous stages allowing parallelism.
       dependsOn: []
-      variables:
-      # Variable group containing the PATs required for running OneLocBuild.
-      # See: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
-      # Variables used:
-      # - BotAccount-dotnet-bot-repo-PAT
-      # - dn-bot-ceapex-package-r
-      - group: OneLocBuildVariables
       jobs:
       - template: eng/pipelines/templates/generate-localization.yml@self
         
