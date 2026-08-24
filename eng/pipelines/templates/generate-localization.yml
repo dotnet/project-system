@@ -36,6 +36,16 @@ jobs:
       # See: https://docs.microsoft.com/dotnet/core/tools/dotnet-run#options
       arguments: '-- -r "$(System.DefaultWorkingDirectory)" -o "$(Build.StagingDirectory)"'
 
+  - task: AzureCLI@2
+    displayName: Get ceapex token
+    inputs:
+      azureSubscription: dnceng-onelocbuild-ceapex
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        $token = az account get-access-token --query accessToken --resource 499b84ac-1321-427f-aa17-267ca6975798 -o tsv
+        Write-Host "##vso[task.setvariable variable=CeapexEntraToken;issecret=true]${token}"
+
   # Runs the localization process on the resource files provided within LocProject.json.
   # Details for the process can be found here: https://ceapex.visualstudio.com/CEINTL/_wiki/wikis/CEINTL.wiki/107/Localization-with-OneLocBuild-Task
   # YAML reference: https://dev.azure.com/ceapex/CEINTL/_git/OneLocBuild?_a=contents&version=GBmain&path=/src/OneLocBuildTaskExtension/OneLocBuildTask/task.json
@@ -48,9 +58,7 @@ jobs:
       # Variable value comes from OneLocBuildVariables: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
       gitHubPatVariable: $(BotAccount-dotnet-bot-repo-PAT)
       packageSourceAuth: patAuth
-      # Provides read access to the ceapex AzDO instance: https://dev.azure.com/ceapex/
-      # Variable value comes from OneLocBuildVariables: https://devdiv.visualstudio.com/DevDiv/_library?itemType=VariableGroups&view=VariableGroupView&variableGroupId=343&path=OneLocBuildVariables
-      patVariable: $(dn-bot-ceapex-package-r)
+      patVariable: $(CeapexEntraToken)
       isCreatePrSelected: true
       isAutoCompletePrSelected: false
       isShouldReusePrSelected: true
