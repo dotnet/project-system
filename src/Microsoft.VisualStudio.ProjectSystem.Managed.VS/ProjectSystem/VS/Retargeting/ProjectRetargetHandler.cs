@@ -1,11 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Text.Json;
 using Microsoft.VisualStudio.ProjectSystem.VS.Setup;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
-using IFileSystem = Microsoft.VisualStudio.IO.IFileSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 
@@ -18,9 +16,8 @@ internal sealed partial class ProjectRetargetHandler(
     UnconfiguredProject project,
 #pragma warning restore CS9113
     IDotNetReleasesProvider releasesProvider,
-    IFileSystem fileSystem,
+    ISolutionSdkVersionProvider solutionSdkVersionProvider,
     IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> projectRetargetingService,
-    ISolutionService solutionService,
     IEnvironment environment,
     IDotNetEnvironment dotnetEnvironment)
     : IProjectRetargetHandler, IDisposable
@@ -38,7 +35,7 @@ internal sealed partial class ProjectRetargetHandler(
             return null;
         }
 
-        string? sdkVersion = await GetSdkVersionForSolutionAsync();
+        string? sdkVersion = await solutionSdkVersionProvider.GetSdkVersionAsync();
 
         if (sdkVersion is null)
         {
@@ -84,54 +81,6 @@ internal sealed partial class ProjectRetargetHandler(
             //NewTargetId = Guid.Empty, // this is what we want ultimately
             CurrentTargetId = _sdkRetargetId
         };
-
-        async Task<string?> GetSdkVersionForSolutionAsync()
-        {
-            string? solutionDirectory = await solutionService.GetSolutionDirectoryAsync();
-
-            if (!Strings.IsNullOrEmpty(solutionDirectory))
-            {
-                string? globalJsonPath = FindGlobalJsonPath();
-
-                if (globalJsonPath is not null)
-                {
-                    try
-                    {
-                        using Stream stream = fileSystem.OpenTextStream(globalJsonPath);
-                        using JsonDocument doc = await JsonDocument.ParseAsync(stream);
-                        if (doc.RootElement.TryGetProperty("sdk", out JsonElement sdkProp) &&
-                            sdkProp.TryGetProperty("version", out JsonElement versionProp))
-                        {
-                            return versionProp.GetString();
-                        }
-                    }
-                    catch (Exception ex) when (ex.IsCatchable())
-                    {
-                    }
-                }
-            }
-
-            return null;
-
-            string? FindGlobalJsonPath()
-            {
-                string? dir = solutionDirectory;
-
-                while (!string.IsNullOrEmpty(dir))
-                {
-                    string globalJsonPath = Path.Join(dir, "global.json");
-
-                    if (fileSystem.FileExists(globalJsonPath))
-                    {
-                        return globalJsonPath;
-                    }
-
-                    dir = Path.GetDirectoryName(dir);
-                }
-
-                return null;
-            }
-        }
     }
 
     public Task<IImmutableList<string>> GetAffectedFilesAsync(IProjectTargetChange projectTargetChange)

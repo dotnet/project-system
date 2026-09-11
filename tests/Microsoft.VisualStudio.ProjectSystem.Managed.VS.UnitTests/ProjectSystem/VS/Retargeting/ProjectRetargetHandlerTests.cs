@@ -3,7 +3,9 @@
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.VS.Setup;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting;
 
@@ -427,12 +429,18 @@ public class ProjectRetargetHandlerTests
 
         dotnetEnvironment ??= Mock.Of<IDotNetEnvironment>();
 
+        var solutionSdkVersionProvider = new SolutionSdkVersionProvider(
+            solutionService,
+            fileSystem,
+            IVsServiceFactory.Create<SVsFileChangeEx, IVsAsyncFileChangeEx>(new IVsAsyncFileChangeExMock()),
+            Mock.Of<IProjectFaultHandlerService>(),
+            JoinableTaskContextNodeFactory.Create().Context);
+
         return new ProjectRetargetHandler(
             null!,
             releasesProvider,
-            fileSystem,
+            solutionSdkVersionProvider,
             retargetingService,
-            solutionService,
             environment,
             dotnetEnvironment);
     }
