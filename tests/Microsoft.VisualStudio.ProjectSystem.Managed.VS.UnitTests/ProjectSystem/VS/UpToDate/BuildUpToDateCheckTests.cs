@@ -174,6 +174,7 @@ public sealed class BuildUpToDateCheckTests : BuildUpToDateCheckTestBase, IDispo
         Dictionary<string, IProjectRuleSnapshotModel>? sourceSnapshot = null,
         bool disableFastUpToDateCheck = false,
         string outDir = _outputPathRelative,
+        string projectTargetPath = "",
         DateTime? lastSuccessfulBuildStartTimeUtc = null,
         DateTime? lastItemsChangedAtUtc = null,
         UpToDateCheckImplicitConfiguredInput? upToDateCheckImplicitConfiguredInput = null,
@@ -196,6 +197,7 @@ public sealed class BuildUpToDateCheckTests : BuildUpToDateCheckTestBase, IDispo
                     { "MSBuildAllProjects", _msBuildAllProjects },
                     { "OutputPath", outDir },
                     { "OutDir", outDir },
+                    { ConfigurationGeneral.TargetPathProperty, projectTargetPath },
                     { ConfigurationGeneral.DisableFastUpToDateCheckProperty, disableFastUpToDateCheck.ToString() },
                     { ConfigurationGeneral.AccelerateBuildsInVisualStudioProperty, _isBuildAccelerationEnabledInProject?.ToString() ?? "" }
                 }
@@ -252,6 +254,68 @@ public sealed class BuildUpToDateCheckTests : BuildUpToDateCheckTestBase, IDispo
         Assert.Equal(
             isEnabled,
             await _buildUpToDateCheck.IsUpToDateCheckEnabledAsync(CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task IsUpToDateAsync_ReusesReferenceTimestampsAcrossProjectChecksAndInvalidatesOutputsAfterBuild()
+    {
+        string resolvedReferencePath = @"C:\Dev\Solution\Reference\obj\Reference.dll";
+
+        var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+        {
+            [UpToDateCheckBuilt.SchemaName] = SimpleItems(@"bin\Debug\Built.dll"),
+            [ResolvedCompilationReference.SchemaName] = new IProjectRuleSnapshotModel
+            {
+                Items = new Dictionary<string, IImmutableDictionary<string, string>>(StringComparers.ItemNames)
+                {
+                    {
+                        "Reference",
+                        ImmutableStringDictionary<string>.EmptyOrdinal
+                            .Add("CopyUpToDateMarker", "ReferenceMarkerPath")
+                            .Add("ResolvedPath", resolvedReferencePath)
+                            .Add("OriginalPath", resolvedReferencePath)
+                    }
+                }
+            }
+        };
+
+        DateTime inputTime = DateTime.UtcNow.AddMinutes(-2);
+        DateTime outputTime = DateTime.UtcNow.AddMinutes(-1);
+
+        _fileSystem.AddFile(resolvedReferencePath, inputTime);
+        _fileSystem.AddFile(_builtPath, outputTime);
+
+        await SetupAsync(
+            projectSnapshot,
+            projectTargetPath: resolvedReferencePath,
+            lastSuccessfulBuildStartTimeUtc: outputTime);
+
+        string expectedLog = $"""
+            Build acceleration is not enabled for this project. See https://aka.ms/vs-build-acceleration.
+            Comparing timestamps of inputs and outputs:
+                Adding UpToDateCheckBuilt outputs:
+                    {_builtPath}
+                Adding newest import input:
+                    {_projectPath}
+                Adding ResolvedCompilationReference inputs:
+                    {resolvedReferencePath}
+                No inputs are newer than earliest output '{_builtPath}' ({ToLocalTime(outputTime)}). Newest input is '{resolvedReferencePath}' ({ToLocalTime(inputTime)}).
+            Project is up-to-date.
+            """;
+
+        await AssertUpToDateAsync(expectedLog);
+        await AssertUpToDateAsync(expectedLog);
+
+        Assert.Equal(3, _fileSystem.LastWriteTimeQueryCounts[resolvedReferencePath]);
+        Assert.Equal(4, _fileSystem.LastWriteTimeQueryCounts[_builtPath]);
+
+        ((IProjectBuildEventListener)_buildUpToDateCheck).NotifyBuildStarting(buildStartTimeUtc: DateTime.UtcNow);
+        await ((IProjectBuildEventListener)_buildUpToDateCheck).NotifyBuildCompletedAsync(wasSuccessful: true, isRebuild: false);
+
+        await AssertUpToDateAsync(expectedLog);
+
+        Assert.Equal(5, _fileSystem.LastWriteTimeQueryCounts[resolvedReferencePath]);
+        Assert.Equal(6, _fileSystem.LastWriteTimeQueryCounts[_builtPath]);
     }
 
     [Theory]

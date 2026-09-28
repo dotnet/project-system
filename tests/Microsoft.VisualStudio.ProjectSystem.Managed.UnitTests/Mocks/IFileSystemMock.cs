@@ -42,6 +42,7 @@ internal class IFileSystemMock : IFileSystem
     private string? _currentDirectory;
 
     public Dictionary<string, FileData> Files { get; } = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
+    public Dictionary<string, int> LastWriteTimeQueryCounts { get; } = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
     public void Create(string path)
     {
@@ -163,6 +164,9 @@ internal class IFileSystemMock : IFileSystem
 
     public bool TryGetLastFileWriteTimeUtc(string path, [NotNullWhen(true)]out DateTime? result)
     {
+        LastWriteTimeQueryCounts.TryGetValue(path, out int queryCount);
+        LastWriteTimeQueryCounts[path] = queryCount + 1;
+
         if (Files.TryGetValue(path, out FileData value))
         {
             result = value.LastWriteTimeUtc;

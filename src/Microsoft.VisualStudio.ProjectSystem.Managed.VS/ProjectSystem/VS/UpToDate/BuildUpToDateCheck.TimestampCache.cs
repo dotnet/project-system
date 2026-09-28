@@ -10,10 +10,12 @@ internal sealed partial class BuildUpToDateCheck
     {
         private readonly Dictionary<string, DateTime> _timestampCache = new(StringComparers.Paths);
         private readonly IFileSystem _fileSystem;
+        private readonly ITimestampCache? _solutionBuildCache;
 
-        public TimestampCache(IFileSystem fileSystem)
+        public TimestampCache(IFileSystem fileSystem, ITimestampCache? solutionBuildCache = null)
         {
             _fileSystem = fileSystem;
+            _solutionBuildCache = solutionBuildCache;
         }
 
         /// <summary>
@@ -27,11 +29,22 @@ internal sealed partial class BuildUpToDateCheck
         /// Otherwise, query the filesystem, cache the result, then return it.
         /// If the file is not found, return <see langword="null"/>.
         /// </summary>
-        public DateTime? GetTimestampUtc(string path)
+        public DateTime? GetTimestampUtc(string path, bool useSolutionBuildCache = false)
         {
             if (!_timestampCache.TryGetValue(path, out DateTime time))
             {
-                if (!_fileSystem.TryGetLastFileWriteTimeUtc(path, out DateTime? newTime))
+                DateTime? newTime;
+
+                if (useSolutionBuildCache && _solutionBuildCache is not null)
+                {
+                    newTime = _solutionBuildCache.GetTimestampUtc(path);
+                }
+                else if (!_fileSystem.TryGetLastFileWriteTimeUtc(path, out newTime))
+                {
+                    return null;
+                }
+
+                if (newTime is null)
                 {
                     return null;
                 }

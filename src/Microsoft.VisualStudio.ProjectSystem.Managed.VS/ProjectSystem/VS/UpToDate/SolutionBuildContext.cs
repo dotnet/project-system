@@ -11,20 +11,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UpToDate;
 internal sealed class SolutionBuildContext
 {
     /// <summary>
-    /// A cache of timestamps for the absolute paths of both source and target of copy items
-    /// across all projects.
+    /// A cache of timestamps for absolute paths across all projects.
     /// </summary>
     /// <remarks>
-    /// In large solutions we end up checking many, many copy items. These items get their
-    /// own cache that lasts the duration of the solution build, rather than the default cache
-    /// which only lasts for the project build. This cache has a high hit rate. As project
-    /// builds complete, we clear each project's output items from the cache so that we re-query
-    /// them on the next call.
+    /// In large solutions, many projects check the same inputs and copy items. This cache lasts
+    /// for the duration of the solution build. As project builds complete, we clear each
+    /// project's output items so that future checks query potentially modified files again.
     /// </remarks>
-    public ITimestampCache CopyItemTimestamps { get; }
+    public ITimestampCache Timestamps { get; }
 
     public SolutionBuildContext(IFileSystem fileSystem)
     {
-        CopyItemTimestamps = new ConcurrentTimestampCache(fileSystem);
+        Timestamps = new ConcurrentTimestampCache(fileSystem);
     }
 }

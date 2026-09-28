@@ -58,7 +58,7 @@ internal sealed partial class BuildUpToDateCheck
     private ISubscription _subscription;
     private int _isDisposed;
     private int _checkNumber;
-    private IEnumerable<string>? _lastCopyTargetsFromThisProject;
+    private IEnumerable<string>? _lastOutputsFromThisProject;
 
     /// <summary>
     /// Gets the set of up-to-date checkers that apply to this project.
@@ -276,7 +276,10 @@ internal sealed partial class BuildUpToDateCheck
 
                 log.VerboseLiteral(input);
 
-                DateTime? inputTime = timestampCache.GetTimestampUtc(input);
+                bool useSolutionBuildCache = itemType == ResolvedAnalyzerReference.SchemaName
+                    || itemType == ResolvedCompilationReference.SchemaName;
+
+                DateTime? inputTime = timestampCache.GetTimestampUtc(input, useSolutionBuildCache: useSolutionBuildCache);
 
                 if (inputTime is null)
                 {
@@ -641,7 +644,7 @@ internal sealed partial class BuildUpToDateCheck
             {
                 log.VerboseLiteral(inputMarker);
 
-                DateTime? inputMarkerTime = timestampCache.GetTimestampUtc(inputMarker);
+                DateTime? inputMarkerTime = timestampCache.GetTimestampUtc(inputMarker, useSolutionBuildCache: true);
 
                 if (inputMarkerTime is null)
                 {
@@ -720,7 +723,7 @@ internal sealed partial class BuildUpToDateCheck
 
     private bool CheckCopyToOutputDirectoryItems(Log log, UpToDateCheckImplicitConfiguredInput state, IEnumerable<(string Path, ImmutableArray<CopyItem> CopyItems)> copyItemsByProject, ConfiguredFileSystemOperationAggregator fileSystemAggregator, bool? isBuildAccelerationEnabled, SolutionBuildContext solutionBuildContext, CancellationToken token)
     {
-        ITimestampCache timestampCache = solutionBuildContext.CopyItemTimestamps;
+        ITimestampCache timestampCache = solutionBuildContext.Timestamps;
 
         string outputFullPath = Path.Combine(state.MSBuildProjectDirectory!, state.OutputRelativeOrFullPath!);
 
@@ -854,15 +857,15 @@ internal sealed partial class BuildUpToDateCheck
 
     async Task IProjectBuildEventListener.NotifyBuildCompletedAsync(bool wasSuccessful, bool isRebuild)
     {
-        if (_lastCopyTargetsFromThisProject is not null)
+        if (_lastOutputsFromThisProject is not null)
         {
             // The project build has completed. We must assume this project modified its outputs,
             // so we remove the outputs that were likely modified from our cache. The next requests
             // for these files will perform a fresh query.
-            _solutionBuildContextProvider.CurrentSolutionBuildContext?.CopyItemTimestamps?.ClearTimestamps(_lastCopyTargetsFromThisProject);
+            _solutionBuildContextProvider.CurrentSolutionBuildContext?.Timestamps.ClearTimestamps(_lastOutputsFromThisProject);
 
             // We don't use this again after clearing the cache, so release it for GC.
-            _lastCopyTargetsFromThisProject = null;
+            _lastOutputsFromThisProject = null;
         }
 
         if (_lastBuildStartTimeUtc == default)
@@ -952,9 +955,6 @@ internal sealed partial class BuildUpToDateCheck
 
             token.ThrowIfCancellationRequested();
 
-            // Short-lived cache of timestamp by path
-            var timestampCache = new TimestampCache(_fileSystem);
-
             // Ensure we have a context object for the current solution build.
             //
             // Ordinarily, this is created when the SBM calls ISolutionBuildEventListener.NotifySolutionBuildStarting,
@@ -975,6 +975,11 @@ internal sealed partial class BuildUpToDateCheck
                 solutionBuildContext = _solutionBuildContextProvider.CurrentSolutionBuildContext;
                 Assumes.NotNull(solutionBuildContext);
             }
+
+            // Validation runs follow a build and must query the latest timestamps.
+            var timestampCache = new TimestampCache(
+                _fileSystem,
+                isValidationRun ? null : solutionBuildContext.Timestamps);
 
             globalProperties.TryGetValue(FastUpToDateCheckIgnoresKindsGlobalPropertyName, out string? ignoreKindsString);
 
@@ -1002,7 +1007,7 @@ internal sealed partial class BuildUpToDateCheck
 
             logger.FileSystemOperations = fileSystemOperations;
 
-            HashSet<string> copyItemPaths = new(StringComparers.Paths);
+            HashSet<string> outputPaths = new(StringComparers.Paths);
 
             try
             {
@@ -1034,6 +1039,11 @@ internal sealed partial class BuildUpToDateCheck
                 foreach (UpToDateCheckImplicitConfiguredInput implicitState in implicitStatesToCheck)
                 {
                     token.ThrowIfCancellationRequested();
+
+                    if (!isValidationRun)
+                    {
+                        AddPotentialOutputPaths(outputPaths, implicitState);
+                    }
 
                     if (logConfigurations)
                     {
@@ -1073,10 +1083,6 @@ internal sealed partial class BuildUpToDateCheck
                     bool? isBuildAccelerationEnabled = await IsBuildAccelerationEnabledAsync(copyInfo.IsComplete, copyInfo.DuplicateCopyItemRelativeTargetPaths, implicitState);
 
                     var configuredFileSystemOperations = new ConfiguredFileSystemOperationAggregator(fileSystemOperations, isBuildAccelerationEnabled, copyInfo.TargetsWithoutReferenceAssemblies);
-
-                    string outputFullPath = Path.Combine(implicitState.MSBuildProjectDirectory!, implicitState.OutputRelativeOrFullPath!);
-
-                    copyItemPaths.UnionWith(implicitState.ProjectCopyData.CopyItems.Select(copyItem => Path.Combine(outputFullPath, copyItem.RelativeTargetPath)));
 
                     if (!CheckGlobalConditions(logger, lastSuccessfulBuildStartTimeUtc, validateFirstRun: !isValidationRun, implicitState) ||
                         !CheckInputsAndOutputs(logger, lastSuccessfulBuildStartTimeUtc, timestampCache, implicitState, ignoreKinds, token) ||
@@ -1140,7 +1146,10 @@ internal sealed partial class BuildUpToDateCheck
                 _lastFailureReason = logger.FailureReason;
                 _lastFailureDescription = logger.FailureDescription;
 
-                _lastCopyTargetsFromThisProject = copyItemPaths;
+                if (!isValidationRun)
+                {
+                    _lastOutputsFromThisProject = outputPaths;
+                }
             }
 
             async ValueTask<bool?> IsBuildAccelerationEnabledAsync(bool isCopyItemsComplete, IReadOnlyList<string>? duplicateCopyItemRelativeTargetPaths, UpToDateCheckImplicitConfiguredInput implicitState)
@@ -1221,6 +1230,57 @@ internal sealed partial class BuildUpToDateCheck
                     // The project explicitly opts out.
                     logger.Info(nameof(VSResources.FUTD_AccelerationDisabledForProject));
                     return false;
+                }
+            }
+        }
+    }
+
+    private void AddPotentialOutputPaths(HashSet<string> outputPaths, UpToDateCheckImplicitConfiguredInput state)
+    {
+        AddItems(state.UpToDateCheckOutputItemsByKindBySetName);
+        AddItems(state.UpToDateCheckBuiltItemsByKindBySetName);
+
+        if (!Strings.IsNullOrWhiteSpace(state.ProjectTargetPath))
+        {
+            outputPaths.Add(state.ProjectTargetPath);
+        }
+
+        if (!Strings.IsNullOrWhiteSpace(state.ProjectCopyData.TargetPath))
+        {
+            outputPaths.Add(state.ProjectCopyData.TargetPath);
+        }
+
+        if (!Strings.IsNullOrWhiteSpace(state.CopyUpToDateMarkerItem))
+        {
+            outputPaths.Add(_configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem));
+        }
+
+        foreach ((string destinationRelative, _) in state.BuiltFromInputFileItems)
+        {
+            outputPaths.Add(_configuredProject.UnconfiguredProject.MakeRooted(destinationRelative));
+        }
+
+        if (!Strings.IsNullOrWhiteSpace(state.MSBuildProjectDirectory)
+            && !Strings.IsNullOrWhiteSpace(state.OutputRelativeOrFullPath))
+        {
+            string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
+
+            foreach (CopyItem copyItem in state.ProjectCopyData.CopyItems)
+            {
+                outputPaths.Add(Path.Combine(outputFullPath, copyItem.RelativeTargetPath));
+            }
+        }
+
+        void AddItems(ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> itemsByKindBySetName)
+        {
+            foreach (ImmutableDictionary<string, ImmutableArray<string>> itemsByKind in itemsByKindBySetName.Values)
+            {
+                foreach (ImmutableArray<string> items in itemsByKind.Values)
+                {
+                    foreach (string path in items)
+                    {
+                        outputPaths.Add(_configuredProject.UnconfiguredProject.MakeRooted(path));
+                    }
                 }
             }
         }
