@@ -43,6 +43,21 @@ public sealed class MiscellaneousRuleTests : XamlRuleTestBase
     }
 
     [Theory]
+    [InlineData("DefiningProjectFullPath")]
+    [InlineData("DefiningProjectLineNumber")]
+    [InlineData("DefiningProjectColumnNumber")]
+    public void CollectedPackageReferenceIncludesSourceMetadata(string metadataName)
+    {
+        var (fullPath, _) = GetRules().Single(rule => Path.GetFileNameWithoutExtension(rule.Path) == CollectedPackageReference.SchemaName);
+        var property = Assert.Single(GetProperties(LoadXamlRule(fullPath)), property => property.Attribute("Name")?.Value == metadataName);
+
+        Assert.Equal(XName.Get("StringProperty", MSBuildNamespace), property.Name);
+        Assert.Equal("true", property.Attribute("ReadOnly")?.Value);
+        Assert.False(IsVisible(property));
+        Assert.Null(GetDataSource(property));
+    }
+
+    [Theory]
     [MemberData(nameof(GetEmbeddedRules))]
     public void EmbeddedRulesShouldNotHaveVisibleProperties(string ruleName, string fullPath, Type assemblyExporterType)
     {

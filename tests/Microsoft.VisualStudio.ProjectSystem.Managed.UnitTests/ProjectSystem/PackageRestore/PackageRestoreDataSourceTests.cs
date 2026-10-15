@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.IO;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.PackageRestore;
@@ -79,6 +80,34 @@ public class PackageRestoreDataSourceTests
         await instance.RestoreAsync(value);
 
         Assert.Equal(1, callCount); // Should have only been called once
+    }
+
+    [Theory]
+    [InlineData("DefiningProjectFullPath", @"C:\Project\references%3B.props", @"C:\Project\moved.props")]
+    [InlineData("DefiningProjectLineNumber", "3", "8")]
+    [InlineData("DefiningProjectColumnNumber", "5", "0")]
+    public async Task RestoreAsync_SourceMetadataChanges_Renominates(string metadataName, string before, string after)
+    {
+        var nominations = new List<ProjectRestoreInfo>();
+        var restoreService = INuGetRestoreServiceFactory.ImplementNominateProjectAsync((info, _, _) => nominations.Add(info));
+        var instance = CreateInitializedInstance(nugetRestoreService: restoreService);
+        var activeConfiguration = ProjectConfigurationFactory.Create("Debug|AnyCPU");
+
+        foreach (string metadataValue in new[] { before, before, after, "" })
+        {
+            var metadata = ImmutableDictionary<string, string>.Empty.Add("Version", "1.0.0").Add(metadataName, metadataValue);
+            var items = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty.Add("Package", metadata);
+            var snapshot = IProjectRuleSnapshotFactory.Create(CollectedPackageReference.SchemaName, "Unused", "", items);
+            var update = ImmutableDictionary<string, IProjectRuleSnapshot>.Empty.Add(CollectedPackageReference.SchemaName, snapshot);
+            var restoreInfo = RestoreBuilder.ToProjectRestoreInfo(update);
+            var value = IProjectVersionedValueFactory.Create(new PackageRestoreUnconfiguredInput(restoreInfo, [], activeConfiguration));
+
+            await instance.RestoreAsync(value);
+        }
+
+        Assert.Equal(3, nominations.Count);
+        Assert.Equal(new[] { before, after, "" }, nominations.Select(info =>
+            Assert.Single(Assert.Single(info.TargetFrameworks).PackageReferences).Metadata[metadataName]));
     }
 
     private static PackageRestoreDataSource CreateInitializedInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, INuGetRestoreService? nugetRestoreService = null)

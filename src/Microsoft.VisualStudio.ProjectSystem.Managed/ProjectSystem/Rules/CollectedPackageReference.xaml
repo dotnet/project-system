@@ -19,6 +19,19 @@
                       ReadOnly="true" 
                       Visible="false" />
 
+  <!-- Include declaration locations in the restore snapshot so source-only edits also trigger nomination. -->
+  <StringProperty Name="DefiningProjectColumnNumber"
+                  ReadOnly="true"
+                  Visible="false" />
+
+  <StringProperty Name="DefiningProjectFullPath"
+                  ReadOnly="true"
+                  Visible="false" />
+
+  <StringProperty Name="DefiningProjectLineNumber"
+                  ReadOnly="true"
+                  Visible="false" />
+
   <StringProperty Name="ExcludeAssets"
                   ReadOnly="true"
                   Visible="false" />
