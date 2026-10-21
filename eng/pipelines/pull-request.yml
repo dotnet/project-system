@@ -22,9 +22,7 @@ pool:
   # https://dnceng.visualstudio.com/public/_settings/agentqueues?queueId=396&view=jobs
   name: NetCore-Public
   # Demands Docs: https://docs.microsoft.com/azure/devops/pipelines/process/demands?view=azure-devops&tabs=yaml#manually-entered-demands
-  # ImageOverride is used to select the image. See:
-  # - https://dev.azure.com/dnceng/internal/_wiki/wikis/DNCEng%20Services%20Wiki/510/1ES-Hosted-Pools-Migration
-  # - https://dev.azure.com/dnceng/internal/_wiki/wikis/DNCEng%20Services%20Wiki/675/1ESManagedPoolsDesign?anchor=1es-managed-images
+  # ImageOverride is used to select the image.
   # Image List: https://helix.dot.net/#1esPools
   demands: ImageOverride -equals Windows.VS2022Preview.Amd64.Open
 
