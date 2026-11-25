@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug;
 
 public class LaunchSettingsProviderTests
 {
-    internal static LaunchSettingsUnderTest GetLaunchSettingsProvider(IFileSystem? fileSystem, string? appDesignerFolder = @"c:\test\Project1\Properties", string activeProfile = "")
+    internal static LaunchSettingsUnderTest GetLaunchSettingsProvider(IFileSystem? fileSystem, string? appDesignerFolder = @"c:\test\Project1\Properties", string activeProfile = "", IProjectCapabilitiesScope? capabilities = null)
     {
         var activeProfileValue = new Mock<IEnumValue>();
         activeProfileValue.Setup(s => s.Name).Returns(activeProfile);
@@ -23,7 +23,7 @@ public class LaunchSettingsProviderTests
         var projectProperties = ProjectPropertiesFactory.Create(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, appDesignerFolder);
         var activeConfigurationProjectProperties = IActiveConfiguredValueFactory.ImplementValue<ProjectProperties?>(() => projectProperties);
         var configuredProject = ConfiguredProjectFactory.Create();
-        var project = UnconfiguredProjectFactory.Create(fullPath: @"c:\test\Project1\Project1.csproj", configuredProject: configuredProject);
+        var project = UnconfiguredProjectFactory.Create(fullPath: @"c:\test\Project1\Project1.csproj", configuredProject: configuredProject, scope: capabilities);
         var properties = ProjectPropertiesFactory.Create(project, [debuggerData]);
         var threadingService = IProjectThreadingServiceFactory.Create();
         var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, threadingService, null, properties);
@@ -955,6 +955,152 @@ public class LaunchSettingsProviderTests
         Assert.True(((IVersionedLaunchSettings)provider.CurrentSnapshot).Version >= 123);
     }
 
+    // In the tests below, the provider's own read of the ActiveDebugProfile property returns no name, as it does in
+    // Visual Studio when the saved profile isn't in the current snapshot: the property's enum lists only that
+    // snapshot's profiles. Only the ProjectDebugger rule update carries the saved name.
+
+    [Fact]
+    public async Task LaunchSettingsFile_Changed_SavedActiveProfileComesBack_BecomesActive()
+    {
+        var moqFS = new IFileSystemMock();
+        using var provider = GetLaunchSettingsProviderWithRuleUpdates(moqFS);
+        await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithProfilesAAndB);
+        await provider.ProjectRuleBlock_ChangedAsyncTest(CreateProjectDebuggerUpdate(activeDebugProfile: "B"));
+
+        // B leaves the file, so A is active.
+        await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithProfileA);
+        await provider.LaunchSettingsFile_ChangedTest();
+
+        // B comes back. ActiveDebugProfile didn't change, so no rule update follows.
+        await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithProfilesAAndB);
+        await provider.LaunchSettingsFile_ChangedTest();
+
+        Assert.Equal("B", provider.CurrentSnapshot.ActiveProfile!.Name);
+    }
+
+    [Fact]
+    public async Task LaunchSettingsFile_Changed_SavedActiveProfileAddedAfterLoad_BecomesActive()
+    {
+        var moqFS = new IFileSystemMock();
+        using var provider = GetLaunchSettingsProviderWithRuleUpdates(moqFS);
+        await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithProfileA);
+        await provider.ProjectRuleBlock_ChangedAsyncTest(CreateProjectDebuggerUpdate(activeDebugProfile: "B"));
+
+        await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithProfilesAAndB);
+        await provider.LaunchSettingsFile_ChangedTest();
+
+        Assert.Equal("B", provider.CurrentSnapshot.ActiveProfile!.Name);
+    }
+
+    [Fact]
+    public async Task LaunchSettingsFile_Changed_OtherProfileSelectedWhileSavedProfileMissing_KeepsSelection()
+    {
+        var moqFS = new IFileSystemMock();
+        using var provider = GetLaunchSettingsProviderWithRuleUpdates(moqFS);
+        await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithProfileA);
+        await provider.ProjectRuleBlock_ChangedAsyncTest(CreateProjectDebuggerUpdate(activeDebugProfile: "B"));
+
+        // While B is missing, the user selects A, the profile that's already active.
+        await provider.ProjectRuleBlock_ChangedAsyncTest(CreateProjectDebuggerUpdate(activeDebugProfile: "A"));
+
+        await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithProfilesAAndB);
+        await provider.LaunchSettingsFile_ChangedTest();
+
+        Assert.Equal("A", provider.CurrentSnapshot.ActiveProfile!.Name);
+    }
+
+    [Fact]
+    public async Task AddOrUpdateProfileAsync_SavedActiveProfileAddedInMemory_BecomesActive()
+    {
+        var moqFS = new IFileSystemMock();
+        using var provider = GetLaunchSettingsProviderWithRuleUpdates(moqFS);
+        await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithProfileA);
+
+        // The first snapshot is built before an extension adds its in-memory profile, so A is active.
+        await provider.ProjectRuleBlock_ChangedAsyncTest(CreateProjectDebuggerUpdate(activeDebugProfile: "InMemory"));
+
+        await provider.AddOrUpdateProfileAsync(new LaunchProfile("InMemory", "Project", doNotPersist: true), addToFront: false);
+
+        Assert.Equal("InMemory", provider.CurrentSnapshot.ActiveProfile!.Name);
+    }
+
+    [Fact]
+    public async Task AddOrUpdateProfileAsync_SavedActiveProfileRemovedAndAddedBack_BecomesActive()
+    {
+        var moqFS = new IFileSystemMock();
+        using var provider = GetLaunchSettingsProviderWithRuleUpdates(moqFS);
+        await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithProfileA);
+        await provider.ProjectRuleBlock_ChangedAsyncTest(CreateProjectDebuggerUpdate(activeDebugProfile: "InMemory"));
+        await provider.AddOrUpdateProfileAsync(new LaunchProfile("InMemory", "Project", doNotPersist: true), addToFront: false);
+
+        // Removing the active profile falls back to A.
+        await provider.RemoveProfileAsync("InMemory");
+
+        await provider.AddOrUpdateProfileAsync(new LaunchProfile("InMemory", "Project", doNotPersist: true), addToFront: false);
+
+        Assert.Equal("InMemory", provider.CurrentSnapshot.ActiveProfile!.Name);
+    }
+
+    [Fact]
+    public async Task AddOrUpdateProfileAsync_NoSavedActiveProfile_KeepsActiveProfile()
+    {
+        var moqFS = new IFileSystemMock();
+        using var provider = GetLaunchSettingsProviderWithRuleUpdates(moqFS);
+        await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithProfilesAAndB);
+        await provider.ProjectRuleBlock_ChangedAsyncTest(CreateProjectDebuggerUpdate(activeDebugProfile: ""));
+
+        await provider.AddOrUpdateProfileAsync(new LaunchProfile("InMemory", "Project", doNotPersist: true), addToFront: true);
+
+        Assert.Equal("A", provider.CurrentSnapshot.ActiveProfile!.Name);
+    }
+
+    // ProjectRuleBlock_ChangedAsync runs its update with the capabilities that came with it, and CPS only accepts
+    // capabilities from the project's own scope. Providers that get rule updates are created with this scope.
+    private static readonly NamedIdentity s_capabilitiesIdentity = new(nameof(LaunchSettingsProviderTests));
+    private static readonly IProjectCapabilitiesScope s_capabilitiesScope = Mock.Of<IProjectCapabilitiesScope>(s => s.Identity == s_capabilitiesIdentity);
+
+    private static LaunchSettingsUnderTest GetLaunchSettingsProviderWithRuleUpdates(IFileSystem fileSystem)
+    {
+        return GetLaunchSettingsProvider(fileSystem, capabilities: s_capabilitiesScope);
+    }
+
+    private static IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>> CreateProjectDebuggerUpdate(string activeDebugProfile)
+    {
+        var ruleSnapshot = IProjectRuleSnapshotFactory.Create(ProjectDebugger.SchemaName, ProjectDebugger.ActiveDebugProfileProperty, activeDebugProfile);
+        var update = IProjectSubscriptionUpdateFactory.Implement(
+            currentState: new Dictionary<string, IProjectRuleSnapshot> { [ProjectDebugger.SchemaName] = ruleSnapshot });
+        var capabilities = Mock.Of<IProjectScopeCapabilitiesSnapshot>(s =>
+            s.ScopeIdentity == s_capabilitiesIdentity
+            && s.InheritedProjectScopeCapabilitiesSnapshots == ImmutableDictionary<NamedIdentity, IProjectScopeCapabilitiesSnapshot>.Empty);
+
+        return IProjectVersionedValueFactory.Create((update, (IProjectCapabilitiesSnapshot)capabilities));
+    }
+
+    private readonly string JsonStringWithProfileA =
+        """
+        {
+          "profiles": {
+            "A": {
+              "commandName": "Project"
+            }
+          }
+        }
+        """;
+
+    private readonly string JsonStringWithProfilesAAndB =
+        """
+        {
+          "profiles": {
+            "A": {
+              "commandName": "Project"
+            },
+            "B": {
+              "commandName": "Project"
+            }
+          }
+        }
+        """;
+
     private readonly string JsonString1 =
         """
         {
@@ -1071,6 +1217,7 @@ internal class LaunchSettingsUnderTest : LaunchSettingsProvider
     public void SetIgnoreFileChanges(bool value) { IgnoreFileChanges = value; }
     public Task<bool> SettingsFileHasChangedAsyncTest() { return SettingsFileHasChangedAsync(); }
     public Task LaunchSettingsFile_ChangedTest() => HandleLaunchSettingsFileChangedAsync();
+    public Task ProjectRuleBlock_ChangedAsyncTest(IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>> projectSnapshot) => ProjectRuleBlock_ChangedAsync(projectSnapshot);
 
     internal void SetSettingsProviderCollection(OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection> settingsProviders)
     {

@@ -71,6 +71,11 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     private IDisposable? _projectRuleSubscriptionLink;
     private long _nextVersion = 1;
 
+    // The ActiveDebugProfile value from the latest ProjectDebugger rule update: the profile the user selected, as saved
+    // in the .user file. A snapshot falls back to the first profile when no profile has this name, so this keeps the
+    // name for the next snapshot to resolve again, once that profile is back.
+    private string? _savedActiveProfileName;
+
     [ImportingConstructor]
     public LaunchSettingsProvider(
         UnconfiguredProject project,
@@ -251,6 +256,11 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
             if (projectSnapshot.Value.Item1.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot? ruleSnapshot))
             {
                 ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string? activeProfile);
+
+                // Record it on every update, even when the snapshot already agrees, so the user's latest selection
+                // is the one later updates resolve.
+                _savedActiveProfileName = activeProfile;
+
                 ILaunchSettings snapshot = CurrentSnapshot;
                 if (snapshot is null || !LaunchProfile.IsSameProfileName(activeProfile, snapshot.ActiveProfile?.Name))
                 {
@@ -294,14 +304,22 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
     {
         try
         {
-            // If the name of the new active profile wasn't provided we'll continue to use the
-            // current one.
+            // If the name of the new active profile wasn't provided, use the one the user selected.
             if (updatedActiveProfileName is null)
             {
-                ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
-                if (await props.ActiveDebugProfile.GetValueAsync() is IEnumValue activeProfileVal)
+                if (!Strings.IsNullOrWhiteSpace(_savedActiveProfileName))
                 {
-                    updatedActiveProfileName = activeProfileVal.Name;
+                    // Not the property's enum value: that only lists the current snapshot's profiles, so it can't
+                    // name a profile this update brings back.
+                    updatedActiveProfileName = _savedActiveProfileName;
+                }
+                else
+                {
+                    ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
+                    if (await props.ActiveDebugProfile.GetValueAsync() is IEnumValue activeProfileVal)
+                    {
+                        updatedActiveProfileName = activeProfileVal.Name;
+                    }
                 }
             }
 
@@ -651,7 +669,11 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         }
 
         // Make sure the profiles are copied. We don't want them to mutate.
-        string? activeProfileName = ActiveProfile?.Name;
+        // Resolve the profile the user selected against the new profiles, so it becomes active again when it's added
+        // back. With no saved selection, keep the current active profile.
+        string? activeProfileName = Strings.IsNullOrWhiteSpace(_savedActiveProfileName)
+            ? ActiveProfile?.Name
+            : _savedActiveProfileName;
 
         ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfileName, version: GetNextVersion());
         if (persistToDisk)
