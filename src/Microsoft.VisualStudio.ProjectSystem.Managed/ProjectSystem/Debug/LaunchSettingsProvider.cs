@@ -669,7 +669,11 @@ internal class LaunchSettingsProvider : ProjectValueDataSourceBase<ILaunchSettin
         }
 
         // Make sure the profiles are copied. We don't want them to mutate.
-        string? activeProfileName = ActiveProfile?.Name;
+        // Resolve the profile the user selected against the new profiles, so it becomes active again when it's added
+        // back. With no saved selection, keep the current active profile.
+        string? activeProfileName = Strings.IsNullOrWhiteSpace(_savedActiveProfileName)
+            ? ActiveProfile?.Name
+            : _savedActiveProfileName;
 
         ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfileName, version: GetNextVersion());
         if (persistToDisk)

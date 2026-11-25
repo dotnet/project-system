@@ -1009,6 +1009,51 @@ public class LaunchSettingsProviderTests
         Assert.Equal("A", provider.CurrentSnapshot.ActiveProfile!.Name);
     }
 
+    [Fact]
+    public async Task AddOrUpdateProfileAsync_SavedActiveProfileAddedInMemory_BecomesActive()
+    {
+        var moqFS = new IFileSystemMock();
+        using var provider = GetLaunchSettingsProviderWithRuleUpdates(moqFS);
+        await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithProfileA);
+
+        // The first snapshot is built before an extension adds its in-memory profile, so A is active.
+        await provider.ProjectRuleBlock_ChangedAsyncTest(CreateProjectDebuggerUpdate(activeDebugProfile: "InMemory"));
+
+        await provider.AddOrUpdateProfileAsync(new LaunchProfile("InMemory", "Project", doNotPersist: true), addToFront: false);
+
+        Assert.Equal("InMemory", provider.CurrentSnapshot.ActiveProfile!.Name);
+    }
+
+    [Fact]
+    public async Task AddOrUpdateProfileAsync_SavedActiveProfileRemovedAndAddedBack_BecomesActive()
+    {
+        var moqFS = new IFileSystemMock();
+        using var provider = GetLaunchSettingsProviderWithRuleUpdates(moqFS);
+        await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithProfileA);
+        await provider.ProjectRuleBlock_ChangedAsyncTest(CreateProjectDebuggerUpdate(activeDebugProfile: "InMemory"));
+        await provider.AddOrUpdateProfileAsync(new LaunchProfile("InMemory", "Project", doNotPersist: true), addToFront: false);
+
+        // Removing the active profile falls back to A.
+        await provider.RemoveProfileAsync("InMemory");
+
+        await provider.AddOrUpdateProfileAsync(new LaunchProfile("InMemory", "Project", doNotPersist: true), addToFront: false);
+
+        Assert.Equal("InMemory", provider.CurrentSnapshot.ActiveProfile!.Name);
+    }
+
+    [Fact]
+    public async Task AddOrUpdateProfileAsync_NoSavedActiveProfile_KeepsActiveProfile()
+    {
+        var moqFS = new IFileSystemMock();
+        using var provider = GetLaunchSettingsProviderWithRuleUpdates(moqFS);
+        await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithProfilesAAndB);
+        await provider.ProjectRuleBlock_ChangedAsyncTest(CreateProjectDebuggerUpdate(activeDebugProfile: ""));
+
+        await provider.AddOrUpdateProfileAsync(new LaunchProfile("InMemory", "Project", doNotPersist: true), addToFront: true);
+
+        Assert.Equal("A", provider.CurrentSnapshot.ActiveProfile!.Name);
+    }
+
     // ProjectRuleBlock_ChangedAsync runs its update with the capabilities that came with it, and CPS only accepts
     // capabilities from the project's own scope. Providers that get rule updates are created with this scope.
     private static readonly NamedIdentity s_capabilitiesIdentity = new(nameof(LaunchSettingsProviderTests));
